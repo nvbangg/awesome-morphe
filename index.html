@@ -7,12 +7,7 @@
   <meta name="description" content="Explore Morphe apps, patch sources, and patch details.">
   <link rel="canonical" href="https://nvbangg.github.io/awesome-for-morphe/">
   <meta name="theme-color" content="#030712">
-  <script>
-    if (location.hostname.endsWith('github.io') && location.pathname === '/awesome-for-morphe') {
-      location.replace('/awesome-for-morphe/' + location.search + location.hash);
-    }
-  </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     [v-cloak] { display: none !important; }
@@ -23,6 +18,14 @@
     ::-webkit-scrollbar-thumb:hover { background: #374151; }
     .fade-enter-active, .fade-leave-active { transition: opacity 0.15s ease; }
     .fade-enter-from, .fade-leave-to { opacity: 0; }
+    
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration { display: none; }
+    
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
@@ -31,10 +34,7 @@
       <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
         <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center border-b border-gray-800 gap-1 md:gap-0">
           <div class="flex items-center gap-1 px-4 h-12 justify-center md:justify-start">
-            <a class="text-lg font-extrabold hover:opacity-80 transition-opacity whitespace-nowrap flex items-center h-full text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400" href="https://nvbangg.github.io/awesome-for-morphe/">Awesome for Morphe</a>
-            <a class="text-gray-100 hover:text-blue-500 transition-colors flex items-center justify-center w-12 h-12" href="https://github.com/nvbangg/awesome-for-morphe" target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">
-              <i class="fa-brands fa-github text-2xl leading-none"></i>
-            </a>
+            <a class="text-2xl font-extrabold hover:opacity-80 transition-opacity whitespace-nowrap flex items-center h-full text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400" href="https://github.com/nvbangg/awesome-for-morphe" target="_blank" rel="noreferrer" title="View Source on GitHub">Awesome for Morphe</a>
           </div>
           <div class="flex justify-self-center gap-1 px-2" role="tablist" aria-label="Views">
             <button class="inline-flex h-12 items-center gap-2 px-4 text-lg font-bold border-b-2 border-transparent text-gray-400 hover:text-blue-500 transition-colors" :class="{'text-blue-500 border-blue-500': view === 'apps'}" @click="view = 'apps'" role="tab" :aria-selected="view === 'apps'">
@@ -51,8 +51,19 @@
           </span>
         </div>
         
-        <div class="grid grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,160px)_minmax(0,160px)_160px] gap-1.5 p-2 md:gap-3 md:p-3">
-          <input type="search" v-model="query" autocomplete="off" placeholder="Search source, app, patch" class="col-span-2 md:col-span-1 w-full h-10 px-3 bg-gray-950 border border-gray-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm">
+        <div class="grid grid-cols-2 md:grid-cols-[auto_1fr_160px_160px_160px] gap-1.5 p-2 md:gap-3 md:p-3">
+          <div class="col-span-2 md:col-span-2 flex gap-1.5">
+            <button @click="resetFilters" class="h-10 w-10 flex items-center justify-center bg-gray-950 border border-gray-800 rounded-md hover:bg-white/5 transition-colors text-gray-400 shrink-0" title="Reset Filters">
+              <i class="fa-solid fa-arrow-rotate-left text-sm"></i>
+            </button>
+
+            <form @submit.prevent="$event.target.querySelector('input').blur()" class="relative flex-1">
+              <input type="search" v-model="query" autocomplete="off" enterkeyhint="search" placeholder="Search source, app, patch" class="w-full h-10 pl-3 pr-9 bg-gray-950 border border-gray-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm">
+              <button v-if="query" type="button" @click="query = ''" class="absolute right-0 top-0 h-10 w-9 flex items-center justify-center text-gray-500 hover:text-gray-300 transition-colors" title="Clear search">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </button>
+            </form>
+          </div>
           
           <select v-model="source" aria-label="Patch Sources filter" class="col-span-1 w-full h-10 pl-3 pr-8 bg-gray-950 border border-gray-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all cursor-pointer text-sm appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat">
             <option value="">All Sources</option>
@@ -110,7 +121,7 @@
           </div>
         </div>
         <div v-else class="grid gap-4">
-          <details v-for="group in sourcesGroups" :key="group.key" class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden group/source">
+          <details v-for="group in sourcesGroups" :key="group.key" :open="sourcesGroups.length === 1" class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden group/source">
             <summary class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-4 cursor-pointer hover:bg-gray-800 transition-colors">
               <span class="flex flex-wrap items-center gap-2 text-gray-400 shrink-0">
                 <strong class="font-bold text-base flex items-center text-gray-100">{{ group.key }}</strong>
@@ -180,7 +191,7 @@
         <header class="sticky top-0 z-10 flex items-start justify-between gap-3 p-4 bg-gray-900 border-b border-gray-800">
           <div class="min-w-0">
             <div class="flex items-center flex-wrap gap-2">
-              <h2 id="modalTitle" class="m-0 text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">{{ modalData.appName }}</h2>
+              <h2 id="modalTitle" class="m-0 text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">{{ modalData.appName }}</h2>
               <span class="flex flex-wrap gap-2 text-xs text-gray-400 shrink-0">
                 <span class="px-2 py-1 bg-white/5 rounded-full border border-white/5">{{ modalData.stats.sources }} sources</span>
                 <span class="px-2 py-1 bg-white/5 rounded-full border border-white/5">{{ modalData.stats.patches }} patches</span>
@@ -193,9 +204,9 @@
           </button>
         </header>
         
-        <div class="p-3 md:p-4 overflow-y-auto bg-gray-950 flex-1">
+        <div class="py-2 md:py-4 overflow-y-auto no-scrollbar bg-gray-950 flex-1">
           <div class="flex flex-col gap-3">
-            <details v-for="group in modalData.groups" :key="group.key" class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden group/source">
+            <details v-for="group in modalData.groups" :key="group.key" :open="modalData.groups.length === 1" class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden group/source">
               <summary class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-4 cursor-pointer hover:bg-gray-800 transition-colors">
                 <span class="flex flex-wrap items-center gap-2 text-gray-400 shrink-0">
                   <strong class="font-bold text-base flex items-center text-gray-100">{{ group.key }}</strong>

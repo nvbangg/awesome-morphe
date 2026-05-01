@@ -21,13 +21,15 @@ createApp({
 
     const hashQuery = location.hash.includes('?') ? location.hash.substring(location.hash.indexOf('?')) : '';
     const params = new URLSearchParams(location.search || hashQuery);
+    query.value = params.get('q') || '';
     source.value = params.get('source') || '';
     app.value = params.get('app') || '';
     channel.value = normalizeChannel(params.get('channel') || DEFAULT_CHANNEL);
 
     // Sync state to URL on change
-    watch([view, source, app, channel], () => {
+    watch([view, query, source, app, channel], () => {
       const params = new URLSearchParams();
+      if (query.value) params.set('q', query.value);
       if (source.value) params.set('source', source.value);
       if (app.value) params.set('app', app.value);
       if (channel.value !== DEFAULT_CHANNEL) params.set('channel', channel.value);
@@ -59,6 +61,17 @@ createApp({
       if (!activeData.value) return [];
       return filterRows(activeData.value, { query: query.value, source: source.value, app: app.value });
     });
+
+    // Auto-open
+    watch([filteredRows, view], () => {
+      if (view.value === 'apps' && (query.value.trim() || source.value || app.value) && !isModalOpen.value) {
+        const rows = filteredRows.value;
+        const pkgs = new Set(rows.map(r => r.packageName).filter(Boolean));
+        if (pkgs.size === 1) {
+          openModal([...pkgs][0]);
+        }
+      }
+    }, { immediate: true });
 
     const filterOptions = computed(() => {
       if (!activeData.value) return { sourceOptions: [], appOptions: [] };
@@ -158,12 +171,19 @@ createApp({
     const releaseUrl = s => s.repo && s.version ? `https://github.com/${s.repo}/releases/tag/${encodeURIComponent(s.version)}` : '';
     const morpheUrl = repo => `https://morphe.software/add-source?github=${encodeURI(repo)}`;
 
+    const resetFilters = () => {
+      query.value = '';
+      source.value = '';
+      app.value = '';
+    };
+
     return {
       view, query, source, app, channel,
       isLoading, errorMsg, stats, filterOptions,
       appsGroups, sourcesGroups,
       isModalOpen, modalData, openModal, closeModal,
-      formatDate, countBy, playUrl, releaseUrl, morpheUrl
+      formatDate, countBy, playUrl, releaseUrl, morpheUrl,
+      resetFilters
     };
   }
 }).mount('#app');
