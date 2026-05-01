@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Sync patch-bundles
+      - name: Download patch-bundles
         run: python src/download-patch-bundles.py
 
       - name: Check git changes
@@ -28,31 +28,34 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Update sources
+      - name: Commit changes
         if: steps.changes.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python src/update-sources.py
-          DATE=$(date +'%Y-%m-%d')
-          DAY=$(date +'%b %d, %Y')
-          if gh release view "$DATE" >/dev/null 2>&1; then
-            echo "RELEASE_TAG=${DATE}-$(date +'%H.%M')" >> $GITHUB_ENV
-            echo "RELEASE_DAY=${DAY} ($(date +'%H:%M'))" >> $GITHUB_ENV
-          else
-            echo "RELEASE_TAG=${DATE}" >> $GITHUB_ENV
-            echo "RELEASE_DAY=${DAY}" >> $GITHUB_ENV
-          fi
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - uses: stefanzweifel/git-auto-commit-action@v7
-        if: steps.changes.outputs.changed == 'true'
-        with:
-          commit_message: "Sync patch bundles (${{ env.RELEASE_TAG }})"
-          file_pattern: |
-            patch-bundles/**
-            src/sources-stable.json
-            src/sources-latest.json
-            src/app-names.json
+          python src/update-sources.py
+                    
+          DATE=$(date +'%Y.%m.%d')
+          DAY=$(date +'%b %d, %Y')
+          TIME=$(date +'%H.%M')
+          
+          if gh release view "$DATE" >/dev/null 2>&1; then
+            RELEASE_TAG="${DATE}-${TIME}"
+            RELEASE_DAY="${DAY} - ${TIME}"
+          else
+            RELEASE_TAG="${DATE}"
+            RELEASE_DAY="${DAY}"
+          fi
+          
+          git add patch-bundles/** src/sources-stable.json src/sources-latest.json src/app-names.json
+          git commit -m "Sync patch-bundles ${RELEASE_TAG}"
+          git push
+          
+          echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_ENV
+          echo "RELEASE_DAY=${RELEASE_DAY}" >> $GITHUB_ENV
 
       - name: Create release
         if: steps.changes.outputs.changed == 'true' && hashFiles('changelog.md') != ''
