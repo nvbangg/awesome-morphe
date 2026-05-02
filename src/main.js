@@ -116,9 +116,8 @@ createApp({
       expandedOptions.has(id) ? expandedOptions.delete(id) : expandedOptions.add(id);
     };
 
-    const expandedPackages = reactive(new Set());
-    const togglePackage = (id) => {
-      expandedPackages.has(id) ? expandedPackages.delete(id) : expandedPackages.add(id);
+    const filterByApp = (pkg) => {
+      app.value = pkg;
     };
 
     const formatDate = (val) => {
@@ -142,7 +141,7 @@ createApp({
       sourcesGroups,
       expandedVersions, toggleVersions,
       expandedOptions, toggleOptions,
-      expandedPackages, togglePackage,
+      filterByApp,
       formatDate, countBy, playUrl, releaseUrl, morpheUrl,
       resetFilters
     };

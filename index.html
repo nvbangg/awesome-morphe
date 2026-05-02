@@ -1,7 +1,7 @@
 <!-- Copyright (c) 2026 nvbangg (github.com/nvbangg) -->
 
 <!doctype html>
-<html lang="en" class="bg-gray-950 text-gray-200 antialiased">
+<html lang="en" class="bg-slate-950 text-slate-200 antialiased" style="color-scheme: dark;">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,45 +26,45 @@
     
   </style>
 </head>
-<body>
+<body class="bg-slate-950 min-h-screen">
   <div id="app" v-cloak>
     <section class="mt-2 md:mt-12 max-w-4xl mx-auto px-3 flex flex-col gap-2 md:gap-4" aria-label="Main Content">
       <div class="flex flex-col sm:flex-row items-center justify-center gap-1.5 md:gap-3 text-[11px] md:text-sm">
-        <a href="https://github.com/nvbangg/awesome-for-morphe" target="_blank" rel="noreferrer" class="flex items-center gap-1.5 md:gap-2 px-2.5 py-1 md:px-3 md:py-1.5 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-gray-200 hover:bg-gray-800 hover:border-gray-700 transition-all shadow-sm">
+        <a href="https://github.com/nvbangg/awesome-for-morphe" target="_blank" rel="noreferrer" class="flex items-center gap-1.5 md:gap-2 px-2.5 py-1 md:px-3 md:py-1.5 bg-slate-900 border border-slate-800 rounded-full text-slate-400 hover:text-slate-200 hover:bg-slate-800 hover:border-slate-700 transition-all shadow-sm">
           <i class="fa-brands fa-github text-sm md:text-base"></i>
           <span class="font-medium">github.com/nvbangg/awesome-for-morphe</span>
         </a>
-        <a href="https://nvbangg.github.io/awesome-for-morphe/" target="_blank" rel="noreferrer" class="flex items-center gap-1.5 md:gap-2 px-2.5 py-1 md:px-3 md:py-1.5 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-gray-200 hover:bg-gray-800 hover:border-gray-700 transition-all shadow-sm">
+        <a href="https://nvbangg.github.io/awesome-for-morphe/" target="_blank" rel="noreferrer" class="flex items-center gap-1.5 md:gap-2 px-2.5 py-1 md:px-3 md:py-1.5 bg-slate-900 border border-slate-800 rounded-full text-slate-400 hover:text-slate-200 hover:bg-slate-800 hover:border-slate-700 transition-all shadow-sm">
           <i class="fa-solid fa-globe text-sm md:text-base"></i>
           <span class="font-medium">nvbangg.github.io/awesome-for-morphe</span>
         </a>
       </div>
-      <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
-        <div class="flex items-center justify-center border-b border-gray-800 h-12">
+      <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg overflow-hidden shadow-sm">
+        <div class="flex items-center justify-center border-b border-slate-700/50 h-12">
           <h1 class="text-2xl font-extrabold whitespace-nowrap flex items-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Awesome for Morphe</h1>
         </div>
         
         <div class="flex flex-col gap-3 p-2 md:p-3">
           <div class="grid grid-cols-2 md:grid-cols-[auto_360px_1fr_1fr] gap-2 md:gap-3">
             <div class="col-span-2 md:col-span-2 flex gap-2">
-              <button @click="resetFilters" class="h-10 w-10 flex items-center justify-center bg-gray-950 border border-gray-800 rounded-md hover:bg-white/5 transition-colors text-gray-400 shrink-0" title="Reset Filters">
+              <button @click="resetFilters" class="h-10 w-10 flex items-center justify-center bg-slate-950 border border-slate-800 rounded-md hover:bg-white/5 transition-colors text-slate-400 shrink-0" title="Reset Filters">
                 <i class="fa-solid fa-arrow-rotate-left text-sm"></i>
               </button>
 
               <form @submit.prevent="$event.target.querySelector('input').blur()" class="relative flex-1">
-                <input type="search" v-model="query" autocomplete="off" enterkeyhint="search" placeholder="Search apps, sources, patches" class="w-full h-10 pl-3 pr-9 bg-gray-950 border border-gray-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm">
-                <button v-if="query" type="button" @click="query = ''" class="absolute right-0 top-0 h-10 w-9 flex items-center justify-center text-gray-500 hover:text-gray-300 transition-colors" title="Clear search">
+                <input type="search" v-model="query" autocomplete="off" enterkeyhint="search" placeholder="Search apps, sources, patches" class="w-full h-10 pl-3 pr-9 bg-slate-950 border border-slate-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm">
+                <button v-if="query" type="button" @click="query = ''" class="absolute right-0 top-0 h-10 w-9 flex items-center justify-center text-slate-500 hover:text-slate-300 transition-colors" title="Clear search">
                   <i class="fa-solid fa-circle-xmark"></i>
                 </button>
               </form>
             </div>
             
-            <select v-model="app" aria-label="Apps filter" class="col-span-1 w-full h-10 pl-3 pr-8 bg-gray-950 border border-gray-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all cursor-pointer text-sm appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat">
+            <select v-model="app" aria-label="Apps filter" class="col-span-1 w-full h-10 pl-3 pr-8 bg-slate-950 border border-slate-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all cursor-pointer text-sm appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat">
               <option value="">All Apps</option>
               <option v-for="opt in filterOptions.appOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
             </select>
 
-            <select v-model="source" aria-label="Patch Sources filter" class="col-span-1 w-full h-10 pl-3 pr-8 bg-gray-950 border border-gray-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all cursor-pointer text-sm appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat">
+            <select v-model="source" aria-label="Patch Sources filter" class="col-span-1 w-full h-10 pl-3 pr-8 bg-slate-950 border border-slate-800 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all cursor-pointer text-sm appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat">
               <option value="">All Sources</option>
               <option v-for="opt in filterOptions.sourceOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
             </select>
@@ -73,10 +73,10 @@
           <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-3">
             <div class="hidden md:block"></div>
             <div class="flex items-center justify-center gap-2">
-              <button @click="channel = 'stable'" class="h-8 px-5 rounded-full text-sm font-medium transition-all border" :class="channel === 'stable' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-gray-400 bg-white/5 border-white/5 hover:bg-white/10'">Stable</button>
-              <button @click="channel = 'latest'" class="h-8 px-5 rounded-full text-sm font-medium transition-all border" :class="channel === 'latest' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' : 'text-gray-400 bg-white/5 border-white/5 hover:bg-white/10'">Latest</button>
+              <button @click="channel = 'stable'" class="h-8 px-5 rounded-full text-sm font-medium transition-all border" :class="channel === 'stable' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-white/5 border-white/5 hover:bg-white/10'">Stable</button>
+              <button @click="channel = 'latest'" class="h-8 px-5 rounded-full text-sm font-medium transition-all border" :class="channel === 'latest' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' : 'text-slate-400 bg-white/5 border-white/5 hover:bg-white/10'">Latest</button>
             </div>
-            <div class="flex flex-wrap gap-2 text-xs text-gray-400 shrink-0 justify-center md:justify-end" aria-live="polite">
+            <div class="flex flex-wrap gap-2 text-xs text-slate-400 shrink-0 justify-center md:justify-end" aria-live="polite">
               <span class="px-2 py-1 bg-white/5 rounded-full border border-white/5">{{ stats?.apps || 0 }} apps</span>
               <span class="px-2 py-1 bg-white/5 rounded-full border border-white/5">{{ stats?.sources || 0 }} sources</span>
               <span class="px-2 py-1 bg-white/5 rounded-full border border-white/5">{{ stats?.patches || 0 }} patches</span>
@@ -88,28 +88,28 @@
 
     <main class="max-w-4xl mx-auto px-3 py-4 pb-16">
       <div>
-          <div v-if="isLoading" class="grid min-h-[220px] place-items-center text-gray-400">Loading {{ channel }} data...</div>
+          <div v-if="isLoading" class="grid min-h-[220px] place-items-center text-slate-400">Loading {{ channel }} data...</div>
           <div v-else-if="errorMsg" class="grid min-h-[220px] place-items-center">
-            <div class="text-center p-8 bg-gray-900 border border-gray-800 rounded-lg">
+            <div class="text-center p-8 bg-slate-800/40 border border-slate-700/50 rounded-lg shadow-sm">
               <h2 class="text-lg font-bold mb-2">Could not load data</h2>
-              <p class="text-gray-400">{{ errorMsg }}</p>
+              <p class="text-slate-400">{{ errorMsg }}</p>
             </div>
           </div>
           
           <div v-else>
             <div v-if="!sourcesGroups.length" class="grid min-h-[220px] place-items-center">
-              <div class="text-center p-8 bg-gray-900 border border-gray-800 rounded-lg max-w-lg w-full">
+              <div class="text-center p-8 bg-slate-800/40 border border-slate-700/50 rounded-lg max-w-lg w-full shadow-sm">
                 <h2 class="text-lg font-bold mb-2">No patch sources found</h2>
-                <p class="text-gray-400">Try changing the search, source, app, or channel filter.</p>
+                <p class="text-slate-400">Try changing the search, source, app, or channel filter.</p>
               </div>
             </div>
             <div v-else class="grid gap-4">
-              <details v-for="group in sourcesGroups" :key="group.key" :open="sourcesGroups.length === 1" class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden group/source">
-                <summary class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-4 cursor-pointer hover:bg-gray-800 transition-colors">
-                  <span class="flex flex-wrap items-center gap-2 text-gray-400 shrink-0 w-full md:w-auto">
+              <details v-for="group in sourcesGroups" :key="group.key" :open="sourcesGroups.length === 1" class="bg-slate-800/40 border border-slate-700/50 rounded-lg overflow-hidden group/source shadow-sm">
+                <summary class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-4 cursor-pointer hover:bg-slate-800/60 transition-colors">
+                  <span class="flex flex-wrap items-center gap-2 text-slate-400 shrink-0 w-full md:w-auto">
                     <div class="flex items-center gap-2 w-full md:w-auto">
-                      <strong class="font-bold text-base flex items-center text-gray-100">{{ group.key }}</strong>
-                      <a v-if="group.source.repo" :href="'https://github.com/' + group.source.repo" target="_blank" rel="noreferrer" @click.stop class="text-gray-100 hover:text-blue-500 transition-colors flex items-center justify-center w-8 h-8" aria-label="GitHub" title="GitHub">
+                      <strong class="font-bold text-base flex items-center text-slate-100">{{ group.key }}</strong>
+                      <a v-if="group.source.repo" :href="'https://github.com/' + group.source.repo" target="_blank" rel="noreferrer" @click.stop class="text-slate-100 hover:text-blue-500 transition-colors flex items-center justify-center w-8 h-8" aria-label="GitHub" title="GitHub">
                         <i class="fa-brands fa-github text-2xl leading-none"></i>
                       </a>
                       <template v-if="group.source.version">
@@ -121,35 +121,35 @@
                       <a v-if="group.source.repo" :href="morpheUrl(group.source.repo)" target="_blank" rel="noreferrer" @click.stop class="px-1.5 py-0.5 text-sm text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full font-medium hover:bg-emerald-500/20 hover:text-emerald-300 transition-colors">Add to Morphe</a>
                     </div>
                   </span>
-                  <span class="flex flex-wrap gap-2 text-xs text-gray-400 shrink-0 justify-start md:justify-end w-full md:w-auto">
+                  <span class="flex flex-wrap gap-2 text-xs text-slate-400 shrink-0 justify-start md:justify-end w-full md:w-auto">
                     <span v-if="group.source.createdAt" class="px-2 py-1 bg-white/5 rounded-full border border-white/5">{{ formatDate(group.source.createdAt) }}</span>
                     <span class="px-2 py-1 bg-white/5 rounded-full border border-white/5">{{ countBy(group.rows, r => r.packageName) }} apps</span>
                     <span class="px-2 py-1 bg-white/5 rounded-full border border-white/5">{{ countBy(group.rows, r => r.patchId) }} patches</span>
                   </span>
                 </summary>
                 
-                <div class="border-t border-gray-800 bg-gray-950/50">
-                  <div class="divide-y divide-gray-800">
+                <div class="border-t border-slate-800 bg-slate-950/80 shadow-inner">
+                  <div class="divide-y divide-slate-800/70">
                     <div v-for="patch in group.patches" :key="patch.id" class="p-4 hover:bg-white/5 transition-colors" :class="{'cursor-pointer': patch.options.length}" @click="patch.options.length && toggleOptions(patch.id)">
                       <div class="flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
-                          <strong class="font-semibold text-gray-300 text-sm">{{ patch.patchName }}</strong>
+                          <strong class="font-semibold text-slate-300 text-sm">{{ patch.patchName }}</strong>
                           <span v-if="!patch.enabled" class="px-1.5 py-0.5 text-[10px] text-red-400 bg-red-500/10 rounded-full font-bold inline-flex items-center">off</span>
                         </div>
-                        <button v-if="patch.options.length" @click.stop="toggleOptions(patch.id)" class="text-gray-400 hover:text-white transition-colors px-2 py-1" aria-label="Toggle Options" :title="expandedOptions.has(patch.id) ? 'Hide options' : 'Show options'">
+                        <button v-if="patch.options.length" @click.stop="toggleOptions(patch.id)" class="text-slate-400 hover:text-white transition-colors px-2 py-1" aria-label="Toggle Options" :title="expandedOptions.has(patch.id) ? 'Hide options' : 'Show options'">
                           <i class="fa-solid fa-chevron-down transition-transform" :class="{'rotate-180': expandedOptions.has(patch.id)}"></i>
                         </button>
                       </div>
-                      <p class="text-xs text-gray-500 mt-1 mb-3 max-w-3xl">{{ patch.description }}</p>
+                      <p class="text-xs text-slate-500 mt-1 mb-3 max-w-3xl">{{ patch.description }}</p>
                       
                       <div class="flex flex-col gap-2">
                         <div v-for="app in patch.apps" :key="app.id" class="flex flex-wrap items-center gap-2">
-                          <button v-if="app.packageName" @click.stop="togglePackage(app.id)" class="px-2 py-1 text-xs font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded hover:bg-blue-500/20 transition-colors focus:outline-none">{{ app.appName }}</button>
-                          <span v-else class="px-2 py-1 text-xs font-bold text-gray-400 bg-gray-800 border border-gray-700 rounded">Universal</span>
-                          
-                          <a v-if="app.packageName && expandedPackages.has(app.id)" :href="playUrl(app.packageName)" target="_blank" rel="noreferrer" @click.stop class="px-2 py-1 text-[11px] font-mono text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded hover:bg-blue-500/20 transition-colors shadow-sm">{{ app.packageName }}</a>
+                          <button v-if="app.packageName" @click.stop="filterByApp(app.packageName)" class="px-2 py-1 text-xs font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded hover:bg-blue-500/20 transition-colors focus:outline-none" title="Filter by this app">{{ app.appName }}</button>
+                          <span v-else class="px-2 py-1 text-xs font-bold text-slate-400 bg-slate-800 border border-slate-700 rounded">Universal</span>
                           
                           <div class="flex flex-wrap gap-1 items-center ml-auto">
+                            <a v-if="app.packageName" :href="playUrl(app.packageName)" target="_blank" rel="noreferrer" @click.stop class="px-1.5 py-0.5 text-[10px] text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-full font-mono font-bold hover:bg-blue-500/20 transition-colors" title="Open in Play Store">{{ app.packageName }}</a>
+                            
                             <template v-if="app.versions && app.versions.length">
                               <span class="px-1.5 py-0.5 text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full font-mono font-bold">{{ app.versions[app.versions.length - 1] }}</span>
                               <button v-if="app.versions.length > 1 && !expandedVersions.has(app.id)" @click.stop="toggleVersions(app.id)" class="px-1.5 py-0.5 text-[10px] text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-full font-mono font-bold hover:bg-blue-500/20 transition-colors">
@@ -167,10 +167,10 @@
                         </div>
                       </div>
 
-                      <div v-if="expandedOptions.has(patch.id)" class="mt-4 p-3 bg-gray-900 border border-gray-800 rounded-lg flex flex-col gap-3">
+                      <div v-if="expandedOptions.has(patch.id)" class="mt-4 p-3 bg-slate-800/40 border border-slate-700/50 rounded-lg flex flex-col gap-3 shadow-sm">
                         <div v-for="opt in patch.options" :key="opt.key" class="text-sm">
-                          <strong class="text-gray-300 block mb-1">{{ opt.title || opt.key }}</strong>
-                          <p class="text-xs text-gray-500">{{ opt.description }}</p>
+                          <strong class="text-slate-300 block mb-1">{{ opt.title || opt.key }}</strong>
+                          <p class="text-xs text-slate-500">{{ opt.description }}</p>
                         </div>
                       </div>
                     </div>
