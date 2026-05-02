@@ -52,7 +52,7 @@ jobs:
           fi
           
           git add patch-bundles/** src/sources-stable.json src/sources-latest.json src/app-names.json
-          git commit -m "Sync patch-bundles ${RELEASE_TAG}"
+          git commit -m "Sync patch-bundles (${RELEASE_TAG})"
           git push
           
           echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_ENV
@@ -75,3 +75,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release create "${{ env.RELEASE_TAG }}-pre" --prerelease --title "🧪 Pre-release (${{ env.RELEASE_DAY }})" --notes-file changelog-pre-release.md
+
+      - name: Cleanup old workflow runs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh run list -L 200 --json databaseId -q '.[].databaseId' | tail -n +41 | xargs -IID gh api "repos/$GITHUB_REPOSITORY/actions/runs/ID" -X DELETE || :

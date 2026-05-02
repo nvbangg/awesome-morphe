@@ -58,9 +58,12 @@ def derive_name(pkg):
     return name.replace("-", " ").replace("_", " ").title()
 
 
-def format_app(pkg, app_names):
+def format_app(pkg, app_names, source_key, label):
     name = app_names.get(pkg) or derive_name(pkg)
-    return f"- `{pkg}` ({name})"
+    url = f"https://nvbangg.github.io/awesome-for-morphe/?source={source_key}&app={pkg}"
+    if label == "pre-release":
+        url += "&channel=latest"
+    return f"- [{name}]({url})"
 
 
 def build_notes(label, old_sources, new_sources, app_names):
@@ -69,13 +72,16 @@ def build_notes(label, old_sources, new_sources, app_names):
         entry = new_sources.get(key) or {}
         apps = entry.get("apps") or []
         if key not in old_sources:
-            link = f"[{key}](https://github.com/{entry['repo']})"
+            url = f"https://nvbangg.github.io/awesome-for-morphe/?source={key}"
+            if label == "pre-release":
+                url += "&channel=latest"
+            link = f"[{key}]({url})"
             new_bundles.append(f"- {link}")
         old_apps = set(old_sources.get(key, {}).get("apps") or [])
         added = [pkg for pkg in apps if pkg not in old_apps]
         if added:
-            heading = f"## [{key}](https://nvbangg.github.io/awesome-for-morphe/?source={key})"
-            new_apps_groups.append("\n".join([heading] + [format_app(p, app_names) for p in added]))
+            heading = f"## {key}"
+            new_apps_groups.append("\n".join([heading] + [format_app(p, app_names, key, label) for p in added]))
     sections = []
     if new_bundles:
         sections.append(f"# 🧩 New Patch Sources ({label})\n" + "\n".join(new_bundles))
