@@ -148,19 +148,30 @@ export function filterRows(data, filters) {
   });
 }
 
-export function getFilterOptions(data) {
+export function getFilterOptions(rows) {
   const appMap = new Map();
-  for (const row of data.rows) {
-    if (row.packageName && !appMap.has(row.packageName)) appMap.set(row.packageName, row.appName);
+  const sourceSet = new Set();
+  let hasUniversal = false;
+
+  for (const row of rows) {
+    sourceSet.add(row.sourceKey);
+    if (row.packageName) {
+      if (!appMap.has(row.packageName)) appMap.set(row.packageName, row.appName);
+    } else {
+      hasUniversal = true;
+    }
+  }
+
+  const appOptions = [...appMap].map(([value, label]) => ({ value, label }))
+    .sort((a, b) => a.label.localeCompare(b.label) || a.value.localeCompare(b.value));
+
+  if (hasUniversal) {
+    appOptions.unshift({ value: 'universal', label: 'Universal' });
   }
 
   return {
-    sourceOptions: data.sources.map(source => ({ value: source.key, label: source.key })),
-    appOptions: [
-      { value: 'universal', label: 'Universal' },
-      ...([...appMap].map(([value, label]) => ({ value, label }))
-        .sort((a, b) => a.label.localeCompare(b.label) || a.value.localeCompare(b.value)))
-    ],
+    sourceOptions: Array.from(sourceSet).sort((a, b) => a.localeCompare(b)).map(value => ({ value, label: value })),
+    appOptions,
   };
 }
 

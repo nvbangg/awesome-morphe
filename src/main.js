@@ -39,7 +39,7 @@ createApp({
       errorMsg.value = '';
       try {
         activeData.value = await loadChannelData(channel.value);
-        const options = getFilterOptions(activeData.value);
+        const options = getFilterOptions(activeData.value.rows);
         if (!options.sourceOptions.some(o => o.value === source.value)) source.value = '';
         if (!options.appOptions.some(o => o.value === app.value)) app.value = '';
       } catch (err) {
@@ -60,7 +60,14 @@ createApp({
 
     const filterOptions = computed(() => {
       if (!activeData.value) return { sourceOptions: [], appOptions: [] };
-      return getFilterOptions(activeData.value);
+      
+      const rowsForSource = filterRows(activeData.value, { query: query.value, source: '', app: app.value });
+      const sourceOptions = getFilterOptions(rowsForSource).sourceOptions;
+      
+      const rowsForApp = filterRows(activeData.value, { query: query.value, source: source.value, app: '' });
+      const appOptions = getFilterOptions(rowsForApp).appOptions;
+      
+      return { sourceOptions, appOptions };
     });
 
     const stats = computed(() => summarizeRows(filteredRows.value));
