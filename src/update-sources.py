@@ -45,7 +45,7 @@ def collect_apps(list_json, app_names):
                     if pkg:
                         apps.add(pkg)
                         app_name = entry.get("name")
-                        if app_name and pkg not in app_names:
+                        if app_name and app_names.get(pkg) != app_name:
                             app_names[pkg] = app_name
     return sorted(apps)
 

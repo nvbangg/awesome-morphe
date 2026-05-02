@@ -9,6 +9,7 @@
   <meta name="description" content="Explore all supported apps and patches, automatically updated.">
   <link rel="canonical" href="https://nvbangg.github.io/awesome-for-morphe/">
   <meta name="theme-color" content="#030712">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -100,7 +101,10 @@
             <div v-if="!sourcesGroups.length" class="grid min-h-[220px] place-items-center">
               <div class="text-center p-8 bg-slate-800/40 border border-slate-700/50 rounded-lg max-w-lg w-full shadow-sm">
                 <h2 class="text-lg font-bold mb-2">No patch sources found</h2>
-                <p class="text-slate-400">Try changing the search, source, app, or channel filter.</p>
+                <p class="text-slate-400 mb-4">Try changing the search or filters.</p>
+                <button @click="resetFilters" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-900/30">
+                  <i class="fa-solid fa-arrow-rotate-left text-xs"></i> Reset filters
+                </button>
               </div>
             </div>
             <div v-else class="grid gap-4">
@@ -184,5 +188,19 @@
     </main>
   </div>
   <script type="module" src="src/main.js"></script>
+
+  <!-- Back to Top -->
+  <button id="back-to-top" aria-label="Back to Top" class="fixed bottom-6 right-6 z-[9999] h-11 w-11 hidden items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-900/40 hover:bg-blue-500 transition-colors border border-blue-500/30">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+  <script>
+    var btn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', function() {
+      btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    });
+    btn.addEventListener('click', function() {
+      window.scrollTo(0, 0);
+    });
+  </script>
 </body>
 </html>
