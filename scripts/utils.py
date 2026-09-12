@@ -28,6 +28,7 @@ WHATS_NEW_PATH = TEMP_DIR / "whats-new.md"
 
 REPOS_JSON_PATH = DATA_DIR / "repos.json"
 HISTORY_PATH = DATA_DIR / "history.json"
+HASHES_PATH = DATA_DIR / "hashes.json"
 OFFICIAL_BUNDLES_PATH = DATA_DIR / "official-bundles.json"
 CUSTOM_JSON_PATH = DISCOVER_DIR / "custom.json"
 

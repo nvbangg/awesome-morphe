@@ -35,6 +35,12 @@ def main() -> int:
         if bundle.get("repo")
     }
     apps_dict = existing_bundles_data.get("store", {})
+    official_bundles = load_json(OFFICIAL_BUNDLES_PATH, {}).get("bundles", [])
+    official_app_updates = {
+        bundle.get("repo"): bundle.get("appUpdates")
+        for bundle in official_bundles
+        if bundle.get("repo") and isinstance(bundle.get("appUpdates"), dict)
+    }
     bundle_sources = {}
     for repo, repo_metadata in repos_data.items():
         if not isinstance(repo_metadata, dict):
@@ -46,10 +52,13 @@ def main() -> int:
             "avatarUrl",
             "repoDescription",
             "appFirstSeen",
+            "appUpdates",
             "isArchived",
         ):
             if field in existing:
                 source_entry[field] = existing[field]
+        if "appUpdates" not in source_entry and repo in official_app_updates:
+            source_entry["appUpdates"] = dict(official_app_updates[repo])
         bundle_sources[repo] = source_entry
 
     errors: dict[str, list[str]] = {"unavailable": [], "warnings": []}
@@ -58,9 +67,9 @@ def main() -> int:
 
     gplay_scrape.process(apps_dict, mode)
     official_ranks = {
-        repo.lower(): bundle_entry.get("hotRank")
-        for bundle_entry in load_json(OFFICIAL_BUNDLES_PATH, {}).get("bundles", [])
-        if (repo := bundle_entry.get("repo"))
+        repo.lower(): bundle.get("hotRank")
+        for bundle in official_bundles
+        if (repo := bundle.get("repo"))
     }
     official_ranks["morpheapp/morphe-patches"] = -1
 
@@ -92,6 +101,7 @@ def main() -> int:
                 existing_bundles.get(key, {}).get("firstSeen", now_ms)
             ),
             "appFirstSeen": bundle.get("appFirstSeen") or {},
+            "appUpdates": bundle.get("appUpdates") or {},
             "patches": bundle.get("patches") or [],
         }
         if hot_rank is not None:

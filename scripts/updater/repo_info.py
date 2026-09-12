@@ -12,6 +12,7 @@ from updater import normalize_image_url
 from utils import (
     CONCURRENCY,
     CUSTOM_JSON_PATH,
+    HASHES_PATH,
     HISTORY_PATH,
     REPOS_JSON_PATH,
     UNAVAILABLE_HTTP_CODES,
@@ -240,7 +241,20 @@ def process(
                     history_data = load_json(HISTORY_PATH, {})
                     if old_repo in history_data:
                         history_data.setdefault(full_name, history_data.pop(old_repo))
-                        save_json(HISTORY_PATH, history_data)
+                        sorted_history = {
+                            repo_key: history_data[repo_key]
+                            for repo_key in sorted(history_data.keys(), key=str.lower)
+                        }
+                        save_json(HISTORY_PATH, sorted_history)
+
+                    hashes_data = load_json(HASHES_PATH, {})
+                    if old_repo in hashes_data:
+                        hashes_data.setdefault(full_name, hashes_data.pop(old_repo))
+                        sorted_hashes = {
+                            repo_key: hashes_data[repo_key]
+                            for repo_key in sorted(hashes_data.keys(), key=str.lower)
+                        }
+                        save_json(HASHES_PATH, sorted_hashes)
 
                     if full_name in bundle_sources:
                         bundle_sources.pop(repo, None)

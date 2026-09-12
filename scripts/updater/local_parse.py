@@ -1,5 +1,6 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
+import hashlib
 import json
 import re
 import time
@@ -8,6 +9,8 @@ from typing import Any
 from utils import (
     BUNDLES_DIR,
     DEFAULT_BRANCHES,
+    HASHES_PATH,
+    HISTORY_PATH,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
     PATCHES_DIR,
@@ -16,11 +19,20 @@ from utils import (
     load_json,
     parse_repo_url,
     parse_timestamp,
+    save_json,
 )
 
 _BUNDLE_NAME_SUFFIX_RE = re.compile(
     r"(?i)(?: for use with morphe| for morphe|['\u2019]s morphe patches|['\u2019]s patches| morphe| patches| patch)+$"
 )
+
+
+def compute_app_hash(raw_patches: list[dict]) -> str:
+    sorted_patches = sorted(raw_patches, key=lambda patch: patch.get("name", ""))
+    content = json.dumps(sorted_patches, sort_keys=True, ensure_ascii=False).encode(
+        "utf-8"
+    )
+    return hashlib.md5(content).hexdigest()[:16]
 
 
 def parse_version_item(item: Any) -> dict | None:
@@ -148,13 +160,13 @@ def load_branch_data(
     discovered_names: dict[str, str],
     is_dev_branch: bool = False,
     main_patch_names: set[str] | None = None,
-) -> tuple[dict | None, list[dict] | None, str | None]:
+) -> tuple[dict | None, list[dict] | None, list[dict] | None, str | None]:
     if not has_sha:
-        return None, None, "Missing `patches-bundle.json`"
+        return None, None, None, "Missing `patches-bundle.json`"
     bundle_file = BUNDLES_DIR / f"{file_prefix}~{branch}.json"
     list_file = PATCHES_DIR / f"{file_prefix}~{branch}.json"
     if not bundle_file.exists():
-        return None, None, "Missing `patches-bundle.json`"
+        return None, None, None, "Missing `patches-bundle.json`"
     bundle = load_json(bundle_file)
     download_url = bundle.get("download_url") if isinstance(bundle, dict) else None
     mpp_source, mpp_repo = (
@@ -166,9 +178,9 @@ def load_branch_data(
         mpp_source != source
         or mpp_repo.lower() != file_prefix.replace("~", "/").lower()
     ):
-        return None, None, "Invalid `download_url`"
+        return None, None, None, "Invalid `download_url`"
     if not list_file.exists():
-        return None, None, "Missing `patches-list.json`"
+        return None, None, None, "Missing `patches-list.json`"
     raw = load_json(list_file)
     patches, reason = parse_patches_list(
         raw,
@@ -177,8 +189,8 @@ def load_branch_data(
         main_patch_names=main_patch_names,
     )
     if not patches:
-        return None, None, reason
-    return bundle, patches, None
+        return None, None, None, reason
+    return bundle, patches, raw["patches"], None
 
 
 def process(
@@ -216,6 +228,8 @@ def process(
     keys_to_remove = []
     valid_apps_from_bundles = set()
     now_ms = int(time.time() * 1000)
+    existing_hashes = load_json(HASHES_PATH, {})
+    all_new_hashes: dict[str, dict[str, str]] = {}
 
     print(f"\nParsing local patches and bundles for {len(bundle_sources)} sources...")
     for repo, source_entry in bundle_sources.items():
@@ -227,8 +241,10 @@ def process(
         chosen_source = None
         main_bundle = None
         main_patches = None
+        main_raw = None
         dev_bundle = None
         dev_patches = None
+        dev_raw = None
         discovered_names = {}
         has_sha = False
         fail_reason = None
@@ -245,15 +261,17 @@ def process(
             has_sha = True
 
             cur_discovered_names = {}
-            cur_main_bundle, cur_main_patches, main_reason = load_branch_data(
-                source, file_prefix, "main", bool(main_sha), cur_discovered_names
+            cur_main_bundle, cur_main_patches, cur_main_raw, main_reason = (
+                load_branch_data(
+                    source, file_prefix, "main", bool(main_sha), cur_discovered_names
+                )
             )
             main_patch_names = (
                 {patch["name"] for patch in cur_main_patches if "name" in patch}
                 if cur_main_patches
                 else set()
             )
-            cur_dev_bundle, cur_dev_patches, dev_reason = load_branch_data(
+            cur_dev_bundle, cur_dev_patches, cur_dev_raw, dev_reason = load_branch_data(
                 source,
                 file_prefix,
                 "dev",
@@ -267,8 +285,10 @@ def process(
                 chosen_source = source
                 main_bundle = cur_main_bundle
                 main_patches = cur_main_patches
+                main_raw = cur_main_raw
                 dev_bundle = cur_dev_bundle
                 dev_patches = cur_dev_patches
+                dev_raw = cur_dev_raw
                 discovered_names = cur_discovered_names
                 break
 
@@ -318,6 +338,26 @@ def process(
         source_entry["name"] = raw_name or owner
 
         chosen_patches = dev_patches if is_latest_dev else main_patches
+        chosen_raw_patches = dev_raw if is_latest_dev else main_raw
+        raw_app_patches_map: dict[str, list[dict]] = {}
+        for raw_patch in chosen_raw_patches or []:
+            if not isinstance(raw_patch, dict):
+                continue
+            compat = raw_patch.get("compatiblePackages")
+            packages = (
+                list(compat.keys())
+                if isinstance(compat, dict)
+                else [
+                    item.get("packageName")
+                    for item in compat
+                    if isinstance(item, dict) and item.get("packageName")
+                ]
+                if isinstance(compat, list)
+                else []
+            ) or [PACKAGE_UNIVERSAL]
+            for package_name in packages:
+                raw_app_patches_map.setdefault(package_name, []).append(raw_patch)
+
         app_first_seen_map = (
             source_entry.get("appFirstSeen")
             if isinstance(source_entry.get("appFirstSeen"), dict)
@@ -350,12 +390,40 @@ def process(
         ):
             app_first_seen_map[PACKAGE_UNIVERSAL] = now_ms
 
+        sorted_apps = sorted(current_apps_in_bundle)
         source_entry["patches"] = chosen_patches
         source_entry["appFirstSeen"] = {
-            package_name: first_seen
-            for package_name, first_seen in app_first_seen_map.items()
-            if package_name in current_apps_in_bundle
+            package_name: app_first_seen_map[package_name]
+            for package_name in sorted_apps
+            if package_name in app_first_seen_map
         }
+
+        bundle_timestamp = source_entry.get("updatedAt", 0)
+        repo_hashes = existing_hashes.get(repo, {})
+        new_repo_hashes = {}
+        app_updates_map = (
+            dict(source_entry.get("appUpdates"))
+            if isinstance(source_entry.get("appUpdates"), dict)
+            else {}
+        )
+
+        for package_name in source_entry["appFirstSeen"]:
+            raw_app_patches = raw_app_patches_map.get(package_name, [])
+            cur_hash = compute_app_hash(raw_app_patches)
+            new_repo_hashes[package_name] = cur_hash
+            prev_hash = repo_hashes.get(package_name)
+
+            if prev_hash is None:
+                app_updates_map.setdefault(package_name, bundle_timestamp)
+            elif prev_hash != cur_hash:
+                app_updates_map[package_name] = bundle_timestamp
+
+        source_entry["appUpdates"] = {
+            package_name: app_updates_map[package_name]
+            for package_name in source_entry["appFirstSeen"]
+            if package_name in app_updates_map
+        }
+        all_new_hashes[repo] = new_repo_hashes
 
     for key in keys_to_remove:
         bundle_sources.pop(key, None)
@@ -369,5 +437,23 @@ def process(
     for package_name in apps_to_remove:
         del apps_dict[package_name]
         print(f"[-] Removed app '{package_name}' (no longer supported by any bundle)")
+
+    valid_repos = set(bundle_sources.keys())
+    cleaned_hashes = {
+        repo: all_new_hashes[repo]
+        for repo in sorted(valid_repos, key=str.lower)
+        if repo in all_new_hashes
+    }
+    save_json(HASHES_PATH, cleaned_hashes)
+
+    history_data = load_json(HISTORY_PATH, {})
+    if history_data:
+        cleaned_history = {
+            repo: history_data[repo]
+            for repo in sorted(history_data.keys(), key=str.lower)
+            if repo in valid_repos
+        }
+        if cleaned_history != history_data:
+            save_json(HISTORY_PATH, cleaned_history)
 
     return compatibilities_list
