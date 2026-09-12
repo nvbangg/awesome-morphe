@@ -102,9 +102,14 @@ def main() -> int:
         final_bundles.append(ordered_bundle)
 
     app_patches_status: dict[str, list[bool]] = {}
+    app_latest_updates: dict[str, int] = {}
     reindexed_compatibilities = []
-    compat_map = {}
+    compatibility_map = {}
     for bundle in final_bundles:
+        for package_name, update_time in bundle.get("appUpdates", {}).items():
+            if update_time and update_time > app_latest_updates.get(package_name, 0):
+                app_latest_updates[package_name] = update_time
+
         is_bundle_prerelease = bool(bundle.get("isPreRelease"))
         for patch in bundle.get("patches", []):
             is_patch_prerelease = is_bundle_prerelease or bool(
@@ -112,17 +117,19 @@ def main() -> int:
             )
             if "compatiblePackagesKey" in patch:
                 old_key = patch["compatiblePackagesKey"]
-                compat_data = compatibilities_list[old_key]
-                compat_json = json.dumps(compat_data, sort_keys=True)
-                if compat_json in compat_map:
-                    patch["compatiblePackagesKey"] = compat_map[compat_json]
+                compatibility_data = compatibilities_list[old_key]
+                compatibility_json = json.dumps(compatibility_data, sort_keys=True)
+                if compatibility_json in compatibility_map:
+                    patch["compatiblePackagesKey"] = compatibility_map[
+                        compatibility_json
+                    ]
                 else:
                     new_key = len(reindexed_compatibilities)
-                    reindexed_compatibilities.append(compat_data)
-                    compat_map[compat_json] = new_key
+                    reindexed_compatibilities.append(compatibility_data)
+                    compatibility_map[compatibility_json] = new_key
                     patch["compatiblePackagesKey"] = new_key
-                for compat_entry in compat_data:
-                    package_name = compat_entry.get("packageName")
+                for compatibility_entry in compatibility_data:
+                    package_name = compatibility_entry.get("packageName")
                     if package_name:
                         app_patches_status.setdefault(package_name, []).append(
                             is_patch_prerelease
@@ -136,7 +143,6 @@ def main() -> int:
     incomplete_apps = []
     for package_name, app_data in apps_dict.items():
         app_data.setdefault("firstSeen", now_ms)
-        app_data.pop("updatedAt", None)
         statuses = app_patches_status.get(package_name, [])
         name = app_data.get("name")
         icon_url = app_data.get("iconUrl")
@@ -146,6 +152,7 @@ def main() -> int:
             "description": html.unescape(app_data.get("description") or ""),
             "minInstalls": app_data.get("minInstalls"),
             "category": app_data.get("category"),
+            "updatedAt": app_latest_updates.get(package_name, 0),
             "firstSeen": app_data.get("firstSeen"),
         }
         if statuses and all(statuses):
