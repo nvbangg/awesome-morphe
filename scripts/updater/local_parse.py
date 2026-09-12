@@ -197,11 +197,12 @@ def process(
     bundle_sources: dict,
     apps_dict: dict,
     errors: dict[str, list[str]] | None = None,
+    existing_bundles: dict | None = None,
 ) -> list:
     compatibilities_list = []
     compatibilities_map = {}
 
-    def get_compat_key(compatibility_data: list) -> int:
+    def get_compatibility_key(compatibility_data: list) -> int:
         compatibility_json = json.dumps(compatibility_data, sort_keys=True)
         if compatibility_json in compatibilities_map:
             return compatibilities_map[compatibility_json]
@@ -365,11 +366,20 @@ def process(
         )
         current_apps_in_bundle: set[str] = set()
 
-        for patch_dict in chosen_patches:
-            compat_packages = patch_dict.pop("compatiblePackages", None)
-            if compat_packages:
-                for compat_package in compat_packages:
-                    package_name = compat_package.get("packageName")
+        existing_bundle = (existing_bundles or {}).get(repo, {})
+        existing_patches = {
+            patch["name"]: patch
+            for patch in existing_bundle.get("patches", [])
+            if isinstance(patch, dict) and patch.get("name")
+        }
+        bundle_first_seen = existing_bundle.get("firstSeen", now_ms)
+
+        final_patches = []
+        for patch in chosen_patches:
+            compatible_packages = patch.pop("compatiblePackages", None)
+            if compatible_packages:
+                for compatible_package in compatible_packages:
+                    package_name = compatible_package.get("packageName")
                     if package_name and package_name != PACKAGE_UNIVERSAL:
                         current_apps_in_bundle.add(package_name)
                         valid_apps_from_bundles.add(package_name)
@@ -380,9 +390,31 @@ def process(
                             apps_dict[package_name]["name"] = app_name
                         if package_name not in app_first_seen_map:
                             app_first_seen_map[package_name] = now_ms
-                patch_dict["compatiblePackagesKey"] = get_compat_key(compat_packages)
             else:
                 current_apps_in_bundle.add(PACKAGE_UNIVERSAL)
+
+            patch_name = patch["name"]
+            patch_first_seen = (
+                existing_patches[patch_name].get("firstSeen", bundle_first_seen)
+                if patch_name in existing_patches
+                else now_ms
+            )
+
+            ordered_patch = {"name": patch_name}
+            if desc := patch.get("description"):
+                ordered_patch["description"] = desc
+            ordered_patch["firstSeen"] = patch_first_seen
+            if patch.get("isPreRelease"):
+                ordered_patch["isPreRelease"] = True
+            if patch.get("default") is False:
+                ordered_patch["default"] = False
+            if options := patch.get("options"):
+                ordered_patch["options"] = options
+            if compatible_packages:
+                ordered_patch["compatiblePackagesKey"] = get_compatibility_key(
+                    compatible_packages
+                )
+            final_patches.append(ordered_patch)
 
         if (
             PACKAGE_UNIVERSAL in current_apps_in_bundle
@@ -391,7 +423,7 @@ def process(
             app_first_seen_map[PACKAGE_UNIVERSAL] = now_ms
 
         sorted_apps = sorted(current_apps_in_bundle)
-        source_entry["patches"] = chosen_patches
+        source_entry["patches"] = final_patches
         source_entry["appFirstSeen"] = {
             package_name: app_first_seen_map[package_name]
             for package_name in sorted_apps

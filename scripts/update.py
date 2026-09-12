@@ -15,7 +15,6 @@ from utils import (
     REPOS_JSON_PATH,
     append_step_summary,
     load_json,
-    parse_timestamp,
     save_json,
 )
 
@@ -35,12 +34,6 @@ def main() -> int:
         if bundle.get("repo")
     }
     apps_dict = existing_bundles_data.get("store", {})
-    official_bundles = load_json(OFFICIAL_BUNDLES_PATH, {}).get("bundles", [])
-    official_app_updates = {
-        bundle.get("repo"): bundle.get("appUpdates")
-        for bundle in official_bundles
-        if bundle.get("repo") and isinstance(bundle.get("appUpdates"), dict)
-    }
     bundle_sources = {}
     for repo, repo_metadata in repos_data.items():
         if not isinstance(repo_metadata, dict):
@@ -57,18 +50,18 @@ def main() -> int:
         ):
             if field in existing:
                 source_entry[field] = existing[field]
-        if "appUpdates" not in source_entry and repo in official_app_updates:
-            source_entry["appUpdates"] = dict(official_app_updates[repo])
         bundle_sources[repo] = source_entry
 
     errors: dict[str, list[str]] = {"unavailable": [], "warnings": []}
-    compatibilities_list = local_parse.process(bundle_sources, apps_dict, errors)
+    compatibilities_list = local_parse.process(
+        bundle_sources, apps_dict, errors, existing_bundles
+    )
     repo_info.process(bundle_sources, mode, existing_bundles, errors)
 
     gplay_scrape.process(apps_dict, mode)
     official_ranks = {
         repo.lower(): bundle.get("hotRank")
-        for bundle in official_bundles
+        for bundle in load_json(OFFICIAL_BUNDLES_PATH, {}).get("bundles", [])
         if (repo := bundle.get("repo"))
     }
     official_ranks["morpheapp/morphe-patches"] = -1
@@ -77,10 +70,8 @@ def main() -> int:
     sorted_keys = sorted(
         bundle_sources.keys(),
         key=lambda sort_key: (
-            parse_timestamp(
-                existing_bundles.get(sort_key, {}).get(
-                    "firstSeen", bundle_sources[sort_key].get("updatedAt", 0)
-                )
+            existing_bundles.get(sort_key, {}).get(
+                "firstSeen", bundle_sources[sort_key].get("updatedAt", 0)
             ),
             sort_key.lower(),
         ),
@@ -97,9 +88,7 @@ def main() -> int:
             "avatarUrl": bundle.get("avatarUrl") or "",
             "stars": bundle.get("stars") or 0,
             "updatedAt": bundle.get("updatedAt") or 0,
-            "firstSeen": parse_timestamp(
-                existing_bundles.get(key, {}).get("firstSeen", now_ms)
-            ),
+            "firstSeen": existing_bundles.get(key, {}).get("firstSeen", now_ms),
             "appFirstSeen": bundle.get("appFirstSeen") or {},
             "appUpdates": bundle.get("appUpdates") or {},
             "patches": bundle.get("patches") or [],
