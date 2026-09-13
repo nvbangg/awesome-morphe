@@ -1,14 +1,38 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.44.0-dev.54",
+  "version": "1.43.1",
   "patches": [
     {
       "name": "APK Junk Cleanup",
-      "description": "Removes junk and useless files with no runtime purpose inside apk. To keep only one CPU architecture, use the patcher's strip-libs option (Morphe Manager) or --striplibs (Morphe Desktop).",
+      "description": "Removes junk and useless files with no runtime purpose inside apk. Native libraries are left untouched unless the 'Strip native architectures' toggle is enabled.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
-      "options": []
+      "options": [
+        {
+          "key": "stripLibs",
+          "title": "Strip native architectures",
+          "description": "OFF (default): lib/ is left completely untouched. ON: deletes lib/<abi>/ of every architecture except the one selected below.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "keepAbi",
+          "title": "Architecture to keep",
+          "description": "Used only when 'Strip native architectures' is ON. Deletes lib/<abi>/ of every other architecture from the patched APK. Requires patcher v1.13.0+ (delete() on unstaged entries).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "arm64-v8a",
+          "values": {
+            "Keep only arm64-v8a (most phones)": "arm64-v8a",
+            "Keep only armeabi-v7a (old 32-bit phones)": "armeabi-v7a",
+            "Keep only x86_64 (emulators)": "x86_64",
+            "Keep only x86 (old emulators)": "x86"
+          }
+        }
+      ]
     },
     {
       "name": "Add Save Data",
@@ -148,7 +172,7 @@
     },
     {
       "name": "Boost Splash Screen Time",
-      "description": "Disables MX Player's welcome/splash ad so playback starts immediately.",
+      "description": "WARNING: MX PLAYER HAS AN INTEGRITY CHECK, and some mods add their own on top. Use a Play Store build, Use URV Manager, patch with signing off, then use MT Manager Enhanced Signature Kill or the app may refuse to start.Disables MX Player's welcome/splash ad so playback starts immediately.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -179,6 +203,18 @@
                 "ARMEABI_V7A": 2001003531,
                 "X86_64": 2001003531,
                 "X86": 2001003531
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.2.2",
+              "versionCodes": {
+                "ARM64_V8A": 2001003532,
+                "ARMEABI_V7A": 2001003532,
+                "X86_64": 2001003532,
+                "X86": 2001003532
               },
               "isExperimental": false,
               "minSdk": null,
@@ -242,7 +278,7 @@
     },
     {
       "name": "Clean Me Tab",
-      "description": "WARNING: MX Player has an integrity check, and some mods add their own on top. Use a Play Store build, Use URV Manager, patch with signing off, then use MT Manager Enhanced Signature Kill or the app may refuse to start.Removes promo rows and unused tiles from the Me tab. Optional Add Network Stream tile.",
+      "description": "Removes promo rows and unused tiles from the Me tab. Optional Add Network Stream tile.",
       "default": false,
       "dependencies": [
         "ResourcePatch",
@@ -277,6 +313,18 @@
                 "ARMEABI_V7A": 2001003531,
                 "X86_64": 2001003531,
                 "X86": 2001003531
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.2.2",
+              "versionCodes": {
+                "ARM64_V8A": 2001003532,
+                "ARMEABI_V7A": 2001003532,
+                "X86_64": 2001003532,
+                "X86": 2001003532
               },
               "isExperimental": false,
               "minSdk": null,
@@ -424,6 +472,18 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "3.2.2",
+              "versionCodes": {
+                "ARM64_V8A": 2001003532,
+                "ARMEABI_V7A": 2001003532,
+                "X86_64": 2001003532,
+                "X86": 2001003532
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -484,6 +544,18 @@
                 "ARMEABI_V7A": 2001003531,
                 "X86_64": 2001003531,
                 "X86": 2001003531
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.2.2",
+              "versionCodes": {
+                "ARM64_V8A": 2001003532,
+                "ARMEABI_V7A": 2001003532,
+                "X86_64": 2001003532,
+                "X86": 2001003532
               },
               "isExperimental": false,
               "minSdk": null,
@@ -570,6 +642,18 @@
                 "ARMEABI_V7A": 2001003531,
                 "X86_64": 2001003531,
                 "X86": 2001003531
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.2.2",
+              "versionCodes": {
+                "ARM64_V8A": 2001003532,
+                "ARMEABI_V7A": 2001003532,
+                "X86_64": 2001003532,
+                "X86": 2001003532
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1217,6 +1301,18 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "3.2.2",
+              "versionCodes": {
+                "ARM64_V8A": 2001003532,
+                "ARMEABI_V7A": 2001003532,
+                "X86_64": 2001003532,
+                "X86": 2001003532
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1384,6 +1480,18 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "3.2.2",
+              "versionCodes": {
+                "ARM64_V8A": 2001003532,
+                "ARMEABI_V7A": 2001003532,
+                "X86_64": 2001003532,
+                "X86": 2001003532
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1464,7 +1572,7 @@
         {
           "key": "defaultShortcutsMask",
           "title": "Default shortcuts bitmask (hex)",
-          "description": "Bit sum of enabled shortcuts, decimal or 0x-prefixed hex. Bits: 0x1 rotation, 0x2 speed, 0x4 background play, 0x8 loop, 0x10 mute, 0x20 shuffle, 0x40 equalizer, 0x100 sleep timer, 0x200 repeat A-B, 0x400 night mode, 0x800 customise items, 0x1000 screenshot, 0x2000 mirror mode, 0x4000 vertical flip, 0x8000 audio effect. Default 0x780F.",
+          "description": "Bit sum of enabled shortcuts, decimal or 0x-prefixed hex. Bits: 0x1 rotation, 0x2 speed, 0x4 background play, 0x8 loop, 0x10 mute, 0x20 shuffle, 0x40 equalizer, 0x100 sleep timer, 0x200 repeat A-B, 0x400 night mode, 0x800 customise items, 0x1000 screenshot, 0x2000 mirror mode, 0x4000 vertical flip, 0x8000 audio effect. Bit 0x80 isn't in this list (unused pre-3.2 legacy slot, suspected PiP shortcut on newer MX Player builds) and is never touched no matter what you set here - it always keeps MX Player's own default. Default 0x780F.",
           "required": false,
           "type": "kotlin.Int",
           "default": 30735,
@@ -1749,6 +1857,37 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Forces SecurityTracker.isPremium() to always return true, so every feature gated by the \"st_01\" premium flag stays unlocked.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.bytedz.printflow",
+          "name": "ImpoStack: PDF Imposition",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.4.0",
+              "versionCodes": {
+                "ARM64_V8A": 10,
+                "ARMEABI_V7A": 10,
+                "X86_64": 10,
+                "X86": 10
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Unlock Pro",
