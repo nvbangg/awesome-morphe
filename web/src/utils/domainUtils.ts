@@ -57,14 +57,15 @@ export function getAppMeta(
   appNamesMap: Record<string, AppNameMeta>,
 ) {
   const appMeta = appNamesMap[packageName];
+  const category = appMeta?.category || CATEGORY_LABEL_UNIVERSAL;
   return {
     packageName,
     appName: appMeta?.name || packageName,
     appIcon: appMeta?.iconUrl || "",
     description: appMeta?.description || "",
     minInstalls: appMeta?.minInstalls || 0,
-    category: appMeta?.category || CATEGORY_LABEL_UNIVERSAL,
-    categorySlug: appMeta?.category ? slugifyCategory(appMeta.category) : "",
+    category,
+    categorySlug: slugifyCategory(category),
     firstSeen: appMeta?.firstSeen || 0,
     isPreRelease: Boolean(appMeta?.isPreRelease),
   };
