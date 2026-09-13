@@ -19,8 +19,8 @@ from utils import (
 )
 
 WHATS_NEW_MAX_ENTRIES = 14
-DISPLAY_ITEM_THRESHOLD = 4
 DISPLAY_ITEM_LIMIT = 3
+EXISTING_APP_PATCH_LIMIT = 6
 DEFAULT_BUNDLE_RANK = 9999
 BASE_WEB_URL = "https://awesome-morphe.vercel.app"
 WHATS_NEW_TAB = "#whats-new"
@@ -247,34 +247,34 @@ def build_json_diff(
 
 
 def render_patches(
-    package_name: str, patches: list[str], truncate: bool = True
+    package_name: str,
+    patches: list[str],
+    limit: int = DISPLAY_ITEM_LIMIT,
 ) -> list[str]:
     sorted_patches = sorted(patches)
     total_patches = len(sorted_patches)
     lines = []
-    display_count = (
-        total_patches
-        if not truncate or total_patches <= DISPLAY_ITEM_THRESHOLD
-        else DISPLAY_ITEM_LIMIT
-    )
+    display_count = total_patches if total_patches <= limit + 1 else limit
 
     for patch_name in sorted_patches[:display_count]:
         patch_url = make_url(app=package_name, patch=patch_name)
         lines.append(f"    + 🧩 [{patch_name}]({patch_url})")
 
-    if truncate and total_patches > display_count:
+    if total_patches > display_count:
         remaining_count = total_patches - display_count
         lines.append(f"    + _...and {remaining_count} more patches_")
 
     return lines
 
 
-def render_apps(package_names: list[str], app_metadata: dict) -> list[str]:
+def render_apps(
+    package_names: list[str],
+    app_metadata: dict,
+    limit: int = DISPLAY_ITEM_LIMIT,
+) -> list[str]:
     lines = []
     total_apps = len(package_names)
-    display_count = (
-        total_apps if total_apps <= DISPLAY_ITEM_THRESHOLD else DISPLAY_ITEM_LIMIT
-    )
+    display_count = total_apps if total_apps <= limit + 1 else limit
 
     for package_name in package_names[:display_count]:
         app_name = format_app_name(package_name, app_metadata)
@@ -411,7 +411,13 @@ def generate_markdown(
             app_name = format_app_name(package_name, app_metadata)
             app_lines.append(f"- 📱 {app_name}")
             patch_list = list(existing_apps_new_patches_map[package_name].values())
-            app_lines.extend(render_patches(package_name, patch_list, truncate=False))
+            app_lines.extend(
+                render_patches(
+                    package_name,
+                    patch_list,
+                    limit=EXISTING_APP_PATCH_LIMIT,
+                )
+            )
         markdown_sections.append("\n".join(app_lines))
 
     if bundle_added_apps_map:
