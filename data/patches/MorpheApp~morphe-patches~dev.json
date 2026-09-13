@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.43.0-dev.3",
+  "version": "1.43.0-dev.4",
   "patches": [
     {
       "name": "Add to queue",
@@ -1366,8 +1366,66 @@
       "options": []
     },
     {
+      "name": "Custom app icon",
+      "description": "Adds an option to select an existing manifest app icon.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.reddit.frontpage",
+          "name": "Reddit",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": [
+            "970b91143813b4c9d5f3634f672c9fcaa5621b4efaaedafd6c235cbbb869736f"
+          ],
+          "targets": [
+            {
+              "version": "2026.37.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 28,
+              "description": null
+            },
+            {
+              "version": "2026.36.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 28,
+              "description": null
+            },
+            {
+              "version": "2026.24.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 28,
+              "description": null
+            },
+            {
+              "version": "2026.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            },
+            {
+              "version": "2026.04.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Custom branding",
-      "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+      "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
       "default": true,
       "dependencies": [
         "BytecodePatch",
@@ -1438,12 +1496,30 @@
           "type": "kotlin.String",
           "default": null,
           "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "\n            The app icon to use.\n\n            A regular installation starts with this icon and can change it later in the app\n            settings. A mounted (root) installation cannot change it from the app settings,\n            so changing its icon requires patching again.\n\n            'App default' uses the custom icon if one is provided, and otherwise the standard icon.\n\n            The notification icon of the app follows this option.\n\n            Places that cannot use the icon selected in the app settings, such as Android Auto and\n            the app list of the system settings, always show the icon chosen here.\n        ",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": {
+            "App default": null,
+            "Original": "original",
+            "Black": "black",
+            "Dark": "dark",
+            "Light": "light",
+            "Play": "play",
+            "Play black": "play_black",
+            "Custom": "custom"
+          }
         }
       ]
     },
     {
       "name": "Custom branding",
-      "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+      "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
       "default": true,
       "dependencies": [
         "BytecodePatch",
@@ -1534,6 +1610,24 @@
           "type": "kotlin.String",
           "default": null,
           "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "\n            The app icon to use.\n\n            A regular installation starts with this icon and can change it later in the app\n            settings. A mounted (root) installation cannot change it from the app settings,\n            so changing its icon requires patching again.\n\n            'App default' uses the custom icon if one is provided, and otherwise the standard icon.\n\n            The notification icon of the app follows this option.\n\n            Places that cannot use the icon selected in the app settings, such as Android Auto and\n            the app list of the system settings, always show the icon chosen here.\n        ",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": {
+            "App default": null,
+            "Original": "original",
+            "Black": "black",
+            "Dark": "dark",
+            "Light": "light",
+            "Play": "play",
+            "Play black": "play_black",
+            "Custom": "custom"
+          }
         }
       ]
     },

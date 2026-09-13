@@ -7,7 +7,7 @@
       "repoDescription": "Morphe Patches",
       "avatarUrl": "https://raw.githubusercontent.com/MorpheApp/morphe-patches/main/patches-bundle.png",
       "stars": 3618,
-      "updatedAt": 1789296202000,
+      "updatedAt": 1789325862000,
       "firstSeen": 1767200400000,
       "appFirstSeen": {
         "__universal__": 1785178161621,
@@ -17,9 +17,9 @@
       },
       "appUpdates": {
         "__universal__": 1789198938000,
-        "com.google.android.apps.youtube.music": 1789198938000,
-        "com.google.android.youtube": 1789198938000,
-        "com.reddit.frontpage": 1789250694000
+        "com.google.android.apps.youtube.music": 1789325862000,
+        "com.google.android.youtube": 1789325862000,
+        "com.reddit.frontpage": 1789325862000
       },
       "patches": [
         {
@@ -186,8 +186,15 @@
           "compatiblePackagesKey": 1
         },
         {
+          "name": "Custom app icon",
+          "description": "Adds an option to select an existing manifest app icon.",
+          "firstSeen": 1789327720887,
+          "isPreRelease": true,
+          "compatiblePackagesKey": 2
+        },
+        {
           "name": "Custom branding",
-          "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+          "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
           "firstSeen": 1767200400000,
           "options": [
             {
@@ -199,13 +206,18 @@
               "key": "customIcon",
               "title": "Custom icon",
               "description": "\n            Folder with images to use as a custom icon.\n            \n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - mipmap-mdpi\n- mipmap-hdpi\n- mipmap-xhdpi\n- mipmap-xxhdpi\n- mipmap-xxxhdpi\n            \n            Each of the folders must contain all of the following files:\n            morphe_adaptive_background_custom.png\nmorphe_adaptive_foreground_custom.png\n            \n            The image dimensions must be as follows:\n            - mipmap-mdpi: 108x108 px\n- mipmap-hdpi: 162x162 px\n- mipmap-xhdpi: 216x216 px\n- mipmap-xxhdpi: 324x324 px\n- mipmap-xxxhdpi: 432x432 px\n\n            Optionally, the path contains a 'drawable' folder with a monochrome icon file:\n            morphe_adaptive_monochrome_custom.xml\n\n            Optionally, the path contains a notification icon in one of the following formats:\n            - XML vector drawable placed in 'drawable':\n              morphe_notification_icon_custom.xml\n            - PNG raster images placed in the matching 'drawable-<dpi>' folders:\n              - drawable-mdpi/morphe_notification_icon_custom.png (24x24 px)\n- drawable-hdpi/morphe_notification_icon_custom.png (36x36 px)\n- drawable-xhdpi/morphe_notification_icon_custom.png (48x48 px)\n- drawable-xxhdpi/morphe_notification_icon_custom.png (72x72 px)\n- drawable-xxxhdpi/morphe_notification_icon_custom.png (96x96 px)\n        "
+            },
+            {
+              "key": "appIcon",
+              "title": "App icon",
+              "description": "\n            The app icon to use.\n\n            A regular installation starts with this icon and can change it later in the app\n            settings. A mounted (root) installation cannot change it from the app settings,\n            so changing its icon requires patching again.\n\n            'App default' uses the custom icon if one is provided, and otherwise the standard icon.\n\n            The notification icon of the app follows this option.\n\n            Places that cannot use the icon selected in the app settings, such as Android Auto and\n            the app list of the system settings, always show the icon chosen here.\n        "
             }
           ],
           "compatiblePackagesKey": 1
         },
         {
           "name": "Custom branding",
-          "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+          "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
           "firstSeen": 1767200400000,
           "options": [
             {
@@ -217,6 +229,11 @@
               "key": "customIcon",
               "title": "Custom icon",
               "description": "\n            Folder with images to use as a custom icon.\n            \n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - mipmap-mdpi\n- mipmap-hdpi\n- mipmap-xhdpi\n- mipmap-xxhdpi\n- mipmap-xxxhdpi\n            \n            Each of the folders must contain all of the following files:\n            morphe_adaptive_background_custom.png\nmorphe_adaptive_foreground_custom.png\n            \n            The image dimensions must be as follows:\n            - mipmap-mdpi: 108x108 px\n- mipmap-hdpi: 162x162 px\n- mipmap-xhdpi: 216x216 px\n- mipmap-xxhdpi: 324x324 px\n- mipmap-xxxhdpi: 432x432 px\n\n            Optionally, the path contains a 'drawable' folder with a monochrome icon file:\n            morphe_adaptive_monochrome_custom.xml\n\n            Optionally, the path contains a notification icon in one of the following formats:\n            - XML vector drawable placed in 'drawable':\n              morphe_notification_icon_custom.xml\n            - PNG raster images placed in the matching 'drawable-<dpi>' folders:\n              - drawable-mdpi/morphe_notification_icon_custom.png (24x24 px)\n- drawable-hdpi/morphe_notification_icon_custom.png (36x36 px)\n- drawable-xhdpi/morphe_notification_icon_custom.png (48x48 px)\n- drawable-xxhdpi/morphe_notification_icon_custom.png (72x72 px)\n- drawable-xxxhdpi/morphe_notification_icon_custom.png (96x96 px)\n        "
+            },
+            {
+              "key": "appIcon",
+              "title": "App icon",
+              "description": "\n            The app icon to use.\n\n            A regular installation starts with this icon and can change it later in the app\n            settings. A mounted (root) installation cannot change it from the app settings,\n            so changing its icon requires patching again.\n\n            'App default' uses the custom icon if one is provided, and otherwise the standard icon.\n\n            The notification icon of the app follows this option.\n\n            Places that cannot use the icon selected in the app settings, such as Android Auto and\n            the app list of the system settings, always show the icon chosen here.\n        "
             }
           ],
           "compatiblePackagesKey": 0
@@ -2658,7 +2675,7 @@
           "compatiblePackagesKey": 75
         }
       ],
-      "hotRank": 10
+      "hotRank": 11
     },
     {
       "source": "github",
@@ -3424,14 +3441,14 @@
       "repoDescription": "morphe patches for twitter and instagram",
       "avatarUrl": "https://avatars.githubusercontent.com/u/44558091?v=4&s=128",
       "stars": 3127,
-      "updatedAt": 1789003243000,
+      "updatedAt": 1789323555000,
       "firstSeen": 1773129596000,
       "appFirstSeen": {
         "com.instagram.android": 1773154796000,
         "com.twitter.android": 1773154796000
       },
       "appUpdates": {
-        "com.instagram.android": 1788480000000,
+        "com.instagram.android": 1789323555000,
         "com.twitter.android": 1788998400000
       },
       "patches": [
@@ -3603,6 +3620,13 @@
           "name": "Customize explore tabs",
           "firstSeen": 1773129596000,
           "compatiblePackagesKey": 109
+        },
+        {
+          "name": "Customize navigation bar",
+          "description": "Choose which tabs appear in the bottom navigation bar and reorder them",
+          "firstSeen": 1789327720887,
+          "isPreRelease": true,
+          "compatiblePackagesKey": 104
         },
         {
           "name": "Customize notification tabs",
@@ -3894,12 +3918,6 @@
           "description": "Removes swipe up for more videos in video player",
           "firstSeen": 1773129596000,
           "compatiblePackagesKey": 109
-        },
-        {
-          "name": "Hide navigation buttons",
-          "description": "Hides navigation bar buttons, such as the Reels and Create button.",
-          "firstSeen": 1773129596000,
-          "compatiblePackagesKey": 104
         },
         {
           "name": "Hide notes tray",
@@ -11657,7 +11675,7 @@
           "compatiblePackagesKey": 498
         }
       ],
-      "hotRank": 8
+      "hotRank": 9
     },
     {
       "source": "gitlab",
@@ -12939,7 +12957,7 @@
           "compatiblePackagesKey": 535
         }
       ],
-      "hotRank": 38
+      "hotRank": 37
     },
     {
       "source": "github",
@@ -18936,7 +18954,7 @@
           "compatiblePackagesKey": 600
         }
       ],
-      "hotRank": 13
+      "hotRank": 12
     },
     {
       "source": "github",
@@ -23100,7 +23118,7 @@
           "compatiblePackagesKey": 706
         }
       ],
-      "hotRank": 11
+      "hotRank": 10
     },
     {
       "source": "github",
@@ -23252,7 +23270,7 @@
           "compatiblePackagesKey": 710
         }
       ],
-      "hotRank": 79
+      "hotRank": 78
     },
     {
       "source": "github",
@@ -24178,7 +24196,7 @@
           "compatiblePackagesKey": 723
         }
       ],
-      "hotRank": 12
+      "hotRank": 13
     },
     {
       "source": "github",
@@ -28001,13 +28019,13 @@
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/10971263?v=4&s=128",
       "stars": 25,
-      "updatedAt": 1789276287000,
+      "updatedAt": 1789323065000,
       "firstSeen": 1786962892864,
       "appFirstSeen": {
         "com.google.android.inputmethod.latin": 1786962892801
       },
       "appUpdates": {
-        "com.google.android.inputmethod.latin": 1789171200000
+        "com.google.android.inputmethod.latin": 1789323065000
       },
       "patches": [
         {
@@ -28024,10 +28042,8 @@
         },
         {
           "name": "Enable Rambler",
-          "description": "Exposes Google Rambler — Gboard's agentic dictation, which rewrites what you say into composed text — as a choice in Voice settings. It is not switched on for you: the feature uses a Google server, has its own quota and asks for consent, so picking it is left to you. Off by default and not yet confirmed working on a device.",
+          "description": "Exposes Google Rambler — Gboard's agentic dictation, which rewrites what you say into composed text — as a choice in Voice settings. It is not switched on for you: the feature uses a Google server, has its own quota and asks for consent, so picking it is left to you.",
           "firstSeen": 1789084800000,
-          "isPreRelease": true,
-          "default": false,
           "compatiblePackagesKey": 125
         },
         {
@@ -28051,10 +28067,8 @@
         },
         {
           "name": "Modern keypress haptics",
-          "description": "Uses Android's haptic primitives for keypresses — the crisp tick the rest of the system uses — instead of a plain buzz. Gboard has the code and disables it with an impossible minimum Android version; this removes that. Devices whose vibrator cannot do primitives are unaffected, because Gboard's own hardware check still runs. Note that it changes what the vibration strength slider means, from milliseconds to intensity. Off by default and not yet confirmed on a device.",
+          "description": "Uses Android's haptic primitives for keypresses — the crisp tick the rest of the system uses — instead of a plain buzz. Gboard has the code and disables it with an impossible minimum Android version; this removes that. Devices whose vibrator cannot do primitives are unaffected, because Gboard's own hardware check still runs. Note that it changes what the vibration strength slider means, from milliseconds to intensity.",
           "firstSeen": 1789171200000,
-          "isPreRelease": true,
-          "default": false,
           "compatiblePackagesKey": 125
         },
         {
@@ -28079,7 +28093,6 @@
           "name": "Swipe up diagnostic (temporary)",
           "description": "Diagnostic build only. Swipe up on a key to delete a character, which proves whether the swipe gesture is being detected at all. Do not enable this at the same time as \"Swipe up to undo autocorrect\" — they attach to the same place and you would get both effects. Off by default, and this patch will be removed once it has answered its question.",
           "firstSeen": 1789084800000,
-          "isPreRelease": true,
           "default": false,
           "compatiblePackagesKey": 125
         },
@@ -28087,7 +28100,6 @@
           "name": "Swipe up to undo autocorrect",
           "description": "Swipe up on the keyboard to put back the word an autocorrect replaced. Gboard has the same undo on backspace, behind a setting; this adds a gesture for it and works whether or not that setting is on. A swipe with nothing to undo does nothing. Off by default until it has been confirmed on a device.",
           "firstSeen": 1788998400000,
-          "isPreRelease": true,
           "default": false,
           "compatiblePackagesKey": 125
         },
@@ -28798,7 +28810,7 @@
       "repoDescription": "Custom Morphe patches on Android.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/179108235?v=4&s=128",
       "stars": 46,
-      "updatedAt": 1789261885000,
+      "updatedAt": 1789325973000,
       "firstSeen": 1787251436744,
       "appFirstSeen": {
         "__universal__": 1789101916717,
@@ -29168,7 +29180,7 @@
           "compatiblePackagesKey": 862
         }
       ],
-      "hotRank": 9
+      "hotRank": 8
     },
     {
       "source": "github",
@@ -29580,7 +29592,7 @@
       "repoDescription": "Efficiency justice for morphe patches",
       "avatarUrl": "https://avatars.githubusercontent.com/u/56123591?v=4&s=128",
       "stars": 8,
-      "updatedAt": 1789150561000,
+      "updatedAt": 1789321440000,
       "firstSeen": 1787620439710,
       "appFirstSeen": {
         "com.candylink.openvpn": 1787620432732,
@@ -30994,7 +31006,7 @@
       "repoDescription": "Unofficial Dual VoT patches: Google/other and Yandex voice-over translation in one Morphe Manager source",
       "avatarUrl": "https://avatars.githubusercontent.com/u/235972620?v=4&s=128",
       "stars": 12,
-      "updatedAt": 1789298336000,
+      "updatedAt": 1789326071000,
       "firstSeen": 1788323754967,
       "appFirstSeen": {
         "__universal__": 1788323746993,
@@ -31004,9 +31016,9 @@
       },
       "appUpdates": {
         "__universal__": 1789144632000,
-        "com.google.android.apps.youtube.music": 1789210687000,
-        "com.google.android.youtube": 1789144632000,
-        "com.reddit.frontpage": 1789298336000
+        "com.google.android.apps.youtube.music": 1789326071000,
+        "com.google.android.youtube": 1789326071000,
+        "com.reddit.frontpage": 1789326071000
       },
       "patches": [
         {
@@ -31173,8 +31185,15 @@
           "compatiblePackagesKey": 1
         },
         {
+          "name": "Custom app icon",
+          "description": "Adds an option to select an existing manifest app icon.",
+          "firstSeen": 1789327720887,
+          "isPreRelease": true,
+          "compatiblePackagesKey": 2
+        },
+        {
           "name": "Custom branding",
-          "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+          "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
           "firstSeen": 1788307200000,
           "options": [
             {
@@ -31186,13 +31205,18 @@
               "key": "customIcon",
               "title": "Custom icon",
               "description": "\n            Folder with images to use as a custom icon.\n            \n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - mipmap-mdpi\n- mipmap-hdpi\n- mipmap-xhdpi\n- mipmap-xxhdpi\n- mipmap-xxxhdpi\n            \n            Each of the folders must contain all of the following files:\n            morphe_adaptive_background_custom.png\nmorphe_adaptive_foreground_custom.png\n            \n            The image dimensions must be as follows:\n            - mipmap-mdpi: 108x108 px\n- mipmap-hdpi: 162x162 px\n- mipmap-xhdpi: 216x216 px\n- mipmap-xxhdpi: 324x324 px\n- mipmap-xxxhdpi: 432x432 px\n\n            Optionally, the path contains a 'drawable' folder with a monochrome icon file:\n            morphe_adaptive_monochrome_custom.xml\n\n            Optionally, the path contains a notification icon in one of the following formats:\n            - XML vector drawable placed in 'drawable':\n              morphe_notification_icon_custom.xml\n            - PNG raster images placed in the matching 'drawable-<dpi>' folders:\n              - drawable-mdpi/morphe_notification_icon_custom.png (24x24 px)\n- drawable-hdpi/morphe_notification_icon_custom.png (36x36 px)\n- drawable-xhdpi/morphe_notification_icon_custom.png (48x48 px)\n- drawable-xxhdpi/morphe_notification_icon_custom.png (72x72 px)\n- drawable-xxxhdpi/morphe_notification_icon_custom.png (96x96 px)\n        "
+            },
+            {
+              "key": "appIcon",
+              "title": "App icon",
+              "description": "\n            The app icon to use.\n\n            A regular installation starts with this icon and can change it later in the app\n            settings. A mounted (root) installation cannot change it from the app settings,\n            so changing its icon requires patching again.\n\n            'App default' uses the custom icon if one is provided, and otherwise the standard icon.\n\n            The notification icon of the app follows this option.\n\n            Places that cannot use the icon selected in the app settings, such as Android Auto and\n            the app list of the system settings, always show the icon chosen here.\n        "
             }
           ],
           "compatiblePackagesKey": 1
         },
         {
           "name": "Custom branding",
-          "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+          "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
           "firstSeen": 1788307200000,
           "options": [
             {
@@ -31204,6 +31228,11 @@
               "key": "customIcon",
               "title": "Custom icon",
               "description": "\n            Folder with images to use as a custom icon.\n            \n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - mipmap-mdpi\n- mipmap-hdpi\n- mipmap-xhdpi\n- mipmap-xxhdpi\n- mipmap-xxxhdpi\n            \n            Each of the folders must contain all of the following files:\n            morphe_adaptive_background_custom.png\nmorphe_adaptive_foreground_custom.png\n            \n            The image dimensions must be as follows:\n            - mipmap-mdpi: 108x108 px\n- mipmap-hdpi: 162x162 px\n- mipmap-xhdpi: 216x216 px\n- mipmap-xxhdpi: 324x324 px\n- mipmap-xxxhdpi: 432x432 px\n\n            Optionally, the path contains a 'drawable' folder with a monochrome icon file:\n            morphe_adaptive_monochrome_custom.xml\n\n            Optionally, the path contains a notification icon in one of the following formats:\n            - XML vector drawable placed in 'drawable':\n              morphe_notification_icon_custom.xml\n            - PNG raster images placed in the matching 'drawable-<dpi>' folders:\n              - drawable-mdpi/morphe_notification_icon_custom.png (24x24 px)\n- drawable-hdpi/morphe_notification_icon_custom.png (36x36 px)\n- drawable-xhdpi/morphe_notification_icon_custom.png (48x48 px)\n- drawable-xxhdpi/morphe_notification_icon_custom.png (72x72 px)\n- drawable-xxxhdpi/morphe_notification_icon_custom.png (96x96 px)\n        "
+            },
+            {
+              "key": "appIcon",
+              "title": "App icon",
+              "description": "\n            The app icon to use.\n\n            A regular installation starts with this icon and can change it later in the app\n            settings. A mounted (root) installation cannot change it from the app settings,\n            so changing its icon requires patching again.\n\n            'App default' uses the custom icon if one is provided, and otherwise the standard icon.\n\n            The notification icon of the app follows this option.\n\n            Places that cannot use the icon selected in the app settings, such as Android Auto and\n            the app list of the system settings, always show the icon chosen here.\n        "
             }
           ],
           "compatiblePackagesKey": 0
@@ -32180,7 +32209,7 @@
       "repoDescription": "Curated list of universal patches for Morphe, including community-driven patches with enhancements and original patches, focusing on quality over quantity",
       "avatarUrl": "https://raw.githubusercontent.com/Zanuaimi/UniPatches/main/patches-bundle.png",
       "stars": 28,
-      "updatedAt": 1789311011000,
+      "updatedAt": 1789318215000,
       "firstSeen": 1788582465944,
       "appFirstSeen": {
         "__universal__": 1788582458169,
@@ -34306,7 +34335,7 @@
           "compatiblePackagesKey": 937
         }
       ],
-      "hotRank": 78
+      "hotRank": 79
     },
     {
       "source": "github",
@@ -34926,7 +34955,7 @@
           "compatiblePackagesKey": 946
         }
       ],
-      "hotRank": 37
+      "hotRank": 38
     },
     {
       "source": "github",
@@ -46736,7 +46765,7 @@
       "description": "Enjoy your favorite videos and channels with the official YouTube app.",
       "minInstalls": 10000000000,
       "category": "Video Players & Editors",
-      "updatedAt": 1789198938000,
+      "updatedAt": 1789326071000,
       "firstSeen": 1783382401000
     },
     "com.google.android.apps.youtube.music": {
@@ -46745,7 +46774,7 @@
       "description": "The world of music dedicated to you",
       "minInstalls": 5000000000,
       "category": "Music & Audio",
-      "updatedAt": 1789210687000,
+      "updatedAt": 1789326071000,
       "firstSeen": 1783382402000
     },
     "com.google.android.apps.photos": {
@@ -46781,7 +46810,7 @@
       "description": "Fast and smart typing with Emojis, GIFs, and more",
       "minInstalls": 10000000000,
       "category": "Tools",
-      "updatedAt": 1789261885000,
+      "updatedAt": 1789323065000,
       "firstSeen": 1783382406000
     },
     "com.reddit.frontpage": {
@@ -46790,7 +46819,7 @@
       "description": "Discover why people are the best - through real & authentic conversations.",
       "minInstalls": 100000000,
       "category": "Social",
-      "updatedAt": 1789298336000,
+      "updatedAt": 1789326071000,
       "firstSeen": 1783382407000
     },
     "com.twitter.android": {
@@ -46808,7 +46837,7 @@
       "description": "Create & share photos, stories, & reels with friends you love",
       "minInstalls": 5000000000,
       "category": "Social",
-      "updatedAt": 1789305588000,
+      "updatedAt": 1789323555000,
       "firstSeen": 1783382409000
     },
     "com.instagram.barcelona": {
@@ -46948,7 +46977,7 @@
     },
     "com.duolingo": {
       "name": "Duolingo",
-      "iconUrl": "https://play-lh.googleusercontent.com/Q-wEiKezZQEspFNNrWfKjcEgAqdWy_b98_tXTAZaXGgm9y1HZ1zi-JSZXA7Tmur9MjcM0xoIA0BdXEN0Bt54=s128-rw",
+      "iconUrl": "https://play-lh.googleusercontent.com/tw_coGKgk1K_zO-Ypf9zBKV1s-KT3dYN1MIUxIqtnbfmON5x_YmuoAr31gE4oSfJHNtA-aStTd-qe9R8S6NVyA=s128-rw",
       "description": "Lessons to learn Spanish, French, German, English, Online Chess, Math & Music",
       "minInstalls": 500000000,
       "category": "Education",
@@ -47354,7 +47383,7 @@
     "com.dcinside.app.android": {
       "name": "dcinside",
       "iconUrl": "https://play-lh.googleusercontent.com/3wsShIT-BhtperkPcnd0wcEz4M0ajLQn2jokq7oPnrimnazOcDJt3wC9fxt68P-jeiabWPsPkWMnkPgWNqJpoA=s128-rw",
-      "description": "DC Inside, the center of internet trends! Explore 86,000 galleries to connect on a variety of topics and take advantage of convenient features like anonymous posting, notifications, and selfies.",
+      "description": "DC Inside, the center of internet trends! Communicate on various topics in over 100,000 galleries, and try out convenient features such as anonymous posting, notifications, and custom images.",
       "minInstalls": 500000,
       "category": "Social",
       "updatedAt": 1788739200000,
@@ -47912,7 +47941,7 @@
     "com.truecaller": {
       "name": "Truecaller",
       "iconUrl": "https://play-lh.googleusercontent.com/kVMxXC3fV4cyG56MZunYS2-HYaHh3eM3YTWoDbYaN5-G9xIU2k235hHVQmRrm79tzBSzt0cZ6GsBbzGzGbbMwg=s128-rw",
-      "description": "Spam call blocker & caller ID. Block scam & robocalls. Screen unknown callers.",
+      "description": "Block spam, scam & robocalls. Identify unknown callers with reverse phone lookup",
       "minInstalls": 1000000000,
       "category": "Communication",
       "updatedAt": 1784401043000,
@@ -49478,7 +49507,7 @@
     "com.changayaf.inmigreat": {
       "name": "Inmigreat",
       "iconUrl": "https://play-lh.googleusercontent.com/BL49mJTEiwida50COBFsLVFGV_eBLd7J4rWXlYG3LiobDF8YoGLVOhVoTqcrAz7heXIqL5Zcu-wDlrt25JyvTZs=s128-rw",
-      "description": "Your USCIS & EOIR case: status alerts, your own stats, your place in line",
+      "description": "Immigration court (EOIR) and USCIS case tracker: hearings, your judge, alerts",
       "minInstalls": 100000,
       "category": "Tools",
       "updatedAt": 1788844505000,
@@ -49766,7 +49795,7 @@
     "np.com.nepalipatro": {
       "name": "Nepalipatro",
       "iconUrl": "https://play-lh.googleusercontent.com/cZ9_hY4QA2qnDZrHFvcgJgL1su8EDhEUMIMDvQvTkkTJJtQQo5807PoTss6zx7kYks2CCqXax5PWtJF7xV03pg=s128-rw",
-      "description": "A Nepali Calendar - 2083 BS Calendar Update",
+      "description": "A Nepali Calendar (2083 BS): Tithi, Panchang, Rashifal & Date Converter",
       "minInstalls": 10000000,
       "category": "Productivity",
       "updatedAt": 1788570357000,
@@ -50234,7 +50263,7 @@
     "com.ea.game.pvzfree_row": {
       "name": "Plants vs. Zombies FREE",
       "iconUrl": "https://play-lh.googleusercontent.com/FGB00L2-aGHPAiRJPxbC3Th_KEaGvVroVF-tPSf_1Unh9kzzY-al4mp1yJT16I16FuLK6oJ-3H-KrVgTrg3ABFc=s128-rw",
-      "description": "Stem a zombie attack on your yard with the help of powerful plants!",
+      "description": "Includes in-game purchases.",
       "minInstalls": 500000000,
       "category": "Strategy",
       "updatedAt": 1788903653000,
@@ -50846,7 +50875,7 @@
     },
     "com.simyasolutions.ling.universal": {
       "name": "Ling",
-      "iconUrl": "https://play-lh.googleusercontent.com/gSo2NaX1KH9i2tlc9MGxSQKt8P49-VXkygRtz6XWWnsP0-EYMQwJusOwMp5gSDY0Sw6gFB4xU7qlfGooipVuZg=s128-rw",
+      "iconUrl": "https://play-lh.googleusercontent.com/_NI_4bwyV1bxnLOXrwSLV5NHAq8mgbAPjf_AaKEQNlRx0Y65YsLqxc852YU8rO8bDAgdFl8fJKTUlYPip--Esg=s128-rw",
       "description": "70+ languages! Learn Thai, Tagalog, Spanish, Cebuano, Japanese, Vietnamese, etc.",
       "minInstalls": 1000000,
       "category": "Education",
@@ -51856,7 +51885,7 @@
     "com.launcher.hype": {
       "name": "Phi Launcher",
       "iconUrl": "https://play-lh.googleusercontent.com/AR3sf_LLFuc66xzP97CLuyCtpZ-lkjG_pkBzFOqPecMOG-APpyVAdWXDOasSI7-v74rZ2DffAdt9XbSpRLDy=s128-rw",
-      "description": "A minimal Android launcher built around speed, flexibility, and clean design.",
+      "description": "A customizable launcher built around speed, flexibility, and clean design.",
       "minInstalls": 50000,
       "category": "Personalization",
       "updatedAt": 1788884842000,
@@ -53150,7 +53179,7 @@
     "com.picsart.studio": {
       "name": "PicsArt",
       "iconUrl": "https://play-lh.googleusercontent.com/wXk_X0uT6AeWv5TFfheHP8NrOmtz17BX-2uEZ7H4naTIzuFpSIfohvQTA4pKOCF71TmeUF3DfMAGq1SlK2hH7Qk=s128-rw",
-      "description": "Remove and swap backgrounds in your photos and remove unwanted objects",
+      "description": "Edit photos & videos with AI: filters, effects, retouch and collages",
       "minInstalls": 1000000000,
       "category": "Photography",
       "updatedAt": 1788844505000,
