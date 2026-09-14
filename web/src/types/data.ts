@@ -15,6 +15,7 @@ export interface PatchItem {
   default?: boolean;
   options?: PatchOption[];
   isPreRelease?: boolean;
+  firstSeen?: number;
   compatiblePackagesKey?: number;
 }
 
@@ -60,6 +61,7 @@ export interface RowItem {
   searchPatchesText: string;
   options?: PatchOption[];
   default?: boolean;
+  firstSeen?: number;
 }
 
 export interface AppNameMeta {

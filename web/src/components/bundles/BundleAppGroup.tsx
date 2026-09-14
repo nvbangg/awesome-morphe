@@ -38,6 +38,7 @@ export function BundleAppGroup({
     !isBundlePreRelease && isAllPatchesPreRelease(group.patches);
 
   const hidePatchPreReleaseBadge = isBundlePreRelease || isAppPreRelease;
+  const hidePatchNewBadge = isBundleNew || isAppNew;
 
   const patchBadge = <Badge variant="patches" value={group.totalPatchCount} />;
 
@@ -98,6 +99,7 @@ export function BundleAppGroup({
               copiedText={copiedText}
               copyToClipboard={copyToClipboard}
               hidePreReleaseBadge={hidePatchPreReleaseBadge}
+              hideNewBadge={hidePatchNewBadge}
             />
           ))}
         </div>

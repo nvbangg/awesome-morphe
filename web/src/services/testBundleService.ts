@@ -188,6 +188,8 @@ function parsePatchesToRows(
         searchPatchesText: simplifyString(`${patchName} ${patchDesc}`),
         options,
         default: isDefault,
+        firstSeen:
+          typeof patch.firstSeen === "number" ? patch.firstSeen : undefined,
       });
     }
   }

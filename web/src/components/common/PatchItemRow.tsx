@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { RowItem, PatchOption } from "@/types/data";
 import { Badge } from "@/components/common/Badge";
+import { isNew } from "@/utils";
 import { ExpandChevron } from "./ExpandChevron";
 import { SupportedVersions } from "./SupportedVersions";
 
@@ -9,6 +10,7 @@ interface PatchItemRowProps {
   copiedText: string | null;
   copyToClipboard: (text: string, key?: string) => void;
   hidePreReleaseBadge?: boolean;
+  hideNewBadge?: boolean;
 }
 
 const PatchOptionsGroup = memo(function PatchOptionsGroup({
@@ -42,6 +44,7 @@ export const PatchItemRow = memo(function PatchItemRow({
   copiedText,
   copyToClipboard,
   hidePreReleaseBadge,
+  hideNewBadge,
 }: PatchItemRowProps) {
   const [showOptions, setShowOptions] = useState(false);
 
@@ -63,6 +66,10 @@ export const PatchItemRow = memo(function PatchItemRow({
           <span className="font-semibold text-sm text-foreground wrap-break-word select-text">
             {patchItem.patchName}
           </span>
+
+          {!hideNewBadge && isNew(patchItem.firstSeen) && (
+            <Badge variant="new" />
+          )}
 
           {!hidePreReleaseBadge && patchItem.isPatchPreRelease && (
             <Badge variant="prerelease" />

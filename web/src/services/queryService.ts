@@ -1,5 +1,5 @@
 import { AppItem, RowItem, Bundle, ActiveData } from "@/types/data";
-import { simplifyString, getAppMeta, AppMeta } from "@/utils";
+import { simplifyString, getAppMeta, AppMeta, isNew } from "@/utils";
 import {
   CATEGORY_UNIVERSAL,
   CATEGORY_LABEL_UNIVERSAL,
@@ -87,6 +87,19 @@ export function compareDefaultBundle(
   if (rankB !== null) return 1;
 
   return compareBundleFallback(bundleItemA, bundleItemB);
+}
+
+export function comparePatches(patchA: RowItem, patchB: RowItem): number {
+  const isNewA = isNew(patchA.firstSeen);
+  const isNewB = isNew(patchB.firstSeen);
+  if (isNewA !== isNewB) {
+    return isNewA ? -1 : 1;
+  }
+  if (isNewA && isNewB) {
+    const diffFirstSeen = (patchB.firstSeen || 0) - (patchA.firstSeen || 0);
+    if (diffFirstSeen !== 0) return diffFirstSeen;
+  }
+  return 0;
 }
 
 const BUNDLE_SORT_KEY_MAP: Record<string, (bundle: Bundle) => number> = {
@@ -305,7 +318,7 @@ export function getAppBundleGroups(
       result.push({
         bundleKey,
         bundleMeta: group.bundleMeta,
-        patches: filteredPatches,
+        patches: filteredPatches.slice().sort(comparePatches),
         totalPatchCount,
       });
     }
@@ -386,7 +399,7 @@ export function groupPatchesByApp(
       result.push({
         packageName,
         appMeta: group.appMeta,
-        patches: filteredPatches,
+        patches: filteredPatches.slice().sort(comparePatches),
         totalPatchCount,
       });
     }

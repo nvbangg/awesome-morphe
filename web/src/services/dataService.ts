@@ -173,6 +173,7 @@ export function loadInitData(): Promise<ActiveData> {
           searchPatchesText,
           options: patchItem.options,
           default: patchItem.default,
+          firstSeen: patchItem.firstSeen,
         }));
       });
 
