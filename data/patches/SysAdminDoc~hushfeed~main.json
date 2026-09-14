@@ -1,5 +1,5 @@
 {
-  "version": "v0.30.2",
+  "version": "v0.31.0",
   "appNames": {
     "com.zhiliaoapp.musically": "TikTok"
   },
@@ -191,7 +191,7 @@
     },
     {
       "name": "Block author button",
-      "description": "Adds a block button to the video player that blocks the account that posted the current video in one tap, with an undo action.",
+      "description": "Adds one-tap controls for blocking the uploader, hiding the uploader locally and blocking the current sound. The local-hide and sound controls have separate switches. Long press any visible control to move it, and all of them hide while comments are open.",
       "use": false,
       "dependencies": [
         "Settings",
@@ -249,7 +249,7 @@
     },
     {
       "name": "Comment tools",
-      "description": "Hides comments that contain chosen words or come from chosen accounts, turns the thumbs down on each comment into a block button, hides comments made of an image or a sticker rather than words, and adds a box above the comments that narrows them by what they say or who said it.",
+      "description": "Hides comments that contain chosen words or come from chosen accounts, turns the thumbs down on each comment into a block button, hides comment media and polls, and adds a box above the comments that narrows them by what they say or who said it.",
       "use": false,
       "dependencies": [
         "Settings",
@@ -314,6 +314,32 @@
         "Settings",
         "BytecodePatch"
       ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Core Asset De-bloat",
+      "description": "Empties TikTok's bundled C2PA native libraries and Microblink payment-card OCR assets. Content credentials and card scanning may stop. Choose this patch to enable it.",
+      "use": false,
+      "dependencies": [],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "46.2.3"
@@ -447,7 +473,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Adds an App behavior toggle that stops ByteDance AppLog analytics, AppsFlyer attribution, explicit Firebase screen reports and crash reporting. TikTok's own diagnostics go quiet with them. Off by default.",
+      "description": "Adds an App behavior toggle that stops ByteDance AppLog analytics, AppsFlyer attribution, explicit Firebase screen reports and TikTok's Npth or MonitorCrash startup reporting. TikTok's own diagnostics go quiet with them. Off by default.",
       "use": false,
       "dependencies": [
         "BytecodePatch",
@@ -564,7 +590,7 @@
     },
     {
       "name": "Downloads",
-      "description": "Adds watermark-free downloads, comment sticker saving, configurable folders, and filename templates.",
+      "description": "Adds watermark-free downloads, comment sticker saving, configurable folders, and filename templates. Network fetches accept public HTTPS addresses and follow at most five checked redirects.",
       "use": true,
       "dependencies": [
         "Settings",
@@ -705,7 +731,7 @@
     },
     {
       "name": "Feed filter",
-      "description": "Hides feed ads, TikTok Shop items, livestreams, LIVE replays, stories, photo posts, paid partnerships, AI labelled videos, verified accounts, series, playlists, the playlist bar, the floating event badge and inserted cards. Videos can also be filtered by your own caption words, creator handles or patterns, sound names, length, the country they were posted from and their view, like, comment, favourite and share counts. Sponsored cards are dropped from the profile video viewer, the search grids and the Friends tab as well as the feed.",
+      "description": "Hides feed ads, including videos with creator commission disclosures, TikTok Shop items, livestreams, LIVE replays, stories, photo posts, paid partnerships, AI labelled videos, verified accounts, series, playlists, the playlist bar, the floating event badge and inserted cards. Videos can also be filtered by your own caption words, creator handles or patterns, sound names, length, the country they were posted from and their view, like, comment, favourite and share counts. Sponsored cards are dropped from the profile video viewer, the search grids and the Friends tab as well as the feed.",
       "use": true,
       "dependencies": [
         "Settings",
@@ -1167,7 +1193,7 @@
     },
     {
       "name": "Hide inbox stories",
-      "description": "Stops the stories tray at the top of the Inbox from being built. Shares its switch with Hide inbox items.",
+      "description": "Hides the stories tray at the top of the Inbox and restores it immediately when the switch is turned off. Shares its switch with Hide inbox items.",
       "use": false,
       "dependencies": [
         "Settings",
@@ -1342,7 +1368,7 @@
     },
     {
       "name": "Hide video overlays",
-      "description": "Hides the visual search prompt TikTok lays over videos, the Live entrance in the top left corner, the caption, the music line, the action column on the right, the survey cards and the status bar, each with its own switch.",
+      "description": "Hides the visual search prompt TikTok lays over videos, the Live entrance in the top left corner, caption and music text, selected action buttons or their counts in the right column, survey cards and the status bar.",
       "use": false,
       "dependencies": [
         "Settings",
@@ -1399,11 +1425,101 @@
       "options": []
     },
     {
+      "name": "Instant Launch & Splash Blocker",
+      "description": "Stops TikTok's splash-ad preload tasks and returns false from its reviewed splash and TopView gates. Other startup behavior is left in place. Choose this patch to enable it.",
+      "use": false,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Keep the screen's refresh rate",
       "description": "Stops TikTok asking the screen to run slower than it can, which it does by asking for the frame rate of the video it is playing. On a 90 or 120 Hz phone that ask takes the whole app down to that rate, scrolling included. A request that is not slower than the screen is left alone.",
       "use": false,
       "dependencies": [
         "Settings",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Language Pack Purger",
+      "description": "Empties unselected TikTok language bundles while always keeping English. Selected language codes are checked before any file changes. Choose this patch to enable it.",
+      "use": false,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "locales",
+          "title": "Languages to keep",
+          "description": "Comma-separated language codes such as en, es, pt, fr or de. English is always kept.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "en",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Live Stream Suite Optimizer",
+      "description": "Empties TikTok's link-mic and LIVE match or minigame assets, then skips its gift-effect widget setup. Co-hosting, games and animated gifts may stop. Choose this patch to enable it.",
+      "use": false,
+      "dependencies": [
         "BytecodePatch"
       ],
       "compatiblePackages": {
@@ -1458,8 +1574,34 @@
       "options": []
     },
     {
+      "name": "Network & Background Traffic Governor",
+      "description": "Turns off TikTok's buffer-preload gate and skips its push initialization task. Videos may start buffering later, and TikTok push notifications may stop. Choose this patch to enable it.",
+      "use": false,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Not interested button",
-      "description": "Adds a button beside the block control to tell TikTok you aren't interested in the current video. Off by default.",
+      "description": "Adds a movable button that tells TikTok you aren't interested in the current video. It hides while comments are open. Off by default.",
       "use": false,
       "dependencies": [
         "Settings",
@@ -1691,6 +1833,32 @@
       "options": []
     },
     {
+      "name": "Runtime Memory Governor",
+      "description": "Makes TikTok's reviewed Fresco animated-frame cache lookups return no cached frame. This can increase decoding work or change animation playback. Choose this patch to enable it.",
+      "use": false,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "SIM spoof",
       "description": "Spoofs SIM country and operator information retrieved by TikTok, with country presets for easier setup.",
       "use": true,
@@ -1778,7 +1946,7 @@
     },
     {
       "name": "Share sheet tools",
-      "description": "Asks for a second tap before a video is sent to a friend from the share sheet, and hides chosen people or share options, or the whole Send to row. ",
+      "description": "Asks twice before a video is sent to a friend from the share sheet. The check follows the account or conversation instead of the visible name and covers accessibility actions and keyboard input. It can also hide chosen people, share options or the whole Send to row.",
       "use": false,
       "dependencies": [
         "Settings",
@@ -1979,6 +2147,32 @@
       "options": []
     },
     {
+      "name": "Studio & Creation De-bloat",
+      "description": "Empties TikTok's reviewed editor, camera-effect and face-model assets. Recording, editing, effects and creator tools may stop working. Choose this patch to enable it.",
+      "use": false,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Subtitle tools",
       "description": "Saves subtitle files beside downloaded videos and adds caption size, background, and clear-display options.",
       "use": false,
@@ -2017,6 +2211,32 @@
         "Settings",
         "BytecodePatch"
       ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Update Prompt Suppressor",
+      "description": "Skips TikTok's background and boot-finished device-ID update-check tasks. This may suppress some in-app update checks. Play Store updates are unaffected. Choose this patch to enable it.",
+      "use": false,
+      "dependencies": [],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "46.2.3"
