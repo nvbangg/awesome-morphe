@@ -41,9 +41,13 @@ export function AppBundleGroup({
 
   const patchBadge = <Badge variant="patches" value={group.totalPatchCount} />;
 
-  const dateBadge = group.bundleMeta.updatedAt > 0 && (
+  const updatedAt =
+    (displayPackage && group.bundleMeta.appUpdates?.[displayPackage]) ||
+    group.bundleMeta.updatedAt;
+
+  const dateBadge = updatedAt > 0 && (
     <Badge variant="updated" href={group.bundleMeta.changelogUrl}>
-      {formatDate(group.bundleMeta.updatedAt)}
+      {formatDate(updatedAt)}
     </Badge>
   );
 

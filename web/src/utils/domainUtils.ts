@@ -67,6 +67,7 @@ export function getAppMeta(
     category,
     categorySlug: slugifyCategory(category),
     firstSeen: appMeta?.firstSeen || 0,
+    updatedAt: appMeta?.updatedAt || 0,
     isPreRelease: Boolean(appMeta?.isPreRelease),
   };
 }

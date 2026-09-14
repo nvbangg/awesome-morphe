@@ -4,6 +4,7 @@ import { PackageNameCopy } from "@/components/common/PackageNameCopy";
 import { AppAvatar } from "@/components/common/ItemAvatar";
 import { ModalHeader, CloseButton } from "@/components/common/CustomModal";
 import { isNew } from "@/utils/formatters";
+import { AppMeta } from "@/utils";
 import {
   PACKAGE_UNIVERSAL,
   CATEGORY_LABEL_UNIVERSAL,
@@ -11,16 +12,7 @@ import {
 } from "@/constants";
 
 interface AppModalHeaderProps {
-  appMeta: {
-    appName: string;
-    appIcon: string;
-    description: string;
-    minInstalls: number;
-    category: string;
-    categorySlug: string;
-    firstSeen: number;
-    isPreRelease: boolean;
-  };
+  appMeta: AppMeta;
   packageName: string | null;
   copiedText: string | null;
   copyToClipboard: (text: string) => void;

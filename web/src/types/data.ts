@@ -31,6 +31,7 @@ export interface Bundle {
   isPreRelease: boolean;
   isArchived?: boolean;
   appFirstSeen: Record<string, number>;
+  appUpdates?: Record<string, number>;
   patches: PatchItem[];
 
   key: string;
@@ -68,6 +69,7 @@ export interface AppNameMeta {
   minInstalls: number;
   category: string;
   firstSeen: number;
+  updatedAt?: number;
   isPreRelease?: boolean;
 }
 
@@ -79,6 +81,7 @@ export interface AppItem {
   minInstalls: number;
   category: string;
   firstSeen: number;
+  updatedAt: number;
   patchCount: number;
   categorySlug: string;
   searchableText: string;

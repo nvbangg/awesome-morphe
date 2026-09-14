@@ -99,6 +99,7 @@ const BUNDLE_SORT_KEY_MAP: Record<string, (bundle: Bundle) => number> = {
 
 const APP_SORT_KEY_MAP: Record<string, (app: AppItem) => number> = {
   new: (app) => -app.firstSeen,
+  updated: (app) => -app.updatedAt,
   patches: (app) => -app.patchCount,
 };
 
@@ -312,8 +313,13 @@ export function getAppBundleGroups(
 
   return result.sort((groupA, groupB) => {
     if (sortByUpdated) {
-      const diffUpdated =
-        groupB.bundleMeta.updatedAt - groupA.bundleMeta.updatedAt;
+      const updatedA =
+        groupA.bundleMeta.appUpdates?.[packageName] ??
+        groupA.bundleMeta.updatedAt;
+      const updatedB =
+        groupB.bundleMeta.appUpdates?.[packageName] ??
+        groupB.bundleMeta.updatedAt;
+      const diffUpdated = updatedB - updatedA;
       if (diffUpdated !== 0) return diffUpdated;
     }
     return compareDefaultBundle(groupA.bundleMeta, groupB.bundleMeta);

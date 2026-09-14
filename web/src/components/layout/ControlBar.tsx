@@ -38,6 +38,7 @@ const BUNDLE_SORT_OPTIONS = [
 const APP_SORT_OPTIONS = [
   { key: "default", label: "Most downloads" },
   { key: "new", label: "New" },
+  { key: "updated", label: "Recently updated" },
   { key: "patches", label: "Most patches" },
   { key: "alpha", label: "Alphabetical" },
 ];

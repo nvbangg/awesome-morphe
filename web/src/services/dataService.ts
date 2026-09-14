@@ -106,6 +106,7 @@ export function loadInitData(): Promise<ActiveData> {
         hotRank,
         isPreRelease: !!jsonBundle.isPreRelease,
         appFirstSeen: jsonBundle.appFirstSeen,
+        appUpdates: jsonBundle.appUpdates,
         patches: jsonBundle.patches,
 
         key: bundleKey,
@@ -195,6 +196,8 @@ export function loadInitData(): Promise<ActiveData> {
     const appMap = new Map<string, AppItem>();
     for (const rowItem of rows) {
       const packageName = rowItem.packageName;
+      const bundleItem = bundleMap[rowItem.bundleKey.toLowerCase()];
+      const bundleAppUpdate = bundleItem?.appUpdates?.[packageName] || 0;
       const existingApp = appMap.get(packageName);
       if (!existingApp) {
         const appMeta = getAppMeta(packageName, appNamesMap);
@@ -209,6 +212,7 @@ export function loadInitData(): Promise<ActiveData> {
           minInstalls: appMeta.minInstalls,
           category: appMeta.category,
           firstSeen: appMeta.firstSeen,
+          updatedAt: Math.max(appMeta.updatedAt, bundleAppUpdate),
           patchCount: 1,
           categorySlug: appMeta.categorySlug,
           searchableText,
@@ -216,6 +220,9 @@ export function loadInitData(): Promise<ActiveData> {
         });
       } else {
         existingApp.patchCount += 1;
+        if (bundleAppUpdate > existingApp.updatedAt) {
+          existingApp.updatedAt = bundleAppUpdate;
+        }
       }
     }
     const appItems = Array.from(appMap.values());
