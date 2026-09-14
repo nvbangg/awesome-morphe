@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.14.0-dev.13",
+  "version": "1.14.0-dev.14",
   "patches": [
     {
       "name": "Auto reward ads",
@@ -129,46 +129,6 @@
             },
             {
               "version": "2025.2.24",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Force FDR data download (bypass Play asset delivery)",
-      "description": "Fixes the 'Download Failed - Failed to download data from Google Play Store' dialog that blocks re-signed APKs at the splash screen. The game's 1.3 GB data pack is normally fetched through Play Asset Delivery, which only works for Play-Store-installed apps. This patch makes the Java layer report no available Play asset packs and skip the Play Core fetch, so the native game uses its built-in FDR downloader (Feral's own servers, fdr.feralinteractive.com) instead - the same fallback every Feral port has. Use together with 'Unlock full game (TBYB bypass + license)'. EXPERIMENTAL: if the FDR servers refuse the Android pack, the game will stay on the download screen (check logcat for 'DetermineDownloadType' / 'FDR' lines and report them).",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.feralinteractive.laracroftgol_android",
-          "name": "Lara Croft: Guardian of Light",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#8B0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.2.6RC1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "1.2.7RC2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -454,6 +414,46 @@
           "targets": [
             {
               "version": "3.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Load game data from device storage",
+      "description": "Fixes the infinite loading screen after the license bypass: the game's 1.3 GB data pack (data_core) normally ships as a Play Asset Delivery split that cannot be installed next to a re-signed APK, and Feral's FDR servers do not host the Android data (404). This patch makes the game load the data from a file YOU provide: extract data_core.apk from the full XAPK and copy it to Android/data/com.feralinteractive.laracroftgol_android/files/packs/data_core.apk. With the file in place the game boots the full data; without it this patch changes nothing. Use together with 'Unlock full game (TBYB bypass + license)'. Replaces the old 'Force FDR data download' patch (FDR cannot deliver the Android pack).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.feralinteractive.laracroftgol_android",
+          "name": "Lara Croft: Guardian of Light",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#8B0000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.2.6RC1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.2.7RC2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

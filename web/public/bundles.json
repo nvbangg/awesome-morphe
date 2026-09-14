@@ -6,8 +6,8 @@
       "name": "MorpheApp",
       "repoDescription": "Morphe Patches",
       "avatarUrl": "https://raw.githubusercontent.com/MorpheApp/morphe-patches/main/patches-bundle.png",
-      "stars": 3618,
-      "updatedAt": 1789296202000,
+      "stars": 3633,
+      "updatedAt": 1789346168000,
       "firstSeen": 1767200400000,
       "appFirstSeen": {
         "__universal__": 1785178161621,
@@ -17,9 +17,9 @@
       },
       "appUpdates": {
         "__universal__": 1789198938000,
-        "com.google.android.apps.youtube.music": 1789198938000,
-        "com.google.android.youtube": 1789198938000,
-        "com.reddit.frontpage": 1789250694000
+        "com.google.android.apps.youtube.music": 1789346168000,
+        "com.google.android.youtube": 1789346168000,
+        "com.reddit.frontpage": 1789346168000
       },
       "patches": [
         {
@@ -41,10 +41,17 @@
           "compatiblePackagesKey": 0
         },
         {
+          "name": "App icon",
+          "description": "Adds an option to select from the Reddit app icons available in the manifest.",
+          "firstSeen": 1789348082732,
+          "isPreRelease": true,
+          "compatiblePackagesKey": 1
+        },
+        {
           "name": "App refresh rate",
           "description": "Adds an option to change the app refresh rate.",
           "firstSeen": 1788220800000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "App refresh rate",
@@ -56,7 +63,7 @@
           "name": "Bypass certificate checks",
           "description": "Bypasses certificate checks which prevent YouTube Music from working on Android Auto.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Bypass image region restrictions",
@@ -93,7 +100,7 @@
               "description": "\n            Folder with images to use as a custom header logo.\n\n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - drawable-hdpi\n- drawable-xhdpi\n- drawable-xxhdpi\n- drawable-xxxhdpi\n\n            Each of the folders must contain the following file(s):\n            - morphe_header_custom_dark.png\n\n            Required dimensions:\n            - drawable-hdpi: 121x36 px\n- drawable-xhdpi: 160x48 px\n- drawable-xxhdpi: 240x72 px\n- drawable-xxxhdpi: 320x96 px\n        "
             }
           ],
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Change header",
@@ -124,13 +131,13 @@
           "name": "Change miniplayer color",
           "description": "Adds an option to change the miniplayer background color to match the fullscreen player.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Change start page",
           "description": "Adds an option to set which page the app opens in instead of the homepage.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Change start page",
@@ -142,7 +149,7 @@
           "name": "Check watch history domain name resolution",
           "description": "Checks if the device DNS server is preventing user watch history from being saved.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Check watch history domain name resolution",
@@ -183,11 +190,11 @@
           "name": "Crossfade",
           "description": "Adds a true dual-player crossfade between consecutive tracks. Requires YouTube Music 9.00 or newer; on older versions the patch is a no-op.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Custom branding",
-          "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+          "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
           "firstSeen": 1767200400000,
           "options": [
             {
@@ -199,13 +206,18 @@
               "key": "customIcon",
               "title": "Custom icon",
               "description": "\n            Folder with images to use as a custom icon.\n            \n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - mipmap-mdpi\n- mipmap-hdpi\n- mipmap-xhdpi\n- mipmap-xxhdpi\n- mipmap-xxxhdpi\n            \n            Each of the folders must contain all of the following files:\n            morphe_adaptive_background_custom.png\nmorphe_adaptive_foreground_custom.png\n            \n            The image dimensions must be as follows:\n            - mipmap-mdpi: 108x108 px\n- mipmap-hdpi: 162x162 px\n- mipmap-xhdpi: 216x216 px\n- mipmap-xxhdpi: 324x324 px\n- mipmap-xxxhdpi: 432x432 px\n\n            Optionally, the path contains a 'drawable' folder with a monochrome icon file:\n            morphe_adaptive_monochrome_custom.xml\n\n            Optionally, the path contains a notification icon in one of the following formats:\n            - XML vector drawable placed in 'drawable':\n              morphe_notification_icon_custom.xml\n            - PNG raster images placed in the matching 'drawable-<dpi>' folders:\n              - drawable-mdpi/morphe_notification_icon_custom.png (24x24 px)\n- drawable-hdpi/morphe_notification_icon_custom.png (36x36 px)\n- drawable-xhdpi/morphe_notification_icon_custom.png (48x48 px)\n- drawable-xxhdpi/morphe_notification_icon_custom.png (72x72 px)\n- drawable-xxxhdpi/morphe_notification_icon_custom.png (96x96 px)\n        "
+            },
+            {
+              "key": "appIcon",
+              "title": "App icon",
+              "description": "\n            The app icon to use, including the notification icon.\n\n            'Automatic' uses the custom icon if one is provided, and otherwise 'Black'.\n            Select 'Original' to keep the icon of the unpatched app.\n\n            The icon can be changed later in the app settings, but only for the launcher.\n            Android Auto, the app list of the system settings and the apk file always show\n            the icon chosen here, and a mounted (root) installation can only change it by\n            patching again.\n        "
             }
           ],
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Custom branding",
-          "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+          "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
           "firstSeen": 1767200400000,
           "options": [
             {
@@ -217,6 +229,11 @@
               "key": "customIcon",
               "title": "Custom icon",
               "description": "\n            Folder with images to use as a custom icon.\n            \n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - mipmap-mdpi\n- mipmap-hdpi\n- mipmap-xhdpi\n- mipmap-xxhdpi\n- mipmap-xxxhdpi\n            \n            Each of the folders must contain all of the following files:\n            morphe_adaptive_background_custom.png\nmorphe_adaptive_foreground_custom.png\n            \n            The image dimensions must be as follows:\n            - mipmap-mdpi: 108x108 px\n- mipmap-hdpi: 162x162 px\n- mipmap-xhdpi: 216x216 px\n- mipmap-xxhdpi: 324x324 px\n- mipmap-xxxhdpi: 432x432 px\n\n            Optionally, the path contains a 'drawable' folder with a monochrome icon file:\n            morphe_adaptive_monochrome_custom.xml\n\n            Optionally, the path contains a notification icon in one of the following formats:\n            - XML vector drawable placed in 'drawable':\n              morphe_notification_icon_custom.xml\n            - PNG raster images placed in the matching 'drawable-<dpi>' folders:\n              - drawable-mdpi/morphe_notification_icon_custom.png (24x24 px)\n- drawable-hdpi/morphe_notification_icon_custom.png (36x36 px)\n- drawable-xhdpi/morphe_notification_icon_custom.png (48x48 px)\n- drawable-xxhdpi/morphe_notification_icon_custom.png (72x72 px)\n- drawable-xxxhdpi/morphe_notification_icon_custom.png (96x96 px)\n        "
+            },
+            {
+              "key": "appIcon",
+              "title": "App icon",
+              "description": "\n            The app icon to use, including the notification icon.\n\n            'Automatic' uses the custom icon if one is provided, and otherwise 'Black'.\n            Select 'Original' to keep the icon of the unpatched app.\n\n            The icon can be changed later in the app settings, but only for the launcher.\n            Android Auto, the app list of the system settings and the apk file always show\n            the icon chosen here, and a mounted (root) installation can only change it by\n            patching again.\n        "
             }
           ],
           "compatiblePackagesKey": 0
@@ -233,13 +250,13 @@
               "description": "The name of the app."
             }
           ],
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Custom font",
           "description": "Adds an option to replace Reddit Sans / Roboto with a custom TTF or OTF font file at runtime.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Custom player overlay opacity",
@@ -251,7 +268,7 @@
           "name": "Disable DRC audio",
           "description": "Adds an option to disable DRC (Dynamic Range Compression) audio.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Disable DRC audio",
@@ -269,7 +286,7 @@
           "name": "Disable QUIC protocol",
           "description": "Adds an option to disable QUIC (Quick UDP Internet Connections) network protocol.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Disable QUIC protocol",
@@ -287,7 +304,7 @@
           "name": "Disable dislike redirection",
           "description": "Adds an option to prevent skipping to the next track when the dislike button is pressed.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Disable double tap actions",
@@ -317,7 +334,7 @@
           "name": "Disable modern home",
           "description": "Adds an option to disable the modern home UI. This patch works with Reddit 2026.24.0 and earlier.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Disable player popup panels",
@@ -341,7 +358,7 @@
           "name": "Disable screenshot popup",
           "description": "Adds an option to disable the popup that appears when taking a screenshot.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Disable scrolling speed limit",
@@ -371,7 +388,7 @@
           "name": "Downloads",
           "description": "Adds support to download songs with an external downloader app using the in-app download button.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Downloads",
@@ -383,7 +400,7 @@
           "name": "Enable debugging",
           "description": "Adds options for debugging and exporting Morphe logs to the clipboard.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Enable debugging",
@@ -395,19 +412,19 @@
           "name": "Enable exclusive audio playback",
           "description": "Enables the option to play audio without video.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Enable forced miniplayer",
           "description": "Adds an option to enable forced miniplayer when switching between music videos, podcasts, or songs.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Enable swipe to dismiss miniplayer",
           "description": "Adds an option to enable dismissing the miniplayer by swiping down on it.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Exit fullscreen mode",
@@ -419,7 +436,7 @@
           "name": "Force original audio",
           "description": "Adds an option to always use the original audio track.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Force original audio",
@@ -431,7 +448,7 @@
           "name": "Force system font",
           "description": "Adds an option that renders Reddit with the device system font instead of Reddit Sans / Roboto.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Fullscreen video scale",
@@ -443,7 +460,7 @@
           "name": "GmsCore support",
           "description": "Allows the app to work without root by using a different package name when patched using a GmsCore instead of Google Play Services.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "GmsCore support",
@@ -455,14 +472,14 @@
           "name": "Hide Ask button",
           "description": "Adds an option to hide Ask button in the search bar.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide Reddit search",
           "description": "Permanently hides the Reddit search in the contextual menu. This patch does not work with root mounting",
           "firstSeen": 1767200400000,
           "default": false,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide Shorts components",
@@ -486,19 +503,19 @@
           "name": "Hide Trending shelves",
           "description": "Adds an option to hide the Trending shelves from feed and search suggestions.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide ads",
           "description": "Adds options to hide fullscreen ads, Premium promotions and video ads.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide ads",
           "description": "Adds options to hide ads.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide ads",
@@ -516,13 +533,13 @@
           "name": "Hide buttons",
           "description": "Adds options to hide the cast, history, notification, and search buttons.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide communities shelf",
           "description": "Adds an option to hide the related or suggested communities shelf in subreddits.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide end screen cards",
@@ -540,13 +557,13 @@
           "name": "Hide filter bar",
           "description": "Adds an option to hide the filter bar at the top of the homepage.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide flyout menu components",
           "description": "Adds options to hide individual items from the player and queue flyout menus.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide info cards",
@@ -558,7 +575,7 @@
           "name": "Hide layout components",
           "description": "Adds options to hide general layout components.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide layout components",
@@ -570,13 +587,13 @@
           "name": "Hide music action buttons",
           "description": "Adds options to hide action buttons under the player.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide navigation buttons",
           "description": "Adds options to hide buttons in the navigation bar.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide player flyout menu components",
@@ -606,7 +623,7 @@
           "name": "Hide sidebar components",
           "description": "Adds options to hide the sidebar components.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide timestamp",
@@ -642,7 +659,7 @@
           "name": "Miniplayer previous and next buttons",
           "description": "Adds options to show previous and next track buttons in the miniplayer.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Mute button",
@@ -654,7 +671,7 @@
           "name": "Navigation bar",
           "description": "Adds options to hide navigation bar, labels and buttons.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Navigation bar",
@@ -667,7 +684,7 @@
           "description": "Adds settings to route supported network requests through an HTTP or HTTPS proxy. Including this patch may cause connectivity problems on certain devices",
           "firstSeen": 1767200400000,
           "default": false,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Network proxy",
@@ -692,13 +709,13 @@
           "name": "Open links directly",
           "description": "Adds an option to skip over redirection URLs in external links.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Open links externally",
           "description": "Adds an option to always open links in your browser instead of with the in-app-browser.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Open links externally",
@@ -734,7 +751,7 @@
           "name": "Play albums songs",
           "description": "Adds an option to play the song version of album tracks instead of music videos.",
           "firstSeen": 1788134400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Play all",
@@ -758,7 +775,7 @@
           "name": "PoToken provider",
           "description": "Adds option to get PoToken using an external PoToken minter app.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "PoToken provider",
@@ -782,19 +799,19 @@
           "name": "Remember repeat state",
           "description": "Adds an option to remember the repeat state when playing a new track or playlist.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Remember shuffle state",
           "description": "Adds an option to remember the shuffle state when playing a new track or playlist.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Remove background playback restrictions",
           "description": "Removes restrictions on background playback, including playing kids videos in the background.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Remove background playback restrictions",
@@ -806,13 +823,13 @@
           "name": "Remove subreddit dialog",
           "description": "Adds options to remove the NSFW community warning and notifications suggestion dialogs by dismissing them automatically.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Remove viewer discretion dialog",
           "description": "Adds an option to remove the dialog that appears when opening a video that has been age-restricted by accepting it automatically. This does not bypass the age restriction.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Remove viewer discretion dialog",
@@ -824,7 +841,7 @@
           "name": "Return YouTube Dislike",
           "description": "Adds an option to show the dislike count of tracks with Return YouTube Dislike.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Return YouTube Dislike",
@@ -836,13 +853,13 @@
           "name": "Sanitize sharing links",
           "description": "Removes the tracking query parameters from shared links.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Sanitize sharing links",
           "description": "Adds an option to sanitize sharing links by removing tracking query parameters.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Sanitize sharing links",
@@ -860,7 +877,7 @@
           "name": "Scrobbling",
           "description": "Adds options to add played tracks to Last.fm and ListenBrainz.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Seekbar",
@@ -872,7 +889,7 @@
           "name": "Settings menu filter",
           "description": "Adds an option to hide items on the standard YouTube Music settings screen by their visible name.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Settings menu filter",
@@ -890,13 +907,13 @@
           "name": "Show view count",
           "description": "Adds an option to show the view count of Posts.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "SponsorBlock",
           "description": "Adds options to enable and configure SponsorBlock, which can skip non-music segments.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "SponsorBlock",
@@ -908,7 +925,7 @@
           "name": "Spoof app version",
           "description": "Adds an option to trick the app into thinking you are running an older version.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Spoof app version",
@@ -932,7 +949,7 @@
           "name": "Spoof video streams",
           "description": "Adds options to spoof the client video streams to fix playback.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Spoof video streams",
@@ -957,7 +974,7 @@
               "description": "Can be a hex color (#RRGGBB) or a color resource reference. Setting a color of either theme applies both while patching and removes the in-app theme color settings."
             }
           ],
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Theme",
@@ -981,7 +998,7 @@
           "name": "Third-party lyrics",
           "description": "Adds an option to show synced lyrics from LRCLIB or KuGou in the lyrics panel.",
           "firstSeen": 1767200400000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Video quality",
@@ -1010,7 +1027,7 @@
       "name": "Patcheddit",
       "repoDescription": "Morphe patches for reddit apps",
       "avatarUrl": "https://avatars.githubusercontent.com/u/3746651?v=4&s=128",
-      "stars": 787,
+      "stars": 788,
       "updatedAt": 1775717959000,
       "firstSeen": 1767377520000,
       "appFirstSeen": {
@@ -1431,7 +1448,7 @@
           "compatiblePackagesKey": 14
         }
       ],
-      "hotRank": 32
+      "hotRank": 33
     },
     {
       "source": "github",
@@ -1508,7 +1525,7 @@
       "name": "Hoodles",
       "repoDescription": "🍃 Patches for Morphe",
       "avatarUrl": "https://avatars.githubusercontent.com/u/207470673?v=4&s=128",
-      "stars": 1090,
+      "stars": 1098,
       "updatedAt": 1788743532000,
       "firstSeen": 1768916001000,
       "appFirstSeen": {
@@ -2142,7 +2159,7 @@
       "name": "Adobo",
       "repoDescription": "Patches for Morphe to disable ads, trackers and analytics, remove Reddit ads everywhere, always open Gboard in incognito mode, and much more! ",
       "avatarUrl": "https://avatars.githubusercontent.com/u/6307355?v=4&s=128",
-      "stars": 253,
+      "stars": 254,
       "updatedAt": 1788707048000,
       "firstSeen": 1771559964000,
       "appFirstSeen": {
@@ -2666,7 +2683,7 @@
       "name": "De-Vanced",
       "repoDescription": "De-Vanced exists because the old way started getting frustrating, so I migrated everything to Morphe and turned it into a better, cleaner place to keep the experience alive.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/128968367?v=4&s=128",
-      "stars": 1232,
+      "stars": 1245,
       "updatedAt": 1789291530000,
       "firstSeen": 1772359809000,
       "appFirstSeen": {
@@ -3195,7 +3212,7 @@
       "name": "Brosssh",
       "repoDescription": "🧩 Distraction free Instagram + few patches for apps I care about",
       "avatarUrl": "https://avatars.githubusercontent.com/u/44944126?v=4&s=128",
-      "stars": 330,
+      "stars": 331,
       "updatedAt": 1788248749000,
       "firstSeen": 1773122204000,
       "appFirstSeen": {
@@ -3423,15 +3440,15 @@
       "name": "Piko",
       "repoDescription": "morphe patches for twitter and instagram",
       "avatarUrl": "https://avatars.githubusercontent.com/u/44558091?v=4&s=128",
-      "stars": 3127,
-      "updatedAt": 1789003243000,
+      "stars": 3137,
+      "updatedAt": 1789323555000,
       "firstSeen": 1773129596000,
       "appFirstSeen": {
         "com.instagram.android": 1773154796000,
         "com.twitter.android": 1773154796000
       },
       "appUpdates": {
-        "com.instagram.android": 1788480000000,
+        "com.instagram.android": 1789323555000,
         "com.twitter.android": 1788998400000
       },
       "patches": [
@@ -3603,6 +3620,13 @@
           "name": "Customize explore tabs",
           "firstSeen": 1773129596000,
           "compatiblePackagesKey": 109
+        },
+        {
+          "name": "Customize navigation bar",
+          "description": "Choose which tabs appear in the bottom navigation bar and reorder them",
+          "firstSeen": 1789327720887,
+          "isPreRelease": true,
+          "compatiblePackagesKey": 104
         },
         {
           "name": "Customize notification tabs",
@@ -3894,12 +3918,6 @@
           "description": "Removes swipe up for more videos in video player",
           "firstSeen": 1773129596000,
           "compatiblePackagesKey": 109
-        },
-        {
-          "name": "Hide navigation buttons",
-          "description": "Hides navigation bar buttons, such as the Reels and Create button.",
-          "firstSeen": 1773129596000,
-          "compatiblePackagesKey": 104
         },
         {
           "name": "Hide notes tray",
@@ -4235,7 +4253,7 @@
       "name": "Patched-Up",
       "repoDescription": "Revived and updated ReVanced patches for Morphe.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/14258484?v=4&s=128",
-      "stars": 53,
+      "stars": 54,
       "updatedAt": 1784339708000,
       "firstSeen": 1774080572000,
       "appFirstSeen": {
@@ -4302,7 +4320,7 @@
           "compatiblePackagesKey": 113
         }
       ],
-      "hotRank": 59
+      "hotRank": 58
     },
     {
       "source": "github",
@@ -4335,7 +4353,7 @@
       "name": "Ample",
       "repoDescription": "morphe patches for kakaotalk/dcinside",
       "avatarUrl": "https://avatars.githubusercontent.com/u/240258030?v=4&s=128",
-      "stars": 138,
+      "stars": 140,
       "updatedAt": 1788852883000,
       "firstSeen": 1774731407000,
       "appFirstSeen": {
@@ -5224,7 +5242,7 @@
           "compatiblePackagesKey": 124
         }
       ],
-      "hotRank": 135
+      "hotRank": 134
     },
     {
       "source": "github",
@@ -5232,7 +5250,7 @@
       "name": "Gboard",
       "repoDescription": "Morphe patches for Gboard with practical upgrades for global users and Taiwan-focused enhancements.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/21318815?v=4&s=128",
-      "stars": 544,
+      "stars": 555,
       "updatedAt": 1788345532000,
       "firstSeen": 1775517803000,
       "appFirstSeen": {
@@ -6644,7 +6662,7 @@
       "name": "Xtra Android",
       "repoDescription": "Some android app patches (morphe)",
       "avatarUrl": "https://avatars.githubusercontent.com/u/111065173?v=4&s=128",
-      "stars": 77,
+      "stars": 78,
       "updatedAt": 1782150270000,
       "firstSeen": 1778518800000,
       "appFirstSeen": {
@@ -6803,7 +6821,7 @@
           "compatiblePackagesKey": 180
         }
       ],
-      "hotRank": 61
+      "hotRank": 60
     },
     {
       "source": "github",
@@ -6836,8 +6854,8 @@
       "name": "ajstrick81",
       "repoDescription": "Patches for Android TV apks",
       "avatarUrl": "https://avatars.githubusercontent.com/u/229211337?v=4&s=128",
-      "stars": 188,
-      "updatedAt": 1788917829000,
+      "stars": 190,
+      "updatedAt": 1789347690000,
       "firstSeen": 1779671144000,
       "appFirstSeen": {
         "com.amazon.amazonvideo.livingroom": 1779836713643,
@@ -6858,7 +6876,7 @@
         "com.amazon.amazonvideo.livingroom": 1788917829000,
         "com.bamnetworks.mobile.android.gameday.atbat": 1788917829000,
         "com.cbs.ott": 1788917829000,
-        "com.disney.disneyplus": 1786924800000,
+        "com.disney.disneyplus": 1789347690000,
         "com.espn.score_center": 1788739200000,
         "com.fox.foxone": 1788917829000,
         "com.netflix.ninja": 1786665600000,
@@ -7140,7 +7158,7 @@
       "name": "Metra TikTok",
       "repoDescription": "This repository is a Morphe patch source for TikTok.  It continues the work from earlier community TikTok patch sets, including ReVanced, with the patches adapted for Morphe and tested against newer TikTok builds. The current target version is TikTok 46.2.3",
       "avatarUrl": "https://raw.githubusercontent.com/icysymmetra/tiktok-patches-for-morphe/main/patches-bundle.png",
-      "stars": 331,
+      "stars": 340,
       "updatedAt": 1789150855000,
       "firstSeen": 1780130886000,
       "appFirstSeen": {
@@ -7491,7 +7509,7 @@
       "name": "Doom",
       "repoDescription": "New mask, same task.                                                                 All patches answer to Doom.",
       "avatarUrl": "https://raw.githubusercontent.com/rushiranpise/morphe-patches/main/patches-bundle.png",
-      "stars": 647,
+      "stars": 660,
       "updatedAt": 1788844505000,
       "firstSeen": 1780370487000,
       "appFirstSeen": {
@@ -9928,7 +9946,7 @@
       "name": "Lain",
       "repoDescription": "Morphe patches ✨",
       "avatarUrl": "https://raw.githubusercontent.com/kiraio-moe/Lain-Patches/main/patches-bundle.png",
-      "stars": 50,
+      "stars": 53,
       "updatedAt": 1787203043000,
       "firstSeen": 1780624125000,
       "appFirstSeen": {
@@ -10308,7 +10326,7 @@
           "compatiblePackagesKey": 462
         }
       ],
-      "hotRank": 30
+      "hotRank": 29
     },
     {
       "source": "github",
@@ -10366,7 +10384,7 @@
           "compatiblePackagesKey": 463
         }
       ],
-      "hotRank": 62
+      "hotRank": 61
     },
     {
       "source": "github",
@@ -10374,7 +10392,7 @@
       "name": "Chiggi",
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/60478892?v=4&s=128",
-      "stars": 39,
+      "stars": 40,
       "updatedAt": 1788901913000,
       "firstSeen": 1781135403000,
       "appFirstSeen": {
@@ -10960,7 +10978,7 @@
       "name": "Kondratjev",
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/39211385?v=4&s=128",
-      "stars": 33,
+      "stars": 34,
       "updatedAt": 1789049308000,
       "firstSeen": 1781138594000,
       "appFirstSeen": {
@@ -11168,7 +11186,7 @@
       "name": "Hooman",
       "repoDescription": "Patches for morphe",
       "avatarUrl": "https://avatars.githubusercontent.com/u/64605756?v=4&s=128",
-      "stars": 191,
+      "stars": 194,
       "updatedAt": 1787680854000,
       "firstSeen": 1781506735000,
       "appFirstSeen": {
@@ -12939,7 +12957,7 @@
           "compatiblePackagesKey": 535
         }
       ],
-      "hotRank": 38
+      "hotRank": 37
     },
     {
       "source": "github",
@@ -12947,7 +12965,7 @@
       "name": "Pairip",
       "repoDescription": "基于 Morphe Patcher 的纯字节码补丁，用于还原被 pairip 加固或代码抽离的 Android 应用。",
       "avatarUrl": "https://avatars.githubusercontent.com/u/98471248?v=4&s=128",
-      "stars": 51,
+      "stars": 53,
       "updatedAt": 1787969509000,
       "firstSeen": 1781749101000,
       "appFirstSeen": {
@@ -13160,7 +13178,7 @@
       "name": "browzomje",
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/295420649?v=4&s=128",
-      "stars": 48,
+      "stars": 49,
       "updatedAt": 1788427022000,
       "firstSeen": 1782181225000,
       "appFirstSeen": {
@@ -13402,7 +13420,7 @@
           "compatiblePackagesKey": 546
         }
       ],
-      "hotRank": 95
+      "hotRank": 96
     },
     {
       "source": "github",
@@ -13846,7 +13864,7 @@
       "name": "Google Feed Ads",
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/70382811?v=4&s=128",
-      "stars": 11,
+      "stars": 12,
       "updatedAt": 1782826727000,
       "firstSeen": 1782801539000,
       "appFirstSeen": {
@@ -13889,7 +13907,7 @@
       "name": "Nai",
       "repoDescription": "A curated collection of Morphe patches that tune, unlock and declutter Android games. Skip ads, bypass license checks, hide root, force orientations and more, all from a single patcher.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/122532548?v=4&s=128",
-      "stars": 529,
+      "stars": 533,
       "updatedAt": 1789238967000,
       "firstSeen": 1782996119000,
       "appFirstSeen": {
@@ -18356,7 +18374,7 @@
           "compatiblePackagesKey": 567
         }
       ],
-      "hotRank": 96
+      "hotRank": 97
     },
     {
       "source": "gitlab",
@@ -18519,7 +18537,7 @@
       "name": "byehi98",
       "repoDescription": "AI was used in the making of these patches.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/203759836?v=4&s=128",
-      "stars": 29,
+      "stars": 30,
       "updatedAt": 1789313538000,
       "firstSeen": 1783221698000,
       "appFirstSeen": {
@@ -18936,7 +18954,7 @@
           "compatiblePackagesKey": 600
         }
       ],
-      "hotRank": 13
+      "hotRank": 12
     },
     {
       "source": "github",
@@ -19157,7 +19175,7 @@
           "compatiblePackagesKey": 605
         }
       ],
-      "hotRank": 29
+      "hotRank": 30
     },
     {
       "source": "github",
@@ -20737,7 +20755,7 @@
       "name": "Proxma",
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/301634153?v=4&s=128",
-      "stars": 14,
+      "stars": 15,
       "updatedAt": 1784463310000,
       "firstSeen": 1784039156000,
       "appFirstSeen": {
@@ -20830,7 +20848,7 @@
           "compatiblePackagesKey": 659
         }
       ],
-      "hotRank": 97
+      "hotRank": 88
     },
     {
       "source": "github",
@@ -20898,7 +20916,7 @@
           "compatiblePackagesKey": 663
         }
       ],
-      "hotRank": 121
+      "hotRank": 120
     },
     {
       "source": "github",
@@ -20932,7 +20950,7 @@
       "repoDescription": "🧩Patches for Morphe, made with AI",
       "avatarUrl": "https://avatars.githubusercontent.com/u/212266985?v=4&s=128",
       "stars": 29,
-      "updatedAt": 1788903653000,
+      "updatedAt": 1789332287000,
       "firstSeen": 1784103515000,
       "appFirstSeen": {
         "__universal__": 1785178161610,
@@ -20954,7 +20972,7 @@
         "com.IvanAF.ClimbAMIYPfree": 1788903653000,
         "com.Neurononfire.SupremeDuelist": 1788903653000,
         "com.ea.game.pvzfree_row": 1788903653000,
-        "com.feralinteractive.laracroftgol_android": 1788825600000,
+        "com.feralinteractive.laracroftgol_android": 1789332287000,
         "com.mad.DuckLifeSpace": 1788825600000,
         "com.mad.ducklife": 1788825600000,
         "com.mobge.Oddmar": 1784592000000,
@@ -20990,14 +21008,6 @@
           "compatiblePackagesKey": 667
         },
         {
-          "name": "Force FDR data download (bypass Play asset delivery)",
-          "description": "Fixes the 'Download Failed - Failed to download data from Google Play Store' dialog that blocks re-signed APKs at the splash screen. The game's 1.3 GB data pack is normally fetched through Play Asset Delivery, which only works for Play-Store-installed apps. This patch makes the Java layer report no available Play asset packs and skip the Play Core fetch, so the native game uses its built-in FDR downloader (Feral's own servers, fdr.feralinteractive.com) instead - the same fallback every Feral port has. Use together with 'Unlock full game (TBYB bypass + license)'. EXPERIMENTAL: if the FDR servers refuse the Android pack, the game will stay on the download screen (check logcat for 'DetermineDownloadType' / 'FDR' lines and report them).",
-          "firstSeen": 1788912000000,
-          "isPreRelease": true,
-          "default": false,
-          "compatiblePackagesKey": 668
-        },
-        {
           "name": "Free ads rewards (skip ad, grant unlock)",
           "description": "Patches ShowRewardedWeaponAd (and similar ad-reward methods) to skip the ad display and immediately grant the reward (weapon/skin/map unlock). Searches for the pattern 'ldr w9, [x8, #0xec]; cmp w9, #7; b.eq; cmp w9, #9; b.ne' and NOPs both conditional branches. This makes the code always fall through to the unlock branch regardless of ad state. Default OFF — enable only if you want all ad-rewarded content unlocked for free.",
           "firstSeen": 1784103515000,
@@ -21010,33 +21020,33 @@
           "description": "Patches the Google Play Billing bridge to report success and validate purchases. Handles crystal packs and other IAP items at the billing layer. For unlocking tribes and skins, use the 'Unlock all tribes' patch instead.",
           "firstSeen": 1784103515000,
           "default": false,
-          "compatiblePackagesKey": 669
+          "compatiblePackagesKey": 668
         },
         {
           "name": "Free in-app purchases",
           "description": "When you try to buy something, the purchase is immediately marked as successful without contacting Google Play. The EA Nimble MTX system receives a null error (success) and grants the item.",
           "firstSeen": 1784103515000,
-          "compatiblePackagesKey": 670
+          "compatiblePackagesKey": 669
         },
         {
           "name": "Free in-app purchases",
           "description": "Skips purchase signature verification and forces billing to report success. Patches RunnerBillingSecurity.verifyPurchase to always return true, Purchase.isAcknowledged/getPurchaseState to return valid values, and the billing bridge callbacks.",
           "firstSeen": 1784103515000,
           "default": false,
-          "compatiblePackagesKey": 671
+          "compatiblePackagesKey": 670
         },
         {
           "name": "Free in-app purchases",
           "description": "Makes every IAP purchase succeed instantly without contacting Google Play Billing. When the user taps 'Buy' on any in-app product, the game credits the purchase immediately and skips the Play Store dialog. For Oddmar 0.111 the only IAP product is 'unlock_all_levels', so this patch gives a free full-game unlock on demand. Note: literal 'unlimited coins' (the in-game currency counter) requires native libil2cpp.so patching and is NOT covered by this Java patch.",
           "firstSeen": 1784103515000,
           "default": false,
-          "compatiblePackagesKey": 672
+          "compatiblePackagesKey": 671
         },
         {
           "name": "Free in-app purchases",
           "description": "Skips Google Play Billing and credits IAP items (gem packs, coin packs, starter packs) directly. Lets the original failure path run after crediting to close the Contacting screen naturally. Also disables the startup purchase-restore flow.",
           "firstSeen": 1784103515000,
-          "compatiblePackagesKey": 673
+          "compatiblePackagesKey": 672
         },
         {
           "name": "Free in-app purchases (optional)",
@@ -21050,19 +21060,26 @@
           "name": "Free reward ads",
           "description": "When the game tries to show a rewarded ad, it immediately fires the ad-clicked and ad-closed callbacks without actually showing the ad. You get the reward instantly.",
           "firstSeen": 1784103515000,
-          "compatiblePackagesKey": 670
+          "compatiblePackagesKey": 669
+        },
+        {
+          "name": "Load game data from device storage",
+          "description": "Fixes the infinite loading screen after the license bypass: the game's 1.3 GB data pack (data_core) normally ships as a Play Asset Delivery split that cannot be installed next to a re-signed APK, and Feral's FDR servers do not host the Android data (404). This patch makes the game load the data from a file YOU provide: extract data_core.apk from the full XAPK and copy it to Android/data/com.feralinteractive.laracroftgol_android/files/packs/data_core.apk. With the file in place the game boots the full data; without it this patch changes nothing. Use together with 'Unlock full game (TBYB bypass + license)'. Replaces the old 'Force FDR data download' patch (FDR cannot deliver the Android pack).",
+          "firstSeen": 1789338356798,
+          "isPreRelease": true,
+          "compatiblePackagesKey": 673
         },
         {
           "name": "Remove ads",
           "description": "Prevents video ads from loading. When the game tries to load an ad, nothing happens. Ads will not be shown.",
           "firstSeen": 1784103515000,
-          "compatiblePackagesKey": 670
+          "compatiblePackagesKey": 669
         },
         {
           "name": "Remove ads",
           "description": "Simulates the purchase of the 'climbnoads' IAP product by injecting a fake Purchase into the purchase list when the game queries purchases. The game finds 'climbnoads' and treats No Ads as purchased.",
           "firstSeen": 1784103515000,
-          "compatiblePackagesKey": 671
+          "compatiblePackagesKey": 670
         },
         {
           "name": "Unity IL2CPP hex patch",
@@ -21094,13 +21111,13 @@
           "name": "Unlock all tribes",
           "description": "Unlocks all 20 tribes (Xinxi, Imperius, Bardur, Oumaji, Kickoo, Hoodrick, Luxidoor, Vengir, Zebasi, Aimo, Aquarion, Elyrion, Polaris, Magma, Yadakk, Quetzali, Cymanti, Swamp, Ikarus, Urkaz) and all skins by patching the native IL2CPP library (libil2cpp.so). Makes IsProductUnlocked return true, skips the purchase flow, and suppresses the 'Purchase error' dialog. Pure ARM64 hex patching, no smali, no extension.",
           "firstSeen": 1784103515000,
-          "compatiblePackagesKey": 669
+          "compatiblePackagesKey": 668
         },
         {
           "name": "Unlock full game",
           "description": "Unlocks the full game (all levels, all worlds) by intercepting the IAP 'has product been purchased' check. Oddmar's only IAP product is 'unlock_all_levels' — this patch makes the game think it has already been purchased, so every level is unlocked from the start. No Google Play Billing connection is required. Also disables the startup 'acknowledge all purchases' query so the patch doesn't try to reach Google Play at boot.",
           "firstSeen": 1784103515000,
-          "compatiblePackagesKey": 672
+          "compatiblePackagesKey": 671
         },
         {
           "name": "Unlock full game (IAP entitlements)",
@@ -21121,7 +21138,7 @@
           "description": "Unlocks the full game (all levels + DLC) of the try-before-you-buy version and bypasses the Google Play Licensing (LVL) startup check that blocks re-signed APKs. Injects 'Demo.FullGame' and 'Demo.FullGamePlusDLC' as already purchased into the Feral billing bridge, so the native game marks the full game as owned without contacting Google Play. Also patches every LVL Policy.allowAccess() to return true and the LicenseCheckerCallback failure callbacks to behave as licensed. Note: this game does NOT use PairIP (verified against the manifest and all split APKs).",
           "firstSeen": 1788825600000,
           "isPreRelease": true,
-          "compatiblePackagesKey": 668
+          "compatiblePackagesKey": 673
         },
         {
           "name": "Unlock premium",
@@ -21130,7 +21147,7 @@
           "compatiblePackagesKey": 675
         }
       ],
-      "hotRank": 33
+      "hotRank": 32
     },
     {
       "source": "github",
@@ -21234,7 +21251,7 @@
           "compatiblePackagesKey": 676
         }
       ],
-      "hotRank": 43
+      "hotRank": 40
     },
     {
       "source": "github",
@@ -21259,7 +21276,7 @@
           "compatiblePackagesKey": 677
         }
       ],
-      "hotRank": 63
+      "hotRank": 62
     },
     {
       "source": "github",
@@ -22681,7 +22698,7 @@
           "default": false
         }
       ],
-      "hotRank": 44
+      "hotRank": 46
     },
     {
       "source": "github",
@@ -22765,8 +22782,8 @@
       "name": "hxreborn",
       "repoDescription": "🧩 Android patches for Morphe: AMOLED themes, ad removal and premium unlocks. Proton Mail, Cx File Explorer, Projectivy Launcher and more.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/32096750?v=4&s=128",
-      "stars": 66,
-      "updatedAt": 1789313309000,
+      "stars": 68,
+      "updatedAt": 1789328354000,
       "firstSeen": 1784328479000,
       "appFirstSeen": {
         "ai.perplexity.app.android": 1786869206023,
@@ -23100,7 +23117,7 @@
           "compatiblePackagesKey": 706
         }
       ],
-      "hotRank": 11
+      "hotRank": 9
     },
     {
       "source": "github",
@@ -23252,7 +23269,7 @@
           "compatiblePackagesKey": 710
         }
       ],
-      "hotRank": 79
+      "hotRank": 78
     },
     {
       "source": "github",
@@ -23309,7 +23326,7 @@
       "name": "Fluffy",
       "repoDescription": "A Morphe Patches repository with patches for some Android apps.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/63334479?v=4&s=128",
-      "stars": 30,
+      "stars": 31,
       "updatedAt": 1788552778000,
       "firstSeen": 1784946166513,
       "appFirstSeen": {
@@ -23340,7 +23357,7 @@
           "compatiblePackagesKey": 714
         }
       ],
-      "hotRank": 47
+      "hotRank": 48
     },
     {
       "source": "github",
@@ -23348,7 +23365,7 @@
       "name": "Breal",
       "repoDescription": "Unofficial Morphe patch bundle for Boost for Reddit, Imgur, and other supported apps.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/6815997?v=4&s=128",
-      "stars": 77,
+      "stars": 78,
       "updatedAt": 1788971897000,
       "firstSeen": 1784984889701,
       "appFirstSeen": {
@@ -24178,7 +24195,7 @@
           "compatiblePackagesKey": 723
         }
       ],
-      "hotRank": 12
+      "hotRank": 13
     },
     {
       "source": "github",
@@ -24210,7 +24227,7 @@
       "name": "Brave and universal",
       "repoDescription": "morphe patches are primarily for personal use",
       "avatarUrl": "https://avatars.githubusercontent.com/u/87336618?v=4&s=128",
-      "stars": 47,
+      "stars": 48,
       "updatedAt": 1788672023000,
       "firstSeen": 1785036993248,
       "appFirstSeen": {
@@ -24312,7 +24329,7 @@
       "name": "Morning Entree",
       "repoDescription": "A collection of unofficial Android patches built with the Morphe framework. Patches are for educational purposes only, modifying apps can be against terms and services",
       "avatarUrl": "https://avatars.githubusercontent.com/u/28127566?v=4&s=128",
-      "stars": 38,
+      "stars": 39,
       "updatedAt": 1788884842000,
       "firstSeen": 1785036993248,
       "appFirstSeen": {
@@ -25371,7 +25388,7 @@
           "compatiblePackagesKey": 772
         }
       ],
-      "hotRank": 58
+      "hotRank": 59
     },
     {
       "source": "github",
@@ -25379,7 +25396,7 @@
       "name": "Hiosdra",
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/22264762?v=4&s=128",
-      "stars": 4,
+      "stars": 5,
       "updatedAt": 1787688247000,
       "firstSeen": 1785374551928,
       "appFirstSeen": {
@@ -25437,7 +25454,7 @@
           "compatiblePackagesKey": 773
         }
       ],
-      "hotRank": 92
+      "hotRank": 93
     },
     {
       "source": "github",
@@ -25720,7 +25737,7 @@
           "compatiblePackagesKey": 779
         }
       ],
-      "hotRank": 55
+      "hotRank": 56
     },
     {
       "source": "github",
@@ -25745,7 +25762,7 @@
           "compatiblePackagesKey": 780
         }
       ],
-      "hotRank": 118
+      "hotRank": 117
     },
     {
       "source": "github",
@@ -25882,7 +25899,7 @@
       "name": "Alastor Kaneki",
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/170276077?v=4&s=128",
-      "stars": 7,
+      "stars": 8,
       "updatedAt": 1787562764000,
       "firstSeen": 1785884829984,
       "appFirstSeen": {
@@ -26085,7 +26102,7 @@
       "name": "Logm1lo",
       "repoDescription": "Morphe patches I actually use. Please report bugs and request more apps or patches via GitHub.",
       "avatarUrl": "https://raw.githubusercontent.com/logm1lo/logm1lo-patches/main/patches-bundle.png",
-      "stars": 8,
+      "stars": 9,
       "updatedAt": 1789024662000,
       "firstSeen": 1785926406013,
       "appFirstSeen": {
@@ -26122,7 +26139,7 @@
           "compatiblePackagesKey": 792
         }
       ],
-      "hotRank": 60
+      "hotRank": 52
     },
     {
       "source": "github",
@@ -26526,7 +26543,7 @@
           "compatiblePackagesKey": 796
         }
       ],
-      "hotRank": 53
+      "hotRank": 51
     },
     {
       "source": "github",
@@ -27188,7 +27205,7 @@
           "compatiblePackagesKey": 813
         }
       ],
-      "hotRank": 23
+      "hotRank": 24
     },
     {
       "source": "github",
@@ -27299,7 +27316,7 @@
           "compatiblePackagesKey": 821
         }
       ],
-      "hotRank": 129
+      "hotRank": 128
     },
     {
       "source": "github",
@@ -27355,7 +27372,7 @@
           "compatiblePackagesKey": 824
         }
       ],
-      "hotRank": 83
+      "hotRank": 84
     },
     {
       "source": "github",
@@ -27560,7 +27577,7 @@
           "compatiblePackagesKey": 831
         }
       ],
-      "hotRank": 52
+      "hotRank": 54
     },
     {
       "source": "github",
@@ -27852,7 +27869,7 @@
           "compatiblePackagesKey": 833
         }
       ],
-      "hotRank": 120
+      "hotRank": 119
     },
     {
       "source": "github",
@@ -27907,7 +27924,7 @@
           "compatiblePackagesKey": 834
         }
       ],
-      "hotRank": 51
+      "hotRank": 53
     },
     {
       "source": "github",
@@ -28001,13 +28018,13 @@
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/10971263?v=4&s=128",
       "stars": 25,
-      "updatedAt": 1789276287000,
+      "updatedAt": 1789323065000,
       "firstSeen": 1786962892864,
       "appFirstSeen": {
         "com.google.android.inputmethod.latin": 1786962892801
       },
       "appUpdates": {
-        "com.google.android.inputmethod.latin": 1789171200000
+        "com.google.android.inputmethod.latin": 1789323065000
       },
       "patches": [
         {
@@ -28024,10 +28041,8 @@
         },
         {
           "name": "Enable Rambler",
-          "description": "Exposes Google Rambler — Gboard's agentic dictation, which rewrites what you say into composed text — as a choice in Voice settings. It is not switched on for you: the feature uses a Google server, has its own quota and asks for consent, so picking it is left to you. Off by default and not yet confirmed working on a device.",
+          "description": "Exposes Google Rambler — Gboard's agentic dictation, which rewrites what you say into composed text — as a choice in Voice settings. It is not switched on for you: the feature uses a Google server, has its own quota and asks for consent, so picking it is left to you.",
           "firstSeen": 1789084800000,
-          "isPreRelease": true,
-          "default": false,
           "compatiblePackagesKey": 125
         },
         {
@@ -28051,10 +28066,8 @@
         },
         {
           "name": "Modern keypress haptics",
-          "description": "Uses Android's haptic primitives for keypresses — the crisp tick the rest of the system uses — instead of a plain buzz. Gboard has the code and disables it with an impossible minimum Android version; this removes that. Devices whose vibrator cannot do primitives are unaffected, because Gboard's own hardware check still runs. Note that it changes what the vibration strength slider means, from milliseconds to intensity. Off by default and not yet confirmed on a device.",
+          "description": "Uses Android's haptic primitives for keypresses — the crisp tick the rest of the system uses — instead of a plain buzz. Gboard has the code and disables it with an impossible minimum Android version; this removes that. Devices whose vibrator cannot do primitives are unaffected, because Gboard's own hardware check still runs. Note that it changes what the vibration strength slider means, from milliseconds to intensity.",
           "firstSeen": 1789171200000,
-          "isPreRelease": true,
-          "default": false,
           "compatiblePackagesKey": 125
         },
         {
@@ -28079,7 +28092,6 @@
           "name": "Swipe up diagnostic (temporary)",
           "description": "Diagnostic build only. Swipe up on a key to delete a character, which proves whether the swipe gesture is being detected at all. Do not enable this at the same time as \"Swipe up to undo autocorrect\" — they attach to the same place and you would get both effects. Off by default, and this patch will be removed once it has answered its question.",
           "firstSeen": 1789084800000,
-          "isPreRelease": true,
           "default": false,
           "compatiblePackagesKey": 125
         },
@@ -28087,7 +28099,6 @@
           "name": "Swipe up to undo autocorrect",
           "description": "Swipe up on the keyboard to put back the word an autocorrect replaced. Gboard has the same undo on backspace, behind a setting; this adds a gesture for it and works whether or not that setting is on. A swipe with nothing to undo does nothing. Off by default until it has been confirmed on a device.",
           "firstSeen": 1788998400000,
-          "isPreRelease": true,
           "default": false,
           "compatiblePackagesKey": 125
         },
@@ -28110,7 +28121,7 @@
           "compatiblePackagesKey": 125
         }
       ],
-      "hotRank": 22
+      "hotRank": 21
     },
     {
       "source": "github",
@@ -28332,14 +28343,14 @@
           "compatiblePackagesKey": 841
         }
       ],
-      "hotRank": 134
+      "hotRank": 135
     },
     {
       "source": "gitlab",
       "repo": "IMXEren/mix-patches",
       "name": "Mix",
       "repoDescription": "Mix Patches",
-      "avatarUrl": "https://gitlab.com/uploads/-/system/user/avatar/41449487/avatar.png?v=1789257650&width=128",
+      "avatarUrl": "https://gitlab.com/uploads/-/system/user/avatar/41449487/avatar.png?v=1789344290&width=128",
       "stars": 2,
       "updatedAt": 1789301796000,
       "firstSeen": 1787114443138,
@@ -28473,7 +28484,7 @@
           "compatiblePackagesKey": 844
         }
       ],
-      "hotRank": 88
+      "hotRank": 89
     },
     {
       "source": "github",
@@ -28632,7 +28643,7 @@
           "compatiblePackagesKey": 855
         }
       ],
-      "hotRank": 84,
+      "hotRank": 83,
       "isPreRelease": true
     },
     {
@@ -28797,8 +28808,8 @@
       "name": "kveld9",
       "repoDescription": "Custom Morphe patches on Android.",
       "avatarUrl": "https://avatars.githubusercontent.com/u/179108235?v=4&s=128",
-      "stars": 46,
-      "updatedAt": 1789261885000,
+      "stars": 55,
+      "updatedAt": 1789333234000,
       "firstSeen": 1787251436744,
       "appFirstSeen": {
         "__universal__": 1789101916717,
@@ -28814,7 +28825,7 @@
         "com.google.android.inputmethod.latin": 1789261885000,
         "com.hevy": 1789084800000,
         "com.vivaldi.browser": 1789084800000,
-        "com.zhiliaoapp.musically": 1789261885000
+        "com.zhiliaoapp.musically": 1789333234000
       },
       "patches": [
         {
@@ -29017,6 +29028,12 @@
           "compatiblePackagesKey": 859
         },
         {
+          "name": "Feed Ad Blocker",
+          "description": "Removes sponsored advertisements, brand promotions, soft commercial videos, and promotional audio from the For You and Following feeds.",
+          "firstSeen": 1789338356798,
+          "compatiblePackagesKey": 639
+        },
+        {
           "name": "Force Incognito Mode",
           "description": "Forces Gboard to always operate in incognito mode (disabling personalized learning and persistent input logging) while keeping clipboard functionality enabled.",
           "firstSeen": 1787251436744,
@@ -29168,7 +29185,7 @@
           "compatiblePackagesKey": 862
         }
       ],
-      "hotRank": 9
+      "hotRank": 11
     },
     {
       "source": "github",
@@ -29247,7 +29264,7 @@
           "compatiblePackagesKey": 865
         }
       ],
-      "hotRank": 91
+      "hotRank": 92
     },
     {
       "source": "github",
@@ -29278,7 +29295,7 @@
           "compatiblePackagesKey": 866
         }
       ],
-      "hotRank": 119
+      "hotRank": 121
     },
     {
       "source": "github",
@@ -29315,7 +29332,7 @@
           "compatiblePackagesKey": 867
         }
       ],
-      "hotRank": 128
+      "hotRank": 129
     },
     {
       "source": "github",
@@ -29372,7 +29389,7 @@
           "compatiblePackagesKey": 870
         }
       ],
-      "hotRank": 93
+      "hotRank": 94
     },
     {
       "source": "github",
@@ -29422,7 +29439,7 @@
       "name": "Aimal",
       "repoDescription": "Morphe patches that hand four streaming apps back the player controls they ship without — speed, aspect ratio and readable subtitles on Crunchyroll, HBO Max, Disney+ and Viki, plus a Viki app that stops shrinking the video on foldable phones",
       "avatarUrl": "https://avatars.githubusercontent.com/u/53941105?v=4&s=128",
-      "stars": 5,
+      "stars": 6,
       "updatedAt": 1788736775000,
       "firstSeen": 1787540142280,
       "appFirstSeen": {
@@ -29475,7 +29492,7 @@
           "compatiblePackagesKey": 876
         }
       ],
-      "hotRank": 49
+      "hotRank": 47
     },
     {
       "source": "github",
@@ -29571,7 +29588,7 @@
           "compatiblePackagesKey": 595
         }
       ],
-      "hotRank": 46
+      "hotRank": 38
     },
     {
       "source": "github",
@@ -29580,7 +29597,7 @@
       "repoDescription": "Efficiency justice for morphe patches",
       "avatarUrl": "https://avatars.githubusercontent.com/u/56123591?v=4&s=128",
       "stars": 8,
-      "updatedAt": 1789150561000,
+      "updatedAt": 1789321440000,
       "firstSeen": 1787620439710,
       "appFirstSeen": {
         "com.candylink.openvpn": 1787620432732,
@@ -29728,7 +29745,7 @@
       "name": "Froggo",
       "repoDescription": "",
       "avatarUrl": "https://avatars.githubusercontent.com/u/7357354?v=4&s=128",
-      "stars": 73,
+      "stars": 74,
       "updatedAt": 1788773987000,
       "firstSeen": 1787675089909,
       "appFirstSeen": {
@@ -29989,7 +30006,7 @@
           "compatiblePackagesKey": 895
         }
       ],
-      "hotRank": 125
+      "hotRank": 126
     },
     {
       "source": "github",
@@ -30497,7 +30514,7 @@
       "name": "Piko",
       "repoDescription": "New X on Android compatible piko builds",
       "avatarUrl": "https://avatars.githubusercontent.com/u/44558091?v=4&s=128",
-      "stars": 303,
+      "stars": 311,
       "updatedAt": 1789293152000,
       "firstSeen": 1787987199523,
       "appFirstSeen": {
@@ -30819,7 +30836,7 @@
           "compatiblePackagesKey": 913
         }
       ],
-      "hotRank": 89
+      "hotRank": 90
     },
     {
       "source": "github",
@@ -30954,7 +30971,7 @@
           "compatiblePackagesKey": 919
         }
       ],
-      "hotRank": 94
+      "hotRank": 95
     },
     {
       "source": "github",
@@ -30994,7 +31011,7 @@
       "repoDescription": "Unofficial Dual VoT patches: Google/other and Yandex voice-over translation in one Morphe Manager source",
       "avatarUrl": "https://avatars.githubusercontent.com/u/235972620?v=4&s=128",
       "stars": 12,
-      "updatedAt": 1789298336000,
+      "updatedAt": 1789345045000,
       "firstSeen": 1788323754967,
       "appFirstSeen": {
         "__universal__": 1788323746993,
@@ -31004,9 +31021,9 @@
       },
       "appUpdates": {
         "__universal__": 1789144632000,
-        "com.google.android.apps.youtube.music": 1789210687000,
-        "com.google.android.youtube": 1789144632000,
-        "com.reddit.frontpage": 1789298336000
+        "com.google.android.apps.youtube.music": 1789345045000,
+        "com.google.android.youtube": 1789345045000,
+        "com.reddit.frontpage": 1789326071000
       },
       "patches": [
         {
@@ -31031,7 +31048,7 @@
           "name": "App refresh rate",
           "description": "Adds an option to change the app refresh rate.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "App refresh rate",
@@ -31043,7 +31060,7 @@
           "name": "Bypass certificate checks",
           "description": "Bypasses certificate checks which prevent YouTube Music from working on Android Auto.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Bypass image region restrictions",
@@ -31080,7 +31097,7 @@
               "description": "\n            Folder with images to use as a custom header logo.\n\n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - drawable-hdpi\n- drawable-xhdpi\n- drawable-xxhdpi\n- drawable-xxxhdpi\n\n            Each of the folders must contain the following file(s):\n            - morphe_header_custom_dark.png\n\n            Required dimensions:\n            - drawable-hdpi: 121x36 px\n- drawable-xhdpi: 160x48 px\n- drawable-xxhdpi: 240x72 px\n- drawable-xxxhdpi: 320x96 px\n        "
             }
           ],
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Change header",
@@ -31111,13 +31128,13 @@
           "name": "Change miniplayer color",
           "description": "Adds an option to change the miniplayer background color to match the fullscreen player.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Change start page",
           "description": "Adds an option to set which page the app opens in instead of the homepage.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Change start page",
@@ -31129,7 +31146,7 @@
           "name": "Check watch history domain name resolution",
           "description": "Checks if the device DNS server is preventing user watch history from being saved.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Check watch history domain name resolution",
@@ -31170,11 +31187,18 @@
           "name": "Crossfade",
           "description": "Adds a true dual-player crossfade between consecutive tracks. Requires YouTube Music 9.00 or newer; on older versions the patch is a no-op.",
           "firstSeen": 1788307200000,
+          "compatiblePackagesKey": 2
+        },
+        {
+          "name": "Custom app icon",
+          "description": "Adds an option to select an existing manifest app icon.",
+          "firstSeen": 1789327720887,
+          "isPreRelease": true,
           "compatiblePackagesKey": 1
         },
         {
           "name": "Custom branding",
-          "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+          "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
           "firstSeen": 1788307200000,
           "options": [
             {
@@ -31186,13 +31210,18 @@
               "key": "customIcon",
               "title": "Custom icon",
               "description": "\n            Folder with images to use as a custom icon.\n            \n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - mipmap-mdpi\n- mipmap-hdpi\n- mipmap-xhdpi\n- mipmap-xxhdpi\n- mipmap-xxxhdpi\n            \n            Each of the folders must contain all of the following files:\n            morphe_adaptive_background_custom.png\nmorphe_adaptive_foreground_custom.png\n            \n            The image dimensions must be as follows:\n            - mipmap-mdpi: 108x108 px\n- mipmap-hdpi: 162x162 px\n- mipmap-xhdpi: 216x216 px\n- mipmap-xxhdpi: 324x324 px\n- mipmap-xxxhdpi: 432x432 px\n\n            Optionally, the path contains a 'drawable' folder with a monochrome icon file:\n            morphe_adaptive_monochrome_custom.xml\n\n            Optionally, the path contains a notification icon in one of the following formats:\n            - XML vector drawable placed in 'drawable':\n              morphe_notification_icon_custom.xml\n            - PNG raster images placed in the matching 'drawable-<dpi>' folders:\n              - drawable-mdpi/morphe_notification_icon_custom.png (24x24 px)\n- drawable-hdpi/morphe_notification_icon_custom.png (36x36 px)\n- drawable-xhdpi/morphe_notification_icon_custom.png (48x48 px)\n- drawable-xxhdpi/morphe_notification_icon_custom.png (72x72 px)\n- drawable-xxxhdpi/morphe_notification_icon_custom.png (96x96 px)\n        "
+            },
+            {
+              "key": "appIcon",
+              "title": "App icon",
+              "description": "\n            The app icon to use, including the notification icon.\n\n            'Automatic' uses the custom icon if one is provided, and otherwise 'Black'.\n            Select 'Original' to keep the icon of the unpatched app.\n\n            The icon can be changed later in the app settings, but only for the launcher.\n            Android Auto, the app list of the system settings and the apk file always show\n            the icon chosen here, and a mounted (root) installation can only change it by\n            patching again.\n        "
             }
           ],
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Custom branding",
-          "description": "Adds options to change the app icon and app name. Branding cannot be changed for mounted (root) installations.",
+          "description": "Adds options to change the app icon and app name. For mounted (root) installations the branding is applied while patching, because it cannot be changed from the app settings.",
           "firstSeen": 1788307200000,
           "options": [
             {
@@ -31204,6 +31233,11 @@
               "key": "customIcon",
               "title": "Custom icon",
               "description": "\n            Folder with images to use as a custom icon.\n            \n            The folder must contain one or more of the following folders, depending on the DPI of the device:\n            - mipmap-mdpi\n- mipmap-hdpi\n- mipmap-xhdpi\n- mipmap-xxhdpi\n- mipmap-xxxhdpi\n            \n            Each of the folders must contain all of the following files:\n            morphe_adaptive_background_custom.png\nmorphe_adaptive_foreground_custom.png\n            \n            The image dimensions must be as follows:\n            - mipmap-mdpi: 108x108 px\n- mipmap-hdpi: 162x162 px\n- mipmap-xhdpi: 216x216 px\n- mipmap-xxhdpi: 324x324 px\n- mipmap-xxxhdpi: 432x432 px\n\n            Optionally, the path contains a 'drawable' folder with a monochrome icon file:\n            morphe_adaptive_monochrome_custom.xml\n\n            Optionally, the path contains a notification icon in one of the following formats:\n            - XML vector drawable placed in 'drawable':\n              morphe_notification_icon_custom.xml\n            - PNG raster images placed in the matching 'drawable-<dpi>' folders:\n              - drawable-mdpi/morphe_notification_icon_custom.png (24x24 px)\n- drawable-hdpi/morphe_notification_icon_custom.png (36x36 px)\n- drawable-xhdpi/morphe_notification_icon_custom.png (48x48 px)\n- drawable-xxhdpi/morphe_notification_icon_custom.png (72x72 px)\n- drawable-xxxhdpi/morphe_notification_icon_custom.png (96x96 px)\n        "
+            },
+            {
+              "key": "appIcon",
+              "title": "App icon",
+              "description": "\n            The app icon to use, including the notification icon.\n\n            'Automatic' uses the custom icon if one is provided, and otherwise 'Black'.\n            Select 'Original' to keep the icon of the unpatched app.\n\n            The icon can be changed later in the app settings, but only for the launcher.\n            Android Auto, the app list of the system settings and the apk file always show\n            the icon chosen here, and a mounted (root) installation can only change it by\n            patching again.\n        "
             }
           ],
           "compatiblePackagesKey": 0
@@ -31220,13 +31254,13 @@
               "description": "The name of the app."
             }
           ],
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Custom font",
           "description": "Adds an option to replace Reddit Sans / Roboto with a custom TTF or OTF font file at runtime.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Custom player overlay opacity",
@@ -31238,7 +31272,7 @@
           "name": "Disable DRC audio",
           "description": "Adds an option to disable DRC (Dynamic Range Compression) audio.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Disable DRC audio",
@@ -31256,7 +31290,7 @@
           "name": "Disable QUIC protocol",
           "description": "Adds an option to disable QUIC (Quick UDP Internet Connections) network protocol.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Disable QUIC protocol",
@@ -31274,7 +31308,7 @@
           "name": "Disable dislike redirection",
           "description": "Adds an option to prevent skipping to the next track when the dislike button is pressed.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Disable double tap actions",
@@ -31304,7 +31338,7 @@
           "name": "Disable modern home",
           "description": "Adds an option to disable the modern home UI. This patch works with Reddit 2026.24.0 and earlier.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Disable player popup panels",
@@ -31328,7 +31362,7 @@
           "name": "Disable screenshot popup",
           "description": "Adds an option to disable the popup that appears when taking a screenshot.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Disable scrolling speed limit",
@@ -31358,7 +31392,7 @@
           "name": "Downloads",
           "description": "Adds support to download songs with an external downloader app using the in-app download button.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Downloads",
@@ -31370,7 +31404,7 @@
           "name": "Enable debugging",
           "description": "Adds options for debugging and exporting Morphe logs to the clipboard.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Enable debugging",
@@ -31382,19 +31416,19 @@
           "name": "Enable exclusive audio playback",
           "description": "Enables the option to play audio without video.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Enable forced miniplayer",
           "description": "Adds an option to enable forced miniplayer when switching between music videos, podcasts, or songs.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Enable swipe to dismiss miniplayer",
           "description": "Adds an option to enable dismissing the miniplayer by swiping down on it.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Exit fullscreen mode",
@@ -31406,7 +31440,7 @@
           "name": "Force original audio",
           "description": "Adds an option to always use the original audio track.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Force original audio",
@@ -31418,7 +31452,7 @@
           "name": "Force system font",
           "description": "Adds an option that renders Reddit with the device system font instead of Reddit Sans / Roboto.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Fullscreen video scale",
@@ -31430,7 +31464,7 @@
           "name": "GmsCore support",
           "description": "Allows the app to work without root by using a different package name when patched using a GmsCore instead of Google Play Services.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "GmsCore support",
@@ -31442,14 +31476,14 @@
           "name": "Hide Ask button",
           "description": "Adds an option to hide Ask button in the search bar.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide Reddit search",
           "description": "Permanently hides the Reddit search in the contextual menu. This patch does not work with root mounting",
           "firstSeen": 1788307200000,
           "default": false,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide Shorts components",
@@ -31473,19 +31507,19 @@
           "name": "Hide Trending shelves",
           "description": "Adds an option to hide the Trending shelves from feed and search suggestions.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide ads",
           "description": "Adds options to hide fullscreen ads, Premium promotions and video ads.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide ads",
           "description": "Adds options to hide ads.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide ads",
@@ -31503,13 +31537,13 @@
           "name": "Hide buttons",
           "description": "Adds options to hide the cast, history, notification, and search buttons.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide communities shelf",
           "description": "Adds an option to hide the related or suggested communities shelf in subreddits.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide end screen cards",
@@ -31527,13 +31561,13 @@
           "name": "Hide filter bar",
           "description": "Adds an option to hide the filter bar at the top of the homepage.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide flyout menu components",
           "description": "Adds options to hide individual items from the player and queue flyout menus.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide info cards",
@@ -31545,7 +31579,7 @@
           "name": "Hide layout components",
           "description": "Adds options to hide general layout components.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide layout components",
@@ -31557,13 +31591,13 @@
           "name": "Hide music action buttons",
           "description": "Adds options to hide action buttons under the player.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Hide navigation buttons",
           "description": "Adds options to hide buttons in the navigation bar.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide player flyout menu components",
@@ -31593,7 +31627,7 @@
           "name": "Hide sidebar components",
           "description": "Adds options to hide the sidebar components.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Hide timestamp",
@@ -31629,7 +31663,7 @@
           "name": "Miniplayer previous and next buttons",
           "description": "Adds options to show previous and next track buttons in the miniplayer.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Mute button",
@@ -31641,7 +31675,7 @@
           "name": "Navigation bar",
           "description": "Adds options to hide navigation bar, labels and buttons.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Navigation bar",
@@ -31654,7 +31688,7 @@
           "description": "Adds settings to route supported network requests through an HTTP or HTTPS proxy. Including this patch may cause connectivity problems on certain devices",
           "firstSeen": 1788307200000,
           "default": false,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Network proxy",
@@ -31679,13 +31713,13 @@
           "name": "Open links directly",
           "description": "Adds an option to skip over redirection URLs in external links.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Open links externally",
           "description": "Adds an option to always open links in your browser instead of with the in-app-browser.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Open links externally",
@@ -31721,7 +31755,7 @@
           "name": "Play albums songs",
           "description": "Adds an option to play the song version of album tracks instead of music videos.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Play all",
@@ -31745,7 +31779,7 @@
           "name": "PoToken provider",
           "description": "Adds option to get PoToken using an external PoToken minter app.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "PoToken provider",
@@ -31769,19 +31803,19 @@
           "name": "Remember repeat state",
           "description": "Adds an option to remember the repeat state when playing a new track or playlist.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Remember shuffle state",
           "description": "Adds an option to remember the shuffle state when playing a new track or playlist.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Remove background playback restrictions",
           "description": "Removes restrictions on background playback, including playing kids videos in the background.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Remove background playback restrictions",
@@ -31793,13 +31827,13 @@
           "name": "Remove subreddit dialog",
           "description": "Adds options to remove the NSFW community warning and notifications suggestion dialogs by dismissing them automatically.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Remove viewer discretion dialog",
           "description": "Adds an option to remove the dialog that appears when opening a video that has been age-restricted by accepting it automatically. This does not bypass the age restriction.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Remove viewer discretion dialog",
@@ -31811,7 +31845,7 @@
           "name": "Return YouTube Dislike",
           "description": "Adds an option to show the dislike count of tracks with Return YouTube Dislike.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Return YouTube Dislike",
@@ -31823,13 +31857,13 @@
           "name": "Sanitize sharing links",
           "description": "Removes the tracking query parameters from shared links.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Sanitize sharing links",
           "description": "Adds an option to sanitize sharing links by removing tracking query parameters.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "Sanitize sharing links",
@@ -31847,7 +31881,7 @@
           "name": "Scrobbling",
           "description": "Adds options to add played tracks to Last.fm and ListenBrainz.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Seekbar",
@@ -31859,7 +31893,7 @@
           "name": "Settings menu filter",
           "description": "Adds an option to hide items on the standard YouTube Music settings screen by their visible name.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Settings menu filter",
@@ -31877,13 +31911,13 @@
           "name": "Show view count",
           "description": "Adds an option to show the view count of Posts.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 2
+          "compatiblePackagesKey": 1
         },
         {
           "name": "SponsorBlock",
           "description": "Adds options to enable and configure SponsorBlock, which can skip non-music segments.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "SponsorBlock",
@@ -31895,7 +31929,7 @@
           "name": "Spoof app version",
           "description": "Adds an option to trick the app into thinking you are running an older version.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Spoof app version",
@@ -31919,7 +31953,7 @@
           "name": "Spoof video streams",
           "description": "Adds options to spoof the client video streams to fix playback.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Spoof video streams",
@@ -31944,7 +31978,7 @@
               "description": "Can be a hex color (#RRGGBB) or a color resource reference. Setting a color of either theme applies both while patching and removes the in-app theme color settings."
             }
           ],
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Theme",
@@ -31968,7 +32002,7 @@
           "name": "Third-party lyrics",
           "description": "Adds an option to show synced lyrics from LRCLIB or KuGou in the lyrics panel.",
           "firstSeen": 1788307200000,
-          "compatiblePackagesKey": 1
+          "compatiblePackagesKey": 2
         },
         {
           "name": "Video quality",
@@ -32026,7 +32060,7 @@
       "name": "mvaishak Letterboxd",
       "repoDescription": " Morphe patches that re-theme Letterboxd for Android — Material You, OLED black, custom accent colour, and layout tweaks",
       "avatarUrl": "https://avatars.githubusercontent.com/u/27264154?v=4&s=128",
-      "stars": 18,
+      "stars": 19,
       "updatedAt": 1789008500000,
       "firstSeen": 1788491531808,
       "appFirstSeen": {
@@ -32089,7 +32123,7 @@
           "compatiblePackagesKey": 92
         }
       ],
-      "hotRank": 21
+      "hotRank": 22
     },
     {
       "source": "github",
@@ -32146,7 +32180,7 @@
           "compatiblePackagesKey": 926
         }
       ],
-      "hotRank": 54
+      "hotRank": 55
     },
     {
       "source": "github",
@@ -32171,7 +32205,7 @@
           "compatiblePackagesKey": 927
         }
       ],
-      "hotRank": 117
+      "hotRank": 118
     },
     {
       "source": "github",
@@ -32180,7 +32214,7 @@
       "repoDescription": "Curated list of universal patches for Morphe, including community-driven patches with enhancements and original patches, focusing on quality over quantity",
       "avatarUrl": "https://raw.githubusercontent.com/Zanuaimi/UniPatches/main/patches-bundle.png",
       "stars": 28,
-      "updatedAt": 1789311011000,
+      "updatedAt": 1789318215000,
       "firstSeen": 1788582465944,
       "appFirstSeen": {
         "__universal__": 1788582458169,
@@ -33547,7 +33581,7 @@
       "repo": "debakarr/morphe-patches",
       "name": "Debakar",
       "repoDescription": "",
-      "avatarUrl": "https://raw.githubusercontent.com/debakarr/morphe-patches/main/patches-bundle.png",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/17507690?v=4&s=128",
       "stars": 4,
       "updatedAt": 1789298656000,
       "firstSeen": 1788714386506,
@@ -33678,15 +33712,15 @@
           "compatiblePackagesKey": 933
         }
       ],
-      "hotRank": 48
+      "hotRank": 49
     },
     {
       "source": "github",
       "repo": "SysAdminDoc/hushfeed",
       "name": "Hushfeed",
-      "repoDescription": "Hushfeed v0.30.0: a Morphe patch bundle with 71 patches for TikTok 46.2.3. Fewer accidental taps, less noise, more control over the feed, inbox, comments and downloads.",
+      "repoDescription": "Hushfeed v0.30.2: 71 patches for TikTok 46.2.3 with safer native hooks, settings recovery, diagnostics and media handling.",
       "avatarUrl": "https://raw.githubusercontent.com/SysAdminDoc/hushfeed/main/patches-bundle.png",
-      "stars": 9,
+      "stars": 23,
       "updatedAt": 1789298631000,
       "firstSeen": 1788756329601,
       "appFirstSeen": {
@@ -34167,7 +34201,7 @@
           "compatiblePackagesKey": 205
         }
       ],
-      "hotRank": 24
+      "hotRank": 23
     },
     {
       "source": "github",
@@ -34306,7 +34340,7 @@
           "compatiblePackagesKey": 937
         }
       ],
-      "hotRank": 78
+      "hotRank": 79
     },
     {
       "source": "github",
@@ -34314,7 +34348,7 @@
       "name": "Zeldris",
       "repoDescription": "Yet another Morphe Patches",
       "avatarUrl": "https://avatars.githubusercontent.com/u/80939130?v=4&s=128",
-      "stars": 4,
+      "stars": 5,
       "updatedAt": 1789125612000,
       "firstSeen": 1788842442448,
       "appFirstSeen": {
@@ -34403,7 +34437,7 @@
           "compatiblePackagesKey": 938
         }
       ],
-      "hotRank": 40
+      "hotRank": 42
     },
     {
       "source": "github",
@@ -34577,7 +34611,7 @@
           "compatiblePackagesKey": 943
         }
       ],
-      "hotRank": 56
+      "hotRank": 63
     },
     {
       "source": "github",
@@ -34585,7 +34619,7 @@
       "name": "Haiagaru",
       "repoDescription": "Haiagaru Morphe patch for ChMate 0.8.10.241-243",
       "avatarUrl": "https://avatars.githubusercontent.com/u/108941410?v=4&s=128",
-      "stars": 11,
+      "stars": 16,
       "updatedAt": 1789304400000,
       "firstSeen": 1789101917522,
       "appFirstSeen": {
@@ -34926,7 +34960,7 @@
           "compatiblePackagesKey": 946
         }
       ],
-      "hotRank": 37
+      "hotRank": 39
     },
     {
       "source": "github",
@@ -34951,7 +34985,7 @@
           "compatiblePackagesKey": 947
         }
       ],
-      "hotRank": 41
+      "hotRank": 43
     },
     {
       "source": "github",
@@ -35173,7 +35207,7 @@
           "compatiblePackagesKey": 479
         }
       ],
-      "hotRank": 39
+      "hotRank": 41
     },
     {
       "source": "github",
@@ -35198,7 +35232,7 @@
           "compatiblePackagesKey": 951
         }
       ],
-      "hotRank": 42
+      "hotRank": 44
     },
     {
       "source": "github",
@@ -35310,28 +35344,6 @@
     ],
     [
       {
-        "packageName": "com.google.android.apps.youtube.music",
-        "targets": [
-          {
-            "version": "9.36.50",
-            "isExperimental": true
-          },
-          {
-            "version": "9.35.54",
-            "isExperimental": true
-          },
-          {
-            "version": "9.34.52",
-            "isExperimental": true
-          },
-          {
-            "version": "9.15.51"
-          }
-        ]
-      }
-    ],
-    [
-      {
         "packageName": "com.reddit.frontpage",
         "targets": [
           {
@@ -35351,6 +35363,28 @@
           },
           {
             "version": "2026.04.0"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "packageName": "com.google.android.apps.youtube.music",
+        "targets": [
+          {
+            "version": "9.36.50",
+            "isExperimental": true
+          },
+          {
+            "version": "9.35.54",
+            "isExperimental": true
+          },
+          {
+            "version": "9.34.52",
+            "isExperimental": true
+          },
+          {
+            "version": "9.15.51"
           }
         ]
       }
@@ -37623,6 +37657,9 @@
           },
           {
             "version": "26.12.1+rc1-2026.07.15"
+          },
+          {
+            "version": "26.16.0+rc2-2026.09.08"
           }
         ]
       }
@@ -42715,23 +42752,6 @@
     ],
     [
       {
-        "packageName": "com.feralinteractive.laracroftgol_android",
-        "targets": [
-          {
-            "version": "1.2.6RC1"
-          },
-          {
-            "version": "1.2.7RC2"
-          },
-          {
-            "version": null,
-            "isExperimental": true
-          }
-        ]
-      }
-    ],
-    [
-      {
         "packageName": "air.com.midjiwan.polytopia",
         "targets": [
           {
@@ -42795,6 +42815,23 @@
         "targets": [
           {
             "version": "1.1.94"
+          },
+          {
+            "version": null,
+            "isExperimental": true
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "packageName": "com.feralinteractive.laracroftgol_android",
+        "targets": [
+          {
+            "version": "1.2.6RC1"
+          },
+          {
+            "version": "1.2.7RC2"
           },
           {
             "version": null,
@@ -46736,7 +46773,7 @@
       "description": "Enjoy your favorite videos and channels with the official YouTube app.",
       "minInstalls": 10000000000,
       "category": "Video Players & Editors",
-      "updatedAt": 1789198938000,
+      "updatedAt": 1789346168000,
       "firstSeen": 1783382401000
     },
     "com.google.android.apps.youtube.music": {
@@ -46745,7 +46782,7 @@
       "description": "The world of music dedicated to you",
       "minInstalls": 5000000000,
       "category": "Music & Audio",
-      "updatedAt": 1789210687000,
+      "updatedAt": 1789346168000,
       "firstSeen": 1783382402000
     },
     "com.google.android.apps.photos": {
@@ -46781,7 +46818,7 @@
       "description": "Fast and smart typing with Emojis, GIFs, and more",
       "minInstalls": 10000000000,
       "category": "Tools",
-      "updatedAt": 1789261885000,
+      "updatedAt": 1789323065000,
       "firstSeen": 1783382406000
     },
     "com.reddit.frontpage": {
@@ -46790,7 +46827,7 @@
       "description": "Discover why people are the best - through real & authentic conversations.",
       "minInstalls": 100000000,
       "category": "Social",
-      "updatedAt": 1789298336000,
+      "updatedAt": 1789346168000,
       "firstSeen": 1783382407000
     },
     "com.twitter.android": {
@@ -46808,7 +46845,7 @@
       "description": "Create & share photos, stories, & reels with friends you love",
       "minInstalls": 5000000000,
       "category": "Social",
-      "updatedAt": 1789305588000,
+      "updatedAt": 1789323555000,
       "firstSeen": 1783382409000
     },
     "com.instagram.barcelona": {
@@ -46889,7 +46926,7 @@
       "description": "Stream and download your favorite movies, TV shows & Originals on Disney+",
       "minInstalls": 500000000,
       "category": "Entertainment",
-      "updatedAt": 1788736775000,
+      "updatedAt": 1789347690000,
       "firstSeen": 1783382418000
     },
     "com.peacocktv.peacockandroid": {
@@ -46916,7 +46953,7 @@
       "description": "Join your friends and discover videos you love, only on TikTok",
       "minInstalls": 1000000000,
       "category": "Social",
-      "updatedAt": 1789261885000,
+      "updatedAt": 1789333234000,
       "firstSeen": 1783382422000
     },
     "com.pandora.android": {
@@ -46932,7 +46969,7 @@
       "name": "Bandcamp",
       "iconUrl": "https://play-lh.googleusercontent.com/GuwW4t4kL9xNB1n154mlaBRQyAeotQvo0Pcx6iVGQqe38JkGQ6JbUM11TjNC7lVxwpJaz9-CVSrEPGFtE8h2ng=s128-rw",
       "description": "Buy music, support artists.",
-      "minInstalls": 1000000,
+      "minInstalls": 5000000,
       "category": "Music & Audio",
       "updatedAt": 1789149530000,
       "firstSeen": 1783382424000
@@ -46948,7 +46985,7 @@
     },
     "com.duolingo": {
       "name": "Duolingo",
-      "iconUrl": "https://play-lh.googleusercontent.com/Q-wEiKezZQEspFNNrWfKjcEgAqdWy_b98_tXTAZaXGgm9y1HZ1zi-JSZXA7Tmur9MjcM0xoIA0BdXEN0Bt54=s128-rw",
+      "iconUrl": "https://play-lh.googleusercontent.com/tw_coGKgk1K_zO-Ypf9zBKV1s-KT3dYN1MIUxIqtnbfmON5x_YmuoAr31gE4oSfJHNtA-aStTd-qe9R8S6NVyA=s128-rw",
       "description": "Lessons to learn Spanish, French, German, English, Online Chess, Math & Music",
       "minInstalls": 500000000,
       "category": "Education",
@@ -47354,7 +47391,7 @@
     "com.dcinside.app.android": {
       "name": "dcinside",
       "iconUrl": "https://play-lh.googleusercontent.com/3wsShIT-BhtperkPcnd0wcEz4M0ajLQn2jokq7oPnrimnazOcDJt3wC9fxt68P-jeiabWPsPkWMnkPgWNqJpoA=s128-rw",
-      "description": "DC Inside, the center of internet trends! Explore 86,000 galleries to connect on a variety of topics and take advantage of convenient features like anonymous posting, notifications, and selfies.",
+      "description": "DC Inside, the center of internet trends! Communicate on various topics in over 100,000 galleries, and try out convenient features such as anonymous posting, notifications, and custom images.",
       "minInstalls": 500000,
       "category": "Social",
       "updatedAt": 1788739200000,
@@ -47912,7 +47949,7 @@
     "com.truecaller": {
       "name": "Truecaller",
       "iconUrl": "https://play-lh.googleusercontent.com/kVMxXC3fV4cyG56MZunYS2-HYaHh3eM3YTWoDbYaN5-G9xIU2k235hHVQmRrm79tzBSzt0cZ6GsBbzGzGbbMwg=s128-rw",
-      "description": "Spam call blocker & caller ID. Block scam & robocalls. Screen unknown callers.",
+      "description": "Block spam, scam & robocalls. Identify unknown callers with reverse phone lookup",
       "minInstalls": 1000000000,
       "category": "Communication",
       "updatedAt": 1784401043000,
@@ -48714,7 +48751,7 @@
       "name": "Timestamp Camera Enterprise",
       "iconUrl": "https://play-lh.googleusercontent.com/jUAGa0QkXyw67DwyyQjX_cuiXVUIQ_QV7uPRdkRrMNI0gKxBH2JAdNiEEwfpqRZk86ZgCZzhOdPqbqKQBZgU=s128-rw",
       "description": "Add date&time watermark to photo&video that can't be forged",
-      "minInstalls": 5000000,
+      "minInstalls": 10000000,
       "category": "Photography",
       "updatedAt": 1787203043000,
       "firstSeen": 1783382631000
@@ -49478,7 +49515,7 @@
     "com.changayaf.inmigreat": {
       "name": "Inmigreat",
       "iconUrl": "https://play-lh.googleusercontent.com/BL49mJTEiwida50COBFsLVFGV_eBLd7J4rWXlYG3LiobDF8YoGLVOhVoTqcrAz7heXIqL5Zcu-wDlrt25JyvTZs=s128-rw",
-      "description": "Your USCIS & EOIR case: status alerts, your own stats, your place in line",
+      "description": "Immigration court (EOIR) and USCIS case tracker: hearings, your judge, alerts",
       "minInstalls": 100000,
       "category": "Tools",
       "updatedAt": 1788844505000,
@@ -49766,7 +49803,7 @@
     "np.com.nepalipatro": {
       "name": "Nepalipatro",
       "iconUrl": "https://play-lh.googleusercontent.com/cZ9_hY4QA2qnDZrHFvcgJgL1su8EDhEUMIMDvQvTkkTJJtQQo5807PoTss6zx7kYks2CCqXax5PWtJF7xV03pg=s128-rw",
-      "description": "A Nepali Calendar - 2083 BS Calendar Update",
+      "description": "A Nepali Calendar (2083 BS): Tithi, Panchang, Rashifal & Date Converter",
       "minInstalls": 10000000,
       "category": "Productivity",
       "updatedAt": 1788570357000,
@@ -50234,7 +50271,7 @@
     "com.ea.game.pvzfree_row": {
       "name": "Plants vs. Zombies FREE",
       "iconUrl": "https://play-lh.googleusercontent.com/FGB00L2-aGHPAiRJPxbC3Th_KEaGvVroVF-tPSf_1Unh9kzzY-al4mp1yJT16I16FuLK6oJ-3H-KrVgTrg3ABFc=s128-rw",
-      "description": "Stem a zombie attack on your yard with the help of powerful plants!",
+      "description": "Includes in-game purchases.",
       "minInstalls": 500000000,
       "category": "Strategy",
       "updatedAt": 1788903653000,
@@ -50846,7 +50883,7 @@
     },
     "com.simyasolutions.ling.universal": {
       "name": "Ling",
-      "iconUrl": "https://play-lh.googleusercontent.com/gSo2NaX1KH9i2tlc9MGxSQKt8P49-VXkygRtz6XWWnsP0-EYMQwJusOwMp5gSDY0Sw6gFB4xU7qlfGooipVuZg=s128-rw",
+      "iconUrl": "https://play-lh.googleusercontent.com/_NI_4bwyV1bxnLOXrwSLV5NHAq8mgbAPjf_AaKEQNlRx0Y65YsLqxc852YU8rO8bDAgdFl8fJKTUlYPip--Esg=s128-rw",
       "description": "70+ languages! Learn Thai, Tagalog, Spanish, Cebuano, Japanese, Vietnamese, etc.",
       "minInstalls": 1000000,
       "category": "Education",
@@ -50881,7 +50918,7 @@
       "firstSeen": 1783382908000
     },
     "com.alibaba.aliexpresshd": {
-      "name": "AliExpress",
+      "name": "AliExpress - Shopping App",
       "iconUrl": "https://play-lh.googleusercontent.com/-26EaFSeFE-GPfgjA98H_ukuK2AEN0ZlMNB9lECGJDxUSG7G20emcnXaHrM5fL2d7mCi3O825iShQvn2J0ZY=s128-rw",
       "description": "Shop global deals, save big with exclusive koupon. Your trusted shopping app.",
       "minInstalls": 500000000,
@@ -51667,7 +51704,7 @@
       "name": "AWS AIF-C01 Exam 2026",
       "iconUrl": "https://play-lh.googleusercontent.com/g4ckJN8y-_QCMdPA679u11jzgwrJbyZjK1BrClzqQwUZAp_JGsg7jal0oZMt3avfnoc-JNuNdDXUULy0euUsBRg=s128-rw",
       "description": "Help you pass Exam AIF-C01: AWS Certified AI Practitioner in 2026 Easier.",
-      "minInstalls": 10,
+      "minInstalls": 50,
       "category": "Education",
       "updatedAt": 1788884842000,
       "firstSeen": 1785374551928
@@ -51802,7 +51839,7 @@
       "name": "AI Audio Novel Reader",
       "iconUrl": "https://play-lh.googleusercontent.com/AZBY6sbiccpNRN8ynH6FOMoBaFHhgnaMwFbkgmsWSfrzWaASKn2kiDzdj6dzYOJBRCVOMZ8JwWr1wxavn61nfeY=s128-rw",
       "description": "AI novel audio: listen to wuxia, xianxia, romance, BL, EPUB & web novels",
-      "minInstalls": 10000,
+      "minInstalls": 50000,
       "category": "Books & Reference",
       "updatedAt": 1789106265000,
       "firstSeen": 1785480547978
@@ -51856,7 +51893,7 @@
     "com.launcher.hype": {
       "name": "Phi Launcher",
       "iconUrl": "https://play-lh.googleusercontent.com/AR3sf_LLFuc66xzP97CLuyCtpZ-lkjG_pkBzFOqPecMOG-APpyVAdWXDOasSI7-v74rZ2DffAdt9XbSpRLDy=s128-rw",
-      "description": "A minimal Android launcher built around speed, flexibility, and clean design.",
+      "description": "A customizable launcher built around speed, flexibility, and clean design.",
       "minInstalls": 50000,
       "category": "Personalization",
       "updatedAt": 1788884842000,
@@ -52091,7 +52128,7 @@
       "name": "MÁVPlusz",
       "iconUrl": "https://play-lh.googleusercontent.com/gFU2tl4AA0dXCUNA9oEKtyzKz27zPnPZD94mVsVayU80Bqg6bTSzQR64Q7F8SzoszeDFZ9DhDKk3VW7yOykbZg=s128-rw",
       "description": "Train and bus tickets, passes, route planning and much more in MÁVPlusz.",
-      "minInstalls": 500000,
+      "minInstalls": 1000000,
       "category": "Travel & Local",
       "updatedAt": 1785875770000,
       "firstSeen": 1785898008247
@@ -52316,7 +52353,7 @@
       "name": "Obd Mary",
       "iconUrl": "https://play-lh.googleusercontent.com/n-hNHOPyi7p85kQ7kMB3fYW8242FSPD39ceA32cLOENG3qb-0spUV-gSe0C55ycxN4OFyqbFPJwCUnyr2Mdl6g=s128-rw",
       "description": "Effectiv OBD2 Car diagnostics. DTC Scanner. Custom Dashboard. ELM Trip Computer.",
-      "minInstalls": 1000000,
+      "minInstalls": 5000000,
       "category": "Auto & Vehicles",
       "updatedAt": 1788884842000,
       "firstSeen": 1786207039650
@@ -52325,7 +52362,7 @@
       "name": "Photon Camera",
       "iconUrl": "https://play-lh.googleusercontent.com/vBtFSSjAhYZjHsEeryKN115tbD9hNvkB9m_9r7VcPUQRvPuRfNWTngzgfpD2xvjXQmPP-JJ23pNqB2M9962PpQ=s128-rw",
       "description": "Pro manual controls with legendary film simulations (Leica, Fuji, Sony styles).",
-      "minInstalls": 500000,
+      "minInstalls": 1000000,
       "category": "Photography",
       "updatedAt": 1788884842000,
       "firstSeen": 1786207039650
@@ -53150,7 +53187,7 @@
     "com.picsart.studio": {
       "name": "PicsArt",
       "iconUrl": "https://play-lh.googleusercontent.com/wXk_X0uT6AeWv5TFfheHP8NrOmtz17BX-2uEZ7H4naTIzuFpSIfohvQTA4pKOCF71TmeUF3DfMAGq1SlK2hH7Qk=s128-rw",
-      "description": "Remove and swap backgrounds in your photos and remove unwanted objects",
+      "description": "Edit photos & videos with AI: filters, effects, retouch and collages",
       "minInstalls": 1000000000,
       "category": "Photography",
       "updatedAt": 1788844505000,
@@ -53819,7 +53856,7 @@
       "name": "Droplert",
       "iconUrl": "https://play-lh.googleusercontent.com/mOkZmzMxyMGhGG2UJZ6q5gQOcRLl-DdhbODIWugu6JIXDkYwyVvrTQkSZYdfTFP9R6Hu7d2p1GJ35umLmuRgcg=s128-rw",
       "description": "Price tracker for any website. Get drop alerts, history charts & target prices.",
-      "minInstalls": 500,
+      "minInstalls": 1000,
       "category": "Shopping",
       "updatedAt": 1788884842000,
       "firstSeen": 1788383305113
@@ -53828,7 +53865,7 @@
       "name": "Fylo — File Manager",
       "iconUrl": "https://play-lh.googleusercontent.com/YajsrMFy6j_W52tZsJ9Ch1S2vYdW2J0ySq3EZkgZwHbV5_DHyNZm74IOiuhB44zeOu-Fr651A8qVAt75Bos7DA=s128-rw",
       "description": "Smart File Manager: Browse, organize, ZIP/RAR, manage PDFs, images & media.",
-      "minInstalls": 100,
+      "minInstalls": 1000,
       "category": "Productivity",
       "updatedAt": 1788884842000,
       "firstSeen": 1788383305113
@@ -53846,7 +53883,7 @@
       "name": "Fricam",
       "iconUrl": "https://play-lh.googleusercontent.com/5ajRsOzqBmcAy0d-Cov6f5Jxh_bfMNhK6-bS8x_VBxwhzYwBhjZuhc7tpR6PNCmtjO7WgLZ-sqr1Xc3_ahECSQ=s128-rw",
       "description": "A fast, native Android client for your self-hosted Frigate NVR.",
-      "minInstalls": 50,
+      "minInstalls": 100,
       "category": "Lifestyle",
       "updatedAt": 1788566400000,
       "firstSeen": 1788434741100
@@ -53984,7 +54021,7 @@
       "description": "Play the first two levels, the unlock the full game via in-app purchase.",
       "minInstalls": 100000,
       "category": "Action",
-      "updatedAt": 1788825600000,
+      "updatedAt": 1789332287000,
       "firstSeen": 1788798582551,
       "isPreRelease": true
     },
@@ -54020,7 +54057,7 @@
       "name": "AFFiNE",
       "iconUrl": "https://play-lh.googleusercontent.com/XeZpj0lZh2NnySO6Hzg0ROrWn6Ci2lSMnXuu4UvMiP2CpNTka0s1Da-aCu3Zc41rHOuQO3O6IUYbDHEYV_B4=s128-rw",
       "description": "AI Notes & Visual Whiteboard",
-      "minInstalls": 10000,
+      "minInstalls": 50000,
       "category": "Productivity",
       "updatedAt": 1788852512000,
       "firstSeen": 1788842442448
