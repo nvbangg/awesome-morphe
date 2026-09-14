@@ -1,95 +1,12 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "patches": [
     {
       "name": "Camera common visibility",
       "description": "Lets the camera app see and use com.sonymobile.cameracommon (camera status provider, gyro calibration) when both are sideloaded: adds the <queries> entry and declares the CAMERA_STATUS_PROVIDER and CAMERA_ADDON permissions.",
       "default": true,
       "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "jp.co.sony.mc.cameraapp",
-          "name": "Sony Camera",
-          "description": "Xperia 1 VI/VII camera app. Download the arm64-v8a nodpi APK from APKMirror: https://www.apkmirror.com/apk/sony-mobile-communications/sony-camera-3/",
-          "apkFileType": "APK",
-          "appIconColor": null,
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.0.2.A.0.8",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 35,
-              "description": null
-            },
-            {
-              "version": "1.0.2.A.0.6",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": 35,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Raw H.264 stream",
-      "description": "Low-latency transport for Live streaming: the encoded H.264 is sent to the PC as a plain TCP stream instead of RTMP (~0.2 s glass-to-glass with Standard stabilization). Receive with gst-launch-1.0 tcpserversrc port=6970 ! h264parse ! avdec_h264 ! ... Video only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "jp.co.sony.mc.cameraapp",
-          "name": "Sony Camera",
-          "description": "Xperia 1 VI/VII camera app. Download the arm64-v8a nodpi APK from APKMirror: https://www.apkmirror.com/apk/sony-mobile-communications/sony-camera-3/",
-          "apkFileType": "APK",
-          "appIconColor": null,
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.0.2.A.0.8",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 35,
-              "description": null
-            },
-            {
-              "version": "1.0.2.A.0.6",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": 35,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Raw stream connect modes",
-      "description": "Adds \"PC via USB\" and \"PC via Wi-Fi\" entries to Live streaming's Connect to list for the raw H.264 transport. USB needs no settings (adb reverse tcp:6970 tcp:6970 on the PC); Wi-Fi takes the PC from the RTMP stream URL field (rtmp://pc-ip).",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch",
-        "BytecodePatch"
-      ],
       "compatiblePackages": [
         {
           "packageName": "jp.co.sony.mc.cameraapp",
@@ -190,9 +107,132 @@
       "options": []
     },
     {
-      "name": "Streaming presets",
-      "description": "Unlocks 1080p60/120 and 4K30/60 in Live streaming (camera-capability filtered) and sets the streaming encoder bitrate and keyframe interval.",
+      "name": "Xperia 1 V camera HAL compatibility",
+      "description": "Makes the Xperia 1 VI camera app work on the Xperia 1 V camera HAL: truncates objectSelectTriggerArea to the 4 ints the 1 V HAL defines and sends conditionDetectMode alongside sceneDetectMode, which the 1 V HAL validates together.",
       "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.mc.cameraapp",
+          "name": "Sony Camera",
+          "description": "Xperia 1 VI/VII camera app. Download the arm64-v8a nodpi APK from APKMirror: https://www.apkmirror.com/apk/sony-mobile-communications/sony-camera-3/",
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.0.2.A.0.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 35,
+              "description": null
+            },
+            {
+              "version": "1.0.2.A.0.6",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 35,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[WIP] Raw H.264 stream",
+      "description": "Low-latency transport for Live streaming: the encoded H.264 is sent to the PC as a plain TCP stream instead of RTMP (~0.2 s glass-to-glass with Standard stabilization). Receive with gst-launch-1.0 tcpserversrc port=6970 ! h264parse ! avdec_h264 ! ... Video only.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.mc.cameraapp",
+          "name": "Sony Camera",
+          "description": "Xperia 1 VI/VII camera app. Download the arm64-v8a nodpi APK from APKMirror: https://www.apkmirror.com/apk/sony-mobile-communications/sony-camera-3/",
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.0.2.A.0.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 35,
+              "description": null
+            },
+            {
+              "version": "1.0.2.A.0.6",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 35,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[WIP] Raw stream connect modes",
+      "description": "Adds \"PC via USB\" and \"PC via Wi-Fi\" entries to Live streaming's Connect to list for the raw H.264 transport. USB needs no settings (adb reverse tcp:6970 tcp:6970 on the PC); Wi-Fi takes the PC from the RTMP stream URL field (rtmp://pc-ip).",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.mc.cameraapp",
+          "name": "Sony Camera",
+          "description": "Xperia 1 VI/VII camera app. Download the arm64-v8a nodpi APK from APKMirror: https://www.apkmirror.com/apk/sony-mobile-communications/sony-camera-3/",
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.0.2.A.0.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 35,
+              "description": null
+            },
+            {
+              "version": "1.0.2.A.0.6",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 35,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[WIP] Streaming presets",
+      "description": "Work in progress, crashes the app on launch (v1.3.0). Unlocks 1080p60/120 and 4K30/60 in Live streaming (camera-capability filtered) and sets the streaming encoder bitrate and keyframe interval.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -247,46 +287,6 @@
           "values": null
         }
       ]
-    },
-    {
-      "name": "Xperia 1 V camera HAL compatibility",
-      "description": "Makes the Xperia 1 VI camera app work on the Xperia 1 V camera HAL: truncates objectSelectTriggerArea to the 4 ints the 1 V HAL defines and sends conditionDetectMode alongside sceneDetectMode, which the 1 V HAL validates together.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "jp.co.sony.mc.cameraapp",
-          "name": "Sony Camera",
-          "description": "Xperia 1 VI/VII camera app. Download the arm64-v8a nodpi APK from APKMirror: https://www.apkmirror.com/apk/sony-mobile-communications/sony-camera-3/",
-          "apkFileType": "APK",
-          "appIconColor": null,
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.0.2.A.0.8",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 35,
-              "description": null
-            },
-            {
-              "version": "1.0.2.A.0.6",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": 35,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
     }
   ]
 }
