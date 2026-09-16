@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.30.0",
+  "version": "1.31.0",
   "patches": [
     {
       "name": "APK Junk Cleaner",
@@ -381,6 +381,49 @@
       "options": []
     },
     {
+      "name": "Client-Side AI & Behavioral Profiling Governor",
+      "description": "Neutralizes on-device machine learning inference, Pitaya behavioral profiling tasks, and on-device ad re-ranking.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.ss.android.ugc.trill",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Clipboard Enhancements",
       "description": "Extends unpinned clipboard history retention duration, raises the maximum number of displayed unpinned clips, and allows customizing keyboard grid columns.",
       "default": true,
@@ -514,7 +557,7 @@
     },
     {
       "name": "Core Asset De-bloat",
-      "description": "Strips embedded Microblink credit card OCR models, C2PA AI content origin verification libraries, and redundant non-Latin fonts to save APK space.",
+      "description": "Strips embedded Microblink/FinTech card scanner models, Pitaya AI & ByteNN LLM engines, C2PA origin verification, DLNA cast scanners, and redundant non-Latin fonts to save APK space.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -575,9 +618,11 @@
     },
     {
       "name": "Device Privacy Guard",
-      "description": "Neutralizes background clipboard snooping routines and blocks screenshot/recording detection listeners to protect user data from unauthorized tracking and popup modals.",
+      "description": "Neutralizes background clipboard snooping routines, local network scanning permissions, and screenshot/recording detection and telemetry listeners to protect user data.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.zhiliaoapp.musically",
@@ -839,7 +884,7 @@
     {
       "name": "Disable Push Notifications",
       "description": "Neutralizes background push notification tasks and persistent socket wake locks to eliminate background battery drain.",
-      "default": false,
+      "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1148,7 +1193,7 @@
     },
     {
       "name": "Feed Bloat & Distraction Blocker",
-      "description": "Removes non-video clutter from the For You and Following feeds, including suggested friend cards, mini-games, CapCut/template creation prompts, memories ('En este día'), surveys, mini-drama paywalls, and Lemon8 promo tasks.",
+      "description": "Removes non-video clutter and floating ad widgets from the For You and Following feeds, including Touchpoint Rewards pendants, floating ad stickers, suggested friend cards, mini-games, CapCut/template creation prompts, memories ('On This Day'), surveys, and mini-drama paywalls.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1367,8 +1412,51 @@
       "options": []
     },
     {
-      "name": "Hide TikTok Shop Anchors",
-      "description": "Removes product showcase badges, shopping cart tags, and TikTok Shop commercial anchors from video posts in the feed.",
+      "name": "Hide TikTok Shop & Mall",
+      "description": "Removes product showcase badges, shopping cart tags, and the TikTok Shop / Mall tab from navigation bars and video posts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.ss.android.ugc.trill",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "In-App Browser Privacy Guard",
+      "description": "Neutralizes inline JavaScript tracking injection, DOM monitoring, and AJAX hooking when opening external links inside the in-app WebView.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1508,7 +1596,7 @@
     {
       "name": "Live Stream 3D Gift Optimizer",
       "description": "Disables Live 3D gift particle effect engine and widget rendering lifecycle to eliminate frame drops during live streams.",
-      "default": true,
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1550,8 +1638,8 @@
     },
     {
       "name": "Live Stream SDK & Minigame De-bloat",
-      "description": "Strips Live link mic SDK (liblink_mic_sdk.so) and live stream interactive minigames to save APK storage.",
-      "default": true,
+      "description": "Strips Live link mic SDK (liblink_mic_sdk.so), Lyrax RTC broadcasting engines (liblyrax.so), and live stream interactive minigames to reduce APK size and memory footprint.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1732,6 +1820,49 @@
       "options": []
     },
     {
+      "name": "P2P Video Relay & Mesh CDN Blocker",
+      "description": "Strips background Peer-to-Peer CDN distribution binaries (libavmdlp2pv2.so and libp2plivevdp.so) to prevent battery drain, background data upload, and mesh relay.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.ss.android.ugc.trill",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "PNG Asset Optimizer",
       "description": "Losslessly recompresses PNG assets with maximum zlib compression and strips non-rendering metadata chunks (pHYs, tEXt, tIME) while preserving 9-patch structures and pixel accuracy.",
       "default": false,
@@ -1742,7 +1873,7 @@
     {
       "name": "Playback Speed Persistence",
       "description": "Persists selected video playback speed across all feed videos and application restarts.",
-      "default": true,
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1885,6 +2016,59 @@
       "options": []
     },
     {
+      "name": "SIM Region Selector",
+      "description": "Spoofs the detected SIM and network country ISO code to bypass regional feed restrictions and catalog blocks.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.ss.android.ugc.trill",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "region",
+          "title": "Spoofed Region ISO Code",
+          "description": "Two-letter ISO country code for SIM and network country spoofing (e.g. 'US', 'JP', 'GB', 'DE').",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "US",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Skip First Run",
       "description": "Skips the welcome screen, search engine selection, and onboarding First Run Experience (FRE) on clean installs.",
       "default": true,
@@ -1929,7 +2113,7 @@
     },
     {
       "name": "Studio & Creation De-bloat",
-      "description": "Strips heavy video creation, CapCut-like video editor SDK (libttvesdk_plugin.so), and AR camera face models to save over 22MB.",
+      "description": "Strips heavy video creation plugins, CapCut NLE editor SDKs, effect plugins, and AR camera face models to significantly reduce APK size.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
