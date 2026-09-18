@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.38.4",
+  "version": "1.41.1",
   "patches": [
     {
       "name": "APK Junk Cleaner",
@@ -1285,6 +1285,59 @@
       "options": []
     },
     {
+      "name": "Display Refresh Rate Governor",
+      "description": "Forces TikTok to run at peak display refresh rate (120Hz/90Hz/60Hz) and neutralizes video playback framerate downclocking routines.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.ss.android.ugc.trill",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "targetRate",
+          "title": "Target Refresh Rate",
+          "description": "Select target display refresh rate: max (display peak rate), 120 (120 Hz), 90 (90 Hz), or 60 (60 Hz). Clamped automatically to display maximum.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "max",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Enable Access Points Menu Redesign",
       "description": "Enables the redesigned access points menu bar and customization panel (Panel V2).",
       "default": true,
@@ -1545,6 +1598,49 @@
             },
             {
               "version": "18.2.4.969776716-lite_beta-armeabi-v7a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Ghost Mode",
+      "description": "Enables anonymous profile and story browsing: suppresses outbound profile view records and story view pings while preserving your ability to see who viewed your profile.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.ss.android.ugc.trill",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "46.9.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1997,7 +2093,7 @@
     },
     {
       "name": "Media Usability & Watermark-Free Downloader",
-      "description": "Unblocks the download button on creator-restricted videos and routes downloads to clean unwatermarked media streams.",
+      "description": "Unblocks the download button on creator-restricted videos and Stories inside the Share panel, and routes downloads to clean unwatermarked media streams.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2675,7 +2771,7 @@
     },
     {
       "name": "Video Quality Governor",
-      "description": "Caps maximum video playback resolution (1080p, 720p, 540p, 480p, 360p) to reduce GPU/MediaCodec load, lower memory retention, and prevent playback buffering.",
+      "description": "Caps video playback and download resolutions (1080p, 720p, 540p, 480p, 360p) independently to conserve battery, GPU/MediaCodec load, and mobile data.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -2717,11 +2813,20 @@
       "options": [
         {
           "key": "maxQuality",
-          "title": "Maximum Video Resolution",
-          "description": "Select maximum resolution ceiling: 1080 (1080p ExtremelyHigh), 720 (720p SuperHigh), 540 (540p H_High), 480 (480p High), or 360 (360p Standard).",
+          "title": "Maximum Playback Resolution",
+          "description": "Select maximum video playback resolution ceiling: 1080 (1080p ExtremelyHigh), 720 (720p SuperHigh), 540 (540p H_High), 480 (480p High), or 360 (360p Standard).",
           "required": false,
           "type": "kotlin.String",
           "default": "480",
+          "values": null
+        },
+        {
+          "key": "maxDownloadQuality",
+          "title": "Maximum Download Resolution",
+          "description": "Select maximum video download resolution ceiling: 1080 (1080p Maximum Quality), 720 (720p SuperHigh), 540 (540p H_High), 480 (480p High), or 360 (360p Standard).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "1080",
           "values": null
         }
       ]
