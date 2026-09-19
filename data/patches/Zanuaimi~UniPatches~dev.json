@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.29.0",
+  "version": "1.30.0-dev.1",
   "patches": [
     {
       "name": "Bypass Emulator Detection",
@@ -76,13 +76,24 @@
       "category": "Control App Ads Enhanced",
       "description": "A merged ad-control patch based on Nai64's No Ads and Ads Free Rewards patches, plus\nliteral-host blocking inspired by Entree and Adobo. Block common ad formats, choose the\nSDKs to target, optionally grant ad rewards without an ad, and redirect matching literal\nad/tracker hosts embedded in the APK.\n\nHost filters are small embedded subsets inspired by uBlock Origin, EasyList, AdGuard,\nOISD, HaGeZi Pro mini, Privacy Essentials, EasyPrivacy, and Peter Lowe's list; they are\nnot downloaded full subscriptions. Each filter is independently toggleable. They only\naffect hosts stored as literal strings by the app; they cannot block dynamically generated\nhosts, encrypted traffic, or requests made entirely inside Google Play services.\n\nCompatibility: when combined with Disable Forced Online Checks, keep that patch's “Exclude\nad SDK and networking code” option enabled; otherwise blocked ad hosts may be treated as\nonline and retried. PairIP Firebase cleanup/removal can disable Firebase-backed reward,\nsign-in, billing, and attribution flows, which this patch cannot restore.\n\nThis patch includes an optional Universal Overlay addon. To use the addon, patch Control App Ads\ntogether with Universal Overlay and select one or more of its three overlay addon modules:\n“Block Ads”, “Ads Free Rewards”, and “Block Ads / Tracking Hosts”. Ad runtime policy is\nenabled automatically when at least one of these Ads runtime modules is enabled in patch\nsettings. The selected modules\nappear under “Ad control hook modules” in Universal Overlay when selected. Host blocking\nstarts according to the Enable Block Ads / Tracking Hosts master setting. Universal Overlay is required for the runtime policy to be\ninstalled; if it is not selected, the normal static ad controls still work but these\nruntime addon modules are not available.\nRuntime changes last for the current app process and affect only methods and literal hosts\nsuccessfully instrumented by this patch. Its policy is attached to the selected overlay's\nown startup bridge, including a manual Activity override; it does not independently choose\nan Application or Activity. Native, dynamically generated, unsupported, or unrecognized\nSDK paths remain unchanged.\n\nCredits: Nai64Patches from Nai64; host-blocking approach inspired by Entree and Adobo.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "Resolve Real Application (internal)"
+      ],
       "compatiblePackages": null,
       "options": [
         {
           "key": "enableNoAds",
           "title": "Enable No Ads",
           "description": "Enable permanent or runtime-controlled blocking for the selected ad formats below.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableUniManagerIntegration",
+          "title": "Enable UniManager integration",
+          "description": "Allow UniManager to provide startup ad-control values when available. If it is absent, the patch-time settings remain active.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -2790,6 +2801,24 @@
             "Universal automatic discovery (default)": "universal",
             "Explicit target Activity, then universal fallback": "explicitActivity"
           }
+        },
+        {
+          "key": "runtimeOverlayEnableUniManagerIntegration",
+          "title": "Quick setup > Enable UniManager integration",
+          "description": "Read optional startup configuration from the separate UniManager companion app. The embedded patch settings remain the fallback when UniManager is absent.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "runtimeOverlayRememberUniManagerRuntimeChanges",
+          "title": "Quick setup > UniManager > Remember runtime changes",
+          "description": "Allow supported runtime controls to become the next-launch defaults when UniManager accepts the update.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
         },
         {
           "key": "runtimeOverlayActivityInstallBanlist",
