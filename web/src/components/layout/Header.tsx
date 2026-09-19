@@ -49,7 +49,7 @@ export function Header() {
             href="https://github.com/nvbangg/awesome-morphe"
             target="_blank"
             title="Awesome Morphe Repository"
-            className="inline-flex items-center justify-center h-9 w-9 md:w-auto md:px-3 rounded-lg font-semibold text-xs gap-1.5 transition-all bg-foreground text-background hover:opacity-90 border-none no-underline shrink-0 select-none"
+            className="inline-flex items-center justify-center h-9 w-9 md:w-auto md:px-3 rounded-lg font-semibold text-xs gap-1.5 transition-all bg-card hover:bg-divider text-foreground border border-divider no-underline shrink-0 select-none active:scale-95"
           >
             <GitHubIcon className="size-4 shrink-0" />
             <span className="hidden md:inline">GitHub</span>
