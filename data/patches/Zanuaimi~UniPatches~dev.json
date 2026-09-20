@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.30.0-dev.1",
+  "version": "1.30.0-dev.2",
   "patches": [
     {
       "name": "Bypass Emulator Detection",
@@ -74,7 +74,7 @@
     {
       "name": "Control App Ads Patch ( Experimental, Enhanced, Has Overlay Addon )",
       "category": "Control App Ads Enhanced",
-      "description": "A merged ad-control patch based on Nai64's No Ads and Ads Free Rewards patches, plus\nliteral-host blocking inspired by Entree and Adobo. Block common ad formats, choose the\nSDKs to target, optionally grant ad rewards without an ad, and redirect matching literal\nad/tracker hosts embedded in the APK.\n\nHost filters are small embedded subsets inspired by uBlock Origin, EasyList, AdGuard,\nOISD, HaGeZi Pro mini, Privacy Essentials, EasyPrivacy, and Peter Lowe's list; they are\nnot downloaded full subscriptions. Each filter is independently toggleable. They only\naffect hosts stored as literal strings by the app; they cannot block dynamically generated\nhosts, encrypted traffic, or requests made entirely inside Google Play services.\n\nCompatibility: when combined with Disable Forced Online Checks, keep that patch's “Exclude\nad SDK and networking code” option enabled; otherwise blocked ad hosts may be treated as\nonline and retried. PairIP Firebase cleanup/removal can disable Firebase-backed reward,\nsign-in, billing, and attribution flows, which this patch cannot restore.\n\nThis patch includes an optional Universal Overlay addon. To use the addon, patch Control App Ads\ntogether with Universal Overlay and select one or more of its three overlay addon modules:\n“Block Ads”, “Ads Free Rewards”, and “Block Ads / Tracking Hosts”. Ad runtime policy is\nenabled automatically when at least one of these Ads runtime modules is enabled in patch\nsettings. The selected modules\nappear under “Ad control hook modules” in Universal Overlay when selected. Host blocking\nstarts according to the Enable Block Ads / Tracking Hosts master setting. Universal Overlay is required for the runtime policy to be\ninstalled; if it is not selected, the normal static ad controls still work but these\nruntime addon modules are not available.\nRuntime changes last for the current app process and affect only methods and literal hosts\nsuccessfully instrumented by this patch. Its policy is attached to the selected overlay's\nown startup bridge, including a manual Activity override; it does not independently choose\nan Application or Activity. Native, dynamically generated, unsupported, or unrecognized\nSDK paths remain unchanged.\n\nCredits: Nai64Patches from Nai64; host-blocking approach inspired by Entree and Adobo.",
+      "description": "A merged ad-control patch based on Nai64's No Ads patch, plus literal-host blocking\ninspired by Entree and Adobo. Block common ad formats, choose the SDKs to target, and\nredirect matching literal ad/tracker hosts embedded in the APK.\n\nHost filters are small embedded subsets inspired by uBlock Origin, EasyList, AdGuard,\nOISD, HaGeZi Pro mini, Privacy Essentials, EasyPrivacy, and Peter Lowe's list; they are\nnot downloaded full subscriptions. Each filter is independently toggleable. They only\naffect hosts stored as literal strings by the app; they cannot block dynamically generated\nhosts, encrypted traffic, or requests made entirely inside Google Play services.\n\nCompatibility: when combined with Disable Forced Online Checks, keep that patch's “Exclude\nad SDK and networking code” option enabled; otherwise blocked ad hosts may be treated as\nonline and retried. PairIP Firebase cleanup/removal can disable Firebase-backed reward,\nsign-in, billing, and attribution flows, which this patch cannot restore.\n\nThis patch includes an optional Universal Overlay addon. To use the addon, patch Control App Ads\ntogether with Universal Overlay and select one or both of its overlay addon modules:\n“Block Ads” and “Block Ads / Tracking Hosts”. Ad runtime policy is\nenabled automatically when at least one of these Ads runtime modules is enabled in patch\nsettings. The selected modules\nappear under “Ad control hook modules” in Universal Overlay when selected. Host blocking\nstarts according to the Enable Block Ads / Tracking Hosts master setting. Universal Overlay is required for the runtime policy to be\ninstalled; if it is not selected, the normal static ad controls still work but these\nruntime addon modules are not available.\nRuntime changes last for the current app process and affect only methods and literal hosts\nsuccessfully instrumented by this patch. Its policy is attached to the selected overlay's\nown startup bridge, including a manual Activity override; it does not independently choose\nan Application or Activity. Native, dynamically generated, unsupported, or unrecognized\nSDK paths remain unchanged.\n\nCredits: Nai64Patches from Nai64; host-blocking approach inspired by Entree and Adobo.",
       "default": false,
       "dependencies": [
         "Resolve Real Application (internal)"
@@ -138,7 +138,7 @@
         {
           "key": "blockRewarded",
           "title": "Ad formats > Block rewarded ads",
-          "description": "Rewarded video. Disable if you use Ads Free Rewards, otherwise progress gates may break. Enable only to fully remove rewarded ads.",
+          "description": "Rewarded video. Enable only if you want to remove rewarded ads entirely; leaving it disabled preserves the game's reward-ad flow.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -148,42 +148,6 @@
           "key": "blockNative",
           "title": "Ad formats > Block native ads",
           "description": "Native ads blended into feeds/lists. Enable for cleaner feeds (may leave empty placeholders).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "enableAdsFreeRewards",
-          "title": "Enable Ads Free Rewards",
-          "description": "Enable permanent or runtime-controlled Ads Free Rewards behavior for the three settings below.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "adsFreeRewardsSkip",
-          "title": "Ads Free Rewards > Skip Rewarded Ads",
-          "description": "Do not show a supported rewarded ad after the user clicks its button. In runtime mode, this becomes the initial value of the overlay control.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "adsFreeRewardsInstant",
-          "title": "Ads Free Rewards > Instant Rewards",
-          "description": "Give the supported reward immediately after the rewarded-ad button is clicked. If Skip Rewarded Ads is disabled, the ad can still be shown while the reward is granted immediately.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "adsFreeRewardsAvailability",
-          "title": "Ads Free Rewards > Fake Ad Availability",
-          "description": "Make supported SDK availability checks report an ad as available so the game can display its rewarded-ad button.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -309,7 +273,7 @@
         {
           "key": "adsSdkInMobi",
           "title": "SDK coverage > InMobi",
-          "description": "Allow detected InMobi interstitial and rewarded entry points to be patched, including automatic reward availability checks.",
+          "description": "Allow detected InMobi interstitial entry points to be patched.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -427,15 +391,6 @@
           "key": "adsRuntimeBlockAdsModule",
           "title": "Overlay integration > Runtime controls > Block Ads",
           "description": "Add one Block Ads settings control to the overlay. Runtime policy is enabled automatically when at least one Ads runtime control is selected. It changes only safely instrumented ad-format methods selected by this patch; it does not force SDK preload or initialization paths.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "adsRuntimeRewardsModule",
-          "title": "Overlay integration > Runtime controls > Ads Free Rewards",
-          "description": "Add one Ads Free Rewards settings control to Universal Overlay. Runtime policy is enabled automatically when at least one Ads runtime control is selected. Its three controls mirror the Ads Free Rewards patch settings initially and affect only safely instrumented reward paths; unsupported reward paths remain unchanged. Supported native MAX paths use request-scoped callbacks.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1723,7 +1678,7 @@
     {
       "name": "UniPatches Universal Overlay Patch v2.6.0 (Experimental)",
       "category": "★ Universal Overlay",
-      "description": "A customizable in-app overlay for Android apps and games. For a quick first build: choose a visual\npreset, select the overlay modules you want, optionally supply an icon image, then patch. Modules\nare excluded and disabled by default. Monitor modules show information, Activity modules control\nthe current Activity, Hook modules make best-effort changes to app behavior, System modules\ncontrol Android capabilities, and Advanced modules provide opt-in diagnostics. Text is the\ndefault legacy icon; an optional image replaces it completely, while the advanced Multi-parts editor\nsupports custom drawn icons, and can be conveniently made in Icon Builder local website in UniPatches repo.\n\nUI presets can save and reuse supported appearance and advanced icon\nsettings. The title, description, repository button text, and repository button URL remain\ncontrolled by the visible Morphe settings. Module selections and module behavior are excluded\nbecause hook and module combinations can be app-specific. \n\nExperimental : This patch may not work on all apps.\n\nCompatibility: this patch owns one shared startup bridge for its runtime and integrated\nmodules. PairIP Bypass preserves that bridge when its Application startup strategies run\nafter Universal Overlay. If a patched APK still has an unusual entry point, use the explicit\nActivity override rather than selecting a library or SDK Activity. Custom App Display and\nControl App Ads attach to this bridge when their runtime addons are enabled; they should not\ncreate a second overlay runtime.\n\nControl App Ads can also add runtime ad-control modules here, but Universal Overlay does not\npatch ad SDKs by itself. To use them, select Control App Ads Patch and Universal Overlay,\nenable the desired options under Control App Ads' Overlay integration > Runtime controls. The\nAds runtime policy is enabled automatically when at least one of those modules is selected.\nThe available modules are Block\nAds, Ads Free Rewards, and Block Ads / Tracking Hosts. Their initial runtime values come from\nthe Control App Ads settings, and later changes are session-only. When both patches are selected,\nControl App Ads attaches its policy to this overlay's exact startup bridge, including an explicit\nActivity override, instead of selecting a separate Activity.\n\nAttribution: The idea and initial works of Universal Overlay Patch are from Zanuaimi / Noobite.",
+      "description": "A customizable in-app overlay for Android apps and games. For a quick first build: choose a visual\npreset, select the overlay modules you want, optionally supply an icon image, then patch. Modules\nare excluded and disabled by default. Monitor modules show information, Activity modules control\nthe current Activity, Hook modules make best-effort changes to app behavior, System modules\ncontrol Android capabilities, and Advanced modules provide opt-in diagnostics. Text is the\ndefault legacy icon; an optional image replaces it completely, while the advanced Multi-parts editor\nsupports custom drawn icons, and can be conveniently made in Icon Builder local website in UniPatches repo.\n\nUI presets can save and reuse supported appearance and advanced icon\nsettings. The title, description, repository button text, and repository button URL remain\ncontrolled by the visible Morphe settings. Module selections and module behavior are excluded\nbecause hook and module combinations can be app-specific. \n\nExperimental : This patch may not work on all apps.\n\nCompatibility: this patch owns one shared startup bridge for its runtime and integrated\nmodules. PairIP Bypass preserves that bridge when its Application startup strategies run\nafter Universal Overlay. If a patched APK still has an unusual entry point, use the explicit\nActivity override rather than selecting a library or SDK Activity. Custom App Display and\nControl App Ads attach to this bridge when their runtime addons are enabled; they should not\ncreate a second overlay runtime.\n\nControl App Ads can also add runtime ad-control modules here, but Universal Overlay does not\npatch ad SDKs by itself. To use them, select Control App Ads Patch and Universal Overlay,\nenable the desired options under Control App Ads' Overlay integration > Runtime controls. The\nAds runtime policy is enabled automatically when at least one of those modules is selected.\nThe available modules are Block Ads and Block Ads / Tracking Hosts. Their initial runtime values come from\nthe Control App Ads settings, and later changes are session-only. When both patches are selected,\nControl App Ads attaches its policy to this overlay's exact startup bridge, including an explicit\nActivity override, instead of selecting a separate Activity.\n\nAttribution: The idea and initial works of Universal Overlay Patch are from Zanuaimi / Noobite.",
       "default": false,
       "dependencies": [
         "Resolve Real Application (internal)"
