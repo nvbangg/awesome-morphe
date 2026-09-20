@@ -69,7 +69,7 @@
 - [PotHelper Guide - YouTube playback with no spoofing required](https://www.reddit.com/r/MorpheApp/comments/1w0o641/pothelper_is_here_youtube_playback_with_no/)
 - [Regarding the Morphe DMCA](https://www.reddit.com/r/MorpheApp/comments/1s3w1er/regarding_the_morphe_dmca/)
 - [How to install and use Shizuku](https://github.com/thedjchi/Shizuku/wiki)
-- [Beginner-friendly Morphe CLI guide](https://gist.github.com/akshay-abraham/01d63dc1911a8879943d781efd04ddfe)
+- [Morphe Workspace - A collection of Android apps that complement Morphe](https://www.reddit.com/r/MorpheApp/comments/1wiowwa/morphe_workspace_a_collection_of_android_apps/)
 
 ## <a id="patch-indexes"></a> 🔍 Patch Indexes
 
