@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "patches": [
     {
       "name": "Account avatar",
@@ -39,9 +39,9 @@
       "options": []
     },
     {
-      "name": "Change package name",
-      "description": "Renames the package to app.morphe.android.apps.photos to allow non-root installation alongside pre-installed Google Photos. Deselect this if Google Photos is not installed as a system app on your device to keep the original package name.",
-      "default": true,
+      "name": "Change to official package name",
+      "description": "Keeps the official package name (com.google.android.apps.photos) instead of renaming to app.morphe.android.apps.photos. Enable this only if Google Photos is uninstalled via ADB or installed as a system app with root. When selecting this, also select 'Disable Play Store updates'.",
+      "default": false,
       "category": "Experimental",
       "dependencies": [],
       "compatiblePackages": [
@@ -70,19 +70,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "packageName",
-          "title": "Package name",
-          "description": "The name of the package to rename the app to.",
-          "required": true,
-          "type": "java.lang.String (Kotlin reflection is not available)",
-          "default": "Default",
-          "values": {
-            "Default": "Default"
-          }
-        }
-      ]
+      "options": []
     },
     {
       "name": "Disable Play Store updates",
@@ -191,10 +179,12 @@
     },
     {
       "name": "Fix memory style font loading",
-      "description": "Redirects Skottie animation font loading to system fonts for mod package compatibility, fixing blank text and cutout crashes in Memories.",
+      "description": "Redirects font loading across Stories and UI to authentic Google Fonts with local caching and CDN downloading, fixing fallback fonts and blank text in Memories.",
       "default": true,
       "category": null,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.photos",
