@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0",
+  "version": "1.7.0-dev.1",
   "patches": [
     {
       "name": "Block Quetta bundled extension installation",
@@ -139,6 +139,78 @@
           "required": true,
           "type": "kotlin.String",
           "default": "Patched",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom NTP wallpaper",
+      "description": "Alpha experimental version-unpinned patch (issue #13): forces Brave NTP background factories (NTPBackgroundImagesBridge.createWallpaper / createBrandedWallpaper) to a custom PNG chosen at patch time. Brave's New tab page settings only toggle \"Show background images\" — this patch supplies the missing custom wallpaper path. Rendering remains in libchrome.so; if a build bypasses these factories the image is ignored. Ambiguous targets fail closed. Default off.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.brave.browser_beta",
+          "name": "Brave Beta",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.brave.browser_nightly",
+          "name": "Brave Nightly",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customWallpaper",
+          "title": "Custom NTP wallpaper",
+          "description": "PNG wallpaper used as the Brave new-tab background. 480-8192 px on each side, maximum 8 MiB.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
           "values": null
         }
       ]
