@@ -1,11 +1,11 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.0",
+  "version": "1.9.0",
   "patches": [
     {
       "name": "AMOLED dark theme",
       "description": "Makes Google Photos dark surfaces true black while keeping light mode untouched.",
-      "default": false,
+      "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
@@ -77,6 +77,40 @@
       "description": "Keeps the official package name (com.google.android.apps.photos) instead of renaming to app.morphe.android.apps.photos. Enable this only if Google Photos is uninstalled via ADB or installed as a system app with root. When selecting this, also select 'Disable Play Store updates'.",
       "default": false,
       "category": "Experimental",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.photos",
+          "name": "Google Photos",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#FC3F3C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.92.0.977185651",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.93.0.982110057",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Custom Morphe branding",
+      "description": "Replaces the Google Photos icon and in-app logos with Morphe branding (violet / teal / indigo / slate pinwheel, hand-drawn style).",
+      "default": false,
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -210,53 +244,6 @@
         }
       ],
       "options": []
-    },
-    {
-      "name": "Enable in-app update checker",
-      "description": "Checks for newer patched Google Photos releases on GitHub and prompts to update.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.photos",
-          "name": "Google Photos",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FC3F3C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "7.92.0.977185651",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "7.93.0.982110057",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "releaseApiUrl",
-          "title": "GitHub Release API URL",
-          "description": "Endpoint to check for the latest patched Google Photos APK release.",
-          "required": true,
-          "type": "java.lang.String (Kotlin reflection is not available)",
-          "default": "https://api.github.com/repos/Akash-Sriram/GooglePhotos-Patched/releases/latest",
-          "values": null
-        }
-      ]
     },
     {
       "name": "Fix memory style font loading",
