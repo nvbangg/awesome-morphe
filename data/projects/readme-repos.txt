@@ -30,3 +30,4 @@ https://github.com/thedjchi/Shizuku
 https://github.com/Xisrr1/Revancify-Xisr
 https://gitlab.com/Paresh-Maheshwari/patch-explorer
 https://github.com/MorpheApp/PotHelper
+https://github.com/drnx64/morphe-track-patches
