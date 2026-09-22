@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.30.0-dev.7",
+  "version": "1.30.0-dev.8",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
@@ -32,7 +32,7 @@
         },
         {
           "key": "adsRuntimeBlockAdsModule",
-          "title": "Quick setup > UniManager > Runtime controls > Block Ads",
+          "title": "Overlay integration > Runtime controls > Block Ads",
           "description": "Add one Block Ads settings control to the overlay and expose its state to UniManager. Runtime policy is enabled automatically when at least one Ads runtime control is selected. It changes only safely instrumented ad-format methods selected by this patch; it does not force SDK preload or initialization paths.",
           "required": false,
           "type": "kotlin.Boolean",
@@ -41,7 +41,7 @@
         },
         {
           "key": "adsRuntimeHostsModule",
-          "title": "Quick setup > UniManager > Runtime controls > Block Ads / Tracking Hosts",
+          "title": "Overlay integration > Runtime controls > Block Ads / Tracking Hosts",
           "description": "Add one host-blocking checkbox to the overlay and expose its state to UniManager. Runtime policy is enabled automatically when at least one Ads runtime control is selected. Its initial state follows Enable Block Ads / Tracking Hosts and controls literal hosts instrumented by this patch; encrypted or dynamically generated requests remain unchanged.",
           "required": false,
           "type": "kotlin.Boolean",
@@ -2787,23 +2787,11 @@
         {
           "key": "runtimeOverlayActivityNameOverride",
           "title": "Advanced > Activity injection > Target Activity name",
-          "description": "Risk: a wrong Activity can prevent the overlay from appearing. Leave blank for automatic discovery. Only use this with Explicit target Activity first; example: com.example.MainActivity.",
+          "description": "Risk: a wrong Activity can prevent the overlay from appearing. Leave blank for automatic discovery. If provided, this Activity is tried after automatic Application discovery and before the launcher fallback; example: com.example.MainActivity.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
           "values": null
-        },
-        {
-          "key": "runtimeOverlayActivityInjectionMode",
-          "title": "Advanced > Activity injection > Strategy",
-          "description": "Risk: manual targeting can miss or break an app's startup. Keep automatic discovery unless you know the target Activity. Explicit mode tries the Activity above, then safely falls back to automatic discovery.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "universal",
-          "values": {
-            "Universal automatic discovery (default)": "universal",
-            "Explicit target Activity, then universal fallback": "explicitActivity"
-          }
         },
         {
           "key": "runtimeOverlayActivityInstallBanlist",
