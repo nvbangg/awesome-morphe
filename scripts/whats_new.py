@@ -22,6 +22,7 @@ WHATS_NEW_MAX_ENTRIES = 14
 DISPLAY_ITEM_LIMIT = 2
 EXISTING_ENTRY_LIMIT = 9
 EXISTING_ITEM_LIMIT = 4
+NEW_APP_THRESHOLD = 10
 DEFAULT_BUNDLE_RANK = 9999
 BASE_WEB_URL = "https://awesome-morphe.vercel.app"
 WHATS_NEW_TAB = "#whats-new"
@@ -382,6 +383,7 @@ def generate_markdown(
 
     if new_apps_map:
         app_lines = []
+        is_compact = len(new_apps_map) > NEW_APP_THRESHOLD
         for package_name in sorted(
             new_apps_map.keys(),
             key=lambda package_name: get_app_sort_key(
@@ -393,8 +395,9 @@ def generate_markdown(
             app_name = format_app_name(package_name, app_metadata)
             app_url = make_url(app=package_name)
             app_lines.append(f"+ 📱 (✨New) [{app_name}]({app_url})")
-            patch_list = list(new_apps_map[package_name].values())
-            app_lines.extend(render_patches(package_name, patch_list))
+            if not is_compact:
+                patch_list = list(new_apps_map[package_name].values())
+                app_lines.extend(render_patches(package_name, patch_list))
         markdown_sections.append("\n".join(app_lines))
 
     if existing_apps_new_patches_map:
