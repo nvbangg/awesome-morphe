@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.2.0-dev.4",
+  "version": "3.2.0",
   "patches": [
     {
       "name": "[Ad] Block ad telemetry",
@@ -32,7 +32,7 @@
     },
     {
       "name": "[Ad] Block background ad prefetch",
-      "description": "Stops Facebook downloading ads, ad images and the on-device ad-ranking model in the background. Saves mobile data, battery and storage whether or not you also hide the ads themselves.",
+      "description": "Stops Facebook downloading ads and its ad model in the background, which saves data, battery and storage.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -60,7 +60,7 @@
     },
     {
       "name": "[Ad] Disable Audience Network",
-      "description": "Stops the Facebook app acting as the ad server for other apps on your device. This is the one patch that changes how other apps behave rather than how Facebook behaves: apps that show Facebook ads fall back to their own ad sources or show nothing, and an app that makes you watch an ad for a reward may not be able to give you one.",
+      "description": "Stops Facebook serving ads to other apps. Those apps then show their own ads or none, and rewarded ads can fail.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -88,7 +88,7 @@
     },
     {
       "name": "[Ad] Hide ad views",
-      "description": "Hides the LINE display ad views. These are the LINE Ads SDK containers in the whole app, the chat-list Smart Channel banner, and the Google AdManager ads.",
+      "description": "Hides LINE display ads: the LINE Ads banners, the Smart Channel banner in the chat list and Google AdManager ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -115,6 +115,32 @@
     {
       "name": "[Ad] Remove banner ads",
       "description": "LINE no longer loads the Smart Channel banner ads. This patch makes the getBanners and getPrefetchableBanners responses null.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[Chat] Hide AI Friends button",
+      "description": "Removes the AI Friends button from the Chats tab header. The Album button shows in its place.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -218,7 +244,7 @@
     },
     {
       "name": "[Chat] Hide attach menu extra tools",
-      "description": "Removes all the server-provided extra tools from the + attach menu in a chat room (Poll, Reservation, Schedule, Ladder shuffle, and more). The built-in tiles (camera, gallery, files, and contact) do not change.",
+      "description": "Removes the server-provided tools (Poll, Schedule and more) from the + menu in a chat. Built-in tiles stay.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -244,7 +270,7 @@
     },
     {
       "name": "[Chat] Hide calendar buttons",
-      "description": "Removes every LINE Calendar surface inside the messenger. One is in the Chats-tab header. Four are in a chat room: the top toolbar, the + attach menu, the slide-out chat menu, and the message long-press menu. The last is the Calendar block in the Friends sub-tab of the Home tab.",
+      "description": "Removes every LINE Calendar button: in the Chats tab, the chat toolbar and menus, and the Home tab.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -295,8 +321,34 @@
       "options": []
     },
     {
+      "name": "[Chat] Hide tips under messages",
+      "description": "Hides the \"CHECK\" tips under some messages, such as a received video.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "[Chat] Keep chats unread",
-      "description": "When you open a 1:1 or group chat, LINE does not mark it read and sends no read receipt. If you use \"Mark as read\" or \"Mark all as read\", LINE marks the chat read and sends the receipt.",
+      "description": "When you open a chat, LINE does not mark it read or send a read receipt. \"Mark as read\" still works.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -322,7 +374,7 @@
     },
     {
       "name": "[Chat] Keep unsent messages",
-      "description": "Keeps unsent messages from 1:1 and group chats on your device instead of erasing them. This patch shows the usual \"unsent a message\" notice directly below the message that it kept. This patch does not apply to OpenChat.",
+      "description": "Keeps messages that others unsend in 1:1 and group chats, with a notice below each one. OpenChat is not covered.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -348,7 +400,7 @@
     },
     {
       "name": "[Feed] Hide sponsored posts",
-      "description": "Removes sponsored posts from the news feed. The ad is dropped before it reaches the feed list, so it leaves no gap and its impression is never logged. Covers both server-delivered ads and the ones the app ranks and inserts locally.",
+      "description": "Removes sponsored posts from the news feed, with no gap left behind.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -376,7 +428,7 @@
     },
     {
       "name": "[Feed] Hide suggested and promoted posts",
-      "description": "Removes feed units Facebook injects rather than units your friends and pages posted: \"Pages you may like\" and its variants, the in-feed upsell nags and surveys, and the ad-experiment slots. Paid ads are a separate patch.",
+      "description": "Removes posts that Facebook adds to the feed, such as \"Pages you may like\", upsells and surveys.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -404,7 +456,7 @@
     },
     {
       "name": "[Fix] Restore chat backup sign-in via MicroG-RE",
-      "description": "Sends the Google account picker and the Drive token of chat-history backup through MicroG-RE. Backup and restore then work on a re-signed build. It does not change how you sign in to a Google account. A Root Mount install does not need this patch.",
+      "description": "Makes Google Drive chat backup and restore work on a re-signed build, through MicroG-RE. Root Mount does not need it.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -432,7 +484,7 @@
     },
     {
       "name": "[Fix] Restore location maps via MicroG-RE",
-      "description": "Shows a map again on the location screens of a re-signed build. This covers the location picker, the location messages in a chat, and the location posts. The tiles come from OpenFreeMap and do not look like Google Maps. This patch needs MicroG-RE 7.0.0 or later. A Root Mount install does not need this patch.",
+      "description": "Shows maps again on a re-signed build, with OpenFreeMap tiles. It needs MicroG-RE 7.0.0 or later. Root Mount does not need it.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -485,8 +537,36 @@
       "options": []
     },
     {
+      "name": "[Fix] Restore screens on re-signed builds",
+      "description": "Makes profiles and some Settings pages open again on a re-signed build. A Root Mount install does not need this patch.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.facebook.katana",
+          "name": "Facebook",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0864FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "577.0.0.50.72",
+              "versionCodes": {
+                "ARM64_V8A": 474426275
+              },
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "[General] AMOLED black theme",
-      "description": "Makes the dark mode of Facebook black instead of dark grey, which saves power on an OLED screen. Turn on dark mode in Facebook first. Dividers, borders, text, icons and the coloured banners do not change.",
+      "description": "Makes Facebook's dark mode black instead of dark grey. Turn on dark mode in Facebook first.",
       "default": false,
       "dependencies": [
         "ResourcePatch"
@@ -541,6 +621,32 @@
       "options": []
     },
     {
+      "name": "[General] Hide Agent i buttons",
+      "description": "Removes the Agent i button from the Home header and from the search bar.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "[General] Hide new item badges",
       "description": "Hides the green dots and N badges that mark new items, on header buttons, tabs, menus, lists and settings rows. Unread message counts do not change.",
       "default": true,
@@ -568,7 +674,7 @@
     },
     {
       "name": "[General] Open links in external browser",
-      "description": "A web link that you tap opens in your default browser, and not in the in-app browser of Facebook. The pages of Facebook still open in the app. Thus login and checkout still work.",
+      "description": "Opens web links in your default browser instead of Facebook's in-app browser. Facebook pages still open in the app.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -596,7 +702,7 @@
     },
     {
       "name": "[General] Open links in external browser",
-      "description": "When you tap a web link (http or https), it opens in your default browser instead of LINE's in-app browser. LIFF mini-apps and LINE deep links do not change.",
+      "description": "Opens web links in your default browser instead of LINE's in-app browser. LIFF mini-apps and LINE links stay in LINE.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -622,7 +728,7 @@
     },
     {
       "name": "[General] Redirect LINE Pay",
-      "description": "Opens LINE Pay flows in the standalone LINE Pay app instead of inside LINE. The device-integrity check that fails on a re-signed build never runs. Messaging does not change.",
+      "description": "Opens LINE Pay in the standalone LINE Pay app, so the integrity check that fails on a re-signed build never runs.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -648,7 +754,7 @@
     },
     {
       "name": "[Home] Hide Home content feed",
-      "description": "Removes the content feed below the friends list on the Home tab. The feed shows LINE NEWS posts, official account posts, live cards, content units, and ranking units. The friends list, the service icons, and the other Home modules do not change.",
+      "description": "Removes the content feed below the friends list on the Home tab: LINE NEWS, official account posts and rankings.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -674,7 +780,7 @@
     },
     {
       "name": "[Home] Hide Home modules",
-      "description": "Hides clutter modules on the Home tab: the recommended stickers and content section, the real-time hot-topics (即時夯話題) block, and the ad modules. A separate patch hides the content feed below the friends list.",
+      "description": "Hides the recommended content, hot-topics and ad modules on the Home tab.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -700,7 +806,7 @@
     },
     {
       "name": "[Premium] Disable LINE Premium",
-      "description": "Hides all LINE Yahoo Premium (LYP) surfaces: the upsells, the badges, the Premium settings page, and the subscribe and manage flows. Premium chat backup changes to the ordinary chat-history backup. This patch unlocks nothing, because the server enforces premium.",
+      "description": "Hides all LINE Premium upsells, badges and pages. It unlocks nothing, because the server enforces Premium.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -726,7 +832,7 @@
     },
     {
       "name": "[Premium] Hide premium unsend upsells",
-      "description": "Removes the LYP premium-unsend upsells that stay after \"Disable LINE Premium\". These are the \"Unsend discreetly\" button, the post-unsend promo link, and the expired-window unsend upsell. Ordinary unsend still works.",
+      "description": "Removes the Premium unsend upsells that \"Disable LINE Premium\" leaves. Ordinary unsend still works.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -752,7 +858,7 @@
     },
     {
       "name": "[Reels] Download any reel",
-      "description": "Adds a Download button beside every reel, and not only the reels that you posted. It saves the video the player is streaming, at the best quality the player holds, to Movies/Facebook.",
+      "description": "Adds a Download button beside every reel. Videos save at the best quality the player streams.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -780,7 +886,7 @@
     },
     {
       "name": "[Reels] Hide sponsored reels",
-      "description": "Removes ads from Reels and Watch, so scrolling only shows videos from creators. Also removes the sponsored product banners over a reel and the ads inside a video, such as mid-rolls.",
+      "description": "Removes ads from Reels and Watch, including product banners over a reel and ads inside a video.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -808,7 +914,7 @@
     },
     {
       "name": "[Stories] Download any story",
-      "description": "Adds a save option to the menu of any story, and not only to the stories that you posted. It saves the picture or the video that the story shows, including a story with music, which Facebook's own save refuses. A video is saved at the best quality the player can stream. Files go to Pictures/Facebook or Movies/Facebook.",
+      "description": "Adds Save to the menu of any story, including stories with music. Videos save at the best quality the player streams.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
