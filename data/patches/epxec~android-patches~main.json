@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "patches": [
     {
       "name": "Enable Premium",
@@ -268,6 +268,39 @@
       "options": []
     },
     {
+      "name": "Enable Saver Pack",
+      "description": "Enables side trail and no ads",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.techyonic.textbasedrpg",
+          "name": "An Elmwood Trail",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF1234",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.1.6",
+              "versionCodes": {
+                "ARM64_V8A": 1728,
+                "ARMEABI_V7A": 1728,
+                "X86_64": 1728,
+                "X86": 1728
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable VIP",
       "description": "Enables the VIP features of the app.",
       "default": true,
@@ -398,28 +431,6 @@
         }
       ],
       "options": []
-    },
-    {
-      "name": "Spoof App Signature",
-      "description": "(Copied from BlazeFTL) Makes the app think its signing certificate is unchanged after Morphe re-signs it, useful when an app crashes or shows a tamper warning because it checks its own certificate. Does not bypass Play Integrity / SafetyNet hardware attestation. Apply with Original app certificate patch.",
-      "default": false,
-      "dependencies": [
-        "ResourcePatch",
-        "RawResourcePatch",
-        "ResourcePatch"
-      ],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "packageName",
-          "title": "Package name override (optional)",
-          "description": "Leave blank — read automatically from the app. Only set this if you changed the app's package name and the patch is using the wrong one.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": null,
-          "values": null
-        }
-      ]
     }
   ]
 }
