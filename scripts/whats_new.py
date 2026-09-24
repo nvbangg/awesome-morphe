@@ -19,8 +19,9 @@ from utils import (
 )
 
 WHATS_NEW_MAX_ENTRIES = 14
-DISPLAY_ITEM_LIMIT = 3
-EXISTING_APP_PATCH_LIMIT = 6
+DISPLAY_ITEM_LIMIT = 2
+EXISTING_ENTRY_LIMIT = 9
+EXISTING_ITEM_LIMIT = 4
 DEFAULT_BUNDLE_RANK = 9999
 BASE_WEB_URL = "https://awesome-morphe.vercel.app"
 WHATS_NEW_TAB = "#whats-new"
@@ -398,7 +399,7 @@ def generate_markdown(
 
     if existing_apps_new_patches_map:
         app_lines = []
-        for package_name in sorted(
+        sorted_packages = sorted(
             existing_apps_new_patches_map.keys(),
             key=lambda package_name: get_app_sort_key(
                 package_name,
@@ -407,7 +408,15 @@ def generate_markdown(
                     package_name, len(existing_apps_new_patches_map[package_name])
                 ),
             ),
-        ):
+        )
+        total_apps = len(sorted_packages)
+        display_count = (
+            total_apps
+            if total_apps <= EXISTING_ENTRY_LIMIT + 1
+            else EXISTING_ENTRY_LIMIT
+        )
+
+        for package_name in sorted_packages[:display_count]:
             app_name = format_app_name(package_name, app_metadata)
             app_lines.append(f"- 📱 {app_name}")
             patch_list = list(existing_apps_new_patches_map[package_name].values())
@@ -415,17 +424,30 @@ def generate_markdown(
                 render_patches(
                     package_name,
                     patch_list,
-                    limit=EXISTING_APP_PATCH_LIMIT,
+                    limit=EXISTING_ITEM_LIMIT,
                 )
             )
+
+        if total_apps > display_count:
+            remaining_count = total_apps - display_count
+            app_lines.append(f"- _...and {remaining_count} more apps_")
+
         markdown_sections.append("\n".join(app_lines))
 
     if bundle_added_apps_map:
         bundle_addition_lines = []
-        for repo in sorted(
+        sorted_repos = sorted(
             bundle_added_apps_map.keys(),
             key=lambda item_repo: bundle_order.get(item_repo, DEFAULT_BUNDLE_RANK),
-        ):
+        )
+        total_bundles = len(sorted_repos)
+        display_count = (
+            total_bundles
+            if total_bundles <= EXISTING_ENTRY_LIMIT + 1
+            else EXISTING_ENTRY_LIMIT
+        )
+
+        for repo in sorted_repos[:display_count]:
             package_names = sorted(
                 bundle_added_apps_map[repo],
                 key=lambda package_name: get_app_sort_key(
@@ -458,8 +480,18 @@ def generate_markdown(
             current_bundle_lines = [
                 f"- 📦 [{display_name}]({bundle_url}){owner_suffix}"
             ]
-            current_bundle_lines.extend(render_apps(package_names, app_metadata))
+            current_bundle_lines.extend(
+                render_apps(
+                    package_names,
+                    app_metadata,
+                    limit=EXISTING_ITEM_LIMIT,
+                )
+            )
             bundle_addition_lines.append("\n".join(current_bundle_lines))
+
+        if total_bundles > display_count:
+            remaining_count = total_bundles - display_count
+            bundle_addition_lines.append(f"- _...and {remaining_count} more bundles_")
 
         if bundle_addition_lines:
             markdown_sections.append("\n\n".join(bundle_addition_lines))
