@@ -1,5 +1,5 @@
 {
-  "version": "0.8.0-dev.11",
+  "version": "0.8.0-dev.12",
   "appNames": {
     "com.zhiliaoapp.musically": "TikTok"
   },
@@ -116,9 +116,10 @@
     },
     {
       "name": "Diagnostic tools",
-      "description": "Adds optional Morphe diagnostic logging, filtered reports, and local TikTok crash capture.",
+      "description": "Adds diagnostic logging, crash capture, reports, and an optional rolling feed debugger.",
       "use": false,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
       ],
@@ -396,6 +397,7 @@
       "description": "Hides feed ads, TikTok Shop items, livestreams, stories, photo posts, and videos outside configured view or like ranges.",
       "use": true,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": {
@@ -530,10 +532,68 @@
       "options": []
     },
     {
+      "name": "Hide AI content",
+      "description": "Hides posts marked as AI-generated or AI-modified by TikTok or their creators. Unmarked AI content may still appear.",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide CAPTCHA popups",
       "description": "Adds a default-off setting to hide browsing and LIVE puzzle dialogs while preserving login and account verification.",
       "use": true,
       "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "46.2.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "targets": [
+            {
+              "version": "46.2.3",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide FYP unpersonalized slop videos",
+      "description": "Hides certain batches of unpersonalized slop posts that appear in your For You feed.",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": {
