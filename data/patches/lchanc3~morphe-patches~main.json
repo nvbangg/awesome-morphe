@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "patches": [
     {
       "name": "Disable Play license check",
@@ -331,6 +331,49 @@
       "options": []
     },
     {
+      "name": "Play GIFs",
+      "description": "Plays animated GIFs and WebPs in articles, which the app shows as their first frame. Needs Android 9 or later; the full size viewer still shows the first frame.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.joshua.jptt",
+          "name": "JPTT",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FCFCFC",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.8.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.8.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Preload article images",
       "description": "Downloads an article's images as soon as you open it instead of when you scroll to each one. Respects the app's own image loading settings.",
       "default": true,
@@ -394,10 +437,12 @@
     },
     {
       "name": "Reconnect on return",
-      "description": "Reconnects the moment you come back to the app, instead of leaving you on a countdown that grows to eight seconds and does not even run while the app is in the background.",
+      "description": "Reconnects the moment you come back to the app, instead of leaving you on a countdown that grows to eight seconds. While an article is open it waits until you leave it or do something that needs PTT, so opening links does not log you in again every time.",
       "default": true,
       "category": null,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.joshua.jptt",
@@ -477,6 +522,49 @@
     {
       "name": "Search history actions",
       "description": "Long press a recent search keyword in the article search dialog to delete it, clear the history, or add a home screen shortcut that opens the board with that search. Shortcuts made from the 最近搜尋 tab open the search too.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.joshua.jptt",
+          "name": "JPTT",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FCFCFC",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.8.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.8.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop on login ban",
+      "description": "Shows PTT's message and stops when it temporarily bans the account from logging in, instead of sitting at 連線中 until the app is closed.",
       "default": true,
       "category": null,
       "dependencies": [
