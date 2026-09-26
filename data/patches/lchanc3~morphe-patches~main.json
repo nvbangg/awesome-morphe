@@ -1,7 +1,37 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.9",
+  "version": "1.3.0",
   "patches": [
+    {
+      "name": "Batch upscale",
+      "description": "Lets the image upscale screen take several pictures at once. Picking one works as before; picking more opens a screen that upscales them one after another with the upscaler and scale chosen there, where each result can be zoomed, compared with its original, and saved on its own or all together.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "io.github.xororz.localdream",
+          "name": "Local Dream",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1B1B1F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.0.0-alpha.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Disable Play license check",
       "description": "Disables the Play Store license check, which a patched app always fails and which closes the app on launch. Needed by every patched build.",
@@ -174,7 +204,7 @@
     },
     {
       "name": "Increase image cache size",
-      "description": "Raises the image cache limit so images you have already seen are not downloaded again when you scroll back.",
+      "description": "Keeps the images of the article you are reading in memory, so they are not read again when you scroll back, and gives the memory back once the app has been in the background for a while. A disk cache behind it covers coming back after that.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -215,12 +245,30 @@
       ],
       "options": [
         {
+          "key": "memoryCacheSizeMb",
+          "title": "Image memory cache size (MB)",
+          "description": "Starting value for the memory the image cache may use while the app is open. 0 turns it off. Changeable in the app afterwards, under Settings > Morphe.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 256,
+          "values": null
+        },
+        {
+          "key": "releaseAfterMinutes",
+          "title": "Release memory cache after (minutes)",
+          "description": "Starting value for how long the app may sit in the background before the image memory cache is emptied. Changeable in the app afterwards, under Settings > Morphe.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 5,
+          "values": null
+        },
+        {
           "key": "cacheSizeMb",
-          "title": "Image cache size (MB)",
+          "title": "Image disk cache size (MB)",
           "description": "Starting value for the maximum disk space the image cache may use. Changeable in the app afterwards, under Settings > Morphe.",
           "required": false,
           "type": "kotlin.Int",
-          "default": 512,
+          "default": 64,
           "values": null
         }
       ]
