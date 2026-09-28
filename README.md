@@ -81,77 +81,27 @@
 
   Alternative: [Patch Explorer](https://paresh-maheshwari.github.io/patch-explorer/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/Paresh-Maheshwari/patch-explorer)
   </details>
-
+- [Morphe Patch Tracker](https://drnx64.github.io/morphe-track-patches/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/morphe-track-patches) 
 - [Revanced External Bundles](https://revanced-external-bundles.brosssh.com/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/brosssh/revanced-external-bundles)
 <!-- - [Community Patch Space Explorer](https://dmh84.github.io/morphe-space-explorer/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/dmh84/morphe-space-explorer) -->
 - [Patch Atlas](https://patch-atlas.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/shakir2117/Patch-Atlas)
 - [Morphe Archive](https://rushiforai.github.io/morphe-archive/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/rushiforai/morphe-archive)
 - [ReVanced Patch Bundles](https://github.com/Jman-Github/ReVanced-Patch-Bundles)
-- Currently unavailable:
-  - [Morphe Patch Tracker](https://morphe-patches-drnx64.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/morphe-track-patches) 
 
 ## <a id="projects"></a> 🛠️ Other Projects
 
-<a href="https://github.com/rushiranpise/helper-for-morphe">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=rushiranpise&repo=helper-for-morphe&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=rushiranpise&repo=helper-for-morphe&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/Paresh-Maheshwari/morphe-ai">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=Paresh-Maheshwari&repo=morphe-ai&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=Paresh-Maheshwari&repo=morphe-ai&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/nvbangg/builder-for-morphe">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=nvbangg&repo=builder-for-morphe&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=nvbangg&repo=builder-for-morphe&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/hoo-dles/jadx-morphe">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=hoo-dles&repo=jadx-morphe&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=hoo-dles&repo=jadx-morphe&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/brosssh/morphe-mcp">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=brosssh&repo=morphe-mcp&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=brosssh&repo=morphe-mcp&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/jpa102/morphe_feature_flags">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=jpa102&repo=morphe_feature_flags&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=jpa102&repo=morphe_feature_flags&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/Jman-Github/Universal-ReVanced-Manager">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=Jman-Github&repo=Universal-ReVanced-Manager&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=Jman-Github&repo=Universal-ReVanced-Manager&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/Jman-Github/Awesome-ReVanced">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=Jman-Github&repo=Awesome-ReVanced&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=Jman-Github&repo=Awesome-ReVanced&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/Xisrr1/Revancify-Xisr">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=Xisrr1&repo=Revancify-Xisr&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=Xisrr1&repo=Revancify-Xisr&border_radius=20&show_owner=true" />
-  </picture>
-</a>
-<a href="https://github.com/Graywizard888/Enhancify">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github-stats-extended.vercel.app/api/pin/?username=Graywizard888&repo=Enhancify&border_radius=20&theme=dracula&show_owner=true" />
-    <img src="https://github-stats-extended.vercel.app/api/pin/?username=Graywizard888&repo=Enhancify&border_radius=20&show_owner=true" />
-  </picture>
-</a>
+[![helper-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=rushiranpise&repo=helper-for-morphe&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/rushiranpise/helper-for-morphe)
+[![morphe-ai](https://github-stats-extended.vercel.app/api/pin?username=Paresh-Maheshwari&repo=morphe-ai&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Paresh-Maheshwari/morphe-ai)
+[![builder-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=nvbangg&repo=builder-for-morphe&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/nvbangg/builder-for-morphe)
+[![jadx-morphe](https://github-stats-extended.vercel.app/api/pin?username=hoo-dles&repo=jadx-morphe&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/hoo-dles/jadx-morphe)
+[![morphe-bytecode](https://github-stats-extended.vercel.app/api/pin?username=crimera&repo=morphe-bytecode&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/crimera/morphe-bytecode)
+[![morphe-mcp](https://github-stats-extended.vercel.app/api/pin?username=brosssh&repo=morphe-mcp&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/brosssh/morphe-mcp)
+[![morphe_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=morphe_feature_flags&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/morphe_feature_flags)
+[![morphe-fetch](https://github-stats-extended.vercel.app/api/pin?username=Akash-Sriram&repo=morphe-fetch&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Akash-Sriram/morphe-fetch)
+[![Universal-ReVanced-Manager](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Universal-ReVanced-Manager&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Universal-ReVanced-Manager)
+[![Awesome-ReVanced](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Awesome-ReVanced&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Awesome-ReVanced)
+[![Revancify-Xisr](https://github-stats-extended.vercel.app/api/pin?username=Xisrr1&repo=Revancify-Xisr&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Xisrr1/Revancify-Xisr)
+[![Enhancify](https://github-stats-extended.vercel.app/api/pin?username=Graywizard888&repo=Enhancify&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Graywizard888/Enhancify)
 
 ## ⬇️ Pre-patched sources
 
@@ -166,8 +116,9 @@
 
 <div align="center"><i>
 
-Maintained with ❤️ by **[@nvbangg](https://github.com/nvbangg)**  
-⭐ Star [this repository](https://github.com/nvbangg/awesome-morphe) if you find it useful!
+Maintained with ❤️ by **[@nvbangg](https://github.com/nvbangg)**
+
+<a href="https://github.com/nvbangg/awesome-morphe"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=1500&pause=1000&color=FF4F81&center=true&vCenter=true&width=490&lines=%E2%AD%90+Star+this+repo+if+you+find+it+useful!" alt="Typing SVG" /></a>
 
 </i></div>
 

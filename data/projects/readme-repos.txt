@@ -31,3 +31,5 @@ https://github.com/Xisrr1/Revancify-Xisr
 https://gitlab.com/Paresh-Maheshwari/patch-explorer
 https://github.com/MorpheApp/PotHelper
 https://github.com/drnx64/morphe-track-patches
+https://github.com/crimera/morphe-bytecode
+https://github.com/Akash-Sriram/morphe-fetch
