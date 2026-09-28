@@ -1,7 +1,33 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.0-dev.5",
+  "version": "1.4.1-dev.3",
   "patches": [
+    {
+      "name": "Block Ad Server",
+      "description": "Stops Nepali Patro's interstitial ads. Two edits to libapp.so: the ad-only host ads-delivery.nepalipatro.com.np is rewritten to an unresolvable .xx domain of the same length, and AdsBloc::featureInterstitialAdWithHtmlPopup - the single callee behind all 24 interstitial call sites - is forced down its existing 'popup blocked' return, so the full-screen ad page and its countdown never open. The host rewrite alone is not enough: the ad URLs are also cached in SharedPreferences under PREF_SLIDER_DATA, and whether to show the page at all comes from remote config, which the app rewrites on every launch. Pairs with Remove Ads, which stops the ad content itself and the AdMob interstitials.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "np.com.nepalipatro",
+          "name": "Nepalipatro",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#E53935",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Enable Online Pro",
       "description": "Experimental companion patch that keeps byAir's online Pro gates open without forcing the crash-prone global entitlement refresh path.",
@@ -58,7 +84,7 @@
     },
     {
       "name": "Remove Ads",
-      "description": "Disables all ad serving in Hamro Patro by no-oping the native ad-placement resolver (HamroAdsPlacements). Every banner, native, interstitial, fullscreen and roadblock placement funnels through these leaf builders, so returning an empty list means no ad request is ever built for AdMob, Pangle, IronSource or Facebook Audience Network. Verified on v10.7.30.",
+      "description": "Disables all ad serving in Hamro Patro by no-oping the native ad-placement resolver (HamroAdsPlacements). Every banner, native, interstitial, fullscreen and roadblock placement funnels through these leaf builders, so returning an empty list means no ad request is ever built for the bundled MAX, Pangle, ironSource, Facebook Audience, Unity, Vungle and Google Ads SDKs, and no mediation cycle ever starts. Re-verified on v10.7.33. Works on its own, and combines cleanly with Nai64's universal No Ads patch if you have it enabled - the two act on different layers, so together they also cover the Google ads_mobile_sdk layer that no SDK-level patch reaches.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -66,12 +92,12 @@
           "packageName": "com.hamropatro",
           "name": "Hamropatro",
           "description": null,
-          "apkFileType": null,
+          "apkFileType": "APK",
           "appIconColor": "#E2231A",
           "signatures": null,
           "targets": [
             {
-              "version": null,
+              "version": "10.7.33",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -84,7 +110,7 @@
     },
     {
       "name": "Remove Ads",
-      "description": "Disables both ad stacks in Nepali Patro: Google Mobile Ads (AdMob) and the first-party flutter_adserver HTML ad server. AdMob's method-channel entry point is short-circuited for every load and show call so no ad is ever created, and the two WebView HTML loaders the ad server uses (loadData and loadDataWithBaseUrl) become no-ops, so no ad markup ever reaches a WebView.",
+      "description": "Disables both ad stacks in Nepali Patro: Google Mobile Ads (AdMob) and the first-party flutter_adserver HTML ad server. AdMob's method-channel entry point is short-circuited for every load and show call so no ad is ever created, and the WebView loaders the ad server uses are neutralised - loadData and loadDataWithBaseUrl become no-ops, while loadUrl only refuses the ads-delivery.nepalipatro.com.np host and data: URLs so normal in-app browsing keeps working.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [

@@ -1,7 +1,33 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "patches": [
+    {
+      "name": "NuvioTV - Merge tracking progress",
+      "description": "Merges Nuvio Sync and connected tracking-provider progress, preserving the previous snapshot while providers refresh.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nuvio.tv",
+          "name": "NuvioTV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.0-beta.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "NuvioTV - Remaining episodes in Continue Watching",
       "description": "Adds a disabled-by-default Continue Watching setting that displays aired, unwatched episode counts for every tracking integration.",
@@ -30,7 +56,7 @@
     },
     {
       "name": "NuvioTV - Side-by-side installation",
-      "description": "Installs the patched app as NuvioTV Patched beside the official NuvioTV app.",
+      "description": "Installs a separately named NuvioTV clone using a configurable package name and app name.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -52,7 +78,26 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Unique Android package name for this installation, for example com.nuvio.testing.one.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.nuvio.santodan",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "Name displayed by Android launchers for this installation.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "NuvioTV Patched",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Peafowl - Unlock Theme Ownership (Experimental)",
