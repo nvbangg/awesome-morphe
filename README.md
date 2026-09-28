@@ -8,7 +8,7 @@
 - [🛠️ Other Projects](#projects)
 - [ℹ️ About](#about)
 
-### ✨ Feature Highlights
+### 🔥 Feature Highlights
 
 - 🌐 A curated list of [Morphe](https://morphe.software) resources and community projects.
 - 🔍 An interactive [website](https://awesome-morphe.vercel.app/) to explore all patch bundles from the Morphe community, with data aggregated automatically.
