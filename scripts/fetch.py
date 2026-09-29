@@ -277,7 +277,7 @@ def process_image(
     return source, repo, remote_sha, True, None
 
 
-def fetch_all_repos(fetch_images: bool = False) -> None:
+def fetch_all_repos(daily: bool = False) -> None:
     repos_data = load_json(REPOS_JSON_PATH, {})
 
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
@@ -294,7 +294,7 @@ def fetch_all_repos(fetch_images: bool = False) -> None:
                 for branch in DEFAULT_BRANCHES:
                     current_sha = source_metadata.get(branch)
                     tasks.append((source, repo, branch, current_sha))
-                if fetch_images:
+                if daily:
                     image_tasks.append((source, repo, source_metadata.get("image")))
 
     print(f"Processing {len(tasks)} branch targets...")
@@ -356,7 +356,7 @@ def fetch_all_repos(fetch_images: bool = False) -> None:
                 if not has_patch_list and has_mpp:
                     updated_files.append(f"mpp/{file_prefix}.mpp")
 
-    if fetch_images:
+    if daily:
         print(f"Processing {len(image_tasks)} image targets...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
             image_futures = [
@@ -395,9 +395,9 @@ def fetch_all_repos(fetch_images: bool = False) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fetch Morphe patches bundles")
-    parser.add_argument("--image", action="store_true", help="Fetch bundle images")
+    parser.add_argument("--daily", action="store_true", help="Daily sync")
     args = parser.parse_args()
-    fetch_all_repos(fetch_images=args.image)
+    fetch_all_repos(daily=args.daily)
 
 
 if __name__ == "__main__":

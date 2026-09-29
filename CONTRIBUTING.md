@@ -22,7 +22,7 @@ awesome-morphe/
 ├── web/                                # Website source code
 │   ├── public/
 │   │   ├── bundles.json                # Metadata of all active bundles and apps
-│   │   └── whats-new.json              # Rolling changelog (last 21 updates)
+│   │   └── whats-new.json              # Rolling changelog (last 14 updates)
 │   └── ...                             # Other supporting files
 ├── CONTRIBUTING.md
 ├── LICENSE
@@ -33,17 +33,17 @@ awesome-morphe/
 
 ### 1. [Sync Workflow](../../actions/workflows/ci.yml)
 
-Unified pipeline for synchronizing bundles, daily/monthly updates, and What's New changelogs:
-- **`default` mode**: Fast sync every 2 hours (skips images, commits only when new bundles are found).
+Unified pipeline for synchronizing bundles, daily/weekly updates, and What's New changelogs:
+- **`default` mode**: Fast sync hourly (skips images, commits only when new bundles are found).
 - **`daily` mode**: Daily sync (fetches images, updates repo info/stars, generates What's New changelog, sends Telegram notifications, and cleans up old workflow runs).
-- **`month` mode**: Monthly refresh on the 1st of each month (full re-scrape of Google Play metadata).
+- **`weekly` mode**: Weekly refresh every week (full re-scrape of Google Play metadata).
 
 ```mermaid
 flowchart TD
-    A["Sync Workflow (ci.yml)"] --> B["Determine mode (default / daily / month)"]
+    A["Sync Workflow (ci.yml)"] --> B["Determine mode (default / daily / weekly)"]
     B --> C["Discover bundles (discover.py)"]
-    C --> D["Check updates (fetch.py / fetch.py --image)"]
-    D --> E{Changes or Daily/Month?}
+    C --> D["Check updates (fetch.py / fetch.py --daily)"]
+    D --> E{Changes or Daily/Weekly?}
 
     E -->|Yes| F["Parse bundles (parse.py) + Compile data (update.py)"]
     E -->|No| G[Skip]
@@ -106,7 +106,7 @@ Manually add or remove target repositories in [`data/discover/custom.json`](data
 ### `fetch.py`
 
 Downloads raw patch lists and bundle metadata from remote sources based on `data/repos.json`.
-It checks for new SHAs, downloads `patches-bundle.json` into `data/bundles/`, the corresponding `.mpp` file into `scripts/bundle-parser/mpp/` to extract the bundle name, and `patches-list.json` (if available) into `data/patches/`. Pending SHA and name updates are written to `scripts/bundle-parser/pending_repos.json`. Updated `.mpp` target paths are written to `scripts/bundle-parser/updated_files.txt` (only generated when there are bundles without a `patches-list.json`). With the `--image` flag, it also fetches the bundle avatar image SHA for each repo.
+It checks for new SHAs, downloads `patches-bundle.json` into `data/bundles/`, the corresponding `.mpp` file into `scripts/bundle-parser/mpp/` to extract the bundle name, and `patches-list.json` (if available) into `data/patches/`. Pending SHA and name updates are written to `scripts/bundle-parser/pending_repos.json`. Updated `.mpp` target paths are written to `scripts/bundle-parser/updated_files.txt` (only generated when there are bundles without a `patches-list.json`). With the `--daily` flag, it also fetches the bundle avatar image SHA for each repo.
 
 ### `parse.py`
 
@@ -120,7 +120,7 @@ Supported execution modes:
 
 - **Default mode**: Compiles data from local JSON files, fetches GitHub/GitLab repository info (stars, avatar, and repository description) for new bundles, and retrieves any missing app metadata (name, icon, or description) from Google Play for newly discovered apps not yet available locally.
 - `--daily`: Same as default, but also refreshes GitHub/GitLab repository info for all bundles and retrieves any missing app metadata from Google Play for all existing apps.
-- `--month`: Same as `--daily`, but also forces a full re-scrape of all app metadata from Google Play for all existing applications, overwriting current values.
+- `--weekly`: Same as `--daily`, but also forces a full re-scrape of all app metadata from Google Play for all existing applications, overwriting current values.
 
 ### `whats_new.py`
 
