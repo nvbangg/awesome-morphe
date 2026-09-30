@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0-dev.4",
+  "version": "1.0.0",
   "patches": [
     {
       "name": "Clean sharing links",
@@ -34,8 +34,101 @@
       "options": []
     },
     {
+      "name": "Hide Home and Browse ads",
+      "description": "Hides image and video brand-ad sections on Home and Browse. Does not suppress audio ads, player ads, or upgrade prompts. Experimental.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.spotify.music",
+          "name": "Spotify",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1DB954",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.1.80.2221",
+              "versionCodes": {
+                "ARM64_V8A": 145767611
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": "Experimental Android customization patches; runtime compatibility is still being verified."
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Premium tab",
+      "description": "Hides the Premium navigation tab. Change this in Spicetify settings, then restart Spotify. Does not change your subscription or remove other ads.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.spotify.music",
+          "name": "Spotify",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1DB954",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.1.80.2221",
+              "versionCodes": {
+                "ARM64_V8A": 145767611
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": "Experimental Android customization patches; runtime compatibility is still being verified."
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide player ad cards",
+      "description": "Hides image brand-ad cards and embedded ad pages in Now Playing. Does not suppress audio ads or other player overlays. Experimental.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.spotify.music",
+          "name": "Spotify",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1DB954",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.1.80.2221",
+              "versionCodes": {
+                "ARM64_V8A": 145767611
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": "Experimental Android customization patches; runtime compatibility is still being verified."
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Local files from a server",
-      "description": "Streams audio from an HTTPS WebDAV folder into Local Files. Configure the server in Spicetify settings. Experimental; requires byte-range support.",
+      "description": "Streams audio from an HTTPS WebDAV folder or Jellyfin music library into Local Files and Your Library. Configure the server in Spicetify settings; playback needs Spotify's Local audio files setting. Experimental; requires byte-range support.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -98,11 +191,12 @@
     },
     {
       "name": "Theme colors",
-      "description": "Changes selected background and accent color resources; defaults to AMOLED black. Some screens, hardcoded colors, and animations retain Spotify's colors.",
+      "description": "Choose a theme, such as OLED, or your own colors in Spicetify settings. Restart Spotify after changing it. Some screens and hardcoded colors keep Spotify's colors.",
       "default": false,
       "category": null,
       "dependencies": [
-        "BytecodePatch"
+        "BytecodePatch",
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -125,35 +219,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "backgroundColor",
-          "title": "Primary background color",
-          "description": "Background color in #RRGGBB or #AARRGGBB format.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#FF000000",
-          "values": null
-        },
-        {
-          "key": "accentColor",
-          "title": "Accent color",
-          "description": "Accent color in #RRGGBB or #AARRGGBB format.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#FF1ED760",
-          "values": null
-        },
-        {
-          "key": "pressedAccentColor",
-          "title": "Pressed accent color",
-          "description": "Pressed accent color in #RRGGBB or #AARRGGBB format.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#FF1ABC54",
-          "values": null
-        }
-      ]
+      "options": []
     }
   ]
 }
