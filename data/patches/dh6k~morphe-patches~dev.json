@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0-dev.2",
+  "version": "1.8.0-dev.6",
   "patches": [
     {
       "name": "Block Quetta bundled extension installation",
@@ -47,9 +47,11 @@
     },
     {
       "name": "Brave AMOLED theme",
-      "description": "Patch-time AMOLED dark theme (issue #21): rewrites Brave dark chrome surfaces to pure black (or a custom opaque hex). Overrides Material You night colors on Android 12+ and defaults dynamic colors off. Does not change web content force-dark, NTP theme collections, or add a runtime color picker. Default off.",
+      "description": "Patch-time AMOLED dark theme (issue #21): rewrites Brave dark chrome surfaces to pure black (or a custom opaque hex). Optional text and accent colors (defaults keep Brave's #f0f2ff / #737ade). Forces Material You dynamic colors off in bytecode (the pref is non-persistent) and overrides system neutral night roles on Android 12+. Apply Dark theme in Brave to see it. Does not change web content force-dark, NTP theme collections, or add a runtime color picker. Default off.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -148,9 +150,27 @@
           "values": null
         },
         {
+          "key": "textColor",
+          "title": "Text color",
+          "description": "Opaque hex for text and icon ink (primary/secondary/muted). Brave dark default: #f0f2ff.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#f0f2ff",
+          "values": null
+        },
+        {
+          "key": "accentColor",
+          "title": "Accent color",
+          "description": "Opaque hex for Brave accent (toggles, links, highlights). Default: #737ade. Status coral/orange is left alone.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#737ade",
+          "values": null
+        },
+        {
           "key": "disableDynamicColors",
           "title": "Disable Material You dynamic colors",
-          "description": "Force Brave's wallpaper dynamic-colors switch off (default off) so AMOLED surfaces are not replaced by system palette roles.",
+          "description": "Force Brave's wallpaper dynamic colors off so AMOLED surfaces are not replaced by system palette roles. The settings switch stays clickable but readers always return off.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
