@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.12.1",
+  "version": "1.13.0",
   "patches": [
     {
       "name": "Block trackers",
@@ -73,6 +73,32 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass anti-tamper (foodpanda)",
+      "description": "Bypasses foodpanda's DeliveryHero MAS integrity block — forces the master security gate (`w9u.a`) to report the device/app as trusted, so re-signed / sideloaded builds no longer hit the \"This device or application is not supported\" BlockedActivity.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.global.foodpanda.android",
+          "name": "foodpanda",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#D70F64",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "26.38.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -294,7 +320,7 @@
     },
     {
       "name": "Remove daily check-in ads",
-      "description": "Removes the SocialPlus daily check-in / in-feed ads (FeedAdsManager banner + native loaders). Separate from \"Remove ads & tracking\" to keep that patch Morphe-Manager-safe; enable this one when patching with the desktop CLI.",
+      "description": "Removes the SocialPlus daily check-in / in-feed ads (FeedAdsManager banner + native loaders) and the day-10/20/30 milestone-claim RewardedAd (the award is still granted, just with no ad). Separate from \"Remove ads & tracking\" to keep that patch Morphe-Manager-safe; enable this one when patching with the desktop CLI.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -362,6 +388,32 @@
           "targets": [
             {
               "version": "3.4.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium (foodpanda)",
+      "description": "Unlocks foodpanda pandapro — forces every `isSubscribed()` check (status instanceof UserSubscriptionStatus.Subscribed) to report subscribed and forces Subscribed.hasBenefits() true, so the app's pro state, UI and entitlement gates unlock. Server-enforced benefits (free delivery, vouchers) still require a real subscription.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.global.foodpanda.android",
+          "name": "foodpanda",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#D70F64",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "26.38.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 32,

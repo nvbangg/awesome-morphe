@@ -1,5 +1,5 @@
 {
-  "version": "1.5.0-dev.17",
+  "version": "1.5.0-dev.18",
   "patches": [
     {
       "name": "Add Packet Handler",
@@ -808,7 +808,143 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "brand",
+          "title": "Brand",
+          "description": "The value reported as Build.BRAND.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "samsung",
+          "values": null
+        },
+        {
+          "key": "manufacturer",
+          "title": "Manufacturer",
+          "description": "The value reported as Build.MANUFACTURER.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "samsung",
+          "values": null
+        },
+        {
+          "key": "model",
+          "title": "Model",
+          "description": "The value reported as Build.MODEL.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "SM-X710",
+          "values": null
+        },
+        {
+          "key": "device",
+          "title": "Device",
+          "description": "The value reported as Build.DEVICE.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "qssi",
+          "values": null
+        },
+        {
+          "key": "product",
+          "title": "Product",
+          "description": "The value reported as Build.PRODUCT.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "gts9wifixx",
+          "values": null
+        },
+        {
+          "key": "board",
+          "title": "Board",
+          "description": "The value reported as Build.BOARD.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "kalama",
+          "values": null
+        },
+        {
+          "key": "hardware",
+          "title": "Hardware",
+          "description": "The value reported as Build.HARDWARE.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "qcom",
+          "values": null
+        },
+        {
+          "key": "cpuAbi",
+          "title": "CPU ABI",
+          "description": "The value reported as Build.CPU_ABI.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "arm64-v8a",
+          "values": null
+        },
+        {
+          "key": "socManufacturer",
+          "title": "SoC manufacturer",
+          "description": "The value reported as Build.SOC_MANUFACTURER.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "QTI",
+          "values": null
+        },
+        {
+          "key": "socModel",
+          "title": "SoC model",
+          "description": "The value reported as Build.SOC_MODEL.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "SM8550",
+          "values": null
+        },
+        {
+          "key": "fingerprint",
+          "title": "Fingerprint",
+          "description": "The value reported as Build.FINGERPRINT. Keep the brand, product, device, build ID, build type and tags consistent with it.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "samsung/gts9wifixx/qssi:14/UP1A.231005.007/X710XXU5BYA1:user/release-keys",
+          "values": null
+        },
+        {
+          "key": "id",
+          "title": "Build ID",
+          "description": "The value reported as Build.ID.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "UP1A.231005.007",
+          "values": null
+        },
+        {
+          "key": "display",
+          "title": "Display",
+          "description": "The value reported as Build.DISPLAY.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "UP1A.231005.007.X710XXU5BYA1",
+          "values": null
+        },
+        {
+          "key": "type",
+          "title": "Build type",
+          "description": "The value reported as Build.TYPE.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "user",
+          "values": null
+        },
+        {
+          "key": "tags",
+          "title": "Tags",
+          "description": "The value reported as Build.TAGS.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "release-keys",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Change package name",
@@ -1291,9 +1427,11 @@
     },
     {
       "name": "Disable Friend Feed tab",
-      "description": "Disables the Friend Feed tab in KakaoTalk.",
+      "description": "Adds an option to replace the Friend Feed tab with the classic Friends tab.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.kakao.talk",
@@ -3085,6 +3223,35 @@
       "options": []
     },
     {
+      "name": "Remove local connect tab",
+      "description": "Adds an option to remove the local connect tab from the bottom navigation bar.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "Kakao Talk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": [
+            "2b06cc3d47782d7c497c07f17cb5f859cd6bbcb66829f3e67b96b7a44820d2ce"
+          ],
+          "targets": [
+            {
+              "version": "26.8.2",
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove main board ads",
       "description": "Removes the native \"main board\" banner ad shown in feeds and under the live player.",
       "default": true,
@@ -3156,9 +3323,11 @@
     },
     {
       "name": "Remove shop tab",
-      "description": "Removes the shop tab from the bottom navigation bar.",
+      "description": "Adds an option to remove the shop tab from the bottom navigation bar.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.kakao.talk",
