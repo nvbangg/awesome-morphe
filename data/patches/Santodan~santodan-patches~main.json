@@ -1,7 +1,78 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "patches": [
+    {
+      "name": "MEO - Side-by-side installation",
+      "description": "Installs a separately named MEO clone using a configurable package name and app name.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alticelabs.meo.androidtv",
+          "name": "MEO (Android TV)",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Unique Android package name for this installation.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.alticelabs.meo.androidtv.santodan",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "Name displayed by Android launchers for this installation.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "MEO Patched",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "MEO - Spoof supported device",
+      "description": "Reports a Sagemcom DIW3930 to MEO provisioning and skips the server's non-blocking device-verification warning.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alticelabs.meo.androidtv",
+          "name": "MEO (Android TV)",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "NuvioTV - Merge tracking progress",
       "description": "Merges Nuvio Sync and connected tracking-provider progress, preserving the previous snapshot while providers refresh.",
@@ -139,6 +210,13 @@
           "appIconColor": null,
           "signatures": null,
           "targets": [
+            {
+              "version": "0.6.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "0.6.19",
               "versionCodes": null,

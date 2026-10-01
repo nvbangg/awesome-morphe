@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "patches": [
     {
       "name": "Modern Android compatibility",
-      "description": "Fixes the crash at launch on current Android and targets API 25 so that Android 14 and later install the game normally. The game is 32-bit only, so the device must still run 32-bit apps.",
+      "description": "Fixes the crash at launch on current Android and targets API 25 so that Android 14 and later install the game normally. If the OBB is missing, the game says why. The game is 32-bit only, so the device must still run 32-bit apps.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -14,6 +14,7 @@
         "ResourcePatch",
         "RawResourcePatch",
         "RawResourcePatch",
+        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
       ],
@@ -95,6 +96,33 @@
       "options": []
     },
     {
+      "name": "Render at 720p",
+      "description": "Makes the menus, text and pictures full size on screens above 720p, where they are otherwise small. The game is drawn at 720p and stretched to the screen, so it looks slightly blurry.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.glu.android.zombsniper",
+          "name": "CK Zombies",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#006020",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.1.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Smooth sound",
       "description": "Removes the stutter while firing, caused by the game building a new audio player for every sound.",
       "default": true,
@@ -123,7 +151,7 @@
     },
     {
       "name": "Stop requests to dead servers",
-      "description": "Removes the 30 second wait on the loading screen and the daily offline message, and stops the game from contacting Tapjoy, OpenFeint and Glu's dead servers. If the OBB is missing, the game says why.",
+      "description": "Removes the 30 second wait on the loading screen and the daily offline message, and stops the game from contacting Tapjoy, OpenFeint and Glu's dead servers.",
       "default": true,
       "category": null,
       "dependencies": [
