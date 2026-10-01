@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.30.0-dev.23",
+  "version": "1.30.0-dev.24",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
@@ -953,7 +953,7 @@
     {
       "name": "Hill Climb Racing Example Overlay Addon",
       "category": "Hill Climb Racing Example Overlay",
-      "description": "Example overlay addon for Hill Climb Racing (com.fingersoft.hillclimb), used together with UniPatches Universal Overlay.\n        It adds six safe, mock-only app-specific preview modules to the shared overlay: A\n        - Add Coins\n        - Add Gems\n        - Add Paints \n        - Vehicle Selection\n        - Stage Selection\n        - Garage Selection. \n        All these six module options are enabled by default and can be disabled independently. \n        \n        Module settings and Preview actions are session-only; this example addon never reads or changes currencies, vehicles, stages, garage state, purchases, save files, or game bytecode.",
+      "description": "Example overlay addon for Hill Climb Racing (com.fingersoft.hillclimb), used together with UniPatches Universal Overlay.\n        It adds six safe, mock-only app-specific preview modules to the shared overlay: A\n        - Add Coins\n        - Add Gems\n        - Add Paints \n        - Vehicle Selection\n        - Stage Selection\n        - Garage Selection. \n        This is an example-only addon; all six module options are disabled by default and must be explicitly enabled independently.\n        \n        Module settings and Preview actions are session-only; this example addon never reads or changes currencies, vehicles, stages, garage state, purchases, save files, or game bytecode.",
       "default": false,
       "dependencies": [
         "Universal Overlay Patch v2.6.1 ( Experimental, UniManager Support )"
@@ -984,7 +984,7 @@
           "description": "Expose the mock Add Coins preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -993,7 +993,7 @@
           "description": "Expose the mock Add Gems preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1002,7 +1002,7 @@
           "description": "Expose the mock Add Paints preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1011,7 +1011,7 @@
           "description": "Expose the mock vehicle selection preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1020,7 +1020,7 @@
           "description": "Expose the mock stage selection preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1029,7 +1029,7 @@
           "description": "Expose the mock garage selection preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         }
       ]
@@ -1045,10 +1045,10 @@
         {
           "key": "legacyCompatibilitySpoofTargetSdk",
           "title": "Legacy App Compatibility > Installation and manifest > Spoof Target SDK",
-          "description": "Report a compatible target SDK so older apps can install or launch on modern Android. This may change platform behavior and does not repair incompatible code.",
+          "description": "Report a compatible target SDK so older apps can install or launch on modern Android. This may change platform behavior and does not repair incompatible code. Explicit opt-in is required because lowering an app's target SDK can weaken platform protections.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1121,16 +1121,25 @@
         {
           "key": "legacyCompatibilityHiddenApi",
           "title": "Legacy App Compatibility > Runtime compatibility > Bypass Hidden API Restrictions",
-          "description": "Exempt all hidden non-SDK interfaces for this app on Android 9 and newer, so old apps using reflection on framework internals keep working. Applies at app startup; affects only this app's process.",
+          "description": "Exempt all hidden non-SDK interfaces for this app on Android 9 and newer, so old apps using reflection on framework internals keep working. Applies at app startup; affects only this app's process. Explicit opt-in is required because this weakens Android's non-SDK API boundary.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
           "key": "legacyCompatibilityTrustCertificates",
           "title": "Legacy App Compatibility > Runtime compatibility > Trust All Certificates",
-          "description": "Security risk: disables TLS certificate and hostname validation for HttpsURLConnection traffic, allowing man-in-the-middle interception. Only enable for legacy apps whose servers use expired or self-signed certificates. WebView traffic is not covered.",
+          "description": "Security risk: disables TLS certificate and hostname validation for HttpsURLConnection traffic, allowing man-in-the-middle interception. Only enable for legacy apps whose servers use expired or self-signed certificates. WebView traffic is not covered. A separate acknowledgement is required.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityAcknowledgeTrustCertificates",
+          "title": "Legacy App Compatibility > Runtime compatibility > Acknowledge Trust-All TLS Risk",
+          "description": "Explicitly acknowledge that trust-all TLS is a high-risk, process-wide override. Trust All Certificates is ignored unless this acknowledgement is enabled too.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1157,10 +1166,10 @@
         {
           "key": "legacyCompatibilityRepairExportFlags",
           "title": "Legacy App Compatibility > Installation and manifest > Repair Missing Component Export Flags",
-          "description": "Add missing android:exported values to activities, aliases, services, and receivers that have intent filters. Do NOT enable this together with Export All Activities because they overlap. If both are selected accidentally, Export All Activities takes precedence.",
+          "description": "Add missing android:exported values to activities, aliases, services, and receivers that have intent filters. Do NOT enable this together with Export All Activities because they overlap. If both are selected accidentally, Export All Activities takes precedence. Explicit opt-in is required because exported components expand the app's attack surface.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1841,6 +1850,15 @@
           "key": "permissionGuardBluetooth",
           "title": "Permission Guard > Bluetooth",
           "description": "Remove legacy Bluetooth declarations.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "permissionGuardRemoveRelatedFeatures",
+          "title": "Permission Guard > Also remove related hardware features",
+          "description": "Optional and disabled by default. Remove matching uses-feature declarations too; this can make the APK install without required hardware while the app may still expect that hardware.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
