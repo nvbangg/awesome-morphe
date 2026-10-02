@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.43.2-dev.3",
+  "version": "1.43.2-dev.4",
   "patches": [
     {
       "name": "APK Junk Cleanup",
@@ -1263,6 +1263,32 @@
       "options": []
     },
     {
+      "name": "Popup blocker",
+      "description": "Blocks popups and popunder redirects with Allow / Block / Always Block prompts. Adds \"Manage popup rules\" as the last item of the 3-dot menu.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "video.downloader.videodownloader",
+          "name": "Video Downloader",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove Ads",
       "description": "Cleans Apps Code From Ads Junk. Works In Most Apps Where There Isn't Any Check For Ads Loaded Or Not. If There Is A Check You Will Be Stuck In SplashActivity Due To Custom Ads Load Checks But It Is Superior.",
       "default": false,
@@ -1329,7 +1355,7 @@
     },
     {
       "name": "Remove Analytics New",
-      "description": "Corrupts analytics network URLs and split-scheme string obfuscation inside the code, and strips matching manifest components.",
+      "description": "DONT CHOOSE 2 SAME PATCHES...Corrupts analytics network URLs and split-scheme string obfuscation inside the code, and strips matching manifest components.",
       "default": false,
       "dependencies": [
         "ResourcePatch"
@@ -1633,6 +1659,83 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Replace FFmpeg codec",
+      "description": "Replaces libffmpeg.mx.so in every lib/<abi>/ folder present in the APK with the matching file from a selected codec zip (EAC3 support). neon64 -> arm64-v8a, neon -> armeabi-v7a, x86 -> x86, x86_64 -> x86_64. ABI folders missing from the APK or from the zip are skipped.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mxtech.videoplayer.ad",
+          "name": "MX Player",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.1.4",
+              "versionCodes": {
+                "ARM64_V8A": 2001003524,
+                "ARMEABI_V7A": 2001003524,
+                "X86_64": 2001003524,
+                "X86": 2001003524
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.2.1",
+              "versionCodes": {
+                "ARM64_V8A": 2001003531,
+                "ARMEABI_V7A": 2001003531,
+                "X86_64": 2001003531,
+                "X86": 2001003531
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.2.2",
+              "versionCodes": {
+                "ARM64_V8A": 2001003532,
+                "ARMEABI_V7A": 2001003532,
+                "X86_64": 2001003532,
+                "X86": 2001003532
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.2.5",
+              "versionCodes": {
+                "ARM64_V8A": 2001003535,
+                "ARMEABI_V7A": 2001003535,
+                "X86_64": 2001003535,
+                "X86": 2001003535
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "ffmpegCodecZip",
+          "title": "FFmpeg codec zip",
+          "description": "Zip containing libffmpeg.mx.so.neon64.*, libffmpeg.mx.so.neon.*, libffmpeg.mx.so.x86.* and/or libffmpeg.mx.so.x86_64.* (any subfolder depth).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Sidebar & Player Defaults",
@@ -2377,6 +2480,42 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Use Your Own Host File For Stronger AdBlock",
+      "description": "Replaces res/raw/hosts.txt with a text/host file you select.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "video.downloader.videodownloader",
+          "name": "Video Downloader",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hostsFile",
+          "title": "Host file",
+          "description": "Text/host file that replaces the built-in res/raw/hosts.txt.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
     }
   ]
 }

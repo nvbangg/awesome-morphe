@@ -1,5 +1,5 @@
 {
-  "version": "v0.0.2",
+  "version": "v0.0.3",
   "appNames": {
     "com.instagram.android": "Instagram"
   },
@@ -80,7 +80,7 @@
     },
     {
       "name": "Disable analytics",
-      "description": "Sends Instagram's usage events and crash reports to an address on your phone that refuses them, instead of to Instagram's and Facebook's servers. Restart Instagram after changing the switch.",
+      "description": "Sends Instagram's usage events and crash reports to an address on your phone that refuses them, instead of to Instagram's and Facebook's servers. It also skips the contacts and location setup screens, which would come back on every start without those events. Restart Instagram after changing the switch.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -228,7 +228,7 @@
     },
     {
       "name": "Download any video",
-      "description": "Adds Download to the menu of a post in your feed with a video. Videos save at the Download quality you set, without Instagram's watermark.",
+      "description": "Adds Download to the menu of a post in your feed with a video, and of a carousel showing a video. Videos save at the Download quality you set, without Instagram's watermark. A second switch does the same for photo posts.",
       "category": "Downloads",
       "use": false,
       "dependencies": [
@@ -265,7 +265,7 @@
     },
     {
       "name": "Hide Meta AI",
-      "description": "Takes Meta AI out of the search bars, in the Search tab and at the top of your messages, so they search the plain way, and removes Meta AI's posts from your home feed. Each has its own switch, and the search one shows once Instagram restarts.",
+      "description": "Takes Meta AI out of the search bars, in the Search tab and at the top of your messages, so they search the plain way, drops the Ask a follow-up bar under search results and Meta AI's buttons in Home's top bar, and removes Meta AI's posts from your home feed. Each has its own switch, and the search one shows once Instagram restarts.",
       "category": "Interface",
       "use": true,
       "dependencies": [
@@ -375,6 +375,43 @@
       "options": []
     },
     {
+      "name": "Hide group buttons on the share sheet",
+      "description": "Takes the New group button away from beside the share sheet's search bar, and the button that sends to the people you picked as one group, so they get it one by one. You can still start a group from your messages.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide suggested posts",
       "description": "Removes the posts and reels from accounts you don't follow that Instagram puts in your home feed as Suggested for you, the rows of accounts, shops and hashtags it suggests you follow, and the posts and accounts from Threads it mixes in. Each has its own switch. Posts from accounts you follow stay.",
       "category": "Feed",
@@ -412,8 +449,119 @@
       "options": []
     },
     {
+      "name": "Hide suggested stories",
+      "description": "Removes the stories from accounts you don't follow, and the accounts Instagram suggests, from the row of stories at the top of Home. A second switch, off to start, takes the whole row away.",
+      "category": "Feed",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide the Explore grid",
+      "description": "Empties the grid of posts and reels under the Search tab's bar. Search, your recent searches and search results stay.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide the Reels tab",
       "description": "Takes the Reels tab off the tab bar, and a start or a notification meant for it opens Home. Reels in your feed and reels people send you still open, and a change to the switch shows once Instagram restarts.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide the Repost button",
+      "description": "Takes the Repost button and its count off posts and reels, so nothing gets reposted by mistake. Share still sends a post or reel to someone.",
       "category": "Interface",
       "use": false,
       "dependencies": [
@@ -522,6 +670,43 @@
       "options": []
     },
     {
+      "name": "Open developer options",
+      "description": "A long press on the Home tab opens Instagram's own developer options, where its server flags (MetaConfig and quick experiments) can be looked at and overridden on your phone. A wrong flag can break parts of Instagram until you reset it there.",
+      "category": "Settings",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Open links in external browser",
       "description": "Opens a web link you tap in your default browser instead of Instagram's in-app browser, without Instagram's click tracker. Instagram and other Meta pages, and ads, still open in the app.",
       "category": "Interface",
@@ -529,6 +714,44 @@
       "dependencies": [
         "BytecodePatch",
         "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Pure black dark mode",
+      "description": "Instagram's dark mode uses pure black instead of its near-black gray, which looks deeper and saves power on an OLED screen. Menus, sheets and buttons keep their own grays so they stay easy to see. Chosen when you patch, with no switch.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings",
+        "ResourcePatch"
       ],
       "compatiblePackages": {
         "com.instagram.android": [
@@ -604,6 +827,43 @@
         "BytecodePatch",
         "HushGram settings",
         "ResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove the empty space at the bottom",
+      "description": "Takes away the empty room Instagram leaves under its tab bar for a navigation bar that isn't there, on a phone that hides its navigation bar and in a pop-up window. A change to the switch shows once Instagram restarts.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
       ],
       "compatiblePackages": {
         "com.instagram.android": [
@@ -745,8 +1005,156 @@
       "options": []
     },
     {
+      "name": "Show if a profile follows you",
+      "description": "Adds Follows you or Doesn't follow you beside the name on someone's profile, after their pronouns if they've set any. A switch in HushGram's settings turns it off.",
+      "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Start Home on Following",
+      "description": "Opens Home on posts from accounts you follow. Tap Following at the top to switch to For you, and Home remembers your pick. A second switch, off to start, takes For you out of Home. A change to either shows once Instagram restarts.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Start on x86 devices",
+      "description": "Keeps Instagram from crashing or freezing on an x86 device that runs its arm code through a translator, such as an x86 Chromebook or an emulator, by skipping the one code protection step that breaks there. Phones and tablets with arm chips run it as before.",
+      "category": "Fixes",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Stop Story auto-advance",
       "description": "Keeps each story on screen until you tap or swipe. Turn the switch off for Instagram's timing.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushGram settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.android": [
+          "449.0.0.52.84"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Instagram",
+          "packageName": "com.instagram.android",
+          "description": null,
+          "appIconColor": 14757996,
+          "signatures": [
+            "3a10c50c18ba937506c2875e9047be74f8fd8b86fae2ff9feaa50a81fcb4c014",
+            "5f3e50f435583c9ae626302a71f7340044087a7e2c60adacfc254205a993e305"
+          ],
+          "targets": [
+            {
+              "version": "449.0.0.52.84",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 385511871
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Story ring size",
+      "description": "Draws the rings in the stories row at the top of Home smaller, so more fit on the screen, or larger. Pick the size in HushGram's settings.",
       "category": "Interface",
       "use": false,
       "dependencies": [
