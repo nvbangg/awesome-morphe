@@ -28,9 +28,10 @@ export interface Bundle {
   stars: number;
   updatedAt: number;
   firstSeen: number;
-  hotRank: number | null;
+  hotRank: number;
   isPreRelease: boolean;
   isArchived?: boolean;
+  isOfficial?: boolean;
   appFirstSeen: Record<string, number>;
   appUpdates?: Record<string, number>;
   patches: PatchItem[];

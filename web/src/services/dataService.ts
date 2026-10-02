@@ -89,10 +89,9 @@ export function loadInitData(): Promise<ActiveData> {
         jsonBundle.isPreRelease,
       );
 
+      const isOfficial = !!jsonBundle.isOfficial;
       const hotRank =
-        jsonBundle.hotRank !== undefined && jsonBundle.hotRank !== null
-          ? jsonBundle.hotRank
-          : null;
+        typeof jsonBundle.hotRank === "number" ? jsonBundle.hotRank : 9999;
 
       const bundleItem: Bundle = {
         source: jsonBundle.source,
@@ -104,6 +103,7 @@ export function loadInitData(): Promise<ActiveData> {
         updatedAt: jsonBundle.updatedAt,
         firstSeen: jsonBundle.firstSeen,
         hotRank,
+        isOfficial,
         isPreRelease: !!jsonBundle.isPreRelease,
         appFirstSeen: jsonBundle.appFirstSeen,
         appUpdates: jsonBundle.appUpdates,
@@ -118,7 +118,7 @@ export function loadInitData(): Promise<ActiveData> {
         searchableText: simplifyString(
           `${jsonBundle.name} ${jsonBundle.source} ${jsonBundle.repo}`,
         ),
-        isUnofficial: hotRank === null,
+        isUnofficial: !isOfficial,
         isArchived: !!jsonBundle.isArchived,
       };
 

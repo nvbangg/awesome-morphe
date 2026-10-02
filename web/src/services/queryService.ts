@@ -5,6 +5,7 @@ import {
   CATEGORY_LABEL_UNIVERSAL,
   PACKAGE_UNIVERSAL,
   BUNDLE_CATEGORY_OPTIONS,
+  UI_NEW_BADGE_MS,
 } from "@/constants";
 
 function parseSearchQuery(query: string): string[] {
@@ -61,32 +62,11 @@ export function compareDefaultApp(
   );
 }
 
-export function compareBundleFallback(
-  bundleItemA: Bundle,
-  bundleItemB: Bundle,
-): number {
-  return (
-    bundleItemB.stars - bundleItemA.stars ||
-    bundleItemB.updatedAt - bundleItemA.updatedAt ||
-    bundleItemA.name.localeCompare(bundleItemB.name) ||
-    bundleItemA.key.localeCompare(bundleItemB.key)
-  );
-}
-
 export function compareDefaultBundle(
   bundleItemA: Bundle,
   bundleItemB: Bundle,
 ): number {
-  const rankA = bundleItemA.hotRank;
-  const rankB = bundleItemB.hotRank;
-
-  if (rankA !== null && rankB !== null) {
-    return rankA - rankB || compareBundleFallback(bundleItemA, bundleItemB);
-  }
-  if (rankA !== null) return -1;
-  if (rankB !== null) return 1;
-
-  return compareBundleFallback(bundleItemA, bundleItemB);
+  return bundleItemA.hotRank - bundleItemB.hotRank;
 }
 
 export function comparePatches(patchA: RowItem, patchB: RowItem): number {
@@ -166,13 +146,13 @@ export function getAppItems(
     if (appSortKeySelector) {
       return (
         appSortKeySelector(appItemA) - appSortKeySelector(appItemB) ||
-        compareAppFallback(appItemA, appItemB)
+        compareDefaultApp(appItemA, appItemB)
       );
     }
     if (sortOrder === "alpha") {
       return (
         appItemA.appName.localeCompare(appItemB.appName) ||
-        compareAppFallback(appItemA, appItemB)
+        compareDefaultApp(appItemA, appItemB)
       );
     }
     return compareDefaultApp(appItemA, appItemB);
@@ -243,13 +223,13 @@ export function getBundleItems(
     bundleList.sort(
       (bundleA, bundleB) =>
         bundleSortKeySelector(bundleA) - bundleSortKeySelector(bundleB) ||
-        compareBundleFallback(bundleA, bundleB),
+        compareDefaultBundle(bundleA, bundleB),
     );
   } else if (sortOrder === "alpha") {
     bundleList.sort(
       (bundleA, bundleB) =>
         bundleA.name.localeCompare(bundleB.name) ||
-        compareBundleFallback(bundleA, bundleB),
+        compareDefaultBundle(bundleA, bundleB),
     );
   } else {
     bundleList.sort(compareDefaultBundle);
@@ -324,6 +304,8 @@ export function getAppBundleGroups(
     }
   }
 
+  const now = Date.now();
+
   return result.sort((groupA, groupB) => {
     if (sortByUpdated) {
       const updatedA =
@@ -332,8 +314,18 @@ export function getAppBundleGroups(
       const updatedB =
         groupB.bundleMeta.appUpdates?.[packageName] ??
         groupB.bundleMeta.updatedAt;
-      const diffUpdated = updatedB - updatedA;
-      if (diffUpdated !== 0) return diffUpdated;
+
+      const isRecentA = now - updatedA <= UI_NEW_BADGE_MS;
+      const isRecentB = now - updatedB <= UI_NEW_BADGE_MS;
+
+      if (isRecentA !== isRecentB) {
+        return isRecentA ? -1 : 1;
+      }
+
+      if (isRecentA && isRecentB) {
+        const diffUpdated = updatedB - updatedA;
+        if (diffUpdated !== 0) return diffUpdated;
+      }
     }
     return compareDefaultBundle(groupA.bundleMeta, groupB.bundleMeta);
   });

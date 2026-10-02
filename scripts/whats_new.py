@@ -84,15 +84,8 @@ def make_url(
     return f"{BASE_WEB_URL}/?{'&'.join(parts)}{WHATS_NEW_TAB}" if parts else ""
 
 
-def bundle_sort_key(bundle: dict) -> tuple:
-    hot_rank = bundle.get("hotRank")
-    is_unofficial = 1 if hot_rank is None else 0
-    rank_value = hot_rank if hot_rank is not None else 0
-    stars = bundle.get("stars", 0) or 0
-    updated_at = bundle.get("updatedAt", 0) or 0
-    name = (bundle.get("name") or bundle.get("repo", "")).lower()
-    repo = (bundle.get("repo") or "").lower()
-    return (is_unofficial, rank_value, -stars, -updated_at, name, repo)
+def bundle_sort_key(bundle: dict) -> int:
+    return bundle.get("hotRank", DEFAULT_BUNDLE_RANK)
 
 
 def get_app_sort_key(

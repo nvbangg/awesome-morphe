@@ -9,6 +9,7 @@ import time
 from updater import gplay_scrape, local_parse, repo_info
 from utils import (
     BUNDLES_JSON_PATH,
+    HOT_RANK_ACTIVE_MS,
     OFFICIAL_BUNDLES_PATH,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
@@ -67,19 +68,28 @@ def main() -> int:
     official_ranks["morpheapp/morphe-patches"] = -1
 
     now_ms = int(time.time() * 1000)
-    sorted_keys = sorted(
-        bundle_sources.keys(),
-        key=lambda sort_key: (
-            existing_bundles.get(sort_key, {}).get(
-                "firstSeen", bundle_sources[sort_key].get("updatedAt", 0)
-            ),
-            sort_key.lower(),
-        ),
-    )
+
+    def get_bundle_sort_key(repo_key: str) -> tuple:
+        bundle_entry = bundle_sources[repo_key]
+        hot_rank = official_ranks.get(repo_key.lower())
+        name = (bundle_entry.get("name") or repo_key).lower()
+        repo_lower = repo_key.lower()
+
+        if hot_rank is not None:
+            return (0, hot_rank, 0, 0, name, repo_lower)
+
+        updated_at = bundle_entry.get("updatedAt", 0) or 0
+        stars = bundle_entry.get("stars", 0) or 0
+
+        if (now_ms - updated_at) <= HOT_RANK_ACTIVE_MS:
+            return (1, 0, -stars, -updated_at, name, repo_lower)
+        return (2, 0, -updated_at, -stars, name, repo_lower)
+
+    sorted_keys = sorted(bundle_sources.keys(), key=get_bundle_sort_key)
     final_bundles = []
-    for key in sorted_keys:
+    for rank_index, key in enumerate(sorted_keys):
         bundle = bundle_sources[key]
-        hot_rank = official_ranks.get(key.lower())
+        is_official = key.lower() in official_ranks
         ordered_bundle = {
             "source": bundle.get("source") or "",
             "repo": bundle.get("repo") or "",
@@ -92,9 +102,10 @@ def main() -> int:
             "appFirstSeen": bundle.get("appFirstSeen") or {},
             "appUpdates": bundle.get("appUpdates") or {},
             "patches": bundle.get("patches") or [],
+            "hotRank": rank_index,
         }
-        if hot_rank is not None:
-            ordered_bundle["hotRank"] = hot_rank
+        if is_official:
+            ordered_bundle["isOfficial"] = True
         if bundle.get("isPreRelease"):
             ordered_bundle["isPreRelease"] = True
         if bundle.get("isArchived"):
