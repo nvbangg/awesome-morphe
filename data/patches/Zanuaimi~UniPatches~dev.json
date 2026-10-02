@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.30.0-dev.24",
+  "version": "1.30.0-dev.25",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
@@ -1740,17 +1740,20 @@
       ]
     },
     {
-      "name": "Permission Guard Patch (Experimental)",
-      "category": "Privacy",
-      "description": "Remove selected dangerous permission declarations from the patched APK manifest. All\npermission controls are disabled by default; select each permission group before patching.\n\nThis is a static manifest patch, not a runtime permission manager. It does not revoke\npermissions already granted to an installed app, stop native or privileged access, or\nprevent an app from requesting a permission at runtime. Android may still deny requests,\nand the app may lose features or fail if it requires a selected permission.\n\nStorage covers legacy external-storage permissions. Media covers Android 13+ photo, video,\naudio, and selected-photo permissions. Nearby devices covers modern Bluetooth and nearby\nWi-Fi declarations; Bluetooth covers legacy Bluetooth declarations.",
+      "name": "Permission Guard Patch (Experimental, Runtime Controls)",
+      "category": "Permission Guard",
+      "description": "Keep declared permissions while guarding common Android permission checks and requests. Selected\ngroups start blocked and can be changed at runtime through the optional Universal Overlay module.\nNative, privileged, already-granted, and unknown permission paths are outside this guard.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "Resolve Real Application (internal)",
+        "Permission Guard UniManager registration"
+      ],
       "compatiblePackages": null,
       "options": [
         {
           "key": "permissionGuardCamera",
-          "title": "Permission Guard > Camera",
-          "description": "Remove CAMERA permission declaration.",
+          "title": "Block Camera",
+          "description": "Block camera permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1758,8 +1761,8 @@
         },
         {
           "key": "permissionGuardMicrophone",
-          "title": "Permission Guard > Microphone",
-          "description": "Remove RECORD_AUDIO permission declaration.",
+          "title": "Block Microphone",
+          "description": "Block microphone permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1767,8 +1770,8 @@
         },
         {
           "key": "permissionGuardLocation",
-          "title": "Permission Guard > Location",
-          "description": "Remove coarse, fine, and background location declarations.",
+          "title": "Block Location",
+          "description": "Block location permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1776,8 +1779,8 @@
         },
         {
           "key": "permissionGuardContacts",
-          "title": "Permission Guard > Contacts",
-          "description": "Remove contacts and account access declarations.",
+          "title": "Block Contacts",
+          "description": "Block contacts permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1785,8 +1788,8 @@
         },
         {
           "key": "permissionGuardPhone",
-          "title": "Permission Guard > Phone",
-          "description": "Remove phone-state, call, voicemail, and SIP declarations.",
+          "title": "Block Phone",
+          "description": "Block phone permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1794,8 +1797,8 @@
         },
         {
           "key": "permissionGuardSms",
-          "title": "Permission Guard > SMS",
-          "description": "Remove SMS, MMS, and WAP push declarations.",
+          "title": "Block SMS",
+          "description": "Block SMS permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1803,8 +1806,8 @@
         },
         {
           "key": "permissionGuardCalendar",
-          "title": "Permission Guard > Calendar",
-          "description": "Remove calendar read and write declarations.",
+          "title": "Block Calendar",
+          "description": "Block calendar permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1812,8 +1815,8 @@
         },
         {
           "key": "permissionGuardStorage",
-          "title": "Permission Guard > Storage",
-          "description": "Remove legacy and broad external-storage declarations.",
+          "title": "Block Storage",
+          "description": "Block storage permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1821,8 +1824,8 @@
         },
         {
           "key": "permissionGuardMedia",
-          "title": "Permission Guard > Media (Photos, Music)",
-          "description": "Remove modern photo, video, audio, and selected-photo declarations.",
+          "title": "Block Media",
+          "description": "Block media permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1830,8 +1833,8 @@
         },
         {
           "key": "permissionGuardNotifications",
-          "title": "Permission Guard > Notifications",
-          "description": "Remove POST_NOTIFICATIONS declaration.",
+          "title": "Block Notifications",
+          "description": "Block notification permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1839,8 +1842,8 @@
         },
         {
           "key": "permissionGuardNearbyDevices",
-          "title": "Permission Guard > Nearby devices",
-          "description": "Remove modern nearby-device and Bluetooth scan/connect declarations.",
+          "title": "Block Nearby Devices",
+          "description": "Block nearby-device permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1848,20 +1851,29 @@
         },
         {
           "key": "permissionGuardBluetooth",
-          "title": "Permission Guard > Bluetooth",
-          "description": "Remove legacy Bluetooth declarations.",
+          "title": "Block Legacy Bluetooth",
+          "description": "Block legacy Bluetooth permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
         },
         {
-          "key": "permissionGuardRemoveRelatedFeatures",
-          "title": "Permission Guard > Also remove related hardware features",
-          "description": "Optional and disabled by default. Remove matching uses-feature declarations too; this can make the APK install without required hardware while the app may still expect that hardware.",
+          "key": "permissionGuardRuntimeOverlay",
+          "title": "Enable Universal Overlay runtime controls",
+          "description": "Expose runtime allow/block toggles through the shared Universal Overlay bridge when Universal Overlay is selected.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "permissionGuardEnableUniManagerIntegration",
+          "title": "Enable UniManager integration",
+          "description": "Expose Permission Guard runtime defaults to UniManager when Universal Overlay runtime controls are enabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
