@@ -1,28 +1,19 @@
 ## [nvbangg/awesome-morphe](https://github.com/nvbangg/awesome-morphe)
 
 > [!NOTE]
-> This document contains the project structure and automation workflows for the [Awesome Morphe Website](https://awesome-morphe.vercel.app/).
+> This document describes the project structure, automation workflows, and data-processing logic behind the [Awesome Morphe Website](https://awesome-morphe.vercel.app/).
 
 ## 📂 Project Structure
 
 ```text
 awesome-morphe/
-├── .github/                            # CI/CD workflows & configurations
-├── data/                               # Raw data storage
-├── scripts/                            # Automated scripts for data processing
-│   ├── audit_readme.py                 # Audits repositories and external links in README
-│   ├── discover.py                     # Discovers all bundles from providers
-│   ├── fetch.py                        # Checks for updates and downloads bundles
-│   ├── find_projects.py                # Searches and filters new Morphe repositories
-│   ├── parse.py                        # Extracts patch metadata via bundle-parser
-│   ├── telegram.py                     # Telegram notification service
-│   ├── update.py                       # Compiles raw data into production JSONs
-│   ├── whats_new.py                    # Generates What's New changelog
-│   └── ...                             # Other supporting files
+├── .github/                            # Automation workflows
+├── data/                               # Raw fetched data, source configuration & sync state
+├── scripts/                            # Automated data-processing scripts
 ├── web/                                # Website source code
 │   ├── public/
-│   │   ├── bundles.json                # Metadata of all active bundles and apps
-│   │   └── whats-new.json              # Rolling changelog (last 14 updates)
+│   │   ├── bundles.json                # Metadata of all active bundles, patches & apps
+│   │   └── whats-new.json              # Rolling changelog
 │   └── ...                             # Other supporting files
 ├── CONTRIBUTING.md
 ├── LICENSE
@@ -31,113 +22,144 @@ awesome-morphe/
 
 ## 🤖 Automation Workflows
 
-### 1. [Sync Workflow](../../actions/workflows/ci.yml)
+### [Sync Workflow](../../actions/workflows/ci.yml) (ci.yml)
 
-Unified pipeline for synchronizing bundles, daily/weekly updates, and What's New changelogs:
-- **`default` mode**: Fast sync hourly (skips images, commits only when new bundles are found).
-- **`daily` mode**: Daily sync (fetches images, updates repo info/stars, generates What's New changelog, sends Telegram notifications, and cleans up old workflow runs).
-- **`weekly` mode**: Weekly refresh every week (validates `.mpp` availability for existing bundles, full re-scrape of Google Play metadata).
+Runs hourly at minute 17 or manually. Scheduled runs dispatch the Daily / Weekly workflow when a refresh is due; otherwise, they perform a fast sync.
 
 ```mermaid
 flowchart TD
-    A["Sync Workflow (ci.yml)"] --> B["Determine mode (default / daily / weekly)"]
-    B --> C["Discover bundles (discover.py)"]
-    C --> D["Check updates (fetch.py / --daily / --weekly)"]
-    D --> E{Changes or Daily/Weekly?}
-
-    E -->|Yes| F["Parse bundles (parse.py) + Compile data (update.py)"]
-    E -->|No| G[Skip]
-
-    F --> H{Mode != default?}
-    H -->|Yes| I["Generate changelog (whats_new.py)"]
-    H -->|No| J[Commit & push]
-
-    I --> J
-    J --> K{Changes & Mode != default?}
-    K -->|Yes| L["Send notifications (telegram.py) + Cleanup runs"]
-    K -->|No| M[Complete]
-    L --> M
-    G --> M
+    A["Sync"] --> B{"Daily / weekly refresh due?"}
+    B -->|Yes, scheduled run| C["Dispatch daily.yml"]
+    B -->|No, or manual run| D["Discover + Fetch"]
+    D --> E{"Changes detected?"}
+    E -->|Yes| F["Parse + Update"]
+    F --> G["Commit and push"]
+    E -->|No| H[Complete]
 ```
 
-### 2. [Check Projects Workflow](../../actions/workflows/check-projects.yml) (Weekly on Sunday at 01:00 UTC)
+### [Daily / Weekly Workflow](../../actions/workflows/daily.yml) (daily.yml)
 
-Audits existing README entries and explores newly published Morphe projects:
+Triggered by Sync or manually:
+
+- **`daily`:** Syncs bundles, checks bundle images, and refreshes repository metadata.
+- **`weekly`:** Also checks existing bundle downloads and refreshes all Google Play metadata.
+
+Both modes update public data, generate the changelog, and clean up old workflow runs. Parsing runs only when changes are detected.
 
 ```mermaid
 flowchart TD
-    A["Check Projects (check-projects.yml)"] --> B["Audit README (audit_readme.py)"]
-    B --> C["Find new projects (find_projects.py)"]
-    C --> D{New projects found?}
-
-    D -->|Yes| E["Commit data/projects/new-projects.txt"]
-    D -->|No| F[Complete]
-    E --> F
+    A["Discover + Fetch"] --> B["Parse if changed"]
+    B --> C["Update + Check What's New"]
+    C --> D["Commit and push"]
+    D --> E["Send What's New via Telegram"]
+    E --> F["Clean up old workflow runs"]
 ```
 
-## 🛠️ Usage / Scripts
+### [Check Projects Workflow](../../actions/workflows/check-projects.yml) (check-projects.yml)
 
-All core automation logic is written in Python inside the `scripts/` directory.
+Runs every Sunday at 01:00 UTC or manually. Audits configured README links and finds standalone Morphe projects for manual review.
 
-### `discover.py`
+```mermaid
+flowchart TD
+    A["Audit README links"] --> B["Find projects"]
+    B --> C["Save candidates to `new-projects.txt`"]
+    C --> D["Commit and push if changed"]
+```
 
-Scans community patch repositories and synchronizes them directly into `data/repos.json` (adding new repositories and auto-pruning removed ones).
+## 🛠️ Scripts
+
+Core automation scripts are written in Python under [`scripts/`](./scripts/).
+
+### [`discover.py`](./scripts/discover.py)
+
+Collects bundle sources from the providers below and synchronizes [`data/repos.json`](./data/repos.json).
 
 #### Discovered Sources
 
-- nvbangg's custom sources defined in [`data/discover/custom.json`](data/discover/custom.json)
+- Custom sources in [`data/discover/custom.json`](./data/discover/custom.json)
 - [Morphe Community Patches](https://morphe-patches.software)
 - [Jman's ReVanced Patch Bundles](https://github.com/Jman-Github/ReVanced-Patch-Bundles)
 - [Morphe Archive](https://github.com/rushiforai/morphe-archive)
 
-#### Customization
+#### Custom Configuration
 
-Manually add or remove target repositories in [`data/discover/custom.json`](data/discover/custom.json).
+Add sources to [`data/discover/custom.json`](./data/discover/custom.json), or set `enabled: false` to exclude them.
 
 ```json
 {
-  "https://github.com/owner/repo": {},
+  "https://github.com/owner/repo-to-add": {},
   "https://gitlab.com/owner/repo-to-exclude": {
     "enabled": false
   }
 }
 ```
 
-### `fetch.py`
+### [`fetch.py`](./scripts/fetch.py)
 
-Downloads raw patch lists and bundle metadata from remote sources based on `data/repos.json`.
-It checks for new SHAs, downloads `patches-bundle.json` into `data/bundles/`, the corresponding `.mpp` file into `scripts/bundle-parser/mpp/` to extract the bundle name, and `patches-list.json` (if available) into `data/patches/`. Pending SHA and name updates are written to `scripts/bundle-parser/pending_repos.json`. Updated `.mpp` target paths are written to `scripts/bundle-parser/updated_files.txt` (only generated when there are bundles without a `patches-list.json`). With the `--daily` flag, it also fetches the bundle avatar image SHA for each repo. With the `--weekly` flag, it also validates that the `.mpp` download URL is still active on releases for all existing bundles and automatically excludes dead bundles.
+Checks and downloads bundle updates for repositories in [`data/repos.json`](./data/repos.json).
 
-### `parse.py`
+#### Update Processing
 
-Executes the Kotlin-based `bundle-parser` (adapted from [Jman's ReVanced Patch Bundles](https://github.com/Jman-Github/ReVanced-Patch-Bundles) to fit this project and Morphe) to parse `.mpp` files listed in `scripts/bundle-parser/updated_files.txt` and extract structured patch lists into `data/patches/`. Upon successful parsing, it commits pending commit SHAs and bundle names from `scripts/bundle-parser/pending_repos.json` into `data/repos.json`.
+Checks the content hashes of `patches-bundle.json` on `main` and `dev`. For changed targets, it downloads:
 
-### `update.py`
+- Bundle metadata to [`data/bundles/`](./data/bundles/).
+- The corresponding `.mpp` to [`scripts/bundle-parser/mpp/`](./scripts/bundle-parser/mpp/) to extract the bundle name.
+- `patches-list.json` to [`data/patches/`](./data/patches/), when it can be downloaded and decoded.
 
-Compiles and syncs data from raw JSON files (`data/repos.json`, `data/bundles/`, and `data/patches/`) into the main public database file (`web/public/bundles.json`). Missing metadata is scraped from Google Play (with a fallback to official Morphe data) or fetched via GitHub/GitLab APIs. It automatically cleans up orphaned bundle and patch files from local storage if they no longer exist in `data/repos.json`.
+If the patch list cannot be retrieved, the `.mpp` is queued in [`scripts/bundle-parser/updated_files.txt`](./scripts/bundle-parser/updated_files.txt) for parsing. Pending names and hashes are saved to [`scripts/bundle-parser/pending_repos.json`](./scripts/bundle-parser/pending_repos.json) for [`parse.py`](./scripts/parse.py) to apply.
 
-Supported execution modes:
+HTTP 404/451 responses mark targets unavailable; other request failures generally preserve existing hashes for retry.
 
-- **Default mode**: Compiles data from local JSON files, fetches GitHub/GitLab repository info (stars, avatar, and repository description) for new bundles, and retrieves any missing app metadata (name, icon, or description) from Google Play for newly discovered apps not yet available locally.
-- `--daily`: Same as default, but also refreshes GitHub/GitLab repository info for all bundles and retrieves any missing app metadata from Google Play for all existing apps.
-- `--weekly`: Same as `--daily`, but also forces a full re-scrape of all app metadata from Google Play for all existing applications, overwriting current values.
+#### Execution Modes
 
-### `whats_new.py`
+- **Default:** Checks and downloads bundle updates.
+- **`--daily`:** Also checks the content hashes of `patches-bundle.png`.
+- **`--weekly`:** Includes daily behavior and checks `.mpp` download availability for unchanged bundles, excluding unavailable targets.
 
-Generates `web/public/whats-new.json` (rolling changelog for the website) and `scripts/temp/whats-new.md` (used for Telegram notifications) by comparing current patch data against the previous state in `data/history.json`.
+### [`parse.py`](./scripts/parse.py)
 
-### `telegram.py`
+Runs the Kotlin-based [`bundle-parser`](./scripts/bundle-parser/) (adapted from [Jman's ReVanced Patch Bundles](https://github.com/Jman-Github/ReVanced-Patch-Bundles) to fit this project and Morphe) on `.mpp` files listed in [`scripts/bundle-parser/updated_files.txt`](./scripts/bundle-parser/updated_files.txt), saving patch lists to [`data/patches/`](./data/patches/).
 
-Sends update notifications to a Telegram channel (`TG_CHAT`) using the Telegram Bot API (`TG_TOKEN`). Supports the following usage:
+Applies pending names and hashes from [`scripts/bundle-parser/pending_repos.json`](./scripts/bundle-parser/pending_repos.json) to [`data/repos.json`](./data/repos.json). Queued bundles have their content hashes updated only after successful parsing.
 
-- **Default**: Posts `scripts/temp/whats-new.md` with an auto-generated title (`🔔 What's New (Month Day)`).
-- With `"Custom Title"`: Posts `scripts/temp/whats-new.md` with the specified title.
-- With `"Custom Title" "path/to/file.md"`: Posts the specified markdown file with the specified title.
+### [`update.py`](./scripts/update.py)
 
-### `audit_readme.py`
+Compiles bundle, patch, and app data into [`web/public/bundles.json`](./web/public/bundles.json).
 
-Audits repositories in `data/projects/readme-repos.txt` and external links in `data/projects/readme-links.txt`, checking for broken links, deleted repositories, or archived projects to ensure all README references remain active and healthy.
+#### Bundle Selection
 
-### `find_projects.py`
+Uses GitHub data first, falling back to GitLab if no valid branch is available. Selects `dev` when it is newer than `main` or no valid `main` exists; otherwise, selects `main`.
 
-Discovers and filters new standalone Morphe patch repositories across GitHub, verifies that each candidate contains valid patch bundles, and saves results to `data/projects/new-projects.txt` for review.
+Bundles without valid `main` data are marked prerelease. Patches found only in `dev` are also marked prerelease when compared with `main`. Invalid bundles are excluded.
+
+#### Metadata and Cleanup
+
+Fetches repository metadata from GitHub/GitLab and app metadata from Google Play. Nonempty app names, icons, and descriptions from [`data/official-bundles.json`](./data/official-bundles.json) take priority.
+
+Removes orphaned bundle and patch files and apps no longer supported by any bundle.
+
+#### Execution Modes
+
+- **Default:** Fetches repository metadata for new bundles and missing app metadata.
+- **`--daily`:** Refreshes repository metadata for all bundles and fetches missing app metadata.
+- **`--weekly`:** Includes daily behavior and refreshes Google Play metadata for all apps.
+
+### [`whats_new.py`](./scripts/whats_new.py)
+
+Compares current bundle, app, and patch names with [`data/history.json`](./data/history.json) to identify additions. Saves the latest 14 changelog entries to [`web/public/whats-new.json`](./web/public/whats-new.json), generates [`scripts/temp/whats-new.md`](./scripts/temp/whats-new.md) when there is content to announce, and updates history when a new entry is created.
+
+### [`telegram.py`](./scripts/telegram.py)
+
+Sends update notifications using `TG_TOKEN` and `TG_CHAT`.
+
+- **Default:** Sends [`scripts/temp/whats-new.md`](./scripts/temp/whats-new.md) with the title `🔔 What's New (Month Day)`.
+- **`"Custom Title"`:** Uses a custom title.
+- **`"Custom Title" "path/to/file.md"`:** Uses a custom title and file.
+
+### [`audit_readme.py`](./scripts/audit_readme.py)
+
+Checks repositories in [`data/projects/readme-repos.txt`](./data/projects/readme-repos.txt) and links in [`data/projects/readme-links.txt`](./data/projects/readme-links.txt) for unavailable, archived, renamed, or redirected targets. Reports findings without editing README.
+
+### [`find_projects.py`](./scripts/find_projects.py)
+
+Searches GitHub for standalone Morphe projects, excluding known repositories and those with `patches-bundle.json` on `main` or `dev`. Candidates must have a README. Saves results to [`data/projects/new-projects.txt`](./data/projects/new-projects.txt) for review.
