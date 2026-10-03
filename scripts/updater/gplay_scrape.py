@@ -82,11 +82,11 @@ def process(apps_dict: dict, mode: str) -> None:
                             if current_app.get(field) is None:
                                 current_app[field] = ""
                     elif is_404:
-                        for field in ("name", "iconUrl", "description", "category"):
+                        current_app["minInstalls"] = 0
+                        current_app["category"] = ""
+                        for field in ("name", "iconUrl", "description"):
                             if current_app.get(field) is None:
                                 current_app[field] = ""
-                        if not current_app.get("minInstalls"):
-                            current_app["minInstalls"] = 0
                 except Exception as error:
                     print(f"[-] Error processing {package_name}: {error}")
     print(
