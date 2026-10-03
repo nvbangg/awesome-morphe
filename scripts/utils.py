@@ -70,7 +70,16 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[st
             result_headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 
     github_token = os.environ.get("GITHUB_TOKEN")
-    if is_github and github_token and "Authorization" not in result_headers:
+    is_release_download = (
+        "/releases/download/" in parsed_url.path
+        or hostname == "objects.githubusercontent.com"
+    )
+    if (
+        is_github
+        and github_token
+        and not is_release_download
+        and "Authorization" not in result_headers
+    ):
         result_headers["Authorization"] = f"Bearer {github_token}"
 
     return result_headers

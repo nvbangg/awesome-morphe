@@ -118,26 +118,46 @@ def process_repo_branch(
             bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
             if bundle_file.exists():
                 bundle_data = load_json(bundle_file, {})
-                mpp_url = bundle_data.get("download_url")
-                if mpp_url and not get_remote_file_hash(
-                    mpp_url, source, fallback="exists"
-                ):
-                    print(
-                        f"[-] {repo_url} ({branch}): `.mpp` file is no longer available"
-                    )
-                    cleanup_target_files(file_prefix)
-                    return (
-                        source,
-                        repo,
-                        branch,
-                        remote_sha,
-                        None,
-                        False,
-                        True,
-                        True,
-                        None,
-                        None,
-                    )
+                if mpp_url := bundle_data.get("download_url"):
+                    try:
+                        mpp_exists = bool(
+                            get_remote_file_hash(mpp_url, source, fallback="exists")
+                        )
+                    except Exception as error:
+                        error_message = (
+                            f"{repo_url} ({branch}): Failed to verify `.mpp`: {error}"
+                        )
+                        print(f"[-] {error_message}")
+                        return (
+                            source,
+                            repo,
+                            branch,
+                            current_sha,
+                            None,
+                            False,
+                            False,
+                            False,
+                            None,
+                            error_message,
+                        )
+
+                    if not mpp_exists:
+                        print(
+                            f"[-] {repo_url} ({branch}): `.mpp` file is no longer available"
+                        )
+                        cleanup_target_files(file_prefix)
+                        return (
+                            source,
+                            repo,
+                            branch,
+                            remote_sha,
+                            None,
+                            False,
+                            True,
+                            True,
+                            None,
+                            None,
+                        )
 
         return (
             source,
