@@ -16,12 +16,18 @@ def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:
             return None, False
         icon_url = normalize_image_url(result.get("icon"))
         desc = result.get("summary") or ""
+        categories = result.get("categories") or []
+        category = (
+            result.get("genre")
+            or (categories[0].get("name") if categories else "")
+            or ""
+        )
         details = {
             "name": result.get("title"),
             "iconUrl": icon_url,
             "description": desc,
             "minInstalls": result.get("minInstalls") or 0,
-            "category": result.get("genre") or "",
+            "category": category,
         }
         return details, False
     except NotFoundError:
