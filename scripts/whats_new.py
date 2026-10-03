@@ -538,6 +538,7 @@ def main() -> None:
         )
         print(f"[-] {warning_message}")
         append_step_summary(f"### ⚠️ What's new\n- {warning_message}")
+        set_step_output("success", "true")
         return
 
     if markdown_str := generate_markdown(
