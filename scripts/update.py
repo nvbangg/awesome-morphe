@@ -85,9 +85,22 @@ def main() -> int:
             return (1, 0, -stars, -updated_at, name, repo_lower)
         return (2, 0, -updated_at, -stars, name, repo_lower)
 
-    sorted_keys = sorted(bundle_sources.keys(), key=get_bundle_sort_key)
+    hot_ranked_keys = sorted(bundle_sources.keys(), key=get_bundle_sort_key)
+    bundle_hot_ranks = {
+        key: rank_index for rank_index, key in enumerate(hot_ranked_keys)
+    }
+
+    sorted_keys = sorted(
+        bundle_sources.keys(),
+        key=lambda sort_key: (
+            existing_bundles.get(sort_key, {}).get(
+                "firstSeen", bundle_sources[sort_key].get("updatedAt", 0)
+            ),
+            sort_key.lower(),
+        ),
+    )
     final_bundles = []
-    for rank_index, key in enumerate(sorted_keys):
+    for key in sorted_keys:
         bundle = bundle_sources[key]
         is_official = key.lower() in official_ranks
         ordered_bundle = {
@@ -96,13 +109,13 @@ def main() -> int:
             "name": bundle.get("name") or "",
             "repoDescription": html.unescape(bundle.get("repoDescription") or ""),
             "avatarUrl": bundle.get("avatarUrl") or "",
+            "hotRank": bundle_hot_ranks[key],
             "stars": bundle.get("stars") or 0,
             "updatedAt": bundle.get("updatedAt") or 0,
             "firstSeen": existing_bundles.get(key, {}).get("firstSeen", now_ms),
             "appFirstSeen": bundle.get("appFirstSeen") or {},
             "appUpdates": bundle.get("appUpdates") or {},
             "patches": bundle.get("patches") or [],
-            "hotRank": rank_index,
         }
         if is_official:
             ordered_bundle["isOfficial"] = True
