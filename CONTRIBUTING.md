@@ -163,3 +163,53 @@ Checks repositories in [`data/projects/readme-repos.txt`](./data/projects/readme
 ### [`find_projects.py`](./scripts/find_projects.py)
 
 Searches GitHub for standalone Morphe projects, excluding known repositories and those with `patches-bundle.json` on `main` or `dev`. Candidates must have a README. Saves results to [`data/projects/new-projects.txt`](./data/projects/new-projects.txt) for review.
+
+## 🌐 Website Logic
+
+The website loads its bundle data from [`web/public/bundles.json`](./web/public/bundles.json) and changelog from [`web/public/whats-new.json`](./web/public/whats-new.json).
+
+### Sorting
+
+#### Apps
+
+- **Default:** Most Google Play installs, then most patches and alphabetical order. Universal patches are always listed last.
+- Other options sort by newest, recently updated, most patches, or alphabetical order, falling back to the default order when values are equal.
+
+#### Bundles
+
+- **Default:** Official bundles follow the Hot ranking from [Morphe Community Patches](https://morphe-patches.software/), with `MorpheApp/morphe-patches` first. Other bundles updated within 30 days are sorted by stars, then last update; older bundles are sorted by last update, then stars. [`update.py`](./scripts/update.py) stores the final order as `hotRank`.
+- Other options sort by newest, recently updated, stars, app count, patch count, or alphabetical order. Ties use the default rank.
+
+#### Patches
+
+Patches first seen within the last seven days are shown first, with newer patches ahead of older ones. Other patches keep their original order.
+
+### Search and Filters
+
+Search ignores case, accents, spaces, and punctuation. All search words must match:
+
+- Apps are searched by name, package name, and description.
+- Bundles are searched by name, source, and repository.
+- Detail views also search app, bundle, patch, and patch-option information.
+
+App filters use Google Play categories, while bundle filters separate official and unofficial sources.
+
+### Status Labels
+
+- **New:** First discovered within the last seven days.
+- **Pre-release:** Available only from prerelease bundle or patch data. An app is prerelease when all its patches are prerelease.
+- **Unofficial:** The bundle is not included in the official Morphe source list.
+- **Archived:** The source repository is archived.
+- **off:** The patch is disabled by default.
+
+### URL Navigation
+
+The URL stores the active tab, category, and sorting in its hash, such as `#apps:updated` or `#bundles:official:stars`. Query parameters open specific content directly:
+
+- `?app=package.name` opens an app.
+- `?github=owner/repo` or `?gitlab=owner/repo` opens a bundle.
+- `?patch=patch-name` searches within the opened app or bundle.
+
+### Test Bundle
+
+Test Bundle accepts a GitHub or GitLab repository URL and previews valid `patches-list.json` data from its `main` and `dev` branches. It does not parse `.mpp` files or add the repository to the public database.
