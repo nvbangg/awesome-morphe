@@ -38,7 +38,7 @@ jobs:
       - name: Fetch new bundles
         id: fetch
         run: |
-          python scripts/fetch.py --daily
+          python scripts/fetch.py --${{ inputs.mode }}
 
           if [ -n "$(git status --porcelain)" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT

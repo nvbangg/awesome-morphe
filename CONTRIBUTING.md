@@ -36,13 +36,13 @@ awesome-morphe/
 Unified pipeline for synchronizing bundles, daily/weekly updates, and What's New changelogs:
 - **`default` mode**: Fast sync hourly (skips images, commits only when new bundles are found).
 - **`daily` mode**: Daily sync (fetches images, updates repo info/stars, generates What's New changelog, sends Telegram notifications, and cleans up old workflow runs).
-- **`weekly` mode**: Weekly refresh every week (full re-scrape of Google Play metadata).
+- **`weekly` mode**: Weekly refresh every week (validates `.mpp` availability for existing bundles, full re-scrape of Google Play metadata).
 
 ```mermaid
 flowchart TD
     A["Sync Workflow (ci.yml)"] --> B["Determine mode (default / daily / weekly)"]
     B --> C["Discover bundles (discover.py)"]
-    C --> D["Check updates (fetch.py / fetch.py --daily)"]
+    C --> D["Check updates (fetch.py / --daily / --weekly)"]
     D --> E{Changes or Daily/Weekly?}
 
     E -->|Yes| F["Parse bundles (parse.py) + Compile data (update.py)"]
@@ -106,7 +106,7 @@ Manually add or remove target repositories in [`data/discover/custom.json`](data
 ### `fetch.py`
 
 Downloads raw patch lists and bundle metadata from remote sources based on `data/repos.json`.
-It checks for new SHAs, downloads `patches-bundle.json` into `data/bundles/`, the corresponding `.mpp` file into `scripts/bundle-parser/mpp/` to extract the bundle name, and `patches-list.json` (if available) into `data/patches/`. Pending SHA and name updates are written to `scripts/bundle-parser/pending_repos.json`. Updated `.mpp` target paths are written to `scripts/bundle-parser/updated_files.txt` (only generated when there are bundles without a `patches-list.json`). With the `--daily` flag, it also fetches the bundle avatar image SHA for each repo.
+It checks for new SHAs, downloads `patches-bundle.json` into `data/bundles/`, the corresponding `.mpp` file into `scripts/bundle-parser/mpp/` to extract the bundle name, and `patches-list.json` (if available) into `data/patches/`. Pending SHA and name updates are written to `scripts/bundle-parser/pending_repos.json`. Updated `.mpp` target paths are written to `scripts/bundle-parser/updated_files.txt` (only generated when there are bundles without a `patches-list.json`). With the `--daily` flag, it also fetches the bundle avatar image SHA for each repo. With the `--weekly` flag, it also validates that the `.mpp` download URL is still active on releases for all existing bundles and automatically excludes dead bundles.
 
 ### `parse.py`
 

@@ -31,6 +31,12 @@ from utils import (
 )
 
 
+def cleanup_target_files(file_prefix: str) -> None:
+    (BUNDLES_DIR / f"{file_prefix}.json").unlink(missing_ok=True)
+    (PATCHES_DIR / f"{file_prefix}.json").unlink(missing_ok=True)
+    (MPP_DIR / f"{file_prefix}.mpp").unlink(missing_ok=True)
+
+
 def extract_mpp_name(mpp_file: Path) -> str | None:
     with contextlib.suppress(Exception), zipfile.ZipFile(mpp_file, "r") as zip_file:
         manifest_text = zip_file.read("META-INF/MANIFEST.MF").decode("utf-8")
@@ -77,7 +83,11 @@ def get_image_sha(source: str, repo: str) -> str | None:
 
 
 def process_repo_branch(
-    source: str, repo: str, branch: str, current_sha: str | None
+    source: str,
+    repo: str,
+    branch: str,
+    current_sha: str | None,
+    weekly: bool = False,
 ) -> tuple[
     str, str, str, str | None, str | None, bool, bool, bool, str | None, str | None
 ]:
@@ -100,7 +110,35 @@ def process_repo_branch(
             error_message,
         )
 
+    owner, repo_name = repo.split("/", 1)
+    file_prefix = f"{owner}~{repo_name}~{branch}"
+
     if remote_sha == current_sha:
+        if weekly and current_sha:
+            bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
+            if bundle_file.exists():
+                bundle_data = load_json(bundle_file, {})
+                mpp_url = bundle_data.get("download_url")
+                if mpp_url and not get_remote_file_hash(
+                    mpp_url, source, fallback="exists"
+                ):
+                    print(
+                        f"[-] {repo_url} ({branch}): `.mpp` file is no longer available"
+                    )
+                    cleanup_target_files(file_prefix)
+                    return (
+                        source,
+                        repo,
+                        branch,
+                        remote_sha,
+                        None,
+                        False,
+                        True,
+                        True,
+                        None,
+                        None,
+                    )
+
         return (
             source,
             repo,
@@ -132,9 +170,6 @@ def process_repo_branch(
             None,
             None,
         )
-
-    owner, repo_name = repo.split("/", 1)
-    file_prefix = f"{owner}~{repo_name}~{branch}"
 
     try:
         bundle_text = fetch(raw_bundle_url)
@@ -185,6 +220,7 @@ def process_repo_branch(
         )
         if mpp_source != source or mpp_repo.lower() != repo.lower():
             print(f"[-] {repo_url} ({branch}): Invalid `download_url`")
+            cleanup_target_files(file_prefix)
             return (
                 source,
                 repo,
@@ -213,6 +249,7 @@ def process_repo_branch(
                 print(
                     f"[-] {repo_url} ({branch}): `.mpp` file not found or taken down (HTTP {error.code})"
                 )
+                cleanup_target_files(file_prefix)
                 return (
                     source,
                     repo,
@@ -277,7 +314,7 @@ def process_image(
     return source, repo, remote_sha, True, None
 
 
-def fetch_all_repos(daily: bool = False) -> None:
+def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     repos_data = load_json(REPOS_JSON_PATH, {})
 
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
@@ -286,6 +323,7 @@ def fetch_all_repos(daily: bool = False) -> None:
 
     tasks = []
     image_tasks = []
+    is_daily = daily or weekly
     for repo, repo_metadata in repos_data.items():
         if not isinstance(repo_metadata, dict):
             continue
@@ -294,7 +332,7 @@ def fetch_all_repos(daily: bool = False) -> None:
                 for branch in DEFAULT_BRANCHES:
                     current_sha = source_metadata.get(branch)
                     tasks.append((source, repo, branch, current_sha))
-                if daily:
+                if is_daily:
                     image_tasks.append((source, repo, source_metadata.get("image")))
 
     print(f"Processing {len(tasks)} branch targets...")
@@ -305,7 +343,9 @@ def fetch_all_repos(daily: bool = False) -> None:
 
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
         futures = [
-            executor.submit(process_repo_branch, source, repo, branch, current_sha)
+            executor.submit(
+                process_repo_branch, source, repo, branch, current_sha, weekly
+            )
             for source, repo, branch, current_sha in tasks
         ]
 
@@ -356,7 +396,7 @@ def fetch_all_repos(daily: bool = False) -> None:
                 if not has_patch_list and has_mpp:
                     updated_files.append(f"mpp/{file_prefix}.mpp")
 
-    if daily:
+    if is_daily:
         print(f"Processing {len(image_tasks)} image targets...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
             image_futures = [
@@ -396,8 +436,13 @@ def fetch_all_repos(daily: bool = False) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fetch Morphe patches bundles")
     parser.add_argument("--daily", action="store_true", help="Daily sync")
+    parser.add_argument(
+        "--weekly",
+        action="store_true",
+        help="Weekly sync to check bundles availability",
+    )
     args = parser.parse_args()
-    fetch_all_repos(daily=args.daily)
+    fetch_all_repos(daily=args.daily, weekly=args.weekly)
 
 
 if __name__ == "__main__":
