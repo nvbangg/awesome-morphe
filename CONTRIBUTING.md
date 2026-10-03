@@ -213,3 +213,48 @@ The URL stores the active tab, category, and sorting in its hash, such as `#apps
 ### Test Bundle
 
 Test Bundle accepts a GitHub or GitLab repository URL and previews valid `patches-list.json` data from its `main` and `dev` branches. It does not parse `.mpp` files or add the repository to the public database.
+
+## 💻 Local Development
+
+Run commands from the repository root unless stated otherwise.
+
+### Website
+
+```sh
+cd web
+npm ci
+npm run dev
+```
+
+Open the local URL shown in the terminal.
+
+### Data Scripts
+
+```sh
+python -m pip install -e scripts/
+python scripts/discover.py
+python scripts/fetch.py
+python scripts/parse.py
+python scripts/update.py
+```
+
+Set `GITHUB_TOKEN` for authenticated GitHub requests. Parsing `.mpp` files requires JDK 21 and GitHub Packages credentials: `GITHUB_ACTOR` and `GITHUB_TOKEN`, or Gradle properties `gpr.user` and `gpr.key`.
+
+### Checks
+
+Run website checks from [`web/`](./web/):
+
+```sh
+npm run check
+npm run build
+```
+
+Run Python checks from the repository root:
+
+```sh
+python -m pip install ruff
+ruff check --fix scripts/
+ruff format scripts/
+```
+
+Lint and formatting commands may modify files.
