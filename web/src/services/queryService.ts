@@ -30,17 +30,6 @@ export function compareUniversalApp(
   return 0;
 }
 
-export function compareAppFallback(
-  appItemA: { patchCount?: number; appName: string; packageName?: string },
-  appItemB: { patchCount?: number; appName: string; packageName?: string },
-): number {
-  return (
-    (appItemB.patchCount ?? 0) - (appItemA.patchCount ?? 0) ||
-    appItemA.appName.localeCompare(appItemB.appName) ||
-    (appItemA.packageName || "").localeCompare(appItemB.packageName || "")
-  );
-}
-
 export function compareDefaultApp(
   appItemA: {
     packageName?: string;
@@ -58,7 +47,9 @@ export function compareDefaultApp(
   return (
     compareUniversalApp(appItemA, appItemB) ||
     appItemB.minInstalls - appItemA.minInstalls ||
-    compareAppFallback(appItemA, appItemB)
+    (appItemB.patchCount ?? 0) - (appItemA.patchCount ?? 0) ||
+    appItemA.appName.localeCompare(appItemB.appName) ||
+    (appItemA.packageName || "").localeCompare(appItemB.packageName || "")
   );
 }
 
