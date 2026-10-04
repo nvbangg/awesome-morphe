@@ -25,3 +25,4 @@ https://github.com/MorpheApp/morphe-manager/blob/main/docs/README.md
 https://github.com/MorpheApp/morphe-desktop/blob/main/docs/documentation.md
 https://github.com/MorpheApp/morphe-documentation/blob/main/docs/morphe-development/README.md
 https://drnx64.github.io/morphe-track-patches/
+https://www.reddit.com/r/MorpheApp/comments/1wuusyp/the_first_wave_of_sideloading_restrictions_has/

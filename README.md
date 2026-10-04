@@ -71,6 +71,7 @@
 - [Regarding the Morphe DMCA](https://www.reddit.com/r/MorpheApp/comments/1s3w1er/regarding_the_morphe_dmca/)
 - [How to install and use Shizuku](https://github.com/thedjchi/Shizuku/wiki)
 - [Morphe Workspace - A collection of Android apps that complement Morphe](https://www.reddit.com/r/MorpheApp/comments/1wiowwa/morphe_workspace_a_collection_of_android_apps/)
+- [All solutions to bypass Android sideloading restrictions](https://www.reddit.com/r/MorpheApp/comments/1wuusyp/the_first_wave_of_sideloading_restrictions_has/)
 
 ## <a id="patch-indexes"></a> 🔍 Patch Indexes
 
@@ -96,6 +97,7 @@
 [![builder-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=nvbangg&repo=builder-for-morphe&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/nvbangg/builder-for-morphe)
 [![jadx-morphe](https://github-stats-extended.vercel.app/api/pin?username=hoo-dles&repo=jadx-morphe&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/hoo-dles/jadx-morphe)
 [![morphe-bytecode](https://github-stats-extended.vercel.app/api/pin?username=crimera&repo=morphe-bytecode&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/crimera/morphe-bytecode)
+[![Patchium](https://github-stats-extended.vercel.app/api/pin?username=GROWNUPS&repo=Patchium&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GROWNUPS/Patchium)
 [![morphe-mcp](https://github-stats-extended.vercel.app/api/pin?username=brosssh&repo=morphe-mcp&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/brosssh/morphe-mcp)
 [![morphe_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=morphe_feature_flags&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/morphe_feature_flags)
 [![morphe-fetch](https://github-stats-extended.vercel.app/api/pin?username=Akash-Sriram&repo=morphe-fetch&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Akash-Sriram/morphe-fetch)
