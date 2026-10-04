@@ -1,5 +1,5 @@
 {
-    "version": "3.49.0",
+    "version": "3.51.0",
     "patches": [
         {
             "name": "NewX: Remove ads",
@@ -320,6 +320,86 @@
                 }
             ],
             "options": []
+        },
+        {
+            "name": "NewX: Clone",
+            "description": "Changes the package name and the app name. This allows you to install the patched X alongside the original X or other patched X.",
+            "default": false,
+            "dependencies": [],
+            "compatiblePackages": [
+                {
+                    "packageName": "com.twitter.android",
+                    "name": "NewX",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": [],
+                    "targets": [
+                        {
+                            "version": "12.27.0-prod.01",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.28.0-prod.01",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.29.1-prod.01",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.30.0-prod.01",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.31.0-alpha.02",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.31.0-alpha.04",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "packageName",
+                    "title": "Package name",
+                    "description": "A new package name for the patched app.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "com.twitter.android.piko",
+                    "values": null
+                },
+                {
+                    "key": "appName",
+                    "title": "App name",
+                    "description": "A new app name (label). Entering \"X\" will skip changing the app name.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "X Piko",
+                    "values": null
+                }
+            ]
         },
         {
             "name": "NewX: Crash logs",
@@ -1430,6 +1510,70 @@
             "description": "Lets you choose whether profile posts open sorted by the most recent or popular posts.",
             "default": true,
             "dependencies": [
+                "BytecodePatch"
+            ],
+            "compatiblePackages": [
+                {
+                    "packageName": "com.twitter.android",
+                    "name": "NewX",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": [],
+                    "targets": [
+                        {
+                            "version": "12.27.0-prod.01",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.28.0-prod.01",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.29.1-prod.01",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.30.0-prod.01",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.31.0-alpha.02",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "12.31.0-alpha.04",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "NewX: Customize profile tabs",
+            "description": "Reorder and hide the tabs shown on profile screens.",
+            "default": true,
+            "dependencies": [
+                "BytecodePatch",
                 "BytecodePatch"
             ],
             "compatiblePackages": [
