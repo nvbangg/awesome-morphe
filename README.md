@@ -1,4 +1,4 @@
-# <img src="web/public/assets/favicon.svg" width="30" height="30"/> [Awesome Morphe](https://github.com/nvbangg/awesome-morphe)
+<h1 align="center"><img src="web/public/assets/favicon.svg" width="30" height="30"/> <a href="https://github.com/nvbangg/awesome-morphe">Awesome Morphe</a></h1>
 
 ### 🔗 Jump to:
 
