@@ -92,19 +92,19 @@
 
 ## <a id="projects"></a> 🛠️ Other Projects
 
-[![helper-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=rushiranpise&repo=helper-for-morphe&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/rushiranpise/helper-for-morphe)
-[![morphe-ai](https://github-stats-extended.vercel.app/api/pin?username=Paresh-Maheshwari&repo=morphe-ai&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Paresh-Maheshwari/morphe-ai)
-[![builder-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=nvbangg&repo=builder-for-morphe&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/nvbangg/builder-for-morphe)
-[![jadx-morphe](https://github-stats-extended.vercel.app/api/pin?username=hoo-dles&repo=jadx-morphe&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/hoo-dles/jadx-morphe)
-[![morphe-bytecode](https://github-stats-extended.vercel.app/api/pin?username=crimera&repo=morphe-bytecode&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/crimera/morphe-bytecode)
-[![Patchium](https://github-stats-extended.vercel.app/api/pin?username=GROWNUPS&repo=Patchium&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GROWNUPS/Patchium)
-[![morphe-mcp](https://github-stats-extended.vercel.app/api/pin?username=brosssh&repo=morphe-mcp&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/brosssh/morphe-mcp)
-[![morphe_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=morphe_feature_flags&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/morphe_feature_flags)
-[![morphe-fetch](https://github-stats-extended.vercel.app/api/pin?username=Akash-Sriram&repo=morphe-fetch&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Akash-Sriram/morphe-fetch)
-[![Universal-ReVanced-Manager](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Universal-ReVanced-Manager&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Universal-ReVanced-Manager)
-[![Awesome-ReVanced](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Awesome-ReVanced&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Awesome-ReVanced)
-[![Revancify-Xisr](https://github-stats-extended.vercel.app/api/pin?username=Xisrr1&repo=Revancify-Xisr&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Xisrr1/Revancify-Xisr)
-[![Enhancify](https://github-stats-extended.vercel.app/api/pin?username=Graywizard888&repo=Enhancify&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Graywizard888/Enhancify)
+[![rushiranpise/helper-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=rushiranpise&repo=helper-for-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/rushiranpise/helper-for-morphe)
+[![Paresh-Maheshwari/morphe-ai](https://github-stats-extended.vercel.app/api/pin?username=Paresh-Maheshwari&repo=morphe-ai&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Paresh-Maheshwari/morphe-ai)
+[![nvbangg/builder-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=nvbangg&repo=builder-for-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/nvbangg/builder-for-morphe)
+[![hoo-dles/jadx-morphe](https://github-stats-extended.vercel.app/api/pin?username=hoo-dles&repo=jadx-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/hoo-dles/jadx-morphe)
+[![crimera/morphe-bytecode](https://github-stats-extended.vercel.app/api/pin?username=crimera&repo=morphe-bytecode&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/crimera/morphe-bytecode)
+[![GROWNUPS/Patchium](https://github-stats-extended.vercel.app/api/pin?username=GROWNUPS&repo=Patchium&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GROWNUPS/Patchium)
+[![brosssh/morphe-mcp](https://github-stats-extended.vercel.app/api/pin?username=brosssh&repo=morphe-mcp&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/brosssh/morphe-mcp)
+[![jpa102/morphe_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=morphe_feature_flags&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/morphe_feature_flags)
+[![Akash-Sriram/morphe-fetch](https://github-stats-extended.vercel.app/api/pin?username=Akash-Sriram&repo=morphe-fetch&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Akash-Sriram/morphe-fetch)
+[![Jman-Github/Universal-ReVanced-Manager](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Universal-ReVanced-Manager&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Universal-ReVanced-Manager)
+[![Jman-Github/Awesome-ReVanced](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Awesome-ReVanced&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Awesome-ReVanced)
+[![Xisrr1/Revancify-Xisr](https://github-stats-extended.vercel.app/api/pin?username=Xisrr1&repo=Revancify-Xisr&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Xisrr1/Revancify-Xisr)
+[![Graywizard888/Enhancify](https://github-stats-extended.vercel.app/api/pin?username=Graywizard888&repo=Enhancify&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Graywizard888/Enhancify)
 
 ## ⬇️ Pre-patched sources
 
