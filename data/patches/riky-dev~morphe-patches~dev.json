@@ -1,7 +1,61 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "patches": [
+    {
+      "name": "Bypass effects region restriction",
+      "description": "Fixes effects/transitions not loading (Shark WAF block) by spoofing device_platform from \"android\" to \"windows\" in effect API requests.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.lemon.lvoverseas",
+          "name": "CapCut",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00C4CC",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "CapCut network tunnel",
+      "description": "Opt-in CapCut-only WireGuard tunnel. Import your own wg-quick .conf (paste or file) in-app; traffic is scoped to CapCut only. Requires Android VPN consent once. Independent of Unlock Premium.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.lemon.lvoverseas",
+          "name": "CapCut",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00C4CC",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Hide ads",
       "description": "Spoofs premium/unlocked state to disable ad-gated behavior.",
