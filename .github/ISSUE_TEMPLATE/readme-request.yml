@@ -1,0 +1,41 @@
+name: README Request
+description: Request to add, remove, or update a README resource or project
+title: "[README Request] "
+labels: ["readme-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for submitting a request! Use this template to add, remove, or update a README resource or project.
+  - type: dropdown
+    id: action
+    attributes:
+      label: Action
+      options:
+        - Add
+        - Remove
+        - Update
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: Link to the resource or project
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: Describe the resource or project, the reason for removal, or the requested updates
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: The resource or project is relevant to Morphe
+        - label: The provided URL is publicly accessible

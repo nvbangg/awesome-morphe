@@ -19,6 +19,7 @@
 ### 📬 Contributing
 
 - To add or remove a bundle source, please submit a [Bundle Request](https://github.com/nvbangg/awesome-morphe/issues/new?template=bundle-request.yml).
+- To add, remove, or update a resource or project in the README, please submit a [README Request](https://github.com/nvbangg/awesome-morphe/issues/new?template=readme-request.yml).
 - For any other issues or suggestions, feel free to [open a new issue](https://github.com/nvbangg/awesome-morphe/issues/new).
 - Contributions and [pull requests](https://github.com/nvbangg/awesome-morphe/pulls) are always welcome!
 
