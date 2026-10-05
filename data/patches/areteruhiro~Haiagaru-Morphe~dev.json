@@ -1,65 +1,6 @@
 {
-    "version": "1.6.10",
+    "version": "1.7.0",
     "patches": [
-        {
-            "name": "Migrate ChMate data with Shizuku",
-            "description": "Optionally copy shared data from the original ChMate package using Shizuku.",
-            "default": false,
-            "dependencies": [
-                "Change ChMate package name",
-                "BytecodePatch"
-            ],
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.226 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.241",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.243 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 24,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
         {
             "name": "Change ChMate package name",
             "description": "Change ChMate's package name, app name, icon, and version code.",
@@ -120,7 +61,7 @@
                 {
                     "key": "packageName",
                     "title": "Package name",
-                    "description": "Use the original ChMate package name as the prefix, followed by a custom suffix, to keep ChMate's startup class-name decoding compatible.",
+                    "description": "Choose a valid Android package name. ChMate's package-dependent startup values are adjusted during patching.",
                     "required": true,
                     "type": "kotlin.String",
                     "default": "jp.co.airfront.android.a2chMate.haiagaru",
@@ -156,8 +97,67 @@
             ]
         },
         {
+            "name": "Migrate ChMate data with Shizuku",
+            "description": "Optionally copy shared data from the original ChMate package using Shizuku.",
+            "default": false,
+            "dependencies": [
+                "Change ChMate package name",
+                "BytecodePatch"
+            ],
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.co.airfront.android.a2chMate",
+                    "name": "ChMate",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#607D8B",
+                    "signatures": [
+                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
+                    ],
+                    "targets": [
+                        {
+                            "version": "0.8.10.191 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 21,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.226 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.241",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.242 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.243 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 24,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Haiagaru",
-            "description": "Ports the Haiagaru ChMate module, including its in-app settings.",
+            "description": "Haiagaruの機能とアプリ内設定を追加します。ChMate 0.8.10.243 devは一部機能が未実装のため非推奨です（パッチ適用は可能）。",
             "default": true,
             "dependencies": [
                 "BytecodePatch"

@@ -6,7 +6,7 @@
   "patches": [
     {
       "name": "Disable analytics",
-      "description": "Stops Pinterest's usage-event and performance uploads and AppsFlyer tracking. A switch and Pause restore those runtime paths. Firebase Analytics is disabled in the manifest and stays disabled until you patch again without this patch. Sign-in, pin requests and Firebase push components are preserved.",
+      "description": "Stops Pinterest's usage-event and performance uploads, AppsFlyer tracking, Bugsnag crash reports and the recommendations Pinterest publishes to Google Engage. A switch and Pause restore those runtime paths. Firebase Analytics is disabled in the manifest and stays disabled until you patch again without this patch. Sign-in, pin requests and Firebase push components are preserved.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -95,7 +95,7 @@
     },
     {
       "name": "Download pins",
-      "description": "Downloads a pin or selected visible grid pins using original images and the highest-resolution MP4 Pinterest supplies. Saves in Downloads on Android 10 or newer, or asks for a save location on Android 9. Turn it off in HushPinterest settings at any time.",
+      "description": "Downloads a pin or selected visible grid pins using original images and the highest-resolution MP4 Pinterest supplies. Saves in Downloads on Android 10 or newer, or asks for a save location on Android 9. The pin menu can also copy that media's link. Turn it off in HushPinterest settings at any time.",
       "category": "Downloads",
       "use": false,
       "dependencies": [
@@ -227,8 +227,52 @@
     },
     {
       "name": "Hide ads",
-      "description": "Removes promoted pins from the home feed, search, related pins and boards, and hides Pinterest's ad-only panels. Turn it off in HushPinterest settings at any time.",
+      "description": "Removes promoted pins from the home feed, search, related pins and boards, and hides Pinterest's ad-only panels. Google's ad SDK isn't started when Pinterest opens. Turn it off in HushPinterest settings at any time.",
       "category": "Ads",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.38.0",
+          "14.25.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.38.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14388010
+              }
+            },
+            {
+              "version": "14.25.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14258020
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide advertising ID",
+      "description": "Pinterest and the ad and tracking code inside it read an all-zero advertising ID with ad tracking limited, the same answer Android gives after you delete your ad ID. A switch and Pause hand back the real ID.",
+      "category": "Privacy",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -359,7 +403,51 @@
     },
     {
       "name": "Hide navigation buttons",
-      "description": "Adds separate switches for the Create and Updates navigation buttons. Home, Search and Profile remain available.",
+      "description": "Adds separate switches for the Create, Updates and Search navigation buttons. Home and Profile remain available.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.38.0",
+          "14.25.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.38.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14388010
+              }
+            },
+            {
+              "version": "14.25.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14258020
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide save toasts",
+      "description": "Stops the pop-up Pinterest shows after you save a pin, such as \"Saved to\" your board or the suggestion to follow the pin's creator. The pin is still saved.",
       "category": "Interface",
       "use": false,
       "dependencies": [
@@ -586,6 +674,50 @@
         "BytecodePatch",
         "HushPinterest settings",
         "ResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.38.0",
+          "14.25.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.38.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14388010
+              }
+            },
+            {
+              "version": "14.25.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14258020
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Original-quality images",
+      "description": "Has Pinterest's image model pick the original image before its large size wherever Pinterest supplied one. Uses more data.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
