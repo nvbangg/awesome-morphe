@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.6.0-dev.23",
+  "version": "0.6.0-dev.24",
   "patches": [
     {
       "name": "Disable AppsFlyer tracking",
@@ -169,6 +169,40 @@
       "options": []
     },
     {
+      "name": "Disable in-app share sheet",
+      "description": "Use the Android share sheet instead of Pinterest's own, so shares go through the system chooser rather than a Pinterest-drawn menu.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pinterest",
+          "name": "Pinterest",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.38.0",
+              "versionCodes": {
+                "ARM64_V8A": 14388010,
+                "ARMEABI_V7A": 14388010,
+                "X86_64": 14388010,
+                "X86": 14388010
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable rating prompts",
       "description": "Skip ADM's automatic rating prompt. The menu item that opens the same dialog on request is left intact.",
       "default": true,
@@ -201,6 +235,40 @@
       "options": []
     },
     {
+      "name": "Download pin from long press",
+      "description": "Add a Download action to the pin long-press menu, so a pin's image can be saved without opening the pin.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pinterest",
+          "name": "Pinterest",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.38.0",
+              "versionCodes": {
+                "ARM64_V8A": 14388010,
+                "ARMEABI_V7A": 14388010,
+                "X86_64": 14388010,
+                "X86": 14388010
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Force Walk & Win steps to 10000",
       "description": "Make Djezzy's Walk & Win counter read 10,000 with no walk at all, by forcing the stored step total itself rather than the pedometer event stream. The card's figures are lifetime accumulators read back out of storage, so an event delivered before a walk is never counted.",
       "default": true,
@@ -222,6 +290,40 @@
                 "ARMEABI_V7A": 40076,
                 "X86_64": 40076,
                 "X86": 40076
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Force original image download",
+      "description": "Load the original full-resolution asset for pin images instead of the 736x rendition, at the cost of considerably more data.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pinterest",
+          "name": "Pinterest",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.38.0",
+              "versionCodes": {
+                "ARM64_V8A": 14388010,
+                "ARMEABI_V7A": 14388010,
+                "X86_64": 14388010,
+                "X86": 14388010
               },
               "isExperimental": false,
               "minSdk": null,
