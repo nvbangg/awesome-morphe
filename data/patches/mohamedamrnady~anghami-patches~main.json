@@ -1,13 +1,79 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "patches": [
+    {
+      "name": "AMOLED black background",
+      "description": "Forces pure-black app background in dark mode (window_background_color -> #000000). Surfaces/cards keep stock greys; light mode untouched.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.anghami",
+          "name": "Anghami",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#A020F0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.0.28",
+              "versionCodes": {
+                "ARM64_V8A": 8000280,
+                "ARMEABI_V7A": 8000280,
+                "X86": 8000280,
+                "X86_64": 8000280
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Disable audio ads",
       "description": "Forces AdSettings.noAd=true and PlayQueue.getDisableAds=true so songs are treated as ad-free locally. Client flag only.",
       "default": true,
       "category": null,
       "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.anghami",
+          "name": "Anghami",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#A020F0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.0.28",
+              "versionCodes": {
+                "ARM64_V8A": 8000280,
+                "ARMEABI_V7A": 8000280,
+                "X86": 8000280,
+                "X86_64": 8000280
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Header Play + Shuffle",
+      "description": "Playlist/album headers show Play + Shuffle instead of Shuffle + Edit/Follow/Like (functional LEAVECOLLAB, local-songs ADD_MORE and podcasts untouched). Pulls in 'Unforce shuffle'.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.anghami",
@@ -132,10 +198,76 @@
     },
     {
       "name": "Hide upsell feature buttons",
-      "description": "Hides TRY SING ALONG karaoke upsell, the player AI MIX switch, and the playlist AI MIX button. Feature gates untouched.",
+      "description": "Hides TRY SING ALONG karaoke upsell, disables the karaoke feature itself, and hides the player/playlist AI MIX buttons. Feature UI stays hidden rather than paywalled.",
       "default": true,
       "category": "Hide Gold features",
       "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.anghami",
+          "name": "Anghami",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#A020F0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.0.28",
+              "versionCodes": {
+                "ARM64_V8A": 8000280,
+                "ARMEABI_V7A": 8000280,
+                "X86": 8000280,
+                "X86_64": 8000280
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "LRCLIB lyrics fallback",
+      "description": "When the server returns truncated/empty lyrics, fetches the full text from LRCLIB (opt-in free source) into a separate cache. Native full lyrics and the Plus path are untouched.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.anghami",
+          "name": "Anghami",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#A020F0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.0.28",
+              "versionCodes": {
+                "ARM64_V8A": 8000280,
+                "ARMEABI_V7A": 8000280,
+                "X86": 8000280,
+                "X86_64": 8000280
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Lyrics options on play long-press",
+      "description": "Long-press play/pause for lyrics options (retry, LRCLIB search, synced/plain toggle, server version) instead of the sleep timer. Pulls in 'LRCLIB lyrics fallback'.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.anghami",
@@ -195,136 +327,42 @@
       "options": []
     },
     {
+      "name": "Player theme",
+      "description": "Night-only player theme: removes the cover-art tint and paints the now-playing row, pills and action icons with the primary accent at night; day mode keeps the stock tinted player. Pulls in 'Player theme background' resources.",
+      "default": false,
+      "category": "Experimental",
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.anghami",
+          "name": "Anghami",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#A020F0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.0.28",
+              "versionCodes": {
+                "ARM64_V8A": 8000280,
+                "ARMEABI_V7A": 8000280,
+                "X86": 8000280,
+                "X86_64": 8000280
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Player theme background",
-      "description": "Makes the player background, text, icons and seekbar follow the app's day/night theme. Keeps the darker split below the progress bar. Pair with 'Player: remove cover-art tint'.",
-      "default": false,
-      "category": "Experimental",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.anghami",
-          "name": "Anghami",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#A020F0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.0.28",
-              "versionCodes": {
-                "ARM64_V8A": 8000280,
-                "ARMEABI_V7A": 8000280,
-                "X86": 8000280,
-                "X86_64": 8000280
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Player: accent action icons",
-      "description": "Paints the share button with the normal theme text color (black day / white night) and keeps the like/download lotties on the primary accent (pink day / lime night, Monet dynamic) across animation swaps.",
-      "default": false,
-      "category": "Experimental",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.anghami",
-          "name": "Anghami",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#A020F0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.0.28",
-              "versionCodes": {
-                "ARM64_V8A": 8000280,
-                "ARMEABI_V7A": 8000280,
-                "X86": 8000280,
-                "X86_64": 8000280
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Player: accent now-playing + pills",
-      "description": "Paints the now-playing queue row with the primary accent (pink day / lime night stock, Monet dynamic). Shuffle/enhance/save pills and unselected rows stay on theme text. Removes the grey highlight wash.",
-      "default": false,
-      "category": "Experimental",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.anghami",
-          "name": "Anghami",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#A020F0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.0.28",
-              "versionCodes": {
-                "ARM64_V8A": 8000280,
-                "ARMEABI_V7A": 8000280,
-                "X86": 8000280,
-                "X86_64": 8000280
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Player: readable queue in day mode",
-      "description": "Keeps the player queue rows in theme text colors in day mode instead of unreadable white-on-light. Night mode is unchanged.",
-      "default": false,
-      "category": "Experimental",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.anghami",
-          "name": "Anghami",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#A020F0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.0.28",
-              "versionCodes": {
-                "ARM64_V8A": 8000280,
-                "ARMEABI_V7A": 8000280,
-                "X86": 8000280,
-                "X86_64": 8000280
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Player: remove cover-art tint",
-      "description": "Stops the player background from being tinted by the current album cover, in both day and night mode.",
+      "description": "Makes the player background, text, icons and seekbar follow the app's day/night theme. Keeps the darker split below the progress bar. Pair with 'Player theme'.",
       "default": false,
       "category": "Experimental",
       "dependencies": [],
@@ -420,7 +458,7 @@
     },
     {
       "name": "Unforce shuffle",
-      "description": "No-ops PlayQueue.shuffle(), forces server shuffleOn=false at both sync points, disables the pick-a-song radio redirect, enables shuffle buttons, and disarms the shuffle upsell dialog. Manual shuffle toggle keeps working.",
+      "description": "Forces server shuffleOn=false at both sync points, never reports shuffle to the server, disables the pick-a-song radio redirect, enables shuffle buttons, and disarms the shuffle upsell dialog. Manual shuffle toggle and the header Shuffle button keep working.",
       "default": true,
       "category": null,
       "dependencies": [],

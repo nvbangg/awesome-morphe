@@ -1,7 +1,183 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "patches": [
+    {
+      "name": "Install alongside original",
+      "description": "Installs the patched app under its own package name and app name, so the original app stays installed. Push notifications and some sign-in options may not work in the separate copy. Disable it to replace the original app instead.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "in.amazon.mShop.android.shopping",
+          "name": "Amazon India",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.18.0.300",
+              "versionCodes": {
+                "ARM64_V8A": 1243240206,
+                "ARMEABI_V7A": 1243240206,
+                "X86_64": 1243240206,
+                "X86": 1243240206
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.16.2.300",
+              "versionCodes": {
+                "ARM64_V8A": 1243222206,
+                "ARMEABI_V7A": 1243222206,
+                "X86_64": 1243222206,
+                "X86": 1243222206
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.shopping",
+          "name": "Amazon Shopping",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.13.2.100",
+              "versionCodes": {
+                "ARM64_V8A": 1241320216,
+                "ARMEABI_V7A": 1241320216,
+                "X86_64": 1241320216,
+                "X86": 1241320216
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.flipkart.android",
+          "name": "Flipkart",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#2874F0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.15",
+              "versionCodes": {
+                "ARM64_V8A": 3240500,
+                "ARMEABI_V7A": 3240500,
+                "X86_64": 3240500,
+                "X86": 3240500
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "9.13",
+              "versionCodes": {
+                "ARM64_V8A": 3220300,
+                "ARMEABI_V7A": 3220300,
+                "X86_64": 3220300,
+                "X86": 3220300
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.myntra.android",
+          "name": "Myntra",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3F6C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.2609.30",
+              "versionCodes": {
+                "ARM64_V8A": 80110582,
+                "ARMEABI_V7A": 80110582,
+                "X86_64": 80110582,
+                "X86": 80110582
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.meesho.supply",
+          "name": "Meesho",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#9F2089",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "29.6",
+              "versionCodes": {
+                "ARM64_V8A": 870,
+                "ARMEABI_V7A": 870,
+                "X86_64": 870,
+                "X86": 870
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "29.5",
+              "versionCodes": {
+                "ARM64_V8A": 868,
+                "ARMEABI_V7A": 868,
+                "X86_64": 868,
+                "X86": 868
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageSuffix",
+          "title": "Package name suffix",
+          "description": "Appended to the original package name, e.g. com.meesho.supply.sorted. Every copy installed on a device needs a different suffix.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "sorted",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "Name shown under the launcher icon. \"Default\" adds \" Sorted\" to the original name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Default",
+          "values": null
+        }
+      ]
+    },
     {
       "name": "Sort by number of ratings",
       "description": "Adds Sort (off / most rated / top rated), 4★+, Hide ads and a 'Ranked' list to Amazon search pages. The ranked list covers every page loaded and can fetch more pages.",
