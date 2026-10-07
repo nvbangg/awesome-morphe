@@ -96,7 +96,7 @@ Add sources to [`data/discover/custom.json`](./data/discover/custom.json), or se
 
 ### [`fetch.py`](./scripts/fetch.py)
 
-Checks and downloads bundle updates for repositories in [`data/repos.json`](./data/repos.json).
+Checks and downloads bundle updates for repositories in [`data/repos.json`](./data/repos.json), storing GitHub and GitLab data separately.
 
 #### Update Processing
 
@@ -128,7 +128,7 @@ Compiles bundle, patch, and app data into [`web/public/bundles.json`](./web/publ
 
 #### Bundle Selection
 
-Uses GitHub data first, falling back to GitLab if no valid branch is available. Selects `dev` when it is newer than `main` or no valid `main` exists; otherwise, selects `main`.
+Selects the valid GitHub or GitLab source with the newest `created_at` value. Ties keep the current source, or prefer GitHub for new bundles. Within that source, `dev` is selected when it is newer than `main` or no valid `main` exists; otherwise, `main` is selected.
 
 Bundles without valid `main` data are marked prerelease. Patches found only in `dev` are also marked prerelease when compared with `main`. Invalid bundles are excluded.
 

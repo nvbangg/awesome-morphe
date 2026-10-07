@@ -176,7 +176,8 @@ def load_branch_data(
     )
     if (
         mpp_source != source
-        or mpp_repo.lower() != file_prefix.replace("~", "/").lower()
+        or not mpp_repo
+        or mpp_repo.lower() != file_prefix.split("~", 1)[1].replace("~", "/").lower()
     ):
         return None, None, None, "Invalid `download_url`"
     if not list_file.exists():
@@ -213,7 +214,7 @@ def process(
 
     repos_data = load_json(REPOS_JSON_PATH, {})
     valid_target_files = {
-        f"{repo.replace('/', '~')}~{branch}.json"
+        f"{source}~{repo.replace('/', '~')}~{branch}.json"
         for repo, repo_metadata in repos_data.items()
         if isinstance(repo_metadata, dict)
         for source in ("github", "gitlab")
@@ -236,17 +237,9 @@ def process(
     for repo, source_entry in bundle_sources.items():
         if not repo or "/" not in repo:
             continue
-        owner, repo_name = repo.split("/", 1)
-        file_prefix = f"{owner}~{repo_name}"
+        owner = repo.split("/", 1)[0]
         repo_metadata = repos_data.get(repo, {})
-        chosen_source = None
-        main_bundle = None
-        main_patches = None
-        main_raw = None
-        dev_bundle = None
-        dev_patches = None
-        dev_raw = None
-        discovered_names = {}
+        candidates = []
         has_sha = False
         fail_reason = None
 
@@ -261,6 +254,7 @@ def process(
                 continue
             has_sha = True
 
+            file_prefix = f"{source}~{repo.replace('/', '~')}"
             cur_discovered_names = {}
             cur_main_bundle, cur_main_patches, cur_main_raw, main_reason = (
                 load_branch_data(
@@ -283,19 +277,38 @@ def process(
             )
 
             if cur_main_patches or cur_dev_patches:
-                chosen_source = source
-                main_bundle = cur_main_bundle
-                main_patches = cur_main_patches
-                main_raw = cur_main_raw
-                dev_bundle = cur_dev_bundle
-                dev_patches = cur_dev_patches
-                dev_raw = cur_dev_raw
-                discovered_names = cur_discovered_names
-                break
+                main_timestamp = (
+                    parse_timestamp(cur_main_bundle.get("created_at"))
+                    if cur_main_patches and cur_main_bundle
+                    else 0
+                )
+                dev_timestamp = (
+                    parse_timestamp(cur_dev_bundle.get("created_at"))
+                    if cur_dev_patches and cur_dev_bundle
+                    else 0
+                )
+                is_latest_dev = bool(
+                    cur_dev_patches
+                    and (not cur_main_patches or dev_timestamp > main_timestamp)
+                )
+                candidates.append(
+                    {
+                        "source": source,
+                        "main_patches": cur_main_patches,
+                        "patches": (
+                            cur_dev_patches if is_latest_dev else cur_main_patches
+                        ),
+                        "raw": cur_dev_raw if is_latest_dev else cur_main_raw,
+                        "timestamp": (
+                            dev_timestamp if is_latest_dev else main_timestamp
+                        ),
+                        "discovered_names": cur_discovered_names,
+                    }
+                )
 
             fail_reason = main_reason or dev_reason
 
-        if not chosen_source:
+        if not candidates:
             keys_to_remove.append(repo)
             message = fail_reason or (
                 "Missing `patches-list.json`"
@@ -310,24 +323,19 @@ def process(
                         errors["unavailable"].append(f"{repo_url}: {message}")
             continue
 
+        previous_source = (existing_bundles or {}).get(repo, {}).get("source")
+        chosen = max(
+            candidates,
+            key=lambda candidate: (
+                candidate["timestamp"],
+                candidate["source"] == previous_source,
+                candidate["source"] == "github",
+            ),
+        )
+        chosen_source = chosen["source"]
         source_entry["source"] = chosen_source
-
-        main_timestamp = (
-            parse_timestamp(main_bundle.get("created_at"))
-            if main_patches and main_bundle
-            else 0
-        )
-        dev_timestamp = (
-            parse_timestamp(dev_bundle.get("created_at"))
-            if dev_patches and dev_bundle
-            else 0
-        )
-        is_latest_dev = bool(
-            dev_patches and (not main_patches or dev_timestamp > main_timestamp)
-        )
-
-        source_entry["isPreRelease"] = not bool(main_patches)
-        source_entry["updatedAt"] = dev_timestamp if is_latest_dev else main_timestamp
+        source_entry["isPreRelease"] = not bool(chosen["main_patches"])
+        source_entry["updatedAt"] = chosen["timestamp"]
 
         raw_name = repo_metadata.get("name") or ""
         if raw_name:
@@ -338,8 +346,9 @@ def process(
             )
         source_entry["name"] = raw_name or owner
 
-        chosen_patches = dev_patches if is_latest_dev else main_patches
-        chosen_raw_patches = dev_raw if is_latest_dev else main_raw
+        chosen_patches = chosen["patches"]
+        chosen_raw_patches = chosen["raw"]
+        discovered_names = chosen["discovered_names"]
         raw_app_patches_map: dict[str, list[dict]] = {}
         for raw_patch in chosen_raw_patches or []:
             if not isinstance(raw_patch, dict):

@@ -44,7 +44,6 @@ def commit_pending_repos(
     for repo, repo_updates in pending_repos.items():
         if "/" not in repo:
             continue
-        owner, repo_name = repo.split("/", 1)
 
         if name := repo_updates.get("name"):
             repos_data.setdefault(repo, {})["name"] = name
@@ -61,11 +60,10 @@ def commit_pending_repos(
             for branch in DEFAULT_BRANCHES:
                 if branch in source_updates:
                     new_sha = source_updates[branch]
-                    is_mpp_target = (
-                        f"mpp/{owner}~{repo_name}~{branch}.mpp" in updated_files_set
-                    )
-                    file_prefix = f"{owner}~{repo_name}~{branch}.json"
-                    if not is_mpp_target or file_prefix in successful_parsed_files:
+                    file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
+                    is_mpp_target = f"mpp/{file_prefix}.mpp" in updated_files_set
+                    parsed_file = f"{file_prefix}.json"
+                    if not is_mpp_target or parsed_file in successful_parsed_files:
                         source_data[branch] = new_sha
                         committed_target_count += 1
 

@@ -110,54 +110,53 @@ def process_repo_branch(
             error_message,
         )
 
-    owner, repo_name = repo.split("/", 1)
-    file_prefix = f"{owner}~{repo_name}~{branch}"
+    file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
+    bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
+    patches_file = PATCHES_DIR / f"{file_prefix}.json"
 
-    if remote_sha == current_sha:
+    if remote_sha == current_sha and bundle_file.exists() and patches_file.exists():
         if weekly and current_sha:
-            bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
-            if bundle_file.exists():
-                bundle_data = load_json(bundle_file, {})
-                if mpp_url := bundle_data.get("download_url"):
-                    try:
-                        mpp_exists = bool(
-                            get_remote_file_hash(mpp_url, source, fallback="exists")
-                        )
-                    except Exception as error:
-                        error_message = (
-                            f"{repo_url} ({branch}): Failed to verify `.mpp`: {error}"
-                        )
-                        print(f"[-] {error_message}")
-                        return (
-                            source,
-                            repo,
-                            branch,
-                            current_sha,
-                            None,
-                            False,
-                            False,
-                            False,
-                            None,
-                            error_message,
-                        )
+            bundle_data = load_json(bundle_file, {})
+            if mpp_url := bundle_data.get("download_url"):
+                try:
+                    mpp_exists = bool(
+                        get_remote_file_hash(mpp_url, source, fallback="exists")
+                    )
+                except Exception as error:
+                    error_message = (
+                        f"{repo_url} ({branch}): Failed to verify `.mpp`: {error}"
+                    )
+                    print(f"[-] {error_message}")
+                    return (
+                        source,
+                        repo,
+                        branch,
+                        current_sha,
+                        None,
+                        False,
+                        False,
+                        False,
+                        None,
+                        error_message,
+                    )
 
-                    if not mpp_exists:
-                        print(
-                            f"[-] {repo_url} ({branch}): `.mpp` file is no longer available"
-                        )
-                        cleanup_target_files(file_prefix)
-                        return (
-                            source,
-                            repo,
-                            branch,
-                            remote_sha,
-                            None,
-                            False,
-                            True,
-                            True,
-                            None,
-                            None,
-                        )
+                if not mpp_exists:
+                    print(
+                        f"[-] {repo_url} ({branch}): `.mpp` file is no longer available"
+                    )
+                    cleanup_target_files(file_prefix)
+                    return (
+                        source,
+                        repo,
+                        branch,
+                        remote_sha,
+                        None,
+                        False,
+                        True,
+                        True,
+                        None,
+                        None,
+                    )
 
         return (
             source,
@@ -395,7 +394,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
             if bundle_name:
                 pending_repos_data.setdefault(repo, {})["name"] = bundle_name
 
-            file_prefix = f"{repo.replace('/', '~')}~{branch}"
+            file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
             if not is_unavailable and new_sha is not None:
                 if bundle_text:
                     save_json(
