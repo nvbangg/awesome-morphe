@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.0",
+  "version": "1.13.0",
   "patches": [
     {
       "name": "Block trackers",
@@ -81,6 +81,32 @@
       "options": []
     },
     {
+      "name": "Bypass anti-tamper (foodpanda)",
+      "description": "Bypasses foodpanda's DeliveryHero MAS integrity block — forces the master security gate (`w9u.a`) to report the device/app as trusted, so re-signed / sideloaded builds no longer hit the \"This device or application is not supported\" BlockedActivity.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.global.foodpanda.android",
+          "name": "foodpanda",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#D70F64",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "26.38.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Bypass device validation",
       "description": "Neutralizes the client-side device-validation gate (anti-root / anti-emulator / anti-Frida / anti-Xposed / anti-tamper battery) that shows a \"Device validation failed\" toast and kills the app via finishAffinity() on a rooted, emulated or re-signed build. Redirects the single failure callback to the success path so all ~16 checks report as passed and the app keeps running pre- and post-login.",
       "default": true,
@@ -121,10 +147,62 @@
           "signatures": [],
           "targets": [
             {
-              "version": "3.3.2",
+              "version": "3.3.4.2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Force dark mode",
+      "description": "Forces OLX into dark (night) mode regardless of the system theme, using the app's built-in -night resources via UiModeManager.setApplicationNightMode at startup.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.pk",
+          "name": "OLX",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#002F34",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "18.8.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes every AdMob ad — the interstitial (rerouted to its onAdFailedToLoad branch so the proxy-apply action still runs, but no ad loads or shows) and the on-screen banner (load skipped). No feature is lost.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sdev.mtproxy",
+          "name": "MTProxy",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#0088CC",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "2.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -151,6 +229,32 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes native feed ads (Google GMA), the full-height ad slot, and the \"Buy with Delivery\" promo section (bar, cards and View all) from OLX. Pinned to the 18.8.0 build (matches that build's obfuscated feed classes).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.pk",
+          "name": "OLX",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#002F34",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "18.8.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -203,7 +307,33 @@
           "signatures": [],
           "targets": [
             {
-              "version": "3.3.2",
+              "version": "3.3.4.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove daily check-in ads",
+      "description": "Removes the SocialPlus daily check-in / in-feed ads (FeedAdsManager banner + native loaders) and the day-10/20/30 milestone-claim RewardedAd (the award is still granted, just with no ad). Separate from \"Remove ads & tracking\" to keep that patch Morphe-Manager-safe; enable this one when patching with the desktop CLI.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.jazzworld",
+          "name": "Simosa",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF6B35",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.3.4.2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
@@ -257,10 +387,36 @@
           "signatures": [],
           "targets": [
             {
-              "version": "3.4.1",
+              "version": "3.4.3",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 26,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium (foodpanda)",
+      "description": "Unlocks foodpanda pandapro — forces every `isSubscribed()` check (status instanceof UserSubscriptionStatus.Subscribed) to report subscribed and forces Subscribed.hasBenefits() true, so the app's pro state, UI and entitlement gates unlock. Server-enforced benefits (free delivery, vouchers) still require a real subscription.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.global.foodpanda.android",
+          "name": "foodpanda",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#D70F64",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "26.38.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
