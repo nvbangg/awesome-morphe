@@ -5,6 +5,7 @@ import contextlib
 import json
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -232,6 +233,20 @@ def process_repo_branch(
     try:
         bundle_data = json.loads(bundle_text)
         mpp_url = bundle_data.get("download_url")
+        if source == "gitlab" and isinstance(mpp_url, str):
+            parsed_url = urllib.parse.urlparse(mpp_url)
+            path_parts = parsed_url.path.split("/")
+            if (
+                len(path_parts) > 5
+                and path_parts[1:4] == ["api", "v4", "projects"]
+                and path_parts[4].isdigit()
+            ):
+                path_parts[4] = urllib.parse.quote(repo, safe="")
+                mpp_url = urllib.parse.urlunparse(
+                    parsed_url._replace(path="/".join(path_parts))
+                )
+                bundle_data["download_url"] = mpp_url
+                bundle_text = json.dumps(bundle_data)
         mpp_source, mpp_repo = (
             parse_repo_url(mpp_url)
             if isinstance(mpp_url, str) and mpp_url.lower().endswith(".mpp")

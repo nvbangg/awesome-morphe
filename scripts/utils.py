@@ -187,9 +187,16 @@ _REPO_URL_RE = re.compile(
     r"(?:raw\.)?(github|gitlab)(?:\.com|usercontent\.com)[:/]([^/#?]+)/([^/#?]+?)(?:\.git)?(?:[/#?]|$)",
     re.IGNORECASE,
 )
+_GITLAB_API_PROJECT_URL_RE = re.compile(
+    r"^https?://gitlab\.com/api/v4/projects/([^/?#]+)(?:[/#?]|$)",
+    re.IGNORECASE,
+)
 
 
 def parse_repo_url(repo_url: str) -> tuple[str, str] | tuple[None, None]:
+    if repo_url and (match := _GITLAB_API_PROJECT_URL_RE.search(repo_url)):
+        project = urllib.parse.unquote(match.group(1)).strip("/")
+        return ("gitlab", project) if "/" in project else (None, None)
     if repo_url and (match := _REPO_URL_RE.search(repo_url)):
         source, owner, repo = match.groups()
         return source.lower(), f"{owner}/{repo}"
