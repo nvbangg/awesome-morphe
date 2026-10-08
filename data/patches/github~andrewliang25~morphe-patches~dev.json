@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.5.0-dev.2",
+  "version": "3.5.0",
   "patches": [
     {
       "name": "[Ad] Block ad telemetry",
@@ -851,6 +851,32 @@
       "name": "[General] Redirect LINE Pay",
       "description": "Opens LINE Pay in the standalone LINE Pay app, so the integrity check that fails on a re-signed build never runs.",
       "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[General] Trust user-installed CAs",
+      "description": "Makes LINE trust certificate authorities you install, so your own HTTPS proxy can read LIFF and mini-app web traffic. Bank and LINE Pay stay pinned. For debugging. Off by default.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
