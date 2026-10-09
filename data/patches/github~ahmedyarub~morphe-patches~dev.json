@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.12.0",
+  "version": "1.14.0-dev.1",
   "patches": [
     {
       "name": "Add ability to copy media link",
@@ -290,7 +290,7 @@
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
-          "default": false,
+          "default": true,
           "values": null
         },
         {
@@ -732,7 +732,7 @@
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
-          "default": false,
+          "default": true,
           "values": null
         }
       ]
@@ -1091,6 +1091,43 @@
       "options": []
     },
     {
+      "name": "Feed filters",
+      "description": "Adds feed filters to timelines: media only (images, videos, GIFs), hide followed profiles, and include/exclude keyword filtering. Toggle each filter from the Morphe settings.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.32.0-prod.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "includeKeywords",
+          "title": "Initial include keywords",
+          "description": "When set, only posts containing at least one of these are shown. Edit in the app.",
+          "required": false,
+          "type": "kotlin.collections.List<kotlin.String>",
+          "default": [],
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Filter posts by keyword",
       "description": "Hides posts whose text contains any of your keywords, ignoring case. Edit the keywords from \"Filtered keywords\" in any post's menu, or in the Morphe settings.",
       "default": true,
@@ -1175,6 +1212,15 @@
           "key": "hideHighlightStories",
           "title": "Hide highlights",
           "description": "Hides resurfaced highlights, which carry no expiry, from the story tray.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideYourTurnStories",
+          "title": "Hide \"Your Turn\" stories",
+          "description": "Hides \"Add Yours\" / \"Your Turn\" stories from the story tray.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1893,6 +1939,33 @@
           "targets": [
             {
               "version": "12.32.0-prod.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Reorder menu options",
+      "description": "Moves Interested and Not Interested to the top of the post menu.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "450.0.0.50.77",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
