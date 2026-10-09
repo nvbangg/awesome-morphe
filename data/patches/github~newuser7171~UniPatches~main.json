@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.31.1",
+  "version": "1.31.3",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
@@ -1402,7 +1402,7 @@
     {
       "name": "InApp Emulation Patch ( Experimental, Enhanced, Has Overlay Addon )",
       "category": "InApp Emulation",
-      "description": "InApp emulation Patch does a local modification of in-app buying behavior via DEX modification to make pressing buy grant items without charging! Best for offline and legacy apps and games.\n\nWarning : This DOES NOT solve server-side purchase verification, which is used by many modern apps and games!\n\nInApp Emulation Overlay Module : This patch as an overlay addon involves an InApp Emulation hook module being added to overlay menu, that has a settings button, which shows a popup showing a checkbox whether to enable InApp Emulation popup or not at buy time, and then if it's enabled, it list of saved purchases, that are saved at buy time if user chooses to save the purchase. Saved purchases are so popup windows don't appear again on buy time. The settings popup list of item of saved purchases also allows for management of them, by deleting saved purchases items.\n\nExperimental : This patch may not work on all apps, as it modifies internal app / game behavior. It's billing libraries support may extend with updates, and it's functionality is not guaranteed.\n\nCredits : Credits to Nai64Patches from Nai64 for original IAP patch core functionality, and credits to MiguelNinja19's billing patches, as it was used to enhance original IAP patch with Cocos2D and GameMaker and Native ILL2CPP Hex Patch.\n\nEnhancement : UniPatches enhances this patch by improving compatibility, stability, and adding Automatic Mode (enabled by default) with optional per-backend Patch Coverage controls. UniPatches also adds an optional overlay addon for use with Universal Overlay Patch.\n\nCompatibility: the overlay addon requires Universal Overlay in the same patch operation. If using\nControl Embedded Auth / Stores, keep its licensing and Google Play Services controls separate\nfrom this patch's purchase emulation controls. If using Custom App Display, avoid applying broad\nActivity changes to third-party billing or sign-in screens unless required.",
+      "description": "InApp emulation Patch does a local modification of in-app buying behavior via DEX modification to make pressing buy grant items without charging! Best for offline and legacy apps and games.\n\nWarning : This DOES NOT solve server-side purchase verification, which is used by many modern apps and games!\n\nInApp Emulation Overlay Module : This patch as an overlay addon involves an InApp Emulation hook module being added to overlay menu, that has a settings button, which shows a popup showing a checkbox whether to enable InApp Emulation popup or not at buy time, and then if it's enabled, it list of saved purchases, that are saved at buy time if user chooses to save the purchase. Saved purchases are so popup windows don't appear again on buy time. The settings popup list of item of saved purchases also allows for management of them, by deleting saved purchases items.\n\nExperimental : This patch may not work on all apps, as it modifies internal app / game behavior. It's billing libraries support may extend with updates, and it's functionality is not guaranteed.\n\nCredits : Credits to Nai64Patches from Nai64 for original IAP patch core functionality, and credits to MiguelNinja19's billing patches, as it was used to enhance original IAP patch with Cocos2D and GameMaker and Native ILL2CPP Hex Patch.\n\nEnhancement : UniPatches enhances this patch by improving compatibility, stability, and adding Automatic Mode (enabled by default) with optional per-backend Patch Coverage controls. RevenueCat requires explicit opt-in even in Automatic Mode. UniPatches also adds an optional overlay addon for use with Universal Overlay Patch.\n\nCompatibility: the overlay addon requires Universal Overlay in the same patch operation. If using\nControl Embedded Auth / Stores, keep its licensing and Google Play Services controls separate\nfrom this patch's purchase emulation controls. If using Custom App Display, avoid applying broad\nActivity changes to third-party billing or sign-in screens unless required.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -1410,7 +1410,7 @@
         {
           "key": "inAppAutomaticMode",
           "title": "InApp Emulation > Patch Mode > Automatic Mode",
-          "description": "When enabled, Automatic Mode detects and enables supported InApp Emulation strategies. When disabled, Manual Mode is used and only the Patch Coverage strategies you select are applied.",
+          "description": "When enabled, Automatic Mode detects and enables supported InApp Emulation strategies except RevenueCat, which always requires explicit opt-in. When disabled, Manual Mode is used and only the Patch Coverage strategies you select are applied.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1522,7 +1522,7 @@
         {
           "key": "inAppCoverageRevenueCat",
           "title": "InApp Emulation > Patch Coverage > RevenueCat",
-          "description": "Enable RevenueCat strategy when Automatic Mode is disabled.",
+          "description": "Explicitly opt into experimental RevenueCat strategies in either mode. Leave disabled unless validating a compatible SDK and store configuration; server-side verification is not supported.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
