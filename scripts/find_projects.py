@@ -33,7 +33,6 @@ RAW_FILTER_PATH = TEMP_DIR / "raw-filter.json"
 SEARCH_KEYWORDS = ["morphe"]
 EXCLUDED_USERS = []
 API_EXCLUDED_KEYWORDS = ["morpheus", "morpheme", "morphelab"]
-API_EXCLUDED_NAME_KEYWORDS = ["builder", "magisk"]
 STANDALONE_NAME_KEYWORDS = []
 EXCLUDED_KEYWORDS = []
 
@@ -73,7 +72,6 @@ def build_search_query(keyword: str) -> str:
     parts.extend(f"-user:{user}" for user in EXCLUDED_USERS)
     parts.extend(build_date_filters())
     parts.extend(f"NOT {forbidden}" for forbidden in API_EXCLUDED_KEYWORDS)
-    parts.extend(f"NOT in:name {forbidden}" for forbidden in API_EXCLUDED_NAME_KEYWORDS)
     return " ".join(parts)
 
 
