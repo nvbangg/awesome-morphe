@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.9",
+  "version": "1.7.11",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -72,7 +72,8 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -412,13 +413,15 @@
     },
     {
       "name": "Location provider toggle",
-      "description": "Adds a Location source choice to the Customization screen: Android's own location providers, or Google Play services' fused provider. With Android, Play services is never asked for a location. Play services is never used while it is missing or disabled, so location keeps working on phones without it. Also keeps the network (Wi-Fi/cell) provider registered when no fused provider answers, instead of GPS only, so a fix does not go stale indoors.",
+      "description": "Adds a Location source choice to the Customization screen: Android's own location providers, microG's (microg Services) or Google Play services' fused provider. With Android, neither is ever asked for a location. A source that is missing or disabled is never used, so location keeps working without it. Also keeps the network (Wi-Fi/cell) provider registered when no fused provider answers, instead of GPS only, so a fix does not go stale indoors.",
       "default": true,
       "category": null,
       "dependencies": [
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
+        "BytecodePatch",
+        "ResourcePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -444,7 +447,7 @@
         {
           "key": "useFusedProvider",
           "title": "Default to Play services location",
-          "description": "The location source Maps starts with. On: Google Play services' fused provider whenever Play services is installed and enabled, Android's own providers otherwise. Off: Android's own providers. Either can be changed later on the Customization screen.",
+          "description": "The location source Maps starts with. On: the fused provider -- Google Play services', or microG's in microG Maps -- whenever it is installed and enabled, Android's own providers otherwise. Off: Android's own providers. Can be changed later on the Customization screen.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
