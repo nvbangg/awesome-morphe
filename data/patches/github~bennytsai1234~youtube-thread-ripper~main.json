@@ -1,5 +1,5 @@
 {
-    "version": "0.2.0",
+    "version": "0.3.0",
     "patches": [
         {
             "name": "Multi-connection video download",
@@ -76,6 +76,42 @@
             "description": "Adds an option (off by default) to resume playback after a stall once a shorter amount of video is buffered than the app's 5 seconds.",
             "default": true,
             "dependencies": [
+                "ResourcePatch"
+            ],
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.youtube",
+                    "name": "YouTube",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FF0000",
+                    "signatures": [],
+                    "targets": [
+                        {
+                            "version": "21.16.256",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Cloudflare WARP while open",
+            "description": "Adds an option (off by default) to route YouTube, and only YouTube, through Cloudflare WARP while it is in the foreground, and back to the normal connection in the background.",
+            "default": true,
+            "dependencies": [
+                "ResourcePatch",
                 "ResourcePatch"
             ],
             "compatiblePackages": [
