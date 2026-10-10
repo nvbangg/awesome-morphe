@@ -1,12 +1,12 @@
 {
-  "version": "v0.0.5",
+  "version": "v0.0.6",
   "appNames": {
     "com.pinterest": "Pinterest"
   },
   "patches": [
     {
       "name": "Disable analytics",
-      "description": "Stops Pinterest's usage-event and performance uploads, AppsFlyer tracking, Bugsnag crash reports and the recommendations Pinterest publishes to Google Engage. A switch and Pause restore those runtime paths. In the manifest it also turns off Firebase Analytics, Crashlytics and Performance collection and Google Analytics' ad ID collection, and sets Google's default analytics and ad consent to denied. That part stays until you patch again without this patch. Sign-in, pin requests and Firebase push components are preserved.",
+      "description": "Stops Pinterest from sending usage reports, crash reports and ad-tracking data to outside companies, and turns off Google's analytics inside the app. Good if you'd rather share less. On by default. Turn it off in HushPinterest settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -16,8 +16,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -31,17 +30,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -51,17 +43,16 @@
     },
     {
       "name": "Disable update nag",
-      "description": "Stops Pinterest's in-app Play Store update prompts. You can still update Pinterest yourself.",
-      "category": "Interface",
-      "use": false,
+      "description": "Stops Pinterest's pop-ups asking you to update from the Play Store. You can still update Pinterest yourself. Good if the reminders get annoying. Starts off. Turn it on in HushPinterest settings > More settings > Updates.",
+      "category": "Updates",
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -75,17 +66,46 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
+                "ARM64_V8A": 14398020
               }
-            },
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Download board",
+      "description": "Adds Download board to a board's menu. It saves every pin Pinterest has loaded for that board and skips ones already in Download history, so you can keep a board without picking pins one at a time. Needs Download pins on too. Starts off. Turn it on in HushPinterest settings > Pin actions.",
+      "category": "Downloads",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.39.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
             {
-              "version": "14.25.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -95,17 +115,16 @@
     },
     {
       "name": "Download pins",
-      "description": "Downloads a pin or selected visible grid pins using original images and the highest-resolution MP4 Pinterest supplies. Saves in Downloads on Android 10 or newer, or asks for a save location on Android 9. The pin menu can also copy that media's link. Turn it off in HushPinterest settings at any time.",
+      "description": "Adds downloads for a pin, or for several pins you select in a grid. Saves the original image or the highest-quality video Pinterest supplies to your phone. Starts off. Turn it on in HushPinterest settings > Pin actions.",
       "category": "Downloads",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -119,17 +138,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -139,17 +151,16 @@
     },
     {
       "name": "Filter pin menu",
-      "description": "Adds separate switches for collage, visual-search and Promote pin menu entries. Download, share and copy-link actions remain available.",
+      "description": "Lets you hide Add to collage, Remix collage, Search image and Promote pin in a pin's menu, each with its own switch. Download, share and copy link stay. Starts off. Turn them on in HushPinterest settings > Interface.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -163,17 +174,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -183,17 +187,16 @@
     },
     {
       "name": "Hide AI-labeled pins",
-      "description": "Removes pins that Pinterest labels as made or changed with AI from the home feed, search, related pins and boards. AI images without Pinterest's label still show.",
+      "description": "Removes pins that Pinterest labels as made or changed with AI from your home feed, search, related pins and boards. AI images without the label still show. Starts off. Turn it on in HushPinterest settings > Feed.",
       "category": "Feed",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -207,17 +210,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -227,7 +223,7 @@
     },
     {
       "name": "Hide ads",
-      "description": "Removes promoted pins from the home feed, search, related pins and boards, and hides Pinterest's ad-only panels. Google's ad SDK isn't started when Pinterest opens. Turn it off in HushPinterest settings at any time.",
+      "description": "Removes promoted pins from your home feed, search, related pins and boards, and hides panels that only hold ads. Good for a cleaner feed. On by default. Turn it off in HushPinterest settings > Feed.",
       "category": "Ads",
       "use": true,
       "dependencies": [
@@ -236,8 +232,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -251,17 +246,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -271,7 +259,7 @@
     },
     {
       "name": "Hide advertising ID",
-      "description": "Pinterest and the ad and tracking code inside it read an all-zero advertising ID with ad tracking limited, the same answer Android gives after you delete your ad ID. A switch and Pause hand back the real ID.",
+      "description": "Pinterest sees an empty advertising ID with ad tracking limited, the same as if you deleted your ad ID in Android. Good for keeping ads from following you. On by default. Turn it off in HushPinterest settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -280,8 +268,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -295,17 +282,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -315,17 +295,16 @@
     },
     {
       "name": "Hide comments",
-      "description": "Collapses comments panels and comment previews beneath pins. It doesn't change who can comment on your pins.",
+      "description": "Collapses the comments and comment previews under pins. It doesn't change who can comment on your pins. Good for a quieter pin page. Starts off. Turn it on in HushPinterest settings > Interface.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -339,17 +318,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -359,17 +331,16 @@
     },
     {
       "name": "Hide header buttons",
-      "description": "Hides trailing header icon buttons. Back buttons, text actions and account controls remain available.",
-      "category": "Interface",
-      "use": false,
+      "description": "Hides the small icon buttons at the end of the top bar. Back buttons, text buttons and account controls stay. Good for a cleaner top bar. Starts off. Turn it on in HushPinterest settings > Interface.",
+      "category": "Navigation",
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -383,17 +354,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -403,17 +367,16 @@
     },
     {
       "name": "Hide navigation buttons",
-      "description": "Adds separate switches for the Create, Updates and Search navigation buttons. Home and Profile remain available.",
-      "category": "Interface",
-      "use": false,
+      "description": "Lets you hide the Create, Notifications and Search buttons in the bottom bar, each with its own switch. Home and Profile stay. Starts off. Turn them on in HushPinterest settings > Interface.",
+      "category": "Navigation",
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -427,17 +390,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -447,17 +403,16 @@
     },
     {
       "name": "Hide save toasts",
-      "description": "Stops the pop-up Pinterest shows after you save a pin, such as \"Saved to\" your board or the suggestion to follow the pin's creator. The pin is still saved.",
+      "description": "Stops the pop-up Pinterest shows after you save a pin, such as the Saved to your board message or a suggestion to follow the creator. The pin is still saved. Starts off. Turn it on in HushPinterest settings > Interface.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -471,17 +426,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -491,17 +439,16 @@
     },
     {
       "name": "Hide search history",
-      "description": "Hides recent-search rows and carousels on this device. It doesn't delete your account's search history.",
+      "description": "Hides your recent searches on the search screen of this phone. It doesn't delete your account's search history. Starts off. Turn it on in HushPinterest settings > Interface.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -515,17 +462,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -535,17 +475,16 @@
     },
     {
       "name": "Hide shopping and product pins",
-      "description": "Hides shoppable pins, shopping stories and featured board placements. Off by default. Turn it on in HushPinterest settings when you want a feed without shopping.",
+      "description": "Hides shoppable pins, shopping stories and featured boards. Good if you want to browse ideas, not products. Starts off. Turn it on in HushPinterest settings > Feed.",
       "category": "Feed",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -559,17 +498,46 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
+                "ARM64_V8A": 14398020
               }
-            },
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide survey prompts",
+      "description": "Turns down Pinterest's \"Got a minute?\" survey invite before it pops up, the same way tapping Maybe later does, so the same survey doesn't come back. Advertiser sponsored polls don't pop up either. Starts off. Turn it on in HushPinterest settings > Interface.",
+      "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.39.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
             {
-              "version": "14.25.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -579,17 +547,16 @@
     },
     {
       "name": "Hide topic suggestions",
-      "description": "Hides the \"Ideas you might love\" row of topic bubbles under pins without leaving a gap. Comments and related pins stay. Its switch starts off, so turn it on in HushPinterest settings.",
+      "description": "Hides the Ideas you might love row of topic bubbles under pins, without leaving a gap. Comments and related pins stay. Starts off. Turn it on in HushPinterest settings > Interface.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -603,17 +570,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -623,7 +583,7 @@
     },
     {
       "name": "HushPinterest settings",
-      "description": "Adds HushPinterest settings to Pinterest. Long-press Pinterest's launcher icon, or open Additional settings in the app on Pinterest's App info page, to turn features on or off, pause HushPinterest, save your switches to a file or load them, and export diagnostics. The licenses are there too.",
+      "description": "Adds a HushPinterest page to Pinterest where you turn features on or off, pause HushPinterest, back up your settings and read the licenses. Open it by long-pressing the Pinterest icon. Works as soon as you patch it in, with no switch.",
       "category": "Settings",
       "use": true,
       "dependencies": [
@@ -632,8 +592,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -647,17 +606,47 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
+                "ARM64_V8A": 14398020
               }
-            },
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Long-press download",
+      "description": "Adds a Download button to the round menu you get when you long-press a pin in a grid, so you can save a pin without opening it. Slide onto the button and let go. Needs Download pins on too. Starts off. Turn it on in HushPinterest settings > Pin actions.",
+      "category": "Downloads",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Download pins",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.39.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
             {
-              "version": "14.25.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -667,17 +656,16 @@
     },
     {
       "name": "No screenshot share menu",
-      "description": "Stops Pinterest's screenshot observer from opening sharing suggestions. Screenshots still work normally.",
+      "description": "Stops Pinterest from popping up sharing suggestions after you take a screenshot. Screenshots still work as usual. Starts off. Turn it on in HushPinterest settings > Interface.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -691,17 +679,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -711,9 +692,9 @@
     },
     {
       "name": "Open links in your browser",
-      "description": "Opens pin Visit links and profile websites in your web browser. Pinterest links and sign-in keep their usual behavior. Turn it off in HushPinterest settings at any time.",
+      "description": "Opens a pin's Visit link and profile websites in your web browser. Pinterest links and sign-in work as before. Good if you prefer your own browser. Starts off. Turn it on in HushPinterest settings > More settings > Links.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings",
@@ -721,8 +702,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -736,17 +716,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -756,17 +729,16 @@
     },
     {
       "name": "Original-quality images",
-      "description": "Asks Pinterest for the original image with each pin and shows it in the pin closeup, and has collages pick the original before the large size. Uses more data.",
+      "description": "Loads the original image for each pin and in collages, instead of the large size. Pictures look sharper but use more data. Starts off. Turn it on in HushPinterest settings > Interface.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -780,17 +752,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -800,17 +765,16 @@
     },
     {
       "name": "Quiet email reminders",
-      "description": "Dismisses the optional confirm-your-email reminder. Account verification and sign-in checks still apply.",
+      "description": "Dismisses the optional reminder to confirm your email. Account checks and sign-in still work as usual. Starts off. Turn it on in HushPinterest settings > Interface.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -824,17 +788,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -844,7 +801,7 @@
     },
     {
       "name": "Remove ad tracking permissions",
-      "description": "Removes Google's advertising ID permission and Android's Privacy Sandbox ad services from Pinterest. It can't be turned back on in settings, only by patching again without it. While it's in, Hide advertising ID's switch can't hand back the real ID, because Google Play services answers with zeros.",
+      "description": "Removes Google's advertising ID permission and Android's Privacy Sandbox ad services from Pinterest, so it can't use them. Google Play services then answers with zeros. Works as soon as you patch it in, with no switch.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -854,8 +811,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -869,17 +825,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -889,7 +838,7 @@
     },
     {
       "name": "Spoof signature for Google sign-in",
-      "description": "Adds Pinterest's original signing certificate to its manifest, so Google sign-in can work in the patched app. It only helps with microG-RE in place of Google Play services, or with the XSpoofSignatures LSPosed module and its permission granted. Stock Google Play services ignores it, and email and password sign-in doesn't need it.",
+      "description": "Helps Google sign-in work in the patched app by naming Pinterest's original signature. It only helps with microG-RE or the XSpoofSignatures module. Email sign-in doesn't need it. It isn't selected by default. Works as soon as you patch it in, with no switch.",
       "category": "Privacy",
       "use": false,
       "dependencies": [
@@ -899,8 +848,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -914,17 +862,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -934,7 +875,7 @@
     },
     {
       "name": "Strip link tracking",
-      "description": "Removes known tracking parameters from URLs shared or copied from Pinterest. Keeps the destination, other parameters and opaque pin.it links. Turn it off or pause HushPinterest to share the original URLs.",
+      "description": "Removes tracking tags from links you copy or share from Pinterest. The link still goes to the same place, and short pin.it links stay as they are. On by default. Turn it off in HushPinterest settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -943,8 +884,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -958,17 +898,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]
@@ -978,17 +911,16 @@
     },
     {
       "name": "System share sheet",
-      "description": "Uses Android's share sheet when sharing a pin link. Screenshot and download actions keep their usual behavior. Turn it off in HushPinterest settings at any time.",
+      "description": "Uses Android's own share menu when you share a pin link. Screenshot and download actions work as before. Good if you want your usual share targets. Starts off. Turn it on in HushPinterest settings > Pin actions.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushPinterest settings"
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.38.0",
-          "14.25.0"
+          "14.39.0"
         ]
       },
       "compatibility": [
@@ -1002,17 +934,10 @@
           ],
           "targets": [
             {
-              "version": "14.38.0",
+              "version": "14.39.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14388010
-              }
-            },
-            {
-              "version": "14.25.0",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 14258020
+                "ARM64_V8A": 14398020
               }
             }
           ]

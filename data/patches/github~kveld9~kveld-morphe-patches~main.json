@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "patches": [
     {
       "name": "APK Junk Cleaner",
-      "description": "Strips non-functional build metadata, compiler properties, Kotlin coroutines debug tables, and duplicate license texts from META-INF and APK root.",
+      "description": "Strips non-functional build metadata, compiler properties, Kotlin coroutines debug tables, and duplicate license texts from META-INF and APK root while preserving kotlin/*.kotlin_builtins runtime descriptors.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -22,7 +22,7 @@
           "packageName": "com.nokoprint",
           "name": "NokoPrint - WiFi, Bluetooth, USB",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "XAPK",
           "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
@@ -42,7 +42,9 @@
       "name": "Always Show Publish Date",
       "description": "Forces video publish/upload date to remain visible in video author information across all feed types.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.zhiliaoapp.musically",
@@ -74,7 +76,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -100,7 +102,7 @@
           "packageName": "com.nokoprint",
           "name": "NokoPrint - WiFi, Bluetooth, USB",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "XAPK",
           "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
@@ -156,7 +158,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -229,7 +231,7 @@
           "packageName": "com.nokoprint",
           "name": "NokoPrint - WiFi, Bluetooth, USB",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "XAPK",
           "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
@@ -294,7 +296,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -303,7 +305,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "blockOffersHost",
+          "title": "Block Offers host",
+          "description": "Rewrites DEX const-string literals containing offers.brave.com to 0.0.0.0. Enabled by default; disable to keep commercial offers endpoint.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Block Telemetry",
@@ -378,7 +390,7 @@
           "packageName": "com.nokoprint",
           "name": "NokoPrint - WiFi, Bluetooth, USB",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "XAPK",
           "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
@@ -406,7 +418,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -437,7 +449,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -467,7 +479,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -496,7 +508,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -562,6 +574,34 @@
       "options": []
     },
     {
+      "name": "Camera & Microphone Indicator",
+      "description": "Shows a corner mark while TikTok holds camera/mic open.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Clean New Tab Page",
       "description": "Removes sponsored wallpaper images, Brave News/Today feeds, marketing widgets, and promo cards from the New Tab Page.",
       "default": true,
@@ -579,7 +619,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -662,7 +702,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -675,7 +715,7 @@
     },
     {
       "name": "Clean Share URL",
-      "description": "Strips tracking parameters, user IDs, device fingerprints, and marketing tokens from shared TikTok links.",
+      "description": "Strips tracking parameters, user IDs, device fingerprints, and marketing tokens from shared TikTok links, with optional custom host redirection.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -699,7 +739,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "shareHost",
+          "title": "Custom Share Host",
+          "description": "Custom hostname to replace in shared links (e.g. 'vxtiktok.com', 'tiktxk.com', or empty to keep original host).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Client-Side AI & Behavioral Profiling Governor",
@@ -774,7 +824,7 @@
     },
     {
       "name": "Comment Customizer",
-      "description": "Customizes TikTok's comment section, including native sort controls, clean text copying, disabling suggested emojis bar, hiding comment quick actions, hiding in-comment surveys and feedback cards, hiding profile photo story rings, enabling voice comments, and automatic comment translation.",
+      "description": "Customizes TikTok's comment section, including native sort controls, clean text copying, disabling suggested emojis bar, hiding comment quick actions, hiding in-comment surveys and feedback cards, hiding profile photo story rings, enabling voice comments, automatic comment translation, fixing silent comment drops, and hiding comment popup ads.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -803,6 +853,15 @@
           "key": "commentSortControls",
           "title": "Comment Sort Controls",
           "description": "Unlocks TikTok's native comment sorting menu (Hot, Newest, Creator only, With media) across all posts.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "commentSendFix",
+          "title": "Fix Silent Comment Drops",
+          "description": "Prevents silent comment publishing drops when the top-page screen context is detached or null.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -863,12 +922,30 @@
           "values": null
         },
         {
+          "key": "hideCommentPopupAds",
+          "title": "Hide Comment Popup Ads",
+          "description": "Suppresses promotional brand surprise animation popups and commercial campaign effects when loading comments or publishing.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
           "key": "autoTranslate",
           "title": "Auto-Translate Comments",
           "description": "Automatically translates comments into your preferred language using TikTok's native translation engine.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "translationExcludedLanguages",
+          "title": "Do-Not-Translate Languages",
+          "description": "Comma-separated ISO 639 codes (e.g. 'en,es,zh') whose comments keep their original text. Applies on top of TikTok's native do-not-translate list and only matters when Auto-Translate Comments is enabled.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         }
       ]
@@ -1231,7 +1308,7 @@
           "description": "Removes graphic and non-values layout resources qualified for Wear OS smartwatches (e.g. watch qualifiers).",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": false,
+          "default": true,
           "values": null
         },
         {
@@ -1240,7 +1317,7 @@
           "description": "Removes graphic and non-values layout resources qualified for Android TV / Leanback (e.g. television qualifiers).",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": false,
+          "default": true,
           "values": null
         },
         {
@@ -1249,14 +1326,14 @@
           "description": "Removes graphic and non-values layout resources qualified for car head units, desk docks, appliances, or VR headsets.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": false,
+          "default": true,
           "values": null
         }
       ]
     },
     {
       "name": "Device Privacy Guard",
-      "description": "Neutralizes invasive runtime permissions (contacts sync, location tracking, nearby devices), advertising ID profiling, background clipboard snooping routines, and motion sensor profiling to protect user data.",
+      "description": "Neutralizes invasive runtime permissions, contacts queries, package inventory inspection, location hardware tracking, advertising ID profiling, background clipboard snooping routines, and motion sensor profiling to protect user data.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -1294,7 +1371,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -1312,7 +1389,7 @@
     },
     {
       "name": "Direct Message Declutter",
-      "description": "Removes visual clutter in direct messages and chat list, including the call button, reaction tray, message forward button, camera icons, input action buttons, try effect button, and sticker reply suggestions.",
+      "description": "Removes visual clutter in direct messages and chat list, including the call button, reaction tray, message forward button, camera icons, input action buttons, try effect button, sticker reply suggestions, and the typing-triggered sticker strip.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1419,7 +1496,7 @@
         {
           "key": "hideStickerReplySuggestions",
           "title": "Hide Sticker Reply Suggestions",
-          "description": "Removes the automatic 'Tap a sticker to reply' suggestion panel above the input bar. The manual sticker reply button keeps working.",
+          "description": "Removes the automatic 'Tap a sticker to reply' suggestion panel and the typing-triggered sticker/GIF strip above the input bar. The manual sticker reply button keeps working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1475,7 +1552,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1501,7 +1578,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1546,8 +1623,34 @@
       "options": []
     },
     {
+      "name": "Disable Content Capture",
+      "description": "Stops Chromium from streaming on-screen page text and URLs to the Android ContentCapture system service (Android System Intelligence).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable Double Tap to Like",
-      "description": "Disables the double tap gesture to like videos in the feed, preventing accidental likes while scrolling or pausing. Videos can still be liked using the like button.",
+      "description": "Disables double tap like in the feed.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1573,9 +1676,11 @@
     },
     {
       "name": "Disable Feed Long-Press Actions",
-      "description": "Disables long-press action gestures on feed buttons, including Like to repost, Share to quick DMs, and Comment to quick emojis.",
+      "description": "Disables long-press action gestures on feed buttons, including Like to repost, Share to quick DMs, and Comment to quick emojis, with optional long-press video body redirection.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.zhiliaoapp.musically",
@@ -1622,6 +1727,20 @@
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
+        },
+        {
+          "key": "longPressVideo",
+          "title": "Long Press Video Action",
+          "description": "Action when long pressing feed video body: 'nothing' (default, suppresses menu/repost), 'comments' (opens comments), 'copyLink' (copies link to clipboard), or 'saveSound' (favorites/saves audio).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "nothing",
+          "values": {
+            "Do nothing": "nothing",
+            "Open comments": "comments",
+            "Copy link": "copyLink",
+            "Save sound": "saveSound"
+          }
         }
       ]
     },
@@ -1653,8 +1772,8 @@
     },
     {
       "name": "Disable Play Services Integration",
-      "description": "Makes Gboard's Google Play services availability check always report SERVICE_DISABLED, so GMS-backed code paths (Clearcut logging, Phenotype, account sync, Google Help feedback) are skipped at the source instead of being attempted.",
-      "default": true,
+      "description": "Makes Gboard's Google Play services availability check always report SERVICE_DISABLED, so GMS-backed code paths (Clearcut logging, Phenotype, account sync, Google Help feedback) are skipped at the source instead of being attempted. Note: Disables Gboard's inline Google Translate tool, which relies on Play Services Cronet.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1746,7 +1865,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -1888,7 +2007,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1962,6 +2081,34 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Enable Live Search",
+      "description": "Shows TikTok's search entry in the Live drawer where supported.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Enable Profile Banner",
@@ -2046,8 +2193,91 @@
       "options": []
     },
     {
+      "name": "Feed Content Filter",
+      "description": "Hides stories, photo posts, and videos outside configured view or like ranges from feeds.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "minViews",
+          "title": "Minimum Views",
+          "description": "Hide videos with fewer views than this. 0 disables the minimum.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
+        },
+        {
+          "key": "maxViews",
+          "title": "Maximum Views",
+          "description": "Hide videos with more views than this. 0 disables the maximum.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
+        },
+        {
+          "key": "minLikes",
+          "title": "Minimum Likes",
+          "description": "Hide videos with fewer likes than this. 0 disables the minimum.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
+        },
+        {
+          "key": "maxLikes",
+          "title": "Maximum Likes",
+          "description": "Hide videos with more likes than this. 0 disables the maximum.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
+        },
+        {
+          "key": "hideStories",
+          "title": "Hide Stories",
+          "description": "Removes story posts from video feeds.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hidePhotoPosts",
+          "title": "Hide Photo Posts",
+          "description": "Removes photo-mode posts from video feeds.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Feed Interface Declutter",
-      "description": "Customizes and cleans feed video overlay elements, including the full screen button, repost pill, video descriptions, profile photo follow badges, story rings, playlist bottom bars, save buttons, and music discs.",
+      "description": "Customizes and cleans feed video overlay elements, including the full screen button, repost pill, interest feedback pills, video descriptions, profile photo follow badges, story rings, playlist bottom bars, save buttons, and music discs.",
       "default": false,
       "dependencies": [
         "BytecodePatch"
@@ -2142,6 +2372,15 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "hideFeedbackButtons",
+          "title": "Hide Feedback Buttons",
+          "description": "Hides the 'Not interested' / 'Interested' feedback pills above the bottom navigation on feed videos.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -2284,7 +2523,7 @@
     },
     {
       "name": "Gboard Enhancements",
-      "description": "Master customization suite bundling in-app toggleable features (AMOLED Pure Black theme, zero bottom inset, independent keyboard vibration, force incognito, voice typing in incognito, clipboard retention, top toolbar icons count, cursor trackpad, and smart flags) managed directly from a top-level Morphe Patches category in Gboard Settings.",
+      "description": "Master customization suite bundling in-app toggleable features (AMOLED Pure Black theme, zero bottom inset, independent keyboard vibration, force incognito, voice typing in incognito, clipboard in incognito, clipboard retention, top toolbar icons count, cursor trackpad, and smart flags) managed directly from a top-level Morphe Patches category in Gboard Settings.",
       "default": true,
       "dependencies": [
         "BytecodePatch",
@@ -2338,7 +2577,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -2526,8 +2765,64 @@
       "options": []
     },
     {
+      "name": "Hide Promotional Content",
+      "description": "Filters videos disclosing branded/paid-promotional content (Contenido Promocional tag) from For You, Following and Friends feeds.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide Seen Videos",
       "description": "Filters previously watched videos from incoming For You feed batches.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Suggested Accounts",
+      "description": "Removes suggested-account cards from profile headers and inbox surfaces.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -2746,7 +3041,7 @@
     },
     {
       "name": "Live Stream SDK & Minigame De-bloat",
-      "description": "Strips Live link mic SDK (liblink_mic_sdk.so), Lyrax RTC broadcasting engines (liblyrax.so), and live stream interactive minigames to reduce APK size and memory footprint.",
+      "description": "Strips Live link mic SDK (liblink_mic_sdk.so), Lyrax RTC broadcasting engines (liblyrax.so), DM voice/video call engine (libvoip.so), live RTM messaging (librtmglobal.so) and live base runtime (libbase_live.so), plus live stream interactive minigames to reduce APK size and memory footprint. Breaks live viewing/broadcasting and direct message calls.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -2785,7 +3080,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2850,7 +3145,26 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "removeWatermark",
+          "title": "Remove Watermark",
+          "description": "Routes downloads to clean unwatermarked streams and strips client-side watermark overlays. Disable to keep stock watermarked downloads while retaining the unblocked download button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "downloadQuality",
+          "title": "Saved-Video Quality Preference",
+          "description": "Download quality control (the single place for download quality; the Video Quality Governor only caps playback): 'high' (best available stream), 'medium', 'low' (smallest stream), or a fixed resolution ceiling in p (1080, 720, 540, 480, 360 - best stream within the ceiling). Anything else falls back to 'high'.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "high",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Model Catalog Unlock",
@@ -2862,7 +3176,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -2888,7 +3202,7 @@
           "packageName": "com.nokoprint",
           "name": "NokoPrint - WiFi, Bluetooth, USB",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "XAPK",
           "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
@@ -2919,7 +3233,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3032,7 +3346,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -3058,12 +3372,40 @@
           "packageName": "com.nokoprint",
           "name": "NokoPrint - WiFi, Bluetooth, USB",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "XAPK",
           "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
             {
               "version": "5.28.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Non-Personalized Search",
+      "description": "Forces TikTok's non-personalized search mode instead of the saved account choice.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3121,7 +3463,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -3173,7 +3515,7 @@
     },
     {
       "name": "Playback Speed Persistence",
-      "description": "Persists selected video playback speed across all feed videos and application restarts.",
+      "description": "Persists selected video playback speed across all feed videos and application restarts, and optionally enables the native hold-and-slide 2x speed lock gesture.",
       "default": false,
       "dependencies": [
         "BytecodePatch"
@@ -3197,7 +3539,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "enableSpeedLock",
+          "title": "Hold-And-Slide 2x Speed Lock",
+          "description": "Enables TikTok's native hold, slide down, and release gesture for locking playback at 2x speed (140dp slide distance fallback when the server returns no distance).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Popups & Prompts Suppressor",
@@ -3272,6 +3624,34 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Remember Clear Display",
+      "description": "Remembers TikTok's clear-display state between videos and re-applies it when new videos start.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Resource & Battery Governor",
@@ -3386,7 +3766,7 @@
     },
     {
       "name": "SIM Region Selector",
-      "description": "Spoofs the detected SIM and network country ISO code to bypass regional feed restrictions and catalog blocks.",
+      "description": "Spoofs the detected SIM and network country ISO code, operator numeric codes, operator names, and cell identity MCC/MNC to bypass regional feed restrictions and catalog blocks.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -3417,6 +3797,24 @@
           "type": "kotlin.String",
           "default": "CH",
           "values": null
+        },
+        {
+          "key": "operatorNumeric",
+          "title": "Spoofed Operator Numeric Code (MCC+MNC)",
+          "description": "5-6 digit MCC+MNC code (e.g. '22801' for Switzerland/Swisscom) used to spoof TelephonyManager operator queries and CellIdentity MCC/MNC reads. Empty keeps stock operator values.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "operatorName",
+          "title": "Spoofed Operator Name",
+          "description": "Display name reported for SIM/network operator queries (e.g. 'Swisscom'). Empty keeps the stock operator name.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
         }
       ]
     },
@@ -3435,7 +3833,35 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show Author Region",
+      "description": "Displays the creator's country or region code next to their username in video author info across feeds and deep-linked detail views.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3485,6 +3911,34 @@
       ]
     },
     {
+      "name": "Skip Content Warnings",
+      "description": "Bypasses and clears sensitive content warnings, graphic media blur overlays, and age gates on feed videos.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Skip First Run",
       "description": "Skips the welcome screen, search engine selection, and onboarding First Run Experience (FRE) on clean installs.",
       "default": true,
@@ -3499,7 +3953,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3537,6 +3991,32 @@
       "options": []
     },
     {
+      "name": "Skip Welcome Dialog",
+      "description": "Suppresses the first-launch About/privacy dialog by applying the app's own accept action silently. The About entry in the menu keeps working.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nokoprint",
+          "name": "NokoPrint - WiFi, Bluetooth, USB",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#0288D1",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.28.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Sound Features Unlock",
       "description": "Unblocks Spatial Audio, hearing enhancement, and voice wake-up restrictions, unbans Spatial Audio on 96kHz aptX Adaptive connections, and bypasses XPAN requirements.",
       "default": true,
@@ -3546,7 +4026,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -3669,7 +4149,7 @@
     },
     {
       "name": "Studio & Creation De-bloat",
-      "description": "Strips heavy video creation plugins, CapCut NLE editor SDKs, effect plugins, and AR camera face models to significantly reduce APK size.",
+      "description": "Strips heavy video creation plugins, CapCut NLE editor SDKs, effect plugins, camera dynamic features, upload video encoders, on-device AI runtimes (LiteRT), and AR camera face models to significantly reduce APK size.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -3708,7 +4188,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.96.61",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3729,7 +4209,7 @@
           "packageName": "com.mi.earphone",
           "name": "Xiaomi Earbuds",
           "description": null,
-          "apkFileType": "APKM",
+          "apkFileType": "XAPK",
           "appIconColor": "#FF6700",
           "signatures": null,
           "targets": [
@@ -3774,6 +4254,196 @@
       "options": []
     },
     {
+      "name": "Tab Group Close Selection",
+      "description": "When closing the active tab in a tab group, selects the previous tab in the same group instead of jumping outside the group.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "TikTok Privacy Permissions Stripper",
+      "description": "Selectively strips sensitive privacy, sensor, hardware, and tracking permissions from AndroidManifest.xml via configurable boolean toggles.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "stripNotifications",
+          "title": "Strip Notification Permission",
+          "description": "Remove POST_NOTIFICATIONS permission (Android 13+). Notification channels cannot dispatch push alerts.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripCamera",
+          "title": "Strip Camera Permission",
+          "description": "Remove CAMERA permission. WARNING: Breaks camera recording, photo capturing, QR scanning, LIVE broadcasting, and video creation.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripMicrophone",
+          "title": "Strip Microphone Permissions",
+          "description": "Remove RECORD_AUDIO, FOREGROUND_SERVICE_MICROPHONE, and FOREGROUND_SERVICE_CAMERA permissions. WARNING: Breaks video voice recording, LIVE audio broadcasting, audio comments, and voice/video calling.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripStorageMedia",
+          "title": "Strip Storage & Media Permissions",
+          "description": "Remove external storage (READ/WRITE_EXTERNAL_STORAGE) and media permissions (READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_AUDIO, READ_MEDIA_VISUAL_USER_SELECTED, ACCESS_MEDIA_LOCATION). WARNING: Breaks local gallery picker, drafts, and video/photo saving.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripBluetooth",
+          "title": "Strip Bluetooth Permissions",
+          "description": "Remove BLUETOOTH, BLUETOOTH_SCAN, BLUETOOTH_CONNECT, and BLUETOOTH_ADVERTISE permissions. WARNING: Breaks Bluetooth audio accessories, wireless headphones low-latency sync, Cast devices, and external remote controls.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripNfc",
+          "title": "Strip NFC Permission",
+          "description": "Remove NFC permission. WARNING: Disables NFC tag interactions and NFC-based hardware authentication tokens.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBiometric",
+          "title": "Strip Biometric Permissions",
+          "description": "Remove USE_BIOMETRIC and USE_FINGERPRINT permissions. WARNING: Breaks fingerprint/face biometric unlocking, passkeys, and biometric payment authorization.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripForegroundServices",
+          "title": "Strip Foreground Service Permissions",
+          "description": "Remove generic FOREGROUND_SERVICE and specialized types (DATA_SYNC, MEDIA_PLAYBACK, MEDIA_PROJECTION, PHONE_CALL). WARNING: HIGH RISK. Breaks background video uploads, offline caching, media playback notification services, screen sharing, and VoIP calls in background.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripSystemAlertWindow",
+          "title": "Strip System Alert Window Permission",
+          "description": "Remove SYSTEM_ALERT_WINDOW permission. WARNING: Breaks Picture-in-Picture overlay window outside the app, floating mini-player, and overlay notification heads.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripWakeLock",
+          "title": "Strip Wake Lock Permission",
+          "description": "Remove WAKE_LOCK permission. WARNING: Device CPU may sleep during media playback or long video uploads/downloads when screen turns off, suspending progress.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripScreenshotDetection",
+          "title": "Strip Screenshot & Recording Detection Permissions",
+          "description": "Remove DETECT_SCREEN_CAPTURE and DETECT_SCREEN_RECORDING permissions to neutralize system-level capture callbacks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripMiscHardware",
+          "title": "Strip Miscellaneous Hardware & System Permissions",
+          "description": "Remove VIBRATE, MODIFY_AUDIO_SETTINGS, MANAGE_OWN_CALLS, REORDER_TASKS, SET_WALLPAPER, and USE_FULL_SCREEN_INTENT permissions. WARNING: Disables haptic feedback vibration, volume adjustments, alarm priority intents, and live wallpaper export.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripOemSignals",
+          "title": "Strip OEM Diagnostic & Background Signals",
+          "description": "Remove OEM attribution, launcher badges, AICore bindings, and proprietary TikTok internal IPC permissions. WARNING: Removing DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION may impact runtime dynamic broadcast receivers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripPushDelivery",
+          "title": "Strip Push Delivery Permissions",
+          "description": "Remove Google C2DM/FCM and Amazon ADM push receiver permissions. WARNING: Breaks push notification delivery.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripBilling",
+          "title": "Strip In-App Billing Permission",
+          "description": "Remove Google Play in-app billing permission (com.android.vending.BILLING). WARNING: Breaks coin purchases and in-app transactions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Unified Telemetry & Tracker Silencer",
       "description": "Neutralizes ByteDance AppLog user tracking, APM/Npth/Heimdallr crash monitors, AppsFlyer attribution, and Firebase analytics.",
       "default": true,
@@ -3798,6 +4468,42 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Universal Hosts Blocker",
+      "description": "Rewrites Dalvik const-string URL/host literals matching a user-supplied hosts blocklist to a sink IP (default 0.0.0.0). The blocklist file is read at patch time, so daily DNS updates apply without patch releases.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "hostsFile",
+          "title": "Hosts blocklist file",
+          "description": "Path to a hosts or plain-domain blocklist file on the patching machine (e.g. Hagezi native.tiktok-onlydomains.txt). Leave empty to skip.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "sinkIp",
+          "title": "Sink IP address",
+          "description": "IPv4 address replacing blocked hosts inside const-string literals (e.g. '0.0.0.0').",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "0.0.0.0",
+          "values": null
+        },
+        {
+          "key": "matchSubdomains",
+          "title": "Match subdomains",
+          "description": "When enabled, a blocklist entry also matches its subdomains (entry 'example.com' matches 'a.example.com').",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Universal Native Binary Trimmer",
@@ -3971,6 +4677,87 @@
       ]
     },
     {
+      "name": "Universal SDK Blocker",
+      "description": "Neutralizes third-party APM, crash reporting, analytics, attribution, session replay, location tracking, and push engagement SDK init and event methods at DEX level via early return-void; companion runtime layer to Universal Telemetry Neutralizer (manifest layer).",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockApm",
+          "title": "Block APM & Performance Monitoring SDKs",
+          "description": "Neutralize New Relic, Datadog, and Dynatrace monitoring, metric reporting, and HTTP transaction tracing methods.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockCrashReporters",
+          "title": "Block Crash Reporting SDKs",
+          "description": "Neutralize Raygun, Shake, Embrace, Splunk Mint, App Center, OpenTelemetry, ACRA, Sentry, Bugsnag, Crashlytics (legacy and Firebase), Fabric, Instabug, Countly, and HockeyApp crash reporters.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockAnalytics",
+          "title": "Block Analytics SDKs",
+          "description": "Neutralize Firebase Analytics, Matomo, Leanplum, Localytics, WebEngage, PostHog, MoEngage, Snowplow, mParticle, Treasure Data, Huawei Analytics, Yandex Metrica, Facebook AppEvents, and Sensors Analytics event tracking, capture, and session logging methods.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockAttribution",
+          "title": "Block Attribution & Engagement SDKs",
+          "description": "Neutralize AppsFlyer, Adjust, Amplitude, Mixpanel, CleverTap, Segment, Branch, Singular, Kochava, Tenjin, Unity Analytics, Flurry, and GameAnalytics conversion, tracking, and attribution SDKs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockLegacyAnalytics",
+          "title": "Block Legacy Google Analytics",
+          "description": "Neutralize pre-Firebase Google Analytics tracking, hit dispatching, and activity reporting methods (com.google.analytics and com.google.android.gms.analytics).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockPushEngagement",
+          "title": "Block Push Engagement SDKs (WARNING: Breaks Push)",
+          "description": "Neutralize OneSignal, Airship, and Braze push engagement and tagging SDKs. WARNING: this breaks push notification delivery; enable only to fully silence push engagement SDK runtimes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "blockSessionReplay",
+          "title": "Block Session Replay SDKs",
+          "description": "Neutralize UXCam, Smartlook, FullStory, Contentsquare, and Bugsee screen and session recording SDK methods.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockLocationTrackers",
+          "title": "Block Location & Beacon Tracking SDKs",
+          "description": "Neutralize Radar, Gimbal, and Estimote beacon and location tracking SDKs; note OS location permission controls remain the primary gate.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Universal Screen Brightness Governor",
       "description": "Prevents applications from overriding display brightness (such as in-app brightness sliders, barcode/QR full-screen brightness, or window-level overrides) by neutralizing all direct writes to WindowManager.LayoutParams.screenBrightness.",
       "default": false,
@@ -3998,7 +4785,7 @@
     },
     {
       "name": "Universal Telemetry Neutralizer",
-      "description": "Strips advertising and Privacy Sandbox permissions, disables analytics ContentProviders and telemetry background services (Firebase, Sentry, Adjust, AppsFlyer, DataTransport), prunes ComponentDiscovery registrars, and injects telemetry opt-out metadata.",
+      "description": "Strips advertising and Privacy Sandbox permissions, disables analytics ContentProviders and telemetry background services (Firebase, Sentry, Adjust, AppsFlyer, DataTransport), prunes ComponentDiscovery registrars, and injects telemetry opt-out metadata. Includes an optional toggle to disable push notification services.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -4042,7 +4829,7 @@
         {
           "key": "injectOptOutFlags",
           "title": "Inject Telemetry Opt-Out Flags & Prune Registrars",
-          "description": "Inject meta-data opt-out entries into application tag (Firebase Analytics, Crashlytics, Performance, AppsFlyer, Sentry) and prune Firebase discovery registrars.",
+          "description": "Inject meta-data opt-out entries into application tag (Firebase Analytics, Crashlytics, Performance, AppsFlyer, Sentry, Facebook SDK) and prune Firebase discovery registrars.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -4052,6 +4839,69 @@
           "key": "disableFirebaseInit",
           "title": "Disable Firebase Init Provider",
           "description": "Disable com.google.firebase.provider.FirebaseInitProvider. Default is false to prevent issues in apps that depend on Firebase Auth or push notifications.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disablePushServices",
+          "title": "Disable Push Notification Services",
+          "description": "Disable Meta Fbns, PushLite, and Firebase Cloud Messaging services plus push receivers (Firebase IID, Braze). WARNING: this breaks push notifications; enable only to fully silence background push delivery.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableGoogleAnalytics",
+          "title": "Disable Google Analytics Services",
+          "description": "Disable legacy Google Analytics background services and receivers (distinct from Firebase AppMeasurement, which is covered by the telemetry toggles above).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableMetaAnalytics",
+          "title": "Disable Meta Analytics Upload Pipeline",
+          "description": "Disable Meta Analytics2/OneFabric upload services, Instagram upload scheduler receiver, and deferred analytics worker components.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableCrashDetectors",
+          "title": "Disable Crash Detectors & Dump Upload",
+          "description": "Disable Lacrima lock-screen/shutdown crash detectors, crash-loop state trackers, and background crash-dump upload services. User-initiated bug reports are untouched.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableDeviceIdProviders",
+          "title": "Disable Device-ID & Cross-App Identity Providers",
+          "description": "Disable attribution, FDID/PhoneId/USDiD, and FamilyApps cross-app identity providers plus referrer and cross-signing components. WARNING: may break login, account switching, and deferred deep links; enable only to fully silence device-identity collection.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableMlKit",
+          "title": "Disable ML Kit On-Device Vision",
+          "description": "Disable Google ML Kit InitProvider, ComponentDiscoveryService, and prune related registrars. WARNING: Breaks on-device barcode scanning, face detection, and text recognition.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableAdStartupInitializers",
+          "title": "Disable Ad SDK Startup Initializers",
+          "description": "Remove ad SDK auto-init entries (e.g. Unity Ads) from the androidx.startup InitializationProvider. WARNING: may break rewarded ads and ad-gated features; enable only to block SDK auto-initialization.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -4148,8 +4998,49 @@
       "options": []
     },
     {
+      "name": "Video Fit",
+      "description": "Adjusts video display aspect ratio across feeds and story cells: 'fit' ensures the entire video is visible without cropping, or 'fill' expands the video to fill the screen.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "fitMode",
+          "title": "Video Fit Mode",
+          "description": "Aspect ratio mode for feed and story videos: 'fit' (entire video visible without crop), or 'fill' (crop to fill screen).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "fit",
+          "values": {
+            "Fit video": "fit",
+            "Fill screen": "fill"
+          }
+        }
+      ]
+    },
+    {
       "name": "Video Quality Governor",
-      "description": "Caps video playback and download resolutions (1080p, 720p, 540p, 480p, 360p) independently to conserve battery, GPU/MediaCodec load, and mobile data.",
+      "description": "Caps video playback resolution (1080p, 720p, 540p, 480p, 360p) to conserve battery, GPU/MediaCodec load, and mobile data. Download quality is controlled separately by the Media Usability patch (downloadQuality).",
       "default": false,
       "dependencies": [
         "BytecodePatch"
@@ -4184,15 +5075,50 @@
           "values": null
         },
         {
-          "key": "maxDownloadQuality",
-          "title": "Maximum Download Resolution",
-          "description": "Select maximum video download resolution ceiling: 1080 (1080p Maximum Quality), 720 (720p SuperHigh), 540 (540p H_High), 480 (480p High), or 360 (360p Standard).",
+          "key": "avoidByteVC2",
+          "title": "Avoid ByteVC2 Software Decoding",
+          "description": "Drops ByteVC2 renditions from playback bitrate lists when an H.264 or ByteVC1 alternative exists, so videos use the hardware decoder instead of TikTok's CPU-bound ByteVC2 software decoder.",
           "required": false,
-          "type": "kotlin.String",
-          "default": "1080",
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "dropUndecodableVideo",
+          "title": "Drop Undecodable Video Streams",
+          "description": "When the ladder's lowest video stream exceeds the device hardware decoder capability (queried via MediaCodecList), drops video streams and keeps audio-only instead of entering decoder-reject retry loops that freeze the device.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
+    },
+    {
+      "name": "Voice & Speech Engine De-bloat",
+      "description": "Strips on-device voice recognition and speech synthesis engines (libspeechspg.so, libspeechsdk.so) and their loader stubs (libspeechengine.so, libspeechepg.so) to save APK space. Breaks voice search (microphone button), voice input, and editor text-to-speech/sing features.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     }
   ]
 }
