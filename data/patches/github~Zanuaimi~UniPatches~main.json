@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.30.2",
+  "version": "1.31.0",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
@@ -1092,6 +1092,35 @@
       "compatiblePackages": null,
       "options": [
         {
+          "key": "legacyCompatibilityPreset",
+          "title": "Legacy App Compatibility > Preset",
+          "description": "Custom (default) uses your individual choices and conservative defaults. Android 7–9 (API 24–28), Android 10 (29), Android 11 (30), Android 12/12L (31–32), Android 13 (33), and Android 14+ (34+) describe the APK's original target era, not your current device. Era profiles keep the original target SDK, repair missing exported flags safely, repair exact receiver calls, and add Apache HTTP/foreground-service/Bluetooth compatibility only for eras before those APIs changed. Unity enables native-library extraction only when exact Unity classes are detected; OpenIAB enables only recognized OpenIAB receiver repair and a scoped Play Store query; Unity + OpenIAB combines both independently detected repairs. Every non-Custom preset overrides all ordinary options and disables trust-all certificates, IMEI spoofing, QUERY_ALL_PACKAGES, export-all, cleartext and hidden-API bypass. Those six choices are dormant outside Custom; ordinary Custom choices need not restore. Presets never embed OBBs, bypass downloaders, lower target SDK, force all receivers exported, or enable uncertain engine mutations.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "custom",
+          "values": {
+            "Custom": "custom",
+            "Android 7–9 origin": "android_7_9",
+            "Android 10 origin": "android_10",
+            "Android 11 origin": "android_11",
+            "Android 12/12L origin": "android_12",
+            "Android 13 origin": "android_13",
+            "Android 14+ origin": "android_14_plus",
+            "Unity": "unity",
+            "OpenIAB": "openiab",
+            "Unity + OpenIAB": "unity_openiab"
+          }
+        },
+        {
+          "key": "legacyCompatibilityDiagnosticsOnly",
+          "title": "Legacy App Compatibility > Diagnostics > Preflight Only (No APK Changes)",
+          "description": "Scan the manifest and recognized bytecode fingerprints, report proposed fixes, API ranges, and uncertainty, but do not modify the APK. Rerun with this off to apply selected fixes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "legacyCompatibilitySpoofTargetSdk",
           "title": "Legacy App Compatibility > Installation and manifest > Spoof Target SDK",
           "description": "Try this if Android blocks an older app from installing or launching because its target SDK is too old. Lowering the target can restore older Android behavior and reduce platform protections; it cannot fix incompatible app code. Leave off unless you have this specific problem.",
@@ -1129,7 +1158,7 @@
           "description": "Turn this on to add the compatibility declarations selected below. Leave it off if the app does not need them; enabling declarations does not grant runtime permissions or guarantee the app will work.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1220,7 +1249,7 @@
         {
           "key": "legacyCompatibilityReceiverFixAppWide",
           "title": "Legacy App Compatibility > Runtime compatibility > Fix Dynamic Receiver Registrations (App Wide)",
-          "description": "Keep enabled for older apps that crash while registering a broadcast receiver on Android 13+. The patch marks affected app receivers as private to this app; broadcasts sent by other apps may stop arriving, and some broadcasts from privileged system apps may also be unavailable. OpenIAB is handled by its separate option. Turn off if this breaks a receiver you rely on.",
+          "description": "Try this if receiver registration crashes on Android 13+. Each call is classified from its statically resolved IntentFilter actions: app-only calls are private, known system/store actions stay exported, and ambiguous calls are skipped with a warning. The fix can miss dynamic filters or expose exported receivers to other apps; OpenIAB is handled separately.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1349,7 +1378,7 @@
           "description": "Keep enabled so Android can install the app on phones and tablets whose screen size or density is not listed in its original manifest. This changes compatibility declarations, not the app's layout; some screens may still display poorly.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
