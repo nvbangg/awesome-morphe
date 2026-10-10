@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.6.0-experimental.16",
+  "version": "2.6.0-experimental.17",
   "patches": [
     {
       "name": "APK Junk Cleaner",
@@ -779,7 +779,7 @@
     },
     {
       "name": "Clone Gboard",
-      "description": "Changes the package name by appending a dot and custom suffix (defaults to 'clone') to allow installing Gboard alongside the original application.",
+      "description": "Changes the package name by appending a dot and custom suffix (defaults to 'clone') and optionally customizes the app label to allow installing Gboard alongside the original application.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -818,6 +818,15 @@
           "required": false,
           "type": "kotlin.String",
           "default": "clone",
+          "values": null
+        },
+        {
+          "key": "appLabel",
+          "title": "App label",
+          "description": "Replaces the launcher and keyboard-list name (<application android:label>) so the clone is visually distinguishable from stock Gboard; leave blank to keep the original label.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         }
       ]
@@ -925,6 +934,15 @@
           "key": "hideCommentPopupAds",
           "title": "Hide Comment Popup Ads",
           "description": "Suppresses promotional brand surprise animation popups and commercial campaign effects when loading comments or publishing.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "showFlaggedComments",
+          "title": "Show Community-Flagged Comments",
+          "description": "Automatically expands community-flagged comments inline as normal comments, without showing the warning banner or requiring a tap.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -2595,7 +2613,7 @@
     },
     {
       "name": "Hardened Intent Security",
-      "description": "Enables Gboard internal external intent protection against unauthorized intent hijacking and removes the exported, permissionless web debug bridge content provider.",
+      "description": "Enables Gboard internal external intent protection against unauthorized intent hijacking, removes the exported, permissionless web debug bridge content provider, and purges federated learning (Brella) services, receivers, queries, and metadata from AndroidManifest.xml.",
       "default": true,
       "dependencies": [
         "ResourcePatch"

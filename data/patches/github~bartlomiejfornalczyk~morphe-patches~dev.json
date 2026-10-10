@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.0-dev.9",
+  "version": "1.1.0-dev.13",
   "patches": [
     {
       "name": "Add microG support",
@@ -261,6 +261,43 @@
       "options": []
     },
     {
+      "name": "Elevate right navigation buttons",
+      "description": "Elevates the right-side navigation buttons (Search, Sound, Report, Media) above the media player and bottom panel during turn-by-turn navigation in portrait mode.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#1A73E8",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "elevationDp",
+          "title": "Elevation (dp)",
+          "description": "Height in dp to elevate the right navigation buttons above the media player.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 165,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Location provider toggle",
       "description": "Adds a Location source choice to the Customization screen: Android's own location providers, microG's (microg Services) or Google Play services' fused provider. With Android, neither is ever asked for a location. A source that is missing or disabled is never used, so location keeps working without it. Also keeps the network (Wi-Fi/cell) provider registered when no fused provider answers, instead of GPS only, so a fix does not go stale indoors.",
       "default": true,
@@ -422,7 +459,7 @@
     },
     {
       "name": "Zoom controls in navigation",
-      "description": "Adds +, − and reset tiles during turn-by-turn that change the navigation zoom while the camera keeps following the car. Elevates right-side navigation buttons above media player panel.",
+      "description": "Adds +, − and reset tiles during turn-by-turn that change the navigation zoom while the camera keeps following the car.",
       "default": true,
       "category": null,
       "dependencies": [
