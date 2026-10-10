@@ -6,6 +6,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -53,6 +54,15 @@ HOT_RANK_ACTIVE_MS = HOT_RANK_ACTIVE_DAYS * 24 * 60 * 60 * 1000
 
 UNAVAILABLE_HTTP_CODES = (404, 451)
 DEAD_LINK_HTTP_CODES = (404, 410)
+
+
+def extract_mpp_name(mpp_file: Path) -> str | None:
+    with contextlib.suppress(Exception), zipfile.ZipFile(mpp_file, "r") as zip_file:
+        manifest_text = zip_file.read("META-INF/MANIFEST.MF").decode("utf-8")
+        for line in manifest_text.splitlines():
+            if line.startswith("Name:"):
+                return line.split(":", 1)[1].strip()
+    return None
 
 
 def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[str, str]:

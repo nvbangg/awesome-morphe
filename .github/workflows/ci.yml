@@ -52,11 +52,12 @@ jobs:
         run: |
           python scripts/fetch.py
 
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-            if [ -s scripts/bundle-parser/updated_files.txt ]; then
-              echo "need_java=true" >> $GITHUB_OUTPUT
-            fi
+          if [ -s scripts/bundle-parser/updated_files.txt ]; then
+            echo "need_java=true" >> $GITHUB_OUTPUT
+            echo "need_parse=true" >> $GITHUB_OUTPUT
+          elif [ -s scripts/bundle-parser/pending_repos.json ] && \
+            jq -e 'length > 0' scripts/bundle-parser/pending_repos.json > /dev/null; then
+            echo "need_parse=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Setup Java environment
@@ -68,17 +69,25 @@ jobs:
           cache: "gradle"
 
       - name: Parse bundles
-        if: steps.fetch.outputs.changed == 'true'
+        if: steps.fetch.outputs.need_parse == 'true'
         run: python scripts/parse.py
 
+      - name: Check data changes
+        if: steps.check.outputs.skip != 'true'
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain -- data/ web/public/)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Update bundles data
-        if: steps.fetch.outputs.changed == 'true'
+        if: steps.changes.outputs.changed == 'true'
         run: |
           pip install -e scripts/
           python scripts/update.py
 
       - name: Commit and push changes
-        if: steps.fetch.outputs.changed == 'true'
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git add data/ web/public/
           if ! git diff --staged --quiet; then

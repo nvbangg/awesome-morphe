@@ -31,10 +31,13 @@ flowchart TD
     A["Sync"] --> B{"Daily / weekly refresh due?"}
     B -->|Yes, scheduled run| C["Dispatch daily.yml"]
     B -->|No, or manual run| D["Discover + Fetch"]
-    D --> E{"Changes detected?"}
-    E -->|Yes| F["Parse + Update"]
-    F --> G["Commit and push"]
-    E -->|No| H[Complete]
+    D --> E{"Pending targets?"}
+    E -->|Yes| F["Apply pending; parse queued .mpp"]
+    E -->|No| G{"Data changes?"}
+    F --> G
+    G -->|Yes| H["Update"]
+    H --> I["Commit and push"]
+    G -->|No| J[Complete]
 ```
 
 ### [Daily / Weekly Workflow](../../actions/workflows/daily.yml) (daily.yml)
@@ -44,11 +47,11 @@ Triggered by Sync or manually:
 - **`daily`:** Syncs bundles, checks bundle images, and refreshes repository metadata.
 - **`weekly`:** Also checks existing bundle downloads and refreshes all Google Play metadata.
 
-Both modes update public data, generate the changelog, and clean up old workflow runs. Parsing runs only when changes are detected.
+Both modes update public data, generate the changelog, and clean up old workflow runs. Pending updates are applied whenever present; Java is set up and the parser runs only when the `.mpp` queue is nonempty.
 
 ```mermaid
 flowchart TD
-    A["Discover + Fetch"] --> B["Parse if changed"]
+    A["Discover + Fetch"] --> B["Apply pending; parse queued .mpp"]
     B --> C["Update + Check What's New"]
     C --> D["Commit and push"]
     D --> E["Send What's New via Telegram"]
@@ -120,7 +123,9 @@ HTTP 404/451 responses mark targets unavailable; other request failures generall
 
 Runs the Kotlin-based [`bundle-parser`](./scripts/bundle-parser/) (adapted from [Jman's ReVanced Patch Bundles](https://github.com/Jman-Github/ReVanced-Patch-Bundles) to fit this project and Morphe) on `.mpp` files listed in [`scripts/bundle-parser/updated_files.txt`](./scripts/bundle-parser/updated_files.txt), saving patch lists to [`data/patches/`](./data/patches/).
 
-Applies pending names and hashes from [`scripts/bundle-parser/pending_repos.json`](./scripts/bundle-parser/pending_repos.json) to [`data/repos.json`](./data/repos.json). Queued bundles have their content hashes updated only after successful parsing.
+Applies pending hashes from [`scripts/bundle-parser/pending_repos.json`](./scripts/bundle-parser/pending_repos.json) to [`data/repos.json`](./data/repos.json). Before each parser run, the previous success list is removed. A queued target is accepted only when the current process succeeds, lists that target in `parsed_files.txt`, and produces a patch list accepted by the existing data validation. Bundle names are read from the manifests of accepted branch updates, so a failed branch cannot supply another branch's name.
+
+A process failure returns a nonzero exit code and rejects all queued targets from that run. When the process succeeds with individual target failures, valid targets are still accepted and failed targets retain their previous hashes for retry. Pending updates from directly downloaded patch lists and images can be applied without Java; independent updates can also be applied when the parser process fails, but the failure stops subsequent workflow steps.
 
 ### [`update.py`](./scripts/update.py)
 
@@ -255,6 +260,12 @@ Run Python checks from the repository root:
 python -m pip install ruff
 ruff check --fix scripts/
 ruff format scripts/
+```
+
+Run parser regression tests from [`scripts/`](./scripts/). They use temporary local fixtures and mock Gradle; no bundles are downloaded or executed:
+
+```sh
+python -B -m unittest discover -s tests -v
 ```
 
 Lint and formatting commands may modify files.

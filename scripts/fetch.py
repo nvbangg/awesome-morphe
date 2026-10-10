@@ -7,9 +7,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from pathlib import Path
 
 from utils import (
     BUNDLES_DIR,
@@ -24,6 +22,7 @@ from utils import (
     append_step_summary,
     build_raw_url,
     build_repo_url,
+    extract_mpp_name,
     fetch,
     get_auth_headers,
     load_json,
@@ -36,15 +35,6 @@ def cleanup_target_files(file_prefix: str) -> None:
     (BUNDLES_DIR / f"{file_prefix}.json").unlink(missing_ok=True)
     (PATCHES_DIR / f"{file_prefix}.json").unlink(missing_ok=True)
     (MPP_DIR / f"{file_prefix}.mpp").unlink(missing_ok=True)
-
-
-def extract_mpp_name(mpp_file: Path) -> str | None:
-    with contextlib.suppress(Exception), zipfile.ZipFile(mpp_file, "r") as zip_file:
-        manifest_text = zip_file.read("META-INF/MANIFEST.MF").decode("utf-8")
-        for line in manifest_text.splitlines():
-            if line.startswith("Name:"):
-                return line.split(":", 1)[1].strip()
-    return None
 
 
 def get_remote_file_hash(
