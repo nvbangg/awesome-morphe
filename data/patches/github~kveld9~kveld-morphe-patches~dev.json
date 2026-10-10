@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.7.0-experimental.1",
+  "version": "2.7.0-experimental.3",
   "patches": [
     {
       "name": "APK Junk Cleaner",
@@ -348,7 +348,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "blockAdwordsHost",
+          "title": "Block Adwords Host",
+          "description": "Rewrites DEX const-string literals containing adwords.google.com and reportingwidget.google.com to 0.0.0.0. Enabled by default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Block Telemetry & Trackers",
@@ -1326,7 +1336,7 @@
           "description": "Removes graphic and non-values layout resources qualified for Wear OS smartwatches (e.g. watch qualifiers).",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1335,7 +1345,7 @@
           "description": "Removes graphic and non-values layout resources qualified for Android TV / Leanback (e.g. television qualifiers).",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1344,7 +1354,7 @@
           "description": "Removes graphic and non-values layout resources qualified for car head units, desk docks, appliances, or VR headsets.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         }
       ]
@@ -2212,7 +2222,7 @@
     },
     {
       "name": "Feed Content Filter",
-      "description": "Hides stories, photo posts, and videos outside configured view or like ranges from feeds.",
+      "description": "Hides stories, photo posts, and videos outside configured view or like ranges from the For You feed only. Following, Friends, profiles, search and other surfaces are never filtered.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -2276,7 +2286,7 @@
         {
           "key": "hideStories",
           "title": "Hide Stories",
-          "description": "Removes story posts from video feeds.",
+          "description": "Removes story posts from the For You feed.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -2285,7 +2295,7 @@
         {
           "key": "hidePhotoPosts",
           "title": "Hide Photo Posts",
-          "description": "Removes photo-mode posts from video feeds.",
+          "description": "Removes photo-mode posts from the For You feed.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -3525,7 +3535,7 @@
     },
     {
       "name": "PNG Asset Optimizer",
-      "description": "Losslessly recompresses PNG assets with maximum zlib compression and strips non-rendering metadata chunks (pHYs, tEXt, tIME) while preserving 9-patch structures and pixel accuracy.",
+      "description": "Losslessly recompresses PNG assets with maximum zlib compression and strips non-rendering metadata chunks (pHYs, tEXt, tIME) while preserving 9-patch structures and pixel accuracy. In raw-only pipeline mode, optimizes assets/ only as res/ is not decoded.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -4525,7 +4535,7 @@
     },
     {
       "name": "Universal Native Binary Trimmer",
-      "description": "Strips non-essential tracking, crash reporting, and debug companion native libraries in lib/** (e.g. libcrashlytics, libsentry, libbugly, libgwp-asan) by zeroing bytes in-situ.",
+      "description": "Strips non-essential tracking, crash reporting, and debug companion native libraries in lib/** (e.g. libcrashlytics, libsentry, libbugly, libgwp-asan) by zeroing bytes in-situ. Requires SDK Blocker pairing when the app eagerly loads these libs.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -4917,6 +4927,24 @@
           "values": null
         },
         {
+          "key": "disableRemoteConfig",
+          "title": "Disable Firebase Remote Config",
+          "description": "Prune Firebase RemoteConfig, DynamicLoading, and AB testing (Abt) discovery registrars. WARNING: May break dynamic backend configuration and remote feature flags.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableCrashlyticsRegistrars",
+          "title": "Disable Firebase Crashlytics Registrars",
+          "description": "Prune Firebase Crashlytics discovery registrars. WARNING: Pruning breaks apps hard-requiring the Crashlytics component at startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "disableAdStartupInitializers",
           "title": "Disable Ad SDK Startup Initializers",
           "description": "Remove ad SDK auto-init entries (e.g. Unity Ads) from the androidx.startup InitializationProvider. WARNING: may break rewarded ads and ad-gated features; enable only to block SDK auto-initialization.",
@@ -4929,7 +4957,7 @@
     },
     {
       "name": "Universal WebP Asset Optimizer",
-      "description": "Losslessly strips non-rendering metadata and ancillary chunks (EXIF, XMP, ICCP) from WebP assets across res/ and assets/ to reduce APK size.",
+      "description": "Losslessly strips non-rendering metadata and ancillary chunks (EXIF, XMP, ICCP) from WebP assets across res/ and assets/ to reduce APK size. In raw-only pipeline mode, optimizes assets/ only as res/ is not decoded.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
