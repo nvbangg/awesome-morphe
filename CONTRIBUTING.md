@@ -109,6 +109,8 @@ Checks the content hashes of `patches-bundle.json` on `main` and `dev`. For chan
 - The corresponding `.mpp` to [`scripts/bundle-parser/mpp/`](./scripts/bundle-parser/mpp/) to extract the bundle name.
 - `patches-list.json` to [`data/patches/`](./data/patches/), when it can be downloaded and decoded.
 
+Branch targets are processed concurrently. Each worker downloads and saves its target's files; the caller collects pending updates and the `.mpp` parse queue.
+
 If the patch list cannot be retrieved, the `.mpp` is queued in [`scripts/bundle-parser/updated_files.txt`](./scripts/bundle-parser/updated_files.txt) for parsing. Pending names and hashes are saved to [`scripts/bundle-parser/pending_repos.json`](./scripts/bundle-parser/pending_repos.json) for [`parse.py`](./scripts/parse.py) to apply.
 
 HTTP 404/451 responses mark targets unavailable; other request failures generally preserve existing hashes for retry.
@@ -262,7 +264,7 @@ ruff check --fix scripts/
 ruff format scripts/
 ```
 
-Run parser regression tests from [`scripts/`](./scripts/). They use temporary local fixtures and mock Gradle; no bundles are downloaded or executed:
+Run Python regression tests from [`scripts/`](./scripts/). They use temporary local fixtures and mock network requests and Gradle; no remote bundles are downloaded or executed:
 
 ```sh
 python -B -m unittest discover -s tests -v

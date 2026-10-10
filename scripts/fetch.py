@@ -8,6 +8,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass
 
 from utils import (
     BUNDLES_DIR,
@@ -29,6 +30,18 @@ from utils import (
     parse_repo_url,
     save_json,
 )
+
+
+@dataclass
+class BranchFetchResult:
+    source: str
+    repo: str
+    branch: str
+    new_sha: str | None
+    status_changed: bool = False
+    needs_parse: bool = False
+    bundle_name: str | None = None
+    error_message: str | None = None
 
 
 def cleanup_target_files(file_prefix: str) -> None:
@@ -79,26 +92,15 @@ def process_repo_branch(
     branch: str,
     current_sha: str | None,
     weekly: bool = False,
-) -> tuple[
-    str, str, str, str | None, str | None, bool, bool, bool, str | None, str | None
-]:
+) -> BranchFetchResult:
     repo_url = build_repo_url(source, repo)
     try:
         remote_sha = get_file_sha(source, repo, branch)
     except Exception as error:
         error_message = f"{repo_url} ({branch}): Failed: {error}"
         print(f"[-] {error_message}")
-        return (
-            source,
-            repo,
-            branch,
-            current_sha,
-            None,
-            False,
-            False,
-            False,
-            None,
-            error_message,
+        return BranchFetchResult(
+            source, repo, branch, current_sha, error_message=error_message
         )
 
     file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
@@ -118,17 +120,8 @@ def process_repo_branch(
                         f"{repo_url} ({branch}): Failed to verify `.mpp`: {error}"
                     )
                     print(f"[-] {error_message}")
-                    return (
-                        source,
-                        repo,
-                        branch,
-                        current_sha,
-                        None,
-                        False,
-                        False,
-                        False,
-                        None,
-                        error_message,
+                    return BranchFetchResult(
+                        source, repo, branch, current_sha, error_message=error_message
                     )
 
                 if not mpp_exists:
@@ -136,50 +129,19 @@ def process_repo_branch(
                         f"[-] {repo_url} ({branch}): `.mpp` file is no longer available"
                     )
                     cleanup_target_files(file_prefix)
-                    return (
-                        source,
-                        repo,
-                        branch,
-                        remote_sha,
-                        None,
-                        False,
-                        True,
-                        True,
-                        None,
-                        None,
+                    return BranchFetchResult(
+                        source, repo, branch, remote_sha, status_changed=True
                     )
 
-        return (
-            source,
-            repo,
-            branch,
-            remote_sha,
-            None,
-            False,
-            False,
-            False,
-            None,
-            None,
-        )
+        return BranchFetchResult(source, repo, branch, remote_sha)
 
     if remote_sha is None:
         print(f"[-] {repo_url} ({branch}): `patches-bundle.json` not found")
-        return source, repo, branch, None, None, False, True, True, None, None
+        return BranchFetchResult(source, repo, branch, None, status_changed=True)
 
     raw_bundle_url = build_raw_url(source, repo, branch, "patches-bundle.json")
     if not raw_bundle_url:
-        return (
-            source,
-            repo,
-            branch,
-            current_sha,
-            None,
-            False,
-            False,
-            False,
-            None,
-            None,
-        )
+        return BranchFetchResult(source, repo, branch, current_sha)
 
     try:
         bundle_text = fetch(raw_bundle_url)
@@ -191,31 +153,13 @@ def process_repo_branch(
             print(
                 f"[-] {repo_url} ({branch}): `patches-bundle.json` not found or taken down (HTTP {error.code})"
             )
-            return (
-                source,
-                repo,
-                branch,
-                remote_sha,
-                None,
-                False,
-                True,
-                True,
-                None,
-                None,
+            return BranchFetchResult(
+                source, repo, branch, remote_sha, status_changed=True
             )
         error_message = f"{repo_url} ({branch}): Failed: {error}"
         print(f"[-] {error_message}")
-        return (
-            source,
-            repo,
-            branch,
-            current_sha,
-            None,
-            False,
-            False,
-            False,
-            None,
-            error_message,
+        return BranchFetchResult(
+            source, repo, branch, current_sha, error_message=error_message
         )
 
     has_mpp = False
@@ -245,17 +189,8 @@ def process_repo_branch(
         if mpp_source != source or mpp_repo.lower() != repo.lower():
             print(f"[-] {repo_url} ({branch}): Invalid `download_url`")
             cleanup_target_files(file_prefix)
-            return (
-                source,
-                repo,
-                branch,
-                remote_sha,
-                bundle_text,
-                False,
-                True,
-                True,
-                None,
-                None,
+            return BranchFetchResult(
+                source, repo, branch, remote_sha, status_changed=True
             )
 
         mpp_file_path = MPP_DIR / f"{file_prefix}.mpp"
@@ -274,46 +209,35 @@ def process_repo_branch(
                     f"[-] {repo_url} ({branch}): `.mpp` file not found or taken down (HTTP {error.code})"
                 )
                 cleanup_target_files(file_prefix)
-                return (
-                    source,
-                    repo,
-                    branch,
-                    remote_sha,
-                    bundle_text,
-                    False,
-                    True,
-                    True,
-                    None,
-                    None,
+                return BranchFetchResult(
+                    source, repo, branch, remote_sha, status_changed=True
                 )
             error_message = f"{repo_url} ({branch}): Failed: {error}"
             print(f"[-] {error_message}")
-            return (
-                source,
-                repo,
-                branch,
-                current_sha,
-                None,
-                False,
-                False,
-                False,
-                None,
-                error_message,
+            return BranchFetchResult(
+                source, repo, branch, current_sha, error_message=error_message
             )
     except Exception:
         pass
 
-    return (
+    if bundle_text:
+        save_json(bundle_file, json.loads(bundle_text))
+
+    has_patch_list = False
+    if patches_list_url := get_patches_list_url(source, repo, branch):
+        with contextlib.suppress(Exception):
+            content = fetch(patches_list_url)
+            save_json(patches_file, json.loads(content))
+            has_patch_list = True
+
+    return BranchFetchResult(
         source,
         repo,
         branch,
         remote_sha,
-        bundle_text,
-        has_mpp,
-        True,
-        False,
-        bundle_name,
-        None,
+        status_changed=True,
+        needs_parse=has_mpp and not has_patch_list,
+        bundle_name=bundle_name,
     )
 
 
@@ -374,51 +298,27 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         ]
 
         for future in as_completed(futures):
-            (
-                source,
-                repo,
-                branch,
-                new_sha,
-                bundle_text,
-                has_mpp,
-                status_changed,
-                is_unavailable,
-                bundle_name,
-                error_message,
-            ) = future.result()
-            if error_message:
-                errors.append(error_message)
+            result = future.result()
+            if result.error_message:
+                errors.append(result.error_message)
 
-            if not status_changed:
+            if not result.status_changed:
                 continue
 
             updated_count += 1
-            pending_repos_data.setdefault(repo, {}).setdefault(source, {})[branch] = (
-                new_sha
-            )
-            if bundle_name:
-                pending_repos_data.setdefault(repo, {})["name"] = bundle_name
+            pending_repos_data.setdefault(result.repo, {}).setdefault(
+                result.source, {}
+            )[result.branch] = result.new_sha
+            if result.bundle_name:
+                pending_repos_data.setdefault(result.repo, {})["name"] = (
+                    result.bundle_name
+                )
 
-            file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
-            if not is_unavailable and new_sha is not None:
-                if bundle_text:
-                    save_json(
-                        BUNDLES_DIR / f"{file_prefix}.json",
-                        json.loads(bundle_text),
-                    )
-
-                has_patch_list = False
-                if patches_list_url := get_patches_list_url(source, repo, branch):
-                    with contextlib.suppress(Exception):
-                        content = fetch(patches_list_url)
-                        save_json(
-                            PATCHES_DIR / f"{file_prefix}.json",
-                            json.loads(content),
-                        )
-                        has_patch_list = True
-
-                if not has_patch_list and has_mpp:
-                    updated_files.append(f"mpp/{file_prefix}.mpp")
+            if result.needs_parse:
+                file_prefix = (
+                    f"{result.source}~{result.repo.replace('/', '~')}~{result.branch}"
+                )
+                updated_files.append(f"mpp/{file_prefix}.mpp")
 
     if is_daily:
         print(f"Processing {len(image_tasks)} image targets...")
