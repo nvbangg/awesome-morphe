@@ -1,5 +1,5 @@
 {
-  "version": "v0.0.6",
+  "version": "v0.0.7",
   "appNames": {
     "com.pinterest": "Pinterest"
   },
@@ -115,7 +115,7 @@
     },
     {
       "name": "Download pins",
-      "description": "Adds downloads for a pin, or for several pins you select in a grid. Saves the original image or the highest-quality video Pinterest supplies to your phone. Starts off. Turn it on in HushPinterest settings > Pin actions.",
+      "description": "Adds downloads for a pin, or for several pins you select in a grid. Saves the original image or the highest-quality video Pinterest supplies to your phone. Downloads go to the Download folder. Turn on Save in Pinterest's folder to keep them in Pictures/100PINT/Pins with Pinterest's own saves, or use Pick a download folder to choose any folder inside Pictures, DCIM, Download or Documents. Starts off. Turn it on in HushPinterest settings > Pin actions.",
       "category": "Downloads",
       "use": true,
       "dependencies": [
@@ -153,6 +153,42 @@
       "name": "Filter pin menu",
       "description": "Lets you hide Add to collage, Remix collage, Search image and Promote pin in a pin's menu, each with its own switch. Download, share and copy link stay. Starts off. Turn them on in HushPinterest settings > Interface.",
       "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.39.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.39.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14398020
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix push notifications",
+      "description": "Lets the patched app sign up for push notifications. Google's Firebase service only signs Pinterest up when the request names Pinterest's original signature, so this sends that signature's fingerprint and changes nothing else in the request. On by default. Turn it off in HushPinterest settings > More settings > Notifications.",
+      "category": "Notifications",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -259,7 +295,7 @@
     },
     {
       "name": "Hide advertising ID",
-      "description": "Pinterest sees an empty advertising ID with ad tracking limited, the same as if you deleted your ad ID in Android. Good for keeping ads from following you. On by default. Turn it off in HushPinterest settings > Privacy.",
+      "description": "Pinterest sees an empty advertising ID with ad tracking limited, the same as if you deleted your ad ID in Android. Pinterest also stops keeping its browser ID in Google's Block Store, so a reinstall doesn't bring the old one back. Good for keeping ads from following you. On by default. Turn it off in HushPinterest settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -875,7 +911,7 @@
     },
     {
       "name": "Strip link tracking",
-      "description": "Removes tracking tags from links you copy or share from Pinterest. The link still goes to the same place, and short pin.it links stay as they are. On by default. Turn it off in HushPinterest settings > Privacy.",
+      "description": "Removes tracking tags from links you copy or share from Pinterest. The link still goes to the same place. Its Plain pin links switch also turns short pin.it links into the pin's own pinterest.com link, so they don't show who shared them. Strip link tracking is on by default and Plain pin links starts off. Both are in HushPinterest settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [

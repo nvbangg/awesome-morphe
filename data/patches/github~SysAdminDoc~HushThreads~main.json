@@ -1,23 +1,21 @@
 {
-  "version": "v0.0.12",
+  "version": "v0.0.13",
   "appNames": {
     "com.instagram.barcelona": "Threads"
   },
   "patches": [
     {
       "name": "Block background-return feed refresh",
-      "description": "Keeps your place in the feed when you come back to Threads within ten minutes, or after any time away with No time limit on. Pull to refresh and a fresh launch still load new posts.",
+      "description": "Keeps your place in your feed when you leave Threads and come back within ten minutes. Pulling down to refresh still loads new posts. Good if you hate losing the post you were reading. Starts off. Turn it on in HushThreads settings > Feed.",
       "category": "Feed",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushThreads settings"
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -36,20 +34,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -59,7 +43,7 @@
     },
     {
       "name": "Change version code",
-      "description": "Raises this build's version code to the highest Android allows, so Google Play stops offering Meta's updates over it. Threads' checks against the version it was built as still see the real one. Since every build with this patch has the same code, an older Threads patched with it also installs over a newer one. Once it's in, going back to stock Threads means uninstalling first, which deletes Threads' data on your phone, and later HushThreads builds need this patch too or they won't install over this one.",
+      "description": "Raises the version number as high as Android allows, so Google Play won't offer Meta's updates over it. Going back to stock Threads means uninstalling, which deletes its data. It isn't selected by default. Works as soon as you patch it in, with no switch.",
       "category": "Updates",
       "use": false,
       "dependencies": [
@@ -68,9 +52,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -89,20 +71,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -112,7 +80,7 @@
     },
     {
       "name": "Disable analytics",
-      "description": "Redirects matched Pigeon, default event-log and MQTT analytics addresses. Settings show which address kinds were patched. Other telemetry may remain.",
+      "description": "Stops Threads from sending most of its usage reports to Meta. A few may still get through. Good if you'd rather share less about how you use the app. On by default. Turn it off in HushThreads settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -121,9 +89,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -142,20 +108,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -165,18 +117,16 @@
     },
     {
       "name": "Disable screenshot detection",
-      "description": "Threads isn't told when you take a screenshot. It stops looking for new screenshots in your photos and doesn't ask Android to report them.",
+      "description": "Threads isn't told when you take a screenshot. It stops watching your photos for new screenshots. Good if you want to screenshot without Threads noticing. Starts off. Turn it on in HushThreads settings > Privacy.",
       "category": "Privacy",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushThreads settings"
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -195,20 +145,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -218,18 +154,16 @@
     },
     {
       "name": "Disable video autoplay",
-      "description": "Videos in feed posts don't play by themselves as you scroll. Tap one to watch it full screen.",
+      "description": "Videos in your feed wait for a tap instead of playing as you scroll. Good for a calmer feed and less data use. Starts off. Turn it on in HushThreads settings > Feed.",
       "category": "Feed",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushThreads settings"
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -248,20 +182,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -271,7 +191,7 @@
     },
     {
       "name": "Hide ads",
-      "description": "Takes sponsored posts out of your Threads feed before they're shown.",
+      "description": "Removes sponsored posts from your feed before Threads shows them, so they leave no gap. Good for a cleaner feed. On by default. Turn it off in HushThreads settings > Feed.",
       "category": "Ads",
       "use": true,
       "dependencies": [
@@ -280,9 +200,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -302,19 +220,42 @@
               "versionCodes": {
                 "ARM64_V8A": 512008342
               }
-            },
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ghost post bubbles",
+      "description": "Takes the ghost post bubbles off profile pictures, on profiles and in the row at the top of your feed. The pictures and the ghost posts themselves stay. Good for a calmer look. Starts off. Turn it on in HushThreads settings > More settings > Appearance.",
+      "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushThreads settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.barcelona": [
+          "450.0.0.51.78"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Threads",
+          "packageName": "com.instagram.barcelona",
+          "description": null,
+          "appIconColor": 0,
+          "signatures": [
+            "5367570bad488d8da6a0fab78d9766a1a4c23c3c70fac0ad2e91c8f0bd58b432",
+            "8f38da6b4dc34b1900353bde4630043198cbe3ef7214151f86679cd000c90500"
+          ],
+          "targets": [
             {
-              "version": "449.0.0.54.82",
+              "version": "450.0.0.51.78",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
+                "ARM64_V8A": 512008342
               }
             }
           ]
@@ -324,7 +265,7 @@
     },
     {
       "name": "Hide suggested users",
-      "description": "Removes verified server cards suggesting accounts to follow. Ordinary posts, reposts and unknown card types stay.",
+      "description": "Removes the cards that suggest accounts to follow, in your feed and on profiles. Normal posts and reposts stay, and so does the rest of a profile. Good if you only want posts in your feed. On by default. Turn it off in HushThreads settings > Feed.",
       "category": "Feed",
       "use": true,
       "dependencies": [
@@ -333,9 +274,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -355,19 +294,42 @@
               "versionCodes": {
                 "ARM64_V8A": 512008342
               }
-            },
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide the Instagram button",
+      "description": "Takes the Instagram button off the top of profiles, yours and other people's. The other buttons stay. Good for a tidier profile. Starts off. Turn it on in HushThreads settings > More settings > Appearance.",
+      "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushThreads settings"
+      ],
+      "compatiblePackages": {
+        "com.instagram.barcelona": [
+          "450.0.0.51.78"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Threads",
+          "packageName": "com.instagram.barcelona",
+          "description": null,
+          "appIconColor": 0,
+          "signatures": [
+            "5367570bad488d8da6a0fab78d9766a1a4c23c3c70fac0ad2e91c8f0bd58b432",
+            "8f38da6b4dc34b1900353bde4630043198cbe3ef7214151f86679cd000c90500"
+          ],
+          "targets": [
             {
-              "version": "449.0.0.54.82",
+              "version": "450.0.0.51.78",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
+                "ARM64_V8A": 512008342
               }
             }
           ]
@@ -377,7 +339,7 @@
     },
     {
       "name": "HushThreads settings",
-      "description": "Adds HushThreads settings to Threads. Tap HushThreads above More settings in Threads' own settings, long-press Threads' launcher icon, or open Additional settings in the app on Threads' App info page, to turn features on or off, pause HushThreads, save your switches to a file or load them, and export diagnostics. The licenses are there too.",
+      "description": "Adds a HushThreads page to Threads where you turn features on or off, pause HushThreads, back up your settings and read the licenses. Open it from Threads' own settings. Works as soon as you patch it in, with no switch.",
       "category": "Settings",
       "use": true,
       "dependencies": [
@@ -386,9 +348,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -407,20 +367,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -430,18 +376,16 @@
     },
     {
       "name": "Max image quality",
-      "description": "Photos load at the largest size Threads has instead of one picked for your screen. They're sharper, and each one is a bigger download.",
+      "description": "Loads photos at the largest size Threads has, instead of one picked for your screen. Photos look sharper but use more data. Starts off. Turn it on in HushThreads settings > Feed.",
       "category": "Feed",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushThreads settings"
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -460,20 +404,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -483,7 +413,7 @@
     },
     {
       "name": "Open links in browser",
-      "description": "Opens the web links you tap in your default browser instead of Threads' own, without Threads' click tracker. Threads, Instagram and other Meta pages still open in Threads.",
+      "description": "Opens links you tap in your regular browser instead of inside Threads, and skips Threads' link tracking. Threads, Instagram and other Meta pages still open in Threads. On by default. Turn it off in HushThreads settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -492,9 +422,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -513,20 +441,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -536,18 +450,16 @@
     },
     {
       "name": "Pure black dark mode",
-      "description": "Threads' dark mode uses pure black instead of its dark gray behind your feed, posts and profiles, which looks deeper and saves power on an OLED screen. Menus and sheets keep their own grays.",
+      "description": "Makes Threads' dark mode truly black instead of dark gray behind your feed and posts. It looks deeper and can save battery on OLED screens. Starts off. Turn it on in HushThreads settings > More settings > Appearance.",
       "category": "Interface",
-      "use": false,
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "HushThreads settings"
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -566,20 +478,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -589,7 +487,7 @@
     },
     {
       "name": "Remove share targets",
-      "description": "Takes Threads out of the share sheet other apps open, so it isn't offered when you share a link, a photo or a video from somewhere else. It does that by removing the share entries from Threads' manifest, along with any contacts Threads offers there for direct sharing. Sharing from Threads to other apps still works.",
+      "description": "Takes Threads out of the share menu in other apps, so it isn't offered when you share a link, photo or video. Sharing from Threads still works. It isn't selected by default. Works as soon as you patch it in, with no switch.",
       "category": "Interface",
       "use": false,
       "dependencies": [
@@ -599,9 +497,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -620,20 +516,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -643,7 +525,7 @@
     },
     {
       "name": "Remove the advertising ID",
-      "description": "Stops Threads getting your phone's advertising ID from Google Play services. Threads gets a string of zeros in its place.",
+      "description": "Stops Threads from reading your phone's advertising ID. It gets a string of zeros instead. Good for making your phone harder to track across apps. Works as soon as you patch it in, with no switch.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -653,9 +535,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -674,20 +554,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -697,7 +563,7 @@
     },
     {
       "name": "Restore screens on re-signed builds",
-      "description": "Lets Threads trust itself again on a re-signed build and share sign-in information with an Instagram installed with this build's own key. Both apps keep their current signing keys. A Root Mount install doesn't need this patch.",
+      "description": "Fixes Threads screens that fail on a patched app because they check who signed it. Also lets Threads share sign-in with an Instagram signed with this build's key. Works as soon as you patch it in, with no switch.",
       "category": "Fixes",
       "use": true,
       "dependencies": [
@@ -706,9 +572,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -727,20 +591,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -750,7 +600,7 @@
     },
     {
       "name": "Sanitize sharing links",
-      "description": "Takes Threads' tracking tags, such as xmt, off the links you share or copy, and turns a short share link into the post's own link. The post a link opens stays the same.",
+      "description": "Removes tracking tags from links you copy or share from Threads, and turns short share links into the post's own link. The link still opens the same post. On by default. Turn it off in HushThreads settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -759,9 +609,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -780,20 +628,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -803,8 +637,8 @@
     },
     {
       "name": "Save photos and videos",
-      "description": "Adds Save to a post's menu, below Copy link. It saves the post's photo or video to your phone's gallery, and every page of a carousel.",
-      "category": "Feed",
+      "description": "Adds Save to a post's menu, below Copy link. It saves the photo or video to your gallery, every page of a carousel too. Good for keeping posts you like. On by default. Turn it off in HushThreads settings > Downloads.",
+      "category": "Downloads",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -812,9 +646,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -833,20 +665,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
@@ -856,7 +674,7 @@
     },
     {
       "name": "Trust user-added certificates",
-      "description": "Lets Android's certificate checks in Threads accept certificates you've installed on your phone yourself, such as one a work or school network needs, or a debugging proxy's. Threads also checks Meta's certificates in its own network code, which this patch doesn't change, so a proxy still can't read most of Threads' traffic to Meta. Only pick it if you know you need it.",
+      "description": "Lets Threads accept security certificates you installed yourself, such as for a work network or a debugging proxy. Meta's own checks stay, so a proxy can't read most traffic. It isn't selected by default. Works as soon as you patch it in, with no switch.",
       "category": "Fixes",
       "use": false,
       "dependencies": [
@@ -866,9 +684,7 @@
       ],
       "compatiblePackages": {
         "com.instagram.barcelona": [
-          "450.0.0.51.78",
-          "449.0.0.54.82",
-          "448.0.0.54.85"
+          "450.0.0.51.78"
         ]
       },
       "compatibility": [
@@ -887,20 +703,6 @@
               "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 512008342
-              }
-            },
-            {
-              "version": "449.0.0.54.82",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511908382
-              }
-            },
-            {
-              "version": "448.0.0.54.85",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 511808302
               }
             }
           ]
