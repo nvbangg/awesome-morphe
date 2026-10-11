@@ -1,0 +1,381 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.3.0",
+  "patches": [
+    {
+      "name": "Allow screenshots and screen recording",
+      "description": "Removes recent-apps preview hiding and screen capture restrictions across application activities.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "enableRecentPreviews",
+          "title": "Enable Recent App Previews",
+          "description": "Removes android:excludeFromRecents to allow viewing the app thumbnail in the Android app switcher.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeCaptureRestrictions",
+          "title": "Remove Capture Restrictions",
+          "description": "Clears screenshot and screen recording blocking flags from activities.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Bypass root and debugger checks",
+      "description": "Reports the debugger as disconnected and hides root indicator files from existence checks, defeating common detection heuristics.",
+      "default": false,
+      "category": "Debugging",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "bypassDebuggerChecks",
+          "title": "Bypass Debugger Checks",
+          "description": "Force Debug.isDebuggerConnected, VMDebug.isDebuggerConnected, and waitingForDebugger to report false.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassRootFileChecks",
+          "title": "Bypass Root File Checks",
+          "description": "Make File.exists and related probes report false inside methods that reference su, magisk, or busybox paths.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Bypass screenshot detection",
+      "description": "Disables screenshot detection callbacks so the app is not notified when a screenshot is taken.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable boot start-up",
+      "description": "Removes boot intent filters so the app cannot start itself when the device boots.",
+      "default": false,
+      "category": "Privacy",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "removeBootFilters",
+          "title": "Remove Boot Intent Filters",
+          "description": "Strip BOOT_COMPLETED, LOCKED_BOOT_COMPLETED, and quickboot intent filters from receivers and services.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Disable tracker SDK calls",
+      "description": "Replaces void-returning calls into known tracking SDKs with no-op instructions so analytics, attribution, and advertising code never runs at runtime.",
+      "default": false,
+      "category": "Privacy",
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Enable debugging and inspection",
+      "description": "Enables application debugging flags, permits cleartext traffic for proxy inspection, and strips test-only restrictions in the application manifest.",
+      "default": false,
+      "category": "Debugging",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "enableDebugging",
+          "title": "Enable Debugging",
+          "description": "Sets android:debuggable to true on the application tag to allow attaching debuggers and profiling tools.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "allowCleartextTraffic",
+          "title": "Allow Cleartext Traffic",
+          "description": "Sets android:usesCleartextTraffic to true to allow inspecting HTTP/cleartext network communication.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeTestOnly",
+          "title": "Remove Test-Only Flag",
+          "description": "Removes android:testOnly if present so the application can be installed normally on production devices.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Open links in browser",
+      "description": "Stops http and https links from opening inside the app by removing app link verification and link intent filters.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "removeAutoVerify",
+          "title": "Remove App Link Verification",
+          "description": "Strip android:autoVerify from intent filters so the system stops opening verified links in the app.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeLinkFilters",
+          "title": "Remove Link Intent Filters",
+          "description": "Remove intent filters that handle http/https links entirely, so links never resolve to this app.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove FLAG_SECURE",
+      "description": "Removes FLAG_SECURE from window flag operations so secure applications allow screenshots and screen recording.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Strip package visibility",
+      "description": "Removes package visibility declarations so the app cannot enumerate other installed applications.",
+      "default": false,
+      "category": "Privacy",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "removeQueries",
+          "title": "Remove Queries Declarations",
+          "description": "Remove all <queries> elements used to probe for other installed packages.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeQueryAllPackages",
+          "title": "Remove QUERY_ALL_PACKAGES Permission",
+          "description": "Remove the QUERY_ALL_PACKAGES permission that grants blanket visibility of installed apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Strip sensitive permissions",
+      "description": "Strips sensitive Android permissions (such as camera and microphone access) from the application manifest to enhance privacy.",
+      "default": false,
+      "category": "Privacy",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripCamera",
+          "title": "Strip Camera",
+          "description": "Remove camera access permissions (android.permission.CAMERA).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripMicrophone",
+          "title": "Strip Microphone",
+          "description": "Remove microphone and audio recording permissions (android.permission.RECORD_AUDIO, etc.).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripLocation",
+          "title": "Strip Location",
+          "description": "Remove location tracking permissions (ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, etc.).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripSensors",
+          "title": "Strip Sensors",
+          "description": "Remove body sensor and activity recognition permissions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripContacts",
+          "title": "Strip Contacts",
+          "description": "Remove contacts access permissions (READ_CONTACTS, WRITE_CONTACTS, GET_ACCOUNTS).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripPhoneSms",
+          "title": "Strip Phone & SMS",
+          "description": "Remove phone, call log, and SMS permissions (READ_PHONE_STATE, READ_CALL_LOG, READ_SMS, SEND_SMS, etc.).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripCalendar",
+          "title": "Strip Calendar",
+          "description": "Remove calendar access permissions (READ_CALENDAR, WRITE_CALENDAR).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripStorage",
+          "title": "Strip Storage & Media",
+          "description": "Remove media and storage permissions (READ_MEDIA_IMAGES, READ_EXTERNAL_STORAGE, etc.).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripWifi",
+          "title": "Strip Nearby Wi-Fi",
+          "description": "Remove nearby Wi-Fi scanning permissions (NEARBY_WIFI_DEVICES, ACCESS_WIFI_STATE, CHANGE_WIFI_STATE). May affect Wi-Fi status display.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripOverlay",
+          "title": "Strip Overlay Access",
+          "description": "Remove permissions that let the app draw over other apps or change system settings (SYSTEM_ALERT_WINDOW, WRITE_SETTINGS).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripSpecialAccess",
+          "title": "Strip Special Access",
+          "description": "Remove package installer, usage access, and all-files access permissions (REQUEST_INSTALL_PACKAGES, PACKAGE_USAGE_STATS, MANAGE_EXTERNAL_STORAGE).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Strip trackers and telemetry",
+      "description": "Strips known tracking, analytics, and advertising SDK components (such as Google Analytics, Firebase, AppsFlyer, Adjust, Facebook, and Crashlytics) from the application manifest.",
+      "default": false,
+      "category": "Privacy",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripGoogleAnalytics",
+          "title": "Strip Google & Firebase Analytics",
+          "description": "Remove Google Analytics, Firebase Analytics, and AppMeasurement components.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripFacebookAnalytics",
+          "title": "Strip Facebook Analytics",
+          "description": "Remove Facebook App Events and analytics provider components.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripAttributionTrackers",
+          "title": "Strip Attribution Trackers",
+          "description": "Remove third-party attribution and tracking SDKs (AppsFlyer, Adjust, Branch, Kochava, Mixpanel, Flurry).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripCrashReporting",
+          "title": "Strip Crash Reporting Telemetry",
+          "description": "Remove Crashlytics and Microsoft App Center telemetry services.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripAdvertisingId",
+          "title": "Strip Advertising ID Permissions",
+          "description": "Remove AD_ID and AdServices permissions to prevent advertising tracking.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Trust user certificates",
+      "description": "Installs a network security config that trusts user-installed CA certificates so HTTPS traffic can be inspected with proxy tools.",
+      "default": false,
+      "category": "Debugging",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "trustUserCerts",
+          "title": "Trust User Certificates",
+          "description": "Accept TLS certificates signed by user-installed certificate authorities (e.g. mitmproxy, HTTP Toolkit).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permitCleartext",
+          "title": "Permit Cleartext Traffic",
+          "description": "Allow unencrypted HTTP traffic in the generated network security config.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    }
+  ]
+}

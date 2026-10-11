@@ -1,0 +1,1565 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.8.0",
+  "patches": [
+    {
+      "name": "Disable Amazon IAP components",
+      "description": "Disables the orphan Amazon In-App Purchasing response receiver and strips the Amazon PrivacyPass attest permission. Inert without the Amazon Appstore installed.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Android debugging",
+      "description": "Sets android:debuggable=false on the application element, blocking JDWP debugger attach and `run-as` access to the app's private data over ADB. Apps that rely on debug-only behavior will lose it.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Bugsnag",
+      "description": "No-ops Bugsnag on Nova Launcher 8.1.6: both HTTP deliverers return DELIVERED so no payload ever leaves the device (queued error files are deleted as sent), and Nova's error-reporting flag is forced false — which also disables novalytics usage recording. The client still initializes; crash data stays local-only.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.teslacoilsw.launcher",
+          "name": "Nova Launcher",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E53935",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "81006 (8.1.6)",
+              "versionCodes": {
+                "ARM64_V8A": 81006,
+                "ARMEABI_V7A": 81006,
+                "X86_64": 81006,
+                "X86": 81006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable CafeBazaar components",
+      "description": "Disables the orphan CafeBazaar in-app billing receiver and strips its pay-through permission. Inert without CafeBazaar installed.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Google Play billing components",
+      "description": "Disables the Play Billing library's proxy billing activities, the Play Core dialog wrapper and asset-pack extraction services, and the Pairip license activity. Billing and licensing permission declarations are handled by the Remove GMS permissions master patch — this patch only disables the components. Purchases were already impossible in re-signed patched APKs.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Huawei store components",
+      "description": "Disables orphan Huawei HMS, AGConnect and OTA update SDK components: the HMS bridge and enable-service activities, AGConnect service discovery and initializer, Huawei's in-app OTA updater, package installer and file provider, and the account sign-in hub activities. Strips the AppGallery common-data permission. Inert without Huawei AppGallery installed.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable OneStore components",
+      "description": "Disables orphan OneStore (Korean GAA SDK) components: the IAP proxy activity and sign-in activity. Inert without OneStore installed.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable RuStore components",
+      "description": "Disables orphan RuStore SDK components: the payment activity, pay and imaging content providers, and the metrics event job service. Inert without RuStore installed.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Samsung IAP components",
+      "description": "Disables orphan Samsung In-App Purchase SDK components: the dialog, package-check, account, payment and subscription-plan activities. Strips the Samsung IAP billing permission. Inert without Samsung Galaxy Store installed.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Sesame integrations",
+      "description": "Disables Nova Launcher 8.1.6's Sesame third-party integrations (Spotify, OneDrive, Twitch, Slack, Discord, Dropbox, Deezer, GitHub): the integration ingest always returns 0 items, so no background or manual data pulls run and their APIs are never contacted. The Sesame engine and local search indexing continue to work.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.teslacoilsw.launcher",
+          "name": "Nova Launcher",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E53935",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "81006 (8.1.6)",
+              "versionCodes": {
+                "ARM64_V8A": 81006,
+                "ARMEABI_V7A": 81006,
+                "X86_64": 81006,
+                "X86": 81006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Sesame search results",
+      "description": "Removes the bundled Sesame (Branch) deep-shortcut results from Nova Launcher's search on 8.1.6 by no-op'ing its results provider. Search still returns apps, contacts and settings.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.teslacoilsw.launcher",
+          "name": "Nova Launcher",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E53935",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "81006 (8.1.6)",
+              "versionCodes": {
+                "ARM64_V8A": 81006,
+                "ARMEABI_V7A": 81006,
+                "X86_64": 81006,
+                "X86": 81006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Xiaomi store components",
+      "description": "Disables orphan Xiaomi billing client and Common IAP components: the proxy billing activities and payment/extra web activities they register. Inert without Xiaomi's store and payment service installed.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable ad SDK calls",
+      "description": "No-ops common ad SDK load/show/init/fetch methods in bundled ad packages.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable cleartext traffic",
+      "description": "Sets android:usesCleartextTraffic=false on the application element, forcing all traffic to HTTPS. Plaintext HTTP can be read and injected by anyone on the network. Apps that legitimately use plain HTTP (local device dashboards, IoT) lose those requests.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable legacy external storage",
+      "description": "Sets android:requestLegacyExternalStorage=false on the application element, confining the app to scoped storage — its own directories and media collections instead of raw access to every app's shared files. Only affects apps targeting Android 10; file-manager-style apps lose raw shared-storage paths.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable lock-screen display",
+      "description": "Disables android:showWhenLocked and android:turnScreenOn on every activity that declared them, so no app screen can display over the lock screen and no activity can wake the screen by itself. Stalkerware and scareware use lock-screen overlays to fake unlock prompts and push alerts while the phone is locked; alarm, incoming-call and 2FA screens lose their over-lock UX. Both removals are on by default — open the patch options (gear) to deselect one.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripShowWhenLocked",
+          "title": "Disable show-when-locked",
+          "description": "No app screen can display over the lock screen anymore — the lock-screen overlay channel dies with it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripTurnScreenOn",
+          "title": "Disable turn-screen-on",
+          "description": "No activity can wake the screen by itself anymore — ad and spyware screen-wake behavior goes with it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Disable telemetry",
+      "description": "Disables Firebase completely (init provider, analytics, Crashlytics, Remote Config wiring, install UUID), turns off the sale promo push notifications, and prevents Fyber's crash handler from installing at process start.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.appgenix.bizcal",
+          "name": "Business Calendar 2",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#D32F2F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.55.6",
+              "versionCodes": {
+                "ARM64_V8A": 255601,
+                "ARMEABI_V7A": 255601,
+                "X86_64": 255601,
+                "X86": 255601
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "IPC guard (cross-app exfil barrier)",
+      "description": "A cross-app IPC barrier for suspect apps: outbound intents to other packages are dropped (own-package traffic passes through), ContentResolver access to foreign authorities is blocked, runtime receivers become not-exported, and notification PendingIntents aimed at other apps become no-ops. The manifest sweep (providers unexported, <queries> stripped, HCE removed) always applies. Breaks share sheets, link opens, pickers and cross-app logins unless the destination package is in the allowlist. All guards are on by default — open the patch options (gear) to deselect or allowlist.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "guardIntents",
+          "title": "Guard outbound intents",
+          "description": "Rewrites startActivity/startService/bindService/sendBroadcast call sites through the allowlist — the main choke point for explicit cross-app transitions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "guardProviders",
+          "title": "Guard content providers",
+          "description": "Rewrites ContentResolver query/insert/update/delete/call/open* call sites — foreign authorities blocked, own package and platform authorities allowed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "guardReceivers",
+          "title": "Force receivers not-exported",
+          "description": "Rewrites registerReceiver call sites to add RECEIVER_NOT_EXPORTED on API 33+, closing the invisible-export receiver door.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "guardPendingIntents",
+          "title": "Guard PendingIntents",
+          "description": "Rewrites PendingIntent creation sites — foreign targets become self-targeted no-ops, so notification lures cannot reach other apps when the system fires them.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "ipcGuardAllowedPackages",
+          "title": "Allowed packages",
+          "description": "Comma-separated destination packages to allow through the barrier (your browser, gallery picker, etc.). The first entry is used as the browser for implicit ACTION_VIEW links.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Network host allowlist",
+      "description": "Blocks all of the app's DNS resolution except the domains you allow: every non-allowlisted host resolves to 0.0.0.0, so no traffic leaves the device except to the hosts you list in the options (gear). Entries are suffix-matched — example.com also allows its subdomains. Unlike literal-based host blocking, this catches hosts the app fetches from configuration or redirects, not just shipped literals. The allowlist is baked at patch time; re-patch to change it.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "allowedDomains",
+          "title": "Allowed domains",
+          "description": "Comma-separated domains allowed through the barrier (e.g. 'api.example.com, cdn.example.net'). An entry also allows every subdomain. Everything else resolves to 0.0.0.0. Leave empty to skip the patch — a full offline block is the Remove INTERNET permission patch's job.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Override auto backup",
+      "description": "Forces android:allowBackup on the application element in the chosen direction. Disable excludes the app's private data — databases, preferences, tokens — from cloud auto backup, adb backup and device transfers (the privacy direction). Enable restores the platform default for apps that opted out, overriding the developer's protection of secrets and license tokens. Pick the direction in the patch options (gear); default is Disable.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "backupOverride",
+          "title": "Backup override",
+          "description": "Which direction to force android:allowBackup.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "disable",
+          "values": {
+            "Disable auto backup": "disable",
+            "Enable auto backup": "enable"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prevent task hijacking (StrandHogg)",
+      "description": "Hardens the app against task-hijacking overlays (StrandHogg): clears the cloneable task affinity, disables activity re-parenting and pins launcher activities to singleTask so no other app can interleave phishing UI in front of this one. Recents behavior can change (relaunch resumes instead of restarting; splash launchers may act differently). All mitigations are on by default — open the patch options (gear) to deselect.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripTaskAffinity",
+          "title": "Clear task affinity",
+          "description": "Sets android:taskAffinity to empty on the application element — nothing left for a malicious app to clone.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripTaskReparenting",
+          "title": "Disable task re-parenting",
+          "description": "Sets allowTaskReparenting=false on the application element and on every activity that declared it — the mechanism StrandHogg 2.0 used.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceSingleTaskLauncher",
+          "title": "Force launcher singleTask",
+          "description": "Sets launchMode=singleTask on launcher activities, pinning the app's root so no other activity can share its task. The highest-impact toggle of the three on app behavior.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove GMS permissions",
+      "description": "Strips the Google Play-defined permission declarations from the manifest: advertising ID, Play Billing, legacy license checks, install referrer attribution, push (C2DM), legacy account auth scopes, legacy activity recognition and Google Services Framework sync. Inert on devices without Google Play; on Play devices it kills the matching capability. All removals are on by default — open the patch options (gear) to deselect specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripAdId",
+          "title": "Remove AD_ID (Google Play Services)",
+          "description": "The cross-app advertising identifier ad SDKs profile against. With the declaration gone, apps read a zeroed ID.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBilling",
+          "title": "Remove BILLING (Google Play)",
+          "description": "Play Billing gate for in-app purchases and subscriptions — already broken in re-signed patched APKs regardless.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripCheckLicense",
+          "title": "Remove CHECK_LICENSE (Play Licensing)",
+          "description": "The legacy License Verification Library gate, still declared by old paid apps. On Play devices a stripped declaration makes the license check throw — the wall that unlock patches replace. Inert without Play.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripInstallReferrer",
+          "title": "Remove BIND_GET_INSTALL_REFERRER_SERVICE",
+          "description": "Play Install Referrer API: the campaign and attribution token that matches installs to ad clicks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripPush",
+          "title": "Remove C2DM permissions (push)",
+          "description": "GCM/FCM push delivery (com.google.android.c2dm.permission.RECEIVE) and the sender-side SEND permission. On devices with Play — including GrapheneOS's sandboxed Play Services — removal silences the app's push notifications.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripC2dMessage",
+          "title": "Remove C2D_MESSAGE (app-scoped push lock)",
+          "description": "The per-app signature permission from the classic GCM client setup (<package>.permission.C2D_MESSAGE) that locks registration to the app's signature. Pairs with push removal; the matching receiver declaration is left untouched.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripGoogleServicesFramework",
+          "title": "Remove READ_GSERVICES (Google Services Framework)",
+          "description": "The legacy Google Services Framework account-data gate, still declared by play-services era apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripLegacyActivityRecognition",
+          "title": "Remove legacy ACTIVITY_RECOGNITION (Google Play Services)",
+          "description": "The GMS-defined alias fitness apps declared before Android 10 — gait and motion profiling via play services. The modern platform ACTIVITY_RECOGNITION permission is covered by its own separate patch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripGoogleAuth",
+          "title": "Remove GOOGLE_AUTH scopes (legacy account tokens)",
+          "description": "The pre-Firebase account auth-scope family (GOOGLE_AUTH and its service variants like GOOGLE_AUTH.writely, GOOGLE_AUTH.wise, GOOGLE_AUTH.ALL_SERVICES) — account-token gates held by the Google stack. Old Google-integrated apps may fail account flows on Play devices once stripped; test per app.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Health Connect permissions",
+      "description": "Strips the app's Health Connect declarations — background reads granted without a separate prompt, and history reaching back before install. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripHealthBackground",
+          "title": "READ_HEALTH_DATA_IN_BACKGROUND",
+          "description": "Background health reads — steps, sleep, heart rate — granted without a separate prompt.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripHealthHistory",
+          "title": "READ_HEALTH_DATA_HISTORY",
+          "description": "History access reaching back to health data from before the app was installed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove INTERNET permission",
+      "description": "Removes the android.permission.INTERNET permission from the manifest. Blocks every socket the app opens, so bundled ad, analytics and telemetry SDKs cannot phone home. Also disables any legitimate online features — only enable for apps you want fully offline.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove SMS & MMS permissions",
+      "description": "Strips the app's messaging declarations — premium-SMS fraud, OTP interception and the carrier push channel, all of which bypass the internet stack entirely. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripSendSms",
+          "title": "SEND_SMS",
+          "description": "The premium-SMS billing fraud channel — carrier-billed, never touches the internet.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReadSms",
+          "title": "READ_SMS",
+          "description": "Message content, including bank and 2FA codes, harvested offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReceiveSms",
+          "title": "RECEIVE_SMS",
+          "description": "Intercepts incoming messages — including OTP codes — the moment they arrive.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReceiveMms",
+          "title": "RECEIVE_MMS",
+          "description": "Auto-retrieves MMS payloads — a media-parser attack surface on the radio path.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReceiveWapPush",
+          "title": "RECEIVE_WAP_PUSH",
+          "description": "Carrier OMA provisioning pushes — a silent configuration channel off the internet.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove ad & Privacy Sandbox permissions",
+      "description": "Strips the app's ad-stack declarations — interest profiling, the advertising identifier and cross-app attribution measurement. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripAdTopics",
+          "title": "ACCESS_ADSERVICES_TOPICS",
+          "description": "Privacy Sandbox Topics — your advertising-interest profile.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripAdId",
+          "title": "ACCESS_AD_SERVICES_AD_ID",
+          "description": "The Privacy Sandbox advertising ID used for attribution and profiling.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripAdAttribution",
+          "title": "ACCESS_ADSERVICES_ATTRIBUTION",
+          "description": "Cross-app attribution measurement — install and conversion matching.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove calendar permissions",
+      "description": "Strips the app's calendar declarations — the read side harvests schedules offline, the write side injects phantom events into the trusted Calendar UI. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripReadCalendar",
+          "title": "READ_CALENDAR",
+          "description": "Schedules, attendees, meeting links and locations — rich metadata harvested offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripWriteCalendar",
+          "title": "WRITE_CALENDAR",
+          "description": "Integrity attack: injects phantom events with attacker links into the trusted Calendar UI.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove camera & flashlight permissions",
+      "description": "Strips the app's camera and flashlight permission declarations, capture included. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripCamera",
+          "title": "CAMERA",
+          "description": "Capture of faces, documents and surroundings — works fully offline for later exfiltration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripFgsCamera",
+          "title": "FOREGROUND_SERVICE_CAMERA",
+          "description": "Android 14+ service-context camera capture behind a persistent-process notification.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripFlashlight",
+          "title": "FLASHLIGHT",
+          "description": "Legacy normal permission, deprecated since Android 6 — the modern torch (setTorchMode) needs no permission, so the declaration is dead weight; stripping is hygiene. Apps that branch on the permission check may hide their own torch button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove contacts & accounts permissions",
+      "description": "Strips the app's social-graph and account-enum declarations — the read side harvests offline, the write side is an integrity attack vector. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripReadContacts",
+          "title": "READ_CONTACTS",
+          "description": "Your full social graph — names, numbers, emails, addresses — harvested offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripWriteContacts",
+          "title": "WRITE_CONTACTS",
+          "description": "Integrity attack: swaps bank and support contacts for attacker numbers, no network needed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripGetAccounts",
+          "title": "GET_ACCOUNTS",
+          "description": "Enumerates on-device accounts for cross-service identity linkage; deprecated, pure hardening.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove location permissions",
+      "description": "Strips the app's location permission declarations, GNSS and service-context capture included. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripFineLocation",
+          "title": "ACCESS_FINE_LOCATION",
+          "description": "A GNSS pattern-of-life trail — home, work, habits — receive-only, works fully offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripCoarseLocation",
+          "title": "ACCESS_COARSE_LOCATION",
+          "description": "Approximate position stream — the same pattern-of-life leak at lower fidelity.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBackgroundLocation",
+          "title": "ACCESS_BACKGROUND_LOCATION",
+          "description": "Silent 24/7 location trail with no visible app use — the highest-risk location grant.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripFgsLocation",
+          "title": "FOREGROUND_SERVICE_LOCATION",
+          "description": "Android 14+ service-context continuous location behind a persistent-process notification.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove media & storage permissions",
+      "description": "Strips the app's media and shared-storage declarations — the full library including PII screenshots, EXIF GPS location history, and legacy shared-storage integrity. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripReadMediaImages",
+          "title": "READ_MEDIA_IMAGES",
+          "description": "Your entire photo library, including PII screenshots, captured offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReadMediaVideo",
+          "title": "READ_MEDIA_VIDEO",
+          "description": "Your entire video library, harvested offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReadMediaAudio",
+          "title": "READ_MEDIA_AUDIO",
+          "description": "Voice notes and recordings, harvested offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReadMediaVisualUserSelected",
+          "title": "READ_MEDIA_VISUAL_USER_SELECTED",
+          "description": "The specific media items granted in the partial-photo-access flow.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripAccessMediaLocation",
+          "title": "ACCESS_MEDIA_LOCATION",
+          "description": "EXIF GPS from shared media — a location-history leak bypassing location permissions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReadExternalStorage",
+          "title": "READ_EXTERNAL_STORAGE",
+          "description": "Legacy (API ≤32) shared-storage read, including other apps' Download dropboxes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripWriteExternalStorage",
+          "title": "WRITE_EXTERNAL_STORAGE",
+          "description": "Legacy (API ≤32) shared-storage write — an integrity surface over every app's Downloads.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove microphone & audio permissions",
+      "description": "Strips the app's audio declarations — microphone capture, service-context capture, and global audio-state modification. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripRecordAudio",
+          "title": "RECORD_AUDIO",
+          "description": "Ambient eavesdropping and long background capture — the stalkerware staple.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripFgsMicrophone",
+          "title": "FOREGROUND_SERVICE_MICROPHONE",
+          "description": "Android 14+ service-context background audio capture behind a persistent-process notification.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripModifyAudioSettings",
+          "title": "MODIFY_AUDIO_SETTINGS",
+          "description": "Granted at install with no prompt: the app can modify global audio state — volume, ringer mode and audio routing during calls. An integrity surface over the device's audio configuration; call and voice apps lose their adjustments.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove nearby radio permissions",
+      "description": "Strips the app's Bluetooth, UWB, Wi-Fi Aware and NFC declarations — beacon presence mapping, discoverability and direct RF exfiltration links, all offline-capable. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripBluetooth",
+          "title": "BLUETOOTH",
+          "description": "Legacy (pre-12) Bluetooth access — discovery reveals nearby devices and MAC addresses for fingerprinting.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBluetoothAdmin",
+          "title": "BLUETOOTH_ADMIN",
+          "description": "Legacy (pre-12) Bluetooth admin — initiates discovery and makes the device discoverable.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBluetoothScan",
+          "title": "BLUETOOTH_SCAN",
+          "description": "Scans for nearby devices and beacons — a retail-tracker presence census, no internet needed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBluetoothConnect",
+          "title": "BLUETOOTH_CONNECT",
+          "description": "Direct RF data link to nearby hardware — an offline exfiltration path.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBluetoothAdvertise",
+          "title": "BLUETOOTH_ADVERTISE",
+          "description": "Broadcasts a presence beacon your device can be tracked by over RF.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripUwbRanging",
+          "title": "UWB_RANGING",
+          "description": "Ultra-wideband fine-ranging — precise proximity and motion analytics, collected offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripNearbyWifiDevices",
+          "title": "NEARBY_WIFI_DEVICES",
+          "description": "Wi-Fi Aware NAN peer links — direct device-to-device transfer with no access point.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripNfc",
+          "title": "NFC",
+          "description": "The NFC radio gate — tag reads and short-range RF peer links off the internet stack.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove network state permissions",
+      "description": "Strips the app's network-visibility declarations — Wi-Fi identity, VPN detection and LAN inventory. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripAccessWifiState",
+          "title": "ACCESS_WIFI_STATE",
+          "description": "Wi-Fi connection details — network names and BSSIDs identify and locate you.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripAccessNetworkState",
+          "title": "ACCESS_NETWORK_STATE",
+          "description": "Current network type and availability; lets ad SDKs detect active VPNs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripAccessLocalNetwork",
+          "title": "ACCESS_LOCAL_NETWORK",
+          "description": "Android 16+ gate for LAN access — inventories your home network, every device a fingerprint.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove notification permission",
+      "description": "Removes the android.permission.POST_NOTIFICATIONS permission from the manifest — a lure and phishing delivery channel into your notification shade. Apps go quiet; that is the point.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove persistence & wakeup permissions",
+      "description": "Strips the app's persistence and wake-scheduling declarations — boot auto-start, CPU hold and precise periodic wakeups, the backbone of always-on background telemetry. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripBootCompleted",
+          "title": "RECEIVE_BOOT_COMPLETED",
+          "description": "Auto-start on every boot — the persistence backbone of always-on telemetry.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripWakeLock",
+          "title": "WAKE_LOCK",
+          "description": "Holds the CPU awake — the enabler of unbounded background processing and beacons.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripScheduleExactAlarm",
+          "title": "SCHEDULE_EXACT_ALARM",
+          "description": "Precise scheduled wakeups — the backbone of periodic telemetry beacons.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripUseExactAlarm",
+          "title": "USE_EXACT_ALARM",
+          "description": "Non-revocable exact-alarm bypass; removal is the only way to revoke it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove phone & call permissions",
+      "description": "Strips the app's telephony declarations — silent dialing, identity correlation, call hijacking and call-record tampering. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripCallPhone",
+          "title": "CALL_PHONE",
+          "description": "Silent dialing without the dialer — premium-rate fraud and tracking callbacks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReadPhoneState",
+          "title": "READ_PHONE_STATE",
+          "description": "Phone identifiers and call state for identity correlation, harvested offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReadPhoneNumbers",
+          "title": "READ_PHONE_NUMBERS",
+          "description": "Your phone number — identity linkage and SIM-swap prep.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripAnswerPhoneCalls",
+          "title": "ANSWER_PHONE_CALLS",
+          "description": "Answer and control incoming calls — a call-hijack primitive.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripReadCallLog",
+          "title": "READ_CALL_LOG",
+          "description": "Your who-talks-to-whom call history, captured offline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripWriteCallLog",
+          "title": "WRITE_CALL_LOG",
+          "description": "Integrity attack: edits or deletes call records to cover tracks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripUseSip",
+          "title": "USE_SIP",
+          "description": "Internet telephony; neutralized once INTERNET is removed, stripped as hardening.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove screenshot detection permission",
+      "description": "Removes the android.permission.DETECT_SCREEN_CAPTURE permission from the manifest (Android 15+) — banking apps scold you and surveillance apps learn that evidence is being collected. Removing it makes your screenshots silent. Pair with the Universal Screenshot Protection Bypass to also clear FLAG_SECURE.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove sensor & motion permissions",
+      "description": "Strips the app's motion and body-sensor declarations — activity inference, tap logging, gait profiling and device fingerprinting. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripOtherSensors",
+          "title": "OTHER_SENSORS",
+          "description": "Android 15+ 'other' sensors — accelerometer, magnetometer: activity inference and fingerprinting.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripActivityRecognition",
+          "title": "ACTIVITY_RECOGNITION",
+          "description": "Gait and motion-state profiling — a cheap, continuous passive fingerprint.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBodySensors",
+          "title": "BODY_SENSORS",
+          "description": "Health signals such as heart rate where sensors exist.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBodySensorsBackground",
+          "title": "BODY_SENSORS_BACKGROUND",
+          "description": "Continuous background body-sensor reads with no visible app use.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove silent download permission",
+      "description": "Removes android.permission.DOWNLOAD_WITHOUT_NOTIFICATION — the grant apps declare to run DownloadManager transfers with hidden visibility, so payload pulls (including dropper self-updates) happen with no visible notification. Once stripped, a hidden download request fails loudly at enqueue (SecurityException: Invalid value for visibility: 2) instead of hiding — the transfer can no longer be invisible. Pairs with the REQUEST_INSTALL_PACKAGES toggle in the special-access patch; apps that legitimately download quietly in the background (e.g. podcast auto-updates) will surface notifications or fail at the attempt — smoke test per app.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove special-access permissions",
+      "description": "Strips the app's special-access declarations — usage-history surveillance, overlay tapjacking, all-files access, the dropper channel and settings hijacking; removal means the app can never reach its Settings grant state. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripPackageUsageStats",
+          "title": "PACKAGE_USAGE_STATS",
+          "description": "The Usage Access grant — your full app-usage history; the parental-control/stalkerware channel.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripSystemAlertWindow",
+          "title": "SYSTEM_ALERT_WINDOW",
+          "description": "The overlay grant — tapjacking, fake-dialog phishing and ad spam over other apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripManageExternalStorage",
+          "title": "MANAGE_EXTERNAL_STORAGE",
+          "description": "The All-files-access grant — read and write over the entire shared storage.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripManageMedia",
+          "title": "MANAGE_MEDIA",
+          "description": "The Media-management grant — modify and delete all media without per-item grants.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripRequestInstallPackages",
+          "title": "REQUEST_INSTALL_PACKAGES",
+          "description": "The dropper channel — silently self-update and sideload further APKs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripWriteSettings",
+          "title": "WRITE_SETTINGS",
+          "description": "The system-settings grant — an integrity surface over ringtone, DND and default apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove surveillance service declarations",
+      "description": "Strips the BIND_* family — system-signature declarations no third-party app can ever be granted, kept in the manifest only as intent markers for accessibility scraping, device admin, notification listening and keylogging. All removals are on by default — open the patch options (gear) to keep specific ones.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripBindAccessibilityService",
+          "title": "BIND_ACCESSIBILITY_SERVICE",
+          "description": "System-signature declaration no third-party app can hold — the accessibility-scraping stalkerware marker.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBindDeviceAdmin",
+          "title": "BIND_DEVICE_ADMIN",
+          "description": "System-signature declaration signaling device-admin intent — remote lock, wipe, enforced policy.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBindNotificationListener",
+          "title": "BIND_NOTIFICATION_LISTENER_SERVICE",
+          "description": "System-signature declaration signaling a notification listener — every notification, including 2FA codes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripBindInputMethod",
+          "title": "BIND_INPUT_METHOD",
+          "description": "System-signature declaration signaling a keyboard — every keystroke in every app.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Silence app logging",
+      "description": "Nops every logging call site — android.util.Log writers, System.out/err print and println, and Throwable.printStackTrace — so tokens, credentials and PII never reach the logcat ring buffer, where adb, bug reports and forensic capture read them. Bundled wrappers like Timber funnel through android.util.Log and are silenced transitively. Log-based debug features and in-app log viewers go empty — that is the point.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "silenceAndroidLog",
+          "title": "Silence android.util.Log",
+          "description": "Nop all Log.v/d/i/w/e/wtf/println call sites — every overload, including format-string and throwable variants.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "silenceSystemStreams",
+          "title": "Silence System.out / System.err",
+          "description": "Nop all PrintStream print/println call sites. Default is false: this rewrites every PrintStream call site, not only System.out/err — an app writing text files through PrintStream.println would lose those writes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "silenceStackTraces",
+          "title": "Silence printStackTrace",
+          "description": "Nop Throwable.printStackTrace call sites — exception messages often carry the very secret being handled when the error occurred.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks all meteoblue Weather premium features by making the billing data source's purchase-state flow always report an active purchase.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meteoblue.droid",
+          "name": "meteoblue Weather",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0077CC",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "Cirrus Uncinus 3.1.4",
+              "versionCodes": {
+                "ARM64_V8A": 27041,
+                "ARMEABI_V7A": 27041,
+                "X86_64": 27041,
+                "X86": 27041
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Prime",
+      "description": "Unlocks Nova Launcher Prime on 8.1.6 by forcing the runtime prime flags (Lzg/t1;->y / ->t) to true at every write — the settings initializer and the Prime-unlocker package-change handler.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.teslacoilsw.launcher",
+          "name": "Nova Launcher",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E53935",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "81006 (8.1.6)",
+              "versionCodes": {
+                "ARM64_V8A": 81006,
+                "ARMEABI_V7A": 81006,
+                "X86_64": 81006,
+                "X86": 81006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks Business Calendar 2 Pro by forcing the complete pro status and the force-pro override to return true, routing every feature gate to the full package (7) without touching billing.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.appgenix.bizcal",
+          "name": "Business Calendar 2",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#D32F2F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.55.6",
+              "versionCodes": {
+                "ARM64_V8A": 255601,
+                "ARMEABI_V7A": 255601,
+                "X86_64": 255601,
+                "X86": 255601
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks Octopi Launcher Pro by returning true from the isPro LiveData getter, bypassing all pro feature gates without modifying billing or database logic.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.otp.octopilauncher",
+          "name": "Octopi Launcher",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6600",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.92",
+              "versionCodes": {
+                "ARM64_V8A": 2309,
+                "ARMEABI_V7A": 2309,
+                "X86_64": 2309,
+                "X86": 2309
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks Wavelet's pro features (Reverberation, Virtualizer, Bass tuner, Equal loudness) by initializing the purchase-verified state flow to true and making the purchase processor always report a verified purchase, which also suppresses the purchase flow.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pittvandewitt.wavelet",
+          "name": "Wavelet",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.05",
+              "versionCodes": {
+                "ARM64_V8A": 260508,
+                "ARMEABI_V7A": 260508,
+                "X86_64": 260508,
+                "X86": 260508
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Your Calendar Widget: Remove ads",
+      "description": "Kills AdMob at every evidenced seam: auto-init provider (attachInfo), overview + settings + promotion-screen banner loaders, the timed promotion popup, and the rewarded-ad bootstrap + display (AdManager load/show). Works independently of the Pro patch.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "de.mash.android.calendar",
+          "name": "Your Calendar Widget",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2E86AB",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.71.3",
+              "versionCodes": {
+                "ARM64_V8A": 523,
+                "ARMEABI_V7A": 523,
+                "X86_64": 523,
+                "X86": 523
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Your Calendar Widget: Unlock Pro",
+      "description": "Unlocks all Pro/task features by forcing the read-side gates (both Utility.isProVersion overloads + Utility.hasTaskAccess). Erosion-safe: purchase state lives in sticky settings that only these gates read; billing failure paths never bypass them. Without GMS, Play Billing can never resolve purchases.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "de.mash.android.calendar",
+          "name": "Your Calendar Widget",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2E86AB",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.71.3",
+              "versionCodes": {
+                "ARM64_V8A": 523,
+                "ARMEABI_V7A": 523,
+                "X86_64": 523,
+                "X86": 523
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}

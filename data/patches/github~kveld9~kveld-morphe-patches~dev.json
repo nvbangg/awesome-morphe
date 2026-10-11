@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.7.0-experimental.4",
+  "version": "2.7.0-experimental.7",
   "patches": [
     {
       "name": "APK Junk Cleaner",
@@ -2742,7 +2742,9 @@
       "name": "Hide Inbox Story & Status Tray",
       "description": "Hides the horizontal story, notes, and status tray (Skylight) displayed at the top of direct messages and the inbox.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.zhiliaoapp.musically",
@@ -2762,7 +2764,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "hideSuggestedOnly",
+          "title": "Hide Suggested Stories Only",
+          "description": "Hides only suggested and non-followed story circles in the inbox tray, preserving followed stories and preventing autoplay into suggested users.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Hide Popular Lives In Search",

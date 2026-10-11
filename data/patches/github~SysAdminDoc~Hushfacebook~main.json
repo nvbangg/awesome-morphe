@@ -1,5 +1,5 @@
 {
-  "version": "v0.9.0",
+  "version": "v0.10.0",
   "appNames": {
     "com.facebook.katana": "Facebook"
   },
@@ -60,7 +60,8 @@
       "use": true,
       "dependencies": [
         "BytecodePatch",
-        "Hushfacebook settings"
+        "Hushfacebook settings",
+        "ResourcePatch"
       ],
       "compatiblePackages": {
         "com.facebook.katana": [
@@ -169,7 +170,7 @@
     },
     {
       "name": "Block ad telemetry",
-      "description": "Stops Facebook watching for screenshots of ads and reporting which apps you install after seeing ads, so less of what you do feeds its ad tracking. Works as soon as you patch it in, with no switch.",
+      "description": "Stops Facebook watching for screenshots of ads and reporting which apps you install after seeing ads, and stops several of the ways it sends your phone's advertising ID, so less of what you do feeds its ad tracking. Works as soon as you patch it in, with no switch.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -432,7 +433,7 @@
     },
     {
       "name": "Comment sheet options",
-      "description": "Small fixes for comments. Stop a long press on Like from opening reactions, hide the GIF and sticker buttons, show every reply without tapping View replies, and hide Related groups under group posts. Starts off. Turn on the parts you want in Hushfacebook settings > Comments.",
+      "description": "Small fixes for comments. Stop a long press on Like from opening reactions, hide the GIF and sticker buttons, show every reply without tapping View replies, hide Related groups under group posts, and hide comments with shop links or your words. Starts off. Turn on the parts you want in Hushfacebook settings > Comments.",
       "category": "Comments",
       "use": true,
       "dependencies": [
@@ -2019,7 +2020,7 @@
     },
     {
       "name": "Hold back analytics uploads",
-      "description": "Stops Facebook sending its usage reports in the background and skips the learning jobs it runs on your phone, so less about how you use the app leaves it. Starts off. Turn it on in Hushfacebook settings > Privacy, then restart Facebook.",
+      "description": "Stops Facebook sending its usage reports in the background and skips the learning jobs it runs on your phone, so less about how you use the app leaves it. A second switch holds back the camera roll processing that uploads your photos and details about them for sharing suggestions. Both start off. Turn them on in Hushfacebook settings > Privacy, then restart Facebook.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -2057,7 +2058,7 @@
     },
     {
       "name": "Hushfacebook in the Menu",
-      "description": "Adds a Hushfacebook settings row to Facebook's Menu, at the end of Settings and privacy, so the settings are easy to find. A Saved row joins it while the Saved shortcut switch is on. Works as soon as you patch it in, with no switch.",
+      "description": "Adds a Hushfacebook settings row to Facebook's Menu, at the end of Settings and privacy, so the settings are easy to find. A Saved row joins it while the Saved shortcut switch is on, and a Watch history row while the Watch history shortcut switch is. Works as soon as you patch it in, with no switch.",
       "category": "Settings",
       "use": true,
       "dependencies": [
@@ -2207,7 +2208,7 @@
     },
     {
       "name": "Keep the progress bar",
-      "description": "Keeps a reel's progress bar full size, so you can drag it without tapping first, and keeps a full-screen video's controls on screen until you tap. Starts off. Turn it on in Hushfacebook settings > Playback.",
+      "description": "Keeps every reel's progress bar full size and moving smoothly, with the time above it, so you can drag it without tapping first. Also keeps a full-screen video's controls on screen until you tap. Starts off. Turn it on in Hushfacebook settings > Playback.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -2400,7 +2401,7 @@
     },
     {
       "name": "Open links in external browser",
-      "description": "Opens web links in your own browser instead of Facebook's built-in one, without Facebook tracking the click. Facebook pages still open in the app. On by default. Turn it off in Hushfacebook settings > Links.",
+      "description": "Opens web links in your own browser instead of Facebook's built-in one, without Facebook tracking the click. Facebook pages still open in the app. On by default. Turn it off in Hushfacebook settings > Links. A second switch, on by default under Privacy, stops Facebook's browser keeping a history of the links you open in it.",
       "category": "Interface",
       "use": true,
       "dependencies": [
@@ -3114,6 +3115,44 @@
       "name": "Turn off screen transitions",
       "description": "Shows Facebook's tabs, Menu and new screens at once, without the slide between them, so the app feels quicker. Swipes and animations inside a page stay. Starts off. Turn it on in Hushfacebook settings > Appearance.",
       "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "582.0.0.50.54"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "582.0.0.50.54",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475417104,
+                "ARMEABI_V7A": 475417036
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock app icons",
+      "description": "Lets you pick the app icons Facebook keeps for Facebook Plus on its App icon page, so your home screen icon can be any of them. Starts off. Turn it on in Hushfacebook settings > Appearance.",
+      "category": "Theme",
       "use": true,
       "dependencies": [
         "BytecodePatch",

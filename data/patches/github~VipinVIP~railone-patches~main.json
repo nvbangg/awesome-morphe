@@ -1,7 +1,50 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "patches": [
+    {
+      "name": "Allow screenshots",
+      "description": "Removes the FLAG_SECURE restriction that makes screenshots and screen recordings of the app come out black. The in-app WebView (WavesActivity) stops applying it, and the bundled no_screenshot plugin's own FLAG_SECURE hook is neutered so no screen can re-apply it.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.cris.aikyam",
+          "name": "RailOne",
+          "description": "Indian Railways passenger app by CRIS. These patches disarm the app's anti-tamper checks so it keeps working on a re-signed build with USB debugging on.",
+          "apkFileType": "APKS",
+          "appIconColor": "#1B4B8F",
+          "signatures": [
+            "8a5f21a01ef7d1202500e143e34bdf4c3166cc43c5595b35f0f463b53f8f0d16"
+          ],
+          "targets": [
+            {
+              "version": "2.1.66",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.1.62",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Bypass USB-debugging detection",
       "description": "Forces the adb_enabled, adb_wifi_enabled and development_settings_enabled checks to return false, so the app runs normally while USB debugging / developer options are on.",
@@ -134,6 +177,49 @@
     {
       "name": "Disable native security SDK",
       "description": "Stops AikyamApplication.onCreate() from loading libnative-lib.so, disarming the native anti-tamper SDK that force-stops the app and wipes its data. Root cause fix: the other patches only matter once this one is applied.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.cris.aikyam",
+          "name": "RailOne",
+          "description": "Indian Railways passenger app by CRIS. These patches disarm the app's anti-tamper checks so it keeps working on a re-signed build with USB debugging on.",
+          "apkFileType": "APKS",
+          "appIconColor": "#1B4B8F",
+          "signatures": [
+            "8a5f21a01ef7d1202500e143e34bdf4c3166cc43c5595b35f0f463b53f8f0d16"
+          ],
+          "targets": [
+            {
+              "version": "2.1.66",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.1.62",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide screenshot detection",
+      "description": "Stops the bundled no_screenshot plugin from registering its MediaStore ContentObserver, so screenshot and screen-recording detection never becomes active and no detection event is delivered to the app's Flutter layer.",
       "default": true,
       "category": null,
       "dependencies": [],
