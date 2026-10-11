@@ -1,112 +1,27 @@
 {
-  "version": "1.2.0",
+  "version": "v1.2.0",
+  "appNames": {},
   "patches": [
-    {
-      "name": "Unlock premium",
-      "description": "Unlocks 365Score premium features (ad-free, tipster, plus, notification sounds) without a subscription.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.scores365",
-          "name": "365Scores",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FF8C00",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "14.9.5",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable ads",
-      "description": "Removes banner and interstitial advertisements from 365Score activities.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.scores365",
-          "name": "365Scores",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FF8C00",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "14.9.5",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable analytics",
-      "description": "Removes analytics and tracking SDK initialization and logging (AppsFlyer, Firebase Analytics) from 365Score.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.scores365",
-          "name": "365Scores",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FF8C00",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "14.9.5",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
     {
       "name": "Block update screen",
       "description": "Blocks the 'This app is out of date' update screen and popup on launch.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.scores365": [
+          "14.9.5"
+        ]
+      },
+      "compatibility": [
         {
+          "name": "",
           "packageName": "com.scores365",
-          "name": "365Scores",
           "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FF8C00",
-          "signatures": null,
+          "appIconColor": null,
           "targets": [
             {
               "version": "14.9.5",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
+              "experimental": false
             }
           ]
         }
@@ -115,41 +30,135 @@
     },
     {
       "name": "Change version code",
-      "description": "Changes the version code of 365Score to prevent forced updates and Play Store overwrites.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
+      "description": "Changes the version code of 365Score to prevent forced updates.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.scores365": [
+          "14.9.5"
+        ]
+      },
+      "compatibility": [
         {
+          "name": "",
           "packageName": "com.scores365",
-          "name": "365Scores",
           "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FF8C00",
-          "signatures": null,
+          "appIconColor": null,
           "targets": [
             {
               "version": "14.9.5",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
+              "experimental": false
             }
           ]
         }
       ],
-      "options": [
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Removes banner and interstitial advertisements from 365Score.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.scores365": [
+          "14.9.5"
+        ]
+      },
+      "compatibility": [
         {
-          "key": "versionCode",
-          "title": "Version code",
-          "description": "The version code to spoof. Default is 999999.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "999999",
-          "values": null
+          "name": "",
+          "packageName": "com.scores365",
+          "description": null,
+          "appIconColor": null,
+          "targets": [
+            {
+              "version": "14.9.5",
+              "experimental": false
+            }
+          ]
         }
-      ]
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable analytics",
+      "description": "Removes analytics and tracking (Firebase Analytics) from 365Score.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.scores365": [
+          "14.9.5"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "",
+          "packageName": "com.scores365",
+          "description": null,
+          "appIconColor": null,
+          "targets": [
+            {
+              "version": "14.9.5",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "MicroG integration",
+      "description": "Allows Google Sign-In and account sync to work on non-rooted devices by redirecting Google Play Services to ReVanced GmsCore / MicroG.",
+      "use": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.scores365": [
+          "14.9.5"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "",
+          "packageName": "com.scores365",
+          "description": null,
+          "appIconColor": null,
+          "targets": [
+            {
+              "version": "14.9.5",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks 365Score premium/pro features (ad-free, tipster, plus, notification sounds).",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.scores365": [
+          "14.9.5"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "",
+          "packageName": "com.scores365",
+          "description": null,
+          "appIconColor": null,
+          "targets": [
+            {
+              "version": "14.9.5",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
     }
   ]
 }

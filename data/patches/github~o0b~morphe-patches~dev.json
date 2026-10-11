@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "patches": [
     {
       "name": "Disable Amazon IAP components",
@@ -62,6 +62,38 @@
       "options": []
     },
     {
+      "name": "Disable Firebase analytics and remote config",
+      "description": "No-ops the app's FirebaseAnalytics event logger and the startup RemoteConfig fetch (no FID, no config phone-home).",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samruston.hurry",
+          "name": "Hurry Day Countdown & Reminder",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "30.2",
+              "versionCodes": {
+                "ARM64_V8A": 186,
+                "ARMEABI_V7A": 186,
+                "X86_64": 186,
+                "X86": 186
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable Google Play billing components",
       "description": "Disables the Play Billing library's proxy billing activities, the Play Core dialog wrapper and asset-pack extraction services, and the Pairip license activity. Billing and licensing permission declarations are handled by the Remove GMS permissions master patch — this patch only disables the components. Purchases were already impossible in re-signed patched APKs.",
       "default": false,
@@ -86,6 +118,38 @@
       "category": null,
       "dependencies": [],
       "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Pairip integrity and license checks",
+      "description": "Removes the signature-tamper crash and the Play-licensing error dialog and shutdown that fire without Google Play services.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samruston.hurry",
+          "name": "Hurry Day Countdown & Reminder",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "30.2",
+              "versionCodes": {
+                "ARM64_V8A": 186,
+                "ARMEABI_V7A": 186,
+                "X86_64": 186,
+                "X86": 186
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
       "options": []
     },
     {
@@ -1487,6 +1551,38 @@
                 "ARMEABI_V7A": 260508,
                 "X86_64": 260508,
                 "X86": 260508
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock pro features",
+      "description": "Forces the app's own \"purchased\" preference on at process start and neutralizes the billing re-verify that erases it without Play services.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samruston.hurry",
+          "name": "Hurry Day Countdown & Reminder",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "30.2",
+              "versionCodes": {
+                "ARM64_V8A": 186,
+                "ARMEABI_V7A": 186,
+                "X86_64": 186,
+                "X86": 186
               },
               "isExperimental": false,
               "minSdk": null,

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.43.3-dev.1",
+  "version": "1.43.3-dev.2",
   "patches": [
     {
       "name": "APK Junk Cleanup",
@@ -249,10 +249,11 @@
     },
     {
       "name": "Clean 3 Dot Menu",
-      "description": "Removes Lock and Add to playlist from the video and folder 3-dot bottom sheets. Toggle in Mod Settings.",
+      "description": "Removes Lock and Add to playlist from the video and folder 3-dot bottom sheets and from the selection toolbar menus. Toggle in Mod Settings.",
       "default": true,
       "dependencies": [
-        "BytecodePatch"
+        "BytecodePatch",
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -387,6 +388,44 @@
                 "ARMEABI_V7A": 242,
                 "X86_64": 242,
                 "X86": 242
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Close duplicate tabs",
+      "description": "Adds Close duplicate tabs to the tab tray 3 dot menu. Toggle in Mod Settings.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.mozilla.fenix",
+          "name": "Firefox Nightly",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "159.0a1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "160.0a1",
+              "versionCodes": {
+                "ARM64_V8A": 2016189527,
+                "ARMEABI_V7A": 2016189527,
+                "X86_64": 2016189527,
+                "X86": 2016189527
               },
               "isExperimental": false,
               "minSdk": null,
@@ -815,7 +854,7 @@
     },
     {
       "name": "Extra File Info",
-      "description": "Shows resolution, date, size and last played on video rows, and video count, size and path on folder rows. Toggle in Mod Settings.",
+      "description": "Shows resolution, date, size and last played on video rows, and video count, size and path on folder rows. Fixes the gap above Recent Added and adds a Mod Settings option to hide the Recent Added and Directory rows. Toggles in Mod Settings.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -981,7 +1020,7 @@
     },
     {
       "name": "Hide Home Tiles",
-      "description": "Hides the tile row at the top of the home page (All Videos, Downloader, Privacy, Cleaner...). Toggle in Mod Settings.",
+      "description": "Hides the tile row at the top of the home page (All Videos, Downloader, Privacy, Cleaner...) and the Move to Trash option in the delete dialog. Toggle in Mod Settings.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -1168,6 +1207,44 @@
       "options": []
     },
     {
+      "name": "Hide fullscreen toast",
+      "description": "Removes the toast shown when a video goes fullscreen. Toggle in Mod Settings.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.mozilla.fenix",
+          "name": "Firefox Nightly",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "159.0a1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "160.0a1",
+              "versionCodes": {
+                "ARM64_V8A": 2016189527,
+                "ARMEABI_V7A": 2016189527,
+                "X86_64": 2016189527,
+                "X86": 2016189527
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide more actions",
       "description": "Hides Hide, Add to desktop, Encrypt, Decrypt, Add bookmark, Web Search, Copy to, Move to, Transfer, and Playing from the \"More actions\" menu.",
       "default": false,
@@ -1336,7 +1413,45 @@
       "options": []
     },
     {
-      "name": "Old style 3 dot menu",
+      "name": "New tab next to current tab",
+      "description": "Opens new tabs right after the current tab and adds a > button beside + that opens a tab at the end. Both are toggles in Mod Settings.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.mozilla.fenix",
+          "name": "Firefox Nightly",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "159.0a1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "160.0a1",
+              "versionCodes": {
+                "ARM64_V8A": 2016189527,
+                "ARMEABI_V7A": 2016189527,
+                "X86_64": 2016189527,
+                "X86": 2016189527
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Old style 3 dot menu And Extension Pinning",
       "description": "Adds \"Mod Settings\" to the 3 dot menu: switch between the stock bottom sheet menu and the old style popup menu, and pin extensions to the search bar.",
       "default": true,
       "dependencies": [
@@ -1353,12 +1468,14 @@
           "targets": [
             {
               "version": "159.0a1",
-              "versionCodes": {
-                "ARM64_V8A": 2016189151,
-                "ARMEABI_V7A": 2016189151,
-                "X86_64": 2016189151,
-                "X86": 2016189151
-              },
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "160.0a1",
+              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -2023,6 +2140,32 @@
       "options": []
     },
     {
+      "name": "Skip splash delay",
+      "description": "Shortens the splash screen waits.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "kallossoft.videotophoto",
+          "name": "Video To Photo",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.0.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Skip splash screen",
       "description": "Launches the app directly into the main screen.",
       "default": true,
@@ -2423,32 +2566,6 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Unlocks Pro features.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "kallossoft.videotophoto",
-          "name": "Video to Photo",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.0.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock Pro",
       "description": "Forces the Pro flag true at every read and write site in the dex, unlocking Pro.",
       "default": true,
       "dependencies": [],
@@ -2559,6 +2676,32 @@
                 "X86_64": 1557000,
                 "X86": 1557000
               },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro and skip onboarding",
+      "description": "Unlocks Pro features and skips the onboarding screens.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "kallossoft.videotophoto",
+          "name": "Video To Photo",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.0.2",
+              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null

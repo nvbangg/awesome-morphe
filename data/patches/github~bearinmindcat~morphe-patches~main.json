@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.13",
+  "version": "2.2.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -23,6 +23,36 @@
           "targets": [
             {
               "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "2D / 3D compass",
+      "description": "Adds a 2D / 3D compass switch to the Experimental screen. With it on, tapping the compass in navigate mode switches the map between the tilted 3D view and a flat, north-up 2D map the way Google Maps' does, from any state (following you, panned away, paused), and brings the map back to you. The compass shows a single north arrow in 2D, and the next navigation starts in the mode you used last.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -97,6 +127,146 @@
       "options": []
     },
     {
+      "name": "Alert distances",
+      "description": "How far ahead, in metres, Waze warns of police, hazards, crashes, traffic jams and speed cameras. The defaults are the old Waze mods' (CGE); Waze's own are lower for most of them.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "police",
+          "title": "Police",
+          "description": "Waze: 600 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 1000,
+          "values": null
+        },
+        {
+          "key": "hazard",
+          "title": "Hazards",
+          "description": "Waze: 600 to 900 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 500,
+          "values": null
+        },
+        {
+          "key": "accident",
+          "title": "Crashes",
+          "description": "Waze: 600 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 2000,
+          "values": null
+        },
+        {
+          "key": "traffic",
+          "title": "Traffic jams",
+          "description": "Waze: 600 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 3000,
+          "values": null
+        },
+        {
+          "key": "streets",
+          "title": "Speed cameras on streets",
+          "description": "Waze: 500 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 700,
+          "values": null
+        },
+        {
+          "key": "highways",
+          "title": "Speed cameras on highways",
+          "description": "Waze: 1000 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 900,
+          "values": null
+        },
+        {
+          "key": "freeways",
+          "title": "Speed cameras on freeways",
+          "description": "Waze: 2000 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 1200,
+          "values": null
+        },
+        {
+          "key": "blockedLane",
+          "title": "Blocked lanes",
+          "description": "Waze: 400 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 1000,
+          "values": null
+        },
+        {
+          "key": "between",
+          "title": "Least distance between two alerts",
+          "description": "Waze: 300 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 200,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "All moods",
+      "description": "Every mood can be chosen: the ones Waze keeps for higher ranks and the beta moods it hides.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Any media app",
       "description": "Navigation's Default media app (Settings > Navigation) offers every music and podcast app that works with Android Auto, such as Poweramp, not only Spotify, YouTube Music and Pandora.",
       "default": true,
@@ -115,6 +285,35 @@
           "targets": [
             {
               "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Better filters",
+      "description": "Adds a Better filters switch to the Experimental screen. With it on, the trail filter's sliders move in finer steps over the same ranges: Rating in 0.1 stars (instead of Any, 3.5, 4 and 4.5), Length in 0.1 mi, Elevation gain in 10 ft, Highest point in 100 ft and Distance away in 1 mi (metric: 0.1 km, 5 m, 50 m, 1 km).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -145,6 +344,128 @@
           "targets": [
             {
               "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Better tracking",
+      "description": "Adds a Better tracking switch to the Experimental screen. With it on, recordings work the way Gaia GPS records: the phone's GPS directly with every fix delivered live (no Play services batching), fixes worse than 65 m or physically impossible dropped, points kept 3 m apart, no trail-biased smoothing, and elevation converted to sea level and counted in 2 m steps.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bigger speedometer",
+      "description": "Bigger digits on the speedometer, and on the speed limit sign beside it, so they can be read at a glance.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "speed",
+          "title": "Speed digits (dp)",
+          "description": "Waze: 26.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 32,
+          "values": null
+        },
+        {
+          "key": "units",
+          "title": "Unit label (dp)",
+          "description": "The \"mph\" or \"km/h\" under the speed. Waze: 12.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 14,
+          "values": null
+        },
+        {
+          "key": "limit",
+          "title": "Speed limit sign digits (sp)",
+          "description": "Limits under 100. Waze: 20.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 24,
+          "values": null
+        },
+        {
+          "key": "limitThreeDigits",
+          "title": "Speed limit sign digits, 100 and over (sp)",
+          "description": "Waze: 13.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 16,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Black icon",
+      "description": "Uses a white AllTrails logo on black for the launcher icon and the splash screen, instead of green on dark green, so this build is easy to tell apart from the stock app.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -282,6 +603,45 @@
     },
     {
       "name": "Change package name",
+      "description": "Installs alongside stock AllTrails under its own package name.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The package name to install under. Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.alltrails",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
       "description": "Installs alongside stock Google Maps under its own package name. On by default, because stock Maps comes built into most phones and cannot be replaced by a patched copy.",
       "default": true,
       "category": null,
@@ -341,6 +701,91 @@
           "targets": [
             {
               "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Experimental screen",
+      "description": "Adds an Experimental row to your profile's menu, under Edit profile and Share profile, that opens an Experimental screen.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Full black",
+      "description": "Waze's dark mode in true black for AMOLED screens: the night map's background and the app's dark backgrounds are black. Roads, labels, buttons and text keep their colours.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
+      "description": "Removes the sponsored pins on the map and on Android Auto, the full-screen ads shown while you are stopped, and the ad statistics Waze sends.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -454,6 +899,203 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Map skin",
+      "description": "The old Waze mods' map skin, as changes to Waze's own: bigger map labels, a wider navigation arrow head and a warm day background. The night background is Full black's.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "fontHuge",
+          "title": "Map labels: huge",
+          "description": "Waze: 14.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 18,
+          "values": null
+        },
+        {
+          "key": "fontBig",
+          "title": "Map labels: big",
+          "description": "Waze: 12.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 14,
+          "values": null
+        },
+        {
+          "key": "fontMedium",
+          "title": "Map labels: medium",
+          "description": "Waze: 10.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 12,
+          "values": null
+        },
+        {
+          "key": "fontSmall",
+          "title": "Map labels: small",
+          "description": "Waze: 8.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 10,
+          "values": null
+        },
+        {
+          "key": "arrowHead",
+          "title": "Navigation arrow head width",
+          "description": "As a multiple of the arrow's tail width. Waze: 3.0.",
+          "required": true,
+          "type": "kotlin.Float",
+          "default": 10.0,
+          "values": null
+        },
+        {
+          "key": "dayBackground",
+          "title": "Day map background (hex)",
+          "description": "Waze: fafcfa, near white.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "ebe7dd",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Navigation distances",
+      "description": "How far ahead Android Auto gives its heads-up, and how long a jam must last before the traffic bar shows it. The defaults are the old Waze mods' (Chuppito).",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "headsUp",
+          "title": "Android Auto heads-up, normal roads (m)",
+          "description": "Waze: 200 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 1200,
+          "values": null
+        },
+        {
+          "key": "headsUpFreeway",
+          "title": "Android Auto heads-up, freeways (m)",
+          "description": "Waze: 500 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 1300,
+          "values": null
+        },
+        {
+          "key": "trafficBar",
+          "title": "Traffic bar: time in traffic (s)",
+          "description": "Waze: 360 s.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 180,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "No AI reporting",
+      "description": "Turns off conversational reporting, Waze's Gemini voice assistant for reports, together with its activation dialog, tips and onboarding.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "No Google Assistant",
+      "description": "Keeps Google Assistant out of Waze: no Assistant button, onboarding or settings entry, whatever Waze's server enables for your region.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Offline saved places",
@@ -585,6 +1227,35 @@
       "options": []
     },
     {
+      "name": "Remember filters",
+      "description": "Adds a Remember filter states switch to the Experimental screen. With it on, the trail filters you set (length, elevation, rating, difficulty, activities, features and the rest, but not Distance away) stay set when you go back to the home screen and after the app restarts, instead of resetting.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove permissions",
       "description": "Removes permissions that only serve Google-account features or Google's data collection: background location, physical activity, contacts, microphone (voice search stops working), camera (Lens and Live View stop working), car speed, advertising ID, push messages and Google services settings. Left out with Add microG support, whose account features need them.",
       "default": true,
@@ -663,6 +1334,228 @@
           "targets": [
             {
               "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Report speed limit",
+      "description": "Turns on Waze's own switch for correcting the speed limit from the speedometer, the old mods' \"Report speed limit\". Waze's server keeps it off; what it shows is not verified here.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Speed camera sound at any speed",
+      "description": "Plays the speed camera sound for every camera, not only when you are over the speed limit.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Speed cameras",
+      "description": "Chimes and shows a note when a speed or red light camera is coming up ahead, and puts the cameras on the map, from OpenStreetMap. Off until turned on in Waze Features, a row on the account sheet, because it downloads the cameras near you from an OpenStreetMap server.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFFFFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Speed cameras everywhere",
+      "description": "Turns speed camera and police alerts back on in the countries where Waze's server switches them off. Warning of speed cameras is against the law in some of those countries.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Speed limit sign",
+      "description": "The style of the speed limit sign beside the speedometer, whatever the country.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "style",
+          "title": "Sign style",
+          "description": "Waze picks one by country.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "us",
+          "values": {
+            "US (white rectangle)": "us",
+            "World (red circle)": "world"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Speeding chime",
+      "description": "Plays a chime when your speed passes the speed limit during navigation, as Waze does. Maps itself only turns its speedometer red. When it chimes is chosen in Waze Features, a row on the account sheet.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFFFFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Theme",
+      "description": "Adds a Theme choice to the Experimental screen: Follow phone, Light, Dark or AMOLED black (dark with pure black backgrounds). AllTrails itself only follows the phone.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
