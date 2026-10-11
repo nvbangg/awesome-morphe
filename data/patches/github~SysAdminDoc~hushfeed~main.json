@@ -1,5 +1,5 @@
 {
-  "version": "v0.70.0",
+  "version": "v0.71.0",
   "appNames": {
     "com.zhiliaoapp.musically": "TikTok"
   },
@@ -58,7 +58,7 @@
     },
     {
       "name": "Advanced downloads",
-      "description": "Adds more ways to save: pick the video quality, save full-size photos, the sound on its own or a photo post as one video, and hold a profile picture or story to save it. Starts off. Turn it on in Hushfeed settings > Downloads.",
+      "description": "Adds more ways to save: pick the video quality, save full-size photos, the sound on its own or a photo post as one video, hold a profile picture or story to save it, and save a story from its share sheet. Starts off. Turn it on in Hushfeed settings > Downloads.",
       "category": "Downloads",
       "use": true,
       "dependencies": [
@@ -606,7 +606,9 @@
       "description": "Shows a name you choose under the app icon, so the patched TikTok is easy to tell apart from another copy. Type the name in this patch's options. Inside the app it still says TikTok.",
       "category": "Interface",
       "use": false,
-      "dependencies": [],
+      "dependencies": [
+        "RawResourcePatch"
+      ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.1.4"
@@ -926,7 +928,9 @@
       "description": "Gives TikTok's home screen icon a themed version that takes your wallpaper's color on Android 13 and up. The options can also make it black, plain or your own picture. Only patching again without it puts the old icon back.",
       "category": "Interface",
       "use": false,
-      "dependencies": [],
+      "dependencies": [
+        "RawResourcePatch"
+      ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.1.4"
@@ -1103,7 +1107,9 @@
       "description": "Stops TikTok from forcing you to sign in before you can keep browsing. Works as soon as you patch it in, with no switch.",
       "category": "Settings",
       "use": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.1.4"
@@ -1139,7 +1145,9 @@
       "description": "Stops TikTok from noticing and reacting when you take a screenshot or record the screen. Works as soon as you patch it in, with no switch.",
       "category": "Downloads",
       "use": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.1.4"
@@ -1289,7 +1297,7 @@
     },
     {
       "name": "Double-tap controls",
-      "description": "Lets a double tap on a video open its comments or do nothing, instead of liking it, so you don't like videos by accident. Starts off. Pick an action in Hushfeed settings > Feed screen.",
+      "description": "Lets a double tap on a video do nothing, open its comments, copy the link, save the sound or the frame on screen, or set a sleep timer instead of liking it, so you don't like videos by accident. Starts off. Pick an action in Hushfeed settings > Feed screen.",
       "category": "Interaction",
       "use": true,
       "dependencies": [
@@ -1368,7 +1376,7 @@
     },
     {
       "name": "Drop the animated image cache",
-      "description": "Lets you make TikTok keep only the frame on screen for animated stickers and GIFs instead of every frame, so they use less memory. Starts off. Turn it on in Hushfeed settings > App.",
+      "description": "Lets you make TikTok decode animated stickers and GIFs one frame at a time as they play, instead of a few frames ahead, so they use a little less memory. Starts off. Turn it on in Hushfeed settings > App.",
       "category": "Performance",
       "use": true,
       "dependencies": [
@@ -1721,7 +1729,9 @@
       "description": "Makes Sign in with Google work in the patched app, where it would otherwise fail. Works as soon as you patch it in, with no switch.",
       "category": "Settings",
       "use": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.1.4"
@@ -2533,7 +2543,7 @@
     },
     {
       "name": "Hide video overlays",
-      "description": "Lets you hide clutter over videos, like the caption, the music line, buttons on the right, surveys and location labels, so you see more of the video. Each has its own switch. Starts off. Turn it on in Hushfeed settings > Feed screen.",
+      "description": "Lets you hide clutter over videos, like the caption, the music line, buttons on the right, surveys and location labels, so you see more of the video. It can also make the music disc spin again or keep it still. Each has its own switch. Starts off. Turn it on in Hushfeed settings > Feed screen.",
       "category": "Feed",
       "use": true,
       "dependencies": [
@@ -2690,7 +2700,7 @@
     },
     {
       "name": "Keep playing in the background",
-      "description": "Keeps the video playing when you leave TikTok or turn the screen off, with a notification to pause it. Handy for music and talks. Starts off. Turn it on in Hushfeed settings > Playback, then restart TikTok.",
+      "description": "Keeps the video playing when you leave TikTok or turn the screen off, with a notification to pause it. It can also start the video over when it ends. Handy for music and talks. Starts off. Turn it on in Hushfeed settings > Playback, then restart TikTok.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -2806,6 +2816,45 @@
       "options": []
     },
     {
+      "name": "Keep the app language",
+      "description": "Lets you keep the language you picked in TikTok's own settings. When TikTok starts and decides the phone's language changed, it drops that pick and follows the phone, which can leave it in the wrong language after a reboot. Starts off. Turn it on in Hushfeed settings > App.",
+      "category": "Settings",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.1.4"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
+          ],
+          "targets": [
+            {
+              "version": "47.1.4",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024701040,
+                "ARMEABI_V7A": 2024701040,
+                "X86": 2024701040,
+                "X86_64": 2024701040
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Keep the screen's refresh rate",
       "description": "Stops TikTok slowing your screen down to the video's frame rate, so scrolling stays smooth on 90 or 120 Hz phones. Starts off. Turn it on in Hushfeed settings > App.",
       "category": "Playback",
@@ -2846,7 +2895,7 @@
     },
     {
       "name": "LIVE controls",
-      "description": "Stops a LIVE in the feed from opening by itself after a countdown, and can show a LIVE's exact viewer count instead of a rounded one. Starts off. Turn it on in Hushfeed settings > Playback.",
+      "description": "Stops a LIVE in the feed from opening by itself after a countdown, can show a LIVE's exact viewer count instead of a rounded one, and can offer a quality choice in more LIVE rooms. Starts off. Turn it on in Hushfeed settings > Playback.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -3012,7 +3061,7 @@
     },
     {
       "name": "Long-press controls",
-      "description": "Lets a long press on a video do something else, like open the comments, copy the link, save the sound or the frame on screen, or set a sleep timer. Starts off. Pick an action in Hushfeed settings > Feed screen.",
+      "description": "Lets a long press on a video like it, open the comments, copy the link, save the sound or the frame on screen, or set a sleep timer. Starts off. Pick an action in Hushfeed settings > Feed screen.",
       "category": "Interaction",
       "use": true,
       "dependencies": [
@@ -3561,7 +3610,7 @@
     },
     {
       "name": "Remember clear display",
-      "description": "Keeps clear display, TikTok's mode that hides the buttons over a video, on as you swipe to the next video. It can also turn on by itself after a delay you pick, which starts off in Hushfeed settings > Feed screen.",
+      "description": "Keeps clear display, TikTok's mode that hides the buttons over a video, on as you swipe to the next video. It can also turn on by itself after a delay you pick, which starts off in Hushfeed settings > Feed screen. When clear display ends, the Following stories bubble TikTok hid comes back too.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -3600,7 +3649,7 @@
     },
     {
       "name": "Remove LIVE extras",
-      "description": "Removes the files for LIVE co-hosting, matches, games and gift effects, so the app gets about 3 MB smaller. The catch: in LIVEs, battle scores and guest names can go missing, and co-hosting, games or animated gifts may stop working.",
+      "description": "Removes the files for LIVE co-hosting, joining a LIVE as a guest, matches, games and gift effects, so the app gets about 3 MB smaller. The catch: in LIVEs, battle scores and guest names can go missing, and joining someone's LIVE by voice or video, co-hosting, games or animated gifts may stop working.",
       "category": "Performance",
       "use": false,
       "dependencies": [
@@ -3716,7 +3765,7 @@
     },
     {
       "name": "Remove creation tools",
-      "description": "Removes TikTok's camera, editing and effects files, saving about 40 MB of storage. The catch: the Create tab and every recording, editing and effects tool stop working.",
+      "description": "Removes TikTok's camera, editing and effects files, saving about 40 MB of storage. The catch: the Create tab and every recording, editing and effects tool stop working, and opening one, like effect search, can close TikTok. Leave it out if you make videos.",
       "category": "Performance",
       "use": false,
       "dependencies": [
@@ -4306,7 +4355,7 @@
     },
     {
       "name": "Show the progress bar",
-      "description": "Shows the progress bar on videos where TikTok hides it, so you can see how long a video is and skip around. On by default. Turn it off in Hushfeed settings > Playback.",
+      "description": "Shows the progress bar on videos where TikTok hides it, so you can see how long a video is and skip around. On by default. Turn it off in Hushfeed settings > Playback, where you can also show the time beside the bar or give it a bigger handle. A seek bar for video stories is there too.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -4425,6 +4474,45 @@
       "description": "Skips TikTok's setup screens on a fresh install, like the interest picker and the swipe tutorial. Sign-in and age screens still show. Its switch is on once picked, since setup runs before you can reach settings. Turn it off in Hushfeed settings > App.",
       "category": "Settings",
       "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.1.4"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
+          ],
+          "targets": [
+            {
+              "version": "47.1.4",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024701040,
+                "ARMEABI_V7A": 2024701040,
+                "X86": 2024701040,
+                "X86_64": 2024701040
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip passkey sign-in",
+      "description": "Lets you sign in another way, like your password or a code by email or text, when TikTok wants a passkey. Password managers won't hand a passkey to a patched app, so that step can't finish here. With the switch on, TikTok treats your phone as one without passkeys. Starts off. Turn it on in Hushfeed settings > App.",
+      "category": "Settings",
+      "use": true,
       "dependencies": [
         "BytecodePatch",
         "Settings"
@@ -4894,7 +4982,7 @@
     },
     {
       "name": "Translate comments",
-      "description": "Translates comments as they load, using TikTok's own translator, so you don't have to tap Translate on each one. Starts off. Turn it on in Hushfeed settings > Comments, where a second row lists languages TikTok's automatic translation should leave alone.",
+      "description": "Translates comments as they load, using TikTok's own translator, so you don't have to tap Translate on each one. Starts off. Turn it on in Hushfeed settings > Comments, where more rows list languages TikTok's automatic translation should leave alone, pick the language translations come out in, and add TikTok's translate button beside the comment count.",
       "category": "Comments",
       "use": true,
       "dependencies": [
@@ -4936,7 +5024,9 @@
       "description": "Lets TikTok trust security certificates you install yourself, so a tool like mitmproxy can show what the app sends. The risk: anyone who gets a certificate onto your phone can read TikTok's traffic too. Use it only on a test phone.",
       "category": "Privacy",
       "use": false,
-      "dependencies": [],
+      "dependencies": [
+        "RawResourcePatch"
+      ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.1.4"
