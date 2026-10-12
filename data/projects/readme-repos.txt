@@ -3,7 +3,7 @@ https://github.com/brosssh/revanced-external-bundles
 https://github.com/Graywizard888/Enhancify
 https://github.com/hoo-dles/jadx-morphe
 https://github.com/Jman-Github/Awesome-ReVanced
-https://github.com/Jman-Github/ReVanced-Patch-Bundles
+https://github.com/Jman-Github/Patch-Bundle-Registry
 https://github.com/Jman-Github/Universal-ReVanced-Manager
 https://github.com/jpa102/morphe_feature_flags
 https://github.com/MorpheApp/jadb

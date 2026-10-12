@@ -80,16 +80,16 @@
 
 - [Awesome Morphe Website](https://awesome-morphe.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/nvbangg/awesome-morphe)
 - [Morphe Community Patches](https://morphe-patches.software/)
+- [Morphe Patch Tracker](https://drnx64.github.io/morphe-track-patches/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/morphe-track-patches) 
+- [Morphe Archive](https://rushiforai.github.io/morphe-archive/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/rushiforai/morphe-archive)
+- [Patch Bundle Registry](https://patch-bundles.jmancentral.com/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/Jman-Github/Patch-Bundle-Registry)
 - <details><summary><a href="https://patch-explorer.web.app/">Patch Explorer</a> <a href="https://gitlab.com/Paresh-Maheshwari/patch-explorer"><img src="https://img.shields.io/badge/Repo-black?style=social&logo=gitlab" alt="Repo"></a></summary>
 
   Alternative: [Patch Explorer](https://paresh-maheshwari.github.io/patch-explorer/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/Paresh-Maheshwari/patch-explorer)
   </details>
-- [Morphe Patch Tracker](https://drnx64.github.io/morphe-track-patches/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/morphe-track-patches) 
+- [Patch Atlas](https://patch-atlas.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/shakir2117/Patch-Atlas)
 - [Revanced External Bundles](https://revanced-external-bundles.brosssh.com/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/brosssh/revanced-external-bundles)
 <!-- - [Community Patch Space Explorer](https://dmh84.github.io/morphe-space-explorer/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/dmh84/morphe-space-explorer) -->
-- [Patch Atlas](https://patch-atlas.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/shakir2117/Patch-Atlas)
-- [Morphe Archive](https://rushiforai.github.io/morphe-archive/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/rushiforai/morphe-archive)
-- [ReVanced Patch Bundles](https://github.com/Jman-Github/ReVanced-Patch-Bundles)
 
 ## <a id="projects"></a> 🛠️ Other Projects
 
@@ -135,6 +135,6 @@ Maintained with ❤️ by **[@nvbangg](https://github.com/nvbangg)**
 
 ### 🙏 Credits
 
-- Patch data is automatically aggregated from: [nvbangg's custom sources](data/discover/custom.json), [Morphe Community Patches](https://morphe-patches.software), [ReVanced Patch Bundles](https://github.com/Jman-Github/ReVanced-Patch-Bundles) and [Morphe Archive](https://github.com/rushiforai/morphe-archive).
+- Patch data is automatically aggregated from: [nvbangg's custom sources](data/discover/custom.json), [Morphe Community Patches](https://morphe-patches.software), [ReVanced Patch Bundles](https://github.com/Jman-Github/Patch-Bundle-Registry) and [Morphe Archive](https://github.com/rushiforai/morphe-archive).
 - Website design is inspired by [Morphe Community Patches](https://morphe-patches.software).
-- Bundle parser is adapted from [Jman's ReVanced Patch Bundles](https://github.com/Jman-Github/ReVanced-Patch-Bundles) to fit this project and Morphe.
+- Bundle parser is adapted from [Jman's ReVanced Patch Bundles](https://github.com/Jman-Github/Patch-Bundle-Registry) to fit this project and Morphe.
