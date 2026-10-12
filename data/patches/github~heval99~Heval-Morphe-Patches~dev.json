@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.14.0-dev.2",
+  "version": "1.14.0-dev.3",
   "patches": [
     {
       "name": "Block marketing notifications",
@@ -1233,12 +1233,24 @@
           "packageName": "com.shazam.android",
           "name": "Shazam",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#0088FF",
           "signatures": null,
           "targets": [
             {
-              "version": "16.62.0",
+              "version": "16.62.1-261006",
+              "versionCodes": {
+                "ARM64_V8A": 1606210,
+                "ARMEABI_V7A": 1606210,
+                "X86_64": 1606210,
+                "X86": 1606210
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.0-261001",
               "versionCodes": {
                 "ARM64_V8A": 1606200,
                 "ARMEABI_V7A": 1606200,
@@ -2285,6 +2297,74 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Open in Morphe YouTube apps",
+      "description": "Makes \"Open in YouTube Music\" and \"Open in YouTube\" open the Morphe-patched apps when they are installed, falling back to the stock apps otherwise.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.shazam.android",
+          "name": "Shazam",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0088FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.62.1-261006",
+              "versionCodes": {
+                "ARM64_V8A": 1606210,
+                "ARMEABI_V7A": 1606210,
+                "X86_64": 1606210,
+                "X86": 1606210
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.0-261001",
+              "versionCodes": {
+                "ARM64_V8A": 1606200,
+                "ARMEABI_V7A": 1606200,
+                "X86_64": 1606200,
+                "X86": 1606200
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "youTubeMusicPackage",
+          "title": "YouTube Music package",
+          "description": "Package name of the patched YouTube Music app that \"Open in YouTube Music\" should open.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.morphe.android.apps.youtube.music",
+          "values": {
+            "Morphe YouTube Music": "app.morphe.android.apps.youtube.music"
+          }
+        },
+        {
+          "key": "youTubePackage",
+          "title": "YouTube package",
+          "description": "Package name of the patched YouTube app that \"Open in YouTube\" should open.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.morphe.android.youtube",
+          "values": {
+            "Morphe YouTube": "app.morphe.android.youtube"
+          }
+        }
+      ]
     },
     {
       "name": "Remove ads",
