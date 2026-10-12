@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.31.1",
+  "version": "1.31.2",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
@@ -1134,19 +1134,19 @@
         {
           "key": "legacyCompatibilityTargetSdk",
           "title": "Legacy App Compatibility > Installation and manifest > Target SDK version",
-          "description": "Choose the target SDK number only when the Custom profile is selected. Android accepts values 23–40 here; other values are rejected. Lower values can restore legacy behavior but may weaken security and privacy protections. Default: 34.",
+          "description": "Target SDK used only by the explicit Custom profile. Android accepts values 23–40 here; other values are rejected. Choose 24 when an Android 17 install requires at least API 24. Lower values can restore legacy behavior but may weaken security and privacy protections. Default: 24.",
           "required": false,
           "type": "kotlin.Int",
-          "default": 34,
+          "default": 24,
           "values": null
         },
         {
           "key": "legacyCompatibilityTargetSdkProfile",
           "title": "Legacy App Compatibility > Installation and manifest > Target SDK compatibility profile",
-          "description": "Choose Custom to use the number above; Automatic to keep the APK's existing target (or use 27 if it has none); or fixed target 27/29 profiles for troubleshooting. Prefer Automatic unless you know the app needs another target: changing it alters Android's compatibility rules, and cannot repair broken code.",
+          "description": "Custom sets the number above (default 24); Preserve original keeps the APK target unchanged and does not apply that number. Fixed 27/29 profiles are available for troubleshooting. Changing target SDK alters Android compatibility rules and can weaken platform protections; choose the lowest explicit target only when required.",
           "required": false,
           "type": "kotlin.String",
-          "default": "automatic",
+          "default": "custom",
           "values": {
             "Custom target SDK": "custom",
             "Preserve original target (automatic)": "automatic",
