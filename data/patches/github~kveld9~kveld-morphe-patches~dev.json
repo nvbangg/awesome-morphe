@@ -1,41 +1,15 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.7.0-experimental.9",
+  "version": "2.7.0-experimental.10",
   "patches": [
     {
-      "name": "APK Junk Cleaner",
-      "description": "Strips non-functional build metadata, compiler properties, Kotlin coroutines debug tables, and duplicate license texts from META-INF and APK root while preserving kotlin/*.kotlin_builtins runtime descriptors.",
+      "name": "Allow Screenshots",
+      "description": "Removes screenshot blocking and capture detection.",
       "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": []
-    },
-    {
-      "name": "Ad Dispatch Governor",
-      "description": "Neutralizes ad loaders, unlocks ad-free status, and strips mediation components & startup providers.",
-      "default": true,
       "dependencies": [
         "ResourcePatch"
       ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.nokoprint",
-          "name": "NokoPrint - WiFi, Bluetooth, USB",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#0288D1",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.28.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
+      "compatiblePackages": null,
       "options": []
     },
     {
@@ -56,58 +30,6 @@
           "targets": [
             {
               "version": "47.1.4",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Anti-Tamper Bypass",
-      "description": "Bypasses Xposed and hook detection, neutralizes VPN and ADB security checks, bypasses root and emulator detection, and hardens WebView JavaScript bridges.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.mi.earphone",
-          "name": "Xiaomi Earbuds",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF6700",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.38.0i",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Asset Debloat",
-      "description": "Strips embedded ad DEX, tracking scripts, web templates, and ad drawables to reduce APK size.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.nokoprint",
-          "name": "NokoPrint - WiFi, Bluetooth, USB",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#0288D1",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.28.6",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -147,23 +69,23 @@
       "options": []
     },
     {
-      "name": "Background Optimizer",
-      "description": "Neutralizes KeepAliveForegroundService, background BLE observation, companion device manager, and MIUI Nearby discovery to eliminate persistent notifications, wakelocks, and background battery drain.",
+      "name": "Better Tab Closing",
+      "description": "Closing a tab picks the previous tab in the same group.",
       "default": true,
       "dependencies": [
-        "ResourcePatch"
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
-          "packageName": "com.mi.earphone",
-          "name": "Xiaomi Earbuds",
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
           "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF6700",
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
           "signatures": null,
           "targets": [
             {
-              "version": "1.38.0i",
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -175,53 +97,8 @@
       "options": []
     },
     {
-      "name": "Background Sync & JobScheduler Purge",
-      "description": "Strips RECEIVE_BOOT_COMPLETED and disables boot, package-replacement, and periodic background sync receivers and services in AndroidManifest.xml to eliminate background wakeups and conserve battery.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "stripBootPermission",
-          "title": "Strip RECEIVE_BOOT_COMPLETED Permission",
-          "description": "Remove android.permission.RECEIVE_BOOT_COMPLETED from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableBootReceivers",
-          "title": "Disable Boot & Package Receivers",
-          "description": "Set android:enabled='false' on broadcast receivers listening for BOOT_COMPLETED, LOCKED_BOOT_COMPLETED, or MY_PACKAGE_REPLACED.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableWorkManager",
-          "title": "Disable WorkManager & Job Schedulers",
-          "description": "Disable AndroidX WorkManager, Google DataTransport, and ProfileInstaller background services and receivers.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "stripWakeLock",
-          "title": "Strip WAKE_LOCK Permission",
-          "description": "Remove android.permission.WAKE_LOCK. Default is false to prevent interrupting background audio playback or active downloads.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Background Sync Optimizer",
-      "description": "Neutralizes background WorkManager constraint tasks and diagnostic wakelocks.",
+      "name": "Block Ads",
+      "description": "Blocks ad loaders and unlocks ad-free status.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -248,23 +125,30 @@
       "options": []
     },
     {
-      "name": "Battery & Background Sync Optimizer",
-      "description": "Disables background WorkManager alarms, periodic job schedulers, Google Play Billing IPC (~89 MB RAM), and removes largeHeap to force aggressive Garbage Collection.",
+      "name": "Block App Hijacking",
+      "description": "Protects against other apps hijacking Gboard and removes debug tools.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
       ],
       "compatiblePackages": [
         {
-          "packageName": "com.hevy",
-          "name": "Hevy - Gym Log Workout Tracker",
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
           "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FF4500",
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
           "signatures": null,
           "targets": [
             {
-              "version": "3.1.14",
+              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -276,16 +160,10 @@
       "options": []
     },
     {
-      "name": "Block Brave Telemetry",
-      "description": "Blocks P3A product analytics, Brave Stats usage pings, crash dump uploads, WDP, Chromium UMA metrics, and Variations seed fetching.",
+      "name": "Block Motion Sensors",
+      "description": "Stops sites from reading motion sensors to identify you.",
       "default": true,
-      "dependencies": [
-        "BytecodePatch",
-        "ResourcePatch",
-        "RawResourcePatch",
-        "ResourcePatch",
-        "RawResourcePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -305,21 +183,37 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "blockOffersHost",
-          "title": "Block Offers host",
-          "description": "Rewrites DEX const-string literals containing offers.brave.com to 0.0.0.0. Enabled by default; disable to keep commercial offers endpoint.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
-      "name": "Block Telemetry",
-      "description": "Disables background metrics dispatch, event logging, daily pings, Google Primes profiling, crash reporting, AppDoctor diagnostics, and Tenor share tracking.",
+      "name": "Block Popups & Rating Requests",
+      "description": "Blocks rating popups, review requests and promo dialogs.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block Trackers",
+      "description": "Stops background metrics, event logging and crash reporting.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -351,8 +245,8 @@
       "options": [
         {
           "key": "blockAdwordsHost",
-          "title": "Block Adwords Host",
-          "description": "Rewrites DEX const-string literals containing adwords.google.com and reportingwidget.google.com to 0.0.0.0. Enabled by default.",
+          "title": "Block ad servers",
+          "description": "Also blocks Google ad servers. Turn off to keep them.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -361,8 +255,8 @@
       ]
     },
     {
-      "name": "Block Telemetry & Trackers",
-      "description": "Neutralizes Sentry crash reporting, Adjust attribution, Facebook AppEvents, Branch referral tracking, and WearOS background sync.",
+      "name": "Block Trackers",
+      "description": "Blocks crash reporting, ad attribution and referral tracking.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -389,8 +283,8 @@
       "options": []
     },
     {
-      "name": "Block Telemetry & Trackers",
-      "description": "Neutralizes Firebase Analytics, Google Measurement, TikTok Business SDK, and crashlytics tracking.",
+      "name": "Block Trackers",
+      "description": "Blocks analytics and ad tracking.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -417,8 +311,8 @@
       "options": []
     },
     {
-      "name": "Block Telemetry & Trackers",
-      "description": "Neutralizes Firebase Analytics, Xiaomi OneTrack, AutoReportHelper, and GlobalReport telemetry and event dispatching.",
+      "name": "Block Trackers",
+      "description": "Stops analytics and usage reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -445,37 +339,13 @@
       "options": []
     },
     {
-      "name": "Brave In-Product & Commercial Notification Optimizer",
-      "description": "Eliminates background wakeups and notifications from Chromium tips scheduler (Job ID 105), Brave Rewards onboarding promo, and retention marketing campaigns.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Brave Origin",
-      "description": "Unlocks Brave Origin and enables local feature toggle controls.",
+      "name": "Block Tracking",
+      "description": "Blocks usage analytics, crash uploads and experiment downloads.",
       "default": true,
       "dependencies": [
+        "BytecodePatch",
         "ResourcePatch",
+        "RawResourcePatch",
         "ResourcePatch",
         "RawResourcePatch"
       ],
@@ -498,13 +368,141 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "blockOffersHost",
+          "title": "Block offers server",
+          "description": "Also blocks the shopping offers server. Turn off to keep it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
-      "name": "Brave Startup Performance Optimization",
-      "description": "Optimizes startup time and eliminates background CPU/disk overhead by disabling unused OEM carrier partner customizations.",
+      "name": "Block Tracking SDKs",
+      "description": "Disables analytics, crash and ad SDKs inside the app.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockApm",
+          "title": "Performance monitors",
+          "description": "Neutralize New Relic, Datadog, and Dynatrace monitoring, metric reporting, and HTTP transaction tracing methods.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockCrashReporters",
+          "title": "Crash reporters",
+          "description": "Neutralize Raygun, Shake, Embrace, Splunk Mint, App Center, OpenTelemetry, ACRA, Sentry, Bugsnag, Crashlytics (legacy and Firebase), Fabric, Instabug, Countly, and HockeyApp crash reporters.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockAnalytics",
+          "title": "Analytics",
+          "description": "Neutralize Firebase Analytics, Matomo, Leanplum, Localytics, WebEngage, PostHog, MoEngage, Snowplow, mParticle, Treasure Data, Huawei Analytics, Yandex Metrica, Facebook AppEvents, and Sensors Analytics event tracking, capture, and session logging methods.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockAttribution",
+          "title": "Ad attribution",
+          "description": "Neutralize AppsFlyer, Adjust, Amplitude, Mixpanel, CleverTap, Segment, Branch, Singular, Kochava, Tenjin, Unity Analytics, Flurry, and GameAnalytics conversion, tracking, and attribution SDKs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockLegacyAnalytics",
+          "title": "Old Google Analytics",
+          "description": "Neutralize pre-Firebase Google Analytics tracking, hit dispatching, and activity reporting methods (com.google.analytics and com.google.android.gms.analytics).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockPushEngagement",
+          "title": "Push SDKs (breaks push!)",
+          "description": "Neutralize OneSignal, Airship, and Braze push engagement and tagging SDKs. WARNING: this breaks push notification delivery; enable only to fully silence push engagement SDK runtimes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "blockSessionReplay",
+          "title": "Screen recorders",
+          "description": "Neutralize UXCam, Smartlook, FullStory, Contentsquare, and Bugsee screen and session recording SDK methods.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockLocationTrackers",
+          "title": "Location trackers",
+          "description": "Neutralize Radar, Gimbal, and Estimote beacon and location tracking SDKs; note OS location permission controls remain the primary gate.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Block Tracking Servers",
+      "description": "Rewrites tracking addresses to nowhere using your blocklist.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "hostsFile",
+          "title": "Blocklist file",
+          "description": "Blocklist file on this device. Empty skips the patch.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "sinkIp",
+          "title": "Replace with",
+          "description": "Address written instead of blocked hosts.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "0.0.0.0",
+          "values": null
+        },
+        {
+          "key": "matchSubdomains",
+          "title": "Include subdomains",
+          "description": "When enabled, a blocklist entry also matches its subdomains (entry 'example.com' matches 'a.example.com').",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Brave Origin",
+      "description": "Unlocks Brave Origin feature switches.",
       "default": true,
       "dependencies": [
+        "ResourcePatch",
         "ResourcePatch",
         "RawResourcePatch"
       ],
@@ -612,43 +610,12 @@
       "options": []
     },
     {
-      "name": "Clean New Tab Page",
-      "description": "Removes sponsored wallpaper images, Brave News/Today feeds, marketing widgets, and promo cards from the New Tab Page.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch",
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "hideTopSites",
-          "title": "Hide Top Sites & Shortcuts",
-          "description": "Removes top sites shortcuts and most visited tiles from the New Tab Page for a completely blank home screen.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
+      "name": "Clean App Packaging",
+      "description": "Removes build leftovers and duplicate files.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
     },
     {
       "name": "Clean Share Panel",
@@ -697,34 +664,6 @@
     },
     {
       "name": "Clean Share URL",
-      "description": "Strips tracking parameters (utm_*, fbclid, gclid, igshid, si, msclkid) when sharing or copying links.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Clean Share URL",
       "description": "Strips tracking parameters, user IDs, device fingerprints, and marketing tokens from shared TikTok links, with optional custom host redirection.",
       "default": true,
       "dependencies": [
@@ -762,6 +701,73 @@
       ]
     },
     {
+      "name": "Clean Shared Links",
+      "description": "Removes tracking codes from links you share or copy.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Clean Start Page",
+      "description": "Removes sponsored wallpapers, news feed and promo cards.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideTopSites",
+          "title": "Hide shortcut tiles",
+          "description": "Removes most-visited tiles for a blank start page.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Client-Side AI & Behavioral Profiling Governor",
       "description": "Neutralizes on-device machine learning inference (Pitaya), Tako AI chatbot entry points and icons, and AI smart search suggestion clutter.",
       "default": true,
@@ -786,60 +792,6 @@
         }
       ],
       "options": []
-    },
-    {
-      "name": "Clone Gboard",
-      "description": "Changes the package name by appending a dot and custom suffix (defaults to 'clone') and optionally customizes the app label to allow installing Gboard alongside the original application.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.inputmethod.latin",
-          "name": "Gboard Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#4285F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "packageSuffix",
-          "title": "Package name suffix",
-          "description": "Suffix appended after the original package name and a dot (e.g. 'clone' -> 'com.google.android.inputmethod.latin.clone').",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "clone",
-          "values": null
-        },
-        {
-          "key": "appLabel",
-          "title": "App label",
-          "description": "Replaces the launcher and keyboard-list name (<application android:label>) so the clone is visually distinguishable from stock Gboard; leave blank to keep the original label.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "",
-          "values": null
-        }
-      ]
     },
     {
       "name": "Comment Customizer",
@@ -1315,51 +1267,6 @@
       ]
     },
     {
-      "name": "DPI Resource Slimmer",
-      "description": "Strips unselected screen density resource directories from res/ (e.g. drawable-mdpi, drawable-hdpi, mipmap-xhdpi). Density-independent resources (nodpi, anydpi) and orphan resources are safely preserved in-situ.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "dpis",
-          "title": "DPI densities to keep",
-          "description": "Comma-separated screen densities to preserve (e.g. 'xxhdpi', 'xhdpi, xxhdpi', 'xxxhdpi'). Density-independent resources (nodpi, anydpi) and unquantified base directories are always preserved.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "xxhdpi",
-          "values": null
-        },
-        {
-          "key": "stripSmartwatch",
-          "title": "Remove smartwatch (Wear OS) resources",
-          "description": "Removes graphic and non-values layout resources qualified for Wear OS smartwatches (e.g. watch qualifiers).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripTelevision",
-          "title": "Remove Android TV resources",
-          "description": "Removes graphic and non-values layout resources qualified for Android TV / Leanback (e.g. television qualifiers).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripOtherFormFactors",
-          "title": "Remove automotive, dock, and VR resources",
-          "description": "Removes graphic and non-values layout resources qualified for car head units, desk docks, appliances, or VR headsets.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Device Privacy Guard",
       "description": "Neutralizes invasive runtime permissions, contacts queries, package inventory inspection, location hardware tracking, advertising ID profiling, background clipboard snooping routines, and motion sensor profiling to protect user data.",
       "default": true,
@@ -1377,34 +1284,6 @@
           "targets": [
             {
               "version": "47.1.4",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Device Privacy Guard",
-      "description": "Blinds hardware device IDs, anonymizes device identifiers, neutralizes environment info leakage, and bypasses location checks for Bluetooth scanning.",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.mi.earphone",
-          "name": "Xiaomi Earbuds",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF6700",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.38.0i",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1533,150 +1412,6 @@
       ]
     },
     {
-      "name": "Disable Background Sync",
-      "description": "Neutralizes AndroidX WorkManager schedulers, MDD (Mobile Data Download) periodic sync, and Superpacks eager asset synchronization (opt-in to preserve initial dictionary downloads).",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.inputmethod.latin",
-          "name": "Gboard Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#4285F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable Background Sync & Periodic Sync",
-      "description": "Eliminates background wakeups, radio modem activity, and battery drain by forcing GooglePlayServicesChecker.shouldDisableBackgroundSync() -> true and neutralizing wakeup tasks.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable Battery Status API & OS Listener",
-      "description": "Neutralizes the Battery Status API (navigator.getBattery) to prevent cross-site device fingerprinting and drops OS battery change broadcasts.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable Cloud Backup",
-      "description": "Disables Android backup for Gboard (allowBackup=false and backup agent removed) so keyboard settings, learned words, and personal dictionary data are never uploaded to Google Drive backups or copied by device-to-device transfer.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.inputmethod.latin",
-          "name": "Gboard Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#4285F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable Content Capture",
-      "description": "Stops Chromium from streaming on-screen page text and URLs to the Android ContentCapture system service (Android System Intelligence).",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Disable Double Tap to Like",
       "description": "Disables double tap like in the feed.",
       "default": false,
@@ -1799,39 +1534,6 @@
       "options": []
     },
     {
-      "name": "Disable Play Services Integration",
-      "description": "Makes Gboard's Google Play services availability check always report SERVICE_DISABLED, so GMS-backed code paths (Clearcut logging, Phenotype, account sync, Google Help feedback) are skipped at the source instead of being attempted. Note: Disables Gboard's inline Google Translate tool, which relies on Play Services Cronet.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.inputmethod.latin",
-          "name": "Gboard Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#4285F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Disable Post-Download Share Dialog",
       "description": "Suppresses the automatic 'Share to' and friend suggestions bottom sheet that pops up after finishing a download.",
       "default": false,
@@ -1884,32 +1586,6 @@
       "options": []
     },
     {
-      "name": "Disable Promos & Nags",
-      "description": "Bypasses startup privacy agreements, onboarding guides, region selector prompts, and Bluetooth permission nags, and disables in-app promotional banners, marketing activities, and store review nag dialogs.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.mi.earphone",
-          "name": "Xiaomi Earbuds",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF6700",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.38.0i",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Disable Push Notifications",
       "description": "Neutralizes background push notification tasks and persistent socket wake locks to eliminate background battery drain.",
       "default": false,
@@ -1925,39 +1601,6 @@
           "targets": [
             {
               "version": "47.1.4",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable Remote Configuration",
-      "description": "Disables periodic remote experiment flag synchronization and background updates.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.inputmethod.latin",
-          "name": "Gboard Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#4285F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2010,32 +1653,6 @@
           "targets": [
             {
               "version": "47.1.4",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable Tab Auto-Minimization",
-      "description": "Prevents Brave from minimizing active tabs to the background and forcing a New Tab Page when returning to the browser after inactivity.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2154,6 +1771,35 @@
           "targets": [
             {
               "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Faster Startup",
+      "description": "Speeds up launch by disabling carrier customizations.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch",
+        "RawResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2522,6 +2168,14 @@
       "options": []
     },
     {
+      "name": "Force Screen Timeout",
+      "description": "Makes apps respect your screen-off timer.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Friends Feed Strict Mutuals",
       "description": "Filters out suggested accounts, recommended videos, and non-mutual profiles (such as 'People you may know') from the Friends feed so it only plays videos from accounts you mutually follow.",
       "default": true,
@@ -2550,111 +2204,58 @@
       "options": []
     },
     {
-      "name": "Gboard Enhancements",
-      "description": "Master customization suite bundling in-app toggleable features (AMOLED Pure Black theme, zero bottom inset, independent keyboard vibration, force incognito, voice typing in incognito, clipboard in incognito, clipboard retention, top toolbar icons count, cursor trackpad, and smart flags) managed directly from a top-level Morphe Patches category in Gboard Settings.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.inputmethod.latin",
-          "name": "Gboard Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#4285F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Guest OTA Unlock",
-      "description": "Bypasses mandatory Xiaomi account login checks for firmware update queries, allowing guest users to check and perform device OTA updates.",
-      "default": true,
+      "name": "Go Fully Offline",
+      "description": "Removes internet access completely.",
+      "default": false,
       "dependencies": [],
-      "compatiblePackages": [
+      "compatiblePackages": null,
+      "options": [
         {
-          "packageName": "com.mi.earphone",
-          "name": "Xiaomi Earbuds",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF6700",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.38.0i",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hardened Intent Security",
-      "description": "Enables Gboard internal external intent protection against unauthorized intent hijacking, removes the exported, permissionless web debug bridge content provider, and purges federated learning (Brella) services, receivers, queries, and metadata from AndroidManifest.xml.",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
+          "key": "stripNetworkState",
+          "title": "Network state",
+          "description": "Also remove ACCESS_NETWORK_STATE and ACCESS_WIFI_STATE permissions. Default is false to prevent SecurityException crashes in apps that query network status without error handling.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
         {
-          "packageName": "com.google.android.inputmethod.latin",
-          "name": "Gboard Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#4285F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
+          "key": "stripWifiControls",
+          "title": "Wi-Fi controls",
+          "description": "Remove CHANGE_NETWORK_STATE, CHANGE_WIFI_STATE, CHANGE_WIFI_MULTICAST_STATE, and NEARBY_WIFI_DEVICES permissions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripPush",
+          "title": "Push permissions",
+          "description": "Remove Google Cloud Messaging and Firebase Cloud Messaging push receiver permissions (com.google.android.c2dm.permission.RECEIVE).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripGoogleServices",
+          "title": "Google sync",
+          "description": "Remove Google Services Framework and account sync permissions (com.google.android.providers.gsf.permission.READ_GSERVICES, android.permission.GET_ACCOUNTS).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "blockCleartext",
+          "title": "Block unencrypted traffic",
+          "description": "Enforce android:usesCleartextTraffic='false' on the application tag in AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
         }
-      ],
-      "options": []
+      ]
     },
     {
       "name": "Hide AI-Generated Content",
@@ -2674,6 +2275,60 @@
           "targets": [
             {
               "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Battery Status",
+      "description": "Stops sites from reading your battery level to track you.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Device ID",
+      "description": "Hides hardware IDs and lets Bluetooth work without location.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.earphone",
+          "name": "Xiaomi Earbuds",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6700",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.38.0i",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2964,6 +2619,60 @@
       "options": []
     },
     {
+      "name": "Install a Copy",
+      "description": "Installs this Gboard next to the original one.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageSuffix",
+          "title": "Copy name ending",
+          "description": "Ending added to the copy (e.g. clone).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "clone",
+          "values": null
+        },
+        {
+          "key": "appLabel",
+          "title": "Copy display name",
+          "description": "Name shown for the copy. Empty keeps the original.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Instant Launch & Splash Blocker",
       "description": "Eliminates cold startup delays, background resume splash advertisements, real-time splash requests, and TopView ad preloading.",
       "default": true,
@@ -2979,6 +2688,78 @@
           "targets": [
             {
               "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep Tabs Open",
+      "description": "Stops Brave from minimizing your tabs in the background.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keyboard Settings",
+      "description": "Adds a settings screen inside Gboard: theme, vibration, clipboard and more.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3078,58 +2859,12 @@
       "options": []
     },
     {
-      "name": "Locale PAK Slimmer",
-      "description": "Strips unselected language resource PAKs from assets/locales/.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "locales",
-          "title": "Locales to keep",
-          "description": "Comma-separated locale codes to keep (e.g. 'es, es-419, en-US, pt-BR, fr, de'). English (en-US) is always kept as a safe fallback.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "en-US",
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Locale Resource Slimmer",
-      "description": "Strips unselected language translation directories from res/ (e.g. values-*, raw-*, xml-*). Base fallback resources with no language qualifiers are always preserved.",
+      "name": "Lock Screen Brightness",
+      "description": "Stops apps from changing brightness by themselves.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
-      "options": [
-        {
-          "key": "locales",
-          "title": "Locales to keep",
-          "description": "Comma-separated language codes to preserve (e.g. 'en, es, pt, fr, de'). English fallback is always retained.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "en",
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
       "name": "Media Usability & Watermark-Free Downloader",
@@ -3177,84 +2912,6 @@
           "values": null
         }
       ]
-    },
-    {
-      "name": "Model Catalog Unlock",
-      "description": "Forces DeviceInfoListCache.isShowProduct to return true, bypassing version-gating and distribution restrictions so that all device models are always displayed and discoverable.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.mi.earphone",
-          "name": "Xiaomi Earbuds",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF6700",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.38.0i",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Multi-Store Debridger",
-      "description": "Disables orphan billing activities, services, and permissions for alternative OEM stores (Huawei, Xiaomi, Samsung).",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.nokoprint",
-          "name": "NokoPrint - WiFi, Bluetooth, USB",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#0288D1",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.28.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Native Bloat Slimmer",
-      "description": "Strips unused native companion binaries (Impress Vision AI, WireGuard VPN, and Android XR) to significantly reduce APK size.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
     },
     {
       "name": "Navigation & Header Declutter",
@@ -3347,23 +3004,28 @@
       ]
     },
     {
-      "name": "Network Security & TLS Inspection",
-      "description": "Disables cleartext traffic, trusts user-installed certificates, and bypasses OkHttp certificate pinning.",
+      "name": "No Cloud Backup",
+      "description": "Keeps keyboard data off Google Drive backups.",
       "default": true,
-      "dependencies": [
-        "ResourcePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.mi.earphone",
-          "name": "Xiaomi Earbuds",
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
           "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF6700",
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
           "signatures": null,
           "targets": [
             {
-              "version": "1.38.0i",
+              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3375,21 +3037,28 @@
       "options": []
     },
     {
-      "name": "Network Security Hardening",
-      "description": "Enforces user trust anchors while preserving HTTP cleartext traffic for driver downloads and LAN printers.",
-      "default": true,
+      "name": "No Play Services",
+      "description": "Runs without Google Play services. Also turns off inline Translate.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.nokoprint",
-          "name": "NokoPrint - WiFi, Bluetooth, USB",
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
           "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#0288D1",
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
           "signatures": null,
           "targets": [
             {
-              "version": "5.28.6",
+              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3430,7 +3099,7 @@
     },
     {
       "name": "Offline Only",
-      "description": "Completely isolates Gboard from the network by revoking network permissions, neutralizing HTTP clients (Cronet, OkHttp, Superpacks), and spoofing offline status.",
+      "description": "Fully disconnects Gboard. Download dictionaries first.",
       "default": false,
       "dependencies": [
         "ResourcePatch"
@@ -3465,7 +3134,7 @@
     },
     {
       "name": "Offline Only",
-      "description": "Completely isolates the app from the network by revoking internet permissions and spoofing offline status. Note: do not activate on first launch; pair your earbuds once before enabling.",
+      "description": "Fully disconnects the app. Pair your earbuds first, then enable.",
       "default": false,
       "dependencies": [
         "ResourcePatch"
@@ -3515,14 +3184,6 @@
           ]
         }
       ],
-      "options": []
-    },
-    {
-      "name": "PNG Asset Optimizer",
-      "description": "Losslessly recompresses PNG assets with maximum zlib compression and strips non-rendering metadata chunks (pHYs, tEXt, tIME) while preserving 9-patch structures and pixel accuracy. In raw-only pipeline mode, optimizes assets/ only as res/ is not decoded.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
       "options": []
     },
     {
@@ -3666,21 +3327,21 @@
       "options": []
     },
     {
-      "name": "Resource & Battery Governor",
-      "description": "Throttles background sensor polling (gyroscope/accelerometer 3D ads) and prevents aggressive video buffer preloading to conserve battery and CPU resources.",
+      "name": "Remove Ad Files",
+      "description": "Deletes hidden ad files and trackers to shrink the app.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.zhiliaoapp.musically",
-          "name": "TikTok",
+          "packageName": "com.nokoprint",
+          "name": "NokoPrint - WiFi, Bluetooth, USB",
           "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FE2C55",
+          "apkFileType": "XAPK",
+          "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
             {
-              "version": "47.1.4",
+              "version": "5.28.6",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3692,8 +3353,8 @@
       "options": []
     },
     {
-      "name": "Resource Slimmer",
-      "description": "Strips embedded third-party license text, onboarding tutorial Lottie animations, promotional GIFs, and APK root metadata/junk files.",
+      "name": "Remove Extra Files",
+      "description": "Deletes licenses, tutorial animations and junk.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3725,8 +3386,8 @@
       "options": []
     },
     {
-      "name": "Resource Slimmer",
-      "description": "Strips embedded onboarding MP4 tutorial video, heavy IMG.LY photo editor stickers/textures, and compiler junk metadata.",
+      "name": "Remove Extra Files",
+      "description": "Deletes tutorial videos, editor stickers and junk to shrink the app.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3740,6 +3401,523 @@
           "targets": [
             {
               "version": "3.1.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Extra Languages",
+      "description": "Deletes unused language packs.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "locales",
+          "title": "Languages to keep",
+          "description": "List like es, fr, de. English always stays.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "en-US",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Extra Languages",
+      "description": "Deletes unselected translation folders.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "locales",
+          "title": "Languages to keep",
+          "description": "Comma-separated language codes to preserve (e.g. 'en, es, pt, fr, de'). English fallback is always retained.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "en",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Extra Stores",
+      "description": "Disables payment components for other app stores you do not use.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nokoprint",
+          "name": "NokoPrint - WiFi, Bluetooth, USB",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#0288D1",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.28.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Permissions",
+      "description": "Removes permissions you pick below.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "stripContacts",
+          "title": "Contacts",
+          "description": "Removes contact access (no contact name suggestions).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripAudio",
+          "title": "Microphone",
+          "description": "Removes microphone access (no voice dictation).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripMedia",
+          "title": "Photos & files",
+          "description": "Removes photo access (no custom image themes).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripUserDictionary",
+          "title": "Dictionary sync",
+          "description": "Removes system dictionary access.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripCrossProfile",
+          "title": "Work profile link",
+          "description": "Separates work and personal profiles.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Permissions",
+      "description": "Removes permissions you pick below.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripNotifications",
+          "title": "Notifications",
+          "description": "Remove POST_NOTIFICATIONS permission (Android 13+) from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripCamera",
+          "title": "Camera",
+          "description": "Remove CAMERA permission from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripMicrophone",
+          "title": "Microphone",
+          "description": "Remove RECORD_AUDIO and audio capture permissions from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripMediaAndStorage",
+          "title": "Photos & files",
+          "description": "Remove external storage (READ/WRITE/MANAGE_EXTERNAL_STORAGE) and media permissions (READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_AUDIO, ACCESS_MEDIA_LOCATION) from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripLocation",
+          "title": "Location",
+          "description": "Remove ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, and ACCESS_BACKGROUND_LOCATION permissions from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripContacts",
+          "title": "Contacts",
+          "description": "Remove READ_CONTACTS, WRITE_CONTACTS, and GET_ACCOUNTS permissions from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripCalendar",
+          "title": "Calendar",
+          "description": "Remove READ_CALENDAR and WRITE_CALENDAR permissions from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripNearbyDevices",
+          "title": "Nearby devices",
+          "description": "Remove Bluetooth scanning/connection and nearby Wi-Fi permissions (BLUETOOTH_SCAN, BLUETOOTH_CONNECT, BLUETOOTH_ADVERTISE, NEARBY_WIFI_DEVICES, UWB_RANGING) from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripSensors",
+          "title": "Body sensors",
+          "description": "Remove BODY_SENSORS, BODY_SENSORS_BACKGROUND, and ACTIVITY_RECOGNITION permissions from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Trackers",
+      "description": "Removes ad IDs, disables tracking components and adds opt-outs.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "revokePermissions",
+          "title": "Ad permissions",
+          "description": "Remove AD_ID, Privacy Sandbox attribution/topics/audiences, and Play Install Referrer permissions from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableProviders",
+          "title": "Tracking providers",
+          "description": "Disable analytics ContentProviders (Google Measurement, Sentry, Facebook, Flurry, Branch, AppsFlyer).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableServices",
+          "title": "Tracking services",
+          "description": "Disable Google Measurement, Google DataTransport, Firebase Sessions, and AppsFlyer background job services.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableReceivers",
+          "title": "Tracking receivers",
+          "description": "Disable install referrer and analytics measurement broadcast receivers (Adjust, AppsFlyer, Google Measurement).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "injectOptOutFlags",
+          "title": "Opt-out flags",
+          "description": "Inject meta-data opt-out entries into application tag (Firebase Analytics, Crashlytics, Performance, AppsFlyer, Sentry, Facebook SDK) and prune Firebase discovery registrars.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableFirebaseInit",
+          "title": "Firebase init (may break apps)",
+          "description": "Disable com.google.firebase.provider.FirebaseInitProvider. Default is false to prevent issues in apps that depend on Firebase Auth or push notifications.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disablePushServices",
+          "title": "Push services (breaks push!)",
+          "description": "Disable Meta Fbns, PushLite, and Firebase Cloud Messaging services plus push receivers (Firebase IID, Braze). WARNING: this breaks push notifications; enable only to fully silence background push delivery.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableGoogleAnalytics",
+          "title": "Google Analytics",
+          "description": "Disable legacy Google Analytics background services and receivers (distinct from Firebase AppMeasurement, which is covered by the telemetry toggles above).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableMetaAnalytics",
+          "title": "Meta analytics",
+          "description": "Disable Meta Analytics2/OneFabric upload services, Instagram upload scheduler receiver, and deferred analytics worker components.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableCrashDetectors",
+          "title": "Crash uploaders",
+          "description": "Disable Lacrima lock-screen/shutdown crash detectors, crash-loop state trackers, and background crash-dump upload services. User-initiated bug reports are untouched.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableDeviceIdProviders",
+          "title": "Device ID (may break login!)",
+          "description": "Disable attribution, FDID/PhoneId/USDiD, and FamilyApps cross-app identity providers plus referrer and cross-signing components. WARNING: may break login, account switching, and deferred deep links; enable only to fully silence device-identity collection.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableMlKit",
+          "title": "ML Kit vision (breaks scanner!)",
+          "description": "Disable Google ML Kit InitProvider, ComponentDiscoveryService, and prune related registrars. WARNING: Breaks on-device barcode scanning, face detection, and text recognition.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableRemoteConfig",
+          "title": "Remote config (may break app!)",
+          "description": "Prune Firebase RemoteConfig, DynamicLoading, and AB testing (Abt) discovery registrars. WARNING: May break dynamic backend configuration and remote feature flags.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableCrashlyticsRegistrars",
+          "title": "Crashlytics (may break app!)",
+          "description": "Prune Firebase Crashlytics discovery registrars. WARNING: Pruning breaks apps hard-requiring the Crashlytics component at startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableAdStartupInitializers",
+          "title": "Ad auto-start",
+          "description": "Remove ad SDK auto-init entries (e.g. Unity Ads) from the androidx.startup InitializationProvider. WARNING: may break rewarded ads and ad-gated features; enable only to block SDK auto-initialization.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Tracking Code",
+      "description": "Deletes tracking and crash-reporting native libraries.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "trimCrashReporters",
+          "title": "Crash reporters",
+          "description": "Zero native crash reporting and tracking libraries (Crashlytics, Sentry, Bugly, PLCrashReporter).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "trimDebugProfilers",
+          "title": "Debuggers",
+          "description": "Zero debug memory and profiling libraries (GWP-ASan, Simpleperf, Android Studio profilers).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Unused Parts",
+      "description": "Deletes unused AI, VPN and AR files to shrink the app.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Unused Screen Sizes",
+      "description": "Deletes image folders for screen sizes you do not use.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "dpis",
+          "title": "Screen sizes to keep",
+          "description": "Comma-separated screen densities to preserve (e.g. 'xxhdpi', 'xhdpi, xxhdpi', 'xxxhdpi'). Density-independent resources (nodpi, anydpi) and unquantified base directories are always preserved.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "xxhdpi",
+          "values": null
+        },
+        {
+          "key": "stripSmartwatch",
+          "title": "Watch resources",
+          "description": "Removes graphic and non-values layout resources qualified for Wear OS smartwatches (e.g. watch qualifiers).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripTelevision",
+          "title": "TV resources",
+          "description": "Removes graphic and non-values layout resources qualified for Android TV / Leanback (e.g. television qualifiers).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripOtherFormFactors",
+          "title": "Car, dock and VR resources",
+          "description": "Removes graphic and non-values layout resources qualified for car head units, desk docks, appliances, or VR headsets.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Resource & Battery Governor",
+      "description": "Throttles background sensor polling (gyroscope/accelerometer 3D ads) and prevents aggressive video buffer preloading to conserve battery and CPU resources.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.1.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3766,6 +3944,32 @@
           "targets": [
             {
               "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Run on Rooted Devices",
+      "description": "Lets the app run on rooted phones and network tools without crashing.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.earphone",
+          "name": "Xiaomi Earbuds",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6700",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.38.0i",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3831,21 +4035,75 @@
       ]
     },
     {
-      "name": "Sensor Privacy Guard",
-      "description": "Neutralizes motion, ambient, and orientation sensor providers to prevent hardware fingerprinting and tracking via Generic Sensor APIs.",
+      "name": "Safer Connections",
+      "description": "Uses trusted certificates while keeping printer downloads working.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
+          "packageName": "com.nokoprint",
+          "name": "NokoPrint - WiFi, Bluetooth, USB",
           "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
+          "apkFileType": "XAPK",
+          "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
             {
-              "version": "1.97.56",
+              "version": "5.28.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Safer Connections",
+      "description": "Blocks unencrypted traffic and allows inspection.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.earphone",
+          "name": "Xiaomi Earbuds",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6700",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.38.0i",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show All Models",
+      "description": "Shows every earbud model for pairing.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.earphone",
+          "name": "Xiaomi Earbuds",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6700",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.38.0i",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3923,6 +4181,76 @@
       ]
     },
     {
+      "name": "Shrink PNG Images",
+      "description": "Recompresses PNGs without losing quality.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Shrink WebP Images",
+      "description": "Strips hidden metadata from WebP images.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripExif",
+          "title": "Camera data",
+          "description": "Remove camera parameters, geolocation, and creator metadata chunks from WebP images.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripXmp",
+          "title": "Editing history",
+          "description": "Remove Adobe XMP XML metadata chunks from WebP images.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripIcc",
+          "title": "Color profiles",
+          "description": "Remove ICCP color profile chunks. Default is false to preserve color profile fidelity on wide-gamut displays.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Silence Promo Notifications",
+      "description": "Stops tips, reward promos and marketing notifications.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Skip Content Warnings",
       "description": "Bypasses and clears sensitive content warnings, graphic media blur overlays, and age gates on feed videos.",
       "default": false,
@@ -3940,32 +4268,6 @@
           "targets": [
             {
               "version": "47.1.4",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Skip First Run",
-      "description": "Skips the welcome screen, search engine selection, and onboarding First Run Experience (FRE) on clean installs.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -4003,8 +4305,34 @@
       "options": []
     },
     {
-      "name": "Skip Welcome Dialog",
-      "description": "Suppresses the first-launch About/privacy dialog by applying the app's own accept action silently. The About entry in the menu keeps working.",
+      "name": "Skip Popups & Tutorials",
+      "description": "Skips startup agreements, tutorials and promo banners.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.earphone",
+          "name": "Xiaomi Earbuds",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6700",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.38.0i",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip Welcome Screen",
+      "description": "Skips the first-launch popup (the About menu still works).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4029,10 +4357,38 @@
       "options": []
     },
     {
-      "name": "Sound Features Unlock",
-      "description": "Unblocks Spatial Audio, hearing enhancement, and voice wake-up restrictions, unbans Spatial Audio on 96kHz aptX Adaptive connections, and bypasses XPAN requirements.",
+      "name": "Skip Welcome Screens",
+      "description": "Skips welcome, search choice and onboarding on fresh installs.",
       "default": true,
       "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Background Activity",
+      "description": "Removes persistent notifications and background battery drain.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.mi.earphone",
@@ -4044,6 +4400,225 @@
           "targets": [
             {
               "version": "1.38.0i",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Background Sync",
+      "description": "Stops background wakeups and battery drain.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Background Sync",
+      "description": "Stops background downloads and sync to save battery.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Background Sync",
+      "description": "Stops background sync tasks and alarms that drain the battery.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.hevy",
+          "name": "Hevy - Gym Log Workout Tracker",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.1.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Background Sync",
+      "description": "Stops background tasks that drain the battery.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nokoprint",
+          "name": "NokoPrint - WiFi, Bluetooth, USB",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#0288D1",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.28.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Background Wakeups",
+      "description": "Stops boot receivers and background schedulers that wake the app.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripBootPermission",
+          "title": "Strip RECEIVE_BOOT_COMPLETED Permission",
+          "description": "Remove android.permission.RECEIVE_BOOT_COMPLETED from AndroidManifest.xml.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableBootReceivers",
+          "title": "Disable Boot & Package Receivers",
+          "description": "Set android:enabled='false' on broadcast receivers listening for BOOT_COMPLETED, LOCKED_BOOT_COMPLETED, or MY_PACKAGE_REPLACED.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableWorkManager",
+          "title": "Disable WorkManager & Job Schedulers",
+          "description": "Disable AndroidX WorkManager, Google DataTransport, and ProfileInstaller background services and receivers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripWakeLock",
+          "title": "Strip WAKE_LOCK Permission",
+          "description": "Remove android.permission.WAKE_LOCK. Default is false to prevent interrupting background audio playback or active downloads.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Stop Remote Updates",
+      "description": "Stops Google from changing settings remotely.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Text Sharing with System",
+      "description": "Stops sending page text to the Android capture service.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -4081,85 +4656,6 @@
       "options": []
     },
     {
-      "name": "Strip Permissions",
-      "description": "Selectively revokes sensitive hardware, privacy, and system permissions from AndroidManifest.xml.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.inputmethod.latin",
-          "name": "Gboard Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#4285F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.4.1.985164140-lite_beta-arm64-v8a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "18.4.1.985164140-lite_beta-armeabi-v7a",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "stripContacts",
-          "title": "Strip Contacts Permission",
-          "description": "Revokes READ_CONTACTS permission from AndroidManifest.xml (disables contact name suggestions).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripAudio",
-          "title": "Strip Microphone Permission",
-          "description": "Revokes RECORD_AUDIO permission from AndroidManifest.xml (disables voice dictation).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripMedia",
-          "title": "Strip Media & Storage Permissions",
-          "description": "Revokes photo and media permissions (READ_MEDIA_IMAGES, READ_MEDIA_VISUAL_USER_SELECTED, READ_EXTERNAL_STORAGE) from AndroidManifest.xml (disables custom image background themes).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripUserDictionary",
-          "title": "Strip System Dictionary Permissions",
-          "description": "Revokes system personal dictionary sync permissions (READ_USER_DICTIONARY, WRITE_USER_DICTIONARY) from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripCrossProfile",
-          "title": "Strip Cross-Profile Permission",
-          "description": "Revokes INTERACT_ACROSS_PROFILES permission from AndroidManifest.xml to isolate work and personal profiles.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Studio & Creation De-bloat",
       "description": "Strips heavy video creation plugins, CapCut NLE editor SDKs, effect plugins, camera dynamic features, upload video encoders, on-device AI runtimes (LiteRT), and AR camera face models to significantly reduce APK size.",
       "default": false,
@@ -4175,58 +4671,6 @@
           "targets": [
             {
               "version": "47.1.4",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Suppress In-App Promos & Surveys",
-      "description": "Suppresses intrusive in-app rating surveys, Play Store review prompts, and marketing promo popups (YouTube promo, ad-free callouts, and Brave Ads onboarding).",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Surgical OEM Unlock",
-      "description": "Bypasses Xiaomi OEM gating to enable full feature parity (voice assistant & spatial audio dialogs) on non-Xiaomi devices (Samsung, Pixel, etc.).",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.mi.earphone",
-          "name": "Xiaomi Earbuds",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF6700",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.38.0i",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -4255,34 +4699,6 @@
           "targets": [
             {
               "version": "47.1.4",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Tab Group Close Selection",
-      "description": "When closing the active tab in a tab group, selects the previous tab in the same group instead of jumping outside the group.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.56",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -4508,502 +4924,8 @@
       "options": []
     },
     {
-      "name": "Universal Hosts Blocker",
-      "description": "Rewrites Dalvik const-string URL/host literals matching a user-supplied hosts blocklist to a sink IP (default 0.0.0.0). The blocklist file is read at patch time, so daily DNS updates apply without patch releases.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "hostsFile",
-          "title": "Hosts blocklist file",
-          "description": "Path to a hosts or plain-domain blocklist file on the patching machine (e.g. Hagezi native.tiktok-onlydomains.txt). Leave empty to skip.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": null,
-          "values": null
-        },
-        {
-          "key": "sinkIp",
-          "title": "Sink IP address",
-          "description": "IPv4 address replacing blocked hosts inside const-string literals (e.g. '0.0.0.0').",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "0.0.0.0",
-          "values": null
-        },
-        {
-          "key": "matchSubdomains",
-          "title": "Match subdomains",
-          "description": "When enabled, a blocklist entry also matches its subdomains (entry 'example.com' matches 'a.example.com').",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Universal Native Binary Trimmer",
-      "description": "Strips non-essential tracking, crash reporting, and debug companion native libraries in lib/** (e.g. libcrashlytics, libsentry, libbugly, libgwp-asan) by zeroing bytes in-situ. Requires SDK Blocker pairing when the app eagerly loads these libs.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "trimCrashReporters",
-          "title": "Trim Crash Reporting Libraries",
-          "description": "Zero native crash reporting and tracking libraries (Crashlytics, Sentry, Bugly, PLCrashReporter).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "trimDebugProfilers",
-          "title": "Trim Debug & Profiling Libraries",
-          "description": "Zero debug memory and profiling libraries (GWP-ASan, Simpleperf, Android Studio profilers).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Universal Offline Mode",
-      "description": "Forces offline execution across any application by revoking INTERNET and network permissions from AndroidManifest.xml and blocking cleartext HTTP traffic at the OS level.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "stripNetworkState",
-          "title": "Strip Network State Permissions",
-          "description": "Also remove ACCESS_NETWORK_STATE and ACCESS_WIFI_STATE permissions. Default is false to prevent SecurityException crashes in apps that query network status without error handling.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripWifiControls",
-          "title": "Strip Wi-Fi Control Permissions",
-          "description": "Remove CHANGE_NETWORK_STATE, CHANGE_WIFI_STATE, CHANGE_WIFI_MULTICAST_STATE, and NEARBY_WIFI_DEVICES permissions.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "stripPush",
-          "title": "Strip Push Notification Permissions",
-          "description": "Remove Google Cloud Messaging and Firebase Cloud Messaging push receiver permissions (com.google.android.c2dm.permission.RECEIVE).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripGoogleServices",
-          "title": "Strip Google Services Sync Permissions",
-          "description": "Remove Google Services Framework and account sync permissions (com.google.android.providers.gsf.permission.READ_GSERVICES, android.permission.GET_ACCOUNTS).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "blockCleartext",
-          "title": "Block Cleartext Traffic",
-          "description": "Enforce android:usesCleartextTraffic='false' on the application tag in AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Universal Privacy Permissions Stripper",
-      "description": "Selectively strips sensitive privacy, sensor, and hardware permissions from AndroidManifest.xml via configurable boolean toggles.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "stripNotifications",
-          "title": "Strip Notification Permission",
-          "description": "Remove POST_NOTIFICATIONS permission (Android 13+) from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripCamera",
-          "title": "Strip Camera Permission",
-          "description": "Remove CAMERA permission from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripMicrophone",
-          "title": "Strip Microphone Permissions",
-          "description": "Remove RECORD_AUDIO and audio capture permissions from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripMediaAndStorage",
-          "title": "Strip Storage & Media Permissions",
-          "description": "Remove external storage (READ/WRITE/MANAGE_EXTERNAL_STORAGE) and media permissions (READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_AUDIO, ACCESS_MEDIA_LOCATION) from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripLocation",
-          "title": "Strip Location Permissions",
-          "description": "Remove ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, and ACCESS_BACKGROUND_LOCATION permissions from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripContacts",
-          "title": "Strip Contacts & Accounts Permissions",
-          "description": "Remove READ_CONTACTS, WRITE_CONTACTS, and GET_ACCOUNTS permissions from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripCalendar",
-          "title": "Strip Calendar Permissions",
-          "description": "Remove READ_CALENDAR and WRITE_CALENDAR permissions from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripNearbyDevices",
-          "title": "Strip Nearby Devices Permissions",
-          "description": "Remove Bluetooth scanning/connection and nearby Wi-Fi permissions (BLUETOOTH_SCAN, BLUETOOTH_CONNECT, BLUETOOTH_ADVERTISE, NEARBY_WIFI_DEVICES, UWB_RANGING) from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "stripSensors",
-          "title": "Strip Body Sensors Permissions",
-          "description": "Remove BODY_SENSORS, BODY_SENSORS_BACKGROUND, and ACTIVITY_RECOGNITION permissions from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Universal SDK Blocker",
-      "description": "Neutralizes third-party APM, crash reporting, analytics, attribution, session replay, location tracking, and push engagement SDK init and event methods at DEX level via early return-void; companion runtime layer to Universal Telemetry Neutralizer (manifest layer).",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "blockApm",
-          "title": "Block APM & Performance Monitoring SDKs",
-          "description": "Neutralize New Relic, Datadog, and Dynatrace monitoring, metric reporting, and HTTP transaction tracing methods.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "blockCrashReporters",
-          "title": "Block Crash Reporting SDKs",
-          "description": "Neutralize Raygun, Shake, Embrace, Splunk Mint, App Center, OpenTelemetry, ACRA, Sentry, Bugsnag, Crashlytics (legacy and Firebase), Fabric, Instabug, Countly, and HockeyApp crash reporters.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "blockAnalytics",
-          "title": "Block Analytics SDKs",
-          "description": "Neutralize Firebase Analytics, Matomo, Leanplum, Localytics, WebEngage, PostHog, MoEngage, Snowplow, mParticle, Treasure Data, Huawei Analytics, Yandex Metrica, Facebook AppEvents, and Sensors Analytics event tracking, capture, and session logging methods.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "blockAttribution",
-          "title": "Block Attribution & Engagement SDKs",
-          "description": "Neutralize AppsFlyer, Adjust, Amplitude, Mixpanel, CleverTap, Segment, Branch, Singular, Kochava, Tenjin, Unity Analytics, Flurry, and GameAnalytics conversion, tracking, and attribution SDKs.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "blockLegacyAnalytics",
-          "title": "Block Legacy Google Analytics",
-          "description": "Neutralize pre-Firebase Google Analytics tracking, hit dispatching, and activity reporting methods (com.google.analytics and com.google.android.gms.analytics).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "blockPushEngagement",
-          "title": "Block Push Engagement SDKs (WARNING: Breaks Push)",
-          "description": "Neutralize OneSignal, Airship, and Braze push engagement and tagging SDKs. WARNING: this breaks push notification delivery; enable only to fully silence push engagement SDK runtimes.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "blockSessionReplay",
-          "title": "Block Session Replay SDKs",
-          "description": "Neutralize UXCam, Smartlook, FullStory, Contentsquare, and Bugsee screen and session recording SDK methods.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "blockLocationTrackers",
-          "title": "Block Location & Beacon Tracking SDKs",
-          "description": "Neutralize Radar, Gimbal, and Estimote beacon and location tracking SDKs; note OS location permission controls remain the primary gate.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Universal Screen Brightness Governor",
-      "description": "Prevents applications from overriding display brightness (such as in-app brightness sliders, barcode/QR full-screen brightness, or window-level overrides) by neutralizing all direct writes to WindowManager.LayoutParams.screenBrightness.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": []
-    },
-    {
-      "name": "Universal Screen Timeout Enforcer",
-      "description": "Forces the target application to respect system screen timeout and sleep timers by neutralizing keepScreenOn view calls and stripping FLAG_KEEP_SCREEN_ON from windows and layout parameters.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": []
-    },
-    {
-      "name": "Universal Screenshot Protection Bypass",
-      "description": "Neutralizes FLAG_SECURE on windows, layout params, and SurfaceViews, unlocks audio playback capture, and suppresses Android 14+ screenshot and screen recording detection callbacks.",
-      "default": false,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": null,
-      "options": []
-    },
-    {
-      "name": "Universal Telemetry Neutralizer",
-      "description": "Strips advertising and Privacy Sandbox permissions, disables analytics ContentProviders and telemetry background services (Firebase, Sentry, Adjust, AppsFlyer, DataTransport), prunes ComponentDiscovery registrars, and injects telemetry opt-out metadata. Includes an optional toggle to disable push notification services.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "revokePermissions",
-          "title": "Revoke Advertising & Tracking Permissions",
-          "description": "Remove AD_ID, Privacy Sandbox attribution/topics/audiences, and Play Install Referrer permissions from AndroidManifest.xml.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableProviders",
-          "title": "Disable Telemetry ContentProviders",
-          "description": "Disable analytics ContentProviders (Google Measurement, Sentry, Facebook, Flurry, Branch, AppsFlyer).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableServices",
-          "title": "Disable Telemetry Background Services",
-          "description": "Disable Google Measurement, Google DataTransport, Firebase Sessions, and AppsFlyer background job services.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableReceivers",
-          "title": "Disable Telemetry Receivers",
-          "description": "Disable install referrer and analytics measurement broadcast receivers (Adjust, AppsFlyer, Google Measurement).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "injectOptOutFlags",
-          "title": "Inject Telemetry Opt-Out Flags & Prune Registrars",
-          "description": "Inject meta-data opt-out entries into application tag (Firebase Analytics, Crashlytics, Performance, AppsFlyer, Sentry, Facebook SDK) and prune Firebase discovery registrars.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableFirebaseInit",
-          "title": "Disable Firebase Init Provider",
-          "description": "Disable com.google.firebase.provider.FirebaseInitProvider. Default is false to prevent issues in apps that depend on Firebase Auth or push notifications.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "disablePushServices",
-          "title": "Disable Push Notification Services",
-          "description": "Disable Meta Fbns, PushLite, and Firebase Cloud Messaging services plus push receivers (Firebase IID, Braze). WARNING: this breaks push notifications; enable only to fully silence background push delivery.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "disableGoogleAnalytics",
-          "title": "Disable Google Analytics Services",
-          "description": "Disable legacy Google Analytics background services and receivers (distinct from Firebase AppMeasurement, which is covered by the telemetry toggles above).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableMetaAnalytics",
-          "title": "Disable Meta Analytics Upload Pipeline",
-          "description": "Disable Meta Analytics2/OneFabric upload services, Instagram upload scheduler receiver, and deferred analytics worker components.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableCrashDetectors",
-          "title": "Disable Crash Detectors & Dump Upload",
-          "description": "Disable Lacrima lock-screen/shutdown crash detectors, crash-loop state trackers, and background crash-dump upload services. User-initiated bug reports are untouched.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableDeviceIdProviders",
-          "title": "Disable Device-ID & Cross-App Identity Providers",
-          "description": "Disable attribution, FDID/PhoneId/USDiD, and FamilyApps cross-app identity providers plus referrer and cross-signing components. WARNING: may break login, account switching, and deferred deep links; enable only to fully silence device-identity collection.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "disableMlKit",
-          "title": "Disable ML Kit On-Device Vision",
-          "description": "Disable Google ML Kit InitProvider, ComponentDiscoveryService, and prune related registrars. WARNING: Breaks on-device barcode scanning, face detection, and text recognition.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "disableRemoteConfig",
-          "title": "Disable Firebase Remote Config",
-          "description": "Prune Firebase RemoteConfig, DynamicLoading, and AB testing (Abt) discovery registrars. WARNING: May break dynamic backend configuration and remote feature flags.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "disableCrashlyticsRegistrars",
-          "title": "Disable Firebase Crashlytics Registrars",
-          "description": "Prune Firebase Crashlytics discovery registrars. WARNING: Pruning breaks apps hard-requiring the Crashlytics component at startup.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "disableAdStartupInitializers",
-          "title": "Disable Ad SDK Startup Initializers",
-          "description": "Remove ad SDK auto-init entries (e.g. Unity Ads) from the androidx.startup InitializationProvider. WARNING: may break rewarded ads and ad-gated features; enable only to block SDK auto-initialization.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Universal WebP Asset Optimizer",
-      "description": "Losslessly strips non-rendering metadata and ancillary chunks (EXIF, XMP, ICCP) from WebP assets across res/ and assets/ to reduce APK size. In raw-only pipeline mode, optimizes assets/ only as res/ is not decoded.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "stripExif",
-          "title": "Strip EXIF Metadata",
-          "description": "Remove camera parameters, geolocation, and creator metadata chunks from WebP images.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "stripXmp",
-          "title": "Strip XMP Metadata",
-          "description": "Remove Adobe XMP XML metadata chunks from WebP images.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "stripIcc",
-          "title": "Strip ICC Color Profiles",
-          "description": "Remove ICCP color profile chunks. Default is false to preserve color profile fidelity on wide-gamut displays.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Unlock Pro",
-      "description": "Unlocks local Hevy Pro capabilities (unlimited workout routines, routine folders, advanced graphs, and local analytics) by dynamically enabling Pro getters and suppressing grace period payment warnings in Hermes Bytecode (HBC96).",
+      "description": "Unlocks Pro features stored on the device (routines, folders, charts). Server-limited items may still need a subscription.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -5017,6 +4939,58 @@
           "targets": [
             {
               "version": "3.1.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Sound Features",
+      "description": "Enables spatial audio and hearing features on all devices.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.earphone",
+          "name": "Xiaomi Earbuds",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6700",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.38.0i",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock for Other Phones",
+      "description": "Enables full features on Samsung, Pixel and other non-Xiaomi phones.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.earphone",
+          "name": "Xiaomi Earbuds",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6700",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.38.0i",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -5043,6 +5017,32 @@
           "targets": [
             {
               "version": "47.1.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Update Without Account",
+      "description": "Lets guests check and install earbud firmware updates.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.earphone",
+          "name": "Xiaomi Earbuds",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6700",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.38.0i",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

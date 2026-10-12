@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "patches": [
     {
       "name": "Allow screenshots and screen recording",
-      "description": "Removes recent-apps preview hiding and screen capture restrictions across application activities.",
+      "description": "Removes preview hiding, capture restrictions, FLAG_SECURE flags, and detection callbacks.",
       "default": false,
       "category": "Interface",
       "compatiblePackages": null,
@@ -22,6 +22,24 @@
           "key": "removeCaptureRestrictions",
           "title": "Remove Capture Restrictions",
           "description": "Clears screenshot and screen recording blocking flags from activities.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeFlagSecure",
+          "title": "Remove FLAG_SECURE",
+          "description": "Zeroes FLAG_SECURE in window flag operations so secure applications cannot block capture.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassScreenshotDetection",
+          "title": "Bypass Screenshot Detection",
+          "description": "Nops Android screenshot detection callbacks so the app is not notified when a screenshot is taken.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -57,12 +75,40 @@
       ]
     },
     {
-      "name": "Bypass screenshot detection",
-      "description": "Disables screenshot detection callbacks so the app is not notified when a screenshot is taken.",
+      "name": "Disable analytics collection",
+      "description": "Disables Firebase Analytics, Crashlytics, and Performance Monitoring data collection by forcing their manifest meta-data flags to false.",
       "default": false,
-      "category": "Interface",
+      "category": "Privacy",
       "compatiblePackages": null,
-      "options": []
+      "options": [
+        {
+          "key": "disableFirebaseAnalytics",
+          "title": "Disable Firebase Analytics",
+          "description": "Force firebase_analytics_collection_enabled to false in the manifest.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableCrashlytics",
+          "title": "Disable Crashlytics",
+          "description": "Force firebase_crashlytics_collection_enabled to false in the manifest.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disablePerformanceMonitoring",
+          "title": "Disable Performance Monitoring",
+          "description": "Force firebase_performance_collection_enabled to false in the manifest.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Disable boot start-up",
@@ -83,16 +129,35 @@
       ]
     },
     {
-      "name": "Disable tracker SDK calls",
-      "description": "Replaces void-returning calls into known tracking SDKs with no-op instructions so analytics, attribution, and advertising code never runs at runtime.",
+      "name": "Enable app backups",
+      "description": "Allows the app to back up its data by enabling android:allowBackup and removing restrictive backup rules in the application manifest.",
       "default": false,
-      "category": "Privacy",
+      "category": "General",
       "compatiblePackages": null,
-      "options": []
+      "options": [
+        {
+          "key": "enableBackups",
+          "title": "Enable Backups",
+          "description": "Sets android:allowBackup to true on the application tag.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeBackupRules",
+          "title": "Remove Backup Rules",
+          "description": "Removes android:fullBackupContent and android:dataExtractionRules so the system default rules (back up everything) apply.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Enable debugging and inspection",
-      "description": "Enables application debugging flags, permits cleartext traffic for proxy inspection, and strips test-only restrictions in the application manifest.",
+      "description": "Enables application debugging flags, trusts user CA certificates, permits cleartext traffic for proxy inspection, and strips test-only restrictions in the application manifest.",
       "default": false,
       "category": "Debugging",
       "compatiblePackages": null,
@@ -107,9 +172,18 @@
           "values": null
         },
         {
+          "key": "trustUserCerts",
+          "title": "Trust User Certificates",
+          "description": "Accept TLS certificates signed by user-installed certificate authorities (e.g. mitmproxy, HTTP Toolkit) in the network security config.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
           "key": "allowCleartextTraffic",
           "title": "Allow Cleartext Traffic",
-          "description": "Sets android:usesCleartextTraffic to true to allow inspecting HTTP/cleartext network communication.",
+          "description": "Sets android:usesCleartextTraffic to true and permits cleartext traffic in the network security config to inspect HTTP communication.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -154,43 +228,8 @@
       ]
     },
     {
-      "name": "Remove FLAG_SECURE",
-      "description": "Removes FLAG_SECURE from window flag operations so secure applications allow screenshots and screen recording.",
-      "default": false,
-      "category": "Interface",
-      "compatiblePackages": null,
-      "options": []
-    },
-    {
-      "name": "Strip package visibility",
-      "description": "Removes package visibility declarations so the app cannot enumerate other installed applications.",
-      "default": false,
-      "category": "Privacy",
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "removeQueries",
-          "title": "Remove Queries Declarations",
-          "description": "Remove all <queries> elements used to probe for other installed packages.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "removeQueryAllPackages",
-          "title": "Remove QUERY_ALL_PACKAGES Permission",
-          "description": "Remove the QUERY_ALL_PACKAGES permission that grants blanket visibility of installed apps.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Strip sensitive permissions",
-      "description": "Strips sensitive Android permissions (such as camera and microphone access) from the application manifest to enhance privacy.",
+      "description": "Strips sensitive Android permissions and package visibility declarations from the application manifest to enhance privacy.",
       "default": false,
       "category": "Privacy",
       "compatiblePackages": null,
@@ -293,12 +332,30 @@
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
+        },
+        {
+          "key": "removeQueries",
+          "title": "Remove Queries Declarations",
+          "description": "Remove all <queries> elements used to probe for other installed packages.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeQueryAllPackages",
+          "title": "Remove QUERY_ALL_PACKAGES Permission",
+          "description": "Remove the QUERY_ALL_PACKAGES permission that grants blanket visibility of installed apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
         }
       ]
     },
     {
       "name": "Strip trackers and telemetry",
-      "description": "Strips known tracking, analytics, and advertising SDK components (such as Google Analytics, Firebase, AppsFlyer, Adjust, Facebook, and Crashlytics) from the application manifest.",
+      "description": "Strips known tracking, analytics, and advertising SDK components from the manifest and nops their runtime calls.",
       "default": false,
       "category": "Privacy",
       "compatiblePackages": null,
@@ -347,29 +404,29 @@
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
-        }
-      ]
-    },
-    {
-      "name": "Trust user certificates",
-      "description": "Installs a network security config that trusts user-installed CA certificates so HTTPS traffic can be inspected with proxy tools.",
-      "default": false,
-      "category": "Debugging",
-      "compatiblePackages": null,
-      "options": [
+        },
         {
-          "key": "trustUserCerts",
-          "title": "Trust User Certificates",
-          "description": "Accept TLS certificates signed by user-installed certificate authorities (e.g. mitmproxy, HTTP Toolkit).",
+          "key": "disableTrackerCalls",
+          "title": "Disable Tracker SDK Calls",
+          "description": "Replace void-returning calls into the stripped tracking SDKs with no-ops so they never run.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
-        },
+        }
+      ]
+    },
+    {
+      "name": "Unlock screen orientation",
+      "description": "Removes android:screenOrientation locks from activities so the screen follows the device rotation setting.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": [
         {
-          "key": "permitCleartext",
-          "title": "Permit Cleartext Traffic",
-          "description": "Allow unencrypted HTTP traffic in the generated network security config.",
+          "key": "removeOrientationLocks",
+          "title": "Remove Orientation Locks",
+          "description": "Strip android:screenOrientation from every activity so orientation is no longer locked.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,

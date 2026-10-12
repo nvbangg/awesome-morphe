@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.2.5",
+  "version": "2.3.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -1384,6 +1384,35 @@
       "options": []
     },
     {
+      "name": "Share alerts with Maps",
+      "description": "Hands the alerts Waze is tracking -- police, crashes, hazards, traffic jams, closures and speed cameras -- to Ungoogled Maps on the same phone, where Waze alerts in Waze Features puts them on the map. Nothing leaves the phone. Waze has to be signed in and open; in the background is enough.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Speed camera sound at any speed",
       "description": "Plays the speed camera sound for every camera, not only when you are over the speed limit.",
       "default": true,
@@ -1547,6 +1576,45 @@
       "options": []
     },
     {
+      "name": "Stay awake in the background",
+      "description": "Lets Waze keep running in the background without a route for the chosen time -- Waze's server allows 10 minutes -- so that its alerts keep reaching Maps while you navigate there. Costs battery; Waze still closes itself when you close it.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "minutes",
+          "title": "Minutes in the background",
+          "description": "How long Waze may run in the background without a route. Waze: 10.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 180,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Theme",
       "description": "Adds a Theme choice to the Experimental screen: Follow phone, Light, Dark or AMOLED black (dark with pure black backgrounds). AllTrails itself only follows the phone.",
       "default": true,
@@ -1582,6 +1650,38 @@
       "default": true,
       "category": null,
       "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFFFFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Waze alerts",
+      "description": "Shows the alerts a Waze on the same phone is tracking -- police to begin with, and any of crashes, hazards, traffic jams, closures and speed cameras -- as pins on the map, with a chime and a note as one comes up ahead. Off until turned on in Waze Features. Waze has to be patched with Share alerts with Maps, signed in and open; in the background is enough.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.maps",

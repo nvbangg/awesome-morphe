@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.11.0",
+  "version": "1.12.3",
   "patches": [
     {
       "name": "AR Effects Slimmer",
@@ -548,24 +548,6 @@
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
-        },
-        {
-          "key": "hideDmAttachButton",
-          "title": "Hide DM Attach Button",
-          "description": "Hide media attachment (+) button in direct message composer",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "hideDmVoiceButton",
-          "title": "Hide DM Voice Button",
-          "description": "Hide voice note / microphone button in direct message composer",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
         }
       ]
     },
@@ -730,11 +712,40 @@
       ]
     },
     {
+      "name": "Dynamic Color",
+      "description": "Replaces the default Twitter Blue with the user's Material You palette.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.33.1-prod.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Fix Google Maps",
       "description": "Restores Google Maps rendering by spoofing the original package signature to Google Play Services.",
       "default": true,
       "dependencies": [
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -988,15 +999,6 @@
           "values": null
         },
         {
-          "key": "hideFab",
-          "title": "Hide FAB",
-          "description": "Hide primary floating action button in timeline",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
           "key": "hideFabMenu",
           "title": "Hide FAB Menu",
           "description": "Hide secondary action expansion menu on floating action button",
@@ -1027,24 +1029,6 @@
           "key": "exploreTabs",
           "title": "Explore Tabs",
           "description": "Toggle rich explore tab surfaces",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "notificationTabs",
-          "title": "Notification Tabs",
-          "description": "Toggle notification timeline tab items",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "searchSuggestions",
-          "title": "Search Suggestions",
-          "description": "Toggle search typeahead and local suggestion persistence",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1147,15 +1131,6 @@
         }
       ],
       "options": [
-        {
-          "key": "hideCommunityBadges",
-          "title": "Hide Community Badges",
-          "description": "Hide community badge indicators across user and post labels",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
         {
           "key": "hideGrokPostAction",
           "title": "Hide Grok Post Action",
@@ -1703,45 +1678,9 @@
           "values": null
         },
         {
-          "key": "hideBookmark",
-          "title": "Hide Bookmark",
-          "description": "Hide bookmark action button in post timeline",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
           "key": "hideCommunityNotes",
           "title": "Hide Community Notes",
           "description": "Hide community notes and birdwatch contributions on posts",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "hideFollowedBy",
-          "title": "Hide Followed By",
-          "description": "Hide followed-by social context facepile on timeline posts",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "hideHiddenReplies",
-          "title": "Hide Hidden Replies",
-          "description": "Hide hidden and moderated replies banner entrypoint in conversation threads",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "hideImmersivePlayer",
-          "title": "Hide Immersive Player",
-          "description": "Hide immersive swipe-up video player surfaces",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1775,15 +1714,6 @@
           "values": null
         },
         {
-          "key": "replySorting",
-          "title": "Reply Sorting",
-          "description": "Customize default reply sorting behavior in conversation threads",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
           "key": "timelineAddTab",
           "title": "Timeline Add Tab",
           "description": "Hide add tab (+) button in home timeline tab header",
@@ -1796,15 +1726,6 @@
           "key": "timelineTopBar",
           "title": "Timeline Top Bar",
           "description": "Toggle top bar elements in home and custom timelines",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "topBarExtra",
-          "title": "Top Bar Extra",
-          "description": "Toggle additional top bar and header action surfaces",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
