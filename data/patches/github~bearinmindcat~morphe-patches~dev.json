@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.4.0",
+  "version": "2.5.2",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -128,7 +128,7 @@
     },
     {
       "name": "Alert distances",
-      "description": "How far ahead, in metres, Waze warns of police, hazards, crashes, traffic jams and speed cameras. The defaults are the old Waze mods' (CGE); Waze's own are lower for most of them.",
+      "description": "How far ahead, in metres, Waze warns of police, hazards, crashes, traffic jams and speed cameras. The defaults are the old Waze mods' (CGE); Waze's own are lower for most of them. They can be changed later in Customization, at the bottom of Waze's side menu.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -296,6 +296,36 @@
       "options": []
     },
     {
+      "name": "Avoid Flock cameras",
+      "description": "Steers driving directions around Flock cameras: when Google's route passes one, a camera-free way is worked out with BRouter, an OpenStreetMap router, and Maps asks Google again for a route through it, so Google still times and navigates the trip, and keeps it through reroutes. A detour longer than half again the distance is dropped. Off until turned on in Waze & external data source, with Flock cameras; your route's start and end go to brouter.de. Trips with stops are left as they are.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFFFFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Better filters",
       "description": "Adds a Better filters switch to the Experimental screen. With it on, the trail filter's sliders move in finer steps over the same ranges: Rating in 0.1 stars (instead of Any, 3.5, 4 and 4.5), Length in 0.1 mi, Elevation gain in 10 ft, Highest point in 100 ft and Distance away in 1 mi (metric: 0.1 km, 5 m, 50 m, 1 km).",
       "default": true,
@@ -385,11 +415,12 @@
     },
     {
       "name": "Bigger speedometer",
-      "description": "Bigger digits on the speedometer, and on the speed limit sign beside it, so they can be read at a glance.",
+      "description": "Bigger digits on the speedometer, and on the speed limit sign beside it, so they can be read at a glance. The sizes can be changed later in Customization, at the bottom of Waze's side menu, where a switch also gives Waze's own sizes back.",
       "default": true,
       "category": null,
       "dependencies": [
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -779,7 +810,7 @@
     },
     {
       "name": "Flock cameras",
-      "description": "Puts Flock and other license plate reader cameras on the map, from OpenStreetMap -- the cameras DeFlock's volunteers map -- and chimes and shows a note when one is coming up ahead. Off until turned on in Waze Features, a row on the account sheet, because it downloads the ones near you from an OpenStreetMap server, over the same area as the speed cameras.",
+      "description": "Puts Flock and other license plate reader cameras on the map, from OpenStreetMap -- the cameras DeFlock's volunteers map -- and chimes and shows a note when one is coming up ahead. Off until turned on in Waze & external data source, a row on the account sheet, because it downloads the ones near you from an OpenStreetMap server, over the same area as the speed cameras.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1060,7 +1091,7 @@
     },
     {
       "name": "Navigation distances",
-      "description": "How far ahead Android Auto gives its heads-up, and how long a jam must last before the traffic bar shows it. The defaults are the old Waze mods' (Chuppito).",
+      "description": "How far ahead Android Auto gives its heads-up, and how long a jam must last before the traffic bar shows it. The defaults are the old Waze mods' (Chuppito). They can be changed later in Customization, at the bottom of Waze's side menu.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1451,7 +1482,7 @@
     },
     {
       "name": "Share alerts with Maps",
-      "description": "Hands the alerts Waze is tracking -- police, crashes, hazards, traffic jams, closures and speed cameras -- to Ungoogled Maps on the same phone, where Waze alerts in Waze Features puts them on the map. Nothing leaves the phone. Waze has to be signed in and open; in the background is enough.",
+      "description": "Hands the alerts Waze is tracking -- police, crashes, hazards, traffic jams, closures and speed cameras -- to Ungoogled Maps on the same phone, where Waze alerts in Waze & external data source puts them on the map. Nothing leaves the phone. Waze has to be signed in and open; in the background is enough.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1509,7 +1540,7 @@
     },
     {
       "name": "Speed cameras",
-      "description": "Chimes and shows a note when a speed or red light camera is coming up ahead, and puts the cameras on the map, from OpenStreetMap. Off until turned on in Waze Features, a row on the account sheet, because it downloads the cameras near you from an OpenStreetMap server -- an area you choose there, about 25 to 175 km across.",
+      "description": "Chimes and shows a note when a speed or red light camera is coming up ahead, and puts the cameras on the map, from OpenStreetMap. Off until turned on in Waze & external data source, a row on the account sheet, because it downloads the cameras near you from an OpenStreetMap server -- an area you choose there, about 25 to 175 km across.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1570,7 +1601,7 @@
     },
     {
       "name": "Speed limit sign",
-      "description": "The style of the speed limit sign beside the speedometer, whatever the country.",
+      "description": "The style of the speed limit sign beside the speedometer, whatever the country. It can be changed later in Customization, at the bottom of Waze's side menu.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1612,7 +1643,7 @@
     },
     {
       "name": "Speeding chime",
-      "description": "Plays a chime when your speed passes the speed limit during navigation, as Waze does. Maps itself only turns its speedometer red. When it chimes is chosen in Waze Features, a row on the account sheet.",
+      "description": "Plays a chime when your speed passes the speed limit during navigation, as Waze does. Maps itself only turns its speedometer red. When it chimes is chosen in Waze & external data source, a row on the account sheet.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1643,7 +1674,7 @@
     },
     {
       "name": "Stay awake in the background",
-      "description": "Lets Waze keep running in the background without a route for the chosen time -- Waze's server allows 10 minutes -- so that its alerts keep reaching Maps while you navigate there. Costs battery; Waze still closes itself when you close it.",
+      "description": "Lets Waze keep running in the background without a route for the chosen time -- Waze's server allows 10 minutes -- so that its alerts keep reaching Maps while you navigate there. Costs battery; Waze still closes itself when you close it. The time can be changed later in Customization, at the bottom of Waze's side menu.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1739,7 +1770,7 @@
     },
     {
       "name": "Waze alerts",
-      "description": "Shows the alerts a Waze on the same phone is tracking -- police to begin with, and any of crashes, hazards, traffic jams, closures and speed cameras -- as pins on the map, with a chime and a note as one comes up ahead. Off until turned on in Waze Features. Waze has to be patched with Share alerts with Maps, signed in and open; in the background is enough.",
+      "description": "Shows the alerts a Waze on the same phone is tracking -- police to begin with, and any of crashes, hazards, traffic jams, closures and speed cameras -- as pins on the map, with a chime and a note as one comes up ahead. Off until turned on in Waze & external data source. Waze has to be patched with Share alerts with Maps, signed in and open; in the background is enough.",
       "default": true,
       "category": null,
       "dependencies": [
