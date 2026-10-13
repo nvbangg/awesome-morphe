@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.23.1",
+  "version": "1.24.0",
   "patches": [
     {
       "name": "App name",
@@ -11,7 +11,7 @@
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -39,6 +39,52 @@
       ]
     },
     {
+      "name": "Default video quality",
+      "description": "Starts every video at one resolution instead of the app's per-video choice; a resolution the video lacks falls back to its highest available (8K included when the stream spoof provides it). Changeable in the headset's Patch settings; Auto keeps the app's own behaviour.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.youtube.vr.oculus",
+          "name": "YouTube VR",
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
+          "apkFileType": "APK",
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.88.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "videoQuality",
+          "title": "Default video quality",
+          "description": "Seeds the in-headset setting on first launch; the Patch settings row governs from the first change there.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "highest",
+          "values": {
+            "highest": "Highest available (the video's best, 8K included)",
+            "4320": "8K (4320p)",
+            "2160": "4K (2160p)",
+            "1440": "1440p",
+            "1080": "1080p (Full HD)",
+            "720": "720p HD",
+            "480": "480p",
+            "360": "360p",
+            "auto": "Auto (the app's own per-video choice)"
+          }
+        }
+      ]
+    },
+    {
       "name": "Disable DRC audio",
       "description": "Disables DRC (Dynamic Range Compression) audio.",
       "default": true,
@@ -47,7 +93,7 @@
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -66,14 +112,14 @@
     },
     {
       "name": "Disable QUIC protocol",
-      "description": "Adds an option to disable QUIC (Quick UDP Internet Connections) network protocol.",
+      "description": "Adds an option (off by default) to disable QUIC (Quick UDP Internet Connections) network protocol; selecting the patch alone changes nothing until the option is enabled.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -102,14 +148,14 @@
     },
     {
       "name": "Extension",
-      "description": "Injects the YouTube VR patch extension used by streaming patches.",
+      "description": "Injects the extension the other patches run through: its streaming spoof is what removes the pre-roll (ad-free playback) and provides the 8K format support. Turning this patch off restores ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -137,6 +183,15 @@
         {
           "key": "enableDiagnostics",
           "title": "Verbose diagnostics (development only)",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "forceVerboseLogging",
+          "title": "Force verbose logging (development builds)",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -181,7 +236,7 @@
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -200,14 +255,14 @@
     },
     {
       "name": "Hide stitched ads (SSAI)",
-      "description": "Removes the client side ad configuration and cue points for server-stitched (SSAI) streams. Does not remove the ad itself; off by default.",
+      "description": "Removes the client side ad configuration and cue points for server-stitched (SSAI) streams. It does not remove the ad itself; keeping ads out is the Extension patch's streaming spoof. Off by default.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -233,7 +288,7 @@
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -290,7 +345,7 @@
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -309,14 +364,14 @@
     },
     {
       "name": "SponsorBlock",
-      "description": "Automatically skips SponsorBlock segments (sponsors, self-promos, intros, ...). Off by default; configure per-category behaviour below.",
-      "default": false,
+      "description": "Automatically skips SponsorBlock segments (sponsors, self-promos, intros, ...). On by default (sponsors: skip once); configure per-category behaviour below or in the headset's Patch settings screen.",
+      "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -495,14 +550,14 @@
     },
     {
       "name": "Spoof app version",
-      "description": "Adds an option to trick the app into thinking you are running a different version.",
+      "description": "Adds an option to trick the app into thinking you are running a different version; the option ships set to the app's current version, so selecting the patch alone changes nothing.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
@@ -530,41 +585,15 @@
       ]
     },
     {
-      "name": "Spoof osName (Android Automotive)",
-      "description": "Reports the app as an Android Automotive device, the way the phone patch set blocks video ads.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.vr.oculus",
-          "name": "YouTube VR",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.88.10",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Spoof package name in User-Agent",
-      "description": "Adds an option to report a different app package name in the Cronet User-Agent.",
+      "description": "Adds an option to report a different app package name in the Cronet User-Agent; the option ships set to the original package name, so selecting the patch alone changes nothing.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.youtube.vr.oculus",
           "name": "YouTube VR",
-          "description": null,
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
           "apkFileType": "APK",
           "appIconColor": "#FF0000",
           "signatures": null,
