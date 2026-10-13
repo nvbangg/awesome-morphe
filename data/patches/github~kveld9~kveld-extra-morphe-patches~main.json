@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "patches": [
     {
       "name": "AR Effects Slimmer",
@@ -236,7 +236,7 @@
     },
     {
       "name": "Block Telemetry & Trackers",
-      "description": "Neutralizes Google AppMeasurement and Firebase Performance Trace dispatchers, and strips advertising identifiers.",
+      "description": "Neutralizes Google AppMeasurement, Firebase Performance, Braze marketing SDK, and strips advertising identifiers.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -531,6 +531,96 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Custom Deep Links",
+      "description": "Registers intent filters to open custom links directly in the app",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.33.1-prod.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customLinkHosts",
+          "title": "Custom Link Hosts",
+          "description": "Custom domains to register for opening in the app",
+          "required": false,
+          "type": "kotlin.collections.List<kotlin.String>",
+          "default": [
+            "vxtwitter.com",
+            "fixvx.com",
+            "fxtwitter.com",
+            "fixupx.com",
+            "twittpr.com",
+            "xcancel.com"
+          ],
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom Fonts",
+      "description": "Applies custom typography to post and profile text",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.33.1-prod.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "fontTtfPath",
+          "title": "Custom Font Path",
+          "description": "Absolute device path to a .ttf applied to post/profile text, e.g. /sdcard/fonts/myfont.ttf",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "emojiFontTtfPath",
+          "title": "Custom Emoji Font Path",
+          "description": "Absolute device path to a .ttf applied to emojis, e.g. /sdcard/fonts/myemojifont.ttf",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
     },
     {
       "name": "DM Debloat",
@@ -988,6 +1078,15 @@
           "values": null
         },
         {
+          "key": "hideFab",
+          "title": "Hide FAB",
+          "description": "Hide floating action button entirely",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
           "key": "hideFabMenu",
           "title": "Hide FAB Menu",
           "description": "Hide secondary action expansion menu on floating action button",
@@ -1360,6 +1459,42 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Round Off Numbers",
+      "description": "Enable or disable rounding off numbers",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.33.1-prod.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "showFullNumbers",
+          "title": "Show Full Numbers",
+          "description": "Display full numbers without abbreviation (e.g. 1,234 instead of 1.2K)",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Screen Density Slimmer",
@@ -1827,6 +1962,32 @@
           "targets": [
             {
               "version": "11.6.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "X Background Slimmer",
+      "description": "Disables background WorkManager services, home screen widgets, and Cast/NFC companion services to reduce background resource consumption.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.33.1-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

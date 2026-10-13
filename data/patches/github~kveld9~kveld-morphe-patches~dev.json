@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.7.0-experimental.17",
+  "version": "2.7.0-experimental.1",
   "patches": [
     {
       "name": "Allow Screenshots",
@@ -417,7 +417,7 @@
         {
           "key": "blockAttribution",
           "title": "Ad attribution",
-          "description": "Neutralize AppsFlyer, Adjust, Amplitude, Mixpanel, CleverTap, Segment, Branch, Singular, Kochava, Tenjin, Unity Analytics, Flurry, and GameAnalytics conversion, tracking, and attribution SDKs.",
+          "description": "Neutralize ad attribution SDKs (AppsFlyer, Adjust, Amplitude, Mixpanel, CleverTap, Segment, Branch, Singular, Kochava, Tenjin, Unity Analytics, Flurry, GameAnalytics). Startup calls that return app objects are left alone to avoid crashes; see docs for method-level detail.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -457,6 +457,15 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        },
+        {
+          "key": "excludedSdks",
+          "title": "SDKs to keep",
+          "description": "SDK names to leave untouched, separated by commas (e.g. Adjust, Branch). Empty keeps the default behavior of blocking every listed SDK.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         }
       ]
@@ -3329,6 +3338,15 @@
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
+        },
+        {
+          "key": "stripInstalledApps",
+          "title": "Installed apps",
+          "description": "Remove QUERY_ALL_PACKAGES so Android 11+ hides your other installed apps from this app. May break launchers, app managers and share menus that list apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
         }
       ]
     },
@@ -3342,7 +3360,7 @@
         {
           "key": "revokePermissions",
           "title": "Ad permissions",
-          "description": "Remove AD_ID, Privacy Sandbox attribution/topics/audiences, and Play Install Referrer permissions from AndroidManifest.xml.",
+          "description": "Remove advertising ID and Privacy Sandbox permissions plus leftover ad-services app configuration from AndroidManifest.xml.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,

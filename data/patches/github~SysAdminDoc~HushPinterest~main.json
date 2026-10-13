@@ -1,9 +1,45 @@
 {
-  "version": "v0.0.7",
+  "version": "v0.0.8",
   "appNames": {
     "com.pinterest": "Pinterest"
   },
   "patches": [
+    {
+      "name": "AMOLED black",
+      "description": "Paints the bottom bar pure black in dark mode, so it matches Pinterest's black pages on OLED screens. Light mode stays as it is. Starts off. Turn it on in HushPinterest settings > Interface.",
+      "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.39.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.39.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14398020
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Disable analytics",
       "description": "Stops Pinterest from sending usage reports, crash reports and ad-tracking data to outside companies, and turns off Google's analytics inside the app. Good if you'd rather share less. On by default. Turn it off in HushPinterest settings > Privacy.",
@@ -79,7 +115,7 @@
     },
     {
       "name": "Download board",
-      "description": "Adds Download board to a board's menu. It saves every pin Pinterest has loaded for that board and skips ones already in Download history, so you can keep a board without picking pins one at a time. Needs Download pins on too. Starts off. Turn it on in HushPinterest settings > Pin actions.",
+      "description": "Adds Download board to a board's menu. It saves every pin Pinterest has loaded for that board, up to 500, and skips ones already in Download history, so you can keep a board without picking pins one at a time. Needs Download pins on too. Starts off. Turn it on in HushPinterest settings > Pin actions.",
       "category": "Downloads",
       "use": true,
       "dependencies": [
@@ -115,12 +151,13 @@
     },
     {
       "name": "Download pins",
-      "description": "Adds downloads for a pin, or for several pins you select in a grid. Saves the original image or the highest-quality video Pinterest supplies to your phone. Downloads go to the Download folder. Turn on Save in Pinterest's folder to keep them in Pictures/100PINT/Pins with Pinterest's own saves, or use Pick a download folder to choose any folder inside Pictures, DCIM, Download or Documents. Starts off. Turn it on in HushPinterest settings > Pin actions.",
+      "description": "Adds downloads for a pin, or for several pins you select in a grid. Saves the original image or the highest-quality video Pinterest supplies to your phone. When it saves an image, Pinterest's own Download image row is hidden. Downloads go to the Download folder. Turn on Save in Pinterest's folder to keep them in Pictures/100PINT/Pins with Pinterest's own saves, or use Pick a download folder to choose any folder inside Pictures, DCIM, Download or Documents. Starts off. Turn it on in HushPinterest settings > Pin actions.",
       "category": "Downloads",
       "use": true,
       "dependencies": [
         "BytecodePatch",
-        "HushPinterest settings"
+        "HushPinterest settings",
+        "ResourcePatch"
       ],
       "compatiblePackages": {
         "com.pinterest": [
@@ -295,8 +332,44 @@
     },
     {
       "name": "Hide advertising ID",
-      "description": "Pinterest sees an empty advertising ID with ad tracking limited, the same as if you deleted your ad ID in Android. Pinterest also stops keeping its browser ID in Google's Block Store, so a reinstall doesn't bring the old one back. Good for keeping ads from following you. On by default. Turn it off in HushPinterest settings > Privacy.",
+      "description": "Pinterest sees an empty advertising ID with ad tracking limited, the same as if you deleted your advertising ID in Android. Pinterest also stops keeping its browser ID in Google's Block Store, so a reinstall doesn't bring the old one back. Good for keeping ads from following you. On by default. Turn it off in HushPinterest settings > Privacy.",
       "category": "Privacy",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.39.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.39.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14398020
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide closeup buttons",
+      "description": "Lets you hide the back arrow and the visual search (lens) button that float over a pin you open, each with its own switch, so they stop covering the picture. Your phone's back gesture still leaves the pin, and Search image in the pin menu still works. Both start off. Turn them on in HushPinterest settings > Interface.",
+      "category": "Interface",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -547,7 +620,7 @@
     },
     {
       "name": "Hide survey prompts",
-      "description": "Turns down Pinterest's \"Got a minute?\" survey invite before it pops up, the same way tapping Maybe later does, so the same survey doesn't come back. Advertiser sponsored polls don't pop up either. Starts off. Turn it on in HushPinterest settings > Interface.",
+      "description": "Turns down Pinterest's \"Got a minute?\" survey invite before it pops up, the same way tapping Maybe later does, so the same survey doesn't come back. Advertiser-sponsored polls don't pop up either. Starts off. Turn it on in HushPinterest settings > Interface.",
       "category": "Interface",
       "use": true,
       "dependencies": [
@@ -619,7 +692,7 @@
     },
     {
       "name": "HushPinterest settings",
-      "description": "Adds a HushPinterest page to Pinterest where you turn features on or off, pause HushPinterest, back up your settings and read the licenses. Open it by long-pressing the Pinterest icon. Works as soon as you patch it in, with no switch.",
+      "description": "Adds a HushPinterest page to Pinterest where you turn features on or off, pause HushPinterest, back up your settings and read the licenses. Open it by long-pressing the Pinterest logo at the top of your home feed or Pinterest's app icon. Works as soon as you patch it in, with no switch.",
       "category": "Settings",
       "use": true,
       "dependencies": [

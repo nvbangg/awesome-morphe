@@ -1,41 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "patches": [
     {
       "name": "AMOLED Theme",
       "description": "Forces SidelineSwap into a pure-black AMOLED theme with dark system bars, black app surfaces, readable light text and icons, and force dark mode on embedded WebViews.",
-      "default": false,
-      "category": "Customization",
-      "dependencies": [
-        "AMOLED Theme Resources"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.sidelineswap.android",
-          "name": "SidelineSwap",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#02C874",
-          "signatures": [
-            "e434334ea79d8702a5d023ce7bfae4da9fa5539796cb9e0ba515cb471528697f"
-          ],
-          "targets": [
-            {
-              "version": "1.52.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 28,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "AMOLED Theme Resources",
-      "description": "Resource modifications for AMOLED theme.",
       "default": false,
       "category": "Customization",
       "dependencies": [],
@@ -96,9 +65,7 @@
       "description": "Replaces the unavailable store with a dialog to view and set your exact chip balance.",
       "default": true,
       "category": "Features",
-      "dependencies": [
-        "Custom Chip Store Binary Hook"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.tripledot.blackjack",
@@ -355,35 +322,6 @@
       ]
     },
     {
-      "name": "Custom Chip Store Binary Hook",
-      "description": "Hooks BlackjackApplication.OpenShop and CheckUpdateToVersion in libil2cpp.so to bridge the custom chip store.",
-      "default": true,
-      "category": "Features",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.tripledot.blackjack",
-          "name": "Blackjack",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#205B1F",
-          "signatures": [
-            "32e1c2b4c9ab0189d3e4e1c67806e6f4fc454aa758a74ccaedda8a309aa6b205"
-          ],
-          "targets": [
-            {
-              "version": "2.22.09",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 25,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Custom Google Maps API Key",
       "description": "Replaces the embedded Google Maps API key with a personal Google Cloud API key so native Google Maps renders on re-signed builds. Note: To use native Google Maps, disable the OpenStreetMap Drop-in Replacement patch.",
       "default": false,
@@ -484,6 +422,217 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Enable Developer Tools and Feature Flags",
+      "description": "Exposes the internal Debug Menu in Settings and provides selectors for LaunchDarkly feature flags, Remote Config controls, and remaining membership gates.",
+      "default": false,
+      "category": "Developer",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.groundspeak.geocaching.intro",
+          "name": "Geocaching",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#007D46",
+          "signatures": [
+            "7f000458070a8272e5960f2b3c9d3348372f31b0e600c86af34fc06e85f8db8c",
+            "6959a7790bff42cc28fbe41c20d457401e32f4854f414dbc390de9f1529c9295"
+          ],
+          "targets": [
+            {
+              "version": "10.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "exposeDebugMenuInSettings",
+          "title": "Expose Debug Menu in Settings",
+          "description": "Restores the internal Debug Menu item in Settings (LaunchDarkly overrides, Remote Config overrides, AutoLogger, Style/Component/Tooltip previews, and DebugSharedPrefs toggles).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableAchievementDebugTap",
+          "title": "Enable Achievement Debug Tap",
+          "description": "Enables the internal Debug.TEST_AWARD tap handler in AchievementActivity to test confetti and cycle achievement states.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "unlockTrailsMapTypeGate",
+          "title": "Unlock Trails Map Types",
+          "description": "Unlocks Trails and Wheelchair Trails in MapTypeSelectionFragment when OpenStreetMap Drop-in Replacement is not enabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockNewsletterSettingsGate",
+          "title": "Unlock Newsletter Language Settings",
+          "description": "Unlocks newsletter language selection and hides the Basic-account upgrade banner in NewsletterSettingsFragment.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockHideCachePremiumOption",
+          "title": "Unlock Hide Cache Premium Controls",
+          "description": "Enables Premium-only controls in HideCacheViewModel and ConversationViewModel GC code validation.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableCacheDetailsRedesign",
+          "title": "Enable Cache Details Redesign",
+          "description": "Enables the redesigned Geocache Details layout (cache-details-rework).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "showTotalLogCount",
+          "title": "Show Total Log Count",
+          "description": "Shows the total log count in geocache activity and details (show-total-log-count).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableShareablesInApp",
+          "title": "Enable Shareables",
+          "description": "Enables in-app Shareables, filter, and FTUE (show-shareables-in-app, mobile-shareables-filter, mobile-shareables-ftue).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "enableCollaborativeLists",
+          "title": "Enable Collaborative Lists",
+          "description": "Enables the collaborative lists feature in Listhub (collaborative-lists).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "enableLodestones",
+          "title": "Enable Lodestones",
+          "description": "Enables Lodestone features across the app (show-lodestones-mobile).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "enableEditLogDate",
+          "title": "Enable Edit Log Date",
+          "description": "Enables editing geocache log dates and date selector (edit-geocache-log, show-log-date-selector).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "enableBetterEventsFilter",
+          "title": "Enable Better Events Filter",
+          "description": "Enables Better Events filter, map, and AR attribute (better-events-filter, better-events-map, show-ar-attribute-in-filter).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "enableSelectCacheTypes",
+          "title": "Enable Select Cache Types",
+          "description": "Enables select cache types and filter settings saving (select-cache-types, save-filter-settings).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "enableDiagnosticFlags",
+          "title": "Enable Diagnostic Flags",
+          "description": "Enables diagnostic info, FCM token display, ANR data prompt, API regions, and map timeout.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "forceMapTrayEnabled",
+          "title": "Force Map Tray Enabled",
+          "description": "Forces the map tray feature enabled (RemoteConfig.MAP_TRAY).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "forceHideLastLogCount",
+          "title": "Force Hide Last Log DNF",
+          "description": "Forces hiding the last log DNF count (RemoteConfig.HIDE_LAST_LOG_DNF).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "forceShowDowntimeBanner",
+          "title": "Force Show Downtime Banner",
+          "description": "Forces the downtime maintenance banner visible (RemoteConfig.SHOW_DOWNTIME_BANNER).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "forceDisableMapAutoUpdate",
+          "title": "Force Disable Map Auto Update",
+          "description": "Disables automatic map updating when panning/zooming (RemoteConfig.MAP_AUTO_UPDATE_DISABLED).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "forceSendDiagnosticLogs",
+          "title": "Force Send Diagnostic Logs",
+          "description": "Forces sending diagnostic logs with bug reports (RemoteConfig.SEND_DIAGNOSTIC_INFO_LOGS).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "forceLinearCalloutsEnabled",
+          "title": "Force Linear Callouts Enabled",
+          "description": "Forces linear callout views enabled (RemoteConfig.LINEAR_CALLOUTS_ENABLED).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         }
       ]
@@ -905,35 +1054,6 @@
       "description": "Removes all ads (AppLovin MAX, Google Mobile Ads, Rokt, Thanks network, Playtime, InBrain Surveys) and disables analytics and tracking SDKs (AppsFlyer, FullStory, Braze, Firebase Analytics, mParticle, Facebook SDK, AppCenter).",
       "default": true,
       "category": "Ads",
-      "dependencies": [
-        "Remove Ads and Tracking from JS Bundle"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.sezzle.sezzlemobile",
-          "name": "Sezzle",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#5C2C94",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.3.9",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove Ads and Tracking from JS Bundle",
-      "description": "Neutralizes post-payment reward and offer modals (Thanks network and Rokt placements) in the embedded Hermes JavaScript bundle.",
-      "default": true,
-      "category": "Ads",
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1054,30 +1174,27 @@
       ]
     },
     {
-      "name": "Remove Lists",
-      "description": "Removes the Lists option from the bottom navigation bar.",
+      "name": "Remove Invite Friends",
+      "description": "Removes the Invite Friends option from the Account screen and eliminates the non-functional orange dot notification badge from the Account navigation icon.",
       "default": true,
       "category": "Interface",
-      "dependencies": [
-        "Remove Lists Resource"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.groundspeak.geocaching.intro",
-          "name": "Geocaching",
+          "packageName": "com.sidelineswap.android",
+          "name": "SidelineSwap",
           "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#007D46",
+          "apkFileType": "XAPK",
+          "appIconColor": "#02C874",
           "signatures": [
-            "7f000458070a8272e5960f2b3c9d3348372f31b0e600c86af34fc06e85f8db8c",
-            "6959a7790bff42cc28fbe41c20d457401e32f4854f414dbc390de9f1529c9295"
+            "e434334ea79d8702a5d023ce7bfae4da9fa5539796cb9e0ba515cb471528697f"
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "1.52.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -1086,8 +1203,8 @@
       "options": []
     },
     {
-      "name": "Remove Lists Resource",
-      "description": "Removes the Lists option from bottom_nav_menu.xml.",
+      "name": "Remove Lists",
+      "description": "Removes the Lists option from the bottom navigation bar.",
       "default": true,
       "category": "Interface",
       "dependencies": [],
@@ -1818,37 +1935,6 @@
       "description": "Replaces Android system emoji with iOS Apple Color Emoji across Compose UI, posts, comments, and direct messages.",
       "default": true,
       "category": "Customization",
-      "dependencies": [
-        "Replace Emoji Font with iOS Asset"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.ashtoncofer.Buzz",
-          "name": "Fizz",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#7F00FF",
-          "signatures": [
-            "622850867847ccb7a1371bc42c865b1137fa51bd19987dc81b53815c9a9817bf"
-          ],
-          "targets": [
-            {
-              "version": "1.54.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Replace Emoji Font with iOS Asset",
-      "description": "Copies the packaged Apple Color Emoji font into the target APK assets.",
-      "default": true,
-      "category": "Customization",
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2151,6 +2237,24 @@
           "key": "unlockAllBetaFeatures",
           "title": "Unlock All Beta Projects",
           "description": "Unlocks all 10% beta features (Activity Feed, Cache Log Translation, Autofill, Confetti, etc.).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableUnpersistedExperimentalFeatures",
+          "title": "Enable Hidden Experimental Toggles",
+          "description": "Persists and enables the Collaborative Lists, Has Parking, and Trackables Only toggles in Experimental Features.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassExperimentalServerSync",
+          "title": "Bypass Experimental Server Sync",
+          "description": "Keeps experimental feature toggles local without POSTing to or being overwritten by /mobile/v1/user/settings/mobileexperiments.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,

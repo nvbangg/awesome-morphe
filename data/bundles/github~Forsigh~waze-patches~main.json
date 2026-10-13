@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-10T07:57:57",
-  "description": "## [0.21.0](https://github.com/Forsigh/waze-patches/compare/v0.20.2...v0.21.0) (2026-10-10)\n\n### ✨ New Features\n\n* replace Waze's YouTube Music entry at the source, add high refresh rate ([f5c4bda](https://github.com/Forsigh/waze-patches/commit/f5c4bda47fad5e9cdd24c0c50bb70b2f7b45be9a))",
-  "download_url": "https://github.com/Forsigh/waze-patches/releases/download/v0.21.0/patches-0.21.0.mpp",
+  "created_at": "2026-10-13T08:35:55",
+  "description": "## [0.26.0](https://github.com/Forsigh/waze-patches/compare/v0.25.0...v0.26.0) (2026-10-13)\n\n### ✨ New patch\n\n* **OLED dark mode** (opt-in): the night map's background becomes true black (#000000) for OLED screens and\n  the road palette is lifted one Waze lighten step (+10% toward white per channel, matching the\n  `color.lighten(0.1, ...)` calls Waze itself uses inside the same file), so the roads stay readable\n  against it. Day mode, labels, traffic and route colours are untouched\n* measured on 5.25.0.1: the night map is described by `assets/res/skins/default/skin_values.night.lua` (with\n  `editor.` and `experiment/` siblings). The canvas colour is `Palette.map_background`, and each road type\n  is a `Palette` entry the renderer reads back through `color.lighten`/`color.darken`\n* applied at patch time with no injected code and no runtime switch. `SkinRefreshPatch` (the versionCode\n  refresh) is pulled in as a dependency, because an already-run Waze would otherwise keep drawing its\n  extracted skins\n* if **Map theme** is also selected, this patch steps aside for it: the theme rewrites the same entries, so\n  the OLED patch detects the theme's marker and leaves those files alone\n* verified by applying the patch alone to the stock base and reading the skin Lua back: all four night files\n  carry `map_background = rgb(0x000000)` and the nine road entries are lifted (e.g. `street`\n  `0x3F5871 -> 0x52697F`); every day file stays byte-for-byte stock. The versionCode rises 1030736 -> 1030756",
+  "download_url": "https://github.com/Forsigh/waze-patches/releases/download/v0.26.0/patches-0.26.0.mpp",
   "signature_download_url": "",
-  "version": "0.21.0"
+  "version": "0.26.0"
 }
