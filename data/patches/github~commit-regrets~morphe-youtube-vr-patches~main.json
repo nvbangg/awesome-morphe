@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.24.0",
+  "version": "1.26.0",
   "patches": [
     {
       "name": "App name",
@@ -85,68 +85,6 @@
       ]
     },
     {
-      "name": "Disable DRC audio",
-      "description": "Disables DRC (Dynamic Range Compression) audio.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.vr.oculus",
-          "name": "YouTube VR",
-          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
-          "apkFileType": "APK",
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.88.10",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable QUIC protocol",
-      "description": "Adds an option (off by default) to disable QUIC (Quick UDP Internet Connections) network protocol; selecting the patch alone changes nothing until the option is enabled.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.vr.oculus",
-          "name": "YouTube VR",
-          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
-          "apkFileType": "APK",
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.88.10",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "disableQuic",
-          "title": "Disable QUIC protocol",
-          "description": null,
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Extension",
       "description": "Injects the extension the other patches run through: its streaming spoof is what removes the pre-roll (ad-free playback) and provides the 8K format support. Turning this patch off restores ads.",
       "default": true,
@@ -199,6 +137,15 @@
           "values": null
         },
         {
+          "key": "forceFallback",
+          "title": "Force the native fallback (development only)",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "enableIdentityMatrix",
           "title": "Probe identity matrix (~14 requests; needs Verbose diagnostics)",
           "description": null,
@@ -229,34 +176,8 @@
     },
     {
       "name": "Hide ads",
-      "description": "Hides video ads.",
+      "description": "Hides video ads, including the pre-roll when the streaming spoof is unavailable and the app falls back to its own player response.",
       "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.vr.oculus",
-          "name": "YouTube VR",
-          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
-          "apkFileType": "APK",
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.88.10",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide stitched ads (SSAI)",
-      "description": "Removes the client side ad configuration and cue points for server-stitched (SSAI) streams. It does not remove the ad itself; keeping ads out is the Extension patch's streaming spoof. Off by default.",
-      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -329,6 +250,42 @@
           "key": "updateProviders",
           "title": "Update providers",
           "description": "Update provider names declared by the app. Fixes installation conflicts, but can break features in certain apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "QUIC (HTTP/3)",
+      "description": "Adds the in-headset switch for QUIC, the transport under HTTP/3: TLS over UDP, used for this app's API and media requests. Leave it on unless playback stalls on a network that blocks or throttles UDP 443 (corporate Wi-Fi, many VPNs), where turning it off forces TCP/TLS. A change applies after the app restarts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.youtube.vr.oculus",
+          "name": "YouTube VR",
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
+          "apkFileType": "APK",
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.88.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "enableQuic",
+          "title": "QUIC (HTTP/3)",
+          "description": "Seeds the in-headset switch on first launch; the Patch settings row governs from the first change there. Off forces TCP/TLS for every request.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
