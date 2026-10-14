@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -45,10 +45,12 @@
     },
     {
       "name": "AMOLED theme",
-      "description": "Replaces the light theme with a dark AMOLED theme. Backgrounds become black and dark text becomes light. Pictures (PNG, WebP) and colors set in code are not changed.",
+      "description": "Forces a true black AMOLED theme across all Stickerly screens, Jetpack Compose UI, dialogs, and bottom sheets.",
       "default": true,
       "category": null,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.snowcorp.stickerly.android",
@@ -68,21 +70,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "amoledColor",
-          "title": "Background color",
-          "description": "The color of the screens that were white. Pure black turns the pixels off on AMOLED screens.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#000000",
-          "values": {
-            "Pure black": "#000000",
-            "Near black": "#0A0A0A",
-            "Dark charcoal": "#121212"
-          }
-        }
-      ]
+      "options": []
     },
     {
       "name": "Allow screenshots",
