@@ -1,5 +1,5 @@
 {
-  "version": "v0.71.2",
+  "version": "v0.72.0",
   "appNames": {
     "com.zhiliaoapp.musically": "TikTok"
   },
@@ -58,7 +58,7 @@
     },
     {
       "name": "Advanced downloads",
-      "description": "Adds more ways to save: pick the video quality, save full-size photos, the sound on its own or a photo post as one video, hold a profile picture or story to save it, and save a story from its share sheet. Starts off. Turn it on in Hushfeed settings > Downloads.",
+      "description": "Adds more ways to save: pick the video quality, save full-size photos, the sound on its own or a photo post as one video, hold a profile picture or story to save it, and save a story or a video's cover from the share sheet. Starts off. Turn it on in Hushfeed settings > Downloads.",
       "category": "Downloads",
       "use": true,
       "dependencies": [
@@ -1026,7 +1026,7 @@
     },
     {
       "name": "Device privacy guard",
-      "description": "Stops TikTok reading what you copied, hides that you're on a VPN, and gives it a blank advertising ID so apps can't match you by it. Each has its own switch. Starts off. Turn it on in Hushfeed settings > Privacy.",
+      "description": "Stops TikTok reading what you copied and gives it a blank advertising ID. Can also hide a VPN connection and root status with details about root tools. Each switch starts off in Hushfeed settings > Privacy. Changing Hide root needs a restart.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -1297,7 +1297,7 @@
     },
     {
       "name": "Double-tap controls",
-      "description": "Lets a double tap on a video do nothing, open its comments, copy the link, save the sound or the frame on screen, or set a sleep timer instead of liking it, so you don't like videos by accident. Starts off. Pick an action in Hushfeed settings > Feed screen.",
+      "description": "Lets a double tap on a video do nothing, open its comments, copy the link, save the sound or the frame on screen, speed the video up, or set a sleep timer instead of liking it, so you don't like videos by accident. Starts off. Pick an action in Hushfeed settings > Feed screen.",
       "category": "Interaction",
       "use": true,
       "dependencies": [
@@ -1880,7 +1880,7 @@
     },
     {
       "name": "Hide CAPTCHA popups",
-      "description": "Notes in Hushfeed's diagnostic report when TikTok shows a verification puzzle. Its hide switch isn't available on this TikTok version, so every puzzle still shows. Works as soon as you patch it in.",
+      "description": "Skips the puzzle TikTok shows while you're just browsing. A puzzle right after you like, follow, comment or repost still shows, and so do sign-in, SMS and two-step checks. Starts off. Turn it on in Hushfeed settings > Feed screen, then restart TikTok.",
       "category": "Feed",
       "use": true,
       "dependencies": [
@@ -2270,7 +2270,7 @@
     },
     {
       "name": "Hide inbox items",
-      "description": "Lets you hide Inbox rows you don't use, like message requests, TikTok Shop and the stories row, plus call buttons and suggested replies in chats. Each has its own switch. Starts off. Turn it on in Hushfeed settings > Inbox.",
+      "description": "Lets you hide Inbox rows you don't use, like message requests, TikTok Shop and the stories row, plus call buttons and suggested replies in chats. Each has its own switch. Also offers search in loaded Activity notifications. Starts off. Turn it on in Hushfeed settings > Inbox.",
       "category": "Inbox",
       "use": true,
       "dependencies": [
@@ -2504,7 +2504,7 @@
     },
     {
       "name": "Hide the risk control CAPTCHA",
-      "description": "Notes in the diagnostic report when TikTok's account safety check decides to show a verification puzzle. It doesn't hide anything, so it's only useful for research. It sits on TikTok's account checks, which is why it isn't picked for you.",
+      "description": "Lets Hide CAPTCHA popups also skip the puzzle TikTok's account safety check raises while you're just browsing. SMS and two-step checks always show. It sits on TikTok's account checks, which is why it isn't picked for you.",
       "category": "Feed",
       "use": false,
       "dependencies": [
@@ -2778,7 +2778,7 @@
     },
     {
       "name": "Keep the Favorites tab",
-      "description": "Keeps the Favorites tab and your saved videos on your profile when TikTok tries out a version of the app that hides them. On by default. Turn it off in Hushfeed settings > App.",
+      "description": "Keeps the Favorites tab and your saved videos on your profile when TikTok tries out a version of the app that hides them, and makes the collections popup you get by holding the Favorites button dark when TikTok is. Both are on by default. Turn them off in Hushfeed settings > App.",
       "category": "Settings",
       "use": true,
       "dependencies": [
@@ -3061,7 +3061,7 @@
     },
     {
       "name": "Long-press controls",
-      "description": "Lets a long press on a video like it, open the comments, copy the link, save the sound or the frame on screen, or set a sleep timer. Starts off. Pick an action in Hushfeed settings > Feed screen.",
+      "description": "Lets a long press on a video like it, open the comments, copy the link, save the sound or the frame on screen, or set a sleep timer, and can give a creator's videos For You's full long-press menu. Starts off. Pick an action in Hushfeed settings > Feed screen.",
       "category": "Interaction",
       "use": true,
       "dependencies": [
@@ -3180,7 +3180,7 @@
     },
     {
       "name": "Network proxy",
-      "description": "Sends TikTok's feed, search and comments through a proxy server you set up. Videos and LIVEs still load directly, and other apps aren't affected. Starts off. Turn it on in Hushfeed settings > Region, then restart TikTok.",
+      "description": "Sends TikTok's feed, search and comments through a proxy server you set up. Videos and LIVEs still load directly, and so do Hushfeed's own saves and short-link lookups. Other apps aren't affected. Starts off. Turn it on in Hushfeed settings > Region, then restart TikTok.",
       "category": "Settings",
       "use": true,
       "dependencies": [
@@ -3534,6 +3534,45 @@
       "name": "Prefer H.264 playback",
       "description": "Plays videos in an older format your phone decodes more easily, which can help older phones play smoothly and run cooler. Videos without it play as before. Starts off. Turn it on in Hushfeed settings > Playback.",
       "category": "Playback",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.1.4"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
+          ],
+          "targets": [
+            {
+              "version": "47.1.4",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024701040,
+                "ARMEABI_V7A": 2024701040,
+                "X86": 2024701040,
+                "X86_64": 2024701040
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Profile background",
+      "description": "Opens TikTok's own profile background editor in Edit profile on accounts TikTok hasn't offered it to yet, and shows the backgrounds other profiles have set. TikTok's servers may still refuse to save one for such an account. Starts off. Turn it on in Hushfeed settings > App.",
+      "category": "Interaction",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -4084,7 +4123,7 @@
     },
     {
       "name": "Settings",
-      "description": "Adds the Hushfeed settings page to TikTok, at the top of Settings and privacy. That's where you turn Hushfeed's features on and off. Works as soon as you patch it in, with no switch.",
+      "description": "Adds the Hushfeed settings page to TikTok, at the top of Settings and privacy. Pressing and holding For You at the top of the feed opens it too. That's where you turn Hushfeed's features on and off. Works as soon as you patch it in, with no switch.",
       "category": "Settings",
       "use": true,
       "dependencies": [
@@ -4122,7 +4161,7 @@
     },
     {
       "name": "Share sheet tools",
-      "description": "Lets you hide people, apps and buttons you don't use from the share sheet, and add apps you do use. Starts off. Turn it on in Hushfeed settings > Share sheet.",
+      "description": "Lets you hide people, apps and buttons you don't use from the share sheet, add apps you do use, and copy a video's link with one press on Share. Starts off. Turn it on in Hushfeed settings > Share sheet.",
       "category": "Interaction",
       "use": true,
       "dependencies": [
@@ -4201,6 +4240,45 @@
       "name": "Show author region",
       "description": "Shows the country a video was posted from next to the creator's name. Starts off. Turn it on in Hushfeed settings > Feed screen.",
       "category": "Feed",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.1.4"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
+          ],
+          "targets": [
+            {
+              "version": "47.1.4",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024701040,
+                "ARMEABI_V7A": 2024701040,
+                "X86": 2024701040,
+                "X86_64": 2024701040
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show commenter handle and region",
+      "description": "Shows a commenter's @username in place of their display name, and the country their account is set to after the comment's time. Both start off. Turn them on in Hushfeed settings > Comments.",
+      "category": "Comments",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -4316,7 +4394,7 @@
     },
     {
       "name": "Show follow status",
-      "description": "Shows on a profile whether that person follows you back, and marks accounts in your follow lists that don't. On by default. Turn it off in Hushfeed settings > App.",
+      "description": "Shows on a profile whether that person follows you back, and marks accounts in your follow lists that don't. On by default. Turn it off in Hushfeed settings > App. Optional local counts and appearance controls apply to your own profile.",
       "category": "Interaction",
       "use": true,
       "dependencies": [
@@ -4432,7 +4510,7 @@
     },
     {
       "name": "Skip content warnings",
-      "description": "Plays videos without the warning screen you'd have to tap through first, and can hide the Check sources banner on unverified videos. Starts off. Turn it on in Hushfeed settings > Feed screen.",
+      "description": "Plays videos without the warning screen you'd have to tap through first, and can hide the Check sources and Check your sources banners. Starts off. Turn it on in Hushfeed settings > Feed screen.",
       "category": "Feed",
       "use": true,
       "dependencies": [
@@ -5176,7 +5254,7 @@
     },
     {
       "name": "Use system font",
-      "description": "Shows TikTok's text in your phone's own font instead of TikTok's, and can use your phone's emoji too. Starts off. Turn it on in Hushfeed settings > App, then restart TikTok.",
+      "description": "Shows TikTok's text in your phone's own font or in a .ttf or .otf font file you import, instead of TikTok's, and can use your phone's emoji too. Starts off. Turn it on in Hushfeed settings > App, then restart TikTok.",
       "category": "Interface",
       "use": true,
       "dependencies": [

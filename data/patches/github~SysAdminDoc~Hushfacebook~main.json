@@ -1,5 +1,5 @@
 {
-  "version": "v0.11.0",
+  "version": "v0.12.0",
   "appNames": {
     "com.facebook.katana": "Facebook"
   },
@@ -2132,11 +2132,12 @@
     },
     {
       "name": "Hushfacebook settings",
-      "description": "Adds Hushfacebook settings to Facebook, where you turn features on or off, pause Hushfacebook and back up your choices. To open them, long-press the Facebook logo at the top of your feed or Facebook's app icon. Other patches need it, so keep it selected.",
+      "description": "Adds Hushfacebook settings to Facebook, where you turn features on or off, pause Hushfacebook and back up your choices. To open them, long-press the Facebook logo at the top of your feed or Facebook's app icon. Its App name option shows a name you pick under the icon. Other patches need it, so keep it selected.",
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "BytecodePatch",
+        "ResourcePatch"
       ],
       "compatiblePackages": {
         "com.facebook.katana": [
@@ -2165,7 +2166,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "A name to show under the app icon, in App info and in recent apps instead of Facebook, up to 50 characters, so this copy is easy to tell apart. Leave it empty to keep Facebook's name. It only changes the name. Clone app is what lets a copy install next to the official Facebook.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Install beside Meta's apps",
@@ -2245,7 +2256,7 @@
     },
     {
       "name": "Keep the progress bar",
-      "description": "Keeps every reel's progress bar full size and moving smoothly, with the time above it, so you can drag it without tapping first. Also keeps a full-screen video's controls on screen until you tap. Starts off. Turn it on in Hushfacebook settings > Playback.",
+      "description": "Keeps every reel's progress bar full size and moving smoothly, with the time above it, so you can drag it without tapping first. Also keeps a full-screen video's controls on screen until you tap, and another switch lets a tap anywhere on the bar jump there. Starts off. Turn it on in Hushfacebook settings > Playback.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -2401,7 +2412,7 @@
     },
     {
       "name": "Open Messenger from the top bar",
-      "description": "Makes the Messenger icon at the top of Facebook open the Messenger app instead of Facebook's own Chats, if you'd rather chat in Messenger. Without Messenger installed, Chats opens as before. Starts off. Turn it on in Hushfacebook settings > Chats.",
+      "description": "Makes the Messenger icon at the top of Facebook open the Messenger app instead of Facebook's own Chats, if you'd rather chat in Messenger. Without Messenger installed, Chats opens as before. Starts off. Turn it on in Hushfacebook settings > Chats. Also carries Leave calls and chats to Messenger, a separate switch that starts off and leaves ringing and chat notifications to Messenger while it's installed and enabled.",
       "category": "Chats",
       "use": true,
       "dependencies": [
@@ -2888,7 +2899,7 @@
     },
     {
       "name": "Tab bar at the bottom",
-      "description": "Moves Facebook's tab bar to the bottom of the screen on accounts that have it at the top, where it's easier to reach. A second switch lets it slide away as you scroll. Starts off. Turn it on in Hushfacebook settings > Appearance, then restart Facebook.",
+      "description": "Moves Facebook's tab bar to the bottom of the screen on accounts that have it at the top, where it's easier to reach. A second switch lets it slide away as you scroll, and two more keep the tab bar or the top bar on screen instead. Starts off. Turn it on in Hushfacebook settings > Appearance, then restart Facebook.",
       "category": "Navigation",
       "use": true,
       "dependencies": [
