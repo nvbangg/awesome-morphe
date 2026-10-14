@@ -1,5 +1,5 @@
 {
-    "version": "1.1.1",
+    "version": "1.2.0",
     "patches": [
         {
             "name": "Force landscape player",
@@ -56,6 +56,53 @@
                 }
             ],
             "options": []
+        },
+        {
+            "name": "Install as a separate app",
+            "description": "Installs the patched app beside the original one under its own package name and app name, so the original keeps updating on its own.",
+            "default": false,
+            "dependencies": [],
+            "compatiblePackages": [
+                {
+                    "packageName": "free.zona",
+                    "name": "FreeZona World",
+                    "description": null,
+                    "apkFileType": "APK_REQUIRED",
+                    "appIconColor": "#202124",
+                    "signatures": [
+                        "a40da80a59d170caa950cf15c18c454d47a39b26989d8b640ecd745ba71bf5dc"
+                    ],
+                    "targets": [
+                        {
+                            "version": "3.0.75",
+                            "versionCodes": "{ARM64_V8A=1075, ARMEABI_V7A=1075, X86_64=1075, X86=1075}",
+                            "isExperimental": false,
+                            "minSdk": 21,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "packageName",
+                    "title": "Package name",
+                    "description": "Package name of the separate install. Must be unique among the installed copies.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "free.zona.morphe",
+                    "values": null
+                },
+                {
+                    "key": "appName",
+                    "title": "App name",
+                    "description": "Name to tell the separate install apart from the original one.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "FreeZona Morphe",
+                    "values": null
+                }
+            ]
         }
     ]
 }

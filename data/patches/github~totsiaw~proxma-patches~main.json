@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.15.1",
+  "version": "1.16.1",
   "patches": [
     {
       "name": "Block trackers",
@@ -47,6 +47,32 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block update prompt",
+      "description": "Forces Remote Config to report latest_version_name=1.0.3 and android_latest_build=34, matching the installed version so the force-update dialog never appears.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.storywise.storywise",
+          "name": "Storywise",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#6C63FF",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "1.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 25,
               "description": null
             }
           ]
@@ -159,6 +185,32 @@
       "options": []
     },
     {
+      "name": "Bypass login",
+      "description": "Restores a signed-in user from an embedded assets/sw_cred.json (pre-formatted Firebase credential file) into SharedPreferences before FirebaseAuth initialises, so the constructor picks up the stored user. Falls back to anonymous sign-in (H3/h + zzacq.zza) if the asset is missing. Also short-circuits the Google sign-in provider flow (O5/p pswitch_5) to reuse the current user.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.storywise.storywise",
+          "name": "Storywise",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#6C63FF",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "1.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 25,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Bypass signature verification",
       "description": "Disables Simosa's anti-tamper signature check so a re-signed APK launches normally instead of stalling on the splash / \"version is not correct\" dialog.",
       "default": true,
@@ -177,6 +229,32 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Force dark mode",
+      "description": "Rewrites foodpanda's baked-in Bento color constants to dark equivalents so the app renders a real dark theme. The app ships no dark palette — R8 merged its light and dark token sets into one identical set of dex constants — so theme, force-dark and values-night changes have no effect. Brand colors are left untouched.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.global.foodpanda.android",
+          "name": "foodpanda",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#D70F64",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "26.38.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -441,6 +519,32 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 21,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock pass",
+      "description": "Unlocks paid content (Monthly Pass: lessons, tutor, reports) by forging pass-expiry and active fields in Firestore document maps the app reads. Also forces latest_version_name and android_latest_build to installed values when present in a Firestore doc, blocking the update prompt via the Firestore path.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.storywise.storywise",
+          "name": "Storywise",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#6C63FF",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "1.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 25,
               "description": null
             }
           ]
