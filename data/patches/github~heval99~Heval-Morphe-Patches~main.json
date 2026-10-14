@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "patches": [
     {
       "name": "Block marketing notifications",
-      "description": "Blocks in-app promotional prompts, modals and promotion banners. Note: this only affects in-app promotions. Match-alert push delivery on re-signed builds needs working push delivery - use MicroG integration + signature spoofing where Play Services is absent (issue #25).",
+      "description": "Blocks in-app promotional prompts, modals, promotion banners and Firebase In-App Messaging popups. Note: this only affects in-app promotions. Match-alert push delivery on re-signed builds needs \"GmsCore support\" with MicroG RE (issue #25).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -12,48 +12,10 @@
           "packageName": "com.sofascore.results",
           "name": "Sofascore",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#384CF4",
           "signatures": null,
           "targets": [
-            {
-              "version": "26.07.27",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.08.24",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.07",
-              "versionCodes": {
-                "ARM64_V8A": 260907002,
-                "ARMEABI_V7A": 260907002,
-                "X86_64": 260907002,
-                "X86": 260907002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.14",
-              "versionCodes": {
-                "ARM64_V8A": 260914002,
-                "ARMEABI_V7A": 260914002,
-                "X86_64": 260914002,
-                "X86": 260914002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "26.09.28",
               "versionCodes": {
@@ -61,6 +23,70 @@
                 "ARMEABI_V7A": 260928002,
                 "X86_64": 260928002,
                 "X86": 260928002
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block marketing popups",
+      "description": "Blocks the server-configured promo dialog, Firebase In-App Messaging popups and in-app promo strips. Push notifications are not affected.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "eu.livesport.FlashScore_com",
+          "name": "Flashscore",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.2",
+              "versionCodes": {
+                "ARM64_V8A": 520,
+                "ARMEABI_V7A": 520,
+                "X86_64": 520,
+                "X86": 520
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block telemetry & trackers",
+      "description": "Blocks Sentry crash reporting, Adjust and Branch attribution, Facebook app events and Amplitude ad-ID and legacy event uploads. Push notifications and purchases keep working.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.hevy",
+          "name": "Hevy",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#101012",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.1.16",
+              "versionCodes": {
+                "ARM64_V8A": 3325935,
+                "ARMEABI_V7A": 3325935,
+                "X86_64": 3325935,
+                "X86": 3325935
               },
               "isExperimental": false,
               "minSdk": null,
@@ -114,6 +140,37 @@
       "options": []
     },
     {
+      "name": "Disable Agent i",
+      "description": "Turns off Agent i, LINE's AI assistant, which removes its buttons from the Home header and the search bar.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable Facebook SDK",
       "description": "Blocks Facebook Audience Network ads and disables Facebook event tracking while keeping Facebook Login working.",
       "default": true,
@@ -125,48 +182,10 @@
           "packageName": "com.sofascore.results",
           "name": "Sofascore",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#384CF4",
           "signatures": null,
           "targets": [
-            {
-              "version": "26.07.27",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.08.24",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.07",
-              "versionCodes": {
-                "ARM64_V8A": 260907002,
-                "ARMEABI_V7A": 260907002,
-                "X86_64": 260907002,
-                "X86": 260907002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.14",
-              "versionCodes": {
-                "ARM64_V8A": 260914002,
-                "ARMEABI_V7A": 260914002,
-                "X86_64": 260914002,
-                "X86": 260914002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "26.09.28",
               "versionCodes": {
@@ -174,6 +193,37 @@
                 "ARMEABI_V7A": 260928002,
                 "X86_64": 260928002,
                 "X86": 260928002
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable VOOM",
+      "description": "VOOM links, shares and notifications do nothing, and the standalone VOOM feed closes at once. Use with Hide VOOM tab to remove the tab as well.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
               },
               "isExperimental": false,
               "minSdk": null,
@@ -258,7 +308,7 @@
           "packageName": "com.appgenix.bizcal",
           "name": "Business Calendar 2",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#009688",
           "signatures": null,
           "targets": [
@@ -281,7 +331,38 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables AppLovin interstitial ads.",
+      "description": "Disables banner, native, interstitial, rewarded and app-open ads.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "me.bluemail.mail",
+          "name": "BlueMail",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#006CEF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.2.408",
+              "versionCodes": {
+                "ARM64_V8A": 47587,
+                "ARMEABI_V7A": 47587,
+                "X86_64": 47587,
+                "X86": 47587
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Disables banner, interstitial and rewarded ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -312,6 +393,18 @@
                 "ARMEABI_V7A": 260,
                 "X86_64": 260,
                 "X86": 260
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.4.17",
+              "versionCodes": {
+                "ARM64_V8A": 261,
+                "ARMEABI_V7A": 261,
+                "X86_64": 261,
+                "X86": 261
               },
               "isExperimental": false,
               "minSdk": null,
@@ -365,17 +458,79 @@
           "packageName": "fm.castbox.audiobook.radio.podcast",
           "name": "Castbox",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#F44336",
           "signatures": null,
           "targets": [
             {
-              "version": "11.26.1",
+              "version": "11.26.1-260915290",
               "versionCodes": {
                 "ARM64_V8A": 260915290,
                 "ARMEABI_V7A": 260915290,
                 "X86_64": 260915290,
                 "X86": 260915290
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Blocks every Google Mobile Ads load (banner, native, interstitial, rewarded, app-open and the networks mediated through it), CREX's own Parth house ads and Meta Audience Network banners. Rewarded videos never load, so their rewards are not granted; use with Enable Premium, which makes the app hide its ad slots.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "in.cricketexchange.app.cricketexchange",
+          "name": "CREX",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#262626",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.06",
+              "versionCodes": {
+                "ARM64_V8A": 667,
+                "ARMEABI_V7A": 667,
+                "X86_64": 667,
+                "X86": 667
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Removes banner, native and app-open ads and skips the ad consent form.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "easy.launcher",
+          "name": "Easy Homescreen",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#212121",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.28",
+              "versionCodes": {
+                "ARM64_V8A": 11028,
+                "ARMEABI_V7A": 11028,
+                "X86_64": 11028,
+                "X86": 11028
               },
               "isExperimental": false,
               "minSdk": null,
@@ -431,25 +586,25 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native, app-open and rewarded ads.",
+      "description": "Stops the Google Mobile Ads SDK and its mediation networks from starting, so the app's banner and interstitial ads never load, and skips PairIP's Play license check that otherwise kills the app when it is not installed from Play. Playback and playlists are unchanged.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "eu.livesport.FlashScore_com",
-          "name": "Flashscore",
+          "packageName": "app.expert.player",
+          "name": "TV Smarters Player Expert",
           "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#1E88E5",
+          "apkFileType": "APKM",
+          "appIconColor": "#1565C0",
           "signatures": null,
           "targets": [
             {
-              "version": "26.9.2",
+              "version": "11.2.0",
               "versionCodes": {
-                "ARM64_V8A": 517,
-                "ARMEABI_V7A": 517,
-                "X86_64": 517,
-                "X86": 517
+                "ARM64_V8A": 306,
+                "ARMEABI_V7A": 306,
+                "X86_64": 306,
+                "X86": 306
               },
               "isExperimental": false,
               "minSdk": null,
@@ -462,7 +617,38 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native, app-open and rewarded ads.",
+      "description": "Disables Google ads, in-app ad slots and video ads. Bookmaker strips and odds are hidden by Hide betting content.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "eu.livesport.FlashScore_com",
+          "name": "Flashscore",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.2",
+              "versionCodes": {
+                "ARM64_V8A": 520,
+                "ARMEABI_V7A": 520,
+                "X86_64": 520,
+                "X86": 520
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Disables banner, interstitial, native, app-open and rewarded ads, and the squad builder's video ad panel.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -475,24 +661,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "27.02",
+              "version": "27.06",
               "versionCodes": {
-                "ARM64_V8A": 7002,
-                "ARMEABI_V7A": 7002,
-                "X86_64": 7002,
-                "X86": 7002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "27.5",
-              "versionCodes": {
-                "ARM64_V8A": 7005,
-                "ARMEABI_V7A": 7005,
-                "X86_64": 7005,
-                "X86": 7005
+                "ARM64_V8A": 7006,
+                "ARMEABI_V7A": 7006,
+                "X86_64": 7006,
+                "X86": 7006
               },
               "isExperimental": false,
               "minSdk": null,
@@ -536,6 +710,37 @@
     },
     {
       "name": "Disable ads",
+      "description": "Removes AdFit native, focus, feed and BizBoard ads from the chat list, friends, OpenChat, short-form and KakaoPay screens.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
       "description": "Disables Librera's banner, interstitial and rewarded ads by reporting ads as switched off and the reward window as open, so the Google Mobile Ads SDK never starts.",
       "default": true,
       "dependencies": [],
@@ -555,6 +760,37 @@
                 "ARMEABI_V7A": 7175,
                 "X86_64": 7175,
                 "X86": 7175
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Removes the Smart Channel banner above the chat list and hides LINE Ads banners on Home, Wallet and other tabs.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
               },
               "isExperimental": false,
               "minSdk": null,
@@ -602,6 +838,18 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "10.3",
+              "versionCodes": {
+                "ARM64_V8A": 2204,
+                "ARMEABI_V7A": 2204,
+                "X86_64": 2204,
+                "X86": 2204
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -618,7 +866,7 @@
           "packageName": "com.flyersoft.moonreader",
           "name": "Moon+ Reader",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#283593",
           "signatures": null,
           "targets": [
@@ -680,7 +928,7 @@
           "packageName": "de.motain.iliga",
           "name": "OneFootball",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#00C853",
           "signatures": null,
           "targets": [
@@ -723,7 +971,7 @@
           "packageName": "com.pocketcolorwheel.PCW",
           "name": "Pocket Color Wheel",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#9C27B0",
           "signatures": null,
           "targets": [
@@ -754,7 +1002,7 @@
           "packageName": "com.Project100Pi.themusicplayer",
           "name": "Pi Music Player",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#3F51B5",
           "signatures": null,
           "targets": [
@@ -790,7 +1038,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "9.17.0",
+              "version": "9.17.0-260909124",
               "versionCodes": {
                 "ARM64_V8A": 260909124,
                 "ARMEABI_V7A": 260909124,
@@ -808,7 +1056,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables Google Mobile Ads (AdMob) initialization, blocking banner, interstitial, rewarded, native and mediated ads.",
+      "description": "Disables Google Mobile Ads (AdMob) initialization and the app's own ad placements, removing banner, interstitial, rewarded, native and mediated ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -820,30 +1068,6 @@
           "appIconColor": "#FFC107",
           "signatures": null,
           "targets": [
-            {
-              "version": "14.9.4",
-              "versionCodes": {
-                "ARM64_V8A": 1494,
-                "ARMEABI_V7A": 1494,
-                "X86_64": 1494,
-                "X86": 1494
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "14.9.5",
-              "versionCodes": {
-                "ARM64_V8A": 1495,
-                "ARMEABI_V7A": 1495,
-                "X86_64": 1495,
-                "X86": 1495
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "14.9.6",
               "versionCodes": {
@@ -863,7 +1087,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native and rewarded ads.",
+      "description": "Disables banner, interstitial, rewarded, app-open and native ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -871,17 +1095,48 @@
           "packageName": "com.streema.simpleradio",
           "name": "Simple Radio",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#FF6D00",
           "signatures": null,
           "targets": [
             {
-              "version": "6.2.0",
+              "version": "6.2.4",
               "versionCodes": {
-                "ARM64_V8A": 872,
-                "ARMEABI_V7A": 872,
-                "X86_64": 872,
-                "X86": 872
+                "ARM64_V8A": 895,
+                "ARMEABI_V7A": 895,
+                "X86_64": 895,
+                "X86": 895
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Disables banner, interstitial, rewarded and app-open ads.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "net.smartwod.timer",
+          "name": "SmartWOD Timer",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#333333",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.46.9",
+              "versionCodes": {
+                "ARM64_V8A": 10000399,
+                "ARMEABI_V7A": 10000399,
+                "X86_64": 10000399,
+                "X86": 10000399
               },
               "isExperimental": false,
               "minSdk": null,
@@ -902,48 +1157,10 @@
           "packageName": "com.sofascore.results",
           "name": "Sofascore",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#384CF4",
           "signatures": null,
           "targets": [
-            {
-              "version": "26.07.27",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.08.24",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.07",
-              "versionCodes": {
-                "ARM64_V8A": 260907002,
-                "ARMEABI_V7A": 260907002,
-                "X86_64": 260907002,
-                "X86": 260907002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.14",
-              "versionCodes": {
-                "ARM64_V8A": 260914002,
-                "ARMEABI_V7A": 260914002,
-                "X86_64": 260914002,
-                "X86": 260914002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "26.09.28",
               "versionCodes": {
@@ -994,7 +1211,38 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables the banner ad.",
+      "description": "Hides banner and native ads and turns off interstitial and app-open ads, so actions such as Click to WhatsApp run at once.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Disables the banner and full-screen ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1013,6 +1261,18 @@
                 "ARMEABI_V7A": 999,
                 "X86_64": 999,
                 "X86": 999
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.11.2",
+              "versionCodes": {
+                "ARM64_V8A": 139,
+                "ARMEABI_V7A": 139,
+                "X86_64": 139,
+                "X86": 139
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1044,6 +1304,99 @@
                 "ARMEABI_V7A": 19019,
                 "X86_64": 19019,
                 "X86": 19019
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable community tab",
+      "description": "Shows only your open chat rooms in the OpenChat tab, without the community list and feed below them.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable default launcher reminder",
+      "description": "Stops the notification that asks you to set the app as the default launcher. It only appears while another launcher is the default.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "easy.launcher",
+          "name": "Easy Homescreen",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#212121",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.28",
+              "versionCodes": {
+                "ARM64_V8A": 11028,
+                "ARMEABI_V7A": 11028,
+                "X86_64": 11028,
+                "X86": 11028
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable friend feed tab",
+      "description": "Shows the classic friend list instead of the friend feed in the first tab.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1110,6 +1463,111 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 56,
+                "ARMEABI_V7A": 56,
+                "X86_64": 56,
+                "X86": 56
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable promotions",
+      "description": "Hides the GetJar and SportsPass partner banners, tiles, search cards and suggestions, the \"Discover\" app offers card and the keyboard promotion notification.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "easy.launcher",
+          "name": "Easy Homescreen",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#212121",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.28",
+              "versionCodes": {
+                "ARM64_V8A": 11028,
+                "ARMEABI_V7A": 11028,
+                "X86_64": 11028,
+                "X86": 11028
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable rating prompts",
+      "description": "Stops the app's feedback (sentiment) dialog and the Google Play review request.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "easy.launcher",
+          "name": "Easy Homescreen",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#212121",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.28",
+              "versionCodes": {
+                "ARM64_V8A": 11028,
+                "ARMEABI_V7A": 11028,
+                "X86_64": 11028,
+                "X86": 11028
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable rating prompts",
+      "description": "Hides the rating banner and the in-app rating dialog.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "eu.livesport.FlashScore_com",
+          "name": "Flashscore",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.2",
+              "versionCodes": {
+                "ARM64_V8A": 520,
+                "ARMEABI_V7A": 520,
+                "X86_64": 520,
+                "X86": 520
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1149,6 +1607,18 @@
                 "ARMEABI_V7A": 260,
                 "X86_64": 260,
                 "X86": 260
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.4.17",
+              "versionCodes": {
+                "ARM64_V8A": 261,
+                "ARMEABI_V7A": 261,
+                "X86_64": 261,
+                "X86": 261
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1194,6 +1664,103 @@
     },
     {
       "name": "Disable telemetry",
+      "description": "Disables Firebase Analytics and Crashlytics, Amplitude, Braze, Singular and Rudderstack tracking. Push notifications keep working.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "easy.launcher",
+          "name": "Easy Homescreen",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#212121",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.28",
+              "versionCodes": {
+                "ARM64_V8A": 11028,
+                "ARMEABI_V7A": 11028,
+                "X86_64": 11028,
+                "X86": 11028
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable telemetry",
+      "description": "Disables AppsFlyer, Apptentive, Crashlytics, Firebase Analytics and Performance collection, and Facebook automatic event logging. Facebook Login and push notifications keep working.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "eu.livesport.FlashScore_com",
+          "name": "Flashscore",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.2",
+              "versionCodes": {
+                "ARM64_V8A": 520,
+                "ARMEABI_V7A": 520,
+                "X86_64": 520,
+                "X86": 520
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable telemetry",
+      "description": "Stops Kakao Tiara analytics, S2 event and share logging, Sentry and Crashlytics reports.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable telemetry",
       "description": "Disables Firebase Analytics event logging and Crashlytics crash reporting.",
       "default": true,
       "dependencies": [],
@@ -1202,12 +1769,36 @@
           "packageName": "com.shazam.android",
           "name": "Shazam",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#0088FF",
           "signatures": null,
           "targets": [
             {
-              "version": "16.62.0",
+              "version": "16.63.0-261008",
+              "versionCodes": {
+                "ARM64_V8A": 1606300,
+                "ARMEABI_V7A": 1606300,
+                "X86_64": 1606300,
+                "X86": 1606300
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.1-261006",
+              "versionCodes": {
+                "ARM64_V8A": 1606210,
+                "ARMEABI_V7A": 1606210,
+                "X86_64": 1606210,
+                "X86": 1606210
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.0-261001",
               "versionCodes": {
                 "ARM64_V8A": 1606200,
                 "ARMEABI_V7A": 1606200,
@@ -1233,48 +1824,10 @@
           "packageName": "com.sofascore.results",
           "name": "Sofascore",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#384CF4",
           "signatures": null,
           "targets": [
-            {
-              "version": "26.07.27",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.08.24",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.07",
-              "versionCodes": {
-                "ARM64_V8A": 260907002,
-                "ARMEABI_V7A": 260907002,
-                "X86_64": 260907002,
-                "X86": 260907002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.14",
-              "versionCodes": {
-                "ARM64_V8A": 260914002,
-                "ARMEABI_V7A": 260914002,
-                "X86_64": 260914002,
-                "X86": 260914002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "26.09.28",
               "versionCodes": {
@@ -1293,8 +1846,132 @@
       "options": []
     },
     {
+      "name": "Disable telemetry",
+      "description": "Turns off the app start tracker, CleverTap event tracking and AppsFlyer attribution.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable update prompts",
+      "description": "Hides the \"update available\" and \"update required\" dialogs. An old version may still stop working if Flashscore's servers drop support for it.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "eu.livesport.FlashScore_com",
+          "name": "Flashscore",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.2",
+              "versionCodes": {
+                "ARM64_V8A": 520,
+                "ARMEABI_V7A": 520,
+                "X86_64": 520,
+                "X86": 520
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable update prompts",
+      "description": "Hides the \"This app is out of date\" screen and the new version popup, so the patched version keeps working.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.scores365",
+          "name": "365Scores",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFC107",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.9.6",
+              "versionCodes": {
+                "ARM64_V8A": 1496,
+                "ARMEABI_V7A": 1496,
+                "X86_64": 1496,
+                "X86": 1496
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable update prompts",
+      "description": "Stops the Google Play in-app update prompts and the app's own \"update required\" page, so the app does not block you from using the patched version.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable FotMob+",
-      "description": "Enables app features locked behind the subscription paywall.",
+      "description": "Removes ads and the FotMob+ paywall. On 238 and newer it also unlocks the exclusive app icons (More > FotMob+). The membership screen still shows no subscription; early access is managed by FotMob.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1302,10 +1979,22 @@
           "packageName": "com.mobilefootie.wc2010",
           "name": "FotMob",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#00985F",
           "signatures": null,
           "targets": [
+            {
+              "version": "238.17794.20261012",
+              "versionCodes": {
+                "ARM64_V8A": 17794,
+                "ARMEABI_V7A": 17794,
+                "X86_64": 17794,
+                "X86": 17794
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "238.17666.20260928",
               "versionCodes": {
@@ -1374,12 +2063,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "6.6.18",
+              "version": "6.6.20",
               "versionCodes": {
-                "ARM64_V8A": 5443,
-                "ARMEABI_V7A": 5443,
-                "X86_64": 5443,
-                "X86": 5443
+                "ARM64_V8A": 5445,
+                "ARMEABI_V7A": 5445,
+                "X86_64": 5445,
+                "X86": 5445
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1405,12 +2094,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "4.3.1",
+              "version": "4.3.2",
               "versionCodes": {
-                "ARM64_V8A": 296,
-                "ARMEABI_V7A": 296,
-                "X86_64": 296,
-                "X86": 296
+                "ARM64_V8A": 297,
+                "ARMEABI_V7A": 297,
+                "X86_64": 297,
+                "X86": 297
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1431,7 +2120,7 @@
           "packageName": "org.kman.AquaMail",
           "name": "Aqua Mail",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#00B0FF",
           "signatures": null,
           "targets": [
@@ -1497,7 +2186,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks premium features by bypassing RevenueCat subscription checks.",
+      "description": "Unlocks the app's Pro plan. Features the BoxBox server grants by account (UserProfiles.isPro) may stay locked.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1528,6 +2217,49 @@
                 "ARMEABI_V7A": 260,
                 "X86_64": 260,
                 "X86": 260
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.4.17",
+              "versionCodes": {
+                "ARM64_V8A": 261,
+                "ARMEABI_V7A": 261,
+                "X86_64": 261,
+                "X86": 261
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Treats the CREX Premium subscription as active on this device, which removes ads (including in the floating score) wherever the app checks the plan. The CREX Premium menu entry still asks you to sign in and shows no plan, and server-checked content such as FanCode live streams stays locked.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "in.cricketexchange.app.cricketexchange",
+          "name": "CREX",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#262626",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.06",
+              "versionCodes": {
+                "ARM64_V8A": 667,
+                "ARMEABI_V7A": 667,
+                "X86_64": 667,
+                "X86": 667
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1583,6 +2315,37 @@
     },
     {
       "name": "Enable Premium",
+      "description": "Experimental: marks every RevenueCat entitlement as active on the Java side, which is what the app's Dart premium check reads. Server-side features (account sync, recordings, the always-current EPG) still depend on the Expert backend and are not changed.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "app.expert.player",
+          "name": "TV Smarters Player Expert",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1565C0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "11.2.0",
+              "versionCodes": {
+                "ARM64_V8A": 306,
+                "ARMEABI_V7A": 306,
+                "X86_64": 306,
+                "X86": 306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
       "description": "Forces User.hasPremium() to return true, unlocking premium features locked behind the RevenueCat subscription entitlement.",
       "default": true,
       "dependencies": [],
@@ -1591,7 +2354,7 @@
           "packageName": "no.fishbuddy_playground.app",
           "name": "FishBuddy",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#0288D1",
           "signatures": null,
           "targets": [
@@ -1713,6 +2476,18 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.0.1-rc1-play",
+              "versionCodes": {
+                "ARM64_V8A": 64,
+                "ARMEABI_V7A": 64,
+                "X86_64": 64,
+                "X86": 64
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1729,7 +2504,7 @@
           "packageName": "com.monefy.app.lite",
           "name": "Monefy",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#8BC34A",
           "signatures": null,
           "targets": [
@@ -1777,6 +2552,18 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 56,
+                "ARMEABI_V7A": 56,
+                "X86_64": 56,
+                "X86": 56
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1820,6 +2607,18 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "5.4.10",
+              "versionCodes": {
+                "ARM64_V8A": 5410,
+                "ARMEABI_V7A": 5410,
+                "X86_64": 5410,
+                "X86": 5410
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1836,7 +2635,7 @@
           "packageName": "com.Project100Pi.themusicplayer",
           "name": "Pi Music Player",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#3F51B5",
           "signatures": null,
           "targets": [
@@ -1859,6 +2658,37 @@
     },
     {
       "name": "Enable Premium",
+      "description": "Unlocks 365Scores premium features (ad-free, tipster, plus, delayed notifications and notification sounds).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.scores365",
+          "name": "365Scores",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFC107",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.9.6",
+              "versionCodes": {
+                "ARM64_V8A": 1496,
+                "ARMEABI_V7A": 1496,
+                "X86_64": 1496,
+                "X86": 1496
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
       "description": "Unlocks Simple Radio Premium (ad-free listening) by forcing the local subscription checks to true.",
       "default": true,
       "dependencies": [],
@@ -1867,17 +2697,48 @@
           "packageName": "com.streema.simpleradio",
           "name": "Simple Radio",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#FF6D00",
           "signatures": null,
           "targets": [
             {
-              "version": "6.2.0",
+              "version": "6.2.4",
               "versionCodes": {
-                "ARM64_V8A": 872,
-                "ARMEABI_V7A": 872,
-                "X86_64": 872,
-                "X86": 872
+                "ARM64_V8A": 895,
+                "ARMEABI_V7A": 895,
+                "X86_64": 895,
+                "X86": 895
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Unlocks Premium+ by reporting the lifetime and ad-free purchases as owned.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "net.smartwod.timer",
+          "name": "SmartWOD Timer",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#333333",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.46.9",
+              "versionCodes": {
+                "ARM64_V8A": 10000399,
+                "ARMEABI_V7A": 10000399,
+                "X86_64": 10000399,
+                "X86": 10000399
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1898,48 +2759,10 @@
           "packageName": "com.sofascore.results",
           "name": "Sofascore",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#384CF4",
           "signatures": null,
           "targets": [
-            {
-              "version": "26.07.27",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.08.24",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.07",
-              "versionCodes": {
-                "ARM64_V8A": 260907002,
-                "ARMEABI_V7A": 260907002,
-                "X86_64": 260907002,
-                "X86": 260907002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "26.09.14",
-              "versionCodes": {
-                "ARM64_V8A": 260914002,
-                "ARMEABI_V7A": 260914002,
-                "X86_64": 260914002,
-                "X86": 260914002
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "26.09.28",
               "versionCodes": {
@@ -1947,6 +2770,37 @@
                 "ARMEABI_V7A": 260928002,
                 "X86_64": 260928002,
                 "X86": 260928002
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Unlocks the Premium interface and the Premium features that are checked on the device. Features backed by Truecaller's servers (Call Assistant, family sharing, Who viewed / searched for me data, Identify AI, cloud call recording, fraud insurance, the verified badge) are not unlocked.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1998,7 +2852,7 @@
           "packageName": "com.myfitnesspal.android",
           "name": "MyFitnessPal",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#0072BC",
           "signatures": null,
           "targets": [
@@ -2033,6 +2887,18 @@
                 "ARMEABI_V7A": 51509,
                 "X86_64": 51509,
                 "X86": 51509
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "26.40.0",
+              "versionCodes": {
+                "ARM64_V8A": 51555,
+                "ARMEABI_V7A": 51555,
+                "X86_64": 51555,
+                "X86": 51555
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2096,7 +2962,7 @@
           "packageName": "com.jetappfactory.jetaudio",
           "name": "jetAudio",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKM",
           "appIconColor": "#FF6D00",
           "signatures": null,
           "targets": [
@@ -2192,6 +3058,674 @@
       "options": []
     },
     {
+      "name": "Fix push notifications",
+      "description": "Makes push notifications work on a re-signed build while LINE is closed, by reporting LINE's original signing certificate to Firebase.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Ghost read",
+      "description": "Experimental: others won't see that you read their messages while you only view chats. Sending a message or reacting should still mark the chat read, read counts on your own messages may update late, and secret chats or open chats may behave differently. Not verified on a real account.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Ghost typing",
+      "description": "Hides your typing status from other people.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.scores365",
+          "name": "365Scores",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFC107",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.9.6",
+              "versionCodes": {
+                "ARM64_V8A": 1496,
+                "ARMEABI_V7A": 1496,
+                "X86_64": 1496,
+                "X86": 1496
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name of the patched app. Keep the original to install over the existing app. A different name installs next to it, but can break features that are tied to the original package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.scores365",
+          "values": {
+            "Original (recommended)": "com.scores365",
+            "Clone": "com.scores365.morphe"
+          }
+        }
+      ]
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sofascore.results",
+          "name": "Sofascore",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#384CF4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.09.28",
+              "versionCodes": {
+                "ARM64_V8A": 260928002,
+                "ARMEABI_V7A": 260928002,
+                "X86_64": 260928002,
+                "X86": 260928002
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name of the patched app. Keep the original to install over the existing app. A different name installs next to it, but can break features that are tied to the original package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.sofascore.results",
+          "values": {
+            "Original (recommended)": "com.sofascore.results",
+            "Clone": "com.sofascore.results.morphe"
+          }
+        }
+      ]
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name of the patched app. Keep the original to install over the existing app. A different name installs next to it, but can break features that are tied to the original package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.truecaller",
+          "values": {
+            "Original (recommended)": "com.truecaller",
+            "Clone": "com.truecaller.morphe"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hide AI friends button",
+      "description": "Removes the AI friends button from the Chats tab header. The Album button shows in its place.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Assistant tab",
+      "description": "Turns off the Call Assistant feature, which removes the Assistant tab.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Blocking tab",
+      "description": "Removes the Blocking tab from the bottom bar. Spam blocking keeps working.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide LINE TODAY tab",
+      "description": "Removes the LINE TODAY (News) tab from the bottom navigation bar.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Premium tab",
+      "description": "Removes the Premium tab from the bottom bar.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Scam feed",
+      "description": "Turns off the Scam Feed, which removes its tab and menu entry and stops its notifications.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Shopping tab",
+      "description": "Removes the Shopping tab (Discover in Taiwan) from the bottom navigation bar.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide VOOM tab",
+      "description": "Removes the VOOM tab from the bottom navigation bar.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Wallet tab",
+      "description": "Removes the Wallet (LINE Pay) tab from the bottom navigation bar.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide betting content",
+      "description": "Hides odds in match lists and match summaries, the match and league Odds tabs, the league Winner Odds block, bet buttons, the bookmaker strip, betting bonuses and the gift icon, bookmakers next to TV channels and gambling notices.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "eu.livesport.FlashScore_com",
+          "name": "Flashscore",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.2",
+              "versionCodes": {
+                "ARM64_V8A": 520,
+                "ARMEABI_V7A": 520,
+                "X86_64": 520,
+                "X86": 520
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide calendar button",
+      "description": "Removes the calendar button from the Chats tab header.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide community button",
+      "description": "Removes the OpenChat (community) button from the Chats tab header.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide family button",
+      "description": "Turns off Family Protect, which removes the family button at the top of the home screen and its onboarding and notifications.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide new badges",
+      "description": "Hides the green dots and N badges that mark new items on header buttons, the Chats tab header, settings rows, Home services and friend rows. Unread counts stay.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide promotional prompts",
       "description": "Experimental: stops the recurring \"Set Brave as default browser\" dialog, the \"Rate Brave\" dialog and card, retention and Rewards promo notifications, the search widget promo and the VPN card in Settings.",
       "default": false,
@@ -2225,6 +3759,338 @@
       "options": []
     },
     {
+      "name": "Hide sponsored content",
+      "description": "Removes sponsored links, sites, suggestions and articles from search and the news feed. The news feed is built from the sponsored article list, so it may show fewer posts or none at all.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "easy.launcher",
+          "name": "Easy Homescreen",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#212121",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.28",
+              "versionCodes": {
+                "ARM64_V8A": 11028,
+                "ARMEABI_V7A": 11028,
+                "X86_64": 11028,
+                "X86": 11028
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep chats unread",
+      "description": "Opening a 1:1 or group chat no longer marks it read or sends read receipts. Mark as read still works.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep unsent messages",
+      "description": "Keeps messages that others unsend in 1:1 and group chats, with LINE's \"unsent a message\" notice below each one. OpenChat is not covered.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Open in Morphe YouTube apps",
+      "description": "Makes \"Open in YouTube Music\" and \"Open in YouTube\" open the Morphe-patched apps when they are installed, falling back to the stock apps otherwise.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.shazam.android",
+          "name": "Shazam",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0088FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.63.0-261008",
+              "versionCodes": {
+                "ARM64_V8A": 1606300,
+                "ARMEABI_V7A": 1606300,
+                "X86_64": 1606300,
+                "X86": 1606300
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.1-261006",
+              "versionCodes": {
+                "ARM64_V8A": 1606210,
+                "ARMEABI_V7A": 1606210,
+                "X86_64": 1606210,
+                "X86": 1606210
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.0-261001",
+              "versionCodes": {
+                "ARM64_V8A": 1606200,
+                "ARMEABI_V7A": 1606200,
+                "X86_64": 1606200,
+                "X86": 1606200
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "youTubeMusicPackage",
+          "title": "YouTube Music package",
+          "description": "Package name of the patched YouTube Music app that \"Open in YouTube Music\" should open.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.morphe.android.apps.youtube.music",
+          "values": {
+            "Morphe YouTube Music": "app.morphe.android.apps.youtube.music"
+          }
+        },
+        {
+          "key": "youTubePackage",
+          "title": "YouTube package",
+          "description": "Package name of the patched YouTube app that \"Open in YouTube\" should open.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.morphe.android.youtube",
+          "values": {
+            "Morphe YouTube": "app.morphe.android.youtube"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Open links in external browser",
+      "description": "Opens web links in your default browser instead of LINE's in-app browser. LINE links and LIFF mini apps stay in LINE.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Read notifications without receipt",
+      "description": "Opening a 1:1 or group chat from a message notification no longer marks it read or sends a read receipt while it is open, and the chat stays unread.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Read without receipt",
+      "description": "Adds \"Read without receipt\" to the long-press menu of 1:1 and group chats in the chat list. The chat opens without marking it read or sending a read receipt while it is open, and stays unread.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 261510192,
+                "ARMEABI_V7A": 261510192,
+                "X86_64": 261510192,
+                "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove 300+ unread limit",
+      "description": "Shows the real unread message count in the chat list instead of \"300+\".",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove 99+ unread limit",
+      "description": "Shows the real number of members who have not read a message in large group chats instead of capping it at 99.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove ads",
       "description": "Unlocks the ad-free purchase.",
       "default": true,
@@ -2245,6 +4111,324 @@
                 "ARMEABI_V7A": 2019070035,
                 "X86_64": 2019070035,
                 "X86": 2019070035
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove screenshot restriction",
+      "description": "Allows screenshots and screen recording in apps that block them, by never setting the FLAG_SECURE window flag or a secure SurfaceView. Does not unprotect DRM-protected video.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove shop tab",
+      "description": "Removes the shopping tab from the bottom navigation bar.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Restore classic call log",
+      "description": "Experimental: turns off the redesigned call log, which brings back the classic call log and its \"Frequently called\" setting.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show messages restricted to mobile",
+      "description": "Shows AlimTalk, Leverage and Universal messages that a sub device (tablet or PC login) otherwise covers with \"check this message on your phone\".",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Fixes push notifications (goal alerts) on patched builds by reporting AiScore's original signing certificate to Firebase.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.onesports.score",
+          "name": "AiScore",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00C853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.3.2",
+              "versionCodes": {
+                "ARM64_V8A": 297,
+                "ARMEABI_V7A": 297,
+                "X86_64": 297,
+                "X86": 297
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.scores365",
+          "name": "365Scores",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFC107",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.9.6",
+              "versionCodes": {
+                "ARM64_V8A": 1496,
+                "ARMEABI_V7A": 1496,
+                "X86_64": 1496,
+                "X86": 1496
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sofascore.results",
+          "name": "Sofascore",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#384CF4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.09.28",
+              "versionCodes": {
+                "ARM64_V8A": 260928002,
+                "ARMEABI_V7A": 260928002,
+                "X86_64": 260928002,
+                "X86": 260928002
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Strip image metadata",
+      "description": "Removes GPS location and camera details from JPEG photos before they are sent (best effort: other formats are sent unchanged).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.kakao.talk",
+          "name": "KakaoTalk",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FEE500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.3",
+              "versionCodes": {
+                "ARM64_V8A": 29260830,
+                "ARMEABI_V7A": 29260830,
+                "X86_64": 29260830,
+                "X86": 29260830
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks Hevy Pro features that run on your device's workout data (unlimited routines, custom exercises, advanced stats and graphs). Pro features Hevy's servers provide, like cloud limits and Hevy Coach, can stay locked.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.hevy",
+          "name": "Hevy",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#101012",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.1.16",
+              "versionCodes": {
+                "ARM64_V8A": 3325935,
+                "ARMEABI_V7A": 3325935,
+                "X86_64": 3325935,
+                "X86": 3325935
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Use SMS for verification codes",
+      "description": "Reads the phone verification code from the SMS inbox instead of Google's SMS Retriever, for devices without Google Play services or with MicroG. Phone verification can still fail on modified builds, because Truecaller's servers check the app.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.39.6",
+              "versionCodes": {
+                "ARM64_V8A": 2639006,
+                "ARMEABI_V7A": 2639006,
+                "X86_64": 2639006,
+                "X86": 2639006
               },
               "isExperimental": false,
               "minSdk": null,
