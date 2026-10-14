@@ -1,108 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.27.0",
+  "version": "0.22.6",
   "patches": [
     {
-      "name": "Add your own media apps as Waze audio partners",
-      "description": "Waze's audio-partner list is a table compiled into the app - it contains Spotify and an internal demo, and Waze never scans installed apps (getInstalledPackages has zero references in the APK). One patch for the whole media feature: it adds your own entries to that table at the point where Waze persists each partner's scope, and declares the media browser service in Waze's manifest, without which Android hides your players from Waze entirely. Waze's own availability check is opened as well: any installed app qualifies as a partner, and Waze reaches it through the generic media-browser client instead of requiring Waze's own SDK.",
-      "default": false,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.waze",
-          "name": "Waze",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#33CCFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.24.90.901",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.25.0.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.25.4.900",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "alsoAllowPackage",
-          "title": "Extra packages to make visible (one per line)",
-          "description": "Package names to declare individually, for an app that does not expose a media browser service. Leave empty for none.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "",
-          "values": null
-        },
-        {
-          "key": "mediaBrowserAction",
-          "title": "Service action to declare",
-          "description": "The action Waze is allowed to query for. The default is the standard Android media browser service, which every player capable of Android Auto support implements.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "android.media.browse.MediaBrowserService",
-          "values": null
-        },
-        {
-          "key": "allowAllPackages",
-          "title": "Let Waze see every installed app",
-          "description": "Adds the QUERY_ALL_PACKAGES permission instead of a targeted declaration. The blunt version: use it only if the targeted declaration is not enough, and expect Waze to learn about apps it has no use for.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "partners",
-          "title": "Partners to add (package=Label)",
-          "description": "One entry per partner, comma separated, written package=Label. The label defaults to the package when omitted. Each app must expose an android.media.browse.MediaBrowserService for Waze to be able to reach it.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "app.morphe.android.apps.youtube.music=YouTube Music Morphe, ak.alizandro.smartaudiobookplayer=Smart Audiobook Player",
-          "values": null
-        },
-        {
-          "key": "enableAudioSdk",
-          "title": "Turn Waze's audio-partner feature on",
-          "description": "Forces CONFIG_VALUE_AUDIO_EXTENSION_SDK_FEATURE_ENABLED and CONFIG_VALUE_AUDIO_EXTENSION_SDK_ON to true. Without them Waze builds an empty partner list and the entries above would never be reached.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Allow high refresh rate",
-      "description": "Waze rejects any display mode above 60 Hz when it picks the mode for its surface, so a 120 Hz screen is served 60 Hz. This raises that ceiling to the requested rate (120 Hz by default). Costs battery and heat - off by default.",
+      "description": "Runs Waze above 60 Hz, up to your screen's refresh rate.",
       "default": false,
       "category": null,
       "dependencies": [],
@@ -150,7 +52,7 @@
         {
           "key": "targetRefreshRate",
           "title": "Target refresh rate (Hz)",
-          "description": "The ceiling Waze accepts when choosing a display mode. 120 suits most modern panels; 90 or 60 to back off if the phone throttles.",
+          "description": "Refresh rate ceiling. 120 suits most phones; lower it if the phone gets hot.",
           "required": false,
           "type": "kotlin.Int",
           "default": 120,
@@ -160,7 +62,7 @@
     },
     {
       "name": "Auto zoom",
-      "description": "Pins Waze's own auto-zoom setting (no / yes / speed) and keeps it across server config sync. Waze ships the row itself; this makes the choice stick.",
+      "description": "Keeps your chosen auto-zoom mode from being reset.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -224,7 +126,7 @@
     },
     {
       "name": "Average-speed camera alerts",
-      "description": "Enables average-speed camera alerts and recommended-speed guidance.",
+      "description": "Average-speed camera alerts, with the zone's recommended speed.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -274,7 +176,7 @@
     },
     {
       "name": "Brief voice guidance",
-      "description": "Enables Waze's brief voice-guidance mode.",
+      "description": "Shorter spoken directions.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -323,8 +225,58 @@
       "options": []
     },
     {
+      "name": "Disable Play Store updates",
+      "description": "Stops the Play Store from updating Waze.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable police & enforcement alerts",
-      "description": "Turns on Waze's police/enforcement alert system.",
+      "description": "Turns on police and enforcement alerts.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -374,111 +326,11 @@
     },
     {
       "name": "Extended police & hazard alert distances",
-      "description": "Increases the pre-alert distances for police enforcement, accidents and heavy traffic.",
+      "description": "Pick the alert distance level: Stock (default), Moderate or Maximum.",
       "default": true,
       "category": null,
       "dependencies": [
         "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.waze",
-          "name": "Waze",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#33CCFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.24.90.901",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.25.0.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.25.4.900",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Lane guidance",
-      "description": "Enables lane guidance, including continue-straight hints.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.waze",
-          "name": "Waze",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#33CCFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.24.90.901",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.25.0.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.25.4.900",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Map theme",
-      "description": "Recolours Waze's own map skin (Google Maps-like light/dark, or OLED black) by rewriting the compiled skin descriptions in the APK, and raises the app's versionCode so Waze re-extracts its skins instead of serving the cached stock ones. Applied at patch time: change the theme by re-patching. No injected code, nothing to render at runtime.",
-      "default": false,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -522,20 +374,74 @@
       ],
       "options": [
         {
-          "key": "theme",
-          "title": "Theme",
-          "description": "google = light and dark palettes sampled from Google Maps. oled = pure-black night palette for both modes. Anything else fails the patch run.",
+          "key": "level",
+          "title": "Alert distance level",
+          "description": "Stock: Waze's own distances (default). Moderate: accident & heavy traffic at 2x - 1200 m; roads 700/900/1200. Maximum: the community table - accident 2000 m, heavy traffic 3000 m.",
           "required": false,
           "type": "kotlin.String",
-          "default": "google",
-          "values": null
+          "default": "Stock",
+          "values": {
+            "Stock (default)": "Stock",
+            "Moderate": "Moderate",
+            "Maximum": "Maximum"
+          }
         }
       ]
     },
     {
-      "name": "OLED dark mode",
-      "description": "Makes the night map truly dark for OLED screens: the map background becomes pure black (#000000) and the road colours are lifted slightly (one Waze lighten step) so they stay readable against it. Only the background and the road palette change - day mode, labels, traffic and routes are left as Waze ships them. Applied at patch time: no runtime switch and nothing injected into the app. Steps aside if Map theme is also selected.",
-      "default": false,
+      "name": "Lane guidance",
+      "description": "Lane guidance, including continue-straight hints.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Morphe YouTube Music as a Waze audio partner",
+      "description": "Lets Morphe YouTube Music work as Waze's audio partner.",
+      "default": true,
       "category": null,
       "dependencies": [
         "ResourcePatch"
@@ -584,7 +490,7 @@
     },
     {
       "name": "Radar sound at any speed",
-      "description": "Plays speed-camera sound alerts even when not above the limit.",
+      "description": "Plays the speed-camera sound even below the limit.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -634,7 +540,7 @@
     },
     {
       "name": "Remove ads",
-      "description": "Forces Waze's advertising config values off.",
+      "description": "Removes ads from Waze.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -684,7 +590,7 @@
     },
     {
       "name": "Show all cameras & road hazards",
-      "description": "Shows speed cameras, red-light cameras and speed bumps on the map and enables their notifications.",
+      "description": "Shows cameras and road hazards on the map, with alerts.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -733,8 +639,56 @@
       "options": []
     },
     {
+      "name": "Skip sign-in",
+      "description": "Boots straight into the map as a guest.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Speed limit sign always shown",
-      "description": "Forces the speed-limit sign on and enables the manual overrides.",
+      "description": "Always shows the speed limit sign.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -784,7 +738,7 @@
     },
     {
       "name": "Speed-limit decrease warnings",
-      "description": "Enables warnings when the speed limit drops, with an extended pre-alert distance.",
+      "description": "Warns when the speed limit drops.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -834,7 +788,7 @@
     },
     {
       "name": "Speedometer always on",
-      "description": "Keeps the speedometer visible at any speed, including while stopped.",
+      "description": "Visible at any speed.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -883,8 +837,159 @@
       "options": []
     },
     {
+      "name": "Theme",
+      "description": "Pick any theme from the menu for day and for night - the two are independent.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "dayTheme",
+          "title": "Day theme",
+          "description": "Themes the daytime map. Any theme from the menu - dark ones work here too. Stock leaves Waze's day colours untouched.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Stock",
+          "values": {
+            "Stock": "Stock",
+            "AMOLED": "AMOLED",
+            "AMOLED Pop": "AMOLED Pop",
+            "AMOLED Carbon": "AMOLED Carbon",
+            "AMOLED Purple": "AMOLED Purple",
+            "AMOLED Emerald": "AMOLED Emerald",
+            "AMOLED Blue": "AMOLED Blue",
+            "AMOLED Amber": "AMOLED Amber",
+            "Dark Purple": "Dark Purple",
+            "Dark Emerald": "Dark Emerald",
+            "Dark Blue": "Dark Blue",
+            "Dark Amber": "Dark Amber",
+            "Paper": "Paper",
+            "Lavender": "Lavender",
+            "Mint": "Mint",
+            "Coastal": "Coastal"
+          }
+        },
+        {
+          "key": "nightTheme",
+          "title": "Night theme",
+          "description": "Themes the night map. Any theme from the menu. Stock leaves Waze's night colours untouched.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "AMOLED",
+          "values": {
+            "Stock": "Stock",
+            "AMOLED": "AMOLED",
+            "AMOLED Pop": "AMOLED Pop",
+            "AMOLED Carbon": "AMOLED Carbon",
+            "AMOLED Purple": "AMOLED Purple",
+            "AMOLED Emerald": "AMOLED Emerald",
+            "AMOLED Blue": "AMOLED Blue",
+            "AMOLED Amber": "AMOLED Amber",
+            "Dark Purple": "Dark Purple",
+            "Dark Emerald": "Dark Emerald",
+            "Dark Blue": "Dark Blue",
+            "Dark Amber": "Dark Amber",
+            "Paper": "Paper",
+            "Lavender": "Lavender",
+            "Mint": "Mint",
+            "Coastal": "Coastal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "UI AMOLED dark mode",
+      "description": "Dark-mode app backgrounds to pure #000000 (bottom sheet, menus, dialogs). Light mode and map colours untouched.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock driver moods",
-      "description": "Waze's mood picker is gated three ways: an eligibility check that accepts only one mood name (and reads the beta-moods flag), a baby-account gate that hides moods, and a filtered native catalogue call. This opens all three, so moods already in the local catalogue - including special and hidden entries - become selectable. Artwork Waze has never downloaded is not invented.",
+      "description": "Unlocks all moods already on the device.",
       "default": true,
       "category": null,
       "dependencies": [
