@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.14.2",
+  "version": "1.15.2",
   "patches": [
     {
       "name": "AR Effects Slimmer",
@@ -18,6 +18,32 @@
           "targets": [
             {
               "version": "447.0.0.55.81",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Background Slimmer",
+      "description": "Disables background periodic jobs, home screen widgets, and companion services to reduce resource usage.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -236,7 +262,7 @@
     },
     {
       "name": "Block Telemetry & Trackers",
-      "description": "Neutralizes Google AppMeasurement, Firebase Performance, Braze marketing SDK, and strips advertising identifiers.",
+      "description": "Blocks tracking services, analytics collection, and advertising identifiers.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -251,7 +277,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -264,7 +290,7 @@
     },
     {
       "name": "Block Update Screen",
-      "description": "Blocks the 'This app is out of date' screen and suppresses in-app update prompts on launch",
+      "description": "Blocks the outdated app screen and suppresses in-app update prompts on launch.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -277,33 +303,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Breakpad Crash Reporter Slimmer",
-      "description": "Zeroes Google Breakpad native crash reporter binaries (libbreakpad.so, libbreakpad_cpp_helper.so) in-situ. WARNING: Native crash reporting is silenced. If the host application loads these libraries unconditionally without exception guards, startup crashes could occur.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#E1306C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "447.0.0.55.81",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -419,8 +419,60 @@
       "options": []
     },
     {
+      "name": "Bypass Signature Check",
+      "description": "Spoofs the official APK signature (SHA-256) for tamper telemetry, drops the server-driven signature blacklist, silences the abnormal-source toast, and disables the Godzilla inject-detect gate so re-signed builds are not blocked.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.lemon.lvoverseas",
+          "name": "CapCut",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "19.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass Unsafe Package Modal",
+      "description": "Replaces the unsafe-package modal fallback URL in the Lynx schema defaults with the real template portal URL so region-blocked or untrusted-client fallbacks open templates instead of the blocking security notice.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.lemon.lvoverseas",
+          "name": "CapCut",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "19.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Control Video Auto Scroll",
-      "description": "Prevents automatic scrolling to the next video in immersive view",
+      "description": "Prevents automatic scrolling to the next video in immersive view.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -433,7 +485,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -534,7 +586,7 @@
     },
     {
       "name": "Custom Deep Links",
-      "description": "Registers intent filters to open custom links directly in the app",
+      "description": "Opens supported custom and alternative domain links directly in the app (for shared link domains, see Share Links).",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -547,7 +599,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -560,7 +612,7 @@
         {
           "key": "customLinkHosts",
           "title": "Custom Link Hosts",
-          "description": "Custom domains to register for opening in the app",
+          "description": "Custom domains to register for opening directly in the app.",
           "required": false,
           "type": "kotlin.collections.List<kotlin.String>",
           "default": [
@@ -577,7 +629,7 @@
     },
     {
       "name": "Custom Fonts",
-      "description": "Applies custom typography to post and profile text",
+      "description": "Applies custom typography to post and profile text.",
       "default": false,
       "dependencies": [
         "BytecodePatch"
@@ -592,7 +644,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -605,7 +657,7 @@
         {
           "key": "fontTtfPath",
           "title": "Custom Font Path",
-          "description": "Absolute device path to a .ttf applied to post/profile text, e.g. /sdcard/fonts/myfont.ttf",
+          "description": "Absolute device path to a TTF font applied to post and profile text, e.g. /sdcard/fonts/myfont.ttf.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
@@ -614,7 +666,7 @@
         {
           "key": "emojiFontTtfPath",
           "title": "Custom Emoji Font Path",
-          "description": "Absolute device path to a .ttf applied to emojis, e.g. /sdcard/fonts/myemojifont.ttf",
+          "description": "Absolute device path to a TTF font applied to emojis, e.g. /sdcard/fonts/myemojifont.ttf.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
@@ -624,7 +676,7 @@
     },
     {
       "name": "DM Debloat",
-      "description": "Hide call buttons and composer actions in direct message conversations",
+      "description": "Hides call buttons and composer actions in direct message conversations.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -637,7 +689,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -650,7 +702,7 @@
         {
           "key": "hideDmCalls",
           "title": "Hide DM Calls",
-          "description": "Hide audio and video call buttons in direct message conversation header. WARNING: neutralizing the unified xchat calling flag disables DM outgoing-call entrypoints, not just the icons.",
+          "description": "Hide audio and video call buttons in direct message conversations (warning: disables outgoing direct message calls).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -712,7 +764,7 @@
     },
     {
       "name": "Drawer Items",
-      "description": "Hide individual items in the navigation drawer",
+      "description": "Hides individual menu items, badges, and sidebar entries in the navigation drawer.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -725,7 +777,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -738,7 +790,7 @@
         {
           "key": "hideProfile",
           "title": "Hide Profile",
-          "description": "Hide Profile entry in navigation drawer",
+          "description": "Hide Profile entry in navigation drawer.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -747,7 +799,7 @@
         {
           "key": "hidePremium",
           "title": "Hide Premium",
-          "description": "Hide Premium subscription entry and discount badges in navigation drawer",
+          "description": "Hide Premium subscription entry and discount badges in navigation drawer (for profile and home upsells, see Remove Premium Upsell).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -756,7 +808,7 @@
         {
           "key": "hideCommunities",
           "title": "Hide Communities",
-          "description": "Hide Communities entry in navigation drawer",
+          "description": "Hide Communities entry in navigation drawer.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -765,7 +817,7 @@
         {
           "key": "hideBookmarks",
           "title": "Hide Bookmarks",
-          "description": "Hide Bookmarks entry in navigation drawer",
+          "description": "Hide Bookmarks entry in navigation drawer.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -774,7 +826,7 @@
         {
           "key": "hideLists",
           "title": "Hide Lists",
-          "description": "Hide Lists entry in navigation drawer",
+          "description": "Hide Lists entry in navigation drawer.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -783,7 +835,7 @@
         {
           "key": "hideSpaces",
           "title": "Hide Spaces",
-          "description": "Hide Spaces entry in navigation drawer",
+          "description": "Hide Spaces entry in navigation drawer.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -792,7 +844,7 @@
         {
           "key": "hideCreatorStudio",
           "title": "Hide Creator Studio",
-          "description": "Hide Creator Studio entry in navigation drawer",
+          "description": "Hide Creator Studio entry in navigation drawer.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -800,8 +852,8 @@
         },
         {
           "key": "hideGetGrok",
-          "title": "Hide Get Grok",
-          "description": "Hide Get Grok assistant entry in navigation drawer",
+          "title": "Hide Grok",
+          "description": "Hide Grok assistant entry in navigation drawer and sidebar (for Grok navigation tab and post actions, see Navigation UI and Post & Profile UI).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -810,7 +862,7 @@
         {
           "key": "hideHelpCenter",
           "title": "Hide Help Center",
-          "description": "Hide Help Center and feedback entries in navigation drawer",
+          "description": "Hide Help Center and feedback entries in navigation drawer.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1008,6 +1060,32 @@
       "options": []
     },
     {
+      "name": "MLKit Vision Slimmer",
+      "description": "Disables machine learning vision components to reduce binary overhead (breaks QR and barcode scanning).",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.34.0-prod.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Native Bloat Slimmer",
       "description": "Strips non-essential companion native libraries by zeroing bytes in-situ. Always zeroes AppLovin ad crash reporter. WARNING: Stripping speech recognition and synthesis engines (libspeech*.so) disables voice recognition, voiceover captions, and speech-to-text features.",
       "default": false,
@@ -1045,7 +1123,7 @@
     },
     {
       "name": "Navigation UI",
-      "description": "Bottom navigation, FAB, tabs and bars",
+      "description": "Customizes bottom navigation bar tabs, unread badges, and search surfaces.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1058,7 +1136,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1071,7 +1149,7 @@
         {
           "key": "hideBadges",
           "title": "Hide Badges",
-          "description": "Hide badges and unread indicator counters from navigation bar icons",
+          "description": "Hide unread indicator badges from Grok and navigation bar tabs (for Grok drawer and post actions, see Drawer Items and Post & Profile UI).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1080,7 +1158,7 @@
         {
           "key": "hideFab",
           "title": "Hide FAB",
-          "description": "Hide floating action button entirely",
+          "description": "Hide floating action button entirely.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1089,7 +1167,7 @@
         {
           "key": "hideFabMenu",
           "title": "Hide FAB Menu",
-          "description": "Hide secondary action expansion menu on floating action button",
+          "description": "Hide secondary action expansion menu on floating action button.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1097,8 +1175,8 @@
         },
         {
           "key": "navigationBar",
-          "title": "Navigation Bar",
-          "description": "Toggle persistent bottom navigation bar behavior",
+          "title": "Hide Navigation Bar",
+          "description": "Hide persistent bottom navigation bar.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1106,8 +1184,8 @@
         },
         {
           "key": "grokTab",
-          "title": "Grok Tab",
-          "description": "Hide Grok tab from bottom navigation bar",
+          "title": "Hide Grok Tab",
+          "description": "Hide Grok tab from bottom navigation bar (for Grok drawer and post actions, see Drawer Items and Post & Profile UI).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1115,8 +1193,8 @@
         },
         {
           "key": "exploreTabs",
-          "title": "Explore Tabs",
-          "description": "Toggle rich explore tab surfaces",
+          "title": "Hide Explore Tabs",
+          "description": "Hide rich explore tab surfaces.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1124,17 +1202,8 @@
         },
         {
           "key": "searchTabItems",
-          "title": "Search Tab Items",
-          "description": "Toggle rich search tab items and surfaces",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "sideBarItems",
-          "title": "Side Bar Items",
-          "description": "Toggle drawer sidebar items including Grok assistant entry",
+          "title": "Hide Search Tab Items",
+          "description": "Hide rich search tab items and surfaces.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1144,7 +1213,7 @@
     },
     {
       "name": "No Shortened URL",
-      "description": "Expands t.co shortened URLs, removing the click-tracking intermediary",
+      "description": "Expands t.co shortened URLs, removing the click-tracking intermediary.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1157,7 +1226,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1170,7 +1239,7 @@
     },
     {
       "name": "Pause Search Suggestions",
-      "description": "Stops persisting search suggestions locally without breaking search",
+      "description": "Stops persisting search suggestions locally without breaking search.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1183,7 +1252,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1196,7 +1265,7 @@
     },
     {
       "name": "Post & Profile UI",
-      "description": "Post actions, profile header and Grok surfaces",
+      "description": "Customizes post action buttons, Grok surfaces, and user profile tabs.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1209,7 +1278,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1222,7 +1291,7 @@
         {
           "key": "hideGrokPostAction",
           "title": "Hide Grok Post Action",
-          "description": "Hide Grok analysis action button in post headers",
+          "description": "Hide Grok analysis action button on posts (for Grok drawer and navigation tab, see Drawer Items and Navigation UI).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1231,7 +1300,7 @@
         {
           "key": "hideProfileGrokButton",
           "title": "Hide Profile Grok Button",
-          "description": "Hide Grok Imagine action button on profile header banner",
+          "description": "Hide Grok Imagine action button on profile header banner (for Grok drawer and navigation tab, see Drawer Items and Navigation UI).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1239,8 +1308,8 @@
         },
         {
           "key": "profileTabs",
-          "title": "Profile Tabs",
-          "description": "Toggle extra connect and media tabs on user profiles",
+          "title": "Hide Profile Tabs",
+          "description": "Hide extra connect and media tabs on user profiles.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1374,7 +1443,7 @@
     },
     {
       "name": "Remove Ads",
-      "description": "Removes promoted posts, trends and ads from timeline",
+      "description": "Removes promoted posts, trends, and ads from timeline feeds.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1387,7 +1456,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1400,7 +1469,7 @@
     },
     {
       "name": "Remove Premium Upsell",
-      "description": "Removes premium upsell surfaces",
+      "description": "Removes Premium subscription prompts and verification upsell surfaces across the app (for drawer entry, see Drawer Items).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1413,7 +1482,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1426,7 +1495,7 @@
         {
           "key": "hideProfileGetVerified",
           "title": "Hide Profile Get Verified",
-          "description": "Hide Get Verified upsell pill on user profile",
+          "description": "Hide Get Verified subscription pill on user profiles (for drawer Premium entry, see Drawer Items).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1462,7 +1531,7 @@
     },
     {
       "name": "Round Off Numbers",
-      "description": "Enable or disable rounding off numbers",
+      "description": "Displays full metric counts without abbreviation on posts and profiles.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1475,7 +1544,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1488,7 +1557,7 @@
         {
           "key": "showFullNumbers",
           "title": "Show Full Numbers",
-          "description": "Display full numbers without abbreviation (e.g. 1,234 instead of 1.2K)",
+          "description": "Show full numbers without abbreviation instead of rounded values (e.g. 1,234 instead of 1.2K).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1570,7 +1639,7 @@
     },
     {
       "name": "Share Links",
-      "description": "Custom sharing domain, handle custom links and legacy share links",
+      "description": "Customizes domain and format for shared post links (for opening custom links in app, see Custom Deep Links).",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1583,7 +1652,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1595,8 +1664,8 @@
       "options": [
         {
           "key": "customSharingDomain",
-          "title": "Enable Custom Domain",
-          "description": "Substitutes twitter.com/x.com with custom domain when sharing post links",
+          "title": "Custom Sharing Domain",
+          "description": "Replace x.com with the selected custom domain when sharing post links.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1604,8 +1673,8 @@
         },
         {
           "key": "sharingDomain",
-          "title": "Custom Sharing Domain",
-          "description": "Domain replacing x.com when sharing post links, e.g. https://fxtwitter.com",
+          "title": "Sharing Domain",
+          "description": "Domain replacing x.com when sharing post links, e.g. https://fxtwitter.com.",
           "required": false,
           "type": "kotlin.String",
           "default": "https://fxtwitter.com",
@@ -1616,18 +1685,9 @@
           }
         },
         {
-          "key": "handleCustomLinks",
-          "title": "Handle Custom Links",
-          "description": "Enables in-app handling of alternative Twitter domains (vxtwitter.com, fxtwitter.com, fixupx.com)",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
           "key": "legacyShareLinks",
           "title": "Legacy Share Links",
-          "description": "Restores post author username in shared links instead of the modern generic /i/status/ format",
+          "description": "Include post author username in shared links instead of the modern generic status format.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1637,7 +1697,7 @@
     },
     {
       "name": "Show Sensitive Media",
-      "description": "Displays sensitive media directly without requiring tap to reveal",
+      "description": "Displays sensitive media directly without requiring tap to reveal.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1650,7 +1710,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1715,7 +1775,7 @@
     },
     {
       "name": "Timeline UI",
-      "description": "Timeline surfaces: posts, threads, banners, recommendations and video entry points",
+      "description": "Customizes timeline surfaces including banners, recommendation carousels, and action buttons.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1728,7 +1788,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.33.1-prod.01",
+              "version": "12.34.0-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1741,7 +1801,7 @@
         {
           "key": "hideBanner",
           "title": "Hide Banner",
-          "description": "Hides new post banner",
+          "description": "Hide new post banner.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1750,7 +1810,7 @@
         {
           "key": "hidePromoteButton",
           "title": "Hide Promote Button",
-          "description": "Hides promote button under self posts",
+          "description": "Hide promote button under self posts.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1759,7 +1819,7 @@
         {
           "key": "hideNudgeButton",
           "title": "Hide Nudge Button",
-          "description": "Hides follow/subscribe/follow back buttons on posts",
+          "description": "Hide follow, subscribe, and follow back buttons on posts.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1768,7 +1828,7 @@
         {
           "key": "hideRecommendationItems",
           "title": "Hide Recommendation Items",
-          "description": "Hides recommendation items such as Who to follow and Today's news in timeline, search, and replies",
+          "description": "Hide recommendation items such as Who to follow and Today's news in timeline, search, and replies.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1777,7 +1837,7 @@
         {
           "key": "hideDiscoverMore",
           "title": "Hide Discover More",
-          "description": "Hides Discover more recommendations in tweet reply threads",
+          "description": "Hide Discover more recommendations in tweet reply threads.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1786,7 +1846,7 @@
         {
           "key": "hideRecommendedUsers",
           "title": "Hide Recommended Users",
-          "description": "Hides recommended users popup shown when following someone",
+          "description": "Hide recommended users popup shown when following someone.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1795,7 +1855,7 @@
         {
           "key": "hideLiveThreads",
           "title": "Hide Live Threads",
-          "description": "Hides live threads",
+          "description": "Hide live threads.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1804,7 +1864,7 @@
         {
           "key": "hideCommunityNotes",
           "title": "Hide Community Notes",
-          "description": "Hide community notes and birdwatch contributions on posts",
+          "description": "Hide community notes and birdwatch contributions on posts.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1813,7 +1873,7 @@
         {
           "key": "hidePostMetrics",
           "title": "Hide Post Metrics",
-          "description": "Hide like, repost, and reply count metrics on timeline posts",
+          "description": "Hide like, repost, and reply count metrics on timeline posts.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1822,7 +1882,7 @@
         {
           "key": "hideViewCount",
           "title": "Hide View Count",
-          "description": "Hide post view count metrics on timeline and post detail",
+          "description": "Hide post view count metrics on timeline and post detail.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1830,8 +1890,8 @@
         },
         {
           "key": "inlineActionBar",
-          "title": "Inline Action Bar",
-          "description": "Toggle inline action buttons across notification timeline",
+          "title": "Hide Inline Action Bar",
+          "description": "Hide inline action buttons across notification timeline.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1840,7 +1900,7 @@
         {
           "key": "timelineAddTab",
           "title": "Timeline Add Tab",
-          "description": "Hide add tab (+) button in home timeline tab header",
+          "description": "Hide add tab (+) button in home timeline tab header.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1848,8 +1908,8 @@
         },
         {
           "key": "timelineTopBar",
-          "title": "Timeline Top Bar",
-          "description": "Toggle top bar elements in home and custom timelines",
+          "title": "Hide Timeline Top Bar",
+          "description": "Hide top bar elements in home and custom timelines.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1858,7 +1918,7 @@
         {
           "key": "hideLiveBanner",
           "title": "Hide Live Banner",
-          "description": "Hides live and broadcast pill at top of home timeline",
+          "description": "Hide live and broadcast pill at top of home timeline.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1962,58 +2022,6 @@
           "targets": [
             {
               "version": "11.6.01",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "X Background Slimmer",
-      "description": "Disables background WorkManager services, home screen widgets, and Cast/NFC companion services to reduce background resource consumption.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.twitter.android",
-          "name": "X",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#000000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "12.33.1-prod.01",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "X MLKit Vision Slimmer",
-      "description": "Disables MLKit component discovery and registrars. WARNING: this breaks in-app QR and barcode scanning.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.twitter.android",
-          "name": "X",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#000000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "12.33.1-prod.01",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

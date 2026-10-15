@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.22.5",
+  "version": "0.22.6",
   "patches": [
     {
       "name": "Allow high refresh rate",
-      "description": "Waze rejects any display mode above 60 Hz when it picks the mode for its surface, so a 120 Hz screen is served 60 Hz. This raises that ceiling to the requested rate (120 Hz by default). Costs battery and heat - off by default.",
+      "description": "Runs Waze above 60 Hz, up to your screen's refresh rate.",
       "default": false,
       "category": null,
       "dependencies": [],
@@ -52,7 +52,7 @@
         {
           "key": "targetRefreshRate",
           "title": "Target refresh rate (Hz)",
-          "description": "The ceiling Waze accepts when choosing a display mode. 120 suits most modern panels; 90 or 60 to back off if the phone throttles.",
+          "description": "Refresh rate ceiling. 120 suits most phones; lower it if the phone gets hot.",
           "required": false,
           "type": "kotlin.Int",
           "default": 120,
@@ -62,7 +62,7 @@
     },
     {
       "name": "Auto zoom",
-      "description": "Keeps the auto-zoom mode you pick (no / yes / speed) from being overwritten when Waze syncs its server config. The setting comes from Waze itself; this makes it stick.",
+      "description": "Keeps your chosen auto-zoom mode from being reset.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -126,7 +126,7 @@
     },
     {
       "name": "Average-speed camera alerts",
-      "description": "Turns on average-speed camera alerts and the recommended speed for the zone.",
+      "description": "Average-speed camera alerts, with the zone's recommended speed.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -176,7 +176,7 @@
     },
     {
       "name": "Brief voice guidance",
-      "description": "Enables Waze's brief voice-guidance mode, which trims the spoken directions down.",
+      "description": "Shorter spoken directions.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -226,7 +226,7 @@
     },
     {
       "name": "Disable Play Store updates",
-      "description": "Stops the Play Store from offering or applying updates to Waze: the manifest version code is locked above Play's maximum (2,100,000,000 + minutes), so the store always sees the installed copy as newer than its listing. The value advances on every re-patch, so Waze still refreshes its extracted resources, and Waze's own package-version accessor keeps reporting the pre-lock code. Ported from Morphe's universal \"Disable Play Store updates\" (GPLv3).",
+      "description": "Stops the Play Store from updating Waze.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -276,7 +276,7 @@
     },
     {
       "name": "Enable police & enforcement alerts",
-      "description": "Turns on Waze's police and enforcement alerts.",
+      "description": "Turns on police and enforcement alerts.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -326,7 +326,7 @@
     },
     {
       "name": "Extended police & hazard alert distances",
-      "description": "Alerts for police, accidents and heavy traffic fire earlier, with their pre-alert distances extended.",
+      "description": "Pick how early police and hazard alerts fire.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -372,11 +372,25 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "level",
+          "title": "Alert distance level",
+          "description": "Stock is Waze's own; the others warn earlier.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Stock",
+          "values": {
+            "Stock (default)": "Stock",
+            "Moderate": "Moderate",
+            "Maximum": "Maximum"
+          }
+        }
+      ]
     },
     {
       "name": "Lane guidance",
-      "description": "Turns on lane guidance, including the continue-straight hints.",
+      "description": "Lane guidance, including continue-straight hints.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -426,7 +440,7 @@
     },
     {
       "name": "Morphe YouTube Music as a Waze audio partner",
-      "description": "Makes Morphe YouTube Music (app.morphe.android.apps.youtube.music) usable as Waze's audio partner: the package is declared in Waze's manifest so Android's package visibility lets Waze see it, and it is added to the audio-partner table (SdkConfiguration.appConfigs) whenever Waze rebuilds that roster. Ported from Loupric/morphe-waze-music-patch (GPLv3).",
+      "description": "Lets Morphe YouTube Music work as Waze's audio partner.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -476,7 +490,7 @@
     },
     {
       "name": "Radar sound at any speed",
-      "description": "Plays the speed-camera alert sound even when you are not over the limit. Waze normally only sounds it when you are.",
+      "description": "Plays the speed-camera sound even below the limit.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -526,7 +540,7 @@
     },
     {
       "name": "Remove ads",
-      "description": "Forces Waze's advertising settings off, so the ad slots that respect those values stay empty.",
+      "description": "Removes ads from Waze.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -576,7 +590,7 @@
     },
     {
       "name": "Show all cameras & road hazards",
-      "description": "Draws speed cameras, red-light cameras and speed bumps on the map, with their on-route notifications enabled.",
+      "description": "Shows cameras and road hazards on the map, with alerts.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -625,8 +639,56 @@
       "options": []
     },
     {
+      "name": "Skip sign-in",
+      "description": "Boots straight into the map as a guest.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Speed limit sign always shown",
-      "description": "The speed-limit sign stays on the map, and its manual overrides become available.",
+      "description": "Always shows the speed limit sign.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -676,7 +738,7 @@
     },
     {
       "name": "Speed-limit decrease warnings",
-      "description": "Warns when the posted speed limit drops, with a longer pre-alert distance than stock.",
+      "description": "Warns when the speed limit drops.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -726,7 +788,7 @@
     },
     {
       "name": "Speedometer always on",
-      "description": "The speedometer stays on screen at any speed, including when stopped. Waze hides it below its own minimum speed otherwise.",
+      "description": "Visible at any speed.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -775,8 +837,159 @@
       "options": []
     },
     {
+      "name": "Theme",
+      "description": "Pick any theme for the map - day and night.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "dayTheme",
+          "title": "Day theme",
+          "description": "The day map's theme. Stock leaves it untouched.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Stock",
+          "values": {
+            "Stock": "Stock",
+            "AMOLED": "AMOLED",
+            "AMOLED Pop": "AMOLED Pop",
+            "AMOLED Carbon": "AMOLED Carbon",
+            "AMOLED Purple": "AMOLED Purple",
+            "AMOLED Emerald": "AMOLED Emerald",
+            "AMOLED Blue": "AMOLED Blue",
+            "AMOLED Amber": "AMOLED Amber",
+            "Dark Purple": "Dark Purple",
+            "Dark Emerald": "Dark Emerald",
+            "Dark Blue": "Dark Blue",
+            "Dark Amber": "Dark Amber",
+            "Paper": "Paper",
+            "Lavender": "Lavender",
+            "Mint": "Mint",
+            "Coastal": "Coastal"
+          }
+        },
+        {
+          "key": "nightTheme",
+          "title": "Night theme",
+          "description": "The night map's theme. Stock leaves it untouched.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "AMOLED",
+          "values": {
+            "Stock": "Stock",
+            "AMOLED": "AMOLED",
+            "AMOLED Pop": "AMOLED Pop",
+            "AMOLED Carbon": "AMOLED Carbon",
+            "AMOLED Purple": "AMOLED Purple",
+            "AMOLED Emerald": "AMOLED Emerald",
+            "AMOLED Blue": "AMOLED Blue",
+            "AMOLED Amber": "AMOLED Amber",
+            "Dark Purple": "Dark Purple",
+            "Dark Emerald": "Dark Emerald",
+            "Dark Blue": "Dark Blue",
+            "Dark Amber": "Dark Amber",
+            "Paper": "Paper",
+            "Lavender": "Lavender",
+            "Mint": "Mint",
+            "Coastal": "Coastal"
+          }
+        }
+      ]
+    },
+    {
+      "name": "UI AMOLED dark mode",
+      "description": "Dark-mode backgrounds go pure black.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock driver moods",
-      "description": "Waze's mood picker is gated three ways: an eligibility check that accepts only one mood name (and reads the beta-moods flag), a baby-account gate that hides moods, and a filtered native catalogue call. This opens all three, so moods already in the local catalogue - including special and hidden entries - become selectable. Artwork Waze has never downloaded is not invented.",
+      "description": "Unlocks all moods already on the device.",
       "default": true,
       "category": null,
       "dependencies": [

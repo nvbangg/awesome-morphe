@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.31.2",
+  "version": "1.32.0",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
@@ -1086,7 +1086,7 @@
     {
       "name": "Legacy App Compatibility Patch ( Experimental, Enhanced )",
       "category": "Legacy App Compatibility",
-      "description": "Improves older app and game compatibility on modern Android with manifest, storage, screen,\nnative runtime, network, shared-library, device-identity, and OpenIAB receiver controls.\nSpoof Target SDK may help installation or launch, but cannot repair incompatible code.\n\nUse Control Embedded Auth / Stores Patch for Google Play license or Google Play Services checks;\nthese options stay separate to prevent overlapping injections.\n\nThis patch cannot restore shut-down servers, missing CPU architecture support, server licensing,\nPlay Integrity, or unsupported native code. Conservative compatibility features are enabled by\ndefault; more invasive native, network, storage, library, and identity options remain disabled.\n\nExperimental: Its functionalities are not guaranteed to work in all apps.\n\nCredits: Nai64Patches from Nai64 for the original legacy compatibility functionality. Credits to\nLSPosed for the Hidden API bypass approach and AndroidHiddenApiBypass implementation (Apache-2.0).\nUniPatches adds the merged settings, validation, manifest safeguards, compatibility organization,\nand the Suppress GPlay Login UI patch option.",
+      "description": "Improves older app and game compatibility on modern Android with manifest, storage, screen,\nnative runtime, network, shared-library, device-identity, and OpenIAB receiver controls.\nSpoof Target SDK may help installation or launch, but cannot repair incompatible code.\n\nUse Control Embedded Auth / Stores Patch for Google Play license or Google Play Services checks;\nthese options stay separate to prevent overlapping injections.\n\nThis patch cannot restore shut-down servers, missing CPU architecture support, server licensing,\nPlay Integrity, or unsupported native code. Custom starts with all boolean options disabled;\nOpenIAB defaults to automatic. Android-era presets add ordinary compatibility fixes.\n\nExperimental: Its functionalities are not guaranteed to work in all apps.\n\nCredits: Nai64Patches from Nai64 for the original legacy compatibility functionality. Credits to\nLSPosed for the Hidden API bypass approach and AndroidHiddenApiBypass implementation (Apache-2.0).\nUniPatches adds the merged settings, validation, manifest safeguards, compatibility organization,\nand the Suppress GPlay Login UI patch option.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -1094,7 +1094,7 @@
         {
           "key": "legacyCompatibilityPreset",
           "title": "Legacy App Compatibility > Preset",
-          "description": "Custom (default) uses your individual choices and conservative defaults. Android 4.x (API 14–20), Android 5–6 (21–23), Android 7–9 (24–28), Android 10 (29), Android 11 (30), Android 12/12L (31–32), Android 13 (33), and Android 14+ (34+) describe the APK's original target era, not your current device. Era profiles keep the original target SDK, repair missing exported flags safely, repair exact receiver calls, and add Apache HTTP/foreground-service/Bluetooth compatibility only for eras before those APIs changed. Unity enables native-library extraction only when exact Unity classes are detected; OpenIAB enables only recognized OpenIAB receiver repair and a scoped Play Store query; Unity + OpenIAB combines both independently detected repairs. Every non-Custom preset overrides all ordinary options and disables trust-all certificates, IMEI spoofing, QUERY_ALL_PACKAGES, export-all, cleartext and hidden-API bypass. Those six choices are dormant outside Custom; ordinary Custom choices need not restore. Presets never embed OBBs, bypass downloaders, lower target SDK, force all receivers exported, or enable uncertain engine mutations.",
+          "description": "Custom (default) uses your individual settings; boolean options default off and OpenIAB defaults to automatic. Android 4.x through Android 14+ describe the APK's original era, not your device. Era presets add receiver and missing-export repairs plus relevant Apache HTTP, foreground-service and Bluetooth declarations. User-enabled choices remain enabled. Presets never change your target SDK controls, OpenIAB mode, OBB options, paths, numbers, text, or explicit high-risk opt-ins. These settings remain available with every preset.",
           "required": false,
           "type": "kotlin.String",
           "default": "custom",
@@ -1107,10 +1107,7 @@
             "Android 11 origin": "android_11",
             "Android 12/12L origin": "android_12",
             "Android 13 origin": "android_13",
-            "Android 14+ origin": "android_14_plus",
-            "Unity": "unity",
-            "OpenIAB": "openiab",
-            "Unity + OpenIAB": "unity_openiab"
+            "Android 14+ origin": "android_14_plus"
           }
         },
         {
@@ -1134,25 +1131,11 @@
         {
           "key": "legacyCompatibilityTargetSdk",
           "title": "Legacy App Compatibility > Installation and manifest > Target SDK version",
-          "description": "Target SDK used only by the explicit Custom profile. Android accepts values 23–40 here; other values are rejected. Choose 24 when an Android 17 install requires at least API 24. Lower values can restore legacy behavior but may weaken security and privacy protections. Default: 24.",
+          "description": "Changes which Android version this app declares it was designed for. This may help install older apps, but does not upgrade their code or guarantee compatibility. Higher values can activate newer Android restrictions. Examples: 24 = Android 7.0; 27 = Android 8.1; 29 = Android 10; 34 = Android 14. Use the lowest value required by your device’s installation error. Ignored when Spoof Target SDK is disabled. Accepted range: 23–40; default: 24.",
           "required": false,
           "type": "kotlin.Int",
           "default": 24,
           "values": null
-        },
-        {
-          "key": "legacyCompatibilityTargetSdkProfile",
-          "title": "Legacy App Compatibility > Installation and manifest > Target SDK compatibility profile",
-          "description": "Custom sets the number above (default 24); Preserve original keeps the APK target unchanged and does not apply that number. Fixed 27/29 profiles are available for troubleshooting. Changing target SDK alters Android compatibility rules and can weaken platform protections; choose the lowest explicit target only when required.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "custom",
-          "values": {
-            "Custom target SDK": "custom",
-            "Preserve original target (automatic)": "automatic",
-            "Target SDK 27": "27",
-            "Target SDK 29": "29"
-          }
         },
         {
           "key": "legacyCompatibilityReviver",
@@ -1169,7 +1152,7 @@
           "description": "Use when the app crashes or fails to start because it uses the removed Apache HttpClient library. Adds that library as optional; it will not help if the app needs other missing libraries. Requires Legacy App Reviver.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1178,7 +1161,7 @@
           "description": "Use when an older app starts a foreground service and fails because its manifest lacks this permission. This only declares permission; Android may require additional service permissions or user-visible behavior. Requires Legacy App Reviver.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1196,7 +1179,7 @@
           "description": "Use when the app needs Bluetooth discovery or connections on newer Android. The manifest declarations do not grant runtime access; Android may still show permission prompts. Requires Legacy App Reviver.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1254,7 +1237,7 @@
           "description": "Try this if receiver registration crashes on Android 13+. Each call is classified from its statically resolved IntentFilter actions: app-only calls are private, known system/store actions stay exported, and ambiguous calls are skipped with a warning. The fix can miss dynamic filters or expose exported receivers to other apps; OpenIAB is handled separately.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1377,7 +1360,7 @@
         {
           "key": "legacyCompatibilityAllScreens",
           "title": "Legacy App Compatibility > Storage and display > Support All Screens",
-          "description": "Keep enabled so Android can install the app on phones and tablets whose screen size or density is not listed in its original manifest. This changes compatibility declarations, not the app's layout; some screens may still display poorly.",
+          "description": "Enable so Android can install the app on phones and tablets whose screen size or density is not listed in its original manifest. This changes compatibility declarations, not the app's layout; some screens may still display poorly.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,

@@ -1,5 +1,5 @@
 {
-  "version": "v0.12.0",
+  "version": "v0.13.0",
   "appNames": {
     "com.facebook.katana": "Facebook"
   },
@@ -208,7 +208,7 @@
     },
     {
       "name": "Block background ad prefetch",
-      "description": "Stops Facebook downloading ads and ad data in the background before you ever see them, which saves mobile data and battery. Works as soon as you patch it in, with no switch.",
+      "description": "Stops the jobs Facebook runs in the background to download ads, and the model it ranks them with, before you ever see them. Works as soon as you patch it in, with no switch.",
       "category": "Ads",
       "use": true,
       "dependencies": [
@@ -358,7 +358,7 @@
     },
     {
       "name": "Clean up Facebook's chat list",
-      "description": "Tidies Chats inside Facebook. One switch empties the row of notes and who's active above your chats, and another removes promotional banners like the one asking you to turn on notifications. Your chats stay. Starts off. Turn on the parts you want in Hushfacebook settings > Chats.",
+      "description": "Tidies Chats inside Facebook. One switch empties the row of notes and who's active above your chats, and another removes promotional banners like the one asking you to turn on notifications. A third takes the Meta AI button off the search row and the search screen. Your chats stay. Starts off. Turn on the parts you want in Hushfacebook settings > Chats.",
       "category": "Chats",
       "use": true,
       "dependencies": [
@@ -433,7 +433,7 @@
     },
     {
       "name": "Comment sheet options",
-      "description": "Small fixes for comments. Stop a long press on Like from opening reactions, hide the GIF and sticker buttons, show every reply without tapping View replies, hide Related groups under group posts, and hide comments with shop links or your words. Starts off. Turn on the parts you want in Hushfacebook settings > Comments.",
+      "description": "Small fixes for comments. Stop a long press on Like from opening reactions, hide the GIF and sticker buttons, show every reply without tapping View replies, load a whole reply thread as you scroll, hide Related groups under group posts, and hide comments with shop links or your words. Starts off. Turn on the parts you want in Hushfacebook settings > Comments.",
       "category": "Comments",
       "use": true,
       "dependencies": [
@@ -1230,6 +1230,44 @@
       "category": "Ads",
       "use": true,
       "dependencies": [
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "582.0.0.50.54"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "582.0.0.50.54",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475417104,
+                "ARMEABI_V7A": 475417036
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide carrier data banners",
+      "description": "On carriers with Facebook Flex, hides the Data mode bar with its buy mobile data button, or the purple Free mode bar, so the feed gets that space back. Both switches start off. Turn them on in Hushfacebook settings > Appearance.",
+      "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
         "Hushfacebook settings"
       ],
       "compatiblePackages": {
@@ -2373,7 +2411,7 @@
     },
     {
       "name": "Material You theme",
-      "description": "Gives Facebook's dark mode the colors of your wallpaper on Android 12 and newer, so it matches your phone. Turn on dark mode in Facebook first. It isn't selected by default because undoing it means patching again. Turn on Expert mode in Manager to pick it.",
+      "description": "Gives Facebook the colors of your wallpaper on Android 12 and newer, so it matches your phone. Dark mode takes them everywhere, and light mode on its grays, blues and selected tab. It isn't selected by default because undoing it means patching again. Turn on Expert mode in Manager to pick it.",
       "category": "Theme",
       "use": false,
       "dependencies": [
@@ -2751,6 +2789,44 @@
       "name": "Show View profile on Marketplace sellers",
       "description": "Adds View profile to every seller's Marketplace page. It opens their regular Facebook profile, so you can check who you're buying from. Facebook shows that button to only some accounts. On by default. Turn it off in Hushfacebook settings > Marketplace.",
       "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "582.0.0.50.54"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "582.0.0.50.54",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475417104,
+                "ARMEABI_V7A": 475417036
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip silent parts",
+      "description": "Plays videos, reels and stories past the silent stretches in their sound, so talks and how-tos get to the point sooner. Starts off. Turn it on in Hushfacebook settings > Playback.",
+      "category": "Playback",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -3311,7 +3387,7 @@
     },
     {
       "name": "View stories anonymously",
-      "description": "Keeps you off the viewer list of stories you watch, because Facebook isn't told which ones you've seen. Replying or reacting still shows you, and watched stories still look new. Starts off. Turn it on in Hushfacebook settings > Stories.",
+      "description": "Keeps you off the viewer list of stories you watch, because Facebook isn't told which ones you've seen. Replying or reacting still shows you. Stories you watch to the end show as watched on this phone only, until that person posts a new one. Starts off. Turn it on in Hushfacebook settings > Stories.",
       "category": "Privacy",
       "use": true,
       "dependencies": [

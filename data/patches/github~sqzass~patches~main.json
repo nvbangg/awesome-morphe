@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "patches": [
     {
       "name": "Allow screenshots and screen recording",
@@ -12,7 +12,7 @@
         {
           "key": "enableRecentPreviews",
           "title": "Enable Recent App Previews",
-          "description": "Removes android:excludeFromRecents to allow viewing the app thumbnail in the Android app switcher.",
+          "description": "Allow viewing the app thumbnail in the app switcher.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -21,7 +21,7 @@
         {
           "key": "removeCaptureRestrictions",
           "title": "Remove Capture Restrictions",
-          "description": "Clears screenshot and screen recording blocking flags from activities.",
+          "description": "Remove screenshot and screen recording blocking flags from activities.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -30,7 +30,7 @@
         {
           "key": "removeFlagSecure",
           "title": "Remove FLAG_SECURE",
-          "description": "Zeroes FLAG_SECURE in window flag operations so secure applications cannot block capture.",
+          "description": "Remove FLAG_SECURE so applications cannot block screen captures (differs from remove capture restrictions).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -39,7 +39,7 @@
         {
           "key": "bypassScreenshotDetection",
           "title": "Bypass Screenshot Detection",
-          "description": "Nops Android screenshot detection callbacks so the app is not notified when a screenshot is taken.",
+          "description": "The app is not notified when a screenshot is taken.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -49,7 +49,7 @@
     },
     {
       "name": "Bypass root and debugger checks",
-      "description": "Reports the debugger as disconnected and hides root indicator files from existence checks, defeating common detection heuristics.",
+      "description": "Reports the debugger as disconnected, hides root indicator files from existence checks. Works only on common detection methods.",
       "default": false,
       "category": "Debugging",
       "compatiblePackages": null,
@@ -76,7 +76,7 @@
     },
     {
       "name": "Disable analytics collection",
-      "description": "Disables Firebase Analytics, Crashlytics, and Performance Monitoring data collection by forcing their manifest meta-data flags to false.",
+      "description": "Disables Firebase Analytics, Crashlytics, and Performance Monitoring data collection.",
       "default": false,
       "category": "Privacy",
       "compatiblePackages": null,
@@ -84,7 +84,7 @@
         {
           "key": "disableFirebaseAnalytics",
           "title": "Disable Firebase Analytics",
-          "description": "Force firebase_analytics_collection_enabled to false in the manifest.",
+          "description": "Force firebase_analytics_collection_enabled to false.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -93,7 +93,7 @@
         {
           "key": "disableCrashlytics",
           "title": "Disable Crashlytics",
-          "description": "Force firebase_crashlytics_collection_enabled to false in the manifest.",
+          "description": "Force firebase_crashlytics_collection_enabled to false.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -102,7 +102,7 @@
         {
           "key": "disablePerformanceMonitoring",
           "title": "Disable Performance Monitoring",
-          "description": "Force firebase_performance_collection_enabled to false in the manifest.",
+          "description": "Force firebase_performance_collection_enabled to false.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -130,7 +130,7 @@
     },
     {
       "name": "Enable app backups",
-      "description": "Allows the app to back up its data by enabling android:allowBackup and removing restrictive backup rules in the application manifest.",
+      "description": "Allows the app to back up its data.",
       "default": false,
       "category": "General",
       "compatiblePackages": null,
@@ -147,7 +147,7 @@
         {
           "key": "removeBackupRules",
           "title": "Remove Backup Rules",
-          "description": "Removes android:fullBackupContent and android:dataExtractionRules so the system default rules (back up everything) apply.",
+          "description": "Removes android:fullBackupContent and android:dataExtractionRules.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -157,7 +157,7 @@
     },
     {
       "name": "Enable debugging and inspection",
-      "description": "Enables application debugging flags, trusts user CA certificates, permits cleartext traffic for proxy inspection, and strips test-only restrictions in the application manifest.",
+      "description": "Enables debugging flags, trusts user CA certificates, permits cleartext traffic for proxy inspection, and strips test-only restrictions in the application manifest.",
       "default": false,
       "category": "Debugging",
       "compatiblePackages": null,
@@ -165,7 +165,7 @@
         {
           "key": "enableDebugging",
           "title": "Enable Debugging",
-          "description": "Sets android:debuggable to true on the application tag to allow attaching debuggers and profiling tools.",
+          "description": "Sets android:debuggable to true on the application tag.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -174,7 +174,7 @@
         {
           "key": "trustUserCerts",
           "title": "Trust User Certificates",
-          "description": "Accept TLS certificates signed by user-installed certificate authorities (e.g. mitmproxy, HTTP Toolkit) in the network security config.",
+          "description": "Accept TLS certificates signed by user-installed certificate authorities.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -183,7 +183,7 @@
         {
           "key": "allowCleartextTraffic",
           "title": "Allow Cleartext Traffic",
-          "description": "Sets android:usesCleartextTraffic to true and permits cleartext traffic in the network security config to inspect HTTP communication.",
+          "description": "Sets android:usesCleartextTraffic to true and permits cleartext traffic in the network security config.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -192,7 +192,7 @@
         {
           "key": "removeTestOnly",
           "title": "Remove Test-Only Flag",
-          "description": "Removes android:testOnly if present so the application can be installed normally on production devices.",
+          "description": "Removes android:testOnly if present.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -202,7 +202,7 @@
     },
     {
       "name": "Open links in browser",
-      "description": "Stops http and https links from opening inside the app by removing app link verification and link intent filters.",
+      "description": "Stops http and https links from opening inside the app.",
       "default": false,
       "category": "Interface",
       "compatiblePackages": null,
@@ -210,7 +210,7 @@
         {
           "key": "removeAutoVerify",
           "title": "Remove App Link Verification",
-          "description": "Strip android:autoVerify from intent filters so the system stops opening verified links in the app.",
+          "description": "Remove android:autoVerify from intent filters.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -219,7 +219,7 @@
         {
           "key": "removeLinkFilters",
           "title": "Remove Link Intent Filters",
-          "description": "Remove intent filters that handle http/https links entirely, so links never resolve to this app.",
+          "description": "Remove intent filters that handle http/https links.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -229,7 +229,7 @@
     },
     {
       "name": "Strip sensitive permissions",
-      "description": "Strips sensitive Android permissions and package visibility declarations from the application manifest to enhance privacy.",
+      "description": "Removes sensitive Android permissions from the application.",
       "default": false,
       "category": "Privacy",
       "compatiblePackages": null,
@@ -237,7 +237,7 @@
         {
           "key": "stripCamera",
           "title": "Strip Camera",
-          "description": "Remove camera access permissions (android.permission.CAMERA).",
+          "description": "Remove camera access permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -246,7 +246,7 @@
         {
           "key": "stripMicrophone",
           "title": "Strip Microphone",
-          "description": "Remove microphone and audio recording permissions (android.permission.RECORD_AUDIO, etc.).",
+          "description": "Remove microphone and audio recording permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -255,7 +255,7 @@
         {
           "key": "stripLocation",
           "title": "Strip Location",
-          "description": "Remove location tracking permissions (ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, etc.).",
+          "description": "Remove location tracking permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -273,7 +273,7 @@
         {
           "key": "stripContacts",
           "title": "Strip Contacts",
-          "description": "Remove contacts access permissions (READ_CONTACTS, WRITE_CONTACTS, GET_ACCOUNTS).",
+          "description": "Remove contacts access permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -282,7 +282,7 @@
         {
           "key": "stripPhoneSms",
           "title": "Strip Phone & SMS",
-          "description": "Remove phone, call log, and SMS permissions (READ_PHONE_STATE, READ_CALL_LOG, READ_SMS, SEND_SMS, etc.).",
+          "description": "Remove phone, call log, and SMS permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -291,7 +291,7 @@
         {
           "key": "stripCalendar",
           "title": "Strip Calendar",
-          "description": "Remove calendar access permissions (READ_CALENDAR, WRITE_CALENDAR).",
+          "description": "Remove calendar access permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -300,7 +300,7 @@
         {
           "key": "stripStorage",
           "title": "Strip Storage & Media",
-          "description": "Remove media and storage permissions (READ_MEDIA_IMAGES, READ_EXTERNAL_STORAGE, etc.).",
+          "description": "Remove media and storage permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -309,7 +309,7 @@
         {
           "key": "stripWifi",
           "title": "Strip Nearby Wi-Fi",
-          "description": "Remove nearby Wi-Fi scanning permissions (NEARBY_WIFI_DEVICES, ACCESS_WIFI_STATE, CHANGE_WIFI_STATE). May affect Wi-Fi status display.",
+          "description": "Remove nearby Wi-Fi scanning permissions. May affect Wi-Fi status display.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -318,7 +318,7 @@
         {
           "key": "stripOverlay",
           "title": "Strip Overlay Access",
-          "description": "Remove permissions that let the app draw over other apps or change system settings (SYSTEM_ALERT_WINDOW, WRITE_SETTINGS).",
+          "description": "Remove permissions that let the app draw over other apps or change system settings.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -327,7 +327,7 @@
         {
           "key": "stripSpecialAccess",
           "title": "Strip Special Access",
-          "description": "Remove package installer, usage access, and all-files access permissions (REQUEST_INSTALL_PACKAGES, PACKAGE_USAGE_STATS, MANAGE_EXTERNAL_STORAGE).",
+          "description": "Remove package installer, usage access, and all-files access permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -355,14 +355,14 @@
     },
     {
       "name": "Strip trackers and telemetry",
-      "description": "Strips known tracking, analytics, and advertising SDK components from the manifest and nops their runtime calls.",
+      "description": "Strips tracking, analytics, and advertising SDK components from the manifest, and their runtime calls.",
       "default": false,
       "category": "Privacy",
       "compatiblePackages": null,
       "options": [
         {
           "key": "stripGoogleAnalytics",
-          "title": "Strip Google & Firebase Analytics",
+          "title": "Google & Firebase Analytics",
           "description": "Remove Google Analytics, Firebase Analytics, and AppMeasurement components.",
           "required": false,
           "type": "kotlin.Boolean",
@@ -371,7 +371,7 @@
         },
         {
           "key": "stripFacebookAnalytics",
-          "title": "Strip Facebook Analytics",
+          "title": "Facebook SDK",
           "description": "Remove Facebook App Events and analytics provider components.",
           "required": false,
           "type": "kotlin.Boolean",
@@ -380,7 +380,7 @@
         },
         {
           "key": "stripAttributionTrackers",
-          "title": "Strip Attribution Trackers",
+          "title": "Attribution SDKs",
           "description": "Remove third-party attribution and tracking SDKs (AppsFlyer, Adjust, Branch, Kochava, Mixpanel, Flurry).",
           "required": false,
           "type": "kotlin.Boolean",
@@ -389,7 +389,7 @@
         },
         {
           "key": "stripCrashReporting",
-          "title": "Strip Crash Reporting Telemetry",
+          "title": "Crash Reporting SDKs",
           "description": "Remove Crashlytics and Microsoft App Center telemetry services.",
           "required": false,
           "type": "kotlin.Boolean",
@@ -398,7 +398,7 @@
         },
         {
           "key": "stripAdvertisingId",
-          "title": "Strip Advertising ID Permissions",
+          "title": "Advertising ID & AdServices",
           "description": "Remove AD_ID and AdServices permissions to prevent advertising tracking.",
           "required": false,
           "type": "kotlin.Boolean",
@@ -407,7 +407,7 @@
         },
         {
           "key": "disableTrackerCalls",
-          "title": "Disable Tracker SDK Calls",
+          "title": "Tracker SDK Calls",
           "description": "Replace void-returning calls into the stripped tracking SDKs with no-ops so they never run.",
           "required": false,
           "type": "kotlin.Boolean",
@@ -418,7 +418,7 @@
     },
     {
       "name": "Unlock screen orientation",
-      "description": "Removes android:screenOrientation locks from activities so the screen follows the device rotation setting.",
+      "description": "Forces orientation unlock on apps that force an orientation.",
       "default": false,
       "category": "Interface",
       "compatiblePackages": null,
@@ -426,7 +426,7 @@
         {
           "key": "removeOrientationLocks",
           "title": "Remove Orientation Locks",
-          "description": "Strip android:screenOrientation from every activity so orientation is no longer locked.",
+          "description": "Removes android:screenOrientation attributes from activities.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
