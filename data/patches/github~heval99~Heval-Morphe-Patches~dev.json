@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.15.0-dev.10",
+  "version": "1.15.0-dev.11",
   "patches": [
     {
       "name": "Block marketing notifications",
@@ -962,6 +962,37 @@
     },
     {
       "name": "Disable ads",
+      "description": "Experimental, not yet tested on a device. Removes banner, native, sticky, interstitial and video preroll ads and the Taboola sponsored links under articles. Pro content stays server-side and is not unlocked.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.divum.MoneyControl",
+          "name": "Moneycontrol",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0066A1",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.6.2",
+              "versionCodes": {
+                "ARM64_V8A": 637,
+                "ARMEABI_V7A": 637,
+                "X86_64": 637,
+                "X86": 637
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
       "description": "Disables Moon+ Reader's banner, interstitial, exit and native ads by forcing the central ad gate to always report ads as disabled.",
       "default": true,
       "dependencies": [],
@@ -1315,7 +1346,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Hides banner and native ads and the ad slots in the call log and inbox, and turns off interstitial and app-open ads, so actions such as Click to WhatsApp run at once.",
+      "description": "Hides banner and native ads and the ad slots in the call log and inbox, and turns off interstitial and app-open ads, so actions such as Click to WhatsApp run at once. Also turns off the remaining ad checks (including rewarded ads), the ad campaign and ad config syncs, and the \"Explore Truecaller Premium\" row in the contacts list.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3411,6 +3442,37 @@
       "options": []
     },
     {
+      "name": "Fix T9 contact search",
+      "description": "Builds Truecaller's T9 dialer search index for new contacts each time the app opens, instead of waiting for the 12-hour background job. Helps when T9 finds no saved contacts after a fresh install.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.40.5",
+              "versionCodes": {
+                "ARM64_V8A": 2640005,
+                "ARMEABI_V7A": 2640005,
+                "X86_64": 2640005,
+                "X86": 2640005
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Fix push notifications",
       "description": "Makes push notifications work on a re-signed build while LINE is closed, by reporting LINE's original signing certificate to Firebase.",
       "default": true,
@@ -3632,40 +3694,6 @@
       "options": []
     },
     {
-      "name": "Heval Controls",
-      "description": "Adds the Heval Controls screen, where supported features of this patch bundle can be turned on or off at runtime, with a global pause and a crash safe mode.",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.linkedin.android",
-          "name": "LinkedIn",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#0A66C2",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.1.1261",
-              "versionCodes": {
-                "ARM64_V8A": 216900,
-                "ARMEABI_V7A": 216900,
-                "X86_64": 216900,
-                "X86": 216900
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Hide AI friends button",
       "description": "Removes the AI friends button from the Chats tab header. The Album button shows in its place.",
       "default": false,
@@ -3822,7 +3850,7 @@
     },
     {
       "name": "Hide Premium tab",
-      "description": "Removes the Premium tab from the bottom bar.",
+      "description": "Removes the Premium tab from the bottom bar and the Premium entry from the Settings screen.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -3841,39 +3869,6 @@
                 "ARMEABI_V7A": 2640005,
                 "X86_64": 2640005,
                 "X86": 2640005
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide Puzzle Games",
-      "description": "Removes the Puzzle Games entry from the panel that opens from your profile photo.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.linkedin.android",
-          "name": "LinkedIn",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#0A66C2",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.1.1261",
-              "versionCodes": {
-                "ARM64_V8A": 216900,
-                "ARMEABI_V7A": 216900,
-                "X86_64": 216900,
-                "X86": 216900
               },
               "isExperimental": false,
               "minSdk": null,
@@ -3998,6 +3993,37 @@
                 "ARMEABI_V7A": 261510192,
                 "X86_64": 261510192,
                 "X86": 261510192
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Wear OS settings",
+      "description": "Removes the \"Truecaller for Wear OS\" entry from the Settings screen.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.40.5",
+              "versionCodes": {
+                "ARM64_V8A": 2640005,
+                "ARMEABI_V7A": 2640005,
+                "X86_64": 2640005,
+                "X86": 2640005
               },
               "isExperimental": false,
               "minSdk": null,
