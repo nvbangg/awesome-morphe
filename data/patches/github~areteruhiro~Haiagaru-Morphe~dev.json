@@ -1,5 +1,5 @@
 {
-    "version": "1.7.91",
+    "version": "1.8.0",
     "patches": [
         {
             "name": "Migrate ChMate data with Shizuku",
@@ -138,7 +138,7 @@
                 {
                     "key": "appIcon",
                     "title": "App icon",
-                    "description": "Path to a PNG or WebP launcher icon. Leave empty to keep the original icon.",
+                    "description": "PNG or WebP launcher icon file path (not a folder). Leave empty to keep the original icon.",
                     "required": false,
                     "type": "kotlin.String",
                     "default": null,
@@ -251,7 +251,7 @@
                 {
                     "key": "edgeArchiveToolbarIconPath",
                     "title": "エッジ過去ログのツールバー画像（任意）",
-                    "description": "パッチ実行端末上のPNG/WebP画像の絶対パス。空欄なら内蔵アイコンを使用します。",
+                    "description": "PNG/WebP画像ファイルの絶対パス（file path）。フォルダではなくファイルを選択してください。空欄なら内蔵アイコンを使用します。",
                     "required": false,
                     "type": "kotlin.String",
                     "default": "",
@@ -272,6 +272,64 @@
             "name": "Save ChMate crash logs",
             "description": "Save uncaught ChMate crash logs to Download/Haiagaru.",
             "default": true,
+            "dependencies": [
+                "BytecodePatch"
+            ],
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.co.airfront.android.a2chMate",
+                    "name": "ChMate",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#607D8B",
+                    "signatures": [
+                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
+                    ],
+                    "targets": [
+                        {
+                            "version": "0.8.10.191 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 21,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.226 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.241",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.242 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.243 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 24,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "画像取得専用VPN（実験用・検証中）",
+            "description": "ChMate単体のVPN Gate画像取得機能を追加します。初期状態は未選択。導入後もHaiagaru設定で有効化が必要です。対象の画像のみVPN経由で取得します。対象画像の表示・全経路の通信漏れ検証は未完了です。VPN運営者に接続元IPが見えることや、固有URLによる識別は防げません。",
+            "default": false,
             "dependencies": [
                 "BytecodePatch"
             ],
