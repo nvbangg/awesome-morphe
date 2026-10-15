@@ -1,7 +1,88 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "patches": [
+    {
+      "name": "AMOLED dark theme force",
+      "description": "Forces AMOLED theme preference keys to their enabled state and can recolor dark theme values to pure black.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forceAmoledPrefs",
+          "title": "Force AMOLED Preference",
+          "description": "Force known AMOLED/pure-black theme preference keys to report enabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "extraAmoledKeys",
+          "title": "Extra Preference Keys",
+          "description": "Comma-separated additional preference keys to force enabled.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "recolorToBlack",
+          "title": "Recolor To Pure Black",
+          "description": "Replace matching color values in res/values XML files with pure black.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "recolorFrom",
+          "title": "Source Color",
+          "description": "Color value to replace, as RRGGBB or AARRGGBB with a leading hash.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#212121",
+          "values": null
+        },
+        {
+          "key": "recolorTo",
+          "title": "Target Color",
+          "description": "Replacement color value, as RRGGBB or AARRGGBB with a leading hash.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Ads-free rewards",
+      "description": "Experimental: reports rewarded ads as loaded and suppresses ad load failure callbacks so reward flows proceed. Granting rewards with no ad shown needs an extension and is not covered.",
+      "default": false,
+      "category": "Monetization",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forceAdReady",
+          "title": "Force Ad Ready",
+          "description": "Force rewarded ad readiness checks to report loaded.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "suppressLoadFailures",
+          "title": "Suppress Load Failures",
+          "description": "Nop rewarded ad load failure callbacks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
     {
       "name": "Allow screenshots and screen recording",
       "description": "Removes preview hiding, capture restrictions, FLAG_SECURE flags, and detection callbacks.",
@@ -48,6 +129,132 @@
       ]
     },
     {
+      "name": "Bypass PairIP protection",
+      "description": "Defeats Google Play's PairIP guard: restores the original application class so the protection gate never starts, deletes libpairipcore.so, and strips PairIP components.",
+      "default": false,
+      "category": "Integrity",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "restoreApplicationClass",
+          "title": "Restore Application Class",
+          "description": "Point android:application back at the class PairIP wrapped, based on the stub's superclass.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "deleteNativeCore",
+          "title": "Delete Native Core",
+          "description": "Remove libpairipcore.so from every ABI so the guard cannot run even if something loads it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripPairIpComponents",
+          "title": "Strip PairIP Components",
+          "description": "Remove com.pairip activities, services, receivers, providers, and instrumentations from the manifest.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Bypass Play Integrity",
+      "description": "Experimental: forces client-side Play Integrity verdict checks to report success. Integrity tokens validated on a server cannot be forged offline, so server-gated features stay gated.",
+      "default": false,
+      "category": "Integrity",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forceVerdictReads",
+          "title": "Force Verdict Reads",
+          "description": "Force Play Integrity verdict getter results to report success.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceVerdictMethods",
+          "title": "Force Verdict Methods",
+          "description": "Make Play Integrity verdict methods return true. Assumes such checks return true when the device passes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Bypass Play licensing",
+      "description": "Makes licensing checks report success: forces licensing policy responses to licensed and suppresses denial callbacks. Server-side license verification cannot be bypassed this way.",
+      "default": false,
+      "category": "Integrity",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forceLicensedResponse",
+          "title": "Force Licensed Response",
+          "description": "Force licensing policy responses to report licensed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "suppressDenialCallbacks",
+          "title": "Suppress Denial Callbacks",
+          "description": "Nop licensing denial and error callbacks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Bypass anti-tamper checks",
+      "description": "Defeats common anti-tamper checks: reports the Play Store as installer, forces signature comparisons to report a match, and can make signature digest methods report an intact app.",
+      "default": false,
+      "category": "Integrity",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofInstallerPackage",
+          "title": "Spoof Installer Package",
+          "description": "Report com.android.vending as the installer in getInstallerPackageName and PackageInfo reads.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceSignatureChecks",
+          "title": "Force Signature Checks",
+          "description": "Force PackageManager.checkSignatures and checkUidSignatures to report SIGNATURE_MATCH.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassDigestChecks",
+          "title": "Force Digest Checks Valid",
+          "description": "Make boolean signature digest methods return true. Assumes such checks return true when the app is intact.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Bypass root and debugger checks",
       "description": "Reports the debugger as disconnected, hides root indicator files from existence checks. Works only on common detection methods.",
       "default": false,
@@ -67,6 +274,195 @@
           "key": "bypassRootFileChecks",
           "title": "Bypass Root File Checks",
           "description": "Make File.exists and related probes report false inside methods that reference su, magisk, or busybox paths.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Renames the app package: rewrites the manifest package, components, and authorities plus matching dex strings, and can report the original package to the app. Permissions are stripped, never renamed. Binary assets referencing the package are left untouched.",
+      "default": false,
+      "category": "Heavy",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "newPackageName",
+          "title": "New Package Name",
+          "description": "Replacement package name written into the manifest and dex strings.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.example.renamed",
+          "values": null
+        },
+        {
+          "key": "rewriteManifest",
+          "title": "Rewrite Manifest",
+          "description": "Rename the manifest package, component class names, and authorities.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripPermissions",
+          "title": "Strip Permissions",
+          "description": "Remove uses-permission entries instead of renaming them.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name (dex)",
+      "description": "Rewrites matching package string constants in dex code and can report the original package to the app.",
+      "default": false,
+      "category": "Heavy",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "originalPackageName",
+          "title": "Original Package Name",
+          "description": "Package name to replace, as read from the manifest before renaming.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "dexNewPackageName",
+          "title": "New Package Name",
+          "description": "Replacement package name written into dex strings.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.example.renamed",
+          "values": null
+        },
+        {
+          "key": "rewriteDexStrings",
+          "title": "Rewrite Dex Strings",
+          "description": "Rewrite matching package string constants in dex code.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hookGetPackageName",
+          "title": "Hook getPackageName",
+          "description": "Force Context.getPackageName to report the original package.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Cross-signal location consistency",
+      "description": "Returns no Wi-Fi scan or cell tower data so location cross-checks against Wi-Fi fingerprints and cell IDs cannot contradict the spoofed position.",
+      "default": false,
+      "category": "Spoofing",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "suppressWifiScans",
+          "title": "Suppress Wi-Fi Scans",
+          "description": "Force WifiManager.getScanResults to return null.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "suppressCellInfo",
+          "title": "Suppress Cell Info",
+          "description": "Force TelephonyManager.getAllCellInfo and getCellLocation to return null.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom app name",
+      "description": "Replaces the application label shown in the launcher with a custom name.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "appName",
+          "title": "App Name",
+          "description": "Label shown in the launcher. Leave empty to keep the app's own label.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "overrideActivityLabels",
+          "title": "Override Activity Labels",
+          "description": "Also replace android:label on activities and activity aliases that declare their own.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "DexGuard string decrypt hook",
+      "description": "Experimental, apply last: detects likely string decryptor methods and forces their results to empty so obfuscated string flows stay non-null. Server-driven or native decryptors are not covered.",
+      "default": false,
+      "category": "Heavy",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "logOnly",
+          "title": "Log Only",
+          "description": "Log decryptor candidates without rewriting their results.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceEmptyStrings",
+          "title": "Force Empty Strings",
+          "description": "Force decryptor call results to empty strings. Assumes callers tolerate empty values.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Disable Play Protect hooks",
+      "description": "Strips APK-side verify hooks: removes package verification intent filters and verifier roles. Play Protect verdicts computed inside Google Play services cannot be changed from the app.",
+      "default": false,
+      "category": "Integrity",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripVerificationFilters",
+          "title": "Strip Verification Filters",
+          "description": "Remove PACKAGE_NEEDS_VERIFICATION intent filters from receivers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripVerifierRoles",
+          "title": "Strip Verifier Roles",
+          "description": "Remove package verifier roles from the manifest.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -201,6 +597,204 @@
       ]
     },
     {
+      "name": "Free in-app purchases",
+      "description": "Grants device-local purchases: forces purchase state to purchased, acknowledgements to true, and owned-item preference reads to true. Network-verified purchases stay gated.",
+      "default": false,
+      "category": "Monetization",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forcePurchasedState",
+          "title": "Force Purchased State",
+          "description": "Force Purchase.getPurchaseState to report purchased.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceAcknowledged",
+          "title": "Force Acknowledged",
+          "description": "Force Purchase.isAcknowledged to report true.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceOwnedKeys",
+          "title": "Force Owned Keys",
+          "description": "Force SharedPreferences reads of owned-item keys to report true.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "GMS check strip",
+      "description": "Makes the app run without Google Play services: forces availability checks to succeed, suppresses error dialogs, and strips GMS package visibility. A lighter alternative to MicroG, which is heavier but more stable.",
+      "default": false,
+      "category": "GMS",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forceAvailabilitySuccess",
+          "title": "Force Availability Success",
+          "description": "Report isGooglePlayServicesAvailable as success (0) and isUserResolvableError as false.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "suppressErrorDialogs",
+          "title": "Suppress Error Dialogs",
+          "description": "Nop Google Play services error dialogs and notifications.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripGmsQueries",
+          "title": "Strip GMS Package Visibility",
+          "description": "Remove GMS and Play Store entries from manifest package visibility queries.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Hide app icon",
+      "description": "Removes MAIN/LAUNCHER intent filters so the app no longer appears in launcher app lists.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "removeLauncherFilters",
+          "title": "Remove Launcher Entry",
+          "description": "Strip intent filters that combine android.intent.action.MAIN with the LAUNCHER category.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Mask developer options and ADB state",
+      "description": "Hides developer state: reports adb_enabled and development settings as off and forces debug-revealing system properties to production values.",
+      "default": false,
+      "category": "Spoofing",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "maskAdbState",
+          "title": "Mask ADB State",
+          "description": "Force Settings reads of adb_enabled to report disabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "maskDeveloperSettings",
+          "title": "Mask Developer Settings",
+          "description": "Force Settings reads of development_settings_enabled to report disabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "maskSystemProperties",
+          "title": "Mask Debug System Properties",
+          "description": "Force ro.debuggable, ro.secure, and service.adb.root reads to report production values.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "MicroG support",
+      "description": "Adapts the app for MicroG: forces Play services availability checks to succeed, suppresses error dialogs, and drops the GMS client version check. MicroG is heavier than stripping GMS checks alone but more stable.",
+      "default": false,
+      "category": "GMS",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forceAvailabilitySuccess",
+          "title": "Force Availability Success",
+          "description": "Report isGooglePlayServicesAvailable as success (0) so MicroG can serve the APIs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "suppressErrorDialogs",
+          "title": "Suppress Error Dialogs",
+          "description": "Nop Google Play services error dialogs and notifications.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeGmsVersionMeta",
+          "title": "Remove GMS Version Meta",
+          "description": "Remove the com.google.android.gms.version meta-data entry used for client version checks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Mock Play Billing client",
+      "description": "Mocks Play Billing client state: reports the client ready, feature checks as supported, and suppresses acknowledge, consume, and disconnect calls. Purchase query results cannot be fabricated without an extension.",
+      "default": false,
+      "category": "Monetization",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forceBillingReady",
+          "title": "Force Billing Ready",
+          "description": "Force BillingClient.isReady to report true.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceFeatureSupported",
+          "title": "Force Feature Supported",
+          "description": "Force BillingClient.isFeatureSupported to report OK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "suppressConsumeCalls",
+          "title": "Suppress Consume Calls",
+          "description": "Nop acknowledgePurchase, consumeAsync, and endConnection calls.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Open links in browser",
       "description": "Stops http and https links from opening inside the app.",
       "default": false,
@@ -223,6 +817,277 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof GPS",
+      "description": "Reports fixed coordinates: forces Location latitude, longitude, and related getter results to the configured position.",
+      "default": false,
+      "category": "Spoofing",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "latitude",
+          "title": "Latitude",
+          "description": "Decimal degrees, positive north.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "51.5074",
+          "values": null
+        },
+        {
+          "key": "longitude",
+          "title": "Longitude",
+          "description": "Decimal degrees, positive east.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "-0.1278",
+          "values": null
+        },
+        {
+          "key": "spoofAccuracy",
+          "title": "Spoof Accuracy",
+          "description": "Force horizontal and vertical accuracy readings to a fixed value.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "accuracy",
+          "title": "Accuracy (meters)",
+          "description": "Reported location accuracy in meters.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "10",
+          "values": null
+        },
+        {
+          "key": "spoofAltitude",
+          "title": "Spoof Altitude",
+          "description": "Force altitude readings to a fixed value.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "altitude",
+          "title": "Altitude (meters)",
+          "description": "Reported altitude in meters.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "0",
+          "values": null
+        },
+        {
+          "key": "spoofProvider",
+          "title": "Spoof Provider Name",
+          "description": "Force Location.getProvider to report gps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof device information",
+      "description": "Presents a different device entirely: rewrites Build identity field reads, forces matching system property reads, and overrides telephony operator and SIM identity getters using device and SIM presets.",
+      "default": false,
+      "category": "Spoofing",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "devicePreset",
+          "title": "Device Preset",
+          "description": "Device build identity to present, including brand, model, and fingerprint.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "google-pixel-8",
+          "values": {
+            "samsung-galaxy-s24": "Samsung Galaxy S24",
+            "samsung-galaxy-a54": "Samsung Galaxy A54",
+            "google-pixel-8": "Google Pixel 8",
+            "google-pixel-7": "Google Pixel 7",
+            "google-pixel-6a": "Google Pixel 6a",
+            "xiaomi-13": "Xiaomi 13",
+            "oneplus-11": "OnePlus 11",
+            "motorola-edge-40": "Motorola Edge 40"
+          }
+        },
+        {
+          "key": "simPreset",
+          "title": "SIM Preset",
+          "description": "Carrier identity to present, including operator code, country, ICCID, and IMSI.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "tmobile-us",
+          "values": {
+            "tmobile-us": "T-Mobile (US)",
+            "verizon-us": "Verizon (US)",
+            "att-us": "AT&T (US)",
+            "vodafone-de": "Vodafone (DE)",
+            "orange-fr": "Orange (FR)",
+            "o2-gb": "O2 (UK)",
+            "airtel-in": "Airtel (IN)",
+            "jio-in": "Jio (IN)",
+            "movistar-es": "Movistar (ES)"
+          }
+        },
+        {
+          "key": "spoofBuildIdentity",
+          "title": "Spoof Build Identity",
+          "description": "Rewrite android.os.Build field reads and matching ro.* system property reads to the preset.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "spoofSimIdentity",
+          "title": "Spoof SIM Identity",
+          "description": "Force TelephonyManager operator, country, ICCID, and IMSI getters to the SIM preset.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "spoofDeviceIds",
+          "title": "Spoof Device IDs",
+          "description": "Force getDeviceId, getImei, and getMeid to the preset IMEI.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof install location",
+      "description": "Reports internal storage as the install location, matching the Play Store default.",
+      "default": false,
+      "category": "Spoofing",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "setManifestInstallLocation",
+          "title": "Set Manifest Install Location",
+          "description": "Sets android:installLocation to internalOnly on the application tag.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "spoofFieldReads",
+          "title": "Spoof Install Location Reads",
+          "description": "Force ApplicationInfo and PackageInfo installLocation field reads to report internal storage (0).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof network transport type",
+      "description": "Reports a Wi-Fi connection: forces transport capability flags, hides the VPN transport, and overrides NetworkInfo type readings.",
+      "default": false,
+      "category": "Spoofing",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forceWifiTransport",
+          "title": "Force Wi-Fi Transport",
+          "description": "Report the Wi-Fi transport in hasTransport checks and NetworkInfo type readings.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceCellularTransport",
+          "title": "Force Cellular Transport",
+          "description": "Additionally report the cellular transport in hasTransport checks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideVpnTransport",
+          "title": "Hide VPN Transport",
+          "description": "Force hasTransport(TRANSPORT_VPN) to report false.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Strip VPN checks",
+      "description": "Defeats VPN detection: reports VpnService.prepare as no consent required, the VPN transport flag as unset, and VPN string tests as false.",
+      "default": false,
+      "category": "Spoofing",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "bypassVpnPrepare",
+          "title": "Bypass VpnService.prepare",
+          "description": "Force VpnService.prepare to return null so no VPN consent prompt is issued.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassVpnTransport",
+          "title": "Bypass VPN Transport Flag",
+          "description": "Force NetworkCapabilities.hasTransport(TRANSPORT_VPN) to report false.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassVpnStringChecks",
+          "title": "Bypass VPN String Checks",
+          "description": "Force equals, equalsIgnoreCase, and contains tests against \"vpn\" string constants to report false.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Strip mock location flags",
+      "description": "Reports Location.isMock and isFromMockProvider as false and forces mock location settings reads to report disabled.",
+      "default": false,
+      "category": "Spoofing",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "bypassLocationApi",
+          "title": "Bypass Location Mock APIs",
+          "description": "Force Location.isMock and Location.isFromMockProvider to report false.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassMockSettings",
+          "title": "Bypass Mock Location Settings",
+          "description": "Force Settings reads of the mock_location key to report disabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -412,6 +1277,87 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Universal cleanup",
+      "description": "Debloats the app: removes debug and tracking components, extra locales, and stale install files. ABI splits, density filtering, and asset size filtering are not covered.",
+      "default": false,
+      "category": "Heavy",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripDebugComponents",
+          "title": "Strip Debug Components",
+          "description": "Remove debug, staging, and test components plus LeakCanary, Stetho, and Chucker.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripGmsComponents",
+          "title": "Strip GMS Components",
+          "description": "Remove Google and Firebase service, receiver, and provider components.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripExtraLocales",
+          "title": "Strip Extra Locales",
+          "description": "Delete locale resource directories not on the keep list.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "keepLocales",
+          "title": "Keep Locales",
+          "description": "Comma-separated locale qualifiers to keep; other locale resource directories are deleted.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "en",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Enables premium features locally: forces premium status getters to report true and premium preference reads to report enabled. Server-side entitlements stay gated.",
+      "default": false,
+      "category": "Monetization",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "forcePremiumGetters",
+          "title": "Force Premium Getters",
+          "description": "Make boolean premium status getters return true.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forcePremiumPreferences",
+          "title": "Force Premium Preferences",
+          "description": "Force SharedPreferences reads of premium keys to report true.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "extraPremiumKeys",
+          "title": "Extra Premium Keys",
+          "description": "Comma-separated preference key substrings treated as premium keys.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         }
       ]

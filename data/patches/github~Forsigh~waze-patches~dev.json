@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.22.6",
+  "version": "0.28.0",
   "patches": [
     {
       "name": "Allow high refresh rate",
@@ -326,7 +326,7 @@
     },
     {
       "name": "Extended police & hazard alert distances",
-      "description": "Pick the alert distance level: Stock (default), Moderate or Maximum.",
+      "description": "Pick how early police and hazard alerts fire.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -376,7 +376,7 @@
         {
           "key": "level",
           "title": "Alert distance level",
-          "description": "Stock: Waze's own distances (default). Moderate: accident & heavy traffic at 2x - 1200 m; roads 700/900/1200. Maximum: the community table - accident 2000 m, heavy traffic 3000 m.",
+          "description": "Stock is Waze's own; the others warn earlier.",
           "required": false,
           "type": "kotlin.String",
           "default": "Stock",
@@ -838,7 +838,7 @@
     },
     {
       "name": "Theme",
-      "description": "Pick any theme from the menu for day and for night - the two are independent.",
+      "description": "Pick any theme for the map - day and night.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -888,7 +888,7 @@
         {
           "key": "dayTheme",
           "title": "Day theme",
-          "description": "Themes the daytime map. Any theme from the menu - dark ones work here too. Stock leaves Waze's day colours untouched.",
+          "description": "The day map's theme. Stock leaves it untouched.",
           "required": false,
           "type": "kotlin.String",
           "default": "Stock",
@@ -914,7 +914,7 @@
         {
           "key": "nightTheme",
           "title": "Night theme",
-          "description": "Themes the night map. Any theme from the menu. Stock leaves Waze's night colours untouched.",
+          "description": "The night map's theme. Stock leaves it untouched.",
           "required": false,
           "type": "kotlin.String",
           "default": "AMOLED",
@@ -941,10 +941,12 @@
     },
     {
       "name": "UI AMOLED dark mode",
-      "description": "Dark-mode app backgrounds to pure #000000 (bottom sheet, menus, dialogs). Light mode and map colours untouched.",
+      "description": "Dark-mode backgrounds go pure black.",
       "default": false,
       "category": null,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.waze",
