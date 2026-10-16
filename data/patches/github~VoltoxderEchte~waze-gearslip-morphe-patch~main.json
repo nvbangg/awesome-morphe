@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "patches": [
     {
       "name": "Allow Gearslip",
@@ -45,6 +45,67 @@
             "Gearslip (release builds)": "4cc56ebdd13a54d260eca9b7e2b2ae6b30e2f225bfda8f508f0709edf084948b,app.seb3thehacker.gearslip",
             "Gearslip (any build, also self-built)": "*,app.seb3thehacker.gearslip"
           }
+        }
+      ]
+    },
+    {
+      "name": "Fix speed drops",
+      "description": "Stops Waze from showing 0 km/h for a moment while driving on phones without Google Play services. A location without a speed gets one from the distance travelled, or keeps the last speed briefly, and short gaps between locations can be bridged. Real stops are not affected.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "holdSeconds",
+          "title": "Hold speed (seconds)",
+          "description": "How long the last speed is kept when a location comes without one and its position is too coarse to compute one. After that the speed falls as if braking.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 2,
+          "values": null
+        },
+        {
+          "key": "braking",
+          "title": "Braking (m/s²)",
+          "description": "How fast a held speed may fall after the hold time. 4 is firm braking.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 4,
+          "values": null
+        },
+        {
+          "key": "bridgeSeconds",
+          "title": "Bridge gaps (seconds)",
+          "description": "When no location arrives while driving, continue along the last heading for at most this many seconds. 0 turns this off.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 2,
+          "values": null
         }
       ]
     }
