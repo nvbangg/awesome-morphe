@@ -81,7 +81,7 @@ Collects bundle sources from the providers below and synchronizes [`data/repos.j
 
 - Custom sources in [`data/discover/custom.json`](./data/discover/custom.json)
 - [Morphe Community Patches](https://morphe-patches.software)
-- [Jman's ReVanced Patch Bundles](https://github.com/Jman-Github/Patch-Bundle-Registry)
+- [Jman's Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry)
 - [Morphe Archive](https://github.com/rushiforai/morphe-archive)
 
 #### Custom Configuration
@@ -123,7 +123,7 @@ HTTP 404/451 responses mark targets unavailable; other request failures generall
 
 ### [`parse.py`](./scripts/parse.py)
 
-Runs the Kotlin-based [`bundle-parser`](./scripts/bundle-parser/) (adapted from [Jman's ReVanced Patch Bundles](https://github.com/Jman-Github/Patch-Bundle-Registry) to fit this project and Morphe) on `.mpp` files listed in [`scripts/bundle-parser/updated_files.txt`](./scripts/bundle-parser/updated_files.txt), saving patch lists to [`data/patches/`](./data/patches/).
+Runs the Kotlin-based [`bundle-parser`](./scripts/bundle-parser/) (adapted from [Jman's Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) to fit this project and Morphe) on `.mpp` files listed in [`scripts/bundle-parser/updated_files.txt`](./scripts/bundle-parser/updated_files.txt), saving patch lists to [`data/patches/`](./data/patches/).
 
 Applies pending hashes from [`scripts/bundle-parser/pending_repos.json`](./scripts/bundle-parser/pending_repos.json) to [`data/repos.json`](./data/repos.json). Before each parser run, the previous success list is removed. A queued target is accepted only when the current process succeeds, lists that target in `parsed_files.txt`, and produces a patch list accepted by the existing data validation. Bundle names are read from the manifests of accepted branch updates, so a failed branch cannot supply another branch's name.
 
