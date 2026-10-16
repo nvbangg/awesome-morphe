@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0",
+  "version": "1.11.0",
   "patches": [
     {
       "name": "Anti-delete messages",
@@ -784,8 +784,83 @@
       "options": []
     },
     {
+      "name": "Hide Stories read status",
+      "description": "Prevents the client from processing and sending Stories read receipts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.telegram.messenger",
+          "name": "Telegram",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2CA5E0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.2",
+              "versionCodes": {
+                "ARM64_V8A": 71751,
+                "ARMEABI_V7A": 71751,
+                "X86_64": 71751,
+                "X86": 71751
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "org.telegram.messenger.web",
+          "name": "Telegram Web",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2CA5E0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.2",
+              "versionCodes": {
+                "ARM64_V8A": 71759,
+                "ARMEABI_V7A": 71759,
+                "X86_64": 71759,
+                "X86": 71759
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "org.telegram.plus",
+          "name": "Telegram Plus",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#2CA5E0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.2.0",
+              "versionCodes": {
+                "ARM64_V8A": 22598,
+                "ARMEABI_V7A": 22598,
+                "X86_64": 22598,
+                "X86": 22598
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide typing indicator",
-      "description": "Blocks Telegram's controller-level sendTyping dispatch on 12.10.x builds.",
+      "description": "Blocks Telegram's controller-level sendTyping dispatch on audited 13.0.2 builds.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -907,7 +982,7 @@
     },
     {
       "name": "Remove ads",
-      "description": "Removes sponsored messages and video ads. On Telegram Plus also blocks the Plus ad loader.",
+      "description": "Removes sponsored messages and video ads. On Telegram Plus also blocks current and legacy Plus ad-loader entry points.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
