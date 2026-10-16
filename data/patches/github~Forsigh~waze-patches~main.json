@@ -1,7 +1,217 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.22.7",
+  "version": "0.22.8",
   "patches": [
+    {
+      "name": "AMOLED Dark Mode For UI",
+      "description": "Dark-mode backgrounds go pure black.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Alert distances",
+      "description": "Choose how early alerts fire: Standard, Moderate, Heavier or Custom.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "level",
+          "title": "Alert distance level",
+          "description": "Standard keeps Waze's own; Moderate and Heavier warn earlier.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Standard",
+          "values": {
+            "Standard (Waze's own)": "Standard",
+            "Moderate": "Moderate",
+            "Heavier": "Heavier",
+            "Custom (set each below)": "Custom"
+          }
+        },
+        {
+          "key": "police",
+          "title": "Police",
+          "description": "Waze: 600 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 600,
+          "values": null
+        },
+        {
+          "key": "hazard",
+          "title": "Hazards",
+          "description": "Waze: 600 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 600,
+          "values": null
+        },
+        {
+          "key": "accident",
+          "title": "Crashes",
+          "description": "Waze: 600 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 600,
+          "values": null
+        },
+        {
+          "key": "traffic",
+          "title": "Traffic jams",
+          "description": "Waze: 600 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 600,
+          "values": null
+        },
+        {
+          "key": "streets",
+          "title": "Speed cams - streets",
+          "description": "Waze: 500 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 500,
+          "values": null
+        },
+        {
+          "key": "highways",
+          "title": "Speed cams - highways",
+          "description": "Waze: 1000 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 1000,
+          "values": null
+        },
+        {
+          "key": "freeways",
+          "title": "Speed cams - freeways",
+          "description": "Waze: 2000 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 2000,
+          "values": null
+        },
+        {
+          "key": "blocked",
+          "title": "Blocked lanes",
+          "description": "Waze: 400 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 400,
+          "values": null
+        },
+        {
+          "key": "between",
+          "title": "Gap between alerts",
+          "description": "Waze: 300 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 300,
+          "values": null
+        }
+      ]
+    },
     {
       "name": "Allow high refresh rate",
       "description": "Runs Waze above 60 Hz, up to your screen's refresh rate.",
@@ -33,6 +243,13 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -93,6 +310,13 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -163,6 +387,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -207,6 +438,70 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Car alerts as notifications",
+      "description": "Delivers police and hazard alerts as car notifications.",
+      "default": false,
+      "category": "Android Auto",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -263,6 +558,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -313,6 +615,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -325,10 +634,10 @@
       "options": []
     },
     {
-      "name": "Extended police & hazard alert distances",
-      "description": "Pick how early police and hazard alerts fire.",
-      "default": true,
-      "category": null,
+      "name": "Instrument cluster support",
+      "description": "Shows the map, alerts and ETA on the car's digital cluster, where it has one.",
+      "default": false,
+      "category": "Experimental",
       "dependencies": [
         "BytecodePatch"
       ],
@@ -363,6 +672,70 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep Waze alive on Android Auto",
+      "description": "Keeps Waze running after you disconnect from Android Auto.",
+      "default": false,
+      "category": "Android Auto",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -374,19 +747,72 @@
       ],
       "options": [
         {
-          "key": "level",
-          "title": "Alert distance level",
-          "description": "Stock is Waze's own; the others warn earlier.",
+          "key": "minutes",
+          "title": "Minutes alive after disconnect",
+          "description": "Waze shuts down this long after you leave the car.",
           "required": false,
-          "type": "kotlin.String",
-          "default": "Stock",
-          "values": {
-            "Stock (default)": "Stock",
-            "Moderate": "Moderate",
-            "Maximum": "Maximum"
-          }
+          "type": "kotlin.Int",
+          "default": 10,
+          "values": null
         }
       ]
+    },
+    {
+      "name": "Keep Waze alive on car",
+      "description": "Keeps Waze connected through car service restarts.",
+      "default": false,
+      "category": "Experimental",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Lane guidance",
@@ -427,6 +853,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -444,7 +877,8 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -471,6 +905,13 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -527,6 +968,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -571,6 +1019,127 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Report speed limit",
+      "description": "Turns on fixing the speed limit from the speedometer.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show FPS counter",
+      "description": "Shows Waze's frames-per-second counter on the map.",
+      "default": false,
+      "category": "Experimental",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -627,6 +1196,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -669,6 +1245,70 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Smoother Android Auto map",
+      "description": "Smoothes the car map's movement and heading on Android Auto.",
+      "default": false,
+      "category": "Android Auto",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -725,6 +1365,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -775,6 +1422,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -785,6 +1439,76 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Speed-limit sign style",
+      "description": "Picks the sign beside the speedometer: US or World.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "style",
+          "title": "Sign style",
+          "description": "Waze picks one by country; this forces it.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "us",
+          "values": {
+            "US (white rectangle)": "us",
+            "World (red circle)": "world"
+          }
+        }
+      ]
     },
     {
       "name": "Speedometer always on",
@@ -825,6 +1549,13 @@
               "description": null
             },
             {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -835,6 +1566,73 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Stay awake in the background",
+      "description": "Keeps Waze running in the background without a route.",
+      "default": false,
+      "category": "Experimental",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "minutes",
+          "title": "Minutes in the background",
+          "description": "Waze's own cap is 10.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 10,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Theme",
@@ -869,6 +1667,13 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -940,12 +1745,12 @@
       ]
     },
     {
-      "name": "UI AMOLED dark mode",
-      "description": "Dark-mode backgrounds go pure black.",
+      "name": "Traffic meter",
+      "description": "Shows the traffic meter on the car screen.",
       "default": false,
-      "category": null,
+      "category": "Android Auto",
       "dependencies": [
-        "ResourcePatch"
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -972,6 +1777,13 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1022,6 +1834,13 @@
             },
             {
               "version": "5.25.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.25.90.900",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
