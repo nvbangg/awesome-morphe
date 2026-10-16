@@ -1,13 +1,56 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.3",
+  "version": "1.7.4",
   "patches": [
     {
-      "name": "AMOLED theme",
-      "description": "Replaces the light theme with a dark AMOLED theme. Backgrounds become black and dark text becomes light. Pictures (PNG, WebP) and colors set in code are not changed.",
+      "name": "AMOLED dark theme",
+      "description": "Turns on the dark theme that is inside the app and makes its background black. Text and backgrounds that the app sets by itself are changed too. Pictures are not changed.",
       "default": true,
       "category": null,
       "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "edu.uvmnet.servicio_alumno",
+          "name": "Conexión Lince UVM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#D7282F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.0.63",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "amoledColor",
+          "title": "Background color",
+          "description": "The color of the screens. Pure black turns the pixels off on AMOLED screens.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": {
+            "Pure black": "#000000",
+            "Near black": "#0A0A0A",
+            "Dark charcoal": "#121212"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AMOLED theme",
+      "description": "Forces a true black AMOLED theme across all Stickerly screens, Jetpack Compose UI, dialogs, and bottom sheets.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.snowcorp.stickerly.android",
@@ -27,25 +70,67 @@
           ]
         }
       ],
-      "options": [
+      "options": []
+    },
+    {
+      "name": "Allow screenshots",
+      "description": "Lets you take screenshots and screen recordings in the app, for example of your student ID.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
         {
-          "key": "amoledColor",
-          "title": "Background color",
-          "description": "The color of the screens that were white. Pure black turns the pixels off on AMOLED screens.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#000000",
-          "values": {
-            "Pure black": "#000000",
-            "Near black": "#0A0A0A",
-            "Dark charcoal": "#121212"
-          }
+          "packageName": "edu.uvmnet.servicio_alumno",
+          "name": "Conexión Lince UVM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#D7282F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.0.63",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
         }
-      ]
+      ],
+      "options": []
     },
     {
       "name": "Always show publish date",
       "description": "Always shows the publish date in video author information. Thanks to lyyako for the original implementation.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.2.41",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Collection picker search",
+      "description": "Adds an option to show a search bar on the sheet where you pick the collection for a saved video, so you do not have to scroll through every collection.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1091,8 +1176,64 @@
       "options": []
     },
     {
+      "name": "Hide survey pop-ups",
+      "description": "Stops the pop-up with an image, a text and a button that the app shows on the home screen for surveys and notices, including forms you already answered.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "edu.uvmnet.servicio_alumno",
+          "name": "Conexión Lince UVM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#D7282F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.0.63",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hold-and-slide 2x lock",
       "description": "Enables TikTok's native hold, slide down, and release gesture to lock 2x speed.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.2.41",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Liked videos search",
+      "description": "Adds an option to show a search bar on the liked videos page that filters loaded videos by description or creator.",
       "default": true,
       "category": null,
       "dependencies": [

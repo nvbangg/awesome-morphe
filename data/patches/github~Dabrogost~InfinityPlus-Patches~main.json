@@ -1,0 +1,93 @@
+{
+    "version": "0.1.6",
+    "patches": [
+        {
+            "name": "Spoof client",
+            "description": "Restores Infinity+ Reddit API functionality using a selectable OAuth client ID preset or custom credentials.",
+            "default": true,
+            "dependencies": [
+                "BytecodePatch",
+                "BytecodePatch",
+                "ResourcePatch"
+            ],
+            "compatiblePackages": [
+                {
+                    "packageName": "ml.docilealligator.infinityforreddit.plus",
+                    "name": "Infinity for Reddit+",
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": [],
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "client-id",
+                    "title": "OAuth client ID",
+                    "description": "Select the RedReader preset or enter your own 22-character Reddit OAuth client ID. Shared client IDs may be restricted or stop working.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": null,
+                    "values": {
+                        "RedReader (shared client ID)": "yH0aTnJEt6qUgGn835B4vg"
+                    }
+                },
+                {
+                    "key": "redirect-uri",
+                    "title": "Redirect URI",
+                    "description": "The Reddit OAuth redirect URI. Defaults to RedReader's redirect URI. Must match the selected client ID.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "redreader://rr_oauth_redir",
+                    "values": null
+                },
+                {
+                    "key": "user-agent",
+                    "title": "User agent",
+                    "description": "The Reddit API user agent. Defaults to RedReader's user agent. Custom client IDs may require a matching user agent.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "org.quantumbadger.redreader/1.25.2",
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Modify login WebView",
+            "description": "Modify the WebView used for logging into reddit to prevent login issues",
+            "default": true,
+            "dependencies": [
+                "BytecodePatch"
+            ],
+            "compatiblePackages": [
+                {
+                    "packageName": "ml.docilealligator.infinityforreddit.plus",
+                    "name": "Infinity for Reddit+",
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": [],
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        }
+    ]
+}

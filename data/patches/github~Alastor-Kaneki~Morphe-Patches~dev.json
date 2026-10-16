@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.14.1",
+  "version": "1.16.0",
   "patches": [
     {
       "name": "Custom download folder",
@@ -113,6 +113,34 @@
       "options": []
     },
     {
+      "name": "Download Reddit gallery originals",
+      "description": "Adds an in-app Download Originals button and share target. Fetches gallery metadata from Arctic Shift (fallback to Reddit) and saves original-quality images or a ZIP.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.reddit.frontpage",
+          "name": "Reddit",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Download timestamped lyrics",
       "description": "Adds an in-app Lyrics button and share target that exports Suno timing data as LRC, enhanced LRC, SRT, WebVTT, or JSON.",
       "default": true,
@@ -170,7 +198,7 @@
     },
     {
       "name": "MonkeyScript userscript manager",
-      "description": "Adds a Chrome 150 Material You userscript manager using a Violentmonkey-derived parser, native app-menu integration, guaranteed Fork-page installation, Greasy Fork/Sleazy Fork support, publishing, and configurable app/package cloning.",
+      "description": "Adds the Chrome 150 Material You userscript manager and cloning. Trichrome builds need the matching original Trichrome Library APK installed before the patched Chrome APK.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -212,6 +240,34 @@
           "targets": [
             {
               "version": "2.5.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Reddit native post-menu originals (2026.41.0)",
+      "description": "Use Reddit's actual post overflow-menu event to identify the current post, show a contextual Save Originals action, and let the existing downloader save the original images or ZIP without a share link.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.reddit.frontpage",
+          "name": "Reddit",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.41.0",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,

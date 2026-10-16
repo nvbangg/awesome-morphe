@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "patches": [
     {
       "name": "Block Ad Server",
-      "description": "Stops Nepali Patro's interstitial ads. Two edits to libapp.so: the ad-only host ads-delivery.nepalipatro.com.np is rewritten to an unresolvable .xx domain of the same length, and AdsBloc::featureInterstitialAdWithHtmlPopup - the single callee behind all 24 interstitial call sites - is forced down its existing 'popup blocked' return, so the full-screen ad page and its countdown never open. The host rewrite alone is not enough: the ad URLs are also cached in SharedPreferences under PREF_SLIDER_DATA, and whether to show the page at all comes from remote config, which the app rewrites on every launch. Pairs with Remove Ads, which stops the ad content itself and the AdMob interstitials.",
+      "description": "Stops Nepali Patro's ads. Eight byte-asserted edits to libapp.so plus an in-place host rewrite: the ad-only host ads-delivery.nepalipatro.com.np is rewritten to an unresolvable .xx domain of the same length; the interstitial_html dispatch in the ad-queue callback is retargeted so the full-screen page is never pushed; showHtmlInterstitialAdDialog - the single function that raises the HTML interstitial roadblock - is stubbed out; the popup/popup_html branch is forced down the app's own 'blocked' return; and the five raster formats (slider, banner, popup, card_view, circular) are dropped to the build's own empty-widget tail, so the image creatives Remove Ads cannot see - they are fetched by Dart through CachedNetworkImage, not by a WebView - are never requested at all. The host rewrite alone is not enough: the ad URLs are also cached in SharedPreferences under PREF_SLIDER_DATA, and whether to present the shell at all comes from remote config, which the app rewrites on every launch. Pairs with Remove Ads, which stops the HTML creatives and the AdMob interstitials.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -45,7 +45,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": null,
+              "version": "2.41.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -71,7 +71,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": null,
+              "version": "2.41.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -202,6 +202,13 @@
           "targets": [
             {
               "version": "1.6.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.7.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -395,6 +402,32 @@
       "options": []
     },
     {
+      "name": "Remove Update Prompt",
+      "description": "Removes byAir's forced-update screen (\"Pack up for Update! 🚀\" / \"Update Now\") by pinning its version gate to \"no update required\". byAir fetches a server-side minimum version code on launch and, if your build is older, blocks the whole app behind a non-dismissible screen whose only action opens Google Play. With the gate closed a patched older build keeps running and never calls the min-version endpoint, so you no longer have to re-patch every time byAir ships a release.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.byairapp.android",
+          "name": "byAir",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#1F6FEB",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.41.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove Watermark",
       "description": "Patches the procedural GLSL shader in libharwin_native.so to disable the \"PRISMATICA\" watermark in the video player and exported videos.",
       "default": true,
@@ -440,6 +473,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -462,6 +502,13 @@
           "targets": [
             {
               "version": "1.6.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.7.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -573,6 +620,13 @@
             },
             {
               "version": "1.4.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.4.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

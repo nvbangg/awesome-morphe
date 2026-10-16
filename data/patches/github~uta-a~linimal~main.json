@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "patches": [
     {
       "name": "Linimal",
@@ -964,6 +964,36 @@
     {
       "name": "手動既読の送信許可",
       "description": "非同期処理側で手動既読の識別子を送信許可へ変換し、処理の終了時に破棄します。",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.11.0",
+              "versionCodes": {
+                "ARM64_V8A": 261100124
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "既読なし閲覧中の送信で既読にする",
+      "description": "既読をつけずに開いた通常トークでも、送信操作で閲覧セッションを終了して既読を反映します。",
       "default": true,
       "dependencies": [
         "BytecodePatch"

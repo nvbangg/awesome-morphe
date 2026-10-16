@@ -1,7 +1,36 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "patches": [
+    {
+      "name": "Add documents provider",
+      "description": "Adds a documents provider so the app's data folders can be accessed from the system file manager.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mojang.minecraftpe",
+          "name": "Minecraft",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Add mtbinloader2 lib",
       "description": "Add libmtbinloader2.so to the app's native library path.",
@@ -33,7 +62,7 @@
     },
     {
       "name": "Change Package Name",
-      "description": "Changes the app package name to install patch without uninstalling original app.By default, .morphe is appended.",
+      "description": "Changes the app package name to install patch without uninstalling original app. By default, .morphe is appended.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -85,6 +114,45 @@
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change app branding",
+      "description": "Changes the app name shown in the launcher.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mojang.minecraftpe",
+          "name": "Minecraft",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The name of the app shown in the launcher.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Minecraft Patch",
+          "values": {
+            "Minecraft Patch": "Minecraft Patch"
+          }
         }
       ]
     },

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.1",
+  "version": "1.3.0",
   "patches": [
     {
       "name": "Enable Premium",
@@ -29,10 +29,12 @@
       "options": []
     },
     {
-      "name": "Hide live room notice",
-      "description": "Removes the 'healthy live streaming' notice shown in every live chat.",
+      "name": "Hide home banner",
+      "description": "Hides the promotional banner carousel shown in the middle of the home live list.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.guochao.faceshow",
@@ -43,7 +45,91 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.2.90",
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide join and follow messages",
+      "description": "Hides the \"joined\" and \"followed the streamer\" messages in the live chat and the join banner at the top.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide live room cards",
+      "description": "Hides the rotating event/honor wall/daily recharge cards in the corner of live rooms.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide live room notice",
+      "description": "Removes the 'healthy live streaming' notice shown in every live chat.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -87,6 +173,60 @@
       "options": []
     },
     {
+      "name": "Remove ads",
+      "description": "Disables AdMob ads (banner, interstitial, app open, rewarded) and the consent form.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.ovz.carscanner",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.1.50",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Spoof the Tinder package signature to fix push notifications (Enable to get notifications).",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Story mention indicator",
       "description": "Shows an \"@N mention\" pill in the story header when the story mentions someone. Tap it to list and open the mentioned profiles.",
       "default": true,
@@ -116,7 +256,33 @@
     },
     {
       "name": "Tinder Remove Ads",
-      "description": "Remove os anúncios exibidos entre os perfis do deck de swipe.",
+      "description": "Removes ads displayed between profiles in the swipe deck.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Tinder Remove Upsells",
+      "description": "Remove sponsored messages in the chat and upsell pop-ups (Likes You, Boost).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -142,7 +308,7 @@
     },
     {
       "name": "Tinder Unlimited Rewind",
-      "description": "Bypasses the paywall check and enables unlimited REWIND on FREE accounts.",
+      "description": "Remove signature verification and enable Rewind locally.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -156,6 +322,39 @@
           "targets": [
             {
               "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Trash bubble on pin long press",
+      "description": "Replace the WhatsApp bubble in the long-press menu of a saved PIN with atrash can that deletes the PIN.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pinterest",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.39.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "14.40.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -200,11 +399,38 @@
       "options": []
     },
     {
+      "name": "Unlock Pro",
+      "description": "Makes Car Scanner believe the Pro version was purchased (Google Play Billing).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.ovz.carscanner",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.1.50",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock SVIP",
       "description": "Unlocks SVIP features, blocks purchase flow and Unity Ads.",
       "default": true,
       "dependencies": [
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -216,7 +442,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.2.90",
+              "version": "3.2.92",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
