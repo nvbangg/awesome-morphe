@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.19.0",
+  "version": "1.21.0",
   "patches": [
     {
       "name": "AR Effects Slimmer",
@@ -290,7 +290,7 @@
     },
     {
       "name": "Block Telemetry & Trackers",
-      "description": "Blocks tracking services, analytics collection, and advertising identifiers.",
+      "description": "Blocks tracking services, analytics collection, and advertising identifiers, redirects Braze and Sentry endpoints to 0.0.0.0, and purges Sentry manifest metadata.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -314,7 +314,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "blockPaymentsTelemetry",
+          "title": "Block Payments & Anti-Fraud Telemetry",
+          "description": "Redirects Plaid, ScribeUp, and financial anti-fraud telemetry endpoints to 0.0.0.0. WARNING: Enabling this disables X Payments and banking verification features.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Block Trackers",
@@ -635,68 +645,6 @@
       "options": []
     },
     {
-      "name": "Copilot DPI Slimmer",
-      "description": "Strips drawables for unselected screen densities from Copilot base APK while preserving launcher icons and single-density assets. Non-phone UI mode qualifiers (watch, television, car, vrheadset) are purged from drawable/mipmap resources. WARNING: Displays matching stripped densities will scale preserved assets.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.office.officehubrow",
-          "name": "Copilot",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#109CF0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "16.0.20527.20022",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "dpi",
-          "title": "Target screen density",
-          "description": "Screen density to preserve (ldpi, mdpi, tvdpi, hdpi, xhdpi, xxhdpi, xxxhdpi). Default is xxhdpi.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "xxhdpi",
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Copilot Junk Cleaner",
-      "description": "Purges non-functional build metadata, properties, proto descriptors, and duplicate license notices from APK root and META-INF while strictly protecting runtime assets and signatures.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.office.officehubrow",
-          "name": "Copilot",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#109CF0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "16.0.20527.20022",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Custom Deep Links",
       "description": "Opens supported custom and alternative domain links directly in the app (for shared link domains, see Share Links).",
       "default": false,
@@ -819,6 +767,46 @@
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
+        }
+      ]
+    },
+    {
+      "name": "Default Reply Sorting",
+      "description": "Opens replies on every post with the selected sort mode instead of Relevance.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.34.0-prod.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "replySortMode",
+          "title": "Reply Sort Mode",
+          "description": "Sort mode replies open with on every post.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Likes",
+          "values": {
+            "Likes": "Likes",
+            "Recency": "Recency",
+            "Relevance (stock)": "Relevance"
+          }
         }
       ]
     },
@@ -1078,60 +1066,8 @@
       ]
     },
     {
-      "name": "Lightroom Background Sync",
-      "description": "Disables WorkManager background sync services, scheduled jobs, and boot receiver. The WorkManager startup initializer is intentionally preserved because removing it prevents application boot. WARNING: Disabling WorkManager can affect background photo uploads, syncing, and exports.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.adobe.lrmobile",
-          "name": "Lightroom",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#001C34",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "11.6.01",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Lightroom Junk Cleaner",
-      "description": "Purges non-functional build metadata, compiler properties, and duplicate license files from the APK root and META-INF.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.adobe.lrmobile",
-          "name": "Lightroom",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#001C34",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "11.6.01",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Locale Slimmer",
-      "description": "Strips unselected language string tables, resources, and asset JSON files from the APK. Base fallback and English are always preserved.",
+      "name": "Locale Assets Slimmer",
+      "description": "Strips unselected CapCut asset locale bundles (assets/locales/*.json) from the APK. English is always preserved. For res/values-* string tables use the canonical universal Remove Extra Languages patch.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1164,94 +1100,6 @@
           "values": null
         }
       ]
-    },
-    {
-      "name": "Locale Slimmer",
-      "description": "Strips unselected language string tables and resources from base APK. Base fallback and English are always preserved.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.tranzmate",
-          "name": "Moovit",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1864E4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.201.1.1809",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "locales",
-          "title": "Locales to keep",
-          "description": "Comma-separated language codes to preserve (e.g. 'en, es, pt, fr, de'). Base fallback and English are always retained.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "en",
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "MLKit Vision Slimmer",
-      "description": "Disable MLKit component discovery and registrars. WARNING: this breaks in-app QR and barcode scanning.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#E1306C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "447.0.0.55.81",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "MLKit Vision Slimmer",
-      "description": "Disables machine learning vision components to reduce binary overhead (breaks QR and barcode scanning).",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.twitter.android",
-          "name": "X",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#000000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "12.34.0-prod.01",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
     },
     {
       "name": "Native Bloat Slimmer",
@@ -1538,78 +1386,6 @@
         }
       ],
       "options": []
-    },
-    {
-      "name": "PowerPoint DPI Slimmer",
-      "description": "Strips drawables for unselected screen densities from PowerPoint base APK while preserving launcher icons and single-density assets. WARNING: Displays matching stripped densities will scale preserved assets.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.office.powerpoint",
-          "name": "PowerPoint",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#E44C50",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "16.0.20527.20034",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "dpi",
-          "title": "Target screen density",
-          "description": "Screen density to preserve (ldpi, mdpi, tvdpi, hdpi, xhdpi, xxhdpi, xxxhdpi). Default is xxhdpi.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "xxhdpi",
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "PowerPoint Locale Slimmer",
-      "description": "Strips unselected localized resource directories (res/values-<locale>/) from PowerPoint base APK. English (en, en-us) is always retained. WARNING: Application strings for stripped locales will fall back to English.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.office.powerpoint",
-          "name": "PowerPoint",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#E44C50",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "16.0.20527.20034",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "locales",
-          "title": "Locales to keep",
-          "description": "Comma-separated language codes to preserve (e.g. 'en, es, fr, de'). English fallback (en, en-us) is always retained.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "en",
-          "values": null
-        }
-      ]
     },
     {
       "name": "Remove Ads",
@@ -1944,78 +1720,6 @@
         }
       ],
       "options": []
-    },
-    {
-      "name": "Screen Density Slimmer",
-      "description": "Strips unselected screen density assets and purges non-phone UI mode qualifiers. Launcher icons, nodpi/anydpi, and single-density orphans are always preserved.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.lemon.lvoverseas",
-          "name": "CapCut",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#000000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "19.8.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "density",
-          "title": "Target screen density",
-          "description": "Screen density to preserve (e.g. 'xxhdpi', 'xhdpi', 'hdpi', 'mdpi', 'xxxhdpi'). Single-density orphans, launcher icons, and nodpi/anydpi are always protected.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "xxhdpi",
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Screen Density Slimmer",
-      "description": "Strips unselected screen density assets and purges non-phone UI mode qualifiers. Launcher icons, nodpi/anydpi, and single-density orphans are always preserved.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.tranzmate",
-          "name": "Moovit",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1864E4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.201.1.1809",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "density",
-          "title": "Target screen density",
-          "description": "Screen density to preserve (e.g. 'xxhdpi', 'xhdpi', 'hdpi', 'mdpi', 'xxxhdpi'). Single-density orphans, launcher icons, and nodpi/anydpi are always protected.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "xxhdpi",
-          "values": null
-        }
-      ]
     },
     {
       "name": "Share Links",
