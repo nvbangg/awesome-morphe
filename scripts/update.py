@@ -10,6 +10,7 @@ from updater import gplay_scrape, local_parse, repo_info
 from utils import (
     BUNDLES_JSON_PATH,
     CUSTOM_JSON_PATH,
+    DEFAULT_BRANCHES,
     HASHES_PATH,
     HISTORY_PATH,
     HOT_RANK_ACTIVE_MS,
@@ -42,9 +43,16 @@ def main() -> int:
     }
     apps_dict = existing_bundles_data.get("store", {})
     bundle_sources = {}
+    total_repo_count = 0
     for repo, repo_metadata in repos_data.items():
         if not isinstance(repo_metadata, dict):
             continue
+        if any(
+            isinstance(source_metadata := repo_metadata.get(source), dict)
+            and any(source_metadata.get(branch) for branch in DEFAULT_BRANCHES)
+            for source in ("github", "gitlab")
+        ):
+            total_repo_count += 1
         existing = existing_bundles.get(repo, {})
         source_entry = {"repo": repo}
         for field in (
@@ -63,6 +71,7 @@ def main() -> int:
     local_hashes = local_parse.process(
         bundle_sources, apps_dict, repos_data, existing_hashes, errors, existing_bundles
     )
+    successful_repo_count = len(local_hashes)
     renames = repo_info.process(
         bundle_sources, mode, existing_bundles, repos_data, custom_data, errors
     )
@@ -271,8 +280,14 @@ def main() -> int:
             + "\n".join(sorted_incomplete_apps)
         )
 
-    if summary_sections:
-        append_step_summary("\n\n".join(["## 🔄 Update:", *summary_sections]))
+    append_step_summary(
+        "\n\n".join(
+            [
+                f"## 🔄 Update ({successful_repo_count}/{total_repo_count}):",
+                *summary_sections,
+            ]
+        )
+    )
     return 0
 
 

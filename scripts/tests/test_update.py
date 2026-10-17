@@ -188,9 +188,9 @@ class BundleUpdateTests(unittest.TestCase):
             self.assertEqual(self.run_update()["bundles"], [])
         load_branch.assert_not_called()
         self.fetch_repo.assert_not_called()
-        self.summary.assert_not_called()
+        self.assertEqual(self.summary.call_args.args[0], "## 🔄 Update (0/0):")
 
-    def test_unusable_metadata_is_skipped_without_update_summary(self) -> None:
+    def test_unusable_metadata_does_not_repeat_fetch_errors(self) -> None:
         for metadata in (
             None,
             [],
@@ -205,7 +205,7 @@ class BundleUpdateTests(unittest.TestCase):
                 else:
                     save_json(bundle_path, metadata)
                 self.assertEqual(self.run_update()["bundles"], [])
-                self.summary.assert_not_called()
+                self.assertEqual(self.summary.call_args.args[0], "## 🔄 Update (0/1):")
         self.fetch_repo.assert_not_called()
 
     def test_missing_patch_list_has_branch_error_without_metadata_error(self) -> None:
@@ -356,6 +356,9 @@ class BundleUpdateTests(unittest.TestCase):
                     {"bundles": [{"repo": "owner/alpha", "source": previous_source}]},
                 )
                 self.assertEqual(self.run_update()["bundles"][0]["source"], expected)
+                self.assertTrue(
+                    self.summary.call_args.args[0].startswith("## 🔄 Update (1/1):")
+                )
 
     def test_compatibility_is_deduplicated_once_without_changing_public_schema(
         self,
@@ -418,7 +421,7 @@ class BundleUpdateTests(unittest.TestCase):
         self.run_update()
         self.summary.assert_called_once()
         summary = self.summary.call_args.args[0]
-        self.assertTrue(summary.startswith("## 🔄 Update:\n\n"))
+        self.assertTrue(summary.startswith("## 🔄 Update (1/1):\n\n"))
         self.assertIn("### Incomplete Apps (1)\n\n", summary)
         self.assertNotIn("### Patch list", summary)
         self.assertNotIn("### Repository metadata", summary)
@@ -525,6 +528,28 @@ class BundleUpdateTests(unittest.TestCase):
         self.assertEqual(
             catalog["compatibilities"][0][0]["packageName"], "com.beta.app"
         )
+        self.assertTrue(
+            self.summary.call_args.args[0].startswith("## 🔄 Update (2/2):")
+        )
+
+    def test_counts_only_repositories_with_hashes_and_deduplicates_sources(
+        self,
+    ) -> None:
+        self.add_target()
+        self.add_target(source="gitlab", branch="dev")
+        self.add_target(repo="owner/invalid", patches=[])
+        self.add_target(repo="owner/skipped", sha=None)
+        catalog = self.run_update()
+        self.assertEqual(len(catalog["bundles"]), 1)
+        self.assertTrue(
+            self.summary.call_args.args[0].startswith("## 🔄 Update (1/2):")
+        )
+
+    def test_empty_repository_list_still_reports_zero_counts(self) -> None:
+        self.assertEqual(self.run_update()["bundles"], [])
+        self.assertEqual(self.summary.call_args.args[0], "## 🔄 Update (0/0):")
+        self.fetch_repo.assert_not_called()
+        self.fetch_app.assert_not_called()
 
     def test_failure_before_final_output_does_not_write_state_or_cleanup_files(
         self,

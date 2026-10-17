@@ -146,6 +146,7 @@ class BundleFetchTests(unittest.TestCase):
             self.assertEqual(updated_repo["github"][branch], f"{branch}-new")
         self.assertFalse(self.updated_path.exists())
         self.run_process.assert_not_called()
+        self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
 
     def test_only_patch_list_404_queues_downloaded_mpp(self) -> None:
         url = self.url("main", "patches-list.json")
@@ -185,6 +186,7 @@ class BundleFetchTests(unittest.TestCase):
         self.fetch_request.assert_not_called()
         self.run_process.assert_not_called()
         self.assertEqual(self.repos_path.read_bytes(), original_content)
+        self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
 
     def test_missing_json_refetches_even_with_unchanged_hash(self) -> None:
         self.fetch_hash.return_value = "main-old"
@@ -310,7 +312,9 @@ class BundleFetchTests(unittest.TestCase):
                     self.assertIn("Timed out", summary)
                     self.assertNotIn("404/451", summary)
                 else:
-                    self.summary.assert_not_called()
+                    self.assertEqual(
+                        self.summary.call_args.args[0], "## 📥 Fetch (1/1):"
+                    )
 
     def test_missing_metadata_is_grouped_by_source_and_repository(self) -> None:
         results = [
@@ -409,6 +413,7 @@ class BundleFetchTests(unittest.TestCase):
         self.assertNotIn("(dev)", summary)
         self.assertNotIn(self.bundle_data["download_url"], summary)
         self.assertEqual(load_json(self.repos_path), self.initial_repos)
+        self.assertTrue(summary.startswith("## 📥 Fetch (0/1):"))
 
     def test_same_http_status_at_different_steps_keeps_both_branch_entries(
         self,
@@ -426,6 +431,11 @@ class BundleFetchTests(unittest.TestCase):
         self.assertIn("(main): Request failed (HTTP 403)", summary)
         self.assertIn("(dev): Request failed (HTTP 403)", summary)
         self.assertEqual(summary.count("- https://"), len(DEFAULT_BRANCHES))
+        self.assertEqual(summary.count("<details>"), 1)
+        details_content, remaining_content = summary.split("</details>")
+        self.assertIn("(main): Request failed (HTTP 403)", details_content)
+        self.assertNotIn("(dev): Request failed (HTTP 403)", details_content)
+        self.assertIn("(dev): Request failed (HTTP 403)", remaining_content)
 
     def test_branch_errors_are_suppressed_when_the_other_branch_succeeds(self) -> None:
         for category in ("metadata", "bundle", "patch_list"):
@@ -485,6 +495,7 @@ class BundleFetchTests(unittest.TestCase):
             summary,
         )
         self.assertNotIn("HTTP 404", summary)
+        self.assertTrue(summary.startswith("## 📥 Fetch (0/1):"))
         self.assertEqual(summary.count("- https://"), 1)
         self.run_process.assert_called_once()
         for branch in DEFAULT_BRANCHES:
@@ -587,7 +598,7 @@ class BundleFetchTests(unittest.TestCase):
                     (self.mpp_dir / "github~owner~alpha~main.mpp").read_bytes(),
                     content,
                 )
-                self.summary.assert_not_called()
+                self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
                 self.run_process.assert_not_called()
 
     def test_name_extraction_does_not_validate_other_archive_entries(self) -> None:
@@ -603,7 +614,7 @@ class BundleFetchTests(unittest.TestCase):
         updated_repo = load_json(self.repos_path)["owner/alpha"]
         self.assertEqual(updated_repo["name"], "Alpha new")
         self.assertEqual(updated_repo["github"]["main"], "main-new")
-        self.summary.assert_not_called()
+        self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
         self.run_process.assert_not_called()
 
     def test_gitlab_worker_rewrites_numeric_download_url(self) -> None:
@@ -753,7 +764,55 @@ class BundleFetchTests(unittest.TestCase):
             1,
         )
         self.run_process.assert_called_once()
-        self.summary.assert_not_called()
+        self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
+
+    def test_success_counts_repositories_once_across_sources_and_branches(self) -> None:
+        repos = self.initial_repos.copy()
+        repos["owner/alpha"] = {
+            **repos["owner/alpha"],
+            "gitlab": {"main": "gitlab-old", "dev": None},
+        }
+        repos["owner/beta"] = {"github": {"main": "beta-old", "dev": None}}
+        save_json(self.repos_path, repos)
+
+        def process_branch(
+            source: str,
+            repo: str,
+            branch: str,
+            current_sha: str | None,
+            **_kwargs: object,
+        ) -> bundle_fetch.BranchFetchResult:
+            return bundle_fetch.BranchFetchResult(
+                source,
+                repo,
+                branch,
+                current_sha,
+                error_message=None
+                if source == "gitlab"
+                else "Request failed (HTTP 503)",
+                error_category=None if source == "gitlab" else "metadata",
+            )
+
+        with (
+            patch.object(
+                bundle_fetch, "process_repo_branch", side_effect=process_branch
+            ),
+            patch.object(
+                bundle_fetch, "get_image_sha", side_effect=TimeoutError("Image timeout")
+            ),
+        ):
+            bundle_fetch.fetch_all_repos(daily=True)
+        summary = self.summary.call_args.args[0]
+        self.assertTrue(summary.startswith("## 📥 Fetch (1/2):"))
+        self.assertIn("Bundle image (3)", summary)
+        self.assertEqual(load_json(self.repos_path), repos)
+
+    def test_empty_repository_list_still_reports_zero_counts(self) -> None:
+        save_json(self.repos_path, {})
+        bundle_fetch.fetch_all_repos()
+        self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (0/0):")
+        self.fetch_hash.assert_not_called()
+        self.fetch_request.assert_not_called()
 
 
 if __name__ == "__main__":

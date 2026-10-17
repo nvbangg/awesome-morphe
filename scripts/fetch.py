@@ -380,14 +380,25 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
             REPOS_JSON_PATH,
             dict(sorted(repos_data.items(), key=lambda item: item[0].lower())),
         )
-    summary_sections = [
-        f"### {title} ({len(errors[category])})\n\n"
-        + "\n".join(f"- {error}" for error in sorted(errors[category]))
-        for category, title in FETCH_ERROR_SECTIONS.items()
-        if errors[category]
-    ]
-    if summary_sections:
-        append_step_summary("\n\n".join(["## 📥 Fetch:", *summary_sections]))
+    total_repo_count = len({result.repo for result in results})
+    successful_repo_count = len(
+        {
+            result.repo
+            for result in results
+            if result.new_sha and not result.error_message
+        }
+    )
+    summary_sections = [f"## 📥 Fetch ({successful_repo_count}/{total_repo_count}):"]
+    for category, title in FETCH_ERROR_SECTIONS.items():
+        if not errors[category]:
+            continue
+        content = "\n".join(f"- {error}" for error in sorted(errors[category]))
+        if category == "metadata":
+            content = (
+                f"<details>\n<summary>Show details</summary>\n\n{content}\n\n</details>"
+            )
+        summary_sections.append(f"### {title} ({len(errors[category])})\n\n{content}")
+    append_step_summary("\n\n".join(summary_sections))
     print(f"Fetch completed. Updated {updated_count} targets.")
 
 
