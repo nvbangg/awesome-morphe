@@ -318,10 +318,15 @@ def collect_fetch_errors(results: list[BranchFetchResult]) -> dict[str, list[str
                 f"{repo_url}: {first_result.error_message}"
             )
         else:
-            for result in branch_results:
-                errors[result.error_category].append(
-                    f"{repo_url} ({result.branch}): {result.error_message}"
+            category_errors: dict[str, list[str]] = {}
+            for result in sorted(
+                branch_results, key=lambda result: DEFAULT_BRANCHES.index(result.branch)
+            ):
+                category_errors.setdefault(result.error_category, []).append(
+                    f"({result.branch}) {result.error_message}"
                 )
+            for category, reasons in category_errors.items():
+                errors[category].append(f"{repo_url}: {'; '.join(reasons)}")
     return errors
 
 

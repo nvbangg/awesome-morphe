@@ -235,7 +235,7 @@ class BundleFetchTests(unittest.TestCase):
                     )
                     self.assertIn(expected_reason, summary)
 
-    def test_metadata_errors_preserve_codes_and_combine_only_identical_errors(
+    def test_metadata_errors_preserve_codes_in_one_entry_per_repository(
         self,
     ) -> None:
         def get_hash(_source: str, _repo: str, branch: str) -> str:
@@ -259,20 +259,18 @@ class BundleFetchTests(unittest.TestCase):
                             bundle_fetch.fetch_all_repos()
                         self.summary.assert_called_once()
                         summary = self.summary.call_args.args[0]
+                        self.assertIn("### Bundle metadata (1)", summary)
+                        self.assertEqual(summary.count("- https://"), 1)
                         if main_code == dev_code:
-                            self.assertEqual(summary.count("- https://"), 1)
                             self.assertNotIn("(main)", summary)
                             self.assertNotIn("(dev)", summary)
                             self.assertIn(f"Request failed (HTTP {main_code})", summary)
                         else:
-                            self.assertEqual(
-                                summary.count("- https://"), len(DEFAULT_BRANCHES)
-                            )
                             self.assertIn(
-                                f"(main): Request failed (HTTP {main_code})", summary
-                            )
-                            self.assertIn(
-                                f"(dev): Request failed (HTTP {dev_code})", summary
+                                "https://github.com/owner/alpha: "
+                                f"(main) Request failed (HTTP {main_code}); "
+                                f"(dev) Request failed (HTTP {dev_code})",
+                                summary,
                             )
                         self.assertNotIn("HTTP 404/451", summary)
                         updated_repo = load_json(self.repos_path)["owner/alpha"]
@@ -305,9 +303,10 @@ class BundleFetchTests(unittest.TestCase):
                 if other_failure:
                     self.summary.assert_called_once()
                     summary = self.summary.call_args.args[0]
-                    self.assertIn("owner/alpha (dev)", summary)
                     self.assertIn(
-                        "owner/alpha (main): Request failed (HTTP 404)", summary
+                        "owner/alpha: (main) Request failed (HTTP 404); "
+                        "(dev) Request failed: Timed out",
+                        summary,
                     )
                     self.assertIn("Timed out", summary)
                     self.assertNotIn("404/451", summary)
@@ -374,11 +373,11 @@ class BundleFetchTests(unittest.TestCase):
                 with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
                     bundle_fetch.fetch_all_repos()
                 summary = self.summary.call_args.args[0]
-                self.assertIn("owner/alpha (main)", summary)
+                self.assertIn("owner/alpha: (main)", summary)
                 self.assertIn("Bundle metadata (1)", summary)
                 self.assertIn("Bundle download (1)", summary)
-                self.assertIn(f"(main): Request failed (HTTP {failure.code})", summary)
-                self.assertIn("(dev): Request failed (HTTP 404)", summary)
+                self.assertIn(f"(main) Request failed (HTTP {failure.code})", summary)
+                self.assertIn("(dev) Request failed (HTTP 404)", summary)
                 self.assertNotIn("on main and dev", summary)
 
     def test_image_failure_is_reported_without_repeating_missing_metadata(self) -> None:
@@ -428,14 +427,14 @@ class BundleFetchTests(unittest.TestCase):
         summary = self.summary.call_args.args[0]
         self.assertIn("Bundle metadata (1)", summary)
         self.assertIn("Bundle download (1)", summary)
-        self.assertIn("(main): Request failed (HTTP 403)", summary)
-        self.assertIn("(dev): Request failed (HTTP 403)", summary)
+        self.assertIn("(main) Request failed (HTTP 403)", summary)
+        self.assertIn("(dev) Request failed (HTTP 403)", summary)
         self.assertEqual(summary.count("- https://"), len(DEFAULT_BRANCHES))
         self.assertEqual(summary.count("<details>"), 1)
         details_content, remaining_content = summary.split("</details>")
-        self.assertIn("(main): Request failed (HTTP 403)", details_content)
-        self.assertNotIn("(dev): Request failed (HTTP 403)", details_content)
-        self.assertIn("(dev): Request failed (HTTP 403)", remaining_content)
+        self.assertIn("(main) Request failed (HTTP 403)", details_content)
+        self.assertNotIn("(dev) Request failed (HTTP 403)", details_content)
+        self.assertIn("(dev) Request failed (HTTP 403)", remaining_content)
 
     def test_branch_errors_are_suppressed_when_the_other_branch_succeeds(self) -> None:
         for category in ("metadata", "bundle", "patch_list"):

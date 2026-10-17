@@ -173,7 +173,7 @@ class BundleUpdateTests(unittest.TestCase):
                 self.assertTrue(path.exists())
                 summary = self.summary.call_args.args[0]
                 self.assertIn("### Patch list (1)", summary)
-                self.assertIn("https://github.com/owner/alpha (main):", summary)
+                self.assertIn("https://github.com/owner/alpha: (main)", summary)
                 self.assertNotIn("patches-bundle.json", summary)
                 self.assertNotIn("invalid or excluded", summary)
         self.fetch_repo.assert_not_called()
@@ -213,7 +213,7 @@ class BundleUpdateTests(unittest.TestCase):
         self.assertEqual(self.run_update()["bundles"], [])
         summary = self.summary.call_args.args[0]
         self.assertIn(
-            "https://github.com/owner/alpha (main): Missing `patches-list.json`",
+            "https://github.com/owner/alpha: (main) Missing `patches-list.json`",
             summary,
         )
         self.assertNotIn("patches-bundle.json", summary)
@@ -227,11 +227,11 @@ class BundleUpdateTests(unittest.TestCase):
         summary = self.summary.call_args.args[0]
         self.assertIn("### Patch list (2)", summary)
         self.assertIn(
-            "https://github.com/owner/alpha (main): No patches found", summary
+            "https://github.com/owner/alpha: (main) No patches found", summary
         )
-        self.assertIn("https://gitlab.com/owner/alpha (dev): Invalid data", summary)
-        self.assertNotIn("https://github.com/owner/alpha (dev)", summary)
-        self.assertNotIn("https://gitlab.com/owner/alpha (main)", summary)
+        self.assertIn("https://gitlab.com/owner/alpha: (dev) Invalid data", summary)
+        self.assertNotIn("https://github.com/owner/alpha: (dev)", summary)
+        self.assertNotIn("https://gitlab.com/owner/alpha: (main)", summary)
 
     def test_invalid_patch_list_is_reported_when_other_source_is_valid(self) -> None:
         self.add_target(patches=[])
@@ -239,7 +239,7 @@ class BundleUpdateTests(unittest.TestCase):
         self.assertEqual(self.run_update()["bundles"][0]["source"], "gitlab")
         summary = self.summary.call_args.args[0]
         self.assertIn(
-            "https://github.com/owner/alpha (main): No patches found", summary
+            "https://github.com/owner/alpha: (main) No patches found", summary
         )
         self.assertNotIn("https://gitlab.com/owner/alpha", summary)
 
@@ -297,16 +297,18 @@ class BundleUpdateTests(unittest.TestCase):
         self.assertEqual(summary.count("- https://"), 1)
         self.assertEqual(self.repos_path.read_bytes(), repos_snapshot)
 
-    def test_different_invalid_branches_keep_separate_reasons(self) -> None:
+    def test_different_invalid_branches_share_one_repository_entry(self) -> None:
         self.add_target(patches=[])
         self.add_target(branch="dev").write_text("{broken", encoding="utf-8")
         self.assertEqual(self.run_update()["bundles"], [])
         summary = self.summary.call_args.args[0]
-        self.assertIn("### Patch list (2)", summary)
+        self.assertIn("### Patch list (1)", summary)
         self.assertIn(
-            "https://github.com/owner/alpha (main): No patches found", summary
+            "https://github.com/owner/alpha: (main) No patches found; "
+            "(dev) Invalid data",
+            summary,
         )
-        self.assertIn("https://github.com/owner/alpha (dev): Invalid data", summary)
+        self.assertEqual(summary.count("- https://"), 1)
 
     def test_null_sha_does_not_hide_other_branch_errors_or_use_stale_files(
         self,
@@ -328,7 +330,7 @@ class BundleUpdateTests(unittest.TestCase):
                 summary = self.summary.call_args.args[0]
                 self.assertIn("### Patch list (1)", summary)
                 self.assertIn(
-                    f"https://github.com/owner/alpha ({invalid_branch}): No patches found",
+                    f"https://github.com/owner/alpha: ({invalid_branch}) No patches found",
                     summary,
                 )
                 self.assertNotIn(f"({skipped_branch})", summary)

@@ -259,11 +259,11 @@ def process(
             if errors is not None and not (cur_main_patches or cur_dev_patches):
                 if main_reason and main_reason == dev_reason:
                     errors["patch_lists"].append(f"{repo_url}: {main_reason}")
-                else:
-                    errors["patch_lists"].extend(
-                        f"{repo_url} ({branch}): {reason}"
-                        for branch, reason in branch_errors
+                elif branch_errors:
+                    reasons = "; ".join(
+                        f"({branch}) {reason}" for branch, reason in branch_errors
                     )
+                    errors["patch_lists"].append(f"{repo_url}: {reasons}")
 
             if cur_main_patches or cur_dev_patches:
                 main_timestamp = (
