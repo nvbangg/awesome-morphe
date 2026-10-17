@@ -1,7 +1,59 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "patches": [
+    {
+      "name": "Adapt to modern displays",
+      "description": "Widens the game world from 512 to 640 units with the matching geometry adjustments, reworks the scene layout for the wider field, adds display-cutout and immersive window handling (fixes the black bar on tall screens), and moves the per-frame texture setup to a one-time init call (the port's flicker fix).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dotgears.flappybird",
+          "name": "Flappy Bird",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Convert to 64-bit",
+      "description": "Removes the bundled 32-bit native libraries (libandengine.so for armeabi, armeabi-v7a and x86). The engine's native loading is exception-guarded in the stock code and falls back to its Java implementation, so the game becomes ABI-neutral and installs on 64-bit-only devices.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dotgears.flappybird",
+          "name": "Flappy Bird",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Disable AppMetrica activation",
       "description": "Makes AppMetrica.activateReporter a no-op, so the AppMetrica reporter the Yandex mediation glue sets up is never activated and its events are dropped.",
@@ -497,6 +549,32 @@
       "options": []
     },
     {
+      "name": "Modernize manifest and resources",
+      "description": "Makes the game activity the launcher and removes the splash screen and AdMob activity, drops the INTERNET and ACCESS_NETWORK_STATE permissions, raises the SDK levels to the port's min 14 / target 34 (current Android refuses to install the stock target 15), adds an adaptive launcher icon and display-cutout theme settings, removes the dead Google sign-in resources, replaces the sound effects with the port's re-encoded versions, and sets the version to 1.12 (versionCode 13).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dotgears.flappybird",
+          "name": "Flappy Bird",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove Rate this app menu item",
       "description": "Removes the 'Rate this app' item, which opens the app's store listing, from the main screen menu.",
       "default": true,
@@ -512,6 +590,32 @@
           "targets": [
             {
               "version": "2.4.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads and Google services hooks",
+      "description": "Hides the AdMob banner and removes the ad request so no ad is ever loaded, disconnects the Google Play Games activity hook, and removes the port-removed tap-zone handler and scene trigger tied to the old services UI.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dotgears.flappybird",
+          "name": "Flappy Bird",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
