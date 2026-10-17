@@ -210,7 +210,10 @@ def main() -> int:
             if issues:
                 display_name = f" ({name})" if name else ""
                 incomplete_apps.append(
-                    f"- `{package_name}`{display_name}: {', '.join(issues)}"
+                    (
+                        bool(name),
+                        f"- `{package_name}`{display_name}: {', '.join(issues)}",
+                    )
                 )
 
     save_json(
@@ -269,7 +272,9 @@ def main() -> int:
             )
 
     if incomplete_apps:
-        sorted_incomplete_apps = sorted(incomplete_apps)
+        sorted_incomplete_apps = [
+            app_issue for _has_name, app_issue in sorted(incomplete_apps)
+        ]
         print(
             f"[-] Note: {len(sorted_incomplete_apps)} apps have incomplete metadata (missing icon/name):"
         )
