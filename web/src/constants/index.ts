@@ -10,7 +10,7 @@ export const UI_NEW_BADGE_MS = UI_NEW_BADGE_DAYS * 24 * 60 * 60 * 1000;
 export const MIN_DISPLAY_INSTALLS = 100;
 export const DEFAULT_TAB = "apps" as const;
 export const BUNDLE_CATEGORY_OPTIONS = [
-  { key: "all", label: "All categories" },
-  { key: "official", label: "Official bundles" },
-  { key: "unofficial", label: "Unofficial" },
+	{ key: "all", label: "All categories" },
+	{ key: "official", label: "Official bundles" },
+	{ key: "unofficial", label: "Unofficial" },
 ];
