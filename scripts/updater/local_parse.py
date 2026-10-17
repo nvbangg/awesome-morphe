@@ -9,17 +9,13 @@ from typing import Any
 from utils import (
     BUNDLES_DIR,
     DEFAULT_BRANCHES,
-    HASHES_PATH,
-    HISTORY_PATH,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
     PATCHES_DIR,
-    REPOS_JSON_PATH,
     build_repo_url,
     load_json,
     parse_repo_url,
     parse_timestamp,
-    save_json,
 )
 
 _BUNDLE_NAME_SUFFIX_RE = re.compile(
@@ -129,7 +125,10 @@ def parse_patches_list(
     valid_patches = []
     bundle_apps = set()
     for patch in raw_list:
-        if not isinstance(patch, dict) or not (name := patch.get("name")):
+        if not isinstance(patch, dict):
+            continue
+        name = patch.get("name")
+        if not isinstance(name, str) or not name.strip():
             continue
         if is_dev_branch and main_patch_names and name not in main_patch_names:
             patch["isPreRelease"] = True
@@ -162,11 +161,11 @@ def load_branch_data(
     main_patch_names: set[str] | None = None,
 ) -> tuple[dict | None, list[dict] | None, list[dict] | None, str | None]:
     if not has_sha:
-        return None, None, None, "Missing `patches-bundle.json`"
+        return None, None, None, None
     bundle_file = BUNDLES_DIR / f"{file_prefix}~{branch}.json"
     list_file = PATCHES_DIR / f"{file_prefix}~{branch}.json"
     if not bundle_file.exists():
-        return None, None, None, "Missing `patches-bundle.json`"
+        return None, None, None, None
     bundle = load_json(bundle_file)
     download_url = bundle.get("download_url") if isinstance(bundle, dict) else None
     mpp_source, mpp_repo = (
@@ -179,16 +178,19 @@ def load_branch_data(
         or not mpp_repo
         or mpp_repo.lower() != file_prefix.split("~", 1)[1].replace("~", "/").lower()
     ):
-        return None, None, None, "Invalid `download_url`"
+        return None, None, None, None
     if not list_file.exists():
         return None, None, None, "Missing `patches-list.json`"
-    raw = load_json(list_file)
-    patches, reason = parse_patches_list(
-        raw,
-        discovered_names,
-        is_dev_branch=is_dev_branch,
-        main_patch_names=main_patch_names,
-    )
+    try:
+        raw = load_json(list_file)
+        patches, reason = parse_patches_list(
+            raw,
+            discovered_names,
+            is_dev_branch=is_dev_branch,
+            main_patch_names=main_patch_names,
+        )
+    except (AttributeError, TypeError, ValueError) as error:
+        return None, None, None, f"Invalid patches-list.json: {error}"
     if not patches:
         return None, None, None, reason
     return bundle, patches, raw["patches"], None
@@ -197,40 +199,13 @@ def load_branch_data(
 def process(
     bundle_sources: dict,
     apps_dict: dict,
+    repos_data: dict,
+    existing_hashes: dict,
     errors: dict[str, list[str]] | None = None,
     existing_bundles: dict | None = None,
-) -> list:
-    compatibilities_list = []
-    compatibilities_map = {}
-
-    def get_compatibility_key(compatibility_data: list) -> int:
-        compatibility_json = json.dumps(compatibility_data, sort_keys=True)
-        if compatibility_json in compatibilities_map:
-            return compatibilities_map[compatibility_json]
-        index = len(compatibilities_list)
-        compatibilities_list.append(compatibility_data)
-        compatibilities_map[compatibility_json] = index
-        return index
-
-    repos_data = load_json(REPOS_JSON_PATH, {})
-    valid_target_files = {
-        f"{source}~{repo.replace('/', '~')}~{branch}.json"
-        for repo, repo_metadata in repos_data.items()
-        if isinstance(repo_metadata, dict)
-        for source in ("github", "gitlab")
-        if isinstance(repo_metadata.get(source), dict)
-        for branch in DEFAULT_BRANCHES
-    }
-    for directory in (BUNDLES_DIR, PATCHES_DIR):
-        if directory.exists():
-            for filepath in directory.glob("*.json"):
-                if filepath.name not in valid_target_files:
-                    filepath.unlink(missing_ok=True)
-
+) -> dict[str, dict[str, str]]:
     keys_to_remove = []
-    valid_apps_from_bundles = set()
     now_ms = int(time.time() * 1000)
-    existing_hashes = load_json(HASHES_PATH, {})
     all_new_hashes: dict[str, dict[str, str]] = {}
 
     print(f"\nParsing local patches and bundles for {len(bundle_sources)} sources...")
@@ -240,8 +215,6 @@ def process(
         owner = repo.split("/", 1)[0]
         repo_metadata = repos_data.get(repo, {})
         candidates = []
-        has_sha = False
-        fail_reason = None
 
         for source in ("github", "gitlab"):
             source_metadata = repo_metadata.get(source)
@@ -250,9 +223,7 @@ def process(
             main_sha = source_metadata.get("main")
             dev_sha = source_metadata.get("dev")
             if not main_sha and not dev_sha:
-                fail_reason = "Missing `patches-bundle.json`"
                 continue
-            has_sha = True
 
             file_prefix = f"{source}~{repo.replace('/', '~')}"
             cur_discovered_names = {}
@@ -275,6 +246,13 @@ def process(
                 is_dev_branch=True,
                 main_patch_names=main_patch_names,
             )
+
+            for branch, reason in (("main", main_reason), ("dev", dev_reason)):
+                if reason:
+                    message = f"{build_repo_url(source, repo)} ({branch}): {reason}"
+                    print(f"[-] {message}")
+                    if errors is not None:
+                        errors["patch_lists"].append(message)
 
             if cur_main_patches or cur_dev_patches:
                 main_timestamp = (
@@ -306,21 +284,9 @@ def process(
                     }
                 )
 
-            fail_reason = main_reason or dev_reason
-
         if not candidates:
             keys_to_remove.append(repo)
-            message = fail_reason or (
-                "Missing `patches-list.json`"
-                if has_sha
-                else "Missing `patches-bundle.json`"
-            )
-            print(f"[-] Excluding {repo}: {message}")
-            if errors is not None:
-                for source in ("github", "gitlab"):
-                    if source in repo_metadata:
-                        repo_url = build_repo_url(source, repo)
-                        errors["unavailable"].append(f"{repo_url}: {message}")
+            print(f"[-] Excluding {repo}: no usable local branch data")
             continue
 
         previous_source = (existing_bundles or {}).get(repo, {}).get("source")
@@ -391,7 +357,6 @@ def process(
                     package_name = compatible_package.get("packageName")
                     if package_name and package_name != PACKAGE_UNIVERSAL:
                         current_apps_in_bundle.add(package_name)
-                        valid_apps_from_bundles.add(package_name)
                         apps_dict.setdefault(package_name, {})
                         if (
                             app_name := discovered_names.get(package_name)
@@ -420,9 +385,7 @@ def process(
             if options := patch.get("options"):
                 ordered_patch["options"] = options
             if compatible_packages:
-                ordered_patch["compatiblePackagesKey"] = get_compatibility_key(
-                    compatible_packages
-                )
+                ordered_patch["compatiblePackages"] = compatible_packages
             final_patches.append(ordered_patch)
 
         if (
@@ -469,32 +432,20 @@ def process(
     for key in keys_to_remove:
         bundle_sources.pop(key, None)
 
-    apps_to_remove = [
-        package_name
-        for package_name in list(apps_dict.keys())
-        if package_name not in valid_apps_from_bundles
-        and package_name != PACKAGE_UNIVERSAL
-    ]
-    for package_name in apps_to_remove:
-        del apps_dict[package_name]
-        print(f"[-] Removed app '{package_name}' (no longer supported by any bundle)")
+    return all_new_hashes
 
-    valid_repos = set(bundle_sources.keys())
-    cleaned_hashes = {
-        repo: all_new_hashes[repo]
-        for repo in sorted(valid_repos, key=str.lower)
-        if repo in all_new_hashes
+
+def cleanup_orphan_files(repos_data: dict) -> None:
+    target_files = {
+        f"{source}~{repo.replace('/', '~')}~{branch}.json"
+        for repo, repo_metadata in repos_data.items()
+        if isinstance(repo_metadata, dict)
+        for source in ("github", "gitlab")
+        if isinstance(repo_metadata.get(source), dict)
+        for branch in DEFAULT_BRANCHES
     }
-    save_json(HASHES_PATH, cleaned_hashes)
-
-    history_data = load_json(HISTORY_PATH, {})
-    if history_data:
-        cleaned_history = {
-            repo: history_data[repo]
-            for repo in sorted(history_data.keys(), key=str.lower)
-            if repo in valid_repos
-        }
-        if cleaned_history != history_data:
-            save_json(HISTORY_PATH, cleaned_history)
-
-    return compatibilities_list
+    for directory in (BUNDLES_DIR, PATCHES_DIR):
+        if directory.exists():
+            for filepath in directory.glob("*.json"):
+                if filepath.name not in target_files:
+                    filepath.unlink()

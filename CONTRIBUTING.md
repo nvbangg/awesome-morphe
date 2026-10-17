@@ -31,13 +31,10 @@ flowchart TD
     A["Sync"] --> B{"Daily / weekly refresh due?"}
     B -->|Yes, scheduled run| C["Dispatch daily.yml"]
     B -->|No, or manual run| D["Discover + Fetch"]
-    D --> E{"Pending targets?"}
-    E -->|Yes| F["Apply pending; parse queued .mpp"]
-    E -->|No| G{"Data changes?"}
-    F --> G
-    G -->|Yes| H["Update"]
-    H --> I["Commit and push"]
-    G -->|No| J[Complete]
+    D --> E{"Data changes?"}
+    E -->|Yes| F["Update"]
+    F --> G["Commit and push"]
+    E -->|No| H[Complete]
 ```
 
 ### [Daily / Weekly Workflow](../../actions/workflows/daily.yml) (daily.yml)
@@ -47,15 +44,14 @@ Triggered by Sync or manually:
 - **`daily`:** Syncs bundles, checks bundle images, and refreshes repository metadata.
 - **`weekly`:** Also checks existing bundle downloads and refreshes all Google Play metadata.
 
-Both modes update public data, generate the changelog, and clean up old workflow runs. Pending updates are applied whenever present; Java is set up and the parser runs only when the `.mpp` queue is nonempty.
+Both modes update public data, generate the changelog, and clean up old workflow runs. Java 21 is set up before fetching; fetch invokes the parser only when patch lists are missing (HTTP 404).
 
 ```mermaid
 flowchart TD
-    A["Discover + Fetch"] --> B["Apply pending; parse queued .mpp"]
-    B --> C["Update + Check What's New"]
-    C --> D["Commit and push"]
-    D --> E["Send What's New via Telegram"]
-    E --> F["Clean up old workflow runs"]
+    A["Discover + Fetch"] --> B["Update + Check What's New"]
+    B --> C["Commit and push"]
+    C --> D["Send What's New via Telegram"]
+    D --> E["Clean up old workflow runs"]
 ```
 
 ### [Check Projects Workflow](../../actions/workflows/check-projects.yml) (check-projects.yml)
@@ -99,35 +95,29 @@ Add sources to [`data/discover/custom.json`](./data/discover/custom.json), or se
 
 ### [`fetch.py`](./scripts/fetch.py)
 
-Checks and downloads bundle updates for repositories in [`data/repos.json`](./data/repos.json), storing GitHub and GitLab data separately.
+Checks metadata hashes for GitHub and GitLab targets (`source`, repository, `main`/`dev` branch). Unchanged targets with a nonempty stored hash and both local JSON files skip downloads; a local `.mpp` is not required. The hash tracks downloaded data, not patch-list validity.
 
-#### Update Processing
+Each concurrent worker downloads metadata, checks its `.mpp` URL against the source repository, downloads the `.mpp`, and attempts to read its manifest name. GitLab numeric project URLs retain their existing rewrite. Downloads stay in memory until the target has completed its network requests, then overwrite the normal paths in `data/bundles/`, `data/patches/`, and `scripts/bundle-parser/mpp/`.
 
-Checks the content hashes of `patches-bundle.json` on `main` and `dev`. For changed targets, it downloads:
+- A downloaded patch list is saved verbatim, even when its JSON or contents are invalid. Validation belongs to `update.py`; an invalid downloaded list never triggers parsing.
+- Only a patch-list HTTP 404 queues the downloaded `.mpp` for parsing. Other patch-list HTTP errors, including 451, preserve the previous files and hash.
+- Connection failures, timeouts, and other HTTP errors preserve the previous files and hash. There are no retries within a run.
+- Unavailable metadata or `.mpp` downloads (HTTP 404/451), malformed metadata, and invalid download URLs clear the target hash to `null`. Existing files are retained but excluded by update.
+- Missing hash headers are reported as check failures, not missing metadata. Name extraction is optional: unreadable archives or manifests and missing or blank names keep the existing display-name fallback without rejecting the target. Fetch does not scan archive contents or validate Morphe runtime compatibility.
 
-- Bundle metadata to [`data/bundles/`](./data/bundles/).
-- The corresponding `.mpp` to [`scripts/bundle-parser/mpp/`](./scripts/bundle-parser/mpp/) to extract the bundle name.
-- `patches-list.json` to [`data/patches/`](./data/patches/), when it can be downloaded and decoded.
+After workers finish, fetch runs the Kotlin [`bundle-parser`](./scripts/bundle-parser/) once for the current queue in `updated_files.txt`. The parser remains adapted from [Jman's Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) for this project and Morphe. Fetch removes the previous `parsed_files.txt` before launch. A parsed target receives its new hash only when the process succeeds, lists that target in the current success file, and the output file exists. Output content is checked later by update. Individual parse failures clear only those targets' hashes; parser launch/build failures or missing success reports stop the pipeline before update or publication. File-write failures also stop the pipeline.
 
-Branch targets are processed concurrently. Each worker downloads and saves its target's files; the caller collects pending updates and the `.mpp` parse queue.
+Fetch collects target results in memory and writes `data/repos.json` once after processing, including independent image updates. It does not use `pending_repos.json` or a separate parse script.
 
-If the patch list cannot be retrieved, the `.mpp` is queued in [`scripts/bundle-parser/updated_files.txt`](./scripts/bundle-parser/updated_files.txt) for parsing. Pending names and hashes are saved to [`scripts/bundle-parser/pending_repos.json`](./scripts/bundle-parser/pending_repos.json) for [`parse.py`](./scripts/parse.py) to apply.
-
-HTTP 404/451 responses mark targets unavailable; other request failures generally preserve existing hashes for retry.
+The Fetch summary groups metadata HTTP 404/451 by source and repository: it reports one entry only when both `main` and `dev` are unavailable. A single unavailable metadata branch stays in console logs. Other metadata errors, `.mpp` failures, patch-list download failures, individual parser failures, and image request failures are reported separately. Fatal parser or file-write failures stop the workflow; their details remain in workflow logs.
 
 #### Execution Modes
 
-- **Default:** Checks and downloads bundle updates.
-- **`--daily`:** Also checks the content hashes of `patches-bundle.png`.
-- **`--weekly`:** Includes daily behavior and checks `.mpp` download availability for unchanged bundles, excluding unavailable targets.
+- **Default:** Checks and downloads bundle updates, parsing only missing patch lists.
+- **`--daily`:** Also checks hashes of `patches-bundle.png`.
+- **`--weekly`:** Includes daily behavior and checks `.mpp` availability for unchanged targets. HTTP 404/451 clears the branch hash; other request failures preserve it.
 
-### [`parse.py`](./scripts/parse.py)
-
-Runs the Kotlin-based [`bundle-parser`](./scripts/bundle-parser/) (adapted from [Jman's Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) to fit this project and Morphe) on `.mpp` files listed in [`scripts/bundle-parser/updated_files.txt`](./scripts/bundle-parser/updated_files.txt), saving patch lists to [`data/patches/`](./data/patches/).
-
-Applies pending hashes from [`scripts/bundle-parser/pending_repos.json`](./scripts/bundle-parser/pending_repos.json) to [`data/repos.json`](./data/repos.json). Before each parser run, the previous success list is removed. A queued target is accepted only when the current process succeeds, lists that target in `parsed_files.txt`, and produces a patch list accepted by the existing data validation. Bundle names are read from the manifests of accepted branch updates, so a failed branch cannot supply another branch's name.
-
-A process failure returns a nonzero exit code and rejects all queued targets from that run. When the process succeeds with individual target failures, valid targets are still accepted and failed targets retain their previous hashes for retry. Pending updates from directly downloaded patch lists and images can be applied without Java; independent updates can also be applied when the parser process fails, but the failure stops subsequent workflow steps.
+Only metadata hashes trigger updates, so changes made solely to a patch list without changing its metadata are not detected.
 
 ### [`update.py`](./scripts/update.py)
 
@@ -137,13 +127,17 @@ Compiles bundle, patch, and app data into [`web/public/bundles.json`](./web/publ
 
 Selects the valid GitHub or GitLab source with the newest `created_at` value. Ties keep the current source, or prefer GitHub for new bundles. Within that source, `dev` is selected when it is newer than `main` or no valid `main` exists; otherwise, `main` is selected.
 
-Bundles without valid `main` data are marked prerelease. Patches found only in `dev` are also marked prerelease when compared with `main`. Invalid bundles are excluded.
+Bundles without valid `main` data are marked prerelease. Patches found only in `dev` are also marked prerelease when compared with `main`. Branches with null hashes are ignored. Downloaded and parser-generated patch lists share the same local validation: malformed JSON, invalid structure, empty lists, and template-only bundles are excluded without restoring previous patch data. A downloaded hash remains a download checkpoint, even when update rejects its patch list.
+
+The Update summary reports missing or invalid local patch lists under **Invalid patch lists**, with the source repository and branch, even if another branch or source remains valid. It does not repeat metadata or `.mpp` failures already handled by fetch, or report a total of excluded repositories. Repository metadata warnings remain under **Warnings**, and incomplete app metadata has its own section.
 
 #### Metadata and Cleanup
 
 Fetches repository metadata from GitHub/GitLab and app metadata from Google Play. Nonempty app names, icons, and descriptions from [`data/official-bundles.json`](./data/official-bundles.json) take priority.
 
-Removes orphaned bundle and patch files and apps no longer supported by any bundle.
+Repository metadata request failures are reported without removing bundles whose local patch data is valid. Rename changes stay in memory until final output is ready. After repository selection and rename handling, apps no longer supported by a final bundle are removed before Google Play requests. Compatibility data stays inline during processing; the public compatibility table and keys are built once from the final patches, preserving the existing public schema.
+
+Only after the final catalog is built does update write the catalog, app hashes, cleaned history, and any renamed source configuration. Hashes and history use final repository names. Orphaned bundle and patch files are removed at the end; failures before final output leave these files and persisted state unchanged.
 
 #### Execution Modes
 
@@ -241,7 +235,6 @@ Open the local URL shown in the terminal.
 python -m pip install -e scripts/
 python scripts/discover.py
 python scripts/fetch.py
-python scripts/parse.py
 python scripts/update.py
 ```
 

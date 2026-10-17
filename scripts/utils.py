@@ -1,8 +1,8 @@
 import contextlib
+import io
 import json
 import os
 import re
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -41,7 +41,6 @@ README_LINKS_PATH = PROJECTS_DIR / "readme-links.txt"
 EXCLUDED_REPOS_PATH = PROJECTS_DIR / "excluded-repos.txt"
 NEW_PROJECTS_PATH = PROJECTS_DIR / "new-projects.txt"
 
-PENDING_REPOS_PATH = BUNDLE_PARSER_DIR / "pending_repos.json"
 UPDATED_FILES_PATH = BUNDLE_PARSER_DIR / "updated_files.txt"
 PARSED_FILES_PATH = BUNDLE_PARSER_DIR / "parsed_files.txt"
 
@@ -56,8 +55,11 @@ UNAVAILABLE_HTTP_CODES = (404, 451)
 DEAD_LINK_HTTP_CODES = (404, 410)
 
 
-def extract_mpp_name(mpp_file: Path) -> str | None:
-    with contextlib.suppress(Exception), zipfile.ZipFile(mpp_file, "r") as zip_file:
+def extract_mpp_name(mpp_file: bytes) -> str | None:
+    with (
+        contextlib.suppress(Exception),
+        zipfile.ZipFile(io.BytesIO(mpp_file), "r") as zip_file,
+    ):
         manifest_text = zip_file.read("META-INF/MANIFEST.MF").decode("utf-8")
         for line in manifest_text.splitlines():
             if line.startswith("Name:"):
@@ -104,25 +106,13 @@ def fetch(
 ) -> Any:
     request_headers = get_auth_headers(url, headers)
 
-    for attempt in range(3):
-        try:
-            request = urllib.request.Request(url, headers=request_headers)
-            with urllib.request.urlopen(request, timeout=timeout) as response:
-                content = response.read()
-                if binary:
-                    return content
-                decoded = content.decode("utf-8")
-                return json.loads(decoded) if as_json else decoded
-
-        except urllib.error.HTTPError:
-            raise
-        except Exception:
-            if attempt < 2:
-                time.sleep(1)
-            else:
-                raise
-
-    raise RuntimeError(f"Failed to fetch {url}")
+    request = urllib.request.Request(url, headers=request_headers)
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        content = response.read()
+        if binary:
+            return content
+        decoded = content.decode("utf-8")
+        return json.loads(decoded) if as_json else decoded
 
 
 def append_step_summary(markdown_content: str) -> None:

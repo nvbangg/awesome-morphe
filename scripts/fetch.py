@@ -1,22 +1,25 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
 import argparse
-import contextlib
 import json
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
+from http import HTTPStatus
+from http.client import HTTPException
 
 from utils import (
+    BUNDLE_PARSER_DIR,
     BUNDLES_DIR,
     CONCURRENCY,
     DEFAULT_BRANCHES,
     MPP_DIR,
+    PARSED_FILES_PATH,
     PATCHES_DIR,
-    PENDING_REPOS_PATH,
     REPOS_JSON_PATH,
     UNAVAILABLE_HTTP_CODES,
     UPDATED_FILES_PATH,
@@ -27,9 +30,14 @@ from utils import (
     fetch,
     get_auth_headers,
     load_json,
+    load_lines,
     parse_repo_url,
     save_json,
 )
+
+HASH_REQUEST_TIMEOUT_SECONDS = 10
+GRADLE_EXECUTABLE_NAME = "gradlew.bat" if sys.platform == "win32" else "gradlew"
+GRADLE_EXECUTABLE_PATH = BUNDLE_PARSER_DIR / GRADLE_EXECUTABLE_NAME
 
 
 @dataclass
@@ -42,12 +50,11 @@ class BranchFetchResult:
     needs_parse: bool = False
     bundle_name: str | None = None
     error_message: str | None = None
+    metadata_unavailable: bool = False
 
-
-def cleanup_target_files(file_prefix: str) -> None:
-    (BUNDLES_DIR / f"{file_prefix}.json").unlink(missing_ok=True)
-    (PATCHES_DIR / f"{file_prefix}.json").unlink(missing_ok=True)
-    (MPP_DIR / f"{file_prefix}.mpp").unlink(missing_ok=True)
+    @property
+    def target_name(self) -> str:
+        return f"{self.source}~{self.repo.replace('/', '~')}~{self.branch}"
 
 
 def get_remote_file_hash(
@@ -57,24 +64,24 @@ def get_remote_file_hash(
         request = urllib.request.Request(
             url, headers=get_auth_headers(url), method="HEAD"
         )
-        with urllib.request.urlopen(request, timeout=10) as response:
-            if source == "github":
-                etag = response.getheader("ETag")
-                return etag.strip('"') if etag else fallback
-            if source == "gitlab":
-                sha = response.getheader("x-gitlab-content-sha256")
-                return sha or fallback
-            return fallback
+        with urllib.request.urlopen(
+            request, timeout=HASH_REQUEST_TIMEOUT_SECONDS
+        ) as response:
+            header_name = "ETag" if source == "github" else "x-gitlab-content-sha256"
+            if remote_hash := response.getheader(header_name):
+                return remote_hash.strip('"')
+            if fallback is not None:
+                return fallback
+            raise ValueError(f"Missing {header_name} header for {url}")
     except urllib.error.HTTPError as error:
         if error.code in UNAVAILABLE_HTTP_CODES:
             return None
         raise
-    return None
 
 
 def get_file_sha(source: str, repo: str, branch: str) -> str | None:
     url = build_raw_url(source, repo, branch, "patches-bundle.json")
-    return get_remote_file_hash(url, source, fallback=None) if url else None
+    return get_remote_file_hash(url, source) if url else None
 
 
 def get_patches_list_url(source: str, repo: str, branch: str) -> str | None:
@@ -94,78 +101,77 @@ def process_repo_branch(
     weekly: bool = False,
 ) -> BranchFetchResult:
     repo_url = build_repo_url(source, repo)
-    try:
-        remote_sha = get_file_sha(source, repo, branch)
-    except Exception as error:
-        error_message = f"{repo_url} ({branch}): Failed: {error}"
+
+    def failed(
+        message: str, unavailable: bool = False, metadata_unavailable: bool = False
+    ) -> BranchFetchResult:
+        error_message = f"{repo_url} ({branch}): {message}"
         print(f"[-] {error_message}")
         return BranchFetchResult(
-            source, repo, branch, current_sha, error_message=error_message
+            source,
+            repo,
+            branch,
+            None if unavailable else current_sha,
+            status_changed=unavailable,
+            error_message=error_message,
+            metadata_unavailable=metadata_unavailable,
         )
+
+    try:
+        remote_sha = get_file_sha(source, repo, branch)
+    except (OSError, HTTPException, ValueError) as error:
+        return failed(f"Failed to check metadata hash: {error}")
 
     file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
     bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
     patches_file = PATCHES_DIR / f"{file_prefix}.json"
-
-    if remote_sha == current_sha and bundle_file.exists() and patches_file.exists():
-        if weekly and current_sha:
-            bundle_data = load_json(bundle_file, {})
-            if mpp_url := bundle_data.get("download_url"):
-                try:
-                    mpp_exists = bool(
-                        get_remote_file_hash(mpp_url, source, fallback="exists")
-                    )
-                except Exception as error:
-                    error_message = (
-                        f"{repo_url} ({branch}): Failed to verify `.mpp`: {error}"
-                    )
-                    print(f"[-] {error_message}")
-                    return BranchFetchResult(
-                        source, repo, branch, current_sha, error_message=error_message
-                    )
-
-                if not mpp_exists:
-                    print(
-                        f"[-] {repo_url} ({branch}): `.mpp` file is no longer available"
-                    )
-                    cleanup_target_files(file_prefix)
-                    return BranchFetchResult(
-                        source, repo, branch, remote_sha, status_changed=True
-                    )
-
-        return BranchFetchResult(source, repo, branch, remote_sha)
-
-    if remote_sha is None:
-        print(f"[-] {repo_url} ({branch}): `patches-bundle.json` not found")
-        return BranchFetchResult(source, repo, branch, None, status_changed=True)
-
-    raw_bundle_url = build_raw_url(source, repo, branch, "patches-bundle.json")
-    if not raw_bundle_url:
+    if not remote_sha:
+        return failed(
+            "Bundle metadata is unavailable (HTTP 404/451)",
+            unavailable=True,
+            metadata_unavailable=True,
+        )
+    if (
+        current_sha
+        and remote_sha == current_sha
+        and bundle_file.is_file()
+        and patches_file.is_file()
+    ):
+        if weekly:
+            bundle_data = load_json(bundle_file)
+            mpp_url = (
+                bundle_data.get("download_url")
+                if isinstance(bundle_data, dict)
+                else None
+            )
+            if not isinstance(mpp_url, str) or not mpp_url:
+                return failed("Invalid download_url", True)
+            try:
+                mpp_exists = get_remote_file_hash(mpp_url, source, fallback="exists")
+            except (OSError, HTTPException, ValueError) as error:
+                return failed(f"Failed to verify .mpp: {error}")
+            if not mpp_exists:
+                return failed(".mpp is unavailable (HTTP 404/451)", True)
         return BranchFetchResult(source, repo, branch, current_sha)
 
+    bundle_url = build_raw_url(source, repo, branch, "patches-bundle.json")
     try:
-        bundle_text = fetch(raw_bundle_url)
-    except Exception as error:
-        if (
-            isinstance(error, urllib.error.HTTPError)
-            and error.code in UNAVAILABLE_HTTP_CODES
-        ):
-            print(
-                f"[-] {repo_url} ({branch}): `patches-bundle.json` not found or taken down (HTTP {error.code})"
-            )
-            return BranchFetchResult(
-                source, repo, branch, remote_sha, status_changed=True
-            )
-        error_message = f"{repo_url} ({branch}): Failed: {error}"
-        print(f"[-] {error_message}")
-        return BranchFetchResult(
-            source, repo, branch, current_sha, error_message=error_message
+        bundle_content = fetch(bundle_url, binary=True)
+    except urllib.error.HTTPError as error:
+        return failed(
+            f"Failed to download metadata: {error}",
+            unavailable=error.code in UNAVAILABLE_HTTP_CODES,
+            metadata_unavailable=error.code in UNAVAILABLE_HTTP_CODES,
         )
-
-    has_mpp = False
-    bundle_name = None
+    except (OSError, HTTPException) as error:
+        return failed(f"Failed to download metadata: {error}")
     try:
-        bundle_data = json.loads(bundle_text)
+        bundle_data = json.loads(bundle_content)
+    except ValueError as error:
+        return failed(f"Invalid patches-bundle.json: {error}", True)
+    if not isinstance(bundle_data, dict):
+        return failed("Invalid patches-bundle.json: expected an object", True)
+    try:
         mpp_url = bundle_data.get("download_url")
         if source == "gitlab" and isinstance(mpp_url, str):
             parsed_url = urllib.parse.urlparse(mpp_url)
@@ -180,65 +186,85 @@ def process_repo_branch(
                     parsed_url._replace(path="/".join(path_parts))
                 )
                 bundle_data["download_url"] = mpp_url
-                bundle_text = json.dumps(bundle_data)
         mpp_source, mpp_repo = (
             parse_repo_url(mpp_url)
             if isinstance(mpp_url, str) and mpp_url.lower().endswith(".mpp")
             else (None, None)
         )
-        if mpp_source != source or mpp_repo.lower() != repo.lower():
-            print(f"[-] {repo_url} ({branch}): Invalid `download_url`")
-            cleanup_target_files(file_prefix)
-            return BranchFetchResult(
-                source, repo, branch, remote_sha, status_changed=True
-            )
+        if mpp_source != source or not mpp_repo or mpp_repo.lower() != repo.lower():
+            return failed(f"Invalid download_url: {mpp_url}", True)
 
-        mpp_file_path = MPP_DIR / f"{file_prefix}.mpp"
-        try:
-            mpp_bytes = fetch(mpp_url, binary=True)
-            MPP_DIR.mkdir(parents=True, exist_ok=True)
-            mpp_file_path.write_bytes(mpp_bytes)
-            has_mpp = True
-            bundle_name = extract_mpp_name(mpp_file_path)
-        except Exception as error:
-            if (
-                isinstance(error, urllib.error.HTTPError)
-                and error.code in UNAVAILABLE_HTTP_CODES
-            ):
-                print(
-                    f"[-] {repo_url} ({branch}): `.mpp` file not found or taken down (HTTP {error.code})"
-                )
-                cleanup_target_files(file_prefix)
-                return BranchFetchResult(
-                    source, repo, branch, remote_sha, status_changed=True
-                )
-            error_message = f"{repo_url} ({branch}): Failed: {error}"
-            print(f"[-] {error_message}")
-            return BranchFetchResult(
-                source, repo, branch, current_sha, error_message=error_message
-            )
-    except Exception:
-        pass
+    except ValueError as error:
+        return failed(f"Invalid download_url: {error}", True)
 
-    if bundle_text:
-        save_json(bundle_file, json.loads(bundle_text))
+    try:
+        mpp_content = fetch(mpp_url, binary=True)
+    except urllib.error.HTTPError as error:
+        return failed(
+            f"Failed to download .mpp: {error}",
+            error.code in UNAVAILABLE_HTTP_CODES,
+        )
+    except (OSError, HTTPException) as error:
+        return failed(f"Failed to download .mpp: {error}")
+    bundle_name = extract_mpp_name(mpp_content)
 
-    has_patch_list = False
-    if patches_list_url := get_patches_list_url(source, repo, branch):
-        with contextlib.suppress(Exception):
-            content = fetch(patches_list_url)
-            save_json(patches_file, json.loads(content))
-            has_patch_list = True
+    patches_url = get_patches_list_url(source, repo, branch)
+    try:
+        patches_content = fetch(patches_url, binary=True)
+    except urllib.error.HTTPError as error:
+        if error.code != HTTPStatus.NOT_FOUND:
+            return failed(f"Failed to download patch list: {error}")
+        patches_content = None
+    except (OSError, HTTPException) as error:
+        return failed(f"Failed to download patch list: {error}")
 
+    save_json(bundle_file, bundle_data)
+    MPP_DIR.mkdir(parents=True, exist_ok=True)
+    (MPP_DIR / f"{file_prefix}.mpp").write_bytes(mpp_content)
+    if patches_content is not None:
+        patches_file.parent.mkdir(parents=True, exist_ok=True)
+        patches_file.write_bytes(patches_content)
     return BranchFetchResult(
         source,
         repo,
         branch,
         remote_sha,
         status_changed=True,
-        needs_parse=has_mpp and not has_patch_list,
+        needs_parse=patches_content is None,
         bundle_name=bundle_name,
     )
+
+
+def run_bundle_parser(targets: list[BranchFetchResult]) -> None:
+    if not targets:
+        UPDATED_FILES_PATH.unlink(missing_ok=True)
+        return
+    UPDATED_FILES_PATH.write_text(
+        "\n".join(f"mpp/{target.target_name}.mpp" for target in targets),
+        encoding="utf-8",
+    )
+    PARSED_FILES_PATH.unlink(missing_ok=True)
+    print(f"\nParsing {len(targets)} bundles...")
+    subprocess.run(
+        [str(GRADLE_EXECUTABLE_PATH), "run", "--args=@updated_files.txt"],
+        cwd=str(BUNDLE_PARSER_DIR),
+        text=True,
+        check=True,
+    )
+    if not PARSED_FILES_PATH.is_file():
+        raise RuntimeError("bundle-parser did not write parsed_files.txt")
+    successful_files = set(load_lines(PARSED_FILES_PATH))
+    for target in targets:
+        output_name = f"{target.target_name}.json"
+        if output_name in successful_files and (PATCHES_DIR / output_name).is_file():
+            continue
+        target.new_sha = None
+        target.bundle_name = None
+        target.error_message = (
+            f"{build_repo_url(target.source, target.repo)} ({target.branch}): "
+            "Parser did not produce a confirmed patch list"
+        )
+        print(f"[-] {target.error_message}")
 
 
 def process_image(
@@ -247,85 +273,72 @@ def process_image(
     repo_url = build_repo_url(source, repo)
     try:
         remote_sha = get_image_sha(source, repo)
-    except Exception as error:
-        if (
-            isinstance(error, urllib.error.HTTPError)
-            and error.code in UNAVAILABLE_HTTP_CODES
-        ):
-            return source, repo, None, current_image is not None, None
+    except (OSError, HTTPException, ValueError) as error:
         error_message = f"{repo_url}: Failed to fetch image: {error}"
         print(f"[-] {error_message}")
         return source, repo, current_image, False, error_message
+    return source, repo, remote_sha, remote_sha != current_image, None
 
-    if remote_sha == current_image:
-        return source, repo, remote_sha, False, None
-    return source, repo, remote_sha, True, None
+
+def collect_fetch_errors(results: list[BranchFetchResult]) -> list[str]:
+    errors = []
+    unavailable_branches: dict[tuple[str, str], set[str]] = {}
+    for result in results:
+        if result.metadata_unavailable:
+            unavailable_branches.setdefault((result.source, result.repo), set()).add(
+                result.branch
+            )
+        elif result.error_message:
+            errors.append(result.error_message)
+    for (source, repo), branches in unavailable_branches.items():
+        if all(branch in branches for branch in DEFAULT_BRANCHES):
+            errors.append(
+                f"{build_repo_url(source, repo)}: patches-bundle.json is unavailable "
+                f"on {' and '.join(DEFAULT_BRANCHES)} (HTTP 404/451)"
+            )
+    return errors
 
 
 def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     repos_data = load_json(REPOS_JSON_PATH, {})
-
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
     MPP_DIR.mkdir(parents=True, exist_ok=True)
-
     tasks = []
     image_tasks = []
-    is_daily = daily or weekly
     for repo, repo_metadata in repos_data.items():
         if not isinstance(repo_metadata, dict):
             continue
         for source in ("github", "gitlab"):
             if source_metadata := repo_metadata.get(source):
                 for branch in DEFAULT_BRANCHES:
-                    current_sha = source_metadata.get(branch)
-                    tasks.append((source, repo, branch, current_sha))
-                if is_daily:
+                    tasks.append((source, repo, branch, source_metadata.get(branch)))
+                if daily or weekly:
                     image_tasks.append((source, repo, source_metadata.get("image")))
 
     print(f"Processing {len(tasks)} branch targets...")
-    pending_repos_data = {}
-    updated_count = 0
-    updated_files = []
-    errors = []
-
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
         futures = [
-            executor.submit(
-                process_repo_branch, source, repo, branch, current_sha, weekly
-            )
-            for source, repo, branch, current_sha in tasks
+            executor.submit(process_repo_branch, *task, weekly=weekly) for task in tasks
         ]
-
-        for future in as_completed(futures):
-            result = future.result()
-            if result.error_message:
-                errors.append(result.error_message)
-
-            if not result.status_changed:
-                continue
-
-            updated_count += 1
-            pending_repos_data.setdefault(result.repo, {}).setdefault(
-                result.source, {}
-            )[result.branch] = result.new_sha
-            if result.bundle_name:
-                pending_repos_data.setdefault(result.repo, {})["name"] = (
-                    result.bundle_name
-                )
-
-            if result.needs_parse:
-                file_prefix = (
-                    f"{result.source}~{result.repo.replace('/', '~')}~{result.branch}"
-                )
-                updated_files.append(f"mpp/{file_prefix}.mpp")
-
-    if is_daily:
+        results = [future.result() for future in as_completed(futures)]
+    results.sort(key=lambda result: (result.repo.lower(), result.source, result.branch))
+    run_bundle_parser([result for result in results if result.needs_parse])
+    errors = collect_fetch_errors(results)
+    updated_count = 0
+    for result in results:
+        if not result.status_changed:
+            continue
+        updated_count += 1
+        repo_metadata = repos_data[result.repo]
+        repo_metadata[result.source][result.branch] = result.new_sha
+        if result.new_sha and result.bundle_name:
+            repo_metadata["name"] = result.bundle_name
+    if image_tasks:
         print(f"Processing {len(image_tasks)} image targets...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
             image_futures = [
-                executor.submit(process_image, source, repo, current_image)
-                for source, repo, current_image in image_tasks
+                executor.submit(process_image, *task) for task in image_tasks
             ]
             for future in as_completed(image_futures):
                 source, repo, new_image_sha, status_changed, error_message = (
@@ -333,28 +346,19 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 )
                 if error_message:
                     errors.append(error_message)
-
                 if status_changed:
                     updated_count += 1
-                    pending_repos_data.setdefault(repo, {}).setdefault(source, {})[
-                        "image"
-                    ] = new_image_sha
-
-    if errors:
-        markdown_lines = ["### ⚠️ Fetch", *[f"- {error}" for error in sorted(errors)]]
-        append_step_summary("\n".join(markdown_lines))
-
-    print(f"Fetch completed. Updated {updated_count} targets.")
-
-    if updated_files:
-        UPDATED_FILES_PATH.write_text("\n".join(updated_files), encoding="utf-8")
-        print(
-            f"Saved {len(updated_files)} updated targets to updated_files.txt and pending_repos.json"
+                    repos_data[repo][source]["image"] = new_image_sha
+    if updated_count:
+        save_json(
+            REPOS_JSON_PATH,
+            dict(sorted(repos_data.items(), key=lambda item: item[0].lower())),
         )
-    elif UPDATED_FILES_PATH.exists():
-        UPDATED_FILES_PATH.unlink()
-
-    save_json(PENDING_REPOS_PATH, pending_repos_data)
+    if errors:
+        append_step_summary(
+            "\n".join(["### ⚠️ Fetch", *[f"- {error}" for error in sorted(errors)]])
+        )
+    print(f"Fetch completed. Updated {updated_count} targets.")
 
 
 def main() -> None:

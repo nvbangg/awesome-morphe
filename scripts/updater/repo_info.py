@@ -11,17 +11,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from updater import normalize_image_url
 from utils import (
     CONCURRENCY,
-    CUSTOM_JSON_PATH,
-    HASHES_PATH,
-    HISTORY_PATH,
-    REPOS_JSON_PATH,
     UNAVAILABLE_HTTP_CODES,
     build_raw_url,
     build_repo_url,
     fetch,
-    load_json,
     parse_repo_url,
-    save_json,
 )
 
 
@@ -121,8 +115,11 @@ def process(
     bundle_sources: dict,
     mode: str,
     existing_bundles: dict,
+    repos_data: dict,
+    custom_data: dict,
     errors: dict[str, list[str]] | None = None,
-) -> None:
+) -> dict[str, str]:
+    renames = {}
     tasks = {}
     for repo, source_entry in bundle_sources.items():
         if mode == "default" and repo in existing_bundles:
@@ -133,15 +130,13 @@ def process(
         tasks[repo] = build_repo_url(source, repo)
 
     if not tasks:
-        return
+        return renames
 
     print(f"\nFetching repo info for {len(tasks)} bundles...")
     if mode == "default":
         for key in tasks:
             print(f"  -> {key}")
 
-    custom_data = load_json(CUSTOM_JSON_PATH, {})
-    repos_data = load_json(REPOS_JSON_PATH, {})
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
         future_to_repo = {
             executor.submit(fetch_repo_details, url): repo
@@ -159,10 +154,9 @@ def process(
                         if details.get("is_451")
                         else "404 Not Found"
                     )
-                    print(f"[-] Excluding {repo} due to {reason}")
+                    print(f"[-] Failed to fetch metadata for {repo}: {reason}")
                     if errors is not None:
-                        errors["unavailable"].append(f"{tasks[repo]}: {reason}")
-                    bundle_sources.pop(repo, None)
+                        errors["warnings"].append(f"{tasks[repo]}: {reason}")
                     continue
 
                 if "error" in details:
@@ -219,42 +213,18 @@ def process(
                     if errors is not None:
                         errors["warnings"].append(f"{old_url} -> {new_url}")
 
-                    repos_json_data = load_json(REPOS_JSON_PATH, {})
-                    if old_repo in repos_json_data:
-                        repos_json_data.setdefault(
-                            full_name, repos_json_data.pop(old_repo)
-                        )
-                        save_json(REPOS_JSON_PATH, repos_json_data)
-
-                    custom_json_data = load_json(CUSTOM_JSON_PATH, {})
+                    renames[old_repo] = full_name
+                    if old_repo in repos_data and full_name not in repos_data:
+                        repos_data[full_name] = repos_data.pop(old_repo)
                     if old_url:
-                        custom_json_data[old_url] = {
+                        custom_data[old_url] = {
                             "enabled": False,
                             "note": f"Automatically disabled by GitHub Actions (Redirected/Renamed to {full_name})",
                         }
-                    if new_url and new_url not in custom_json_data:
-                        custom_json_data[new_url] = {
+                    if new_url and new_url not in custom_data:
+                        custom_data[new_url] = {
                             "note": f"Automatically added by GitHub Actions (Redirected/Renamed from {old_repo})"
                         }
-                    save_json(CUSTOM_JSON_PATH, custom_json_data)
-
-                    history_data = load_json(HISTORY_PATH, {})
-                    if old_repo in history_data:
-                        history_data.setdefault(full_name, history_data.pop(old_repo))
-                        sorted_history = {
-                            repo_key: history_data[repo_key]
-                            for repo_key in sorted(history_data.keys(), key=str.lower)
-                        }
-                        save_json(HISTORY_PATH, sorted_history)
-
-                    hashes_data = load_json(HASHES_PATH, {})
-                    if old_repo in hashes_data:
-                        hashes_data.setdefault(full_name, hashes_data.pop(old_repo))
-                        sorted_hashes = {
-                            repo_key: hashes_data[repo_key]
-                            for repo_key in sorted(hashes_data.keys(), key=str.lower)
-                        }
-                        save_json(HASHES_PATH, sorted_hashes)
 
                     if full_name in bundle_sources:
                         bundle_sources.pop(repo, None)
@@ -262,3 +232,4 @@ def process(
                         source_entry["repo"] = full_name
             except Exception as error:
                 print(f"[-] Failed to fetch details for {repo}: {error}")
+    return renames

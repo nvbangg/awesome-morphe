@@ -9,6 +9,9 @@ import time
 from updater import gplay_scrape, local_parse, repo_info
 from utils import (
     BUNDLES_JSON_PATH,
+    CUSTOM_JSON_PATH,
+    HASHES_PATH,
+    HISTORY_PATH,
     HOT_RANK_ACTIVE_MS,
     OFFICIAL_BUNDLES_PATH,
     PACKAGE_EXAMPLE,
@@ -28,6 +31,9 @@ def main() -> int:
     mode = "weekly" if args.weekly else "daily" if args.daily else "default"
 
     repos_data = load_json(REPOS_JSON_PATH, {})
+    existing_hashes = load_json(HASHES_PATH, {})
+    existing_history = load_json(HISTORY_PATH, {})
+    custom_data = load_json(CUSTOM_JSON_PATH, {})
     existing_bundles_data = load_json(BUNDLES_JSON_PATH, {})
     existing_bundles = {
         bundle.get("repo"): bundle
@@ -53,12 +59,23 @@ def main() -> int:
                 source_entry[field] = existing[field]
         bundle_sources[repo] = source_entry
 
-    errors: dict[str, list[str]] = {"unavailable": [], "warnings": []}
-    compatibilities_list = local_parse.process(
-        bundle_sources, apps_dict, errors, existing_bundles
+    errors: dict[str, list[str]] = {"patch_lists": [], "warnings": []}
+    local_hashes = local_parse.process(
+        bundle_sources, apps_dict, repos_data, existing_hashes, errors, existing_bundles
     )
-    repo_info.process(bundle_sources, mode, existing_bundles, errors)
-
+    renames = repo_info.process(
+        bundle_sources, mode, existing_bundles, repos_data, custom_data, errors
+    )
+    active_apps = {
+        package_name
+        for bundle in bundle_sources.values()
+        for package_name in bundle.get("appFirstSeen", {})
+    }
+    apps_dict = {
+        package_name: app_data
+        for package_name, app_data in apps_dict.items()
+        if package_name in active_apps or package_name == PACKAGE_UNIVERSAL
+    }
     gplay_scrape.process(apps_dict, mode)
     official_ranks = {
         repo.lower(): bundle.get("hotRank")
@@ -127,7 +144,7 @@ def main() -> int:
 
     app_patches_status: dict[str, list[bool]] = {}
     app_latest_updates: dict[str, int] = {}
-    reindexed_compatibilities = []
+    compatibilities = []
     compatibility_map = {}
     for bundle in final_bundles:
         for package_name, update_time in bundle.get("appUpdates", {}).items():
@@ -139,19 +156,12 @@ def main() -> int:
             is_patch_prerelease = is_bundle_prerelease or bool(
                 patch.get("isPreRelease")
             )
-            if "compatiblePackagesKey" in patch:
-                old_key = patch["compatiblePackagesKey"]
-                compatibility_data = compatibilities_list[old_key]
+            if compatibility_data := patch.pop("compatiblePackages", None):
                 compatibility_json = json.dumps(compatibility_data, sort_keys=True)
-                if compatibility_json in compatibility_map:
-                    patch["compatiblePackagesKey"] = compatibility_map[
-                        compatibility_json
-                    ]
-                else:
-                    new_key = len(reindexed_compatibilities)
-                    reindexed_compatibilities.append(compatibility_data)
-                    compatibility_map[compatibility_json] = new_key
-                    patch["compatiblePackagesKey"] = new_key
+                if compatibility_json not in compatibility_map:
+                    compatibility_map[compatibility_json] = len(compatibilities)
+                    compatibilities.append(compatibility_data)
+                patch["compatiblePackagesKey"] = compatibility_map[compatibility_json]
                 for compatibility_entry in compatibility_data:
                     package_name = compatibility_entry.get("packageName")
                     if package_name:
@@ -198,34 +208,48 @@ def main() -> int:
         BUNDLES_JSON_PATH,
         {
             "bundles": final_bundles,
-            "compatibilities": reindexed_compatibilities,
+            "compatibilities": compatibilities,
             "store": apps_store,
         },
     )
+    final_repos = {bundle["repo"] for bundle in final_bundles}
+    cleaned_hashes = {
+        bundle["repo"]: local_hashes[repo_key]
+        for repo_key, bundle in bundle_sources.items()
+        if repo_key in local_hashes
+    }
+    save_json(
+        HASHES_PATH,
+        dict(sorted(cleaned_hashes.items(), key=lambda item: item[0].lower())),
+    )
+    history_data = dict(existing_history)
+    for old_repo, new_repo in renames.items():
+        if old_repo in history_data and new_repo not in history_data:
+            history_data[new_repo] = history_data[old_repo]
+    cleaned_history = {
+        repo: history_data[repo]
+        for repo in sorted(history_data, key=str.lower)
+        if repo in final_repos
+    }
+    if cleaned_history != existing_history:
+        save_json(HISTORY_PATH, cleaned_history)
+    if renames:
+        save_json(
+            REPOS_JSON_PATH,
+            dict(sorted(repos_data.items(), key=lambda item: item[0].lower())),
+        )
+        save_json(CUSTOM_JSON_PATH, custom_data)
+    local_parse.cleanup_orphan_files(repos_data)
     print(
         f"Update completed. Saved {len(final_bundles)} bundles and {len(apps_store)} apps."
     )
 
     summary_sections = []
-    final_bundle_repos = {
-        bundle["repo"] for bundle in final_bundles if bundle.get("repo")
-    }
-    invalid_repos = [repo for repo in repos_data if repo not in final_bundle_repos]
-    has_update_errors = bool(
-        invalid_repos or errors["unavailable"] or errors["warnings"]
-    )
-
-    if has_update_errors:
-        update_lines = []
-        if invalid_repos:
-            note_message = f"Note: {len(invalid_repos)}/{len(repos_data)} repos are invalid or excluded"
-            print(f"[-] {note_message}")
-            update_lines.append(f"## ⚠️ Update\n{note_message}:")
-        else:
-            update_lines.append("## ⚠️ Update:")
+    if errors["patch_lists"] or errors["warnings"]:
+        update_lines = ["## ⚠️ Update:"]
 
         for category_name, category_icon, category_errors in (
-            ("Unavailable", "⛔", errors["unavailable"]),
+            ("Invalid patch lists", "⛔", errors["patch_lists"]),
             ("Warnings", "⚠️", errors["warnings"]),
         ):
             if category_errors:
