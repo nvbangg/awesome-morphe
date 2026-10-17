@@ -11,6 +11,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
+
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT_DIR / "data"
 PUBLIC_DIR = ROOT_DIR / "web" / "public"
@@ -53,6 +55,8 @@ HOT_RANK_ACTIVE_MS = HOT_RANK_ACTIVE_DAYS * 24 * 60 * 60 * 1000
 
 UNAVAILABLE_HTTP_CODES = (404, 451)
 DEAD_LINK_HTTP_CODES = (404, 410)
+
+load_dotenv(SCRIPTS_DIR / ".env", override=False)
 
 
 def extract_mpp_name(mpp_file: bytes) -> str | None:

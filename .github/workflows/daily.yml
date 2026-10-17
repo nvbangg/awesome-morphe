@@ -32,6 +32,9 @@ jobs:
         with:
           ref: main
 
+      - name: Install Python dependencies
+        run: python -m pip install -e scripts/
+
       - name: Discover repositories
         run: python scripts/discover.py
 
@@ -46,9 +49,7 @@ jobs:
         run: python scripts/fetch.py --${{ inputs.mode }}
 
       - name: Update bundles data
-        run: |
-          pip install -e scripts/
-          python scripts/update.py --${{ inputs.mode }}
+        run: python scripts/update.py --${{ inputs.mode }}
 
       - name: Generate What's New
         id: whats_new

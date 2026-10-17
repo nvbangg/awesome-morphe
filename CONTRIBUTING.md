@@ -231,6 +231,8 @@ Open the local URL shown in the terminal.
 
 ### Data Scripts
 
+Scripts automatically load the optional `scripts/.env` file, regardless of the working directory. Existing environment variables take priority over values in this file. Loaded variables are also inherited by child processes, including Gradle. The file is ignored by Git and is not required in GitHub Actions.
+
 ```sh
 python -m pip install -e scripts/
 python scripts/discover.py
