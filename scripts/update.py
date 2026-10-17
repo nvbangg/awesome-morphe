@@ -59,7 +59,7 @@ def main() -> int:
                 source_entry[field] = existing[field]
         bundle_sources[repo] = source_entry
 
-    errors: dict[str, list[str]] = {"patch_lists": [], "warnings": []}
+    errors: dict[str, list[str]] = {"patch_lists": [], "repo_metadata": []}
     local_hashes = local_parse.process(
         bundle_sources, apps_dict, repos_data, existing_hashes, errors, existing_bundles
     )
@@ -245,24 +245,19 @@ def main() -> int:
     )
 
     summary_sections = []
-    if errors["patch_lists"] or errors["warnings"]:
-        update_lines = ["## ⚠️ Update:"]
-
-        for category_name, category_icon, category_errors in (
-            ("Invalid patch lists", "⛔", errors["patch_lists"]),
-            ("Warnings", "⚠️", errors["warnings"]),
-        ):
-            if category_errors:
-                sorted_errors = sorted(category_errors)
-                print(f"  {category_name} ({len(sorted_errors)}):")
-                for error in sorted_errors:
-                    print(f"    - {error}")
-                update_lines.append(
-                    f"### {category_icon} {category_name} ({len(sorted_errors)})\n"
-                    + "\n".join(f"- {error}" for error in sorted_errors)
-                )
-
-        summary_sections.append("\n\n".join(update_lines))
+    for category_name, category_errors in (
+        ("Patch list", errors["patch_lists"]),
+        ("Repository metadata", errors["repo_metadata"]),
+    ):
+        if category_errors:
+            sorted_errors = sorted(category_errors)
+            print(f"  {category_name} ({len(sorted_errors)}):")
+            for error in sorted_errors:
+                print(f"    - {error}")
+            summary_sections.append(
+                f"### {category_name} ({len(sorted_errors)})\n\n"
+                + "\n".join(f"- {error}" for error in sorted_errors)
+            )
 
     if incomplete_apps:
         sorted_incomplete_apps = sorted(incomplete_apps)
@@ -272,12 +267,12 @@ def main() -> int:
         for app_issue in sorted_incomplete_apps:
             print(f"  {app_issue}")
         summary_sections.append(
-            f"### 📱 Incomplete Apps ({len(sorted_incomplete_apps)})\n"
+            f"### Incomplete Apps ({len(sorted_incomplete_apps)})\n\n"
             + "\n".join(sorted_incomplete_apps)
         )
 
     if summary_sections:
-        append_step_summary("\n\n".join(summary_sections))
+        append_step_summary("\n\n".join(["## 🔄 Update:", *summary_sections]))
     return 0
 
 

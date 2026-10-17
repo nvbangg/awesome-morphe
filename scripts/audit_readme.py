@@ -79,14 +79,14 @@ def audit_repos_and_links() -> dict[str, list[str]]:
     print(completed_message)
 
     summary_sections = [f"## 📋 Audit Readme\n{completed_message}"]
-    for category_name, category_icon, category_errors in (
-        ("Unavailable", "⛔", errors["unavailable"]),
-        ("Warnings", "⚠️", errors["warnings"]),
-        ("Other Errors", "🌐", errors["other"]),
+    for category_name, category_errors in (
+        ("Unavailable", errors["unavailable"]),
+        ("Warnings", errors["warnings"]),
+        ("Other Errors", errors["other"]),
     ):
         if category_errors:
             summary_sections.append(
-                f"### {category_icon} {category_name} ({len(category_errors)})\n"
+                f"### {category_name} ({len(category_errors)})\n\n"
                 + "\n".join(f"- {error}" for error in sorted(category_errors))
             )
     if not any(errors.values()):

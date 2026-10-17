@@ -1,9 +1,11 @@
 import json
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
+import audit_readme
 import update as bundle_update
 from updater import gplay_scrape, local_parse, repo_info
 from utils import PACKAGE_UNIVERSAL, load_json, save_json
@@ -170,7 +172,7 @@ class BundleUpdateTests(unittest.TestCase):
                 )
                 self.assertTrue(path.exists())
                 summary = self.summary.call_args.args[0]
-                self.assertIn("Invalid patch lists (1)", summary)
+                self.assertIn("### Patch list (1)", summary)
                 self.assertIn("https://github.com/owner/alpha (main):", summary)
                 self.assertNotIn("patches-bundle.json", summary)
                 self.assertNotIn("invalid or excluded", summary)
@@ -179,7 +181,12 @@ class BundleUpdateTests(unittest.TestCase):
 
     def test_null_sha_prevents_reading_old_valid_patch_list(self) -> None:
         self.add_target(sha=None)
-        self.assertEqual(self.run_update()["bundles"], [])
+        self.add_target(branch="dev", sha=None)
+        with patch.object(
+            local_parse, "load_branch_data", wraps=local_parse.load_branch_data
+        ) as load_branch:
+            self.assertEqual(self.run_update()["bundles"], [])
+        load_branch.assert_not_called()
         self.fetch_repo.assert_not_called()
         self.summary.assert_not_called()
 
@@ -218,13 +225,11 @@ class BundleUpdateTests(unittest.TestCase):
         )
         self.assertEqual(self.run_update()["bundles"], [])
         summary = self.summary.call_args.args[0]
-        self.assertIn("Invalid patch lists (2)", summary)
+        self.assertIn("### Patch list (2)", summary)
         self.assertIn(
-            "https://github.com/owner/alpha (main): Empty `patches-list.json`", summary
+            "https://github.com/owner/alpha (main): No patches found", summary
         )
-        self.assertIn(
-            "https://gitlab.com/owner/alpha (dev): Invalid `patches-list.json`", summary
-        )
+        self.assertIn("https://gitlab.com/owner/alpha (dev): Invalid data", summary)
         self.assertNotIn("https://github.com/owner/alpha (dev)", summary)
         self.assertNotIn("https://gitlab.com/owner/alpha (main)", summary)
 
@@ -233,7 +238,9 @@ class BundleUpdateTests(unittest.TestCase):
         self.add_target(source="gitlab", patches=[{"name": "Universal patch"}])
         self.assertEqual(self.run_update()["bundles"][0]["source"], "gitlab")
         summary = self.summary.call_args.args[0]
-        self.assertIn("https://github.com/owner/alpha (main): Empty", summary)
+        self.assertIn(
+            "https://github.com/owner/alpha (main): No patches found", summary
+        )
         self.assertNotIn("https://gitlab.com/owner/alpha", summary)
 
     def test_newer_dev_is_selected_and_only_dev_patches_are_prerelease(self) -> None:
@@ -254,13 +261,77 @@ class BundleUpdateTests(unittest.TestCase):
     def test_invalid_main_does_not_exclude_valid_dev(self) -> None:
         self.add_target().write_text("{broken", encoding="utf-8")
         self.add_target(branch="dev", patches=[self.app_patch("Dev patch")])
-        catalog = self.run_update()
+        with patch("builtins.print") as console:
+            catalog = self.run_update()
+        console.assert_any_call(
+            "[-] https://github.com/owner/alpha (main): Invalid data"
+        )
         self.assertTrue(catalog["bundles"][0]["isPreRelease"])
         self.assertTrue(catalog["store"]["com.test.app"]["isPreRelease"])
         summary = self.summary.call_args.args[0]
-        self.assertIn("owner/alpha (main): Invalid `patches-list.json`", summary)
-        self.assertNotIn("owner/alpha (dev)", summary)
+        self.assertNotIn("### Patch list", summary)
         self.assertIn("Incomplete Apps", summary)
+
+    def test_invalid_dev_is_suppressed_when_main_is_valid(self) -> None:
+        self.add_target(patches=[self.app_patch("Main patch")])
+        self.add_target(branch="dev", patches=[])
+        with patch("builtins.print") as console:
+            catalog = self.run_update()
+        console.assert_any_call(
+            "[-] https://github.com/owner/alpha (dev): No patches found"
+        )
+        self.assertEqual(catalog["bundles"][0]["patches"][0]["name"], "Main patch")
+        self.assertNotIn("isPreRelease", catalog["bundles"][0])
+        self.assertNotIn("### Patch list", self.summary.call_args.args[0])
+
+    def test_identical_invalid_branches_have_one_summary_entry(self) -> None:
+        self.add_target().write_text("{broken", encoding="utf-8")
+        self.add_target(branch="dev").write_text("[]", encoding="utf-8")
+        repos_snapshot = self.repos_path.read_bytes()
+        self.assertEqual(self.run_update()["bundles"], [])
+        summary = self.summary.call_args.args[0]
+        self.assertIn("### Patch list (1)", summary)
+        self.assertIn("https://github.com/owner/alpha: Invalid data", summary)
+        self.assertNotIn("(main)", summary)
+        self.assertNotIn("(dev)", summary)
+        self.assertEqual(summary.count("- https://"), 1)
+        self.assertEqual(self.repos_path.read_bytes(), repos_snapshot)
+
+    def test_different_invalid_branches_keep_separate_reasons(self) -> None:
+        self.add_target(patches=[])
+        self.add_target(branch="dev").write_text("{broken", encoding="utf-8")
+        self.assertEqual(self.run_update()["bundles"], [])
+        summary = self.summary.call_args.args[0]
+        self.assertIn("### Patch list (2)", summary)
+        self.assertIn(
+            "https://github.com/owner/alpha (main): No patches found", summary
+        )
+        self.assertIn("https://github.com/owner/alpha (dev): Invalid data", summary)
+
+    def test_null_sha_does_not_hide_other_branch_errors_or_use_stale_files(
+        self,
+    ) -> None:
+        for invalid_branch, skipped_branch in (("main", "dev"), ("dev", "main")):
+            with self.subTest(invalid_branch=invalid_branch):
+                self.add_target(branch=invalid_branch, patches=[])
+                skipped_patch_path = self.add_target(branch=skipped_branch, sha=None)
+                skipped_bundle_path = (
+                    self.bundles_dir / f"github~owner~alpha~{skipped_branch}.json"
+                )
+                with patch.object(
+                    local_parse, "load_json", wraps=load_json
+                ) as read_local:
+                    self.assertEqual(self.run_update()["bundles"], [])
+                read_paths = [call.args[0] for call in read_local.call_args_list]
+                self.assertNotIn(skipped_patch_path, read_paths)
+                self.assertNotIn(skipped_bundle_path, read_paths)
+                summary = self.summary.call_args.args[0]
+                self.assertIn("### Patch list (1)", summary)
+                self.assertIn(
+                    f"https://github.com/owner/alpha ({invalid_branch}): No patches found",
+                    summary,
+                )
+                self.assertNotIn(f"({skipped_branch})", summary)
 
     def test_main_is_selected_when_newer_than_dev(self) -> None:
         self.add_target(
@@ -310,9 +381,9 @@ class BundleUpdateTests(unittest.TestCase):
     def test_repository_metadata_failures_do_not_remove_valid_bundle(self) -> None:
         self.add_target()
         for details in (
-            {"is_404": True, "error": "404 Not Found"},
-            {"is_451": True, "error": "451 Unavailable"},
-            {"error": "Request timed out"},
+            {"is_404": True, "error": "Request failed (HTTP 404)"},
+            {"is_451": True, "error": "Request failed (HTTP 451)"},
+            {"error": "Request failed: timed out"},
         ):
             with self.subTest(details=details):
                 save_json(
@@ -336,8 +407,30 @@ class BundleUpdateTests(unittest.TestCase):
                 )
                 self.summary.assert_called()
                 summary = self.summary.call_args.args[0]
-                self.assertIn("Warnings (1)", summary)
-                self.assertNotIn("Invalid patch lists", summary)
+                self.assertIn("### Repository metadata (1)", summary)
+                self.assertIn(
+                    f"https://github.com/owner/alpha: {details['error']}", summary
+                )
+                self.assertNotIn("### Patch list", summary)
+
+    def test_incomplete_apps_alone_are_grouped_under_update(self) -> None:
+        self.add_target()
+        self.run_update()
+        self.summary.assert_called_once()
+        summary = self.summary.call_args.args[0]
+        self.assertTrue(summary.startswith("## 🔄 Update:\n\n"))
+        self.assertIn("### Incomplete Apps (1)\n\n", summary)
+        self.assertNotIn("### Patch list", summary)
+        self.assertNotIn("### Repository metadata", summary)
+
+    def test_archived_repository_is_reported_without_excluding_bundle(self) -> None:
+        self.add_target()
+        self.fetch_repo.return_value = {"is_archived": True, "stars": 7}
+        catalog = self.run_update()
+        self.assertTrue(catalog["bundles"][0]["isArchived"])
+        summary = self.summary.call_args.args[0]
+        self.assertIn("### Repository metadata (1)", summary)
+        self.assertIn("https://github.com/owner/alpha: Repository is archived", summary)
 
     def test_modes_keep_metadata_refresh_and_official_store_priority(self) -> None:
         self.add_target()
@@ -396,6 +489,10 @@ class BundleUpdateTests(unittest.TestCase):
         self.assertEqual(set(load_json(self.repos_path)), {"owner/renamed"})
         self.assertFalse(
             load_json(self.custom_path)["https://github.com/owner/alpha"]["enabled"]
+        )
+        self.assertIn(
+            "https://github.com/owner/alpha: Renamed to https://github.com/owner/renamed",
+            self.summary.call_args.args[0],
         )
 
     def test_rename_collision_filters_apps_hashes_and_history_before_scraping(
@@ -476,6 +573,86 @@ class BundleUpdateTests(unittest.TestCase):
         self.assertNotIn("compatiblePackagesKey", sources["owner/alpha"]["patches"][0])
         self.assertEqual(self.snapshot(), snapshot)
         self.assertTrue(orphan_file.exists())
+
+
+class RepositoryMetadataTests(unittest.TestCase):
+    def setUp(self) -> None:
+        sleep_patcher = patch.object(repo_info.time, "sleep")
+        sleep_patcher.start()
+        self.addCleanup(sleep_patcher.stop)
+        network_patcher = patch(
+            "urllib.request.urlopen",
+            side_effect=AssertionError("Unexpected network access"),
+        )
+        self.open_url = network_patcher.start()
+        self.addCleanup(network_patcher.stop)
+
+    def http_error(self, code: int) -> urllib.error.HTTPError:
+        error = urllib.error.HTTPError(
+            "https://example.com", code, "Failed", None, None
+        )
+        self.addCleanup(error.close)
+        return error
+
+    def test_github_http_errors_keep_actual_status_and_audit_flags(self) -> None:
+        for code in (404, 451, 403, 503):
+            with (
+                self.subTest(code=code),
+                patch.object(repo_info, "fetch", side_effect=self.http_error(code)),
+            ):
+                details = repo_info.fetch_repo_details("https://github.com/owner/alpha")
+                expected = {"error": f"Request failed (HTTP {code})"}
+                if code in repo_info.UNAVAILABLE_HTTP_CODES:
+                    expected[f"is_{code}"] = True
+                self.assertEqual(details, expected)
+
+    def test_connection_error_reports_reason_without_fabricating_http_status(
+        self,
+    ) -> None:
+        with patch.object(
+            repo_info, "fetch", side_effect=urllib.error.URLError("DNS lookup failed")
+        ):
+            details = repo_info.fetch_repo_details("https://github.com/owner/alpha")
+        self.assertEqual(details, {"error": "Request failed: DNS lookup failed"})
+
+    def test_gitlab_request_errors_report_actual_status_or_exception_reason(
+        self,
+    ) -> None:
+        for error, expected in (
+            (self.http_error(503), "Request failed (HTTP 503)"),
+            (urllib.error.URLError("timed out"), "Request failed: timed out"),
+        ):
+            with self.subTest(error=error):
+                self.open_url.side_effect = error
+                self.assertEqual(
+                    repo_info.fetch_gitlab_repo_details("owner/alpha"),
+                    {"error": expected},
+                )
+
+    def test_missing_gitlab_project_does_not_claim_an_http_error(self) -> None:
+        self.open_url.side_effect = None
+        self.open_url.return_value.__enter__.return_value.read.return_value = (
+            b'{"data": {"project": null}}'
+        )
+        self.assertEqual(
+            repo_info.fetch_gitlab_repo_details("owner/alpha"),
+            {"is_404": True, "error": "Repository not found or inaccessible"},
+        )
+
+    def test_audit_still_classifies_unavailable_repositories(self) -> None:
+        repo_url = "https://github.com/owner/alpha"
+        for code in repo_info.UNAVAILABLE_HTTP_CODES:
+            with (
+                self.subTest(code=code),
+                patch.object(repo_info, "fetch", side_effect=self.http_error(code)),
+                patch.object(audit_readme, "load_lines", side_effect=[[repo_url], []]),
+                patch.object(audit_readme, "append_step_summary") as summary,
+            ):
+                errors = audit_readme.audit_repos_and_links()
+                self.assertEqual(len(errors["unavailable"]), 1)
+                self.assertIn(str(code), errors["unavailable"][0])
+                self.assertEqual(errors["other"], [])
+                self.assertIn("### Unavailable (1)", summary.call_args.args[0])
 
 
 if __name__ == "__main__":

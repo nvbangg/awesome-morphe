@@ -15,6 +15,7 @@ from utils import (
     build_raw_url,
     build_repo_url,
     fetch,
+    format_request_error,
     parse_repo_url,
 )
 
@@ -56,7 +57,7 @@ def fetch_gitlab_repo_details(repo: str) -> dict:
             data = json.loads(response.read().decode("utf-8"))
             project = data.get("data", {}).get("project")
             if not project:
-                return {"is_404": True, "error": "404 Not Found"}
+                return {"is_404": True, "error": "Repository not found or inaccessible"}
             avatar = project.get("avatarUrl")
             if not avatar and "/" in repo:
                 avatar = fetch_gitlab_user_avatar(repo.split("/")[0])
@@ -69,7 +70,7 @@ def fetch_gitlab_repo_details(repo: str) -> dict:
                 "is_archived": bool(project.get("archived")),
             }
     except Exception as error:
-        return {"error": str(error)}
+        return {"error": format_request_error(error)}
 
 
 def fetch_repo_details(repo_url: str) -> dict:
@@ -101,14 +102,13 @@ def fetch_repo_details(repo_url: str) -> dict:
             "is_archived": bool(response.get("archived")),
         }
     except Exception as error:
+        details: dict[str, str | bool] = {"error": format_request_error(error)}
         if (
             isinstance(error, urllib.error.HTTPError)
             and error.code in UNAVAILABLE_HTTP_CODES
         ):
-            if error.code == 451:
-                return {"is_451": True, "error": "451 DMCA Takedown"}
-            return {"is_404": True, "error": "404 Not Found"}
-        return {"error": str(error)}
+            details[f"is_{error.code}"] = True
+        return details
 
 
 def process(
@@ -148,28 +148,19 @@ def process(
                 details = future.result()
                 if not details:
                     continue
-                if details.get("is_404") or details.get("is_451"):
-                    reason = (
-                        "451 DMCA Takedown"
-                        if details.get("is_451")
-                        else "404 Not Found"
-                    )
-                    print(f"[-] Failed to fetch metadata for {repo}: {reason}")
-                    if errors is not None:
-                        errors["warnings"].append(f"{tasks[repo]}: {reason}")
-                    continue
-
                 if "error" in details:
                     print(f"[-] Failed to fetch {repo}: {details['error']}")
                     if errors is not None:
-                        errors["warnings"].append(f"{tasks[repo]}: {details['error']}")
+                        errors["repo_metadata"].append(
+                            f"{tasks[repo]}: {details['error']}"
+                        )
                     continue
 
                 source_entry = bundle_sources[repo]
                 if details.get("is_archived"):
                     print(f"[-] Repository archived: {repo}")
                     if errors is not None:
-                        errors["warnings"].append(
+                        errors["repo_metadata"].append(
                             f"{tasks[repo]}: Repository is archived"
                         )
                     source_entry["isArchived"] = True
@@ -211,7 +202,9 @@ def process(
                     new_url = build_repo_url(source, full_name)
                     print(f"[+] Rename detected: {old_repo} -> {full_name}")
                     if errors is not None:
-                        errors["warnings"].append(f"{old_url} -> {new_url}")
+                        errors["repo_metadata"].append(
+                            f"{old_url}: Renamed to {new_url}"
+                        )
 
                     renames[old_repo] = full_name
                     if old_repo in repos_data and full_name not in repos_data:

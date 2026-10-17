@@ -3,7 +3,7 @@
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from providers import jman, morphe_archive, official
+from providers import jman, load_provider_sources, morphe_archive, official
 from utils import (
     DISCOVER_DIR,
     REPOS_JSON_PATH,
@@ -29,12 +29,9 @@ def _run_providers() -> list[str]:
     with ThreadPoolExecutor(max_workers=len(PROVIDER_MODULES)) as executor:
         futures = [executor.submit(module.discover) for module in PROVIDER_MODULES]
         for future in as_completed(futures):
-            try:
-                warning_message = future.result()
-                if warning_message:
-                    warnings.append(warning_message)
-            except Exception as error:
-                warnings.append(f"Unhandled exception: {error}")
+            warning_message = future.result()
+            if warning_message:
+                warnings.append(warning_message)
     return warnings
 
 
@@ -42,7 +39,7 @@ def _load_provider_files() -> list[tuple[str, dict]]:
     return [
         (f"{provider}.json", data)
         for provider in PROVIDERS
-        if (data := load_json(DISCOVER_DIR / f"{provider}.json"))
+        if (data := load_provider_sources(DISCOVER_DIR / f"{provider}.json"))
     ]
 
 
@@ -107,18 +104,19 @@ def main() -> int:
     print()
     provider_files = _load_provider_files()
     if not provider_files:
-        print("No provider files found.")
-        append_step_summary(
-            "### ⚠️ Discover\n- No provider files found in `data/discover/`."
-        )
-        return 1
+        message = "No usable provider files found; discovery stopped"
+        print(message)
+        warnings.append(message)
 
     if warnings:
         markdown_lines = [
-            "### ⚠️ Discover",
+            "## 🔎 Discover:\n",
             *[f"- {warning}" for warning in sorted(warnings)],
         ]
         append_step_summary("\n".join(markdown_lines))
+
+    if not provider_files:
+        return 1
 
     merged = _merge(provider_files)
     print(f"Merged {len(merged)} unique sources")

@@ -114,13 +114,13 @@ def parse_patches_list(
     main_patch_names: set[str] | None = None,
 ) -> tuple[list[dict] | None, str | None]:
     if not isinstance(raw_patches_data, dict):
-        return None, "Invalid `patches-list.json`"
+        return None, "Invalid data"
 
     raw_list = raw_patches_data.get("patches")
     if not isinstance(raw_list, list):
-        return None, "Invalid `patches-list.json`"
+        return None, "Invalid data"
     if len(raw_list) == 0:
-        return None, "Empty `patches-list.json`"
+        return None, "No patches found"
 
     valid_patches = []
     bundle_apps = set()
@@ -144,7 +144,7 @@ def parse_patches_list(
         valid_patches.append(patch_dict)
 
     if not valid_patches:
-        return None, "Invalid `patches-list.json`"
+        return None, "Invalid data"
     if bundle_apps == {PACKAGE_EXAMPLE}:
         return None, "Only contains `com.example.app`"
 
@@ -189,8 +189,8 @@ def load_branch_data(
             is_dev_branch=is_dev_branch,
             main_patch_names=main_patch_names,
         )
-    except (AttributeError, TypeError, ValueError) as error:
-        return None, None, None, f"Invalid patches-list.json: {error}"
+    except (AttributeError, TypeError, ValueError):
+        return None, None, None, "Invalid data"
     if not patches:
         return None, None, None, reason
     return bundle, patches, raw["patches"], None
@@ -247,12 +247,23 @@ def process(
                 main_patch_names=main_patch_names,
             )
 
-            for branch, reason in (("main", main_reason), ("dev", dev_reason)):
-                if reason:
-                    message = f"{build_repo_url(source, repo)} ({branch}): {reason}"
-                    print(f"[-] {message}")
-                    if errors is not None:
-                        errors["patch_lists"].append(message)
+            branch_errors = [
+                (branch, reason)
+                for branch, reason in (("main", main_reason), ("dev", dev_reason))
+                if reason
+            ]
+            repo_url = build_repo_url(source, repo)
+            for branch, reason in branch_errors:
+                print(f"[-] {repo_url} ({branch}): {reason}")
+
+            if errors is not None and not (cur_main_patches or cur_dev_patches):
+                if main_reason and main_reason == dev_reason:
+                    errors["patch_lists"].append(f"{repo_url}: {main_reason}")
+                else:
+                    errors["patch_lists"].extend(
+                        f"{repo_url} ({branch}): {reason}"
+                        for branch, reason in branch_errors
+                    )
 
             if cur_main_patches or cur_dev_patches:
                 main_timestamp = (

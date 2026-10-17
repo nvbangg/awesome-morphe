@@ -95,5 +95,29 @@ class FetchHelperTests(unittest.TestCase):
         open_url.assert_called_once()
 
 
+class StepSummaryTests(unittest.TestCase):
+    def test_sections_in_separate_step_files_have_one_separator_each(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            paths = []
+            for section_name in ("Discover", "Fetch", "Update"):
+                path = root / f"{section_name}.md"
+                with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(path)}):
+                    utils.append_step_summary(f"## {section_name}:\n\n- Warning")
+                paths.append(path)
+                self.assertTrue(
+                    path.read_text(encoding="utf-8").endswith("\n\n---\n\n")
+                )
+            summary = "\n".join(path.read_text(encoding="utf-8") for path in paths)
+            self.assertEqual(summary.count("\n---\n"), len(paths))
+
+    def test_empty_content_does_not_create_summary_or_separator(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            path = Path(temporary_directory) / "summary.md"
+            with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(path)}):
+                utils.append_step_summary(" \n ")
+            self.assertFalse(path.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

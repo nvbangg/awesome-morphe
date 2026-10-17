@@ -290,7 +290,7 @@ def verify_and_export_repos(candidates: list[dict] | None = None) -> list[dict]:
                 else ""
             )
             summary_sections.append(
-                f"### [{repo['full_name']}]({repo['url']}) (⭐ {repo['stars']})\n- **Created:** `{repo['created_at']}` | **Updated:** `{repo['pushed_at']}`{desc}"
+                f"### [{repo['full_name']}]({repo['url']}) ({repo['stars']} stars)\n\n- **Created:** `{repo['created_at']}` | **Updated:** `{repo['pushed_at']}`{desc}"
             )
 
     PROJECTS_DIR.mkdir(parents=True, exist_ok=True)

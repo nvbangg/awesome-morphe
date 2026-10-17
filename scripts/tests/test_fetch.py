@@ -223,17 +223,30 @@ class BundleFetchTests(unittest.TestCase):
                         self.assertEqual(path.read_bytes(), content)
                     self.assertFalse(self.updated_path.exists())
                     self.run_process.assert_not_called()
-                    self.assertIn("owner/alpha (main)", self.summary.call_args.args[0])
+                    summary = self.summary.call_args.args[0]
+                    self.assertIn("https://github.com/owner/alpha:", summary)
+                    self.assertNotIn("(main)", summary)
+                    expected_reason = (
+                        f"Request failed (HTTP {failure.code})"
+                        if isinstance(failure, urllib.error.HTTPError)
+                        else "Request failed: "
+                    )
+                    self.assertIn(expected_reason, summary)
 
-    def test_both_unavailable_metadata_branches_have_one_summary_entry(self) -> None:
+    def test_metadata_errors_preserve_codes_and_combine_only_identical_errors(
+        self,
+    ) -> None:
+        def get_hash(_source: str, _repo: str, branch: str) -> str:
+            raise self.responses[self.url(branch, "patches-bundle.json")]
+
         for stage in ("hash", "metadata"):
             for main_code in HTTP_UNAVAILABLE_CODES:
                 for dev_code in HTTP_UNAVAILABLE_CODES:
                     with self.subTest(stage=stage, main=main_code, dev=dev_code):
                         save_json(self.repos_path, self.initial_repos)
                         self.summary.reset_mock()
-                        self.fetch_hash.return_value = (
-                            None if stage == "hash" else "main-new"
+                        self.fetch_hash.side_effect = (
+                            get_hash if stage == "hash" else None
                         )
                         for branch, code in (("main", main_code), ("dev", dev_code)):
                             url = self.url(branch, "patches-bundle.json")
@@ -244,8 +257,22 @@ class BundleFetchTests(unittest.TestCase):
                             bundle_fetch.fetch_all_repos()
                         self.summary.assert_called_once()
                         summary = self.summary.call_args.args[0]
-                        self.assertEqual(summary.count("- https://"), 1)
-                        self.assertIn("on main and dev (HTTP 404/451)", summary)
+                        if main_code == dev_code:
+                            self.assertEqual(summary.count("- https://"), 1)
+                            self.assertNotIn("(main)", summary)
+                            self.assertNotIn("(dev)", summary)
+                            self.assertIn(f"Request failed (HTTP {main_code})", summary)
+                        else:
+                            self.assertEqual(
+                                summary.count("- https://"), len(DEFAULT_BRANCHES)
+                            )
+                            self.assertIn(
+                                f"(main): Request failed (HTTP {main_code})", summary
+                            )
+                            self.assertIn(
+                                f"(dev): Request failed (HTTP {dev_code})", summary
+                            )
+                        self.assertNotIn("HTTP 404/451", summary)
                         updated_repo = load_json(self.repos_path)["owner/alpha"]
                         for branch in DEFAULT_BRANCHES:
                             self.assertIsNone(updated_repo["github"][branch])
@@ -263,7 +290,9 @@ class BundleFetchTests(unittest.TestCase):
                     failure: Exception | None = other_failure,
                 ) -> str | None:
                     if branch == "main":
-                        return None
+                        raise self.http_error(
+                            self.url(branch, "patches-bundle.json"), HTTP_NOT_FOUND
+                        )
                     if failure:
                         raise failure
                     return "dev-new"
@@ -275,6 +304,9 @@ class BundleFetchTests(unittest.TestCase):
                     self.summary.assert_called_once()
                     summary = self.summary.call_args.args[0]
                     self.assertIn("owner/alpha (dev)", summary)
+                    self.assertIn(
+                        "owner/alpha (main): Request failed (HTTP 404)", summary
+                    )
                     self.assertIn("Timed out", summary)
                     self.assertNotIn("404/451", summary)
                 else:
@@ -283,7 +315,12 @@ class BundleFetchTests(unittest.TestCase):
     def test_missing_metadata_is_grouped_by_source_and_repository(self) -> None:
         results = [
             bundle_fetch.BranchFetchResult(
-                source, repo, branch, None, metadata_unavailable=True
+                source,
+                repo,
+                branch,
+                None,
+                error_category="metadata",
+                error_message="Request failed (HTTP 404)",
             )
             for source, repo, branch in (
                 ("github", "owner/alpha", "main"),
@@ -292,15 +329,23 @@ class BundleFetchTests(unittest.TestCase):
             )
         ]
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
-            self.assertEqual(bundle_fetch.collect_fetch_errors(results), [])
+            self.assertFalse(any(bundle_fetch.collect_fetch_errors(results).values()))
             results.append(
                 bundle_fetch.BranchFetchResult(
-                    "gitlab", "owner/alpha", "main", None, metadata_unavailable=True
+                    "gitlab",
+                    "owner/alpha",
+                    "main",
+                    None,
+                    error_category="metadata",
+                    error_message="Request failed (HTTP 404)",
                 )
             )
             errors = bundle_fetch.collect_fetch_errors(results)
-        self.assertEqual(len(errors), 1)
-        self.assertIn("https://gitlab.com/owner/alpha:", errors[0])
+        self.assertEqual(
+            errors["metadata"],
+            ["https://gitlab.com/owner/alpha: Request failed (HTTP 404)"],
+        )
+        self.assertEqual(sum(len(messages) for messages in errors.values()), 1)
 
     def test_mpp_failures_are_reported_when_other_metadata_branch_is_missing(
         self,
@@ -312,19 +357,30 @@ class BundleFetchTests(unittest.TestCase):
             with self.subTest(failure=str(failure)):
                 save_json(self.repos_path, self.initial_repos)
                 self.summary.reset_mock()
-                self.fetch_hash.side_effect = lambda _source, _repo, branch: (
-                    "main-new" if branch == "main" else None
-                )
+
+                def get_hash(_source: str, _repo: str, branch: str) -> str:
+                    if branch == "dev":
+                        raise self.http_error(
+                            self.url(branch, "patches-bundle.json"), HTTP_NOT_FOUND
+                        )
+                    return "main-new"
+
+                self.fetch_hash.side_effect = get_hash
                 self.responses[self.bundle_data["download_url"]] = failure
                 with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
                     bundle_fetch.fetch_all_repos()
                 summary = self.summary.call_args.args[0]
                 self.assertIn("owner/alpha (main)", summary)
-                self.assertIn(".mpp", summary)
+                self.assertIn("Bundle metadata (1)", summary)
+                self.assertIn("Bundle download (1)", summary)
+                self.assertIn(f"(main): Request failed (HTTP {failure.code})", summary)
+                self.assertIn("(dev): Request failed (HTTP 404)", summary)
                 self.assertNotIn("on main and dev", summary)
 
     def test_image_failure_is_reported_without_repeating_missing_metadata(self) -> None:
-        self.fetch_hash.return_value = None
+        self.fetch_hash.side_effect = self.http_error(
+            self.url("main", "patches-bundle.json"), HTTP_NOT_FOUND
+        )
         with (
             patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES),
             patch.object(
@@ -334,7 +390,127 @@ class BundleFetchTests(unittest.TestCase):
             bundle_fetch.fetch_all_repos(daily=True)
         summary = self.summary.call_args.args[0]
         self.assertEqual(summary.count("- https://"), 2)
-        self.assertIn("Failed to fetch image: Image timeout", summary)
+        self.assertIn("Bundle image (1)", summary)
+        self.assertIn("Request failed: Image timeout", summary)
+
+    def test_identical_bundle_failures_have_one_entry_without_branches(self) -> None:
+        self.responses[self.bundle_data["download_url"]] = self.http_error(
+            self.bundle_data["download_url"], 503
+        )
+        with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
+            bundle_fetch.fetch_all_repos()
+        summary = self.summary.call_args.args[0]
+        self.assertIn("Bundle download (1)", summary)
+        self.assertIn(
+            "https://github.com/owner/alpha: Request failed (HTTP 503)", summary
+        )
+        self.assertEqual(summary.count("- https://"), 1)
+        self.assertNotIn("(main)", summary)
+        self.assertNotIn("(dev)", summary)
+        self.assertNotIn(self.bundle_data["download_url"], summary)
+        self.assertEqual(load_json(self.repos_path), self.initial_repos)
+
+    def test_same_http_status_at_different_steps_keeps_both_branch_entries(
+        self,
+    ) -> None:
+        metadata_url = self.url("main", "patches-bundle.json")
+        self.responses[metadata_url] = self.http_error(metadata_url, 403)
+        self.responses[self.bundle_data["download_url"]] = self.http_error(
+            self.bundle_data["download_url"], 403
+        )
+        with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
+            bundle_fetch.fetch_all_repos()
+        summary = self.summary.call_args.args[0]
+        self.assertIn("Bundle metadata (1)", summary)
+        self.assertIn("Bundle download (1)", summary)
+        self.assertIn("(main): Request failed (HTTP 403)", summary)
+        self.assertIn("(dev): Request failed (HTTP 403)", summary)
+        self.assertEqual(summary.count("- https://"), len(DEFAULT_BRANCHES))
+
+    def test_branch_errors_are_suppressed_when_the_other_branch_succeeds(self) -> None:
+        for category in ("metadata", "bundle", "patch_list"):
+            with self.subTest(category=category):
+                results = [
+                    bundle_fetch.BranchFetchResult(
+                        "github",
+                        "owner/alpha",
+                        "main",
+                        "main-old",
+                        error_category=category,
+                        error_message="Request failed (HTTP 503)",
+                    ),
+                    bundle_fetch.BranchFetchResult(
+                        "github", "owner/alpha", "dev", "dev-new"
+                    ),
+                ]
+                with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
+                    self.assertFalse(
+                        any(bundle_fetch.collect_fetch_errors(results).values())
+                    )
+
+    def test_patch_list_request_errors_do_not_trigger_parsing(self) -> None:
+        for code in (403, 451):
+            with self.subTest(code=code):
+                self.summary.reset_mock()
+                for branch in DEFAULT_BRANCHES:
+                    url = self.url(branch, "patches-list.json")
+                    self.responses[url] = self.http_error(url, code)
+                with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
+                    bundle_fetch.fetch_all_repos()
+                summary = self.summary.call_args.args[0]
+                self.assertIn("Patch list (1)", summary)
+                self.assertIn(f"Request failed (HTTP {code})", summary)
+                self.assertNotIn("Bundle metadata", summary)
+                self.assertNotIn("Bundle download", summary)
+                self.run_process.assert_not_called()
+                self.assertEqual(load_json(self.repos_path), self.initial_repos)
+
+    def test_both_parser_failures_report_only_one_patch_list_generation_failure(
+        self,
+    ) -> None:
+        for branch in DEFAULT_BRANCHES:
+            url = self.url(branch, "patches-list.json")
+            self.responses[url] = self.http_error(url, HTTP_NOT_FOUND)
+
+        def run_parser(*_args: object, **_kwargs: object) -> None:
+            self.parsed_path.write_text("", encoding="utf-8")
+
+        self.run_process.side_effect = run_parser
+        with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
+            bundle_fetch.fetch_all_repos()
+        summary = self.summary.call_args.args[0]
+        self.assertIn("Patch list (1)", summary)
+        self.assertIn(
+            "https://github.com/owner/alpha: Failed to generate `patches-list.json`",
+            summary,
+        )
+        self.assertNotIn("HTTP 404", summary)
+        self.assertEqual(summary.count("- https://"), 1)
+        self.run_process.assert_called_once()
+        for branch in DEFAULT_BRANCHES:
+            self.assertIsNone(
+                load_json(self.repos_path)["owner/alpha"]["github"][branch]
+            )
+
+    def test_missing_or_blocked_image_is_cleared_without_warning(self) -> None:
+        image_url = self.url("main", "patches-bundle.png")
+        for code in HTTP_UNAVAILABLE_CODES:
+            with (
+                self.subTest(code=code),
+                patch.object(
+                    bundle_fetch,
+                    "get_image_sha",
+                    side_effect=self.http_error(image_url, code),
+                ),
+            ):
+                self.assertEqual(
+                    bundle_fetch.process_image("github", "owner/alpha", "image-old"),
+                    ("github", "owner/alpha", None, True, None),
+                )
+                self.assertEqual(
+                    bundle_fetch.process_image("github", "owner/alpha", None),
+                    ("github", "owner/alpha", None, False, None),
+                )
 
     def test_unavailable_metadata_and_mpp_clear_sha_without_deleting_files(
         self,
@@ -345,8 +521,10 @@ class BundleFetchTests(unittest.TestCase):
                 with self.subTest(stage=stage, code=code):
                     save_json(self.repos_path, self.initial_repos)
                     self.responses = original_responses.copy()
-                    self.fetch_hash.return_value = (
-                        None if stage == "hash" else "main-new"
+                    self.fetch_hash.side_effect = (
+                        self.http_error(self.url("main", "patches-bundle.json"), code)
+                        if stage == "hash"
+                        else None
                     )
                     if stage != "hash":
                         url = (
@@ -382,6 +560,10 @@ class BundleFetchTests(unittest.TestCase):
                 self.assertIsNone(result.new_sha)
                 self.assertFalse(result.needs_parse)
                 self.assertTrue(result.error_message)
+                self.assertEqual(result.error_category, "metadata")
+                self.assertIn(
+                    result.error_message, ("Invalid data", "Invalid `download_url`")
+                )
 
     def test_unreadable_or_missing_manifest_name_keeps_existing_display_name(
         self,
@@ -448,7 +630,13 @@ class BundleFetchTests(unittest.TestCase):
         save_json(self.bundles_dir / "github~owner~alpha~main.json", self.bundle_data)
         save_json(self.patches_dir / "github~owner~alpha~main.json", self.patches_data)
         self.fetch_hash.return_value = "main-old"
-        with patch.object(bundle_fetch, "get_remote_file_hash", return_value=None):
+        with patch.object(
+            bundle_fetch,
+            "get_remote_file_hash",
+            side_effect=self.http_error(
+                self.bundle_data["download_url"], HTTP_NOT_FOUND
+            ),
+        ):
             bundle_fetch.fetch_all_repos(weekly=True)
         self.assertIsNone(load_json(self.repos_path)["owner/alpha"]["github"]["main"])
         self.assertTrue((self.patches_dir / "github~owner~alpha~main.json").exists())
@@ -471,7 +659,9 @@ class BundleFetchTests(unittest.TestCase):
         self.fetch_request.assert_not_called()
 
     def test_image_updates_are_independent_of_branch_failures(self) -> None:
-        self.fetch_hash.return_value = None
+        self.fetch_hash.side_effect = self.http_error(
+            self.url("main", "patches-bundle.json"), HTTP_NOT_FOUND
+        )
         for mode in ("daily", "weekly"):
             with (
                 self.subTest(mode=mode),
@@ -496,12 +686,12 @@ class BundleFetchTests(unittest.TestCase):
     def test_missing_hash_header_is_not_a_missing_file(self) -> None:
         with patch.object(bundle_fetch.urllib.request, "urlopen") as open_url:
             open_url.return_value.__enter__.return_value.getheader.return_value = None
-            with self.assertRaisesRegex(ValueError, "Missing ETag"):
+            with self.assertRaisesRegex(ValueError, "Missing `ETag`"):
                 bundle_fetch.get_remote_file_hash(
                     self.url("main", "patches-bundle.json"), "github"
                 )
 
-    def test_metadata_head_404_and_451_mean_unavailable(self) -> None:
+    def test_hash_request_preserves_http_errors_for_the_caller(self) -> None:
         url = self.url("main", "patches-bundle.json")
         for code in HTTP_UNAVAILABLE_CODES:
             with (
@@ -512,7 +702,9 @@ class BundleFetchTests(unittest.TestCase):
                     side_effect=self.http_error(url, code),
                 ),
             ):
-                self.assertIsNone(bundle_fetch.get_remote_file_hash(url, "github"))
+                with self.assertRaises(urllib.error.HTTPError) as raised:
+                    bundle_fetch.get_remote_file_hash(url, "github")
+                self.assertEqual(raised.exception.code, code)
 
     def test_parser_failure_stops_before_saving_repos(self) -> None:
         patch_url = self.url("main", "patches-list.json")
@@ -561,9 +753,7 @@ class BundleFetchTests(unittest.TestCase):
             1,
         )
         self.run_process.assert_called_once()
-        summary = self.summary.call_args.args[0]
-        self.assertIn("owner/alpha (dev): Parser did not produce", summary)
-        self.assertNotIn("owner/alpha (main)", summary)
+        self.summary.assert_not_called()
 
 
 if __name__ == "__main__":

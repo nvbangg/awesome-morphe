@@ -522,7 +522,7 @@ def main() -> None:
             "No changes detected in patch bundles. Skipping What's New generation."
         )
         print(f"[-] {info_message}")
-        append_step_summary(f"### ⚠️ What's new\n- {info_message}")
+        append_step_summary(f"## 🆕 What's New:\n\n- {info_message}")
         set_step_output("success", "true")
         return
 
@@ -537,7 +537,7 @@ def main() -> None:
             f" `{WHATS_NEW_JSON_PATH.name}`. Skipping What's New generation."
         )
         print(f"[-] {warning_message}")
-        append_step_summary(f"### ⚠️ What's new\n- {warning_message}")
+        append_step_summary(f"## 🆕 What's New:\n\n- {warning_message}")
         set_step_output("success", "true")
         return
 
@@ -559,7 +559,7 @@ def main() -> None:
             f" `{WHATS_NEW_PATH.name}` generation."
         )
         print(f"[-] {info_message}")
-        append_step_summary(f"### ⚠️ What's new\n- {info_message}")
+        append_step_summary(f"## 🆕 What's New:\n\n- {info_message}")
 
     whats_new_data.insert(0, {"date": today_str, "bundles": json_diff})
     save_json(WHATS_NEW_JSON_PATH, whats_new_data[:WHATS_NEW_MAX_ENTRIES])

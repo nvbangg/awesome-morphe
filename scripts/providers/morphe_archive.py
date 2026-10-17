@@ -1,8 +1,9 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
 import re
+from http.client import HTTPException
 
-from providers import export_provider
+from providers import export_provider, report_provider_warning
 from utils import DISCOVER_DIR, build_repo_url, fetch
 
 README_URL = (
@@ -15,10 +16,8 @@ _REPO_RE = re.compile(r"morphe\.software/add-source\?(github|gitlab)=([^)\s]+)")
 def discover() -> str | None:
     try:
         content = fetch(README_URL)
-    except Exception as error:
-        warning_message = f"[morphe-archive] Failed: {error}. Kept existing sources in morphe-archive.json"
-        print(f"[-] {warning_message}")
-        return warning_message
+    except (OSError, HTTPException, UnicodeError) as error:
+        return report_provider_warning("morphe-archive", error, OUTPUT_PATH)
 
     discovered = {
         url: {}

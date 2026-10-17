@@ -126,7 +126,14 @@ def append_step_summary(markdown_content: str) -> None:
             contextlib.suppress(Exception),
             Path(summary_path).open("a", encoding="utf-8") as file,
         ):
-            file.write(markdown_content.strip() + "\n\n")
+            file.write(markdown_content.strip() + "\n\n---\n\n")
+
+
+def format_request_error(error: Exception) -> str:
+    if isinstance(error, urllib.error.HTTPError):
+        return f"Request failed (HTTP {error.code})"
+    reason = error.reason if isinstance(error, urllib.error.URLError) else error
+    return f"Request failed: {reason}"
 
 
 def set_step_output(name: str, value: str) -> None:
