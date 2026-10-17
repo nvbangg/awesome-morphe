@@ -38,6 +38,7 @@ from utils import (
 )
 
 HASH_REQUEST_TIMEOUT_SECONDS = 10
+METADATA_REQUEST_TIMEOUT_SECONDS = 15
 GRADLE_EXECUTABLE_NAME = "gradlew.bat" if sys.platform == "win32" else "gradlew"
 GRADLE_EXECUTABLE_PATH = BUNDLE_PARSER_DIR / GRADLE_EXECUTABLE_NAME
 FETCH_ERROR_SECTIONS = {
@@ -105,6 +106,26 @@ def get_file_sha(source: str, repo: str, branch: str) -> str | None:
     return get_remote_file_hash(url, source) if url else None
 
 
+def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | None]:
+    headers = get_auth_headers(url)
+    if current_sha:
+        headers["If-None-Match"] = f'"{current_sha}"'
+    request = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(
+            request, timeout=METADATA_REQUEST_TIMEOUT_SECONDS
+        ) as response:
+            remote_hash = response.getheader("ETag")
+            if not remote_hash:
+                raise ValueError("Missing `ETag` header")
+            return remote_hash.strip('"'), response.read()
+    except urllib.error.HTTPError as error:
+        if error.code == HTTPStatus.NOT_MODIFIED and current_sha:
+            error.close()
+            return current_sha, None
+        raise
+
+
 def get_patches_list_url(source: str, repo: str, branch: str) -> str | None:
     return build_raw_url(source, repo, branch, "patches-list.json")
 
@@ -138,8 +159,19 @@ def process_repo_branch(
             error_category=category,
         )
 
+    file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
+    bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
+    patches_file = PATCHES_DIR / f"{file_prefix}.json"
+    has_local_data = bundle_file.is_file() and patches_file.is_file()
+    bundle_url = build_raw_url(source, repo, branch, "patches-bundle.json")
+    bundle_content = None
     try:
-        remote_sha = get_file_sha(source, repo, branch)
+        if source == "github":
+            remote_sha, bundle_content = get_github_bundle(
+                bundle_url, current_sha if has_local_data else None
+            )
+        else:
+            remote_sha = get_file_sha(source, repo, branch)
     except urllib.error.HTTPError as error:
         return failed(
             format_request_error(error),
@@ -151,9 +183,6 @@ def process_repo_branch(
     except ValueError as error:
         return failed(str(error), "metadata")
 
-    file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
-    bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
-    patches_file = PATCHES_DIR / f"{file_prefix}.json"
     if not remote_sha:
         return failed(
             "Metadata hash is unavailable",
@@ -163,8 +192,8 @@ def process_repo_branch(
     if (
         current_sha
         and remote_sha == current_sha
-        and bundle_file.is_file()
-        and patches_file.is_file()
+        and has_local_data
+        and bundle_content is None
     ):
         if weekly:
             bundle_data = load_json(bundle_file)
@@ -187,9 +216,9 @@ def process_repo_branch(
                 return failed(format_request_error(error), "bundle")
         return BranchFetchResult(source, repo, branch, current_sha)
 
-    bundle_url = build_raw_url(source, repo, branch, "patches-bundle.json")
     try:
-        bundle_content = fetch(bundle_url, binary=True)
+        if bundle_content is None:
+            bundle_content = fetch(bundle_url, binary=True)
     except urllib.error.HTTPError as error:
         return failed(
             format_request_error(error),

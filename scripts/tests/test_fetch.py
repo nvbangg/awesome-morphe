@@ -7,7 +7,7 @@ import urllib.error
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from unittest.mock import call, patch
+from unittest.mock import Mock, call, patch
 
 import fetch as bundle_fetch
 from utils import DEFAULT_BRANCHES, build_raw_url, load_json, save_json
@@ -17,6 +17,70 @@ DOWNLOAD_WAIT_TIMEOUT_SECONDS = 5
 HTTP_NOT_FOUND = 404
 HTTP_UNAVAILABLE_CODES = (404, 451)
 HTTP_OTHER_CODES = (403, 429, 500, 503)
+
+
+class GithubBundleTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.url = build_raw_url("github", "owner/alpha", "main", "patches-bundle.json")
+        request_patcher = patch.object(bundle_fetch.urllib.request, "urlopen")
+        self.open_url = request_patcher.start()
+        self.addCleanup(request_patcher.stop)
+        self.response = self.open_url.return_value.__enter__.return_value
+        self.response.getheader.return_value = '"new-hash"'
+        self.response.read.return_value = b'{"download_url": "bundle.mpp"}'
+
+    def test_changed_metadata_uses_one_conditional_get_with_response_etag(self) -> None:
+        result = bundle_fetch.get_github_bundle(self.url, "old-hash")
+        self.assertEqual(result, ("new-hash", self.response.read.return_value))
+        self.open_url.assert_called_once()
+        request = self.open_url.call_args.args[0]
+        self.assertEqual(request.get_method(), "GET")
+        self.assertEqual(request.get_header("If-none-match"), '"old-hash"')
+        self.response.read.assert_called_once()
+
+    def test_unconfirmed_metadata_uses_unconditional_get(self) -> None:
+        bundle_fetch.get_github_bundle(self.url, None)
+        self.assertIsNone(self.open_url.call_args.args[0].get_header("If-none-match"))
+        self.response.read.assert_called_once()
+
+    def test_not_modified_preserves_hash_without_reading_body(self) -> None:
+        body = io.BytesIO()
+        self.open_url.side_effect = urllib.error.HTTPError(
+            self.url, 304, "Not Modified", None, body
+        )
+        self.assertEqual(
+            bundle_fetch.get_github_bundle(self.url, "old-hash"),
+            ("old-hash", None),
+        )
+        self.open_url.assert_called_once()
+        self.response.read.assert_not_called()
+        self.assertTrue(body.closed)
+
+    def test_http_errors_propagate_with_actual_status(self) -> None:
+        for code in (304, *HTTP_UNAVAILABLE_CODES, *HTTP_OTHER_CODES):
+            with self.subTest(code=code):
+                error = urllib.error.HTTPError(
+                    self.url, code, "Request failed", None, None
+                )
+                self.addCleanup(error.close)
+                self.open_url.side_effect = error
+                with self.assertRaises(urllib.error.HTTPError) as raised:
+                    bundle_fetch.get_github_bundle(self.url, None)
+                self.assertIs(raised.exception, error)
+
+    def test_network_errors_propagate_without_retry(self) -> None:
+        error = urllib.error.URLError("DNS failure")
+        self.open_url.side_effect = error
+        with self.assertRaises(urllib.error.URLError) as raised:
+            bundle_fetch.get_github_bundle(self.url, "old-hash")
+        self.assertIs(raised.exception, error)
+        self.open_url.assert_called_once()
+
+    def test_missing_etag_is_reported_before_reading_body(self) -> None:
+        self.response.getheader.return_value = None
+        with self.assertRaisesRegex(ValueError, "Missing `ETag`"):
+            bundle_fetch.get_github_bundle(self.url, None)
+        self.response.read.assert_not_called()
 
 
 class BundleDownloadsTests(unittest.TestCase):
@@ -112,11 +176,17 @@ class BundleFetchTests(unittest.TestCase):
         request_patcher = patch.object(bundle_fetch, "fetch", side_effect=self.download)
         self.fetch_request = request_patcher.start()
         self.addCleanup(request_patcher.stop)
+        self.fetch_hash = Mock(return_value="main-new")
         hash_patcher = patch.object(
-            bundle_fetch, "get_file_sha", return_value="main-new"
+            bundle_fetch, "get_file_sha", side_effect=self.fetch_hash
         )
-        self.fetch_hash = hash_patcher.start()
+        hash_patcher.start()
         self.addCleanup(hash_patcher.stop)
+        github_patcher = patch.object(
+            bundle_fetch, "get_github_bundle", side_effect=self.github_metadata
+        )
+        self.github_metadata_request = github_patcher.start()
+        self.addCleanup(github_patcher.stop)
         image_patcher = patch.object(
             bundle_fetch, "get_image_sha", return_value="image-old"
         )
@@ -142,6 +212,19 @@ class BundleFetchTests(unittest.TestCase):
         error = urllib.error.HTTPError(url, code, "Request failed", None, None)
         self.addCleanup(error.close)
         return error
+
+    def github_metadata(
+        self, url: str, current_sha: str | None
+    ) -> tuple[str, bytes | None]:
+        branch = next(
+            branch
+            for branch in DEFAULT_BRANCHES
+            if url == self.url(branch, "patches-bundle.json")
+        )
+        remote_sha = self.fetch_hash("github", "owner/alpha", branch)
+        if current_sha and remote_sha == current_sha:
+            return current_sha, None
+        return remote_sha, self.fetch_request(url, binary=True)
 
     def seed_target(self) -> dict[Path, bytes]:
         old_contents = {
@@ -268,15 +351,66 @@ class BundleFetchTests(unittest.TestCase):
         self.run_process.assert_not_called()
         self.assertEqual(self.repos_path.read_bytes(), original_content)
         self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
+        self.github_metadata_request.assert_called_once_with(
+            self.url("main", "patches-bundle.json"), "main-old"
+        )
 
     def test_missing_json_refetches_even_with_unchanged_hash(self) -> None:
         self.fetch_hash.return_value = "main-old"
-        bundle_fetch.fetch_all_repos()
-        self.assertEqual(
-            load_json(self.patches_dir / "github~owner~alpha~main.json"),
-            self.patches_data,
+        for missing_directory in (self.bundles_dir, self.patches_dir):
+            with self.subTest(missing_directory=missing_directory.name):
+                self.seed_target()
+                (missing_directory / "github~owner~alpha~main.json").unlink()
+                self.fetch_request.reset_mock()
+                self.github_metadata_request.reset_mock()
+                bundle_fetch.fetch_all_repos()
+                self.assertEqual(
+                    load_json(self.patches_dir / "github~owner~alpha~main.json"),
+                    self.patches_data,
+                )
+                self.assertEqual(self.fetch_request.call_count, 3)
+                self.github_metadata_request.assert_called_once_with(
+                    self.url("main", "patches-bundle.json"), None
+                )
+
+    def test_null_sha_refetches_despite_existing_local_files(self) -> None:
+        self.seed_target()
+        result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", None)
+        self.github_metadata_request.assert_called_once_with(
+            self.url("main", "patches-bundle.json"), None
         )
-        self.assertEqual(self.fetch_request.call_count, 3)
+        self.assertEqual(result.new_sha, "main-new")
+        self.assertTrue(result.status_changed)
+
+    def test_metadata_200_is_processed_even_when_etag_matches_saved_sha(self) -> None:
+        self.seed_target()
+        self.github_metadata_request.side_effect = None
+        self.github_metadata_request.return_value = (
+            "main-old",
+            json.dumps(self.bundle_data).encode(),
+        )
+        result = bundle_fetch.process_repo_branch(
+            "github", "owner/alpha", "main", "main-old"
+        )
+        self.assertTrue(result.status_changed)
+        self.assertEqual(result.bundle_name, "Alpha new")
+        self.assertNotIn(
+            call(self.url("main", "patches-bundle.json"), binary=True),
+            self.fetch_request.call_args_list,
+        )
+
+    def test_gitlab_unchanged_metadata_still_skips_get(self) -> None:
+        self.fetch_hash.return_value = "main-old"
+        for directory in (self.bundles_dir, self.patches_dir):
+            save_json(directory / "gitlab~owner~alpha~main.json", {})
+        result = bundle_fetch.process_repo_branch(
+            "gitlab", "owner/alpha", "main", "main-old"
+        )
+        self.assertEqual(result.new_sha, "main-old")
+        self.assertFalse(result.status_changed)
+        self.fetch_hash.assert_called_once_with("gitlab", "owner/alpha", "main")
+        self.github_metadata_request.assert_not_called()
+        self.fetch_request.assert_not_called()
 
     def test_request_failures_preserve_all_old_files_and_sha(self) -> None:
         urls = {
