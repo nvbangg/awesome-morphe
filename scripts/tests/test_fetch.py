@@ -5,16 +5,59 @@ import threading
 import unittest
 import urllib.error
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 import fetch as bundle_fetch
 from utils import DEFAULT_BRANCHES, build_raw_url, load_json, save_json
 
 PATCH_LIST_BARRIER_TIMEOUT_SECONDS = 5
+DOWNLOAD_WAIT_TIMEOUT_SECONDS = 5
 HTTP_NOT_FOUND = 404
 HTTP_UNAVAILABLE_CODES = (404, 451)
 HTTP_OTHER_CODES = (403, 429, 500, 503)
+
+
+class BundleDownloadsTests(unittest.TestCase):
+    def test_concurrent_targets_share_download_without_blocking_other_urls(
+        self,
+    ) -> None:
+        shared_url = "https://example.com/shared.mpp"
+        other_url = "https://example.com/other.mpp"
+        download_started = threading.Event()
+        release_download = threading.Event()
+        downloads = bundle_fetch.BundleDownloads()
+
+        def download(url: str, *, binary: bool) -> bytes:
+            self.assertTrue(binary)
+            if url == shared_url:
+                download_started.set()
+                self.assertTrue(
+                    release_download.wait(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
+                )
+            return url.encode()
+
+        with (
+            patch.object(bundle_fetch, "fetch", side_effect=download) as request,
+            ThreadPoolExecutor(max_workers=3) as executor,
+        ):
+            first = executor.submit(downloads.download, shared_url)
+            try:
+                self.assertTrue(
+                    download_started.wait(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
+                )
+                second = executor.submit(downloads.download, shared_url)
+                other = executor.submit(downloads.download, other_url)
+                self.assertEqual(
+                    other.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS),
+                    other_url.encode(),
+                )
+            finally:
+                release_download.set()
+            self.assertEqual(first.result(), shared_url.encode())
+            self.assertEqual(second.result(), shared_url.encode())
+        self.assertEqual(request.call_count, 2)
 
 
 class BundleFetchTests(unittest.TestCase):
@@ -147,6 +190,44 @@ class BundleFetchTests(unittest.TestCase):
         self.assertFalse(self.updated_path.exists())
         self.run_process.assert_not_called()
         self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
+        self.assertEqual(
+            self.fetch_request.call_args_list.count(
+                call(self.bundle_data["download_url"], binary=True)
+            ),
+            1,
+        )
+
+    def test_different_bundle_urls_are_downloaded_separately(self) -> None:
+        dev_bundle_data = {
+            "download_url": "https://github.com/owner/alpha/releases/download/dev/bundle.mpp"
+        }
+        self.responses[self.url("dev", "patches-bundle.json")] = json.dumps(
+            dev_bundle_data
+        ).encode()
+        self.responses[dev_bundle_data["download_url"]] = self.mpp_bytes
+        with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
+            bundle_fetch.fetch_all_repos()
+        for url in (self.bundle_data["download_url"], dev_bundle_data["download_url"]):
+            self.assertEqual(
+                self.fetch_request.call_args_list.count(call(url, binary=True)),
+                1,
+            )
+        for branch in DEFAULT_BRANCHES:
+            self.assertEqual(
+                (self.mpp_dir / f"github~owner~alpha~{branch}.mpp").read_bytes(),
+                self.mpp_bytes,
+            )
+
+    def test_bundle_downloads_are_not_reused_between_fetch_runs(self) -> None:
+        bundle_fetch.fetch_all_repos()
+        save_json(self.repos_path, self.initial_repos)
+        bundle_fetch.fetch_all_repos()
+        self.assertEqual(
+            self.fetch_request.call_args_list.count(
+                call(self.bundle_data["download_url"], binary=True)
+            ),
+            2,
+        )
 
     def test_only_patch_list_404_queues_downloaded_mpp(self) -> None:
         url = self.url("main", "patches-list.json")
@@ -413,6 +494,17 @@ class BundleFetchTests(unittest.TestCase):
         self.assertNotIn(self.bundle_data["download_url"], summary)
         self.assertEqual(load_json(self.repos_path), self.initial_repos)
         self.assertTrue(summary.startswith("## 📥 Fetch (0/1):"))
+        self.assertEqual(
+            self.fetch_request.call_args_list.count(
+                call(self.bundle_data["download_url"], binary=True)
+            ),
+            1,
+        )
+        for branch in DEFAULT_BRANCHES:
+            self.assertNotIn(
+                call(self.url(branch, "patches-list.json"), binary=True),
+                self.fetch_request.call_args_list,
+            )
 
     def test_same_http_status_at_different_steps_keeps_both_branch_entries(
         self,

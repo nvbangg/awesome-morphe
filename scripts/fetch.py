@@ -7,10 +7,11 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from http import HTTPStatus
 from http.client import HTTPException
+from threading import Lock
 
 from utils import (
     BUNDLE_PARSER_DIR,
@@ -45,6 +46,28 @@ FETCH_ERROR_SECTIONS = {
     "patch_list": "Patch list",
     "image": "Bundle image",
 }
+
+
+class BundleDownloads:
+    def __init__(self) -> None:
+        self.futures: dict[str, Future[bytes]] = {}
+        self.lock = Lock()
+
+    def download(self, url: str) -> bytes:
+        with self.lock:
+            future = self.futures.get(url)
+            if future is None:
+                future = Future()
+                self.futures[url] = future
+                owns_download = True
+            else:
+                owns_download = False
+        if owns_download:
+            try:
+                future.set_result(fetch(url, binary=True))
+            except BaseException as error:
+                future.set_exception(error)
+        return future.result()
 
 
 @dataclass
@@ -97,6 +120,7 @@ def process_repo_branch(
     branch: str,
     current_sha: str | None,
     weekly: bool = False,
+    bundle_downloads: BundleDownloads | None = None,
 ) -> BranchFetchResult:
     repo_url = build_repo_url(source, repo)
 
@@ -207,7 +231,11 @@ def process_repo_branch(
         return failed("Invalid `download_url`", "metadata", True)
 
     try:
-        mpp_content = fetch(mpp_url, binary=True)
+        mpp_content = (
+            bundle_downloads.download(mpp_url)
+            if bundle_downloads is not None
+            else fetch(mpp_url, binary=True)
+        )
     except urllib.error.HTTPError as error:
         return failed(
             format_request_error(error),
@@ -348,9 +376,16 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                     image_tasks.append((source, repo, source_metadata.get("image")))
 
     print(f"Processing {len(tasks)} branch targets...")
+    bundle_downloads = BundleDownloads()
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
         futures = [
-            executor.submit(process_repo_branch, *task, weekly=weekly) for task in tasks
+            executor.submit(
+                process_repo_branch,
+                *task,
+                weekly=weekly,
+                bundle_downloads=bundle_downloads,
+            )
+            for task in tasks
         ]
         results = [future.result() for future in as_completed(futures)]
     results.sort(key=lambda result: (result.repo.lower(), result.source, result.branch))
