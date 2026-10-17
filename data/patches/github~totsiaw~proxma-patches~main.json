@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.16.1",
+  "version": "1.17.0",
   "patches": [
     {
       "name": "Block trackers",
@@ -289,6 +289,32 @@
       "options": []
     },
     {
+      "name": "Remove Elite promotions",
+      "description": "Removes the promoted Elite seller cards and the buyer-matchmaking recommendation slot from OLX India's listing feed — OLX's own paid placements, which the ad-removal patch does not cover.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.southasia",
+          "name": "OLX India",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#002F34",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "20.07.001",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove ads",
       "description": "Removes foodpanda's adtech banner ads (all placements: order-tracking, home, discovery, reels) and the forced PandaMart \"CrossSell\" popup, and suppresses the forced in-app review prompt (DeliveryHero InAppRatingActivity).",
       "default": true,
@@ -385,6 +411,32 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes ads from OLX India by disabling the in-house Baxter ad SDK at its own enable predicate (com.naspers.advertising.baxterandroid.f.d()). Every ad path — native feed, full-page, interstitial, swipe, adpv and the ad view itself — already checks this predicate, so disabling it stops the ad requests rather than just hiding the boxes.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.southasia",
+          "name": "OLX India",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#002F34",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "20.07.001",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
               "description": null
             }
           ]
