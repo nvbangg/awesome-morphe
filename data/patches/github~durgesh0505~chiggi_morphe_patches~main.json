@@ -1,5 +1,5 @@
 {
-  "version": "1.23.1",
+  "version": "1.24.0",
   "patches": [
     {
       "name": "Add food search bar",
@@ -146,6 +146,35 @@
               "version": "3.1.1",
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass license check",
+      "description": "Bypasses PairIP signature and Google Play license checks. It also bypasses PairIP's encrypted-key import bootstrap, neutralizes its protected native logger, restores the game library's PairIP-encrypted native data, disables broken AndroidX startup and Firebase anonymous auth, and reconstructs the critical application, activity, and notification-service lifecycle methods so a re-signed build can start without encrypted VM bytecode. Third-party SDK VM stubs remain a runtime risk.",
+      "default": true,
+      "dependencies": [
+        "RawResourcePatch",
+        "RawResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "fi.twomenandadog.zombiecatchers",
+          "name": "Zombie Catchers",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#7DBA45",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.69.16",
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -634,6 +663,41 @@
       ]
     },
     {
+      "name": "Change package name",
+      "description": "Changes the manifest package and package-derived authorities/permissions so Zombie Catchers Morphe can install beside the original. Play Games, Firebase auth, store updates, and server checks can still reject the renamed and re-signed build.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "fi.twomenandadog.zombiecatchers",
+          "name": "Zombie Catchers",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#7DBA45",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.69.16",
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "New package name for side-by-side installation.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "fi.twomenandadog.zombiecatchers.morphe",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Disable AppsFlyer tracking",
       "description": "Disables AppsFlyer attribution and event tracking. Other SDKs (CleverTap, Firebase Analytics/Crashlytics) are not affected by this patch.",
       "default": true,
@@ -1109,6 +1173,33 @@
       "options": []
     },
     {
+      "name": "Free in-app purchases",
+      "description": "Skips Google Play Billing and exposes the app's product list at zero price. Buying an item sends a synthetic purchase receipt through Zombie Catchers' own native purchaseResult success callback, and the native server receipt check is forced off so the grant never depends on the developer's verification endpoint. No payment reaches Google. The developer's own event log still records each purchase; use a throwaway account.",
+      "default": true,
+      "dependencies": [
+        "RawResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "fi.twomenandadog.zombiecatchers",
+          "name": "Zombie Catchers",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#7DBA45",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.69.16",
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide ads",
       "description": "Hides sponsored posts and injected \"suggested\" netego units from the Threads feed. Marks every media as organic (Media.DED) and blocks the feed ad-injection scheduler (BarcelonaSpoolFeedCacheHandler). Client-side only.",
       "default": true,
@@ -1576,6 +1667,31 @@
               "version": "10.8",
               "isExperimental": false,
               "minSdk": 21,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Disables AppLovin MAX initialization, banners, and real ad playback. Interstitial requests complete immediately. Rewarded requests call the game's native successful completion callback so reward-gated actions can still grant their reward. Runtime confirmation is required because the final reward logic is native C++.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "fi.twomenandadog.zombiecatchers",
+          "name": "Zombie Catchers",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#7DBA45",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.69.16",
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
