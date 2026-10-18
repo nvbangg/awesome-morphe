@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import java.io.File
 import java.io.FileNotFoundException
 import java.lang.reflect.InvocationTargetException
@@ -16,24 +17,25 @@ import java.util.jar.JarFile
 
 private const val MORPHE_PATCHER_CLASSPATH_PROPERTY = "morphe.patcher.classpath"
 
-internal fun generateMorphePatchList(mppFile: File): JsonArray? {
-    if (!mppFile.isFile) {
-        Logger.warning("The patch bundle file was not found: ${mppFile.name}")
-        return null
-    }
+internal fun generateMorphePatchList(downloadUri: URI): JsonArray? {
+    val patchesFile = File.createTempFile("morphe-patches", ".mpp")
     return try {
-        val classLoader = Thread.currentThread().contextClassLoader
-        val patches = loadMorphePatchesFromJar(mppFile, classLoader)
-        val jsonPatches = patches.map(::convertMorphePatch)
-        if (jsonPatches.isEmpty()) {
-            Logger.warning("No patches were found in the Morphe patch bundle.")
-            null
-        } else {
-            JsonArray(jsonPatches)
+        val classpathFiles = morpheClasspathFiles()
+        downloadToFile(downloadUri.toURL(), patchesFile)
+        URLClassLoader(
+            (classpathFiles + patchesFile).map { it.toURI().toURL() }.toTypedArray(), ClassLoader.getSystemClassLoader()
+        ).use { classLoader ->
+            val patches = loadMorphePatchesFromJar(patchesFile, classLoader)
+            completePatchMetadata(patchesFile, classLoader, "app/morphe/patcher", patches, ::convertMorphePatch)
         }
+    } catch (_: FileNotFoundException) {
+        Logger.warning("The patch bundle file was not found.")
+        null
     } catch (e: Exception) {
         Logger.warning("Failed to parse Morphe patch bundle. ${e.describeForLog()}")
-        null
+        throw e
+    } finally {
+        patchesFile.delete()
     }
 }
 
@@ -92,13 +94,9 @@ private fun loadMorphePatchesFromJar(
     } ?: throw IllegalStateException("Morphe patcher returned no patches for ${patchesFile.name}.")
 
     val loaded = when (patches) {
-        is Iterable<*> -> patches.mapNotNull(::retainNamedPatch)
-        is Array<*> -> patches.mapNotNull(::retainNamedPatch)
+        is Iterable<*> -> patches.filterNotNull()
+        is Array<*> -> patches.filterNotNull()
         else -> throw IllegalStateException("Unexpected Morphe patch result type: ${patches::class.java.name}")
-    }
-
-    if (loaded.isEmpty()) {
-        throw IllegalStateException("No Morphe patch entries were discovered in ${patchesFile.name}.")
     }
 
     return loaded
@@ -146,28 +144,18 @@ private fun morpheLoaderClasses(classLoader: ClassLoader): List<Class<*>> {
 
 private fun retainNamedPatch(candidate: Any?): Any? {
     candidate ?: return null
-    return candidate.takeIf { dependencyLabel(it).isNotBlank() }
+    return candidate.takeIf { !readStringMember(it, "name").isNullOrBlank() }
 }
 
 private fun convertMorphePatch(patch: Any): JsonObject {
-    val name = readStringMember(patch, "name").orEmpty()
-    val description = readStringMember(patch, "description").orEmpty()
-    val default = readBooleanMember(patch, "default") ?: readBooleanMember(patch, "use") ?: true
-    
+    val packages = readMemberValue(patch, "compatiblePackages")
+    require(packages == null || packages is Iterable<*>) { "Compatible packages are not iterable" }
+    val compatiblePackages = convertMorpheCompatiblePackages(packages)
     val dependencies = JsonArray(
         asIterable(readMemberValue(patch, "dependencies"))
             .mapNotNull(::retainNamedPatch)
             .map { JsonPrimitive(dependencyLabel(it)) }
     )
-    
-    val compatibilityList = readMemberValue(patch, "compatibility") as? List<*> ?: emptyList<Any?>()
-    val compatiblePackages = if (compatibilityList.isNotEmpty()) {
-        convertMorpheCompatibility(compatibilityList)
-    } else {
-        convertMorpheCompatiblePackages(
-            readMemberValue(patch, "compatiblePackages") as? Set<*> ?: emptySet<Any?>()
-        )
-    }
     val optionsValue = readMemberValue(patch, "options")
     val options = JsonArray(
         when (optionsValue) {
@@ -176,14 +164,14 @@ private fun convertMorphePatch(patch: Any): JsonObject {
         }.mapNotNull(::convertMorpheOption)
     )
 
-    return JsonObject(linkedMapOf(
-        "name" to JsonPrimitive(name),
-        "description" to JsonPrimitive(description),
-        "default" to JsonPrimitive(default),
-        "dependencies" to dependencies,
-        "compatiblePackages" to compatiblePackages,
-        "options" to options
-    ))
+    return buildJsonObject {
+        put("name", readStringMember(patch, "name")?.let(::JsonPrimitive) ?: JsonNull)
+        put("description", toJsonValue(readStringMember(patch, "description")))
+        put("use", JsonPrimitive(readBooleanMember(patch, "use") ?: true))
+        put("dependencies", dependencies)
+        put("compatiblePackages", compatiblePackages)
+        put("options", options)
+    }
 }
 
 private fun dependencyLabel(patch: Any): String {
@@ -199,114 +187,42 @@ private fun convertMorpheOption(option: Any?): JsonObject? {
     val key = name.ifBlank { readStringMember(option, "key").orEmpty() }
     val title = readStringMember(option, "title").orEmpty().ifBlank { name.ifBlank { key } }
     val description = readStringMember(option, "description").orEmpty()
-    val required = readBooleanMember(option, "required") ?: false
-    val type = readMemberValue(option, "type")?.toString() ?: "kotlin.Any"
-    val default = toJsonValue(readMemberValue(option, "default"))
     val values = readMemberValue(option, "values") as? Map<*, *> ?: emptyMap<String, Any?>()
-    val valuesJson = if (values.isEmpty()) JsonNull else mapToJsonObject(values)
 
-    return JsonObject(linkedMapOf(
-        "key" to JsonPrimitive(key),
-        "title" to JsonPrimitive(title),
-        "description" to JsonPrimitive(description),
-        "required" to JsonPrimitive(required),
-        "type" to JsonPrimitive(type),
-        "default" to default,
-        "values" to valuesJson
-    ))
-}
-
-private fun convertMorpheCompatibility(compatibilityList: List<*>): JsonElement {
-    if (compatibilityList.isEmpty()) return JsonNull
-
-    val packagesArray = JsonArrayBuilder()
-    var ignoredCount = 0
-
-    for (compatibility in compatibilityList) {
-        if (compatibility == null) continue
-        val packageName = readStringMember(compatibility, "packageName")
-        if (packageName == null) {
-            ignoredCount++
-            continue
-        }
-
-        val name = readStringMember(compatibility, "name")
-        val description = readStringMember(compatibility, "description")
-        val apkFileType = readMemberValue(compatibility, "apkFileType")?.toString()?.substringAfterLast('.')
-        val appIconColorInt = (readMemberValue(compatibility, "appIconColor") as? Number)?.toInt()
-        val appIconColor = appIconColorInt?.let { String.format("#%06X", (0xFFFFFF and it)) }
-        val signatures = readMemberValue(compatibility, "signatures") as? Iterable<*> ?: emptyList<Any?>()
-
-        val targets = readMemberValue(compatibility, "targets") as? Iterable<*> ?: emptyList<Any?>()
-        val versionsArray = JsonArrayBuilder()
-
-        for (target in targets) {
-            if (target == null) continue
-            val version = readStringMember(target, "version")
-            val versionCodes = readMemberValue(target, "versionCodes")
-            val isExperimental = readBooleanMember(target, "isExperimental") ?: readBooleanMember(target, "experimental") ?: false
-            val minSdk = (readMemberValue(target, "minSdk") as? Number)?.toInt()
-            val targetDescription = readStringMember(target, "description")
-
-            versionsArray.add(JsonObject(linkedMapOf(
-                "version" to (version?.let(::JsonPrimitive) ?: JsonNull),
-                "versionCodes" to (versionCodes?.let(::toJsonValue) ?: JsonNull),
-                "isExperimental" to JsonPrimitive(isExperimental),
-                "minSdk" to (minSdk?.let(::JsonPrimitive) ?: JsonNull),
-                "description" to (targetDescription?.let(::JsonPrimitive) ?: JsonNull)
-            )))
-        }
-
-        val signatureArray = JsonArrayBuilder()
-        for (sig in signatures) {
-            if (sig is String) signatureArray.add(JsonPrimitive(sig))
-        }
-
-        packagesArray.add(JsonObject(linkedMapOf(
-            "packageName" to JsonPrimitive(packageName),
-            "name" to (name?.let(::JsonPrimitive) ?: JsonNull),
-            "description" to (description?.let(::JsonPrimitive) ?: JsonNull),
-            "apkFileType" to (apkFileType?.let(::JsonPrimitive) ?: JsonNull),
-            "appIconColor" to (appIconColor?.let(::JsonPrimitive) ?: JsonNull),
-            "signatures" to signatureArray.build(),
-            "targets" to versionsArray.build()
-        )))
+    return buildJsonObject {
+        put("key", JsonPrimitive(key))
+        put("title", JsonPrimitive(title))
+        put("description", JsonPrimitive(description))
+        put("required", JsonPrimitive(readBooleanMember(option, "required") ?: false))
+        put("type", JsonPrimitive(readMemberValue(option, "type")?.toString() ?: "kotlin.Any"))
+        put("default", toJsonValue(readMemberValue(option, "default")))
+        put("values", if (values.isEmpty()) JsonNull else mapToJsonObject(values))
     }
-
-    if (ignoredCount > 0) {
-        Logger.warning("Skipped $ignoredCount compatibility entries without package names.")
-    }
-
-    val finalArray = packagesArray.build()
-    if (finalArray.isEmpty()) return JsonNull
-
-    return finalArray
 }
 
-private class JsonArrayBuilder {
-    private val elements = mutableListOf<JsonElement>()
-    fun add(element: JsonElement) { elements.add(element) }
-    fun build(): JsonArray = JsonArray(elements)
-}
-
-private fun convertMorpheCompatiblePackages(compatiblePackages: Set<*>): JsonElement {
-    if (compatiblePackages.isEmpty()) {
+private fun convertMorpheCompatiblePackages(compatiblePackages: Iterable<*>?): JsonElement {
+    if (compatiblePackages == null) {
         return JsonNull
     }
 
-    val mapped = linkedMapOf<String, List<JsonElement>>()
+    val mapped = mutableListOf<Pair<String, JsonElement>>()
     var ignoredCount = 0
 
     for (entry in compatiblePackages) {
         when {
             entry is Map.Entry<*, *> -> {
                 val name = entry.key as? String ?: continue
-                mapped[name] = parseCompatibleVersions(entry.value)
+                mapped += name to parseCompatibleVersions(entry.value)
             }
-            entry is String -> mapped[entry] = emptyList()
+            entry is String -> mapped += entry to JsonNull
             entry != null && entry.javaClass.name == "kotlin.Pair" -> {
                 val name = readMemberValue(entry, "first") as? String ?: continue
-                mapped[name] = parseCompatibleVersions(readMemberValue(entry, "second"))
+                mapped += name to parseCompatibleVersions(readMemberValue(entry, "second"))
+            }
+            entry != null -> {
+                val name = readStringMember(entry, "name")
+                    ?: error("Invalid compatible package name")
+                mapped += name to parseCompatibleVersions(readMemberValue(entry, "versions"))
             }
             else -> ignoredCount++
         }
@@ -320,43 +236,21 @@ private fun convertMorpheCompatiblePackages(compatiblePackages: Set<*>): JsonEle
         return JsonNull
     }
 
-    return JsonObject(
-        mapped.mapValues { (_, versions) -> JsonArray(versions) }
-    )
+    return compatibilityJson(mapped)
 }
 
-private fun parseCompatibleVersions(value: Any?): List<JsonElement> {
-    val items: List<Any> = when (value) {
-        is String -> return listOfNotNull(value.trim().takeIf(String::isNotBlank)?.let(::JsonPrimitive))
-        is Iterable<*> -> value.filterNotNull()
-        is Array<*> -> value.filterNotNull()
-        else -> return emptyList()
+private fun parseCompatibleVersions(value: Any?): JsonElement {
+    if (value == null) return JsonNull
+    val versions = when (value) {
+        is Iterable<*> -> value
+        is Array<*> -> value.asIterable()
+        is String -> listOf(value)
+        else -> error("Compatible versions are not iterable")
     }
-    return items.mapNotNull { item ->
-        if (item is String) {
-            val trimmed = item.trim()
-            if (trimmed.isNotBlank()) JsonPrimitive(trimmed) else null
-        } else {
-            val version = readStringMember(item, "version")
-            val versionCodes = readMemberValue(item, "versionCodes")
-            val isExperimental = readBooleanMember(item, "isExperimental") ?: readBooleanMember(item, "experimental") ?: false
-            val minSdk = (readMemberValue(item, "minSdk") as? Number)?.toInt()
-            val description = readStringMember(item, "description")
-            
-            if (version == null && versionCodes == null && !isExperimental && minSdk == null && description == null) {
-                val fallback = item.toString().trim()
-                if (fallback.isNotBlank()) JsonPrimitive(fallback) else null
-            } else {
-                JsonObject(linkedMapOf(
-                    "version" to (version?.let(::JsonPrimitive) ?: JsonNull),
-                    "versionCodes" to (versionCodes?.let(::toJsonValue) ?: JsonNull),
-                    "isExperimental" to JsonPrimitive(isExperimental),
-                    "minSdk" to (minSdk?.let(::JsonPrimitive) ?: JsonNull),
-                    "description" to (description?.let(::JsonPrimitive) ?: JsonNull)
-                ))
-            }
-        }
-    }
+    return JsonArray(versions.map {
+        require(it is String) { "Compatible version is not a string" }
+        JsonPrimitive(it)
+    })
 }
 
 private fun toJsonValue(value: Any?): JsonElement {
@@ -401,19 +295,13 @@ private fun readBooleanMember(target: Any, vararg names: String): Boolean? {
 private fun readMemberValue(target: Any, vararg names: String): Any? {
     for (name in names) {
         findAccessor(target.javaClass, name)?.let { accessor ->
-            try {
-                return accessor.invoke(target)
-            } catch (_: Throwable) {
-                // Try the next accessor candidate.
-            }
+            accessor.isAccessible = true
+            return accessor.invoke(target)
         }
 
         target.javaClass.fields.firstOrNull { it.name == name }?.let { field ->
-            try {
-                return field.get(target)
-            } catch (_: Throwable) {
-                // Try the next accessor candidate.
-            }
+            field.isAccessible = true
+            return field.get(target)
         }
     }
 

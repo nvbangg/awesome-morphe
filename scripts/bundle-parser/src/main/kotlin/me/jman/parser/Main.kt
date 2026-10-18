@@ -16,7 +16,6 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import java.io.File
-import java.io.FileNotFoundException
 import java.net.URI
 import java.net.HttpURLConnection
 import java.net.URISyntaxException
@@ -35,13 +34,12 @@ private val prioritizedReleaseTags = listOf("latest", "dev", "stable")
 private val prettyJson = Json { prettyPrint = true }
 private val parsingJson = Json { ignoreUnknownKeys = true }
 
-private val patchCache = mutableMapOf<String, JsonArray>()
 private val githubAuthToken = sequenceOf(
     System.getenv("GH_PAT"),
-    System.getenv("GITHUB_TOKEN")
+    System.getenv("GIT_TOKEN")
 ).filterNotNull().firstOrNull { it.isNotBlank() }
 private const val GITHUB_API_BASE = "https://api.github.com"
-private const val USER_AGENT = "revanced-patch-bundles/1.0 (+https://github.com/Jman-Github/ReVanced-Patch-Bundles)"
+private const val USER_AGENT = "patch-bundle-registry/1.0 (+https://github.com/Jman-Github/Patch-Bundle-Registry)"
 
 private data class GitHubRateLimitInfo(
     val limit: String?,
@@ -126,7 +124,9 @@ private enum class BundleFormat {
 private data class ParsedBundle(
     val version: String,
     val downloadUrl: String,
-    val format: BundleFormat
+    val format: BundleFormat,
+    val family: String? = null,
+    val providerDigest: String? = null
 )
 
 private fun extractReleaseTag(bundleName: String, fileName: String): String {
@@ -178,15 +178,9 @@ private fun parseBundleMetadata(variant: BundleVariant): ParsedBundle? {
     } catch (_: SerializationException) {
         null
     }
-    parsedModern?.takeIf { modern ->
-        listOf(
-            modern.version,
-            modern.downloadUrl,
-            modern.signatureDownloadUrl,
-            modern.createdAt,
-            modern.description
-        ).any { !it.isNullOrBlank() }
-    }?.let { modern ->
+    // Historical legacy inputs also carry top-level release metadata. Their
+    // nested patches URL distinguishes them from the modern download_url format.
+    parsedModern?.takeIf { it.downloadUrl != null }?.let { modern ->
         val version = normalizeMetadataValue(modern.version)
         if (version == null) {
             Logger.warning("Version is invalid.")
@@ -197,7 +191,7 @@ private fun parseBundleMetadata(variant: BundleVariant): ParsedBundle? {
             Logger.warning("Download URL is invalid.")
             return null
         }
-        return ParsedBundle(version, downloadUrl, BundleFormat.MODERN)
+        return ParsedBundle(version, downloadUrl, BundleFormat.MODERN, canonicalBundleFamily(modern.bundleType), modern.providerDigest)
     }
 
     val parsedLegacy = try {
@@ -219,7 +213,7 @@ private fun parseBundleMetadata(variant: BundleVariant): ParsedBundle? {
             Logger.warning("Download URL is invalid.")
             return null
         }
-        return ParsedBundle(version, downloadUrl, BundleFormat.LEGACY)
+        return ParsedBundle(version, downloadUrl, BundleFormat.LEGACY, providerDigest = legacy.providerDigest)
     }
 
     Logger.warning("Bundle is not supported.")
@@ -234,7 +228,7 @@ private fun loadBundleVariants(bundleFolder: File, bundleName: String): List<Bun
         ?.asSequence()
         ?.filter { it.isFile }
         ?.filter { it.extension.equals("json", ignoreCase = true) }
-        ?.filterNot { it.name.endsWith(PATCH_LIST_SUFFIX, ignoreCase = true) }
+        ?.filterNot { it.name.endsWith(PATCH_LIST_SUFFIX, ignoreCase = true) || it.name.endsWith("-extraction.json") }
         ?.forEach { file ->
             val releaseTag = extractReleaseTag(bundleName, file.name)
             val releaseType = ReleaseType.fromTag(releaseTag)
@@ -283,45 +277,15 @@ private fun readExistingPatches(file: File): LocalPatchesFile? {
 private fun canonicalizeElement(element: JsonElement): JsonElement {
     return when (element) {
         is JsonObject -> {
-            val remappedKeys = element.keys.associateWith { if (it == "use") "default" else it }
-            val mappedValues = remappedKeys.values.toSet()
-            val sortedKeys = sortJsonObjectKeys(mappedValues)
+            val sortedKeys = element.keys.sorted()
             buildJsonObject {
-                for (outputKey in sortedKeys) {
-                    val originalKey = remappedKeys.entries.first { it.value == outputKey }.key
-                    put(outputKey, canonicalizeElement(element.getValue(originalKey)))
+                for (key in sortedKeys) {
+                    put(key, canonicalizeElement(element.getValue(key)))
                 }
             }
         }
         is JsonArray -> JsonArray(element.map(::canonicalizeElement))
         else -> element
-    }
-}
-
-private fun sortJsonObjectKeys(keys: Set<String>): List<String> {
-    val patchOrder = listOf("name", "description", "default", "dependencies", "compatiblePackages", "options")
-    val compatiblePackageOrder = listOf("packageName", "name", "description", "apkFileType", "appIconColor", "signatures", "targets")
-    val targetOrder = listOf("version", "versionCodes", "isExperimental", "minSdk", "description")
-    
-    val orderedList = when {
-        keys.containsAll(patchOrder.filter { it in keys }) && 
-        (keys.contains("compatiblePackages") || keys.contains("dependencies")) -> patchOrder
-        
-        keys.containsAll(compatiblePackageOrder.filter { it in keys }) && 
-        keys.contains("packageName") -> compatiblePackageOrder
-        
-        keys.containsAll(targetOrder.filter { it in keys }) && 
-        keys.contains("version") -> targetOrder
-        
-        else -> null
-    }
-    
-    return if (orderedList != null) {
-        val ordered = orderedList.filter { it in keys }
-        val remaining = keys.filter { it !in ordered }.sorted()
-        ordered + remaining
-    } else {
-        keys.sorted()
     }
 }
 
@@ -349,7 +313,7 @@ private fun sanitizeDependencies(patches: JsonArray): JsonArray {
             val obj = element as? JsonObject ?: return@map element
             val dependencies = obj["dependencies"] as? JsonArray ?: return@map element
             val sanitized = JsonArray(
-                dependencies.map { dep ->
+                dependencies.filter { it != JsonNull }.map { dep ->
                     val primitive = dep as? JsonPrimitive ?: return@map dep
                     JsonPrimitive(primitive.content.substringBefore("@"))
                 }
@@ -406,8 +370,9 @@ internal fun sanitizeCompatiblePackages(patches: JsonArray): JsonArray {
             val sanitizedPackages = JsonArray(
                 compatiblePackages.mapNotNull { packageElement ->
                     val packageObject = packageElement as? JsonObject ?: return@mapNotNull null
-                    val fallbackName = packageObject["packageName"]?.jsonPrimitive?.contentOrNull
-                    val packageName = packageObject["name"]?.jsonPrimitive?.contentOrNull ?: fallbackName
+                    val fallbackName = (packageObject["packageName"] as? JsonPrimitive)
+                        ?.takeIf { it.isString }?.contentOrNull?.takeIf { it.isNotBlank() }
+                    val packageName = fallbackName ?: packageObject["name"]?.jsonPrimitive?.contentOrNull
                     if (packageName.isNullOrBlank()) {
                         return@mapNotNull null
                     }
@@ -443,112 +408,16 @@ internal fun sanitizeCompatiblePackages(patches: JsonArray): JsonArray {
     )
 }
 
-private fun generateModernPatchList(downloadUri: URI, expectedVersion: String? = null): JsonArray? {
-    val result = if (isMorphePatchBundle(downloadUri)) {
-        generateMorphePatchListFromUri(downloadUri)
-    } else {
-        generateRevancedPatchList(downloadUri)
-    } ?: return null
-    return canonicalizePatchArray(result)
-}
-
-private fun generateMorphePatchListFromUri(downloadUri: URI): JsonArray? {
-    val tempFile = File.createTempFile("morphe-patches", ".mpp")
-    return try {
-        downloadToFile(downloadUri.toURL(), tempFile)
-        generateMorphePatchList(tempFile)
-    } catch (_: FileNotFoundException) {
-        Logger.warning("The patch bundle file was not found.")
-        null
-    } catch (e: Exception) {
-        Logger.warning("Failed to download patch bundle. ${e.message}")
-        null
-    } finally {
-        tempFile.delete()
-    }
-}
-
 private fun isMorphePatchBundle(downloadUri: URI): Boolean {
     return downloadUri.path.lowercase(Locale.ROOT).endsWith(".mpp")
 }
 
-private fun parseGeneratedPatchArray(jsonText: String): JsonArray? {
-    return try {
-        val element: JsonElement = Json.parseToJsonElement(jsonText)
-        val array = element as? JsonArray
-        if (array == null) {
-            Logger.warning("Generated patches are not a JSON array.")
-            return null
-        }
-        array
-    } catch (_: SerializationException) {
-        Logger.warning("Generated patches are not valid JSON.")
-        null
-    } catch (_: IllegalArgumentException) {
-        Logger.warning("Generated patches are not valid JSON.")
-        null
+internal fun isUsablePatchArray(patches: JsonArray): Boolean =
+    patches.all { element ->
+        val patch = element as? JsonObject ?: return@all false
+        val name = patch["name"]
+        name == null || name == JsonNull || (name is JsonPrimitive && name.isString)
     }
-}
-
-private fun requireNonEmptyPatchArray(jsonText: String, source: String): JsonArray {
-    val parsed = parseGeneratedPatchArray(jsonText)
-        ?: throw IllegalStateException("$source did not produce a valid patch array.")
-    if (parsed.isEmpty()) {
-        throw IllegalStateException("$source produced an empty patch array.")
-    }
-    return parsed
-}
-
-private fun generateRevancedPatchList(downloadUri: URI): JsonArray? {
-    return try {
-        requireNonEmptyPatchArray(generatePatchesFromUrl(downloadUri), "Patcher 22")
-    } catch (_: FileNotFoundException) {
-        Logger.warning("The patch bundle file was not found.")
-        null
-    } catch (e: Exception) {
-        Logger.warning("Failed to generate patches from ${downloadUri} with patcher 22. ${e.formatForLog()}")
-        try {
-            Logger.info("Retrying ${downloadUri} with legacy patcher 21.1.0-dev.5...")
-            requireNonEmptyPatchArray(
-                generatePatchesFromUrlWithLegacyPatcher(downloadUri),
-                "Legacy patcher 21.1.0-dev.5"
-            )
-        } catch (legacyError: Exception) {
-            Logger.warning(
-                "Legacy patcher fallback also failed for ${downloadUri}. ${legacyError.formatForLog()}"
-            )
-            null
-        }
-    }
-}
-
-private fun generateLegacyPatchList(downloadUri: URI): JsonArray? {
-    val patchesFile = File.createTempFile("legacy-patches", ".jar")
-    return try {
-        downloadToFile(downloadUri.toURL(), patchesFile)
-        val parsed = parseLegacyPatchBundle(patchesFile)
-        if (parsed.isEmpty()) {
-            Logger.warning("No patches were found in the legacy patch bundle.")
-            null
-        } else {
-            canonicalizePatchArray(parsed)
-        }
-    } catch (_: FileNotFoundException) {
-        Logger.warning("The patch bundle file was not found.")
-        null
-    } catch (e: SerializationException) {
-        Logger.warning("Generated patches are not valid JSON. ${e.message}")
-        null
-    } catch (e: IllegalArgumentException) {
-        Logger.warning("Generated patches are not valid JSON. ${e.message}")
-        null
-    } catch (e: Exception) {
-        Logger.warning("Failed to parse legacy patch bundle. ${e.formatForLog()}")
-        null
-    } finally {
-        patchesFile.delete()
-    }
-}
 
 private fun generatePatchListFromReleaseAsset(downloadUri: URI, expectedVersion: String): JsonArray? {
     val location = parseReleaseLocation(downloadUri) ?: return null
@@ -562,7 +431,7 @@ private fun generatePatchListFromReleaseAsset(downloadUri: URI, expectedVersion:
     return canonicalizePatchArray(parsed)
 }
 
-internal fun generateMorphePatchListFromSource(downloadUri: URI, expectedVersion: String): JsonArray? {
+private fun generateMorphePatchListFromSource(downloadUri: URI, expectedVersion: String): JsonArray? {
     parseReleaseLocation(downloadUri)?.let { location ->
         return generatePatchListFromRepositoryFile(location, expectedVersion, logMissing = false)
     }
@@ -575,11 +444,28 @@ internal fun generateMorphePatchListFromSource(downloadUri: URI, expectedVersion
 }
 
 private fun writePatchList(outputFile: File, version: String, patches: JsonArray) {
-    val payload = LocalPatchesFile(version, patches)
-    outputFile.writeText(prettyJson.encodeToString(payload))
+    require(isUsablePatchArray(patches)) {
+        "Refusing to overwrite ${outputFile.name} with invalid patch entries."
+    }
+    val payload = LocalPatchesFile(version, patches, PATCH_METADATA_SCHEMA_VERSION)
+    atomicWriteText(outputFile, prettyJson.encodeToString(payload))
 }
 
-private fun processBundle(bundleFolder: File) {
+private fun generateFallbackPatchList(downloadUri: URI, version: String, family: String? = null): JsonArray? =
+    if (family == "Reseam") {
+        null // Only the signed catalog supplies Reseam metadata.
+    } else if (family == "Morphe:V1" || isMorphePatchBundle(downloadUri)) {
+        generateMorphePatchListFromSource(downloadUri, version)
+            ?: generatePatchListFromReleaseAsset(downloadUri, version)
+    } else {
+        generatePatchListFromReleaseAsset(downloadUri, version)
+    }
+
+internal fun processBundle(
+    bundleFolder: File,
+    extract: ((URI, Boolean) -> RuntimeResult)? = null,
+    fallback: ((URI, String) -> JsonArray?)? = null,
+) {
     val bundleName = bundleFolder.name.removeSuffix("-patch-bundles")
     val variants = loadBundleVariants(bundleFolder, bundleName)
 
@@ -608,16 +494,51 @@ private fun processBundle(bundleFolder: File) {
                 return@processVariant
             }
 
-            val cacheKey = downloadUri.toString()
-            val generated = patchCache[cacheKey]?.also {
-                Logger.info("Reusing cached patches for ${parsedBundle.downloadUrl}.")
-            } ?: run {
+            val generated = run {
                 Logger.info("Resolving patch list for ${parsedBundle.downloadUrl}...")
-                val created = when (parsedBundle.format) {
-                    BundleFormat.MODERN -> generateModernPatchList(downloadUri)
-                    BundleFormat.LEGACY -> generateLegacyPatchList(downloadUri)
-                } ?: throw IllegalStateException("Failed to resolve patches from bundle at ${parsedBundle.downloadUrl}")
-                patchCache[cacheKey] = created
+                val legacy = parsedBundle.format == BundleFormat.LEGACY
+                val family = parsedBundle.family ?: if (legacy) "ReVanced:v21"
+                    else if (downloadUri.path.lowercase().endsWith(".reseam")) "Reseam"
+                    else if (isMorphePatchBundle(downloadUri)) "Morphe:V1" else "ReVanced:v22"
+                val recordFile = File(bundleFolder, "$bundleName-${variant.releaseTag}-extraction.json")
+                val previous = runCatching {
+                    parsingJson.decodeFromString<ExtractionRecord>(recordFile.readText())
+                }.getOrNull()
+                ExtractionCache.seed(family, previous, outputPatchesFile, existingContent)
+                val paused = previous?.takeIf {
+                    pausedFailure(it, parsedBundle.version, parsedBundle.downloadUrl, family,
+                                  parsedBundle.providerDigest, runtimeFingerprint())
+                }
+                val extracted = extract?.invoke(downloadUri, legacy)
+                    ?: extractWithRuntimes(downloadUri, legacy, family, paused)
+                val digestMatches = extracted.hash == null || matchesProviderDigest(
+                    parsedBundle.providerDigest, extracted.hash, parsedBundle.providerDigest)
+                val extraction = if (digestMatches) extracted else
+                    extracted.copy(patches = null, embeddedMetadata = null,
+                        status = "artifact_digest_mismatch", terminal = false, paused = false)
+                if (extraction.paused) return@processVariant
+                // Revoke old proof before cleanup or writing, including failures
+                // after binary extraction returned a patch array.
+                val pending = if (extraction.patches == null) extraction else
+                    extraction.copy(patches = null, status = "metadata_processing_failure")
+                recordExtraction(recordFile, outputPatchesFile, parsedBundle.version,
+                    downloadUri, pending, parsedBundle.providerDigest, family)
+                // Keep existing metadata fallback behavior; only binary extraction receives artifact proof.
+                val created = extraction.patches?.let(::canonicalizePatchArray)
+                    ?: embeddedFallbackPatches(extraction.embeddedMetadata, parsedBundle.version)?.let(::canonicalizePatchArray)
+                    ?: if (fallback != null) fallback(downloadUri, parsedBundle.version)
+                    else generateFallbackPatchList(downloadUri, parsedBundle.version, family)
+                if (created == null) {
+                    recordExtraction(recordFile, outputPatchesFile, parsedBundle.version,
+                    downloadUri, extraction, parsedBundle.providerDigest, family)
+                    return@processVariant
+                }
+                val result = if (extraction.patches == null) extraction.copy(fallbackPatchCount = created.size)
+                    else extraction.copy(patches = created)
+                writePatchList(outputPatchesFile, parsedBundle.version, created)
+                FreshAppPackages.add(bundleFolder.name, parsedBundle.version, parsedBundle.downloadUrl, created)
+                recordExtraction(recordFile, outputPatchesFile, parsedBundle.version,
+                    downloadUri, result, parsedBundle.providerDigest, family)
                 created
             }
 
@@ -635,92 +556,54 @@ private fun processBundle(bundleFolder: File) {
 }
 
 fun main(args: Array<String>) {
-    val patchesOutDir = File("../../data", "patches")
-    patchesOutDir.mkdirs()
-
-    val filesToProcess = if (args.isNotEmpty()) {
-        val filenames = if (args.size == 1 && args[0].startsWith("@")) {
-            File(args[0].substring(1)).readLines().map { it.trim() }.filter { it.isNotBlank() }
-        } else {
-            args.toList()
-        }
-        filenames.map(::File).filter { it.isFile }
-    } else {
-        emptyList()
+    if (args.firstOrNull() == "--extract-one") {
+        val result = extractWithRuntimes(File(args[1]).toURI(), args[2] == "legacy")
+        File(args[3]).writeText(buildJsonObject {
+            put("status", JsonPrimitive(result.status))
+            put("terminal", JsonPrimitive(result.terminal))
+            put("runtime", result.runtime?.let(::JsonPrimitive) ?: JsonNull)
+            put("file_hash", result.hash?.let(::JsonPrimitive) ?: JsonNull)
+            put("patch_count", JsonPrimitive(result.patches?.size ?: 0))
+            put("parser_revision", JsonPrimitive(parserRevision()))
+            put("attempts", parsingJson.parseToJsonElement(parsingJson.encodeToString(result.attempts)))
+        }.toString())
+        return
     }
-
-    val successCount = java.util.concurrent.atomic.AtomicInteger(0)
-    val failedFiles = java.util.concurrent.ConcurrentLinkedQueue<String>()
-    val successfulFiles = java.util.concurrent.ConcurrentLinkedQueue<String>()
-    filesToProcess
-        .parallelStream()
-        .forEach { file ->
-            val targetName = if (file.extension.equals("mpp", ignoreCase = true)) file.nameWithoutExtension + ".json" else file.name
-            Logger.setContext(targetName)
-            Logger.info("Processing bundle ${file.name}")
-            var failed = true
-            try {
-                if (processTargetFile(file, patchesOutDir)) {
-                    successCount.incrementAndGet()
-                    successfulFiles.add(targetName)
-                    failed = false
-                }
-            } catch (e: Exception) {
-                Logger.error("Something went wrong while processing ${file.name}. ${e.formatForLog()}")
-            } finally {
-                if (failed) failedFiles.add(targetName)
-                Logger.setContext(null)
-            }
-        }
-    val totalCount = filesToProcess.size
-    val failedCount = totalCount - successCount.get()
-    if (failedCount > 0) {
-        val failedListStr = failedFiles.joinToString(", ") { it.replace(".json", "") }
-        println("\n::warning title=Parse:: Failed to parse $failedCount/$totalCount bundles: $failedListStr")
+    if (args.firstOrNull() == "--runtime-worker") {
+        runtimeWorker(args)
+        return
     }
-    File("parsed_files.txt").writeText(successfulFiles.joinToString("\n"))
-    println("\nParsed ${successCount.get()}/$totalCount bundles successfully.")
-}
-
-private fun extractVersionFromMpp(mppFile: File): String {
-    return try {
-        java.util.jar.JarFile(mppFile).use { jar ->
-            val attrs = jar.manifest?.mainAttributes
-            attrs?.getValue("Version")?.trim()
-                ?: attrs?.getValue("Bundle-Version")?.trim()
-                ?: attrs?.getValue("Implementation-Version")?.trim()
-                ?: ""
-        }
-    } catch (_: Exception) {
-        ""
-    }
-}
-
-private fun processTargetFile(file: File, outDir: File): Boolean {
-    if (file.extension.equals("mpp", ignoreCase = true)) {
-        val outFileName = file.nameWithoutExtension + ".json"
-        val outputFile = File(outDir, outFileName)
-        val generated = generateMorphePatchList(file) ?: return false
-        val version = extractVersionFromMpp(file)
-        writePatchList(outputFile, version, generated)
-        return true
-    }
-    return processSingleBundleFile(file, outDir)
-}
-
-private fun processSingleBundleFile(bundleFile: File, outDir: File): Boolean {
-    val variant = BundleVariant(bundleFile, "", ReleaseType.LATEST)
-    val parsedBundle = parseBundleMetadata(variant) ?: return false
-    val outputPatchesFile = File(outDir, bundleFile.name)
-    val downloadUri = try {
-        URI(parsedBundle.downloadUrl)
-    } catch (_: Exception) {
-        Logger.warning("Download URL is invalid.")
-        return false
-    }
-    val generated = generateModernPatchList(downloadUri, parsedBundle.version) ?: generateLegacyPatchList(downloadUri) ?: return false
-    writePatchList(outputPatchesFile, parsedBundle.version, generated)
-    return true
+    val batchSetting = System.getenv("CATALOG_HISTORICAL_BATCH_SIZE")?.takeIf(String::isNotBlank)
+    val batchSize = batchSetting?.let {
+        it.toIntOrNull() ?: error("CATALOG_HISTORICAL_BATCH_SIZE must be an integer")
+    } ?: DEFAULT_HISTORICAL_BATCH_SIZE
+    require(batchSize in 1..MAX_HISTORICAL_BATCH_SIZE)
+    val secondsSetting = System.getenv("CATALOG_HISTORICAL_MAX_SECONDS")?.takeIf(String::isNotBlank)
+    val historySeconds = secondsSetting?.let {
+        it.toLongOrNull() ?: error("CATALOG_HISTORICAL_MAX_SECONDS must be an integer")
+    } ?: 900L
+    require(historySeconds in 1..21600)
+    val policy = File("..", "internal/cache/disabled-extraction.json")
+    val disabledFolders = if (policy.isFile)
+        parsingJson.decodeFromString<Set<String>>(policy.readText()) else emptySet()
+    val workers = System.getenv("CATALOG_EXTRACTION_WORKERS")?.takeIf(String::isNotBlank)?.let {
+        it.toIntOrNull() ?: error("CATALOG_EXTRACTION_WORKERS must be an integer")
+    } ?: 2
+    require(workers in 1..4) { "CATALOG_EXTRACTION_WORKERS must be between 1 and 4" }
+    val bundleRoot = File("..", "internal/cache/bundles")
+    val current = bundleRoot.listFiles()?.filter {
+        it.isDirectory && it.name !in disabledFolders
+    }?.sortedBy { it.name } ?: emptyList()
+    FreshAppPackages.reset()
+    try {
+        Logger.info("Extraction workers: $workers")
+        processDirectories(current, workers)
+        val work = historicalWork(File("..", "internal/cache/history"), batchSize, runtimeFingerprint(), disabledFolders)
+        Logger.info("History extraction queue: ${work.latest.size} latest, ${work.historical.size} older selected, ${work.deferred} deferred")
+        processDirectories(work.latest, workers)
+        val attempted = processDirectories(work.historical, workers, historySeconds)
+        Logger.info("Historical extraction attempted $attempted bundles; ${work.deferred + work.historical.size - attempted} deferred to the next refresh")
+    } finally { FreshAppPackages.flush() }
 }
 
 private data class ReleaseLocation(
@@ -813,16 +696,18 @@ private fun fetchReleaseMetadata(location: ReleaseLocation): JsonObject? {
     return null
 }
 
-private fun findPatchMetadataAsset(releaseJson: JsonObject): String? {
+internal fun findPatchMetadataAsset(releaseJson: JsonObject): String? {
     val assets = releaseJson["assets"]?.jsonArray ?: return null
     val candidates = assets.mapNotNull { it as? JsonObject }
     fun JsonObject.downloadUrl(): String? = this["browser_download_url"]?.jsonPrimitive?.contentOrNull
     fun JsonObject.assetName(): String = this["name"]?.jsonPrimitive?.contentOrNull.orEmpty()
 
     val prioritized = candidates.firstOrNull { it.assetName().equals("patches.json", ignoreCase = true) }
+        ?: candidates.firstOrNull { it.assetName().equals("patches-list.json", ignoreCase = true) }
         ?: candidates.firstOrNull {
             val lower = it.assetName().lowercase(Locale.ROOT)
-            lower.endsWith("patches.json") || (lower.contains("patch") && lower.endsWith(".json"))
+            lower != "patches-bundle.json" &&
+                (lower.endsWith("patches.json") || (lower.contains("patch") && lower.endsWith(".json")))
         }
     return prioritized?.downloadUrl()
 }
@@ -835,9 +720,9 @@ private fun generatePatchListFromRepositoryFile(
     val attempts = listOf(location.tag, null)
 
     for (ref in attempts) {
-        val payload = downloadRepositoryFile(location, "patches-list.json", ref) ?: continue
+        val payload = downloadRepositoryFile(location, "patches-list.json", ref?.let { "refs/tags/$it" }) ?: continue
         val sourceLabel = ref?.let { "ref $it" } ?: "default branch"
-        val parsed = parseRepositoryPatchListPayload(payload, expectedVersion)
+        val parsed = parseRepositoryPatchListPayload(payload, expectedVersion, ref?.takeIf { it == location.tag })
         if (parsed == null) {
             Logger.warning(
                 "Repository patches-list.json from ${location.owner}/${location.repo} ($sourceLabel) " +
@@ -846,7 +731,7 @@ private fun generatePatchListFromRepositoryFile(
             continue
         }
         Logger.info("Using repository patches-list.json from ${location.owner}/${location.repo} ($sourceLabel).")
-        return canonicalizePatchArray(parsed.patches)
+        return canonicalizePatchArray(parsed)
     }
 
     if (logMissing) {
@@ -877,13 +762,21 @@ private fun generatePatchListFromGitLabRepositoryFile(
         Logger.info(
             "Using repository patches-list.json from ${location.projectPath} (ref $ref)."
         )
-        return canonicalizePatchArray(parsed.patches)
+        return canonicalizePatchArray(parsed)
     }
 
     return null
 }
 
-private fun parseRepositoryPatchListPayload(payload: String, expectedVersion: String): LocalPatchesFile? {
+internal fun parseRepositoryPatchListPayload(
+    payload: String, expectedVersion: String, releaseTag: String? = null
+): JsonArray? {
+    val element = runCatching { Json.parseToJsonElement(payload) }.getOrNull() ?: return null
+    if (element is JsonArray) {
+        // A default branch's unversioned list cannot describe a historical release.
+        if (releaseTag == null || !versionsMatch(releaseTag, expectedVersion)) return null
+        return convertPatchMetadataPayload(payload)
+    }
     val parsed = try {
         parsingJson.decodeFromString<LocalPatchesFile>(payload)
     } catch (e: SerializationException) {
@@ -901,10 +794,10 @@ private fun parseRepositoryPatchListPayload(payload: String, expectedVersion: St
         return null
     }
 
-    return parsed
+    return parsed.patches
 }
 
-private fun versionsMatch(left: String, right: String): Boolean =
+internal fun versionsMatch(left: String, right: String): Boolean =
     normalizeVersionForComparison(left) == normalizeVersionForComparison(right)
 
 private fun normalizeVersionForComparison(value: String): String =
@@ -937,16 +830,17 @@ private fun downloadRepositoryFile(location: ReleaseLocation, path: String, ref:
                 HttpURLConnection.HTTP_OK -> {
                     val body = connection.inputStream.bufferedReader().use { it.readText() }
                     val response = Json.parseToJsonElement(body).jsonObject
-                    val downloadUrl = response["download_url"]?.jsonPrimitive?.contentOrNull
-                    if (!downloadUrl.isNullOrBlank()) {
-                        return downloadPlainText(downloadUrl)
-                    }
-
                     val content = response["content"]?.jsonPrimitive?.contentOrNull
                     val encoding = response["encoding"]?.jsonPrimitive?.contentOrNull
                     if (!content.isNullOrBlank() && encoding.equals("base64", ignoreCase = true)) {
                         val normalized = content.replace("\n", "").replace("\r", "")
                         return String(Base64.getDecoder().decode(normalized), StandardCharsets.UTF_8)
+                    }
+
+                    // Prefer the body bound to this exact ref; it also saves a second request.
+                    val downloadUrl = response["download_url"]?.jsonPrimitive?.contentOrNull
+                    if (!downloadUrl.isNullOrBlank()) {
+                        return downloadPlainText(downloadUrl)
                     }
 
                     Logger.warning(
@@ -1024,7 +918,7 @@ private fun downloadPlainText(url: String): String? {
     }
 }
 
-private fun convertPatchMetadataPayload(payload: String): JsonArray? {
+internal fun convertPatchMetadataPayload(payload: String): JsonArray? {
     val element = try {
         Json.parseToJsonElement(payload)
     } catch (e: SerializationException) {
@@ -1036,16 +930,22 @@ private fun convertPatchMetadataPayload(payload: String): JsonArray? {
     }
     val patches = when (element) {
         is JsonArray -> element
-        is JsonObject -> element["patches"]?.jsonArray
+        is JsonObject -> element["patches"] as? JsonArray
         else -> null
     } ?: return null
+    // Preserve legitimate empty results, but never manufacture one by silently
+    // dropping malformed entries from a nonempty fallback payload.
+    if (!isUsablePatchArray(patches)) return null
     val converted = patches.mapNotNull { convertExternalPatchObject(it) }
     return JsonArray(converted)
 }
 
 private fun convertExternalPatchObject(element: JsonElement): JsonObject? {
     val obj = element as? JsonObject ?: return null
-    val compatObject = convertCompatibilityArray(obj["compatiblePackages"] as? JsonArray)
+    val compatObject = when (val compatible = obj["compatiblePackages"]) {
+        is JsonObject -> compatible
+        else -> convertCompatibilityArray(compatible as? JsonArray)
+    }
     val dependencies = (obj["dependencies"] as? JsonArray) ?: JsonArray(emptyList())
     val options = (obj["options"] as? JsonArray) ?: JsonArray(emptyList())
     val hasUseField = "use" in obj
@@ -1074,13 +974,16 @@ private fun convertExternalPatchObject(element: JsonElement): JsonObject? {
     }
 }
 
-internal fun convertCompatibilityArray(array: JsonArray?): JsonObject {
+internal fun convertCompatibilityArray(array: JsonArray?): JsonElement {
     if (array == null) {
         return JsonObject(emptyMap())
     }
     val mapped = array.mapNotNull { entry ->
         val compatObj = entry as? JsonObject ?: return@mapNotNull null
-        val packageName = compatObj["name"]?.jsonPrimitive?.contentOrNull ?: return@mapNotNull null
+        val packageName = (compatObj["packageName"] as? JsonPrimitive)
+            ?.takeIf { it.isString }?.contentOrNull?.takeIf { it.isNotBlank() }
+            ?: compatObj["name"]?.jsonPrimitive?.contentOrNull
+            ?: return@mapNotNull null
         val versionsElement = compatObj["versions"]
         val versions = when (versionsElement) {
             is JsonArray -> versionsElement.mapNotNull { it.jsonPrimitive.contentOrNull }
@@ -1089,7 +992,9 @@ internal fun convertCompatibilityArray(array: JsonArray?): JsonObject {
                 ?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
                 ?: emptyList()
         }
-        packageName to JsonArray(versions.map(::JsonPrimitive))
+        val unrestricted = versionsElement == JsonNull ||
+            (versionsElement == null && "targets" !in compatObj)
+        packageName to if (unrestricted) JsonNull else JsonArray(versions.map(::JsonPrimitive))
     }
-    return JsonObject(mapped.toMap())
+    return compatibilityJson(mapped)
 }

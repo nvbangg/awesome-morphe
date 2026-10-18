@@ -10,6 +10,50 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class CompatiblePackagesSanitizationTest {
+    @Test fun `fallback conversion preserves unrestricted and empty versions`() {
+        val metadata = Json.parseToJsonElement("""
+            [{"name":"unrestricted","versions":null},{"name":"empty","versions":[]},
+             {"name":"omitted"},{"name":"no-targets","targets":[]},
+             {"name":"restricted","versions":["1.0"]}]
+        """).jsonArray
+        val result = convertCompatibilityArray(metadata).jsonObject
+        assertEquals(JsonNull, result["unrestricted"])
+        assertEquals(JsonNull, result["omitted"])
+        assertEquals(0, result.getValue("empty").jsonArray.size)
+        assertEquals(0, result.getValue("no-targets").jsonArray.size)
+        assertEquals("1.0", result.getValue("restricted").jsonArray.single().jsonPrimitive.content)
+        val patch = assertNotNull(convertPatchMetadataPayload(
+            """[{"name":"Patch","compatiblePackages":{"com.any":null,"com.none":[]}}]"""
+        )).single().jsonObject
+        assertEquals(JsonNull, patch.getValue("compatiblePackages").jsonObject["com.any"])
+        assertEquals(0, patch.getValue("compatiblePackages").jsonObject.getValue("com.none").jsonArray.size)
+    }
+
+    @Test fun `fallback keeps repeated restricted and unrestricted package links`() {
+        val compatible = Json.parseToJsonElement("""[
+            {"name":"com.app","versions":["1.0","1.0"]},
+            {"name":"com.app","versions":["2.0","1.0"]},
+            {"name":"com.app","versions":null}
+        ]""").jsonArray
+        val entries = convertCompatibilityArray(compatible).jsonArray.map { it.jsonObject }
+        assertEquals(JsonNull, entries.first()["versions"])
+        assertEquals(listOf("1.0", "2.0"), entries.last().getValue("versions").jsonArray.map { it.jsonPrimitive.content })
+    }
+
+    @Test fun `unusable package aliases preserve valid named compatibility`() {
+        for (alias in listOf("\"\"", "\"  \"", "null", "123", "{}")) {
+            val packages = Json.parseToJsonElement(
+                """[{"name":"com.example.app","packageName":$alias,"versions":["1.0"]}]"""
+            ).jsonArray
+            val converted = convertCompatibilityArray(packages).jsonObject
+            assertEquals(setOf("com.example.app"), converted.keys)
+            assertEquals("1.0", converted.getValue("com.example.app").jsonArray.single().jsonPrimitive.content)
+            val sanitized = compatiblePackage("""[{"compatiblePackages":$packages}]""")
+            assertEquals("com.example.app", sanitized.getValue("name").jsonPrimitive.content)
+            assertEquals("1.0", sanitized.getValue("versions").jsonArray.single().jsonPrimitive.content)
+        }
+    }
+
     private fun compatiblePackage(json: String) = sanitizeCompatiblePackages(
         Json.parseToJsonElement(json).jsonArray
     )[0].jsonObject["compatiblePackages"]!!.jsonArray[0].jsonObject
@@ -39,7 +83,7 @@ class CompatiblePackagesSanitizationTest {
             """[{"name":"RailOne","targets":[{"version":"2.1.62"},{"version":null},{"version":"2.1.62"}]}]"""
         ).jsonArray
 
-        val result = convertCompatibilityArray(compatiblePackages)
+        val result = convertCompatibilityArray(compatiblePackages).jsonObject
 
         assertEquals(
             listOf("2.1.62"),
