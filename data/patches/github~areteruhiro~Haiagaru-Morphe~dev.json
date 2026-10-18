@@ -1,13 +1,11 @@
 {
-    "version": "1.8.15",
+    "version": "1.8.16",
     "patches": [
         {
             "name": "Change ChMate package name",
             "description": "Change ChMate's package name, app name, icon, and version code.",
             "default": true,
-            "dependencies": [
-                "BytecodePatch"
-            ],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "jp.co.airfront.android.a2chMate",
@@ -74,66 +72,19 @@
                 {
                     "key": "versionCode",
                     "title": "Version code",
-                    "description": "Positive integer from 1 to 2100000000. Leave unset to keep the original version code.",
+                    "description": "Defaults to the maximum Android distribution version code (2100000000). Allows switching between supported ChMate versions when package and signing key match. A lower-code APK cannot normally overwrite it. Clear to keep the original version code. Does not add support for unsupported versions.",
                     "required": false,
                     "type": "kotlin.Int",
-                    "default": null,
+                    "default": 2100000000,
                     "values": null
                 }
             ]
         },
         {
-            "name": "Migrate ChMate data with Shizuku",
-            "description": "Optionally copy shared data from the original ChMate package using Shizuku.",
-            "default": false,
-            "dependencies": [
-                "Change ChMate package name",
-                "BytecodePatch"
-            ],
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.226 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
             "name": "Haiagaru",
             "description": "Haiagaruの機能とアプリ内設定を追加します。対応バージョンはChMate 0.8.10.191 dev／0.8.10.226 dev／0.8.10.242 devです。",
             "default": true,
-            "dependencies": [
-                "BytecodePatch"
-            ],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "jp.co.airfront.android.a2chMate",
@@ -227,100 +178,10 @@
             ]
         },
         {
-            "name": "Save ChMate crash logs",
-            "description": "Save uncaught ChMate crash logs to Download/Haiagaru.",
-            "default": true,
-            "dependencies": [
-                "BytecodePatch"
-            ],
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.226 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "画像取得専用VPN（実験用・検証中）",
-            "description": "ChMate単体のVPN Gate画像取得機能を追加します。初期状態は未選択。導入後もHaiagaru設定で有効化が必要です。対象の画像のみVPN経由で取得します。対象画像の表示・全経路の通信漏れ検証は未完了です。VPN運営者に接続元IPが見えることや、固有URLによる識別は防げません。",
-            "default": false,
-            "dependencies": [
-                "BytecodePatch"
-            ],
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.226 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
             "name": "Imgurログインアップロード（開発中）",
             "description": "アプリ内でImgurにログインし、既存の画像アップロードからアカウントへ送信します。初期状態は未選択。導入後もログインと有効化が必要です。非公式Web方式で動作保証はなく、利用規約・利用制限が適用されます。失敗時に匿名送信へ切り替えません。",
             "default": false,
-            "dependencies": [
-                "BytecodePatch"
-            ],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "jp.co.airfront.android.a2chMate",
@@ -362,9 +223,91 @@
             "name": "MEGAバックアップ・同期",
             "description": "MEGAアカウントへのバックアップ・復元・起動時同期を追加します。注意：Android 7.0以降が必要です。初期状態は未選択で、自動同期も初期OFFです。このパッチを選択しなくてもローカルバックアップ・復元は利用できます。",
             "default": false,
-            "dependencies": [
-                "Haiagaru"
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.co.airfront.android.a2chMate",
+                    "name": "ChMate",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#607D8B",
+                    "signatures": [
+                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
+                    ],
+                    "targets": [
+                        {
+                            "version": "0.8.10.191 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 21,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.226 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.242 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        }
+                    ]
+                }
             ],
+            "options": []
+        },
+        {
+            "name": "Migrate ChMate data with Shizuku",
+            "description": "Optionally copy shared data from the original ChMate package using Shizuku.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.co.airfront.android.a2chMate",
+                    "name": "ChMate",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#607D8B",
+                    "signatures": [
+                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
+                    ],
+                    "targets": [
+                        {
+                            "version": "0.8.10.191 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 21,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.226 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.242 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Save ChMate crash logs",
+            "description": "Save uncaught ChMate crash logs to Download/Haiagaru.",
+            "default": true,
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "jp.co.airfront.android.a2chMate",
@@ -406,9 +349,49 @@
             "name": "動画専用ビューア",
             "description": "対応する動画をChMate内で再生します。初期状態は未選択。導入後もHaiagaru設定でオン／オフできます。未選択の場合は従来の動画表示・外部アプリ起動を維持します。",
             "default": false,
-            "dependencies": [
-                "BytecodePatch"
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.co.airfront.android.a2chMate",
+                    "name": "ChMate",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#607D8B",
+                    "signatures": [
+                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
+                    ],
+                    "targets": [
+                        {
+                            "version": "0.8.10.191 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 21,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.226 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.242 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        }
+                    ]
+                }
             ],
+            "options": []
+        },
+        {
+            "name": "画像取得専用VPN（実験用・検証中）",
+            "description": "ChMate単体のVPN Gate画像取得機能を追加します。初期状態は未選択。導入後もHaiagaru設定で有効化が必要です。対象の画像のみVPN経由で取得します。対象画像の表示・全経路の通信漏れ検証は未完了です。VPN運営者に接続元IPが見えることや、固有URLによる識別は防げません。",
+            "default": false,
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "jp.co.airfront.android.a2chMate",

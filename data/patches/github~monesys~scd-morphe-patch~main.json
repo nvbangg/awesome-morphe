@@ -1,11 +1,63 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.6",
+  "version": "1.0.10",
   "patches": [
     {
       "name": "Ayoomi Instant Rewards",
       "description": "Instantly grant ad rewards for games using Ayoomi SDK (Serpent Chain Defense) without watching ads or triggering mediation timeouts.",
       "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Loading Completion Short Circuit",
+      "description": "Experimental: send UIUpgreateLoading.<Start>b__17_0 once, 30 seconds after Unity resumes. Requires a matching Unity GameObject and parameterless receiver; device validation required.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Native Loading Mask Bypass",
+      "description": "SCD v123 ARM64: deactivate UIUpgreateLoading on its first Update, with SCD.NativeMask entry/return logs. Reveals the underlying screen; does not complete pending asset operations. Requires the exact supported libil2cpp.so.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -145,10 +197,10 @@
         {
           "key": "instantAyoomiInitState",
           "title": "Instant Ayoomi Init Callback",
-          "description": "Immediately invoke onAyoomiInited in AyoomiApplication.GetInitState() instead of infinite background polling. Default false to prevent desync during startup.",
+          "description": "Immediately invoke onAyoomiInited in AyoomiApplication.GetInitState() instead of infinite background polling. Default true to prevent startup freeze.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": false,
+          "default": true,
           "values": null
         },
         {

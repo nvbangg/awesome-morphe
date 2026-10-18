@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. It is generated with ./gradlew generatePatchesList for every release. Manually editing this file can break third party tools that use this file.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "patches": [
     {
       "name": "AMOLED black",
@@ -407,6 +407,33 @@
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Clone Chess.com",
+      "description": "Renames the app to com.chess.noam so it installs next to the real Chess.com app instead of over it. Leave it off to keep updating your current install.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.chess",
+          "name": "Chess.com",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.10.18-googleplay",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -1325,6 +1352,36 @@
       "options": []
     },
     {
+      "name": "Lichess Puzzles",
+      "description": "Puzzles from Lichess becomes the Puzzles tab's big button, with chess.com's Solve Puzzles above it. Lichess's puzzles play in chess.com's own puzzle screen (board, coach, sounds), rated on the phone the way Lichess rates them; nothing is sent to chess.com.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.chess",
+          "name": "Chess.com",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.10.18-googleplay",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Limits as toasts",
       "description": "When a free limit is reached (Game Review, puzzles, lessons, drills, videos…) a short toast says so instead of a full-screen Premium offer, and promotional pop-ups are not shown. Nothing is unlocked: the limits stay exactly as they are.",
       "default": true,
@@ -2026,36 +2083,6 @@
       "options": []
     },
     {
-      "name": "Review on Lichess",
-      "description": "Game Review opens your game on Lichess (imported, with Lichess's analysis board) in a browser inside the app: always, or only once chess.com's free review is used up.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch",
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.chess",
-          "name": "Chess.com",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.10.18-googleplay",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Runtime feature toggles",
       "description": "Lets the No-Google settings turn off Gboard features that only work through Google servers (Emoji Kitchen, Tenor, Assistant voice, proofread…) and hide the GIF and sticker tabs.",
       "default": true,
@@ -2084,6 +2111,36 @@
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stockfish analysis",
+      "description": "Stockfish 19 on your phone, offline (arm64): best-move arrows on finished games, the analysis boards, the game explorer and Game Review (in a Lichess review, on the moves Lichess didn't mark), and an eval bar where chess.com has none of its own. It never shows while a game is being played or in puzzles. Patching downloads the official Stockfish 19 (80 MB) from Stockfish's GitHub, so it needs internet.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.chess",
+          "name": "Chess.com",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.10.18-googleplay",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -2200,6 +2257,65 @@
       "options": []
     },
     {
+      "name": "Unlimited Game Review",
+      "description": "Game Review asks who reviews the game: chess.com, Lichess's servers (online, with your Lichess account) or, with the Stockfish analysis patch, Stockfish on your phone (offline, no daily limit). The phone and Lichess mark moves the Lichess way (?! inaccuracies, ? mistakes, ?? blunders, accuracy and centipawn loss) in chess.com's own review screen. Finished games only; a live game on screen is never analysed.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.chess",
+          "name": "Chess.com",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.10.18-googleplay",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlimited Play Coach",
+      "description": "Removes the one-free-game-per-day limit on Play Coach, a bot-only practice mode.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.chess",
+          "name": "Chess.com",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.10.18-googleplay",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock Experimental features",
       "description": "Opens Experimental features in Settings without Premium and keeps its toggles on after the app restarts.",
       "default": true,
@@ -2285,6 +2401,35 @@
       "options": []
     },
     {
+      "name": "Unlock Premium content",
+      "description": "The app's own premium-tier check always answers with the top tier, so content gated on it (lessons, drills, insights, themes, puzzle-rush extras and anything else that reads the account's tier) treats the account as a member. The server still decides what you may actually play online.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.chess",
+          "name": "Chess.com",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.10.18-googleplay",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock Statistics",
       "description": "Statistics (D/T grid, averages, streaks) worked out from your own finds, opened from the profile without Premium and without the Go Premium line under it.",
       "default": true,
@@ -2332,6 +2477,35 @@
           "targets": [
             {
               "version": "10.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock all bots",
+      "description": "Every bot in Versus Bots can be played, including ones only Premium members may play.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.chess",
+          "name": "Chess.com",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.10.18-googleplay",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
