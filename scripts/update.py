@@ -262,7 +262,7 @@ def main() -> int:
         ("Repository metadata", errors["repo_metadata"]),
     ):
         if category_errors:
-            sorted_errors = sorted(category_errors)
+            sorted_errors = sorted(category_errors, key=str.lower)
             print(f"  {category_name} ({len(sorted_errors)}):")
             for error in sorted_errors:
                 print(f"    - {error}")

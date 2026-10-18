@@ -461,7 +461,9 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     for category, title in FETCH_ERROR_SECTIONS.items():
         if not errors[category]:
             continue
-        content = "\n".join(f"- {error}" for error in sorted(errors[category]))
+        content = "\n".join(
+            f"- {error}" for error in sorted(errors[category], key=str.lower)
+        )
         if category == "metadata":
             content = (
                 f"<details>\n<summary>Show details</summary>\n\n{content}\n\n</details>"
