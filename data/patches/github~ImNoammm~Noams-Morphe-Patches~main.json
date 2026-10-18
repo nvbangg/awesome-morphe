@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. It is generated with ./gradlew generatePatchesList for every release. Manually editing this file can break third party tools that use this file.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "patches": [
     {
       "name": "AMOLED black",
@@ -588,6 +588,43 @@
               "version": "10.8.1",
               "versionCodes": null,
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Dictionary downloads",
+      "description": "Adds \"Download dictionaries from Google\" to No-Google settings (off by default). Only English comes with Gboard; with the switch on, Gboard's own downloader gets the other languages' dictionaries (word suggestions, autocorrect) through the network helper app (included), which for this can only reach Google's dictionary folder. With it off, the first time a language without a dictionary is used, a hint says so.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1A73E8",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.2.4.969776716-release-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -2084,7 +2121,7 @@
     },
     {
       "name": "Runtime feature toggles",
-      "description": "Lets the No-Google settings turn off Gboard features that only work through Google servers (Emoji Kitchen, Tenor, Assistant voice, proofread…) and hide the GIF and sticker tabs.",
+      "description": "Lets the No-Google settings turn off Gboard features that only work through Google servers (Emoji Kitchen, Tenor, Assistant voice, proofread…), hide the GIF and sticker tabs, and keep Gboard in incognito mode everywhere.",
       "default": true,
       "category": null,
       "dependencies": [

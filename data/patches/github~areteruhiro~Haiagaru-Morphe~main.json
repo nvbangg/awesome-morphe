@@ -1,5 +1,5 @@
 {
-    "version": "1.8.16",
+    "version": "1.7.1",
     "patches": [
         {
             "name": "Change ChMate package name",
@@ -32,10 +32,24 @@
                             "description": null
                         },
                         {
+                            "version": "0.8.10.241",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
                             "version": "0.8.10.242 dev",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.243 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 24,
                             "description": null
                         }
                     ]
@@ -63,7 +77,7 @@
                 {
                     "key": "appIcon",
                     "title": "App icon",
-                    "description": "PNG or WebP launcher icon file path (not a folder). Leave empty to keep the original icon.",
+                    "description": "Path to a PNG or WebP launcher icon. Leave empty to keep the original icon.",
                     "required": false,
                     "type": "kotlin.String",
                     "default": null,
@@ -72,17 +86,17 @@
                 {
                     "key": "versionCode",
                     "title": "Version code",
-                    "description": "Defaults to the maximum Android distribution version code (2100000000). Allows switching between supported ChMate versions when package and signing key match. A lower-code APK cannot normally overwrite it. Clear to keep the original version code. Does not add support for unsupported versions.",
+                    "description": "Positive integer from 1 to 2100000000. Leave unset to keep the original version code.",
                     "required": false,
                     "type": "kotlin.Int",
-                    "default": 2100000000,
+                    "default": null,
                     "values": null
                 }
             ]
         },
         {
             "name": "Haiagaru",
-            "description": "Haiagaruの機能とアプリ内設定を追加します。対応バージョンはChMate 0.8.10.191 dev／0.8.10.226 dev／0.8.10.242 devです。",
+            "description": "Haiagaruの機能とアプリ内設定を追加します。ChMate 0.8.10.243 devは一部機能が未実装のため非推奨です（パッチ適用は可能）。",
             "default": true,
             "category": null,
             "compatiblePackages": [
@@ -111,10 +125,24 @@
                             "description": null
                         },
                         {
+                            "version": "0.8.10.241",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
                             "version": "0.8.10.242 dev",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.243 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 24,
                             "description": null
                         }
                     ]
@@ -160,7 +188,7 @@
                 {
                     "key": "edgeArchiveToolbarIconPath",
                     "title": "エッジ過去ログのツールバー画像（任意）",
-                    "description": "PNG/WebP画像ファイルの絶対パス（file path）。フォルダではなくファイルを選択してください。空欄なら内蔵アイコンを使用します。",
+                    "description": "パッチ実行端末上のPNG/WebP画像の絶対パス。空欄なら内蔵アイコンを使用します。",
                     "required": false,
                     "type": "kotlin.String",
                     "default": "",
@@ -176,90 +204,6 @@
                     "values": null
                 }
             ]
-        },
-        {
-            "name": "Imgurログインアップロード（開発中）",
-            "description": "アプリ内でImgurにログインし、既存の画像アップロードからアカウントへ送信します。初期状態は未選択。導入後もログインと有効化が必要です。非公式Web方式で動作保証はなく、利用規約・利用制限が適用されます。失敗時に匿名送信へ切り替えません。",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.226 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "MEGAバックアップ・同期",
-            "description": "MEGAアカウントへのバックアップ・復元・起動時同期を追加します。注意：Android 7.0以降が必要です。初期状態は未選択で、自動同期も初期OFFです。このパッチを選択しなくてもローカルバックアップ・復元は利用できます。",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.226 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
         },
         {
             "name": "Migrate ChMate data with Shizuku",
@@ -292,10 +236,24 @@
                             "description": null
                         },
                         {
+                            "version": "0.8.10.241",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 23,
+                            "description": null
+                        },
+                        {
                             "version": "0.8.10.242 dev",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": 23,
+                            "description": null
+                        },
+                        {
+                            "version": "0.8.10.243 dev",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 24,
                             "description": null
                         }
                     ]
@@ -334,42 +292,7 @@
                             "description": null
                         },
                         {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "動画専用ビューア",
-            "description": "対応する動画をChMate内で再生します。初期状態は未選択。導入後もHaiagaru設定でオン／オフできます。未選択の場合は従来の動画表示・外部アプリ起動を維持します。",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.226 dev",
+                            "version": "0.8.10.241",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": 23,
@@ -381,47 +304,12 @@
                             "isExperimental": false,
                             "minSdk": 23,
                             "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "画像取得専用VPN（実験用・検証中）",
-            "description": "ChMate単体のVPN Gate画像取得機能を追加します。初期状態は未選択。導入後もHaiagaru設定で有効化が必要です。対象の画像のみVPN経由で取得します。対象画像の表示・全経路の通信漏れ検証は未完了です。VPN運営者に接続元IPが見えることや、固有URLによる識別は防げません。",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
                         },
                         {
-                            "version": "0.8.10.226 dev",
+                            "version": "0.8.10.243 dev",
                             "versionCodes": null,
                             "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
+                            "minSdk": 24,
                             "description": null
                         }
                     ]

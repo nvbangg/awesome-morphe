@@ -1,11 +1,37 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.10",
+  "version": "1.0.16",
   "patches": [
     {
       "name": "Ayoomi Instant Rewards",
       "description": "Instantly grant ad rewards for games using Ayoomi SDK (Serpent Chain Defense) without watching ads or triggering mediation timeouts.",
       "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Ayoomi SDK Init Short Circuit",
+      "description": "[Deprecated] Superseded by Unity Lifecycle Protection (Section 2: instantAyoomiInitState). Kept safe as a no-op to prevent duplicate hook VerifyError.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -161,6 +187,32 @@
       "options": []
     },
     {
+      "name": "SCD Runtime Diagnostics",
+      "description": "Diagnostic builds only: enable Android debuggable so ADB run-as can sample the stalled UnityMain thread. Disable this patch for normal builds.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unity Lifecycle Protection",
       "description": "Prevent Unity from calling finish()/kill() or pausing shutdown on re-signed / non-root builds (Galaxy S24, etc.). Fixes startup crashes and initialization infinite wait loops.",
       "default": true,
@@ -196,8 +248,8 @@
         },
         {
           "key": "instantAyoomiInitState",
-          "title": "Instant Ayoomi Init Callback",
-          "description": "Immediately invoke onAyoomiInited in AyoomiApplication.GetInitState() instead of infinite background polling. Default true to prevent startup freeze.",
+          "title": "Instant Ayoomi Init Callback & SDK State Force-Success",
+          "description": "Force isInitSDKSuccess/isInitSDK/isAymSDKInit to true and immediately invoke onAyoomiInited in AyoomiApplication to prevent untrusted environment detection and PlayerData wipe. Default true.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -220,8 +272,43 @@
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
+        },
+        {
+          "key": "spoofPlayStoreSignature",
+          "title": "Spoof Play Store Package Signature (db83fba5)",
+          "description": "Spoof PackageManager.getPackageInfo() signature to authentic Google Play certificate (MD5 75:3B:19:17:2B:CE:B7:C7:18:04:B0:C6:A9:F2:FD:0A / hash db83fba5). Bypasses local signature check, skips Application.Quit(-1001), and prevents player data wipe to null in timer coroutine. Default true.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
         }
       ]
+    },
+    {
+      "name": "Unity Native Quit Guard",
+      "description": "SCD v123 ARM64: ignore Application.Quit(-1001), the shutdown observed on the re-signed build. Other exit codes retain the original native quit behavior. Experimental; exact original libil2cpp.so required.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     }
   ]
 }
