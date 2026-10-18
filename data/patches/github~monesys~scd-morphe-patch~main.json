@@ -1,0 +1,175 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.0.5",
+  "patches": [
+    {
+      "name": "Ayoomi Instant Rewards",
+      "description": "Instantly grant ad rewards for games using Ayoomi SDK (Serpent Chain Defense) without watching ads or triggering mediation timeouts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "PairIP Protection Bypass",
+      "description": "Bypass PairIP license checking and anti-tamper self-termination so the app can start on re-signed / non-root builds (Galaxy S24, etc.).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "neuterLicenseClient",
+          "title": "Neuter LicenseClient root triggers",
+          "description": "Neuter LicenseClient.checkLicense, initializeLicenseCheck, scheduleAppShutdown, and error handlers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassAttachBaseContext",
+          "title": "Bypass Application.attachBaseContext check",
+          "description": "Neuter PairIP Application.attachBaseContext license verification trigger.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "neuterLicenseActivity",
+          "title": "Neuter LicenseActivity exit triggers",
+          "description": "Neuter LicenseActivity.exitApp(), closeApp(), and onStart() to prevent the paywall/error shutdown activity from killing the process.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Play Asset Delivery Fallback",
+      "description": "Redirect Unity Play Asset Delivery (PAD) asset queries to base.apk. Fixes infinite loading screen caused by YooAsset/Unity hanging on PACK_UNAVAILABLE (-2) on re-signed / non-root builds (Galaxy S24, etc.).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unity Lifecycle Protection",
+      "description": "Prevent Unity from calling finish()/kill() or pausing shutdown on re-signed / non-root builds (Galaxy S24, etc.). Fixes startup crashes and initialization infinite wait loops.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.and.aym.scd",
+          "name": "Serpent Chain Defense",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#D4AF37",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "neuterKill",
+          "title": "Neuter UnityPlayer.kill() and finish()",
+          "description": "Prevent Unity native runtime errors from closing the host Activity.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "instantAyoomiInitState",
+          "title": "Instant Ayoomi Init Callback",
+          "description": "Immediately invoke onAyoomiInited in AyoomiApplication.GetInitState() instead of infinite background polling. Default false to prevent desync during startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "suppressFcmDialog",
+          "title": "Suppress FCM Permission Dialog",
+          "description": "Mock FCM notification permission as true to prevent Android 13+ permission popups from backgrounding the Unity activity during startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "neuterCheckEntryRetry",
+          "title": "Neuter CheckEntry Infinite Retry",
+          "description": "Neuter AyoomiApplication.CheckEntry() infinite retry loop (0x98967f / 9,999,999 retries) that blocks startup when offline or when servers disconnect.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    }
+  ]
+}
