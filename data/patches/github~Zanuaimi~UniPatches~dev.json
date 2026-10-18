@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.33.1",
+  "version": "1.33.2",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
@@ -1086,7 +1086,7 @@
     {
       "name": "Legacy App Compatibility Patch ( Experimental, Enhanced )",
       "category": "Legacy App Compatibility",
-      "description": "Improves older apps and games on modern Android with opt-in manifest, storage, display,\nfile-sharing, network, native-library, OpenIAB, and OBB fixes. Includes target SDK controls,\ndiagnostics, API-gated package visibility and foreground-service types, selected-domain\ncleartext, and FileProvider sharing for app-private files.\n\nPresets add ordinary fixes; Custom booleans start off. Ambiguous receiver calls are skipped.\nNative checks reject APK library collisions during relocation and DT_TEXTREL for target SDK 23+.\nOBB pre-staging and downloader bypass are refused when they could skip an existing\nLicenseChecker. These safeguards may stop patching. Target SDK spoofing cannot repair\nincompatible code.\n\nDoes not bypass Google licensing or Play Services. Use Control Embedded Auth / Stores Patch\nfor those. It cannot restore stopped servers, unsupported ABIs, server licensing,\nPlay Integrity, or incompatible native code.\n\nCredits: Nai64Patches from Nai64 for the original compatibility functionality. LSPosed for\nthe Hidden API bypass approach and AndroidHiddenApiBypass (Apache-2.0).",
+      "description": "Improves older apps and games on modern Android with opt-in manifest, storage, display,\nfile-sharing, network, native-library, OpenIAB, and OBB fixes. Includes target SDK controls,\ndiagnostics, API-gated package visibility and foreground-service types, selected-domain\ncleartext, and FileProvider sharing for app-private files.\n\nPresets add ordinary fixes; Custom booleans start off. Ambiguous receiver calls are skipped.\nNative checks reject APK library collisions during relocation and DT_TEXTREL for target SDK 23+.\nWith LicenseChecker, keep standard ExpansionDownloader launcher and run LVL before\nstaged OBB validation. Deny/error\nblocks Unity; unsupported flows fail closed. Target SDK spoofing cannot repair code.\n\nDoes not bypass Google licensing or Play Services. Use Control Embedded Auth / Stores Patch\nfor those. It cannot restore stopped servers, unsupported ABIs, server licensing,\nPlay Integrity, or incompatible native code.\n\nCredits: Nai64Patches from Nai64 for the original compatibility functionality. LSPosed for\nthe Hidden API bypass approach and AndroidHiddenApiBypass (Apache-2.0).",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -1389,7 +1389,7 @@
         {
           "key": "legacyCompatibilityEmbedExpansionObb",
           "title": "Legacy App Compatibility > Expansion data and OBB > Embed and stage expansion OBB",
-          "description": "Use when the app needs an OBB at first launch and no downloader can provide it. The file is bundled inside the APK and copied to the expected OBB folder; this can greatly increase APK size. Pre-staging can skip license checks; the patch refuses this option whenever a LicenseChecker class exists, even if its downloader flow cannot be identified.",
+          "description": "Use when the app needs an OBB at first launch. The file is bundled inside the APK and copied to the expected OBB folder; this can greatly increase APK size. If a LicenseChecker exists, only the recognized Google ExpansionDownloader flow is supported: its original LVL service check is forced before OBB validation, and deny/error blocks Unity. Unsupported flows fail closed.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1398,7 +1398,7 @@
         {
           "key": "legacyCompatibilityBypassExpansionDownloader",
           "title": "Legacy App Compatibility > Expansion data and OBB > Bypass known Unity expansion downloader",
-          "description": "Use only for the standard Google ExpansionDownloader when it blocks startup despite bundled OBB data. The target activity is detected from DownloaderActivity's Intent(Class) launch and must inherit a Unity engine activity base class. It is not a general downloader repair, requires Embed and stage expansion OBB, fails if a single safe target cannot be proven, and is refused when a LicenseChecker exists.",
+          "description": "Use only for the standard Google ExpansionDownloader when bundled OBB data should skip its download UI. Requires Embed and stage expansion OBB. If LicenseChecker exists, DownloaderActivity remains launcher, existing LVL service check runs first, download controls stay hidden during that check, and only allow continues to OBB validation/Unity. Deny/error blocks launch; unsupported flows fail closed.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
