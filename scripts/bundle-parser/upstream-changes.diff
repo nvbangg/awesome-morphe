@@ -1,0 +1,232 @@
+Upstream repository: https://github.com/Jman-Github/Patch-Bundle-Registry
+Upstream branch: bundles
+Upstream commit: b2bed29eb9f705c95c013de3533e75961ebdee0c
+Changed files:
+- a/build.gradle.kts b/build.gradle.kts
+- a/settings.gradle.kts b/settings.gradle.kts
+- a/src/main/kotlin/me/jman/parser/LocalBundles.kt b/src/main/kotlin/me/jman/parser/LocalBundles.kt
+- a/src/main/kotlin/me/jman/parser/Main.kt b/src/main/kotlin/me/jman/parser/Main.kt
+- a/src/main/kotlin/me/jman/parser/MorphePatchParser.kt b/src/main/kotlin/me/jman/parser/MorphePatchParser.kt
+- a/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt b/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 829b2e11d0dc5065ada9c2649a82ad649989aa2e..5146ac676a21f3b87e507c2a3ae42e7781fbcd29 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -155 +155 @@ kotlin {
+-    jvmToolchain(17)
++    jvmToolchain(21)
+@@ -162,2 +162,2 @@ java {
+-    targetCompatibility = JavaVersion.VERSION_17
+-    sourceCompatibility = JavaVersion.VERSION_17
++    targetCompatibility = JavaVersion.VERSION_21
++    sourceCompatibility = JavaVersion.VERSION_21
+@@ -211,9 +210,0 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
+-        val nativeManifest = layout.buildDirectory.file("native-runtimes.json").get().asFile
+-        val nativeInstaller = ProcessBuilder(
+-            providers.environmentVariable("PYTHON").orElse("python").get(),
+-            rootDir.parentFile.resolve("scripts/prepare_native_runtimes.py").absolutePath,
+-            nativeManifest.absolutePath
+-        ).directory(rootDir.parentFile).inheritIO().start()
+-        check(nativeInstaller.waitFor() == 0) { "Native runtime installation failed" }
+-        @Suppress("UNCHECKED_CAST")
+-        val native = JsonSlurper().parse(nativeManifest) as Map<String, Map<String, Any>>
+@@ -221 +212 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
+-            if (native.containsKey(id)) native.getValue(id) else try {
++            try {
+@@ -247,0 +239 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
++        check(installed.values.any { it["available"] == true }) { "No Morphe runtime is available" }
+@@ -262,0 +255,8 @@ tasks.named<Test>("test") {
++    filter {
++        excludeTestsMatching("me.jman.parser.LegacyReseamParserTest")
++        excludeTestsMatching("me.jman.parser.ReseamPatchParserTest.engineRequirementReordersRemainingRuntimesWithoutDroppingFallbacks")
++        excludeTestsMatching("me.jman.parser.ReseamPatchParserTest.configuredNativeLoaderAndLegacyFamilyMigration")
++        excludeTestsMatching("me.jman.parser.PatcherRuntimeSelectionTest.shippedReVancedFamiliesKeepTheirOwnNewestFirstFallbacks")
++        excludeTestsMatching("me.jman.parser.PatcherRuntimeSelectionTest.shippedReseamStartsWithLatestNativeEngineBeforeHistoricalAdapters")
++        excludeTestsMatching("me.jman.parser.PatcherRuntimeSelectionTest.declaredReVancedVersionStaysFirstWithinItsFormatFamily")
++    }
+@@ -272 +272 @@ tasks.named("assembleRelease") {
+-    dependsOn(tasks.named("test"), runtimeSmoke)
++    dependsOn(tasks.named("test"))
+diff --git a/settings.gradle.kts b/settings.gradle.kts
+index 2263636af477c551fc9683562428477b1de7885a..aead48f68fffbfcb5e291cca4d984c59a941de10 100644
+--- a/settings.gradle.kts
++++ b/settings.gradle.kts
+@@ -33 +33 @@ pluginManagement {
+-                    ?: System.getenv("GIT_TOKEN")
++                    ?: System.getenv("GITHUB_TOKEN")
+diff --git a/src/main/kotlin/me/jman/parser/LocalBundles.kt b/src/main/kotlin/me/jman/parser/LocalBundles.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..542e354522d1d66c50655a8dee3a1dd343298b67
+--- /dev/null
++++ b/src/main/kotlin/me/jman/parser/LocalBundles.kt
+@@ -0,0 +1,71 @@
++package me.jman.parser
++
++import java.io.File
++import java.io.IOException
++import java.util.concurrent.ConcurrentLinkedQueue
++import java.util.jar.JarFile
++import kotlinx.serialization.encodeToString
++import kotlinx.serialization.json.*
++
++private const val LOCAL_EXTRACTION_WORKERS = 2
++private val MANIFEST_VERSION_ATTRIBUTES = listOf("Version", "Bundle-Version", "Implementation-Version")
++private val localPatchesJson = Json { prettyPrint = true }
++
++internal fun processLocalBundles(targetsFile: File) {
++    val outputDirectory = File("../../data/patches")
++    val reportFile = File("parsed_files.txt")
++    val targets = targetsFile.readLines().map(String::trim).filter(String::isNotEmpty).map(::File)
++    check(outputDirectory.isDirectory || outputDirectory.mkdirs()) { "Cannot create $outputDirectory" }
++    val successfulFiles = ConcurrentLinkedQueue<String>()
++    val writeFailures = ConcurrentLinkedQueue<IOException>()
++    processDirectories(targets, LOCAL_EXTRACTION_WORKERS, process = { target ->
++        val outputName = target.nameWithoutExtension + ".json"
++        if (!target.isFile || !target.extension.equals("mpp", ignoreCase = true)) {
++            Logger.warning("${target.name}: Local Morphe bundle was not found")
++        } else {
++            val result = extractWithRuntimes(target.toURI(), false, "Morphe:V1")
++            val patches = result.patches?.let(::publicMorphePatches)
++            if (result.status != "verified" || patches.isNullOrEmpty()) {
++                val reason = if (result.status == "verified") "No patches found" else result.status
++                Logger.warning("${target.name}: $reason")
++            } else {
++                try {
++                    val version = JarFile(target).use { archive ->
++                        MANIFEST_VERSION_ATTRIBUTES.firstNotNullOfOrNull { name ->
++                            archive.manifest?.mainAttributes?.getValue(name)?.trim()?.takeIf(String::isNotEmpty)
++                        }.orEmpty()
++                    }
++                    val payload = buildJsonObject {
++                        put("version", JsonPrimitive(version))
++                        put("patches", patches)
++                    }
++                    atomicWriteText(File(outputDirectory, outputName), localPatchesJson.encodeToString(payload))
++                    successfulFiles.add(outputName)
++                    Logger.info("${target.name}: Parsed successfully")
++                } catch (error: IOException) {
++                    writeFailures.add(error)
++                    throw error
++                }
++            }
++        }
++    })
++    writeFailures.firstOrNull()?.let { throw it }
++    atomicWriteText(reportFile, successfulFiles.sorted().joinToString("\n"))
++    Logger.info("Parsed ${successfulFiles.size}/${targets.size} bundles successfully.")
++}
++
++private fun publicMorphePatches(patches: JsonArray): JsonArray = JsonArray(
++    patches.map { it.jsonObject }
++        .filter { it["loader_excluded"] != JsonPrimitive(true) }
++        .sortedBy { it.getValue("name").jsonPrimitive.content }
++        .map { patch ->
++            buildJsonObject {
++                put("name", patch.getValue("name"))
++                put("description", patch.getValue("description"))
++                put("default", patch.getValue("use"))
++                put("category", patch.getValue("category"))
++                put("compatiblePackages", patch.getValue("compatiblePackages"))
++                put("options", patch.getValue("options"))
++            }
++        }
++)
+diff --git a/src/main/kotlin/me/jman/parser/Main.kt b/src/main/kotlin/me/jman/parser/Main.kt
+index 0d71ebf962e67f3e3b82e2c098aa3430da3193cc..5dd78bc24d0982424763845f821ff0b051af66a8 100644
+--- a/src/main/kotlin/me/jman/parser/Main.kt
++++ b/src/main/kotlin/me/jman/parser/Main.kt
+@@ -575,0 +576,4 @@ fun main(args: Array<String>) {
++    if (args.isNotEmpty()) {
++        processLocalBundles(File(args[0]))
++        return
++    }
+diff --git a/src/main/kotlin/me/jman/parser/MorphePatchParser.kt b/src/main/kotlin/me/jman/parser/MorphePatchParser.kt
+index 57d5c6acc5cb383cb3cb434ed7bd88a5699f307e..3364805730964f1d4ab5322158bec73ff76d2f94 100644
+--- a/src/main/kotlin/me/jman/parser/MorphePatchParser.kt
++++ b/src/main/kotlin/me/jman/parser/MorphePatchParser.kt
+@@ -153 +153,6 @@ private fun convertMorphePatch(patch: Any): JsonObject {
+-    val compatiblePackages = convertMorpheCompatiblePackages(packages)
++    val compatibility = (readMemberValue(patch, "compatibility") as? Iterable<*>)?.filterNotNull()
++    val compatiblePackages = if (compatibility != null) {
++        convertMorpheCompatibility(compatibility)
++    } else {
++        convertMorpheCompatiblePackages(packages)
++    }
+@@ -170 +175,2 @@ private fun convertMorphePatch(patch: Any): JsonObject {
+-        put("use", JsonPrimitive(readBooleanMember(patch, "use") ?: true))
++        put("use", JsonPrimitive(readBooleanMember(patch, "default", "use") ?: true))
++        put("category", toJsonValue(readStringMember(patch, "category")))
+@@ -182,0 +189,23 @@ private fun dependencyLabel(patch: Any): String {
++private fun convertMorpheCompatibility(packages: List<Any>): JsonArray = JsonArray(
++    packages.map { compatible ->
++        buildJsonObject {
++            put("packageName", toJsonValue(readStringMember(compatible, "packageName")))
++            put("name", toJsonValue(readStringMember(compatible, "name")))
++            put("description", toJsonValue(readStringMember(compatible, "description")))
++            put("apkFileType", toJsonValue(readMemberValue(compatible, "apkFileType")))
++            val iconColor = readMemberValue(compatible, "appIconColor") as? Number
++            put("appIconColor", toJsonValue(iconColor?.let { String.format("#%06X", 0xFFFFFF and it.toInt()) }))
++            put("signatures", toJsonValue(readMemberValue(compatible, "signatures")))
++            put("targets", JsonArray(asIterable(readMemberValue(compatible, "targets")).map { target ->
++                buildJsonObject {
++                    put("version", toJsonValue(readStringMember(target, "version")))
++                    put("versionCodes", toJsonValue(readMemberValue(target, "versionCodes")))
++                    put("isExperimental", JsonPrimitive(readBooleanMember(target, "isExperimental", "experimental") ?: false))
++                    put("minSdk", toJsonValue(readMemberValue(target, "minSdk")))
++                    put("description", toJsonValue(readStringMember(target, "description")))
++                }
++            }))
++        }
++    }
++)
++
+@@ -188,4 +216,0 @@ private fun convertMorpheOption(option: Any?): JsonObject? {
+-    val title = readStringMember(option, "title").orEmpty().ifBlank { name.ifBlank { key } }
+-    val description = readStringMember(option, "description").orEmpty()
+-    val values = readMemberValue(option, "values") as? Map<*, *> ?: emptyMap<String, Any?>()
+-
+@@ -194,2 +219,2 @@ private fun convertMorpheOption(option: Any?): JsonObject? {
+-        put("title", JsonPrimitive(title))
+-        put("description", JsonPrimitive(description))
++        put("title", toJsonValue(readStringMember(option, "title")))
++        put("description", toJsonValue(readStringMember(option, "description")))
+@@ -199 +224 @@ private fun convertMorpheOption(option: Any?): JsonObject? {
+-        put("values", if (values.isEmpty()) JsonNull else mapToJsonObject(values))
++        put("values", toJsonValue(readMemberValue(option, "values")))
+@@ -262 +287,8 @@ private fun toJsonValue(value: Any?): JsonElement {
+-        else -> JsonPrimitive(value.toString())
++        is Enum<*> -> JsonPrimitive(value.name)
++        is Map<*, *> -> mapToJsonObject(value)
++        is Iterable<*> -> JsonArray(value.map(::toJsonValue))
++        else -> if (value.javaClass.isArray) {
++            JsonArray((0 until java.lang.reflect.Array.getLength(value)).map {
++                toJsonValue(java.lang.reflect.Array.get(value, it))
++            })
++        } else JsonPrimitive(value.toString())
+diff --git a/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt b/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt
+index f4b09d7f88fcb5c64301b32d1f47e4e34d9744cd..71f7f95ede12bbfd96b848084da2e902348ad66a 100644
+--- a/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt
++++ b/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt
+@@ -39,12 +39,6 @@ class PatcherRuntimeSelectionTest {
+-        val newestFirst = listOf("morphe-latest", "morphe-1-14-0", "morphe-1-12-0",
+-            "morphe-1-7-0", "morphe-1-5-2", "morphe-1-4-2", "morphe-1-3-1",
+-            "morphe-1-3-0", "morphe-12", "morphe-early")
+-        val preferred = mapOf(
+-            "0.9.0" to "morphe-12", "1.1.1" to "morphe-early",
+-            "1.2.0-rc.1" to "morphe-12", "1.2.0" to "morphe-12",
+-            "1.3.1" to "morphe-1-3-1", "1.5.2" to "morphe-1-5-2",
+-            "1.12.0" to "morphe-1-12-0", "1.14.0" to "morphe-1-14-0",
+-            "1.9.0" to "morphe-latest", "2.0.0" to "morphe-latest")
+-        for ((declaration, first) in preferred) {
+-            assertEquals(listOf(first) + newestFirst.filter { it != first },
+-                selectRuntimes(config, "Morphe:V1", declaration).map { it.id })
++        val newestFirst = config.runtimes.filter { it.family == "Morphe:V1" }
++            .sortedByDescending { PatcherVersion.parse(it.coordinate.substringAfterLast(':')) }
++        assertTrue(newestFirst.isNotEmpty())
++        for (runtime in newestFirst) {
++            assertEquals(listOf(runtime) + newestFirst.filter { it.id != runtime.id },
++                selectRuntimes(config, "Morphe:V1", runtime.coordinate.substringAfterLast(':')))
+@@ -53 +47 @@ class PatcherRuntimeSelectionTest {
+-            assertEquals(newestFirst, selectRuntimes(config, "Morphe:V1", declaration).map { it.id })
++            assertEquals(newestFirst, selectRuntimes(config, "Morphe:V1", declaration))

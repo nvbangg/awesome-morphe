@@ -56,6 +56,7 @@ class ReseamPatchParserTest {
         assertEquals(JsonNull, mapped["name"])
         assertEquals(JsonNull, mapped["description"])
         assertEquals(JsonPrimitive(true), mapped["hidden"])
+        assertEquals(JsonPrimitive(true), mapped["loader_excluded"])
         assertEquals("Ads", mapped["display_name"]?.jsonPrimitive?.content)
         assertTrue(isUsablePatchArray(result.patches!!))
         assertFails {

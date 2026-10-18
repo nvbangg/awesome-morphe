@@ -150,7 +150,12 @@ private fun retainNamedPatch(candidate: Any?): Any? {
 private fun convertMorphePatch(patch: Any): JsonObject {
     val packages = readMemberValue(patch, "compatiblePackages")
     require(packages == null || packages is Iterable<*>) { "Compatible packages are not iterable" }
-    val compatiblePackages = convertMorpheCompatiblePackages(packages)
+    val compatibility = (readMemberValue(patch, "compatibility") as? Iterable<*>)?.filterNotNull()
+    val compatiblePackages = if (compatibility != null) {
+        convertMorpheCompatibility(compatibility)
+    } else {
+        convertMorpheCompatiblePackages(packages)
+    }
     val dependencies = JsonArray(
         asIterable(readMemberValue(patch, "dependencies"))
             .mapNotNull(::retainNamedPatch)
@@ -167,7 +172,8 @@ private fun convertMorphePatch(patch: Any): JsonObject {
     return buildJsonObject {
         put("name", readStringMember(patch, "name")?.let(::JsonPrimitive) ?: JsonNull)
         put("description", toJsonValue(readStringMember(patch, "description")))
-        put("use", JsonPrimitive(readBooleanMember(patch, "use") ?: true))
+        put("use", JsonPrimitive(readBooleanMember(patch, "default", "use") ?: true))
+        put("category", toJsonValue(readStringMember(patch, "category")))
         put("dependencies", dependencies)
         put("compatiblePackages", compatiblePackages)
         put("options", options)
@@ -180,23 +186,42 @@ private fun dependencyLabel(patch: Any): String {
         ?: patch.javaClass.name
 }
 
+private fun convertMorpheCompatibility(packages: List<Any>): JsonArray = JsonArray(
+    packages.map { compatible ->
+        buildJsonObject {
+            put("packageName", toJsonValue(readStringMember(compatible, "packageName")))
+            put("name", toJsonValue(readStringMember(compatible, "name")))
+            put("description", toJsonValue(readStringMember(compatible, "description")))
+            put("apkFileType", toJsonValue(readMemberValue(compatible, "apkFileType")))
+            val iconColor = readMemberValue(compatible, "appIconColor") as? Number
+            put("appIconColor", toJsonValue(iconColor?.let { String.format("#%06X", 0xFFFFFF and it.toInt()) }))
+            put("signatures", toJsonValue(readMemberValue(compatible, "signatures")))
+            put("targets", JsonArray(asIterable(readMemberValue(compatible, "targets")).map { target ->
+                buildJsonObject {
+                    put("version", toJsonValue(readStringMember(target, "version")))
+                    put("versionCodes", toJsonValue(readMemberValue(target, "versionCodes")))
+                    put("isExperimental", JsonPrimitive(readBooleanMember(target, "isExperimental", "experimental") ?: false))
+                    put("minSdk", toJsonValue(readMemberValue(target, "minSdk")))
+                    put("description", toJsonValue(readStringMember(target, "description")))
+                }
+            }))
+        }
+    }
+)
+
 private fun convertMorpheOption(option: Any?): JsonObject? {
     option ?: return null
 
     val name = readStringMember(option, "name").orEmpty()
     val key = name.ifBlank { readStringMember(option, "key").orEmpty() }
-    val title = readStringMember(option, "title").orEmpty().ifBlank { name.ifBlank { key } }
-    val description = readStringMember(option, "description").orEmpty()
-    val values = readMemberValue(option, "values") as? Map<*, *> ?: emptyMap<String, Any?>()
-
     return buildJsonObject {
         put("key", JsonPrimitive(key))
-        put("title", JsonPrimitive(title))
-        put("description", JsonPrimitive(description))
+        put("title", toJsonValue(readStringMember(option, "title")))
+        put("description", toJsonValue(readStringMember(option, "description")))
         put("required", JsonPrimitive(readBooleanMember(option, "required") ?: false))
         put("type", JsonPrimitive(readMemberValue(option, "type")?.toString() ?: "kotlin.Any"))
         put("default", toJsonValue(readMemberValue(option, "default")))
-        put("values", if (values.isEmpty()) JsonNull else mapToJsonObject(values))
+        put("values", toJsonValue(readMemberValue(option, "values")))
     }
 }
 
@@ -259,7 +284,14 @@ private fun toJsonValue(value: Any?): JsonElement {
         is String -> JsonPrimitive(value)
         is Number -> JsonPrimitive(value)
         is Boolean -> JsonPrimitive(value)
-        else -> JsonPrimitive(value.toString())
+        is Enum<*> -> JsonPrimitive(value.name)
+        is Map<*, *> -> mapToJsonObject(value)
+        is Iterable<*> -> JsonArray(value.map(::toJsonValue))
+        else -> if (value.javaClass.isArray) {
+            JsonArray((0 until java.lang.reflect.Array.getLength(value)).map {
+                toJsonValue(java.lang.reflect.Array.get(value, it))
+            })
+        } else JsonPrimitive(value.toString())
     }
 }
 

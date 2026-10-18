@@ -83,6 +83,7 @@ internal fun parseReseamInspection(payload: String, hash: String, runtime: Strin
                 put("name", name)
                 (officialLabel ?: fallbackLabel)?.let { put("display_name", it) }
                 put("hidden", hidden)
+                if (hidden) put("loader_excluded", true)
                 put("description", patch.patchText("description"))
                 put("use", patch.getValue("enabled_by_default").jsonPrimitive.boolean)
                 put("dependencies", patch.getValue("dependencies").jsonArray)

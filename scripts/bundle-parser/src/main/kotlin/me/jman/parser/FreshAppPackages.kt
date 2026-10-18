@@ -9,7 +9,10 @@ internal object FreshAppPackages {
     private val valid = Regex("[A-Za-z][A-Za-z0-9_]*(?:\\.[A-Za-z0-9_]+)+")
     @Synchronized fun reset() { packages.clear(); flush() }
     @Synchronized fun add(folder: String, version: String, download: String, patches: JsonArray) {
-        val names = patches.filter { it.jsonObject["loader_excluded"] != JsonPrimitive(true) }.flatMap { patch ->
+        val names = patches.filter {
+            it.jsonObject["loader_excluded"] != JsonPrimitive(true) &&
+            it.jsonObject["hidden"] != JsonPrimitive(true)
+        }.flatMap { patch ->
             when (val compatibility = patch.jsonObject["compatiblePackages"]) {
                 is JsonObject -> compatibility.entries.filter { (_, versions) ->
                     versions !is JsonArray || versions.isNotEmpty()

@@ -30,7 +30,7 @@ pluginManagement {
                 password = providers.gradleProperty("gpr.key").orNull
                     ?.takeIf { it.isNotBlank() }
                     ?: localGprKey
-                    ?: System.getenv("GIT_TOKEN")
+                    ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }

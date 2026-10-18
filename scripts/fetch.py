@@ -313,7 +313,7 @@ def run_bundle_parser(targets: list[BranchFetchResult]) -> None:
     PARSED_FILES_PATH.unlink(missing_ok=True)
     print(f"\nParsing {len(targets)} bundles...")
     subprocess.run(
-        [str(GRADLE_EXECUTABLE_PATH), "run", "--args=@updated_files.txt"],
+        [str(GRADLE_EXECUTABLE_PATH), "run", "--args=updated_files.txt"],
         cwd=str(BUNDLE_PARSER_DIR),
         text=True,
         check=True,

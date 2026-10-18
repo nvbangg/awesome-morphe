@@ -147,6 +147,7 @@ private fun legacyReseamPatch(patch: Any, exportLabel: String? = null): JsonObje
     }
     put("description", patch.property("getDescription").jsonValue())
     put("hidden", hidden)
+    if (hidden) put("loader_excluded", true)
     put("enabled_by_default", patch.property("getEnabled").jsonValue())
     put("dependencies", JsonArray((patch.property("getDependencies") as Iterable<*>).map { dependency ->
         if (dependency is String) JsonPrimitive(dependency)

@@ -78,7 +78,8 @@ class PatchDisplayNameTest {
             FreshAppPackages.add("fixture","v1","https://example.test/patches.mpp",
                 Json.parseToJsonElement("""[
                     {"name":"Public patch","compatiblePackages":{"com.public.app":null}},
-                    {"name":null,"loader_excluded":true,"compatiblePackages":{"com.helper.app":null}}
+                    {"name":null,"loader_excluded":true,"compatiblePackages":{"com.helper.app":null}},
+                    {"name":"Reseam hidden","hidden":true,"compatiblePackages":{"com.reseam.hidden":null}}
                 ]""").jsonArray)
             FreshAppPackages.flush()
             val apps = Json.parseToJsonElement(file.readText()).jsonObject

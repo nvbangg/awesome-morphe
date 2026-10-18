@@ -573,6 +573,10 @@ fun main(args: Array<String>) {
         runtimeWorker(args)
         return
     }
+    if (args.isNotEmpty()) {
+        processLocalBundles(File(args[0]))
+        return
+    }
     val batchSetting = System.getenv("CATALOG_HISTORICAL_BATCH_SIZE")?.takeIf(String::isNotBlank)
     val batchSize = batchSetting?.let {
         it.toIntOrNull() ?: error("CATALOG_HISTORICAL_BATCH_SIZE must be an integer")

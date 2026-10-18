@@ -82,7 +82,7 @@ class BundleParserTests(unittest.TestCase):
         self.complete_parser(targets)
         bundle_fetch.run_bundle_parser(targets)
         self.run_process.assert_called_once_with(
-            [str(self.gradle_path), "run", "--args=@updated_files.txt"],
+            [str(self.gradle_path), "run", "--args=updated_files.txt"],
             cwd=str(self.root),
             text=True,
             check=True,
