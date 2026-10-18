@@ -1,7 +1,33 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0",
+  "version": "1.9.0-dev.1",
   "apps": [
+    {
+      "packageName": "com.adobe.reader",
+      "name": "Adobe Reader",
+      "description": null,
+      "apkFileType": "APKM",
+      "appIconColor": "#FA0F00",
+      "signatures": [
+        "b6dd0562256487fcd6c98cde137858ef50d9adb9f9cd2f1ca58c5357efdf0faf"
+      ],
+      "targets": [
+        {
+          "version": "26.9.2.50367",
+          "versionCodes": null,
+          "isExperimental": false,
+          "minSdk": 28,
+          "description": null
+        }
+      ],
+      "patchNames": [
+        "Remove Ads and Tracking"
+      ],
+      "supportedVersions": [
+        "26.9.2.50367"
+      ],
+      "latestSupportedVersion": "26.9.2.50367"
+    },
     {
       "packageName": "com.adobe.scan.android",
       "name": "Adobe Scan",
@@ -126,6 +152,32 @@
       "latestSupportedVersion": "10.2605.0"
     },
     {
+      "packageName": "com.creditkarma.mobile",
+      "name": "Credit Karma",
+      "description": null,
+      "apkFileType": "APKM",
+      "appIconColor": "#008600",
+      "signatures": [
+        "f5ae9364524d92be9eb436eb7436d7c9efa9e1b4e823b0db6bc3989a4d84d0bf"
+      ],
+      "targets": [
+        {
+          "version": "26.40",
+          "versionCodes": null,
+          "isExperimental": false,
+          "minSdk": 32,
+          "description": null
+        }
+      ],
+      "patchNames": [
+        "Remove Tracking"
+      ],
+      "supportedVersions": [
+        "26.40"
+      ],
+      "latestSupportedVersion": "26.40"
+    },
+    {
       "packageName": "com.eab.se",
       "name": "Navigate360 Student",
       "description": null,
@@ -151,6 +203,33 @@
         "26.19.22"
       ],
       "latestSupportedVersion": "26.19.22"
+    },
+    {
+      "packageName": "com.eumlab.android.prometronome",
+      "name": "Pro Metronome",
+      "description": null,
+      "apkFileType": "APKM",
+      "appIconColor": "#ACD371",
+      "signatures": [
+        "67ba64147a05aedb766363801f77a59e04f37ab8785062a12c5678dadf8b7c35"
+      ],
+      "targets": [
+        {
+          "version": "1.0.12",
+          "versionCodes": null,
+          "isExperimental": false,
+          "minSdk": 23,
+          "description": null
+        }
+      ],
+      "patchNames": [
+        "Remove Tracking",
+        "Unlock Pro"
+      ],
+      "supportedVersions": [
+        "1.0.12"
+      ],
+      "latestSupportedVersion": "1.0.12"
     },
     {
       "packageName": "com.groundspeak.geocaching.intro",
@@ -234,7 +313,8 @@
       "patchNames": [
         "Remove Ads",
         "Remove Tracking",
-        "Unlock Hidden Features"
+        "Unlock Hidden Features",
+        "Web Ad Blocker"
       ],
       "supportedVersions": [
         "17.0.0"
@@ -431,7 +511,7 @@
     },
     {
       "name": "Block Tracking and Telemetry",
-      "description": "Neutralizes first-party analytics (SidelineSwap backend), behavioral tracking (Amplitude, Firebase Analytics, Facebook App Events, Iterable), diagnostic telemetry (Firebase Crashlytics, Timber logging tree), payment gateway telemetry (Braintree FPTI), and zeros the Google Play Advertising ID (AAID).",
+      "description": "Neutralizes first-party analytics (SidelineSwap backend), behavioral tracking (Amplitude, Firebase Analytics, Facebook App Events, Iterable), diagnostic telemetry (Firebase Crashlytics, Timber logging tree), payment gateway telemetry (Braintree FPTI), Google Play Install Referrer, and zeros the Google Play Advertising ID (AAID).",
       "default": true,
       "category": "Privacy",
       "dependencies": [],
@@ -456,7 +536,89 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "disableFirstParty",
+          "title": "Disable First-Party Analytics",
+          "description": "Neutralizes SidelineSwap's central event dispatcher (AnalyticsLogger), first-party client, and LogRepo HTTP event uploads.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableAmplitude",
+          "title": "Disable Amplitude Analytics",
+          "description": "Neutralizes the Amplitude client wrapper and core Amplitude SDK event tracking, identification, and initialization across all repositories.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableFirebase",
+          "title": "Disable Firebase & GMS Analytics",
+          "description": "Neutralizes FirebaseClient, Google Play Services Measurement event queue, and removes background AppMeasurement services and sessions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableCrashlytics",
+          "title": "Disable Crashlytics & Diagnostic Logging",
+          "description": "Neutralizes the Timber Crashlytics logging tree and Firebase Crashlytics exception, log, and custom key reporting.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableFacebook",
+          "title": "Disable Facebook SDK & App Events",
+          "description": "Neutralizes Facebook SDK initialization, auto-event collection, activity lifecycle tracking, and removes FacebookInitProvider.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableIterable",
+          "title": "Disable Iterable Telemetry",
+          "description": "Neutralizes Iterable client calls, In-App message tracking, session event uploads, and lifecycle callback registration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableBraintreeTelemetry",
+          "title": "Disable Braintree Gateway Telemetry",
+          "description": "Stubs Braintree FPTI background upload and database workers with immediate success, and neutralizes BraintreeClient analytics dispatchers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "zeroAdvertisingId",
+          "title": "Zero Google Play Advertising ID",
+          "description": "Spoofs minified and standard Google Play AdvertisingIdClient calls to return an all-zero UUID and forces limit-ad-tracking to true.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableInstallReferrer",
+          "title": "Disable Install Referrer Tracking",
+          "description": "Neutralizes Google Play Install Referrer querying and client connections across attribution listeners.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Bypass Native Signature Check",
@@ -1395,7 +1557,64 @@
     },
     {
       "name": "Remove Ads and Tracking",
-      "description": "Disables Adobe, Branch, Facebook, Creative SDK, and Crashlytics telemetry; removes in-app ads and review prompts; blocks install-referrer collection; and zeroes the Google Play Advertising ID.",
+      "description": "Disables Adobe MobileCore, EventHub, Document Cloud Analytics (DCMAnalytics and ARDCMAnalytics), Adobe Growth Platform (DGP/MAU), Adobe Journey Optimizer (AJO), Branch deep-link attribution, Creative SDK, Next Best Action (NBA) tools profiling, Facebook App Events, Firebase Performance, Firebase Sessions, and Crashlytics telemetry; suppresses Google Mobile Ads (AdMob), interstitials, rewarded ads, banner pools, paywalls, and in-app reviews; removes telemetry preferences; and zeroes the Google Play Advertising ID.",
+      "default": true,
+      "category": "Ads",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.adobe.reader",
+          "name": "Adobe Reader",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FA0F00",
+          "signatures": [
+            "b6dd0562256487fcd6c98cde137858ef50d9adb9f9cd2f1ca58c5357efdf0faf"
+          ],
+          "targets": [
+            {
+              "version": "26.9.2.50367",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "removeTracking",
+          "title": "Disable Telemetry & Tracking",
+          "description": "Disables Adobe MobileCore, EventHub, Document Cloud Analytics (DCMAnalytics and ARDCMAnalytics), Adobe Growth Platform (DGP/MAU), Adobe Journey Optimizer (AJO), Branch attribution, Creative SDK, Next Best Action (NBA) tools profiling, Facebook App Events, Firebase Performance, Firebase Sessions, Crashlytics, and zeroes the Google Play Advertising ID.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeAds",
+          "title": "Disable In-App Ads & Paywalls",
+          "description": "Disables in-app ads (AdMob banners, native ads, document-close interstitials, rewarded edit interstitials, and prefetching), ad performance metrics, ad analytics, dynamic paywalls, and in-app review prompts.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeSettings",
+          "title": "Remove Settings",
+          "description": "Removes the Send usage info and Send crash reports preferences from the Preferences menu, and suppresses crash reporting dialogs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Ads and Tracking",
+      "description": "Disables Adobe Experience Platform MobileCore, EventHub, Adobe Growth SDK (DGP/MAU and Dunamis), Adobe Journey Optimizer (AJO), Creative SDK, Branch attribution, Facebook App Events and Audience Network, Firebase Performance, Firebase Sessions, and Crashlytics telemetry; suppresses Google Mobile Ads (AdMob), interstitials, banner preloaders, and in-app reviews; removes telemetry preferences; zeroes the Google Play Advertising ID; and blocks hardware android_id collection.",
       "default": true,
       "category": "Ads",
       "dependencies": [],
@@ -1421,6 +1640,60 @@
         }
       ],
       "options": [
+        {
+          "key": "removeAds",
+          "title": "Disable In-App Ads",
+          "description": "Disables banner and interstitial ads, banner preloading, ad analytics, and InMobi SDK initialization.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeAdobeTracking",
+          "title": "Disable Adobe Telemetry & Growth",
+          "description": "Disables Adobe Experience Platform MobileCore, EventHub dispatch, Adobe Growth SDK (DGP/MAU and Dunamis), Adobe Journey Optimizer (AJO), Creative SDK, and AEP NetworkService.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeFirebaseTracking",
+          "title": "Disable Firebase Telemetry",
+          "description": "Disables Firebase Performance Monitoring (AppStartTrace and network timing), Firebase Sessions, Firebase Installations, and Crashlytics collection.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeFacebookTracking",
+          "title": "Disable Facebook Tracking",
+          "description": "Disables Facebook SDK initialization (FacebookInitProvider), Audience Network ContentProvider, App Events logging, and remote settings fetch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeDeviceIdentifiers",
+          "title": "Zero Device Identifiers",
+          "description": "Zeroes the Google Play Advertising ID, blocks Install Referrer, and neutralizes hardware android_id collection in AccountManager and Creative SDK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeReviewPrompts",
+          "title": "Disable Review Prompts",
+          "description": "Suppresses in-app rating and review dialogs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
         {
           "key": "removeSettings",
           "title": "Remove Settings",
@@ -2040,7 +2313,127 @@
     },
     {
       "name": "Remove Tracking",
-      "description": "Removes the OneTrust CMP tracking consent popup, zeros Google Play Advertising ID (AAID), blocks host application analytics, disables Firebase Analytics, AppMeasurement, Firebase Performance Monitoring, Crashlytics, and Sessions telemetry, neutralizes UrbanAirship and Blaze tracking and logging, suppresses Brightcove video metrics reporting, and blocks Ticketmaster telemetry.",
+      "description": "Neutralizes Google Play Advertising ID tracking, Firebase Analytics, Datadog telemetry, Kochava attribution, New Relic, Luciq, root/emulator checks, and integrity attestation.",
+      "default": true,
+      "category": "Privacy",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.creditkarma.mobile",
+          "name": "Credit Karma",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#008600",
+          "signatures": [
+            "f5ae9364524d92be9eb436eb7436d7c9efa9e1b4e823b0db6bc3989a4d84d0bf"
+          ],
+          "targets": [
+            {
+              "version": "26.40",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "zeroAdvertisingId",
+          "title": "Zero Advertising ID",
+          "description": "Spoofs the Google Play Advertising ID and Kochava client to return an all-zero identifier and force limit-ad-tracking.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableFirebaseAnalytics",
+          "title": "Disable Firebase Analytics",
+          "description": "Blocks Firebase Analytics and Google Play AppMeasurement event and property logging.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableCrashlytics",
+          "title": "Disable Crashlytics",
+          "description": "Neutralizes Firebase Crashlytics crash reporting and diagnostic logging.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableDatadog",
+          "title": "Disable Datadog Telemetry",
+          "description": "Blocks Datadog initialization, SDK logger, and background upload workers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableKochava",
+          "title": "Disable Kochava Tracker",
+          "description": "Neutralizes Kochava attribution, event tracking, and background jobs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableScribe",
+          "title": "Disable Scribe & Diagnostic Uploads",
+          "description": "Neutralizes Intuit Scribe telemetry and diagnostic log upload tasks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableNewRelic",
+          "title": "Disable New Relic Telemetry",
+          "description": "Blocks Credit Karma New Relic event collection and background upload scheduling.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableLuciqTelemetry",
+          "title": "Disable Luciq Telemetry & Session Recording",
+          "description": "Neutralizes Luciq APM session updates, auto screen recording, and diagnostic screenshot collection.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "neutralizeRootDetection",
+          "title": "Neutralize Root & Emulator Detection",
+          "description": "Forces local root, su binary, build tags, and emulator detection checks to report clean across Luciq, MiSnap IAD, ThreatMetrix, and diagnostic loggers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "neutralizeIntegrityAttestation",
+          "title": "Neutralize Integrity & Attestation Checks",
+          "description": "Bypasses NokNok Play Integrity and JailBreak signals, Firebase App Check Play Integrity provider, and ThreatMetrix APK self-hash, tamper code, and malicious app profiling.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Tracking",
+      "description": "Removes the OneTrust CMP tracking consent popup, zeros Google Play Advertising ID (AAID), blocks host application analytics, disables Firebase Analytics, AppMeasurement, Firebase Performance Monitoring, Crashlytics, and Sessions telemetry, neutralizes UrbanAirship and Blaze tracking, user activity, and logging, suppresses Brightcove video metrics reporting and backlog processing, and blocks Ticketmaster telemetry.",
       "default": true,
       "category": "Privacy",
       "dependencies": [],
@@ -2067,9 +2460,99 @@
       ],
       "options": [
         {
+          "key": "disableOneTrustCmp",
+          "title": "Disable OneTrust CMP",
+          "description": "Neutralizes OneTrust CMP tracking consent popups, network calls, and forces consent queries to Denied.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
           "key": "removeBrokenPrivacySettings",
           "title": "Remove Broken Privacy Settings",
           "description": "Removes the broken Privacy Settings entry from the Settings screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "zeroAdvertisingId",
+          "title": "Zero Advertising ID",
+          "description": "Spoofs the Google Play Advertising ID (AAID) to return an all-zero identifier and limit ad tracking.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableHostAnalytics",
+          "title": "Disable Host App Analytics",
+          "description": "Blocks host application screen tracking and interaction event logging.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableFirebaseAnalytics",
+          "title": "Disable Firebase Analytics",
+          "description": "Blocks Firebase Analytics, AppMeasurement, and the WebView JavaScript analytics bridge.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableFirebasePerformance",
+          "title": "Disable Firebase Performance Monitoring",
+          "description": "Neutralizes Firebase Performance Monitoring traces, metrics, and gauge collection.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableUrbanAirshipTelemetry",
+          "title": "Disable UrbanAirship Telemetry",
+          "description": "Neutralizes UrbanAirship install referrer capture, event queueing, session tracking, and metered usage telemetry.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableBlazeTracking",
+          "title": "Disable Blaze Tracking & Logging",
+          "description": "Blocks Blaze SDK bulk event analytics, user viewing activity history, and remote diagnostic logging.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableBrightcoveAnalytics",
+          "title": "Disable Brightcove Video Analytics",
+          "description": "Suppresses Brightcove video playback metrics, interactivity tracking, and backlog processing.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableTicketmasterTelemetry",
+          "title": "Disable Ticketmaster Telemetry",
+          "description": "Neutralizes Ticketmaster authentication analytics, event reporting queues, and presence analytics.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableCrashlyticsAndSessions",
+          "title": "Disable Crashlytics & Sessions",
+          "description": "Neutralizes Firebase Crashlytics logging, exception capture, Sessions lifecycle monitoring, and DataTransport uploads.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -2145,6 +2628,81 @@
           "key": "disableOneSignalTracking",
           "title": "Disable OneSignal Telemetry",
           "description": "Blocks OneSignal custom events, session outcomes, tags, and location tracking.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Tracking",
+      "description": "Neutralizes Umeng Analytics, Facebook App Events, Advertising ID harvesting, device fingerprinting, Bolts measurement events, and Google DataTransport telemetry.",
+      "default": true,
+      "category": "Privacy",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.eumlab.android.prometronome",
+          "name": "Pro Metronome",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#ACD371",
+          "signatures": [
+            "67ba64147a05aedb766363801f77a59e04f37ab8785062a12c5678dadf8b7c35"
+          ],
+          "targets": [
+            {
+              "version": "1.0.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "disableFacebookEvents",
+          "title": "Disable Facebook App Events",
+          "description": "Neutralizes Facebook SDK session logging, purchase tracking, and attribution identifiers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "zeroAdvertisingId",
+          "title": "Zero Advertising ID",
+          "description": "Spoofs the Google Play Advertising ID client to return an all-zero identifier and force limit-ad-tracking.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableTelemetry",
+          "title": "Disable Background Telemetry",
+          "description": "Neutralizes Bolts measurement events and Google DataTransport runtime schedulers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableUmengAnalytics",
+          "title": "Disable Umeng Analytics",
+          "description": "Neutralizes Umeng Analytics initialization, session/page lifecycle tracking, and error reporting.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "neutralizeDeviceFingerprint",
+          "title": "Neutralize Device Fingerprinting",
+          "description": "Replaces hardware-derived device and preset UUIDs with random identifiers and returns an empty device ID.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3008,6 +3566,35 @@
       ]
     },
     {
+      "name": "Unlock Pro",
+      "description": "Unlocks all Pro features including polyrhythms, advanced subdivisions, visual beat modes, practice modes, and unlimited presets.",
+      "default": true,
+      "category": "Features",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.eumlab.android.prometronome",
+          "name": "Pro Metronome",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#ACD371",
+          "signatures": [
+            "67ba64147a05aedb766363801f77a59e04f37ab8785062a12c5678dadf8b7c35"
+          ],
+          "targets": [
+            {
+              "version": "1.0.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock Receipt Scanner",
       "description": "Makes the receipt scanner available from Development Settings and forces its V2 flow to render. REQUIRES Unlock Developer Settings to be enabled.",
       "default": false,
@@ -3088,6 +3675,35 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Web Ad Blocker",
+      "description": "Blocks advertisements, sponsored banners, and analytics tracking in NHL article views and embedded web content using bundled NHL rules and optional downloadable filter list subscriptions (EasyList, EasyPrivacy).",
+      "default": true,
+      "category": "Ads",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nhl.gc1112.free",
+          "name": "NHL",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": [
+            "2309209340875f6f8a008ea25dbd98d8a03e482704d43211933d2b9a91923aff"
+          ],
+          "targets": [
+            {
+              "version": "17.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]

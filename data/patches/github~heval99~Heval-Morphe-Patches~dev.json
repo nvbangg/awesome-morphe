@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.17.0-dev.3",
+  "version": "1.17.0-dev.4",
   "patches": [
     {
       "name": "Add-on support",
@@ -1709,7 +1709,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Hides banner and native ads and the ad slots in the call log and inbox, and turns off interstitial and app-open ads, so actions such as Click to WhatsApp run at once. Also turns off the remaining ad checks (including rewarded ads), the ad campaign and ad config syncs, and the \"Explore Truecaller Premium\" row in the contacts list.",
+      "description": "Hides banner and native ads and the ad slots in the call log and inbox, and turns off interstitial and app-open ads, so actions such as Click to WhatsApp run at once. Also turns off the remaining ad checks (including rewarded ads), the ad campaign and ad config syncs, the \"Explore Truecaller Premium\" row in the contacts list and the \"Recommended Offers\" (Offer Hub) entry.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3039,7 +3039,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Turns off the app start tracker, CleverTap event tracking and AppsFlyer attribution.",
+      "description": "Turns off the app start tracker, CleverTap (event tracking, its SDK start, profile refresh and CleverTap marketing pushes), AppsFlyer attribution, Firebase Analytics (including advertising ID collection), Crashlytics crash reports and Firebase Sessions.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4589,6 +4589,88 @@
     },
     {
       "name": "GmsCore support",
+      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed. FotMob's Sign in with Google needs it. FotMob's automatic sign-in at first start is skipped, because MicroG RE would show it as an account chooser; use the Sign in with Google button instead.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mobilefootie.wc2010",
+          "name": "FotMob",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00985F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "238.17794.20261012",
+              "versionCodes": {
+                "ARM64_V8A": 17794,
+                "ARMEABI_V7A": 17794,
+                "X86_64": 17794,
+                "X86": 17794
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "238.17666.20260928",
+              "versionCodes": {
+                "ARM64_V8A": 17666,
+                "ARMEABI_V7A": 17666,
+                "X86_64": 17666,
+                "X86": 17666
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "237.17536.20260911",
+              "versionCodes": {
+                "ARM64_V8A": 17536,
+                "ARMEABI_V7A": 17536,
+                "X86_64": 17536,
+                "X86": 17536
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "236.17398.20260827",
+              "versionCodes": {
+                "ARM64_V8A": 17398,
+                "ARMEABI_V7A": 17398,
+                "X86_64": 17398,
+                "X86": 17398
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "236.17338.20260822",
+              "versionCodes": {
+                "ARM64_V8A": 17338,
+                "ARMEABI_V7A": 17338,
+                "X86_64": 17338,
+                "X86": 17338
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
       "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed.",
       "default": false,
       "dependencies": [
@@ -4630,6 +4712,77 @@
           "values": {
             "Original (recommended)": "com.scores365",
             "Clone": "com.scores365.morphe"
+          }
+        }
+      ]
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed. Shazam's Sign in with Google needs it. Shazam's automatic sign-in attempts are skipped, because MicroG RE would show them as an account chooser; use the Sign in with Google button instead.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.shazam.android",
+          "name": "Shazam",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0088FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.63.0-261008",
+              "versionCodes": {
+                "ARM64_V8A": 1606300,
+                "ARMEABI_V7A": 1606300,
+                "X86_64": 1606300,
+                "X86": 1606300
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.1-261006",
+              "versionCodes": {
+                "ARM64_V8A": 1606210,
+                "ARMEABI_V7A": 1606210,
+                "X86_64": 1606210,
+                "X86": 1606210
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.0-261001",
+              "versionCodes": {
+                "ARM64_V8A": 1606200,
+                "ARMEABI_V7A": 1606200,
+                "X86_64": 1606200,
+                "X86": 1606200
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name of the patched app. Keep the original to install over the existing app. A different name installs next to it, but can break features that are tied to the original package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.shazam.android",
+          "values": {
+            "Original (recommended)": "com.shazam.android",
+            "Clone": "com.shazam.android.morphe"
           }
         }
       ]
@@ -4683,8 +4836,8 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed.",
-      "default": false,
+      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed. Truecaller's Google sign-in and Google Drive backup need it.",
+      "default": true,
       "dependencies": [
         "ResourcePatch",
         "BytecodePatch"
@@ -5201,6 +5354,37 @@
                 "ARMEABI_V7A": 11166823,
                 "X86_64": 11166823,
                 "X86": 11166823
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide business media",
+      "description": "Hides the brand images and promo video on business contact details, and the verified business campaign cards in contact details and on the in-call and after-call screens. The description, website and call, message, save and block buttons stay.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.40.5",
+              "versionCodes": {
+                "ARM64_V8A": 2640005,
+                "ARMEABI_V7A": 2640005,
+                "X86_64": 2640005,
+                "X86": 2640005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -6014,7 +6198,7 @@
     },
     {
       "name": "Restore classic call log",
-      "description": "Experimental: turns off the redesigned call log, which brings back the classic call log and its \"Frequently called\" setting.",
+      "description": "Experimental: turns off the redesigned call log, which brings back the classic call log and its \"Frequently called\" setting. Swipe right to call and swipe left for SMS stay available.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -6143,6 +6327,85 @@
       "dependencies": [],
       "compatiblePackages": [
         {
+          "packageName": "com.mobilefootie.wc2010",
+          "name": "FotMob",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00985F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "238.17794.20261012",
+              "versionCodes": {
+                "ARM64_V8A": 17794,
+                "ARMEABI_V7A": 17794,
+                "X86_64": 17794,
+                "X86": 17794
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "238.17666.20260928",
+              "versionCodes": {
+                "ARM64_V8A": 17666,
+                "ARMEABI_V7A": 17666,
+                "X86_64": 17666,
+                "X86": 17666
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "237.17536.20260911",
+              "versionCodes": {
+                "ARM64_V8A": 17536,
+                "ARMEABI_V7A": 17536,
+                "X86_64": 17536,
+                "X86": 17536
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "236.17398.20260827",
+              "versionCodes": {
+                "ARM64_V8A": 17398,
+                "ARMEABI_V7A": 17398,
+                "X86_64": 17398,
+                "X86": 17398
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "236.17338.20260822",
+              "versionCodes": {
+                "ARM64_V8A": 17338,
+                "ARMEABI_V7A": 17338,
+                "X86_64": 17338,
+                "X86": 17338
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
           "packageName": "com.scores365",
           "name": "365Scores",
           "description": null,
@@ -6157,6 +6420,63 @@
                 "ARMEABI_V7A": 1497,
                 "X86_64": 1497,
                 "X86": 1497
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working. Also connects Shazam to Spotify through Spotify's login page instead of the Spotify app, which rejects the patched app (use email/password or email code; Google and Apple login don't work there).",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.shazam.android",
+          "name": "Shazam",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0088FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.63.0-261008",
+              "versionCodes": {
+                "ARM64_V8A": 1606300,
+                "ARMEABI_V7A": 1606300,
+                "X86_64": 1606300,
+                "X86": 1606300
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.1-261006",
+              "versionCodes": {
+                "ARM64_V8A": 1606210,
+                "ARMEABI_V7A": 1606210,
+                "X86_64": 1606210,
+                "X86": 1606210
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "16.62.0-261001",
+              "versionCodes": {
+                "ARM64_V8A": 1606200,
+                "ARMEABI_V7A": 1606200,
+                "X86_64": 1606200,
+                "X86": 1606200
               },
               "isExperimental": false,
               "minSdk": null,
@@ -6201,7 +6521,7 @@
     {
       "name": "Spoof signature",
       "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
-      "default": false,
+      "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {

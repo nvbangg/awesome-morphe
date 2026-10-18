@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.22.2",
+  "version": "1.23.1",
   "patches": [
     {
       "name": "AR Effects Slimmer",
@@ -290,6 +290,34 @@
     },
     {
       "name": "Block Telemetry & Trackers",
+      "description": "Neutralizes Google AppMeasurement, Firebase Analytics, and Firebase Crashlytics event dispatchers at bytecode entrypoints.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sube.app",
+          "name": "SUBE",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#00A4E4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.7.25",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block Telemetry & Trackers",
       "description": "Blocks tracking services, analytics collection, and advertising identifiers, redirects Braze and Sentry endpoints to 0.0.0.0, and purges Sentry manifest metadata.",
       "default": true,
       "dependencies": [
@@ -515,6 +543,32 @@
       "options": []
     },
     {
+      "name": "Bypass SUBE NFC antenna check",
+      "description": "Bypasses the com.nxp.mifare system feature check in SUBE so the app runs on devices whose ROM does not declare NXP Mifare support.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sube.app",
+          "name": "SUBE",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#00A4E4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.7.25",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Bypass Signature Check",
       "description": "Spoofs the official APK signature (SHA-256) for tamper telemetry, drops the server-driven signature blacklist, silences the abnormal-source toast, and disables the Godzilla inject-detect gate so re-signed builds are not blocked.",
       "default": true,
@@ -582,6 +636,60 @@
           "targets": [
             {
               "version": "16.0.20604.20012",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Cut Firebase Entirely",
+      "description": "Rewrites the Firebase Installations API endpoint (firebaseinstallations.googleapis.com) to 0.0.0.0 in DEX bytecode across all classes, severing background FID registration and installation auth tokens. WARNING: Breaks push notifications (FCM) and cloud messaging.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sube.app",
+          "name": "SUBE",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#00A4E4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.7.25",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Cut Firebase Manifest",
+      "description": "Disables Firebase Cloud Messaging services and instance ID receivers in AndroidManifest.xml. Breaks push notifications and FCM background delivery.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sube.app",
+          "name": "SUBE",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#00A4E4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.7.25",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1035,6 +1143,32 @@
           "targets": [
             {
               "version": "1.38.0i",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "SUBE Telemetry Manifest Purge",
+      "description": "Strips advertising permissions, disables measurement services, providers, and install receivers, and injects opt-out metadata flags in AndroidManifest.xml.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sube.app",
+          "name": "SUBE",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#00A4E4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.7.25",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
