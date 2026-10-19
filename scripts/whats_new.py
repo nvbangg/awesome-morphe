@@ -5,7 +5,7 @@ import unicodedata
 import urllib.parse
 from datetime import UTC, datetime, timedelta
 
-from utils import (
+from common.utils import (
     BUNDLES_JSON_PATH,
     HISTORY_PATH,
     PACKAGE_EXAMPLE,

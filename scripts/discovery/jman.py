@@ -2,8 +2,8 @@
 
 from http.client import HTTPException
 
-from providers import export_provider, report_provider_warning
-from utils import DISCOVER_DIR, build_repo_url, fetch, parse_repo_url
+from common.utils import DISCOVER_DIR, build_repo_url, fetch, parse_repo_url
+from discovery import export_provider, report_provider_warning
 
 SOURCES_URL = "https://raw.githubusercontent.com/Jman-Github/Patch-Bundle-Registry/bundles/config/sources.json"
 OUTPUT_PATH = DISCOVER_DIR / "jman.json"

@@ -6,7 +6,7 @@ import re
 import time
 from typing import Any
 
-from utils import (
+from common.utils import (
     BUNDLES_DIR,
     DEFAULT_BRANCHES,
     PACKAGE_EXAMPLE,

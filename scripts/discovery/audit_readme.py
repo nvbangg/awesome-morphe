@@ -1,14 +1,12 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from repo_info import fetch_repo_details
-from utils import (
+from common.repo_info import fetch_repo_details
+from common.utils import (
     CONCURRENCY,
     README_LINKS_PATH,
     README_REPOS_PATH,
-    append_step_summary,
     build_repo_url,
     check_link_status,
     load_lines,
@@ -16,7 +14,7 @@ from utils import (
 )
 
 
-def audit_repos_and_links() -> dict[str, list[str]]:
+def audit_repos_and_links() -> str:
     repo_urls = load_lines(README_REPOS_PATH)
     link_urls = load_lines(README_LINKS_PATH)
     print(
@@ -78,7 +76,7 @@ def audit_repos_and_links() -> dict[str, list[str]]:
     )
     print(completed_message)
 
-    summary_sections = [f"## 📋 Audit Readme\n{completed_message}"]
+    summary_sections = [f"### README audit\n\n{completed_message}"]
     for category_name, category_errors in (
         ("Unavailable", errors["unavailable"]),
         ("Warnings", errors["warnings"]),
@@ -86,20 +84,10 @@ def audit_repos_and_links() -> dict[str, list[str]]:
     ):
         if category_errors:
             summary_sections.append(
-                f"### {category_name} ({len(category_errors)})\n\n"
+                f"#### {category_name} ({len(category_errors)})\n\n"
                 + "\n".join(f"- {error}" for error in sorted(category_errors))
             )
     if not any(errors.values()):
-        summary_sections.append("- ✅ All repositories and links are active.")
+        summary_sections.append("- All repositories and links are active.")
 
-    append_step_summary("\n\n".join(summary_sections))
-    return errors
-
-
-def main() -> int:
-    audit_repos_and_links()
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+    return "\n\n".join(summary_sections)

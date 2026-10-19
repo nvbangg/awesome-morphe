@@ -13,7 +13,7 @@ from typing import Any
 
 from dotenv import load_dotenv
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT_DIR / "data"
 PUBLIC_DIR = ROOT_DIR / "web" / "public"
 SCRIPTS_DIR = ROOT_DIR / "scripts"

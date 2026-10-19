@@ -2,8 +2,14 @@
 
 from http.client import HTTPException
 
-from providers import export_provider, report_provider_warning
-from utils import DISCOVER_DIR, OFFICIAL_BUNDLES_PATH, build_repo_url, fetch, save_json
+from common.utils import (
+    DISCOVER_DIR,
+    OFFICIAL_BUNDLES_PATH,
+    build_repo_url,
+    fetch,
+    save_json,
+)
+from discovery import export_provider, report_provider_warning
 
 BUNDLES_URL = "https://morphe-patches.software/data/bundles.json"
 OUTPUT_PATH = DISCOVER_DIR / "official.json"

@@ -13,8 +13,8 @@ from http import HTTPStatus
 from http.client import HTTPException
 from threading import Lock
 
-from repo_info import fetch_repo_details
-from utils import (
+from common.repo_info import fetch_repo_details
+from common.utils import (
     BUNDLE_PARSER_DIR,
     BUNDLES_DIR,
     CONCURRENCY,

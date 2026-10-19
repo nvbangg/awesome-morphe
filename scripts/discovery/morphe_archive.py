@@ -3,8 +3,8 @@
 import re
 from http.client import HTTPException
 
-from providers import export_provider, report_provider_warning
-from utils import DISCOVER_DIR, build_repo_url, fetch
+from common.utils import DISCOVER_DIR, build_repo_url, fetch
+from discovery import export_provider, report_provider_warning
 
 README_URL = (
     "https://raw.githubusercontent.com/rushiforai/morphe-archive/main/README.md"

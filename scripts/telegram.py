@@ -9,7 +9,7 @@ import urllib.request
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from utils import WHATS_NEW_PATH
+from common.utils import WHATS_NEW_PATH
 
 
 def format_inline_markdown(text: str) -> str:

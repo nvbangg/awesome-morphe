@@ -7,7 +7,7 @@ import time
 import urllib.error
 import urllib.request
 
-from utils import (
+from common.utils import (
     UNAVAILABLE_HTTP_CODES,
     fetch,
     format_request_error,

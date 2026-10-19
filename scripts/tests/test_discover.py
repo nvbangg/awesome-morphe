@@ -6,8 +6,8 @@ from unittest.mock import patch
 from urllib.error import HTTPError, URLError
 
 import discover
-from providers import jman, morphe_archive, official
-from utils import load_json, save_json
+from common.utils import load_json, save_json
+from discovery import audit_readme, find_projects, jman, morphe_archive, official
 
 
 class DiscoverTests(unittest.TestCase):
@@ -212,11 +212,11 @@ class DiscoverTests(unittest.TestCase):
         self,
     ) -> None:
         self.open_url.side_effect = URLError("offline")
-        self.assertEqual(discover.main(), 0)
+        self.assertEqual(discover.main([]), 0)
         self.assertEqual(load_json(self.repos_path), self.saved_repos)
         self.summary.assert_called_once()
         summary = self.summary.call_args.args[0]
-        self.assertTrue(summary.startswith("## 🔎 Discover:\n\n"))
+        self.assertTrue(summary.startswith("## 🔎 Discovery:\n\n"))
         for provider in ("official", "jman", "morphe-archive"):
             self.assertEqual(summary.count(f"[{provider}]:"), 1)
         self.assertNotIn("no saved sources available", summary)
@@ -226,7 +226,7 @@ class DiscoverTests(unittest.TestCase):
             module.OUTPUT_PATH.write_text("[]", encoding="utf-8")
         snapshot = self.repos_path.read_bytes()
         self.open_url.side_effect = URLError("offline")
-        self.assertEqual(discover.main(), 1)
+        self.assertEqual(discover.main([]), 1)
         self.assertEqual(self.repos_path.read_bytes(), snapshot)
         self.summary.assert_called_once()
         summary = self.summary.call_args.args[0]
@@ -259,7 +259,7 @@ class DiscoverTests(unittest.TestCase):
                 return_value="https://morphe.software/add-source?github=owner/saved",
             ),
         ):
-            self.assertEqual(discover.main(), 0)
+            self.assertEqual(discover.main([]), 0)
         self.assertEqual(load_json(self.repos_path), self.saved_repos)
         self.summary.assert_not_called()
 
@@ -284,7 +284,7 @@ class DiscoverTests(unittest.TestCase):
                 "fetch",
                 return_value="https://morphe.software/add-source?github=owner/new",
             ),
-            patch("providers.save_json", side_effect=OSError("disk full")),
+            patch("discovery.save_json", side_effect=OSError("disk full")),
             self.assertRaisesRegex(OSError, "disk full"),
         ):
             morphe_archive.discover()
@@ -301,9 +301,148 @@ class DiscoverTests(unittest.TestCase):
             patch.object(morphe_archive, "fetch", return_value=""),
             self.assertRaisesRegex(RuntimeError, "Unexpected failure"),
         ):
-            discover.main()
+            discover.main([])
         self.assertEqual(self.repos_path.read_bytes(), snapshot)
         self.summary.assert_not_called()
+
+    def test_default_does_not_audit_or_search_projects(self) -> None:
+        self.open_url.side_effect = URLError("offline")
+        with (
+            patch.object(audit_readme, "audit_repos_and_links") as audit,
+            patch.object(find_projects, "main") as search,
+        ):
+            self.assertEqual(discover.main([]), 0)
+        audit.assert_not_called()
+        search.assert_not_called()
+
+    def test_daily_and_weekly_combine_audit_and_project_reports(self) -> None:
+        project_dir = self.root / "projects"
+        project_dir.mkdir()
+        output_path = project_dir / "new-projects.txt"
+        repository = {
+            "name": "new-project",
+            "full_name": "owner/new-project",
+            "html_url": "https://github.com/owner/new-project",
+            "default_branch": "develop",
+            "stargazers_count": 4,
+            "created_at": "2026-01-01T00:00:00Z",
+            "pushed_at": "2026-10-19T00:00:00Z",
+            "description": "A standalone Morphe project",
+        }
+        bundle = {**repository, "full_name": "owner/patch-bundle"}
+        known = {**repository, "full_name": "owner/known-project"}
+        excluded = {**repository, "full_name": "owner/excluded-project"}
+        no_readme = {**repository, "full_name": "owner/no-readme"}
+
+        def link_status(url: str, **_kwargs: object) -> dict:
+            return {
+                "is_active": url.endswith(
+                    (
+                        "owner/new-project/develop/README.md",
+                        "owner/patch-bundle/dev/patches-bundle.json",
+                    )
+                ),
+                "is_dead": True,
+            }
+
+        for mode in ("--daily", "--weekly"):
+            with (
+                self.subTest(mode=mode),
+                patch.object(
+                    audit_readme,
+                    "load_lines",
+                    side_effect=[["https://github.com/owner/archived"], []],
+                ),
+                patch.object(
+                    audit_readme,
+                    "fetch_repo_details",
+                    return_value={"is_archived": True},
+                ),
+                patch.multiple(
+                    find_projects,
+                    ROOT_DIR=self.root,
+                    RAW_SEARCH_PATH=self.root / "raw-search.json",
+                    RAW_FILTER_PATH=self.root / "raw-filter.json",
+                    PROJECTS_DIR=project_dir,
+                    NEW_PROJECTS_PATH=output_path,
+                    SEARCH_KEYWORDS=["morphe"],
+                    TARGET_USERS=[],
+                ),
+                patch.object(
+                    find_projects,
+                    "fetch",
+                    return_value={
+                        "total_count": 6,
+                        "items": [
+                            repository,
+                            repository,
+                            bundle,
+                            known,
+                            excluded,
+                            no_readme,
+                        ],
+                    },
+                ) as search,
+                patch.object(
+                    find_projects,
+                    "load_lines",
+                    side_effect=[
+                        ["https://github.com/owner/known-project"],
+                        ["https://github.com/owner/excluded-project"],
+                    ],
+                ),
+                patch.object(
+                    find_projects, "check_link_status", side_effect=link_status
+                ),
+            ):
+                self.open_url.side_effect = URLError("offline")
+                self.summary.reset_mock()
+                self.assertEqual(discover.main([mode]), 0)
+                search.assert_called_once()
+                self.summary.assert_called_once()
+                summary = self.summary.call_args.args[0]
+                self.assertEqual(summary.count("## 🔎 Discovery:"), 1)
+                self.assertIn("### Bundle sources", summary)
+                self.assertIn("### README audit", summary)
+                self.assertIn("Repository is archived", summary)
+                self.assertIn("### New projects", summary)
+                self.assertIn("**New Repositories Found:** `1`", summary)
+                self.assertNotIn("## 📋", summary)
+                self.assertNotIn("## 🔍", summary)
+                self.assertEqual(
+                    output_path.read_text(encoding="utf-8"),
+                    repository["html_url"] + "\n",
+                )
+                self.assertEqual(load_json(self.repos_path), self.saved_repos)
+
+    def test_extended_discovery_stops_when_no_bundle_sources_are_usable(self) -> None:
+        for module in discover.PROVIDER_MODULES:
+            module.OUTPUT_PATH.write_text("[]", encoding="utf-8")
+        self.open_url.side_effect = URLError("offline")
+        with (
+            patch.object(audit_readme, "audit_repos_and_links") as audit,
+            patch.object(find_projects, "main") as search,
+        ):
+            self.assertEqual(discover.main(["--daily"]), 1)
+        audit.assert_not_called()
+        search.assert_not_called()
+        self.assertEqual(load_json(self.repos_path), self.saved_repos)
+
+    def test_no_candidates_preserves_saved_project_file_and_reports_result(
+        self,
+    ) -> None:
+        output_path = self.root / "new-projects.txt"
+        output_path.write_text(
+            "https://github.com/owner/saved-project\n", encoding="utf-8"
+        )
+        with patch.object(find_projects, "NEW_PROJECTS_PATH", output_path):
+            report = find_projects.verify_and_export_repos([])
+        self.assertIn("### New projects", report)
+        self.assertIn("No new standalone repositories found", report)
+        self.assertEqual(
+            output_path.read_text(encoding="utf-8"),
+            "https://github.com/owner/saved-project\n",
+        )
 
 
 class RepositoryIdentityTests(unittest.TestCase):

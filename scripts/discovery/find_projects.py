@@ -2,13 +2,12 @@
 
 import argparse
 import re
-import sys
 import time
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime, timedelta
 
-from utils import (
+from common.utils import (
     CONCURRENCY,
     DEFAULT_BRANCHES,
     EXCLUDED_REPOS_PATH,
@@ -17,7 +16,6 @@ from utils import (
     README_REPOS_PATH,
     ROOT_DIR,
     TEMP_DIR,
-    append_step_summary,
     build_raw_url,
     check_link_status,
     fetch,
@@ -222,13 +220,13 @@ def filter_repos(repos: list[dict] | None = None) -> list[dict]:
     return candidates
 
 
-def verify_and_export_repos(candidates: list[dict] | None = None) -> list[dict]:
+def verify_and_export_repos(candidates: list[dict] | None = None) -> str:
     if candidates is None:
         if not RAW_FILTER_PATH.exists():
             print(
                 f"Filtered file not found: {RAW_FILTER_PATH.relative_to(ROOT_DIR)}. Run with --filter first."
             )
-            return []
+            return "### New projects\n\nNo saved candidates available for verification."
         candidates = load_json(RAW_FILTER_PATH, [])
         print(
             f"Loaded {len(candidates)} candidates from {RAW_FILTER_PATH.relative_to(ROOT_DIR)}"
@@ -236,7 +234,7 @@ def verify_and_export_repos(candidates: list[dict] | None = None) -> list[dict]:
 
     if not candidates:
         print("Candidate list is empty. Skipping verification.")
-        return []
+        return "### New projects\n\nNo new standalone repositories found."
 
     print(
         f"Checking {len(candidates)} candidates for patches-bundle.json and README...\n"
@@ -278,8 +276,10 @@ def verify_and_export_repos(candidates: list[dict] | None = None) -> list[dict]:
     query_lines = "\n".join(f"  - `{query}`" for query in queries)
     excluded_keywords = ", ".join(EXCLUDED_KEYWORDS)
     summary_sections = [
-        f"## 🔍 Find Projects\n- **Queries:**\n{query_lines}\n- **Excluded:** non-standalone morphe variants with: {excluded_keywords}\n- **New Repositories Found:** `{len(repos)}`"
+        f"### New projects\n\n- **Queries:**\n{query_lines}\n- **New Repositories Found:** `{len(repos)}`"
     ]
+    if excluded_keywords:
+        summary_sections.append(f"- **Excluded keywords:** {excluded_keywords}")
     if not repos:
         summary_sections.append("- No new standalone repositories found.")
     else:
@@ -290,22 +290,20 @@ def verify_and_export_repos(candidates: list[dict] | None = None) -> list[dict]:
                 else ""
             )
             summary_sections.append(
-                f"### [{repo['full_name']}]({repo['url']}) ({repo['stars']} stars)\n\n- **Created:** `{repo['created_at']}` | **Updated:** `{repo['pushed_at']}`{desc}"
+                f"#### [{repo['full_name']}]({repo['url']}) ({repo['stars']} stars)\n\n- **Created:** `{repo['created_at']}` | **Updated:** `{repo['pushed_at']}`{desc}"
             )
 
     PROJECTS_DIR.mkdir(parents=True, exist_ok=True)
     NEW_PROJECTS_PATH.write_text(
         "\n".join(repo["url"] for repo in repos) + "\n", encoding="utf-8"
     )
-    append_step_summary("\n\n".join(summary_sections))
-
     print(
         f"Saved {len(repos)} URLs to {NEW_PROJECTS_PATH.relative_to(ROOT_DIR)} (excluded {len(candidates) - len(repos)} patch bundles or without README)"
     )
-    return repos
+    return "\n\n".join(summary_sections)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> str:
     parser = argparse.ArgumentParser(
         description="Find and filter standalone repositories in the Morphe ecosystem."
     )
@@ -325,21 +323,21 @@ def main() -> int:
         help="Verify patch bundle status and export output files.",
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     if args.search:
         search_repos()
     elif args.filter:
         filter_repos()
     elif args.check:
-        verify_and_export_repos()
+        return verify_and_export_repos()
     else:
         raw_repos = search_repos()
         candidates = filter_repos(raw_repos)
-        verify_and_export_repos(candidates)
+        return verify_and_export_repos(candidates)
 
-    return 0
+    return ""
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    print(main())

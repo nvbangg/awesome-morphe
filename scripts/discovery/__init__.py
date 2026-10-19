@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from utils import format_request_error, load_json, save_json
+from common.utils import format_request_error, load_json, save_json
 
 
 def load_provider_sources(path: Path) -> dict:

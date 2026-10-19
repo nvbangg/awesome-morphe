@@ -5,7 +5,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import fetch as bundle_fetch
-from utils import load_lines, save_json
+from common.utils import load_lines, save_json
 
 
 class BundleParserTests(unittest.TestCase):

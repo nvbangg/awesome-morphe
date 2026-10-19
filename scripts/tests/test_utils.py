@@ -8,7 +8,7 @@ import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
-import utils
+from common import utils
 
 DOTENV_TEST_VARIABLE = "MORPHE_DOTENV_TEST_VALUE"
 
@@ -20,7 +20,9 @@ class DotenvLoadingTests(unittest.TestCase):
         self.root = Path(temporary_directory.name)
         self.scripts_dir = self.root / "scripts"
         self.scripts_dir.mkdir()
-        self.utils_path = self.scripts_dir / "utils.py"
+        common_dir = self.scripts_dir / "common"
+        common_dir.mkdir()
+        self.utils_path = common_dir / "utils.py"
         shutil.copyfile(utils.__file__, self.utils_path)
 
     def import_utils(self, existing_value: str | None = None) -> str:
@@ -58,6 +60,15 @@ class DotenvLoadingTests(unittest.TestCase):
     def test_missing_dotenv_keeps_existing_environment(self) -> None:
         self.assertEqual(self.import_utils("from-environment"), "from-environment")
         self.assertEqual(self.import_utils(), "")
+
+    def test_shared_paths_still_resolve_from_the_repository_root(self) -> None:
+        repository_root = Path(__file__).resolve().parents[2]
+        self.assertEqual(utils.ROOT_DIR, repository_root)
+        self.assertEqual(utils.SCRIPTS_DIR, repository_root / "scripts")
+        self.assertEqual(utils.REPOS_JSON_PATH, repository_root / "data/repos.json")
+        self.assertEqual(
+            utils.BUNDLE_PARSER_DIR, repository_root / "scripts/bundle-parser"
+        )
 
 
 class FetchHelperTests(unittest.TestCase):

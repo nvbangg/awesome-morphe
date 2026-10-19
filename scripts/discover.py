@@ -1,10 +1,10 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
+import argparse
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from providers import jman, load_provider_sources, morphe_archive, official
-from utils import (
+from common.utils import (
     DISCOVER_DIR,
     REPOS_JSON_PATH,
     ROOT_DIR,
@@ -13,6 +13,14 @@ from utils import (
     load_json,
     parse_repo_url,
     save_json,
+)
+from discovery import (
+    audit_readme,
+    find_projects,
+    jman,
+    load_provider_sources,
+    morphe_archive,
+    official,
 )
 
 PROVIDERS = [
@@ -85,7 +93,19 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
     return dict(sorted(synced.items(), key=lambda item: item[0].lower()))
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Discover Morphe bundles and projects")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument(
+        "--daily", action="store_true", help="Also audit README links and find projects"
+    )
+    modes.add_argument(
+        "--weekly",
+        action="store_true",
+        help="Also audit README links and find projects",
+    )
+    args = parser.parse_args(argv)
+
     warnings = _run_providers()
     print()
     provider_files = _load_provider_files()
@@ -94,14 +114,15 @@ def main() -> int:
         print(message)
         warnings.append(message)
 
+    summary_sections = ["## 🔎 Discovery:"]
     if warnings:
-        markdown_lines = [
-            "## 🔎 Discover:\n",
-            *[f"- {warning}" for warning in sorted(warnings)],
-        ]
-        append_step_summary("\n".join(markdown_lines))
+        summary_sections.append(
+            "### Bundle sources\n\n"
+            + "\n".join(f"- {warning}" for warning in sorted(warnings))
+        )
 
     if not provider_files:
+        append_step_summary("\n\n".join(summary_sections))
         return 1
 
     merged = _merge(provider_files)
@@ -112,6 +133,11 @@ def main() -> int:
     print(f"Synced {len(synced_repos)} repos")
     save_json(REPOS_JSON_PATH, synced_repos)
     print(f"Saved to {REPOS_JSON_PATH.relative_to(ROOT_DIR)}")
+    if args.daily or args.weekly:
+        summary_sections.append(audit_readme.audit_repos_and_links())
+        summary_sections.append(find_projects.main([]))
+    if len(summary_sections) > 1:
+        append_step_summary("\n\n".join(summary_sections))
     return 0
 
 

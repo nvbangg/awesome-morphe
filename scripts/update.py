@@ -6,8 +6,7 @@ import json
 import sys
 import time
 
-from updater import gplay_scrape, local_parse
-from utils import (
+from common.utils import (
     BUNDLES_DIR,
     BUNDLES_JSON_PATH,
     CUSTOM_JSON_PATH,
@@ -27,6 +26,7 @@ from utils import (
     parse_repo_url,
     save_json,
 )
+from updater import gplay_scrape, local_parse
 
 
 def apply_renames(

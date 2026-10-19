@@ -44,7 +44,7 @@ Triggered by Sync or manually:
 - **`daily`:** Syncs bundles, checks bundle images, and refreshes repository metadata.
 - **`weekly`:** Also checks existing bundle downloads and refreshes all Google Play metadata.
 
-Both modes update public data, generate the changelog, and clean up old workflow runs. Java 21 is set up before fetching; fetch invokes the parser only when patch lists are missing (HTTP 404).
+Both modes audit README links, find standalone projects, update public data, generate the changelog, and clean up old workflow runs. Java 21 is set up before fetching; fetch invokes the parser only when patch lists are missing (HTTP 404).
 
 ```mermaid
 flowchart TD
@@ -54,17 +54,6 @@ flowchart TD
     D --> E["Clean up old workflow runs"]
 ```
 
-### [Check Projects Workflow](../../actions/workflows/check-projects.yml) (check-projects.yml)
-
-Runs every Sunday at 01:00 UTC or manually. Audits configured README links and finds standalone Morphe projects for manual review.
-
-```mermaid
-flowchart TD
-    A["Audit README links"] --> B["Find projects"]
-    B --> C["Save candidates to `new-projects.txt`"]
-    C --> D["Commit and push if changed"]
-```
-
 ## 🛠️ Scripts
 
 Core automation scripts are written in Python under [`scripts/`](./scripts/).
@@ -72,6 +61,8 @@ Core automation scripts are written in Python under [`scripts/`](./scripts/).
 ### [`discover.py`](./scripts/discover.py)
 
 Collects bundle sources from the providers below and synchronizes [`data/repos.json`](./data/repos.json).
+
+With `--daily` or `--weekly`, also runs README audits and standalone project discovery. Reports are grouped under **Discovery**.
 
 #### Discovered Sources
 
@@ -130,7 +121,7 @@ After workers finish, fetch runs the Kotlin [`bundle-parser`](./scripts/bundle-p
 
 Fetch selects one display name per repository after branch processing: a branch with a nonempty hash is available, and `main` takes priority over `dev`. This does not change whether a dev target is downloaded or parsed. An unchanged preferred branch keeps its saved name. When the preferred branch changes or no name has been saved, fetch reads that branch's local `.mpp`, downloading it if necessary. Missing manifest names retain the existing fallback. Name selection does not depend on timestamps or worker completion order.
 
-Fetch also retrieves repository descriptions, avatars, stars, archive status, and canonical paths through `scripts/repo_info.py`, shared with the README audit. Default runs request missing metadata; daily/weekly runs refresh repositories with a nonempty branch hash. Existing repositories are checked before branch downloads so a confirmed rename can validate a download URL under the new path; newly downloaded repositories are checked afterward. Each repository is requested at most once per run. Request failures preserve saved metadata and branch hashes. Successful unarchive responses remove `isArchived`.
+Fetch also retrieves repository descriptions, avatars, stars, archive status, and canonical paths through `scripts/common/repo_info.py`, shared with the README audit. Default runs request missing metadata; daily/weekly runs refresh repositories with a nonempty branch hash. Existing repositories are checked before branch downloads so a confirmed rename can validate a download URL under the new path; newly downloaded repositories are checked afterward. Each repository is requested at most once per run. Request failures preserve saved metadata and branch hashes. Successful unarchive responses remove `isArchived`.
 
 A changed canonical path records `renamedTo` without changing the repository key or custom sources. Update applies the rename. Fetch collects results in memory and writes `data/repos.json` once after processing, including independent image and repository metadata updates. It does not use `pending_repos.json` or a separate parse script.
 
@@ -181,11 +172,11 @@ Sends update notifications using `TG_TOKEN` and `TG_CHAT`.
 - **`"Custom Title"`:** Uses a custom title.
 - **`"Custom Title" "path/to/file.md"`:** Uses a custom title and file.
 
-### [`audit_readme.py`](./scripts/audit_readme.py)
+### [`audit_readme.py`](./scripts/discovery/audit_readme.py)
 
 Checks repositories in [`data/projects/readme-repos.txt`](./data/projects/readme-repos.txt) and links in [`data/projects/readme-links.txt`](./data/projects/readme-links.txt) for unavailable, archived, renamed, or redirected targets. Reports findings without editing README.
 
-### [`find_projects.py`](./scripts/find_projects.py)
+### [`find_projects.py`](./scripts/discovery/find_projects.py)
 
 Searches GitHub for standalone Morphe projects, excluding known repositories and those with `patches-bundle.json` on `main` or `dev`. Candidates must have a README. Saves results to [`data/projects/new-projects.txt`](./data/projects/new-projects.txt) for review.
 

@@ -5,12 +5,12 @@ import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
-import audit_readme
-import repo_info
 import update as bundle_update
 import whats_new
+from common import repo_info
+from common.utils import PACKAGE_UNIVERSAL, load_json, save_json
+from discovery import audit_readme
 from updater import gplay_scrape, local_parse
-from utils import PACKAGE_UNIVERSAL, load_json, save_json
 
 CURRENT_TIME_SECONDS = 1_800_000_000
 BUNDLE_TIME_MS = 1_700_000_000_000
@@ -754,13 +754,11 @@ class RepositoryMetadataTests(unittest.TestCase):
                 self.subTest(code=code),
                 patch.object(repo_info, "fetch", side_effect=self.http_error(code)),
                 patch.object(audit_readme, "load_lines", side_effect=[[repo_url], []]),
-                patch.object(audit_readme, "append_step_summary") as summary,
             ):
-                errors = audit_readme.audit_repos_and_links()
-                self.assertEqual(len(errors["unavailable"]), 1)
-                self.assertIn(str(code), errors["unavailable"][0])
-                self.assertEqual(errors["other"], [])
-                self.assertIn("### Unavailable (1)", summary.call_args.args[0])
+                summary = audit_readme.audit_repos_and_links()
+                self.assertIn(f"{repo_url}: {code}", summary)
+                self.assertNotIn("Other Errors", summary)
+                self.assertIn("#### Unavailable (1)", summary)
 
 
 class WhatsNewIdentityTests(unittest.TestCase):

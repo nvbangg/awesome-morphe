@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest.mock import Mock, call, patch
 
 import fetch as bundle_fetch
-from utils import DEFAULT_BRANCHES, build_raw_url, load_json, save_json
+from common.utils import DEFAULT_BRANCHES, build_raw_url, load_json, save_json
 
 PATCH_LIST_BARRIER_TIMEOUT_SECONDS = 5
 DOWNLOAD_WAIT_TIMEOUT_SECONDS = 5
