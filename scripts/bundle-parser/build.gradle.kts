@@ -174,9 +174,29 @@ tasks.register("assembleRelease") {
 }
 
 // Each configuration resolves independently; an unavailable runtime is recorded, not fatal.
-@Suppress("UNCHECKED_CAST")
-val configuredRuntimes = (JsonSlurper().parse(rootDir.parentFile.resolve("config/patcher-runtimes.json"))
-    as Map<String, Any>)["runtimes"] as List<Map<String, Any>>
+val morphePatcher = libs.morphe.patcher.get().toString()
+val configuredRuntimes = listOf(mapOf(
+    "id" to "morphe-latest",
+    "family" to "Morphe:V1",
+    "loader" to "morphe",
+    "coordinate" to morphePatcher,
+    "dependencies" to listOf(morphePatcher, "com.google.code.gson:gson:2.14.0")
+))
+val runtimeConfiguration = layout.buildDirectory.file("patcher-runtimes.json")
+val runtimeConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(mapOf(
+    "worker" to mapOf("restart_attempts" to 0),
+    "runtimes" to configuredRuntimes
+)))
+val generateRuntimeConfiguration = tasks.register("generateRuntimeConfiguration") {
+    inputs.property("configuration", runtimeConfigurationJson)
+    outputs.file(runtimeConfiguration)
+    doLast {
+        runtimeConfiguration.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(runtimeConfigurationJson)
+        }
+    }
+}
 val configurableRuntimeDependencies = configuredRuntimes.associate { runtime ->
     val id = runtime["id"] as String
     require(id.matches(Regex("[a-z0-9-]+"))) { "Invalid runtime id" }
@@ -204,7 +224,8 @@ val configurableRuntimeDependencies = configuredRuntimes.associate { runtime ->
 }
 val runtimeManifest = layout.buildDirectory.file("runtime-classpaths.json")
 val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
-    inputs.file(rootDir.parentFile.resolve("config/patcher-runtimes.json"))
+    dependsOn(generateRuntimeConfiguration)
+    inputs.file(runtimeConfiguration)
     outputs.file(runtimeManifest)
     outputs.upToDateWhen { false } // Retry runtime artifact outages on the next workflow run.
     doLast {
@@ -246,12 +267,14 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
 tasks.named<JavaExec>("run") {
     dependsOn(prepareCatalogRuntimes)
     doFirst {
-        systemProperty("catalog.runtime.config", rootDir.parentFile.resolve("config/patcher-runtimes.json"))
+        systemProperty("catalog.runtime.config", runtimeConfiguration.get().asFile)
         systemProperty("catalog.runtime.manifest", runtimeManifest.get().asFile)
     }
 }
 tasks.named<Test>("test") {
-    dependsOn(tasks.named("installDist"))
+    dependsOn(tasks.named("installDist"), generateRuntimeConfiguration)
+    inputs.file(runtimeConfiguration)
+    systemProperty("catalog.runtime.config", runtimeConfiguration.get().asFile)
     filter {
         excludeTestsMatching("me.jman.parser.LegacyReseamParserTest")
         excludeTestsMatching("me.jman.parser.ReseamPatchParserTest.engineRequirementReordersRemainingRuntimesWithoutDroppingFallbacks")

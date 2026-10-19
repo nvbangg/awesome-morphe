@@ -1,6 +1,6 @@
 Upstream repository: https://github.com/Jman-Github/Patch-Bundle-Registry
 Upstream branch: bundles
-Upstream commit: b2bed29eb9f705c95c013de3533e75961ebdee0c
+Upstream commit: 1b6a21f2ae49038bde6a68a4065622d60fd4662e
 Changed files:
 - a/build.gradle.kts b/build.gradle.kts
 - a/settings.gradle.kts b/settings.gradle.kts
@@ -8,9 +8,12 @@ Changed files:
 - a/src/main/kotlin/me/jman/parser/Main.kt b/src/main/kotlin/me/jman/parser/Main.kt
 - a/src/main/kotlin/me/jman/parser/MorphePatchParser.kt b/src/main/kotlin/me/jman/parser/MorphePatchParser.kt
 - a/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt b/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt
+- a/src/main/kotlin/me/jman/parser/DexPatchBundle.kt b/src/main/kotlin/me/jman/parser/DexPatchBundle.kt
+- a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+- a/src/test/kotlin/me/jman/parser/BundleSupportTest.kt b/src/test/kotlin/me/jman/parser/BundleSupportTest.kt
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 829b2e11d0dc5065ada9c2649a82ad649989aa2e..5146ac676a21f3b87e507c2a3ae42e7781fbcd29 100644
+index 829b2e11d0dc5065ada9c2649a82ad649989aa2e..ff032aeb424ee806c7489d7698020dc320ac0875 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -155 +155 @@ kotlin {
@@ -21,7 +24,38 @@ index 829b2e11d0dc5065ada9c2649a82ad649989aa2e..5146ac676a21f3b87e507c2a3ae42e77
 -    sourceCompatibility = JavaVersion.VERSION_17
 +    targetCompatibility = JavaVersion.VERSION_21
 +    sourceCompatibility = JavaVersion.VERSION_21
-@@ -211,9 +210,0 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
+@@ -177,3 +177,23 @@ tasks.register("assembleRelease") {
+-@Suppress("UNCHECKED_CAST")
+-val configuredRuntimes = (JsonSlurper().parse(rootDir.parentFile.resolve("config/patcher-runtimes.json"))
+-    as Map<String, Any>)["runtimes"] as List<Map<String, Any>>
++val morphePatcher = libs.morphe.patcher.get().toString()
++val configuredRuntimes = listOf(mapOf(
++    "id" to "morphe-latest",
++    "family" to "Morphe:V1",
++    "loader" to "morphe",
++    "coordinate" to morphePatcher,
++    "dependencies" to listOf(morphePatcher, "com.google.code.gson:gson:2.14.0")
++))
++val runtimeConfiguration = layout.buildDirectory.file("patcher-runtimes.json")
++val runtimeConfigurationJson = JsonOutput.prettyPrint(JsonOutput.toJson(mapOf(
++    "worker" to mapOf("restart_attempts" to 0),
++    "runtimes" to configuredRuntimes
++)))
++val generateRuntimeConfiguration = tasks.register("generateRuntimeConfiguration") {
++    inputs.property("configuration", runtimeConfigurationJson)
++    outputs.file(runtimeConfiguration)
++    doLast {
++        runtimeConfiguration.get().asFile.apply {
++            parentFile.mkdirs()
++            writeText(runtimeConfigurationJson)
++        }
++    }
++}
+@@ -207 +227,2 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
+-    inputs.file(rootDir.parentFile.resolve("config/patcher-runtimes.json"))
++    dependsOn(generateRuntimeConfiguration)
++    inputs.file(runtimeConfiguration)
+@@ -211,9 +231,0 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
 -        val nativeManifest = layout.buildDirectory.file("native-runtimes.json").get().asFile
 -        val nativeInstaller = ProcessBuilder(
 -            providers.environmentVariable("PYTHON").orElse("python").get(),
@@ -31,12 +65,19 @@ index 829b2e11d0dc5065ada9c2649a82ad649989aa2e..5146ac676a21f3b87e507c2a3ae42e77
 -        check(nativeInstaller.waitFor() == 0) { "Native runtime installation failed" }
 -        @Suppress("UNCHECKED_CAST")
 -        val native = JsonSlurper().parse(nativeManifest) as Map<String, Map<String, Any>>
-@@ -221 +212 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
+@@ -221 +233 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
 -            if (native.containsKey(id)) native.getValue(id) else try {
 +            try {
-@@ -247,0 +239 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
+@@ -247,0 +260 @@ val prepareCatalogRuntimes = tasks.register("prepareCatalogRuntimes") {
 +        check(installed.values.any { it["available"] == true }) { "No Morphe runtime is available" }
-@@ -262,0 +255,8 @@ tasks.named<Test>("test") {
+@@ -257 +270 @@ tasks.named<JavaExec>("run") {
+-        systemProperty("catalog.runtime.config", rootDir.parentFile.resolve("config/patcher-runtimes.json"))
++        systemProperty("catalog.runtime.config", runtimeConfiguration.get().asFile)
+@@ -262 +275,11 @@ tasks.named<Test>("test") {
+-    dependsOn(tasks.named("installDist"))
++    dependsOn(tasks.named("installDist"), generateRuntimeConfiguration)
++    inputs.file(runtimeConfiguration)
++    systemProperty("catalog.runtime.config", runtimeConfiguration.get().asFile)
 +    filter {
 +        excludeTestsMatching("me.jman.parser.LegacyReseamParserTest")
 +        excludeTestsMatching("me.jman.parser.ReseamPatchParserTest.engineRequirementReordersRemainingRuntimesWithoutDroppingFallbacks")
@@ -45,7 +86,7 @@ index 829b2e11d0dc5065ada9c2649a82ad649989aa2e..5146ac676a21f3b87e507c2a3ae42e77
 +        excludeTestsMatching("me.jman.parser.PatcherRuntimeSelectionTest.shippedReseamStartsWithLatestNativeEngineBeforeHistoricalAdapters")
 +        excludeTestsMatching("me.jman.parser.PatcherRuntimeSelectionTest.declaredReVancedVersionStaysFirstWithinItsFormatFamily")
 +    }
-@@ -272 +272 @@ tasks.named("assembleRelease") {
+@@ -272 +295 @@ tasks.named("assembleRelease") {
 -    dependsOn(tasks.named("test"), runtimeSmoke)
 +    dependsOn(tasks.named("test"))
 diff --git a/settings.gradle.kts b/settings.gradle.kts
@@ -205,9 +246,12 @@ index 57d5c6acc5cb383cb3cb434ed7bd88a5699f307e..3364805730964f1d4ab5322158bec73f
 +            })
 +        } else JsonPrimitive(value.toString())
 diff --git a/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt b/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt
-index f4b09d7f88fcb5c64301b32d1f47e4e34d9744cd..71f7f95ede12bbfd96b848084da2e902348ad66a 100644
+index f4b09d7f88fcb5c64301b32d1f47e4e34d9744cd..a7ce4f45edcc602cc2085b606f1d3a793bfc08bf 100644
 --- a/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt
 +++ b/src/test/kotlin/me/jman/parser/PatcherRuntimeSelectionTest.kt
+@@ -24 +24 @@ class PatcherRuntimeSelectionTest {
+-        File("../config/patcher-runtimes.json").readText()
++        File(System.getProperty("catalog.runtime.config")).readText()
 @@ -39,12 +39,6 @@ class PatcherRuntimeSelectionTest {
 -        val newestFirst = listOf("morphe-latest", "morphe-1-14-0", "morphe-1-12-0",
 -            "morphe-1-7-0", "morphe-1-5-2", "morphe-1-4-2", "morphe-1-3-1",
@@ -230,3 +274,29 @@ index f4b09d7f88fcb5c64301b32d1f47e4e34d9744cd..71f7f95ede12bbfd96b848084da2e902
 @@ -53 +47 @@ class PatcherRuntimeSelectionTest {
 -            assertEquals(newestFirst, selectRuntimes(config, "Morphe:V1", declaration).map { it.id })
 +            assertEquals(newestFirst, selectRuntimes(config, "Morphe:V1", declaration))
+diff --git a/src/main/kotlin/me/jman/parser/DexPatchBundle.kt b/src/main/kotlin/me/jman/parser/DexPatchBundle.kt
+index 7c102b76440d0067959ba4ad7d9836db6d0768bf..eaab4e648ec71bd66db05ce1d79a97b0ae9e1cac 100644
+--- a/src/main/kotlin/me/jman/parser/DexPatchBundle.kt
++++ b/src/main/kotlin/me/jman/parser/DexPatchBundle.kt
+@@ -183,0 +184,3 @@ internal fun equivalentHybridClassShape(jvm: ByteArray, dex: ByteArray): Boolean
++    val sameSuperName = a.superName == b.superName ||
++        (a.superName == "java/lang/Record" &&
++            b.superName == "com/android/tools/r8/RecordTag")
+@@ -186 +189 @@ internal fun equivalentHybridClassShape(jvm: ByteArray, dex: ByteArray): Boolean
+-        a.superName == b.superName && a.interfaces.toSet() == b.interfaces.toSet()
++        sameSuperName && a.interfaces.toSet() == b.interfaces.toSet()
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+index fca2ed0658709ec92d5673434c70e1be9f048230..cd978f7121374d1b079612bc22f4cc72b1e583e4 100644
+--- a/gradle/libs.versions.toml
++++ b/gradle/libs.versions.toml
+@@ -9,0 +10 @@ dex2jar = "2.4.38"
++morphe-patcher = "1.15.1"
+@@ -17,0 +19 @@ dex-translator = { module = "de.femtopedia.dex2jar:dex-translator", version.ref
++morphe-patcher = { module = "app.morphe:morphe-patcher", version.ref = "morphe-patcher" }
+diff --git a/src/test/kotlin/me/jman/parser/BundleSupportTest.kt b/src/test/kotlin/me/jman/parser/BundleSupportTest.kt
+index fab44dc6a2c17a032894400580b7612c14bc570f..fb1d0e3f6736eca7dfe16fec5fa8ebf61563dd76 100644
+--- a/src/test/kotlin/me/jman/parser/BundleSupportTest.kt
++++ b/src/test/kotlin/me/jman/parser/BundleSupportTest.kt
+@@ -40 +40 @@ class CompilerDependencySampleTest {
+-                File(catalogProjectRoot(), "config/patcher-runtimes.json").readText())
++                File(System.getProperty("catalog.runtime.config")).readText())

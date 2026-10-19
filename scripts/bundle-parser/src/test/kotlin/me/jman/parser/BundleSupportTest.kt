@@ -37,7 +37,7 @@ class CompilerDependencySampleTest {
         val artifact = File(path)
         val config = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
             .decodeFromString<RuntimeConfiguration>(
-                File(catalogProjectRoot(), "config/patcher-runtimes.json").readText())
+                File(System.getProperty("catalog.runtime.config")).readText())
         val support = supportArtifacts(config, sha256(artifact))
         assertTrue(support.isNotEmpty())
         val result = extractWithRuntimes(artifact.toURI(), false, "ReVanced:v22")

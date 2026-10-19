@@ -21,7 +21,7 @@ class PatcherRuntimeSelectionTest {
     ))
 
     private fun shipped() = Json.decodeFromString<RuntimeConfiguration>(
-        File("../config/patcher-runtimes.json").readText()
+        File(System.getProperty("catalog.runtime.config")).readText()
     )
 
     @Test fun shippedReVancedFamiliesKeepTheirOwnNewestFirstFallbacks() {

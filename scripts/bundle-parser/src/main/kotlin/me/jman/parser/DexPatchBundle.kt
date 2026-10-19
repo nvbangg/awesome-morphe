@@ -181,9 +181,12 @@ internal fun equivalentHybridClassShape(jvm: ByteArray, dex: ByteArray): Boolean
     val a = ClassReader(jvm)
     val b = ClassReader(dex)
     val kindMask = Opcodes.ACC_INTERFACE or Opcodes.ACC_ANNOTATION or Opcodes.ACC_ENUM
+    val sameSuperName = a.superName == b.superName ||
+        (a.superName == "java/lang/Record" &&
+            b.superName == "com/android/tools/r8/RecordTag")
     return a.className == b.className &&
         (a.access and kindMask) == (b.access and kindMask) &&
-        a.superName == b.superName && a.interfaces.toSet() == b.interfaces.toSet()
+        sameSuperName && a.interfaces.toSet() == b.interfaces.toSet()
 }
 
 /** Compare publisher patch annotations independent of bytecode and Kotlin compiler metadata. */
