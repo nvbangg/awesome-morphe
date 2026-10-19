@@ -6,8 +6,6 @@ import urllib.parse
 from datetime import UTC, datetime, timedelta
 
 from common.utils import (
-    BUNDLES_JSON_PATH,
-    HISTORY_PATH,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
     WHATS_NEW_JSON_PATH,
@@ -17,7 +15,6 @@ from common.utils import (
     load_json,
     parse_repo_url,
     save_json,
-    set_step_output,
 )
 
 WHATS_NEW_MAX_ENTRIES = 14
@@ -128,43 +125,19 @@ def extract_bundle_metadata(
     return bundle_names, bundle_order
 
 
-def build_new_bundles(bundles_json: dict) -> dict:
-    compatibilities = bundles_json.get("compatibilities", [])
-    new_bundles: dict[str, dict[str, list[str]]] = {}
-
-    for bundle in bundles_json.get("bundles", []):
-        repo = bundle.get("repo")
-        patches = bundle.get("patches", [])
-        if not repo or not patches:
-            continue
-
-        patches_dict: dict[str, set[str]] = {}
-        for patch in patches:
-            if not (patch_name := patch.get("name")):
-                continue
-
-            compat_key = patch.get("compatiblePackagesKey")
-            if compat_key is not None and compat_key < len(compatibilities):
-                has_valid_package = False
-                for item in compatibilities[compat_key]:
-                    if (
-                        isinstance(item, dict)
-                        and (package_name := item.get("packageName"))
-                        and is_valid_package_name(package_name)
-                    ):
-                        patches_dict.setdefault(package_name, set()).add(patch_name)
-                        has_valid_package = True
-                if not has_valid_package:
-                    patches_dict.setdefault(PACKAGE_UNIVERSAL, set()).add(patch_name)
-            else:
-                patches_dict.setdefault(PACKAGE_UNIVERSAL, set()).add(patch_name)
-
-        if patches_dict:
-            new_bundles[build_repo_url(bundle["source"], repo)] = {
-                package_name: sorted(patches_dict[package_name])
-                for package_name in sorted(patches_dict)
-            }
-    return dict(sorted(new_bundles.items(), key=lambda item: item[0].lower()))
+def collect_patch_history(
+    bundle_apps: dict[str, set[str]],
+    patch_name: str,
+    compatibility: list[dict] | None,
+) -> None:
+    package_names = {
+        package_name
+        for item in compatibility or []
+        if (package_name := item.get("packageName"))
+        and is_valid_package_name(package_name)
+    }
+    for package_name in package_names or {PACKAGE_UNIVERSAL}:
+        bundle_apps.setdefault(package_name, set()).add(patch_name)
 
 
 def count_app_patches(
@@ -497,19 +470,26 @@ def generate_markdown(
     return "\n\n".join(markdown_sections)
 
 
-def main() -> None:
-    old_history = load_json(HISTORY_PATH, {})
+def generate(
+    current_bundles: dict[str, dict[str, set[str]]],
+    old_history: dict,
+    bundles: list[dict],
+    app_metadata: dict,
+) -> dict:
+    WHATS_NEW_PATH.unlink(missing_ok=True)
     whats_new_data = load_json(WHATS_NEW_JSON_PATH, [])
-    bundles_json = load_json(BUNDLES_JSON_PATH, {})
-    app_metadata = bundles_json.get("store", {})
-    bundle_names, bundle_order = extract_bundle_metadata(
-        bundles_json.get("bundles", [])
-    )
+    bundle_names, bundle_order = extract_bundle_metadata(bundles)
 
     current_time = datetime.now(UTC) + timedelta(hours=1)
     today_str = current_time.strftime(f"%B {current_time.day}, %Y")
 
-    new_bundles = build_new_bundles(bundles_json)
+    new_bundles = {
+        repo_url: {
+            package_name: sorted(patches)
+            for package_name, patches in sorted(bundle_apps.items())
+        }
+        for repo_url, bundle_apps in current_bundles.items()
+    }
     app_patch_counts = count_app_patches(new_bundles)
     json_diff = build_json_diff(
         old_history,
@@ -525,8 +505,7 @@ def main() -> None:
         )
         print(f"[-] {info_message}")
         append_step_summary(f"## 🆕 What's New:\n\n- {info_message}")
-        set_step_output("success", "true")
-        return
+        return old_history
 
     latest_entry = (
         whats_new_data[0]
@@ -540,8 +519,7 @@ def main() -> None:
         )
         print(f"[-] {warning_message}")
         append_step_summary(f"## 🆕 What's New:\n\n- {warning_message}")
-        set_step_output("success", "true")
-        return
+        return old_history
 
     if markdown_str := generate_markdown(
         json_diff,
@@ -566,10 +544,4 @@ def main() -> None:
     save_json(WHATS_NEW_JSON_PATH, whats_new_data[:WHATS_NEW_MAX_ENTRIES])
     print(f"Updated {WHATS_NEW_JSON_PATH.name}")
 
-    save_json(HISTORY_PATH, new_bundles)
-    print(f"Saved baseline to {HISTORY_PATH.name}")
-    set_step_output("success", "true")
-
-
-if __name__ == "__main__":
-    main()
+    return {**old_history, **new_bundles}

@@ -25,8 +25,9 @@ from common.utils import (
     load_json,
     parse_repo_url,
     save_json,
+    set_step_output,
 )
-from updater import gplay_scrape, local_parse
+from updater import gplay_scrape, local_parse, whats_new
 
 
 def apply_renames(
@@ -230,7 +231,9 @@ def main() -> int:
     app_latest_updates: dict[str, int] = {}
     compatibilities = []
     compatibility_map = {}
+    current_history = {}
     for bundle in final_bundles:
+        bundle_apps = {}
         for package_name, update_time in bundle.get("appUpdates", {}).items():
             if update_time and update_time > app_latest_updates.get(package_name, 0):
                 app_latest_updates[package_name] = update_time
@@ -240,7 +243,12 @@ def main() -> int:
             is_patch_prerelease = is_bundle_prerelease or bool(
                 patch.get("isPreRelease")
             )
-            if compatibility_data := patch.pop("compatiblePackages", None):
+            compatibility_data = patch.pop("compatiblePackages", None)
+            if mode != "default":
+                whats_new.collect_patch_history(
+                    bundle_apps, patch["name"], compatibility_data
+                )
+            if compatibility_data:
                 compatibility_json = json.dumps(compatibility_data, sort_keys=True)
                 if compatibility_json not in compatibility_map:
                     compatibility_map[compatibility_json] = len(compatibilities)
@@ -256,6 +264,10 @@ def main() -> int:
                 app_patches_status.setdefault(PACKAGE_UNIVERSAL, []).append(
                     is_patch_prerelease
                 )
+        if bundle_apps:
+            current_history[build_repo_url(bundle["source"], bundle["repo"])] = (
+                bundle_apps
+            )
 
     apps_store = {}
     incomplete_apps = []
@@ -299,9 +311,6 @@ def main() -> int:
             "store": apps_store,
         },
     )
-    final_repos = {
-        build_repo_url(bundle["source"], bundle["repo"]) for bundle in final_bundles
-    }
     cleaned_hashes = {
         build_repo_url(bundle["source"], bundle["repo"]): local_hashes[repo_key]
         for repo_key, bundle in bundle_sources.items()
@@ -313,15 +322,9 @@ def main() -> int:
     )
     history_data = dict(existing_history)
     for old_url, new_url in renames.items():
-        if old_url in history_data and new_url not in history_data:
-            history_data[new_url] = history_data[old_url]
-    cleaned_history = {
-        repo_url: history_data[repo_url]
-        for repo_url in sorted(history_data, key=str.lower)
-        if repo_url in final_repos
-    }
-    if cleaned_history != existing_history:
-        save_json(HISTORY_PATH, cleaned_history)
+        if old_url in history_data:
+            previous_history = history_data.pop(old_url)
+            history_data.setdefault(new_url, previous_history)
     if renames:
         move_renamed_files(file_renames)
         save_json(
@@ -367,6 +370,17 @@ def main() -> int:
             ]
         )
     )
+    if mode != "default":
+        history_data = whats_new.generate(
+            current_history, history_data, final_bundles, apps_store
+        )
+    if history_data != existing_history:
+        save_json(
+            HISTORY_PATH,
+            dict(sorted(history_data.items(), key=lambda item: item[0].lower())),
+        )
+    if mode != "default":
+        set_step_output("success", "true")
     return 0
 
 

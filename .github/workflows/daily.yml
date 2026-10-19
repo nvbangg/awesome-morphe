@@ -49,14 +49,11 @@ jobs:
         run: python scripts/fetch.py --${{ inputs.mode }}
 
       - name: Update bundles data
+        id: update
         run: python scripts/update.py --${{ inputs.mode }}
 
-      - name: Generate What's New
-        id: whats_new
-        run: python scripts/whats_new.py
-
       - name: Commit and push changes
-        if: steps.whats_new.outputs.success == 'true'
+        if: steps.update.outputs.success == 'true'
         id: commit
         run: |
           TODAY=$(date -u -d '+1 hour' +'%Y-%m-%d')

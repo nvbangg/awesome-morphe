@@ -2,15 +2,15 @@ import json
 import tempfile
 import unittest
 import urllib.error
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from unittest.mock import patch
 
 import update as bundle_update
-import whats_new
 from common import repo_info
 from common.utils import PACKAGE_UNIVERSAL, load_json, save_json
 from discovery import audit_readme
-from updater import gplay_scrape, local_parse
+from updater import gplay_scrape, local_parse, whats_new
 
 CURRENT_TIME_SECONDS = 1_800_000_000
 BUNDLE_TIME_MS = 1_700_000_000_000
@@ -30,6 +30,8 @@ class BundleUpdateTests(unittest.TestCase):
         self.history_path = self.root / "history.json"
         self.custom_path = self.root / "custom.json"
         self.official_path = self.root / "official.json"
+        self.changelog_path = self.root / "whats-new.json"
+        self.markdown_path = self.root / "whats-new.md"
         self.state_paths = [
             self.repos_path,
             self.public_path,
@@ -39,6 +41,24 @@ class BundleUpdateTests(unittest.TestCase):
         ]
         for path in [*self.state_paths, self.official_path]:
             save_json(path, {})
+        save_json(self.changelog_path, [])
+        changelog_patcher = patch.multiple(
+            whats_new,
+            WHATS_NEW_JSON_PATH=self.changelog_path,
+            WHATS_NEW_PATH=self.markdown_path,
+        )
+        changelog_patcher.start()
+        self.addCleanup(changelog_patcher.stop)
+        clock_patcher = patch.object(whats_new, "datetime")
+        self.clock = clock_patcher.start()
+        self.clock.now.return_value = datetime.fromtimestamp(CURRENT_TIME_SECONDS, UTC)
+        self.addCleanup(clock_patcher.stop)
+        changelog_summary_patcher = patch.object(whats_new, "append_step_summary")
+        changelog_summary_patcher.start()
+        self.addCleanup(changelog_summary_patcher.stop)
+        output_patcher = patch.object(bundle_update, "set_step_output")
+        self.output = output_patcher.start()
+        self.addCleanup(output_patcher.stop)
         path_patcher = patch.multiple(
             bundle_update,
             REPOS_JSON_PATH=self.repos_path,
@@ -484,7 +504,7 @@ class BundleUpdateTests(unittest.TestCase):
                 ]
             },
         )
-        old_history = {"patches": ["Patch"]}
+        old_history = {"com.test.app": ["Patch"]}
         save_json(self.history_path, {"https://github.com/owner/alpha": old_history})
         repos = load_json(self.repos_path)
         repos["https://github.com/owner/alpha"]["renamedTo"] = (
@@ -523,8 +543,8 @@ class BundleUpdateTests(unittest.TestCase):
         save_json(
             self.history_path,
             {
-                "https://github.com/owner/alpha": {"patches": ["Alpha"]},
-                "https://github.com/owner/beta": {"patches": ["Beta"]},
+                "https://github.com/owner/alpha": {"com.alpha.app": ["Patch"]},
+                "https://github.com/owner/beta": {"com.beta.app": ["Patch"]},
             },
         )
         repos = load_json(self.repos_path)
@@ -542,7 +562,7 @@ class BundleUpdateTests(unittest.TestCase):
         )
         self.assertEqual(
             load_json(self.history_path),
-            {"https://github.com/owner/beta": {"patches": ["Beta"]}},
+            {"https://github.com/owner/beta": {"com.beta.app": ["Patch"]}},
         )
         self.assertEqual(
             [call.args[0] for call in self.fetch_app.call_args_list], ["com.beta.app"]
@@ -572,6 +592,155 @@ class BundleUpdateTests(unittest.TestCase):
         self.assertEqual(self.summary.call_args.args[0], "## 🔄 Update (0/0):")
         self.fetch_repo.assert_not_called()
         self.fetch_app.assert_not_called()
+
+    def test_default_update_does_not_advance_history_before_daily(self) -> None:
+        self.add_target()
+        self.run_update()
+        self.assertEqual(load_json(self.history_path), {})
+        self.assertEqual(load_json(self.changelog_path), [])
+        self.output.assert_not_called()
+        with patch.object(
+            whats_new,
+            "load_json",
+            side_effect=lambda path, default: (
+                load_json(path, default)
+                if path == self.changelog_path
+                else self.fail("What's New must not reload the catalog or history")
+            ),
+        ):
+            self.run_update("daily")
+        repo_url = "https://github.com/owner/alpha"
+        self.assertEqual(
+            load_json(self.history_path), {repo_url: {"com.test.app": ["Patch"]}}
+        )
+        self.assertTrue(load_json(self.changelog_path)[0]["bundles"][repo_url]["isNew"])
+        self.assertTrue(self.markdown_path.is_file())
+        self.output.assert_called_once_with("success", "true")
+
+    def test_unavailable_and_invalid_bundles_keep_history_without_being_published(
+        self,
+    ) -> None:
+        unavailable_url = "https://github.com/owner/unavailable"
+        invalid_url = "https://github.com/owner/invalid"
+        removed_url = "https://github.com/owner/removed"
+        saved_history = {
+            unavailable_url: {"com.old.app": ["Old patch"]},
+            invalid_url: {"com.invalid.app": ["Old patch"]},
+            removed_url: {"com.removed.app": ["Old patch"]},
+        }
+        save_json(self.history_path, saved_history)
+        self.add_target(repo="owner/unavailable", sha=None)
+        self.add_target(repo="owner/invalid", patches=[])
+        self.add_target(
+            repo="owner/template",
+            patches=[self.app_patch(package_name="com.example.app")],
+        )
+        for mode in ("default", "daily", "weekly"):
+            with self.subTest(mode=mode):
+                catalog = self.run_update(mode)
+                self.assertEqual(catalog["bundles"], [])
+                self.assertNotIn("com.old.app", catalog["store"])
+                self.assertEqual(load_json(self.history_path), saved_history)
+                self.assertEqual(load_json(self.changelog_path), [])
+
+    def test_returning_bundle_only_announces_added_patches(self) -> None:
+        repo_url = "https://github.com/owner/alpha"
+        save_json(self.history_path, {repo_url: {"com.test.app": ["Patch"]}})
+        self.add_target(sha=None)
+        self.run_update("daily")
+        self.add_target()
+        self.run_update("daily")
+        self.assertEqual(load_json(self.changelog_path), [])
+        self.add_target(patches=[self.app_patch(), self.app_patch(name="Added patch")])
+        self.run_update("daily")
+        changes = load_json(self.changelog_path)[0]["bundles"][repo_url]
+        self.assertNotIn("isNew", changes)
+        self.assertEqual(
+            changes["apps"], {"com.test.app": {"patches": ["Added patch"]}}
+        )
+
+    def test_known_app_in_new_bundle_is_not_a_new_app_in_telegram(self) -> None:
+        old_url = "https://github.com/owner/unavailable"
+        save_json(self.history_path, {old_url: {"com.test.app": ["Patch"]}})
+        self.add_target()
+        self.run_update("daily")
+        self.assertIn(old_url, load_json(self.history_path))
+        markdown = self.markdown_path.read_text(encoding="utf-8")
+        self.assertIn("📦 (✨New)", markdown)
+        self.assertNotIn("📱 (✨New)", markdown)
+
+    def test_known_app_added_to_existing_bundle_is_only_a_bundle_addition(self) -> None:
+        repo_url = "https://github.com/owner/alpha"
+        save_json(
+            self.history_path,
+            {
+                "https://github.com/owner/unavailable": {"com.test.app": ["Patch"]},
+                repo_url: {"com.other.app": ["Other patch"]},
+            },
+        )
+        self.add_target(
+            patches=[
+                self.app_patch(),
+                self.app_patch(name="Other patch", package_name="com.other.app"),
+            ]
+        )
+        self.run_update("weekly")
+        changes = load_json(self.changelog_path)[0]["bundles"][repo_url]
+        self.assertNotIn("isNew", changes)
+        self.assertEqual(
+            changes["apps"],
+            {"com.test.app": {"patches": ["Patch"], "isNew": True}},
+        )
+        markdown = self.markdown_path.read_text(encoding="utf-8")
+        self.assertNotIn("📱 (✨New)", markdown)
+        self.assertNotIn("📦 (✨New)", markdown)
+        self.assertIn("com.test.app", markdown)
+
+    def test_unchanged_daily_removes_the_previous_notification(self) -> None:
+        self.add_target()
+        self.run_update("daily")
+        history = self.history_path.read_bytes()
+        changelog = self.changelog_path.read_bytes()
+        self.assertTrue(self.markdown_path.exists())
+        self.run_update("daily")
+        self.assertFalse(self.markdown_path.exists())
+        self.assertEqual(self.history_path.read_bytes(), history)
+        self.assertEqual(self.changelog_path.read_bytes(), changelog)
+
+    def test_same_day_skip_preserves_baseline_and_removes_stale_notification(
+        self,
+    ) -> None:
+        self.add_target()
+        self.run_update("daily")
+        history = self.history_path.read_bytes()
+        changelog = self.changelog_path.read_bytes()
+        self.assertTrue(self.markdown_path.exists())
+        self.add_target(patches=[self.app_patch(name="Next patch")])
+        self.run_update("daily")
+        self.assertEqual(self.history_path.read_bytes(), history)
+        self.assertEqual(self.changelog_path.read_bytes(), changelog)
+        self.assertFalse(self.markdown_path.exists())
+        self.clock.now.return_value += timedelta(days=1)
+        self.run_update("daily")
+        changes = load_json(self.changelog_path)[0]["bundles"]
+        self.assertEqual(
+            changes["https://github.com/owner/alpha"]["apps"],
+            {"com.test.app": {"patches": ["Next patch"]}},
+        )
+
+    def test_changelog_failure_does_not_mark_update_successful_or_advance_history(
+        self,
+    ) -> None:
+        self.add_target()
+        with (
+            patch.object(
+                whats_new, "generate", side_effect=OSError("Cannot write changelog")
+            ),
+            self.assertRaises(OSError),
+        ):
+            self.run_update("daily")
+        self.output.assert_not_called()
+        self.assertEqual(load_json(self.history_path), {})
 
     def test_failure_before_final_output_does_not_write_state_or_cleanup_files(
         self,
@@ -762,6 +931,22 @@ class RepositoryMetadataTests(unittest.TestCase):
 
 
 class WhatsNewIdentityTests(unittest.TestCase):
+    def history(self, catalog: dict) -> dict:
+        history = {}
+        for bundle in catalog["bundles"]:
+            bundle_apps = {}
+            for patch_data in bundle["patches"]:
+                whats_new.collect_patch_history(
+                    bundle_apps,
+                    patch_data["name"],
+                    patch_data.get("compatiblePackages"),
+                )
+            history[f"https://{bundle['source']}.com/{bundle['repo']}"] = {
+                package_name: sorted(patches)
+                for package_name, patches in bundle_apps.items()
+            }
+        return history
+
     def catalog(self) -> dict:
         return {
             "bundles": [
@@ -779,7 +964,7 @@ class WhatsNewIdentityTests(unittest.TestCase):
 
     def test_baseline_and_diff_preserve_both_hosts(self) -> None:
         catalog = self.catalog()
-        baseline = whats_new.build_new_bundles(catalog)
+        baseline = self.history(catalog)
         self.assertEqual(
             set(baseline),
             {"https://github.com/owner/alpha", "https://gitlab.com/owner/alpha"},
@@ -799,9 +984,7 @@ class WhatsNewIdentityTests(unittest.TestCase):
             bundle.pop("name")
         names, order = whats_new.extract_bundle_metadata(catalog["bundles"])
         self.assertEqual(set(names.values()), {"alpha"})
-        changes = whats_new.build_json_diff(
-            {}, whats_new.build_new_bundles(catalog), {}, order
-        )
+        changes = whats_new.build_json_diff({}, self.history(catalog), {}, order)
         markdown = whats_new.generate_markdown(changes, {}, {}, {}, order)
         self.assertIn("github=owner/alpha", markdown)
         self.assertIn("gitlab=owner/alpha", markdown)
@@ -811,6 +994,30 @@ class WhatsNewIdentityTests(unittest.TestCase):
             "com.test.app", {"com.test.app": {"name": "Test", "minInstalls": None}}
         )
         self.assertEqual(key[1], 0)
+
+    def test_patch_history_filters_packages_deduplicates_and_keeps_universal(
+        self,
+    ) -> None:
+        bundle_apps = {}
+        compatibility = [
+            {"packageName": "com.test.app"},
+            {"packageName": "com.test.app"},
+            {"packageName": "com.example.app"},
+            {"packageName": "invalid"},
+        ]
+        whats_new.collect_patch_history(bundle_apps, "Patch", compatibility)
+        whats_new.collect_patch_history(bundle_apps, "Patch", compatibility)
+        whats_new.collect_patch_history(bundle_apps, "Universal patch", None)
+        whats_new.collect_patch_history(
+            bundle_apps, "Template patch", [{"packageName": "com.example.app"}]
+        )
+        self.assertEqual(
+            bundle_apps,
+            {
+                "com.test.app": {"Patch"},
+                PACKAGE_UNIVERSAL: {"Universal patch", "Template patch"},
+            },
+        )
 
 
 if __name__ == "__main__":

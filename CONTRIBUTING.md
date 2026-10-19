@@ -153,16 +153,18 @@ Reads repository metadata from `data/repos.json` and fetches app metadata from G
 
 Pending renames stay in memory until final output is ready. Update transfers repository identity, hashes, history, and local bundle/patch-list filenames to the destination URL, disables the old custom source, enables discovery of the destination, and removes `renamedTo`. An existing destination keeps its data; the old source is discarded without merging across hosts. After branch selection and rename handling, apps no longer supported by a final bundle are removed before Google Play requests. Compatibility data stays inline during processing; the public compatibility table and keys are built once from the final patches, preserving the existing public schema.
 
-Only after the final catalog is built does update write the catalog, app hashes, cleaned history, and any renamed source configuration. Hashes and history use final repository names. Orphaned bundle and patch files are removed at the end; failures before final output leave these files and persisted state unchanged.
+Only after the final catalog is built does update write the catalog, app hashes, history, and any renamed source configuration. Hashes and history use final repository names. Orphaned bundle and patch files are removed at the end; failures before final output leave these files and persisted state unchanged.
 
 #### Execution Modes
 
 - **Default / `--daily`:** Processes local bundle data and fetches missing app metadata.
 - **`--weekly`:** Also refreshes Google Play metadata for all apps.
 
-### [`whats_new.py`](./scripts/whats_new.py)
+Daily and weekly updates also generate What's New from the data already in memory. Default updates do not advance the changelog baseline.
 
-Uses full repository URLs to distinguish bundle identities and compares current bundle, app, and patch names with [`data/history.json`](./data/history.json) to identify additions. Saves the latest 14 changelog entries to [`web/public/whats-new.json`](./web/public/whats-new.json), generates [`scripts/temp/whats-new.md`](./scripts/temp/whats-new.md) when there is content to announce, and updates history when a new entry is created.
+### [`updater/whats_new.py`](./scripts/updater/whats_new.py)
+
+Called by daily/weekly Update to compare current bundle, app, and patch names with [`data/history.json`](./data/history.json), using full repository URLs as identities. Saves the latest 14 changelog entries to [`web/public/whats-new.json`](./web/public/whats-new.json) and generates [`scripts/temp/whats-new.md`](./scripts/temp/whats-new.md) when there is content to announce. New entries update history for current valid bundles while retaining snapshots of unavailable bundles, so returning bundles and previously known apps are not announced as new. History is not reconstructed from leftover patch-list files.
 
 ### [`telegram.py`](./scripts/telegram.py)
 
