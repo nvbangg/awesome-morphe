@@ -24,35 +24,23 @@ awesome-morphe/
 
 ### [Sync Workflow](../../actions/workflows/ci.yml) (ci.yml)
 
-Runs hourly at minute 17 or manually. Scheduled runs dispatch the Daily / Weekly workflow when a refresh is due; otherwise, they perform a fast sync.
+Runs hourly at minute 17 or manually. Scheduled runs select `weekly`, `daily`, or `default` from `data/ci.json`; manual runs select a mode and default to `default`.
 
 ```mermaid
 flowchart TD
-    A["Sync"] --> B{"Daily / weekly refresh due?"}
-    B -->|Yes, scheduled run| C["Dispatch daily.yml"]
-    B -->|No, or manual run| D["Discover + Fetch"]
-    D --> E{"Data changes?"}
-    E -->|Yes| F["Update"]
-    F --> G["Commit and push"]
-    E -->|No| H[Complete]
+    A["Select mode"] --> B["Discover + Fetch"]
+    B --> C{"Daily / weekly, or data changes?"}
+    C -->|Yes| D["Update"]
+    D --> E["Commit and push"]
+    E --> F["Daily / weekly: notify and clean up"]
+    C -->|No| G[Complete]
 ```
 
-### [Daily / Weekly Workflow](../../actions/workflows/daily.yml) (daily.yml)
-
-Triggered by Sync or manually:
-
+- **`default`:** Updates local bundle data only when discovery or fetch changes tracked data.
 - **`daily`:** Syncs bundles, checks bundle images, and refreshes repository metadata.
 - **`weekly`:** Also checks existing bundle downloads and refreshes all Google Play metadata.
 
-Both modes audit README links, find standalone projects, update public data, generate the changelog, and clean up old workflow runs. Java 21 is set up before fetching; fetch invokes the parser only when patch lists are missing (HTTP 404).
-
-```mermaid
-flowchart TD
-    A["Discover + Fetch"] --> B["Update + Check What's New"]
-    B --> C["Commit and push"]
-    C --> D["Send What's New via Telegram"]
-    D --> E["Clean up old workflow runs"]
-```
+Daily and weekly modes also audit README links, find standalone projects, generate the changelog, send available Telegram notifications after committing changes, and clean up old workflow runs. Successful refreshes update `data/ci.json`. Java 21 is set up before fetching; fetch invokes the parser only when patch lists are missing (HTTP 404).
 
 ## 🛠️ Scripts
 

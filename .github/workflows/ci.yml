@@ -4,6 +4,16 @@ on:
   schedule:
     - cron: "17 * * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "Select mode"
+        required: true
+        default: "default"
+        type: choice
+        options:
+          - default
+          - daily
+          - weekly
 
 concurrency:
   group: ci
@@ -24,8 +34,10 @@ jobs:
         with:
           ref: main
 
-      - name: Check schedule
-        id: check
+      - name: Select sync mode
+        id: mode
+        env:
+          MODE: ${{ inputs.mode || 'default' }}
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
             MODE=$(jq -r \
@@ -33,25 +45,20 @@ jobs:
               --arg week "$(date -u -d '+1 hour' +'%G-W%V')" '
               if .lastWeek != $week then "weekly"
               elif .lastDaily != $today then "daily"
-              else empty end' data/ci.json 2>/dev/null)
-
-            if [ -n "$MODE" ]; then
-              gh workflow run daily.yml -f mode="$MODE"
-              echo "::notice title=Workflow Triggered::Dispatched daily.yml with mode=$MODE"
-              echo "skip=true" >> $GITHUB_OUTPUT
-            fi
+              else "default" end' data/ci.json)
+          fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          if [ "$MODE" != "default" ]; then
+            echo "args=--$MODE" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Install Python dependencies
-        if: steps.check.outputs.skip != 'true'
         run: python -m pip install -e scripts/
 
-      - name: Discover repositories
-        if: steps.check.outputs.skip != 'true'
-        run: python scripts/discover.py
+      - name: Discover bundles and projects
+        run: python scripts/discover.py ${{ steps.mode.outputs.args }}
 
       - name: Setup Java environment
-        if: steps.check.outputs.skip != 'true'
         uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: "temurin"
@@ -59,11 +66,10 @@ jobs:
           cache: "gradle"
 
       - name: Fetch new bundles
-        if: steps.check.outputs.skip != 'true'
-        run: python scripts/fetch.py
+        run: python scripts/fetch.py ${{ steps.mode.outputs.args }}
 
       - name: Check data changes
-        if: steps.check.outputs.skip != 'true'
+        if: steps.mode.outputs.mode == 'default'
         id: changes
         run: |
           if [ -n "$(git status --porcelain -- data/ web/public/)" ]; then
@@ -71,16 +77,44 @@ jobs:
           fi
 
       - name: Update bundles data
-        if: steps.changes.outputs.changed == 'true'
-        run: python scripts/update.py
+        if: steps.mode.outputs.mode != 'default' || steps.changes.outputs.changed == 'true'
+        id: update
+        run: python scripts/update.py ${{ steps.mode.outputs.args }}
 
       - name: Commit and push changes
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.changed == 'true' || steps.update.outputs.success == 'true'
+        id: commit
+        env:
+          MODE: ${{ steps.mode.outputs.mode }}
         run: |
+          COMMIT_MSG="Sync bundles"
+          if [ "$MODE" != "default" ]; then
+            TODAY=$(date -u -d '+1 hour' +'%Y-%m-%d')
+            WEEK=$(date -u -d '+1 hour' +'%G-W%V')
+            jq --arg d "$TODAY" --arg w "$WEEK" --arg m "$MODE" \
+              '.lastDaily = $d | if $m == "weekly" then .lastWeek = $w else . end' data/ci.json > data/ci.tmp && mv data/ci.tmp data/ci.json
+            COMMIT_MSG="Update history (${TODAY})"
+            if [ "$MODE" = "weekly" ]; then
+              COMMIT_MSG="Update history (weekly ${TODAY})"
+            fi
+          fi
           git add data/ web/public/
           if ! git diff --staged --quiet; then
             git config --global user.name "github-actions[bot]"
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git commit -m "Sync bundles"
+            git commit -m "$COMMIT_MSG"
             git push origin HEAD:main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Send Telegram notification
+        if: steps.mode.outputs.mode != 'default' && steps.commit.outputs.changed == 'true' && hashFiles('scripts/temp/whats-new.md') != ''
+        env:
+          TG_CHAT: ${{ secrets.TG_CHAT }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+        run: python scripts/telegram.py
+
+      - name: Cleanup old workflow runs
+        if: steps.mode.outputs.mode != 'default'
+        run: |
+          gh run list -L 500 --json databaseId -q '.[].databaseId' | tail -n +191 | xargs -IID gh api "repos/$GITHUB_REPOSITORY/actions/runs/ID" -X DELETE || :
