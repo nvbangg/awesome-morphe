@@ -1,0 +1,451 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "0.2.0",
+  "patches": [
+    {
+      "name": "Allow standalone install (split-less APK)",
+      "description": "Removes Pdb's base-APK split requirement (requiredSplitTypes=base__abi,base__density) so the single patched APK installs. Required when patching the App Bundle's base APK.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.134.6",
+              "versionCodes": {
+                "ARM64_V8A": 2694,
+                "ARMEABI_V7A": 2694,
+                "X86_64": 2694,
+                "X86": 2694
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
+      "description": "Disables Pdb's PairIP / Play licence verification so the app runs after Morphe re-signs it. Restores the real Application class (pdb.app.App).",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.134.6",
+              "versionCodes": {
+                "ARM64_V8A": 2694,
+                "ARMEABI_V7A": 2694,
+                "X86_64": 2694,
+                "X86": 2694
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable PairIP license check",
+      "description": "Disables PairIP license verification, VM checks, and repeated background checks.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
+      "description": "Disables Google Analytics measurement and Yandex AppMetrica telemetry, and turns off Crashlytics/Analytics data collection via their official opt-out flags.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.134.6",
+              "versionCodes": {
+                "ARM64_V8A": 2694,
+                "ARMEABI_V7A": 2694,
+                "X86_64": 2694,
+                "X86": 2694
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix Firebase after re-signing",
+      "description": "Fixes Firebase services (push notifications, Remote Config, Firebase Auth) that break after Morphe re-signs the app with a different certificate.\n\nApply with Original app certificate patch — no other config needed.",
+      "default": false,
+      "dependencies": [
+        "RawResourcePatch"
+      ],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Fix app icon",
+      "description": "Gives the default launcher icon a real foreground. The base APK ships an adaptive icon with a null foreground (the visible icon normally comes from a theme alias enabled at runtime).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.134.6",
+              "versionCodes": {
+                "ARM64_V8A": 2694,
+                "ARMEABI_V7A": 2694,
+                "X86_64": 2694,
+                "X86": 2694
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support (MicroG)",
+      "description": "Routes Google Play Services calls through MicroG instead of real GPS.\n\nWorks for: Google apps (YouTube, Maps, News, Photos) and third-party apps using classic Google Sign-In (Android 13 and below).\n\nDoes not work for: Android 14+ Credential Manager sign-in (most modern third-party apps), Play Integrity / SafetyNet checks, or apps with custom auth.\n\nRequires MicroG RE installed. Apply with Original app certificate patch.",
+      "default": false,
+      "dependencies": [
+        "RawResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "gmsCoreVendor",
+          "title": "MicroG package name",
+          "description": "Which MicroG / GmsCore app is installed on your device. Check your device's app list for \"MicroG\" or \"GmsCore\" if unsure — most users should leave this as the default.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.revanced.android.gms",
+          "values": {
+            "app.revanced.android.gms (default)": "app.revanced.android.gms",
+            "app.morphe.android.gms": "app.morphe.android.gms",
+            "app.morphe.manager": "app.morphe.manager",
+            "app.revanced.manager": "app.revanced.manager",
+            "app.rvx.manager": "app.rvx.manager",
+            "com.google.android.gms": "com.google.android.gms",
+            "org.microg.gms": "org.microg.gms"
+          }
+        },
+        {
+          "key": "mainActivityName",
+          "title": "Main activity class (optional)",
+          "description": "The app's main Activity class name ending with a semicolon, e.g. /MainActivity; Used to inject the MicroG check at startup. Leave blank for auto-detection.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "packageName",
+          "title": "Custom package name (optional)",
+          "description": "Rename the app to this package name. Leave blank to keep the original. Must be a valid package name (e.g. com.example.myapp).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Pdb Extras feature menu",
+      "description": "Adds a Pdb Extras entry to the top of Pdb's Settings screen with toggles, hidden overrides, power tools (preference writer, chat data, identity controls) and a one-tap shortcut to Pdb's native dev screen.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.134.6",
+              "versionCodes": {
+                "ARM64_V8A": 2694,
+                "ARMEABI_V7A": 2694,
+                "X86_64": 2694,
+                "X86": 2694
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Pdb Extras — resources",
+      "description": "Adds the Pdb Extras entry to the Settings screen and registers the extension components.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.134.6",
+              "versionCodes": {
+                "ARM64_V8A": 2694,
+                "ARMEABI_V7A": 2694,
+                "X86_64": 2694,
+                "X86": 2694
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Provide Original app certificate",
+      "description": "Automatically reads the signing certificate from the APK you are patching — no original app installed or file provided needed. Only fill the options below if you are patching an APK that was already re-signed (e.g. a previously patched build): in that case point to the original APK file, or enter the certificate manually.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "originalApkPath",
+          "title": "Path to original APK (if uninstalled)",
+          "description": "Full path to the original APK or .apks bundle. Example: /sdcard/Download/Waze.apks",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "manualCertSha1",
+          "title": "Certificate SHA-1 (manual)",
+          "description": "40-char hex. Found on APKMirror under app signature info.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "manualCertSha256",
+          "title": "Certificate SHA-256 (manual)",
+          "description": "64-char hex. Optional companion to SHA-1.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "manualCertBase64",
+          "title": "Certificate Base64 DER (manual)",
+          "description": "Needed only for Signature spoof patch. Get it with: apksigner verify --print-certs original.apk",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove ads",
+      "description": "Disables Pdb's ad SDKs (GMS, AppLovin, Vungle, Yandex, Pangle) and turns off in-app ad initialisation.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.134.6",
+              "versionCodes": {
+                "ARM64_V8A": 2694,
+                "ARMEABI_V7A": 2694,
+                "X86_64": 2694,
+                "X86": 2694
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof Widevine / DRM level",
+      "description": "Reports Widevine L1 (hardware DRM) to apps that check DRM level locally.\n\nUseful for apps that refuse to play HD/4K content on L3 devices or after re-signing.\n\nDoes not bypass server-side DRM - Netflix, Disney+ and similar are not affected.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "securityLevel",
+          "title": "Widevine security level to report",
+          "description": "L1 = hardware DRM (highest quality). L3 = software only. Default L1.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "L1",
+          "values": {
+            "L1 (highest — hardware)": "L1",
+            "L2": "L2",
+            "L3 (software only)": "L3"
+          }
+        },
+        {
+          "key": "hdcpLevel",
+          "title": "HDCP level to report",
+          "description": "HDCP_V2_2 is required for 4K content on most streaming apps.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "HDCP_V2_2",
+          "values": {
+            "HDCP 2.2": "HDCP_V2_2",
+            "HDCP 2.3": "HDCP_V2_3",
+            "HDCP 1.x": "HDCP_V1",
+            "None (disable)": "HDCP_LEVEL_NONE"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Spoof app signature",
+      "description": "Makes the app think its signing certificate is unchanged after Morphe re-signs it.\n\nUseful when an app crashes or shows a tamper warning because it checks its own certificate.\n\nDoes not bypass Play Integrity / SafetyNet hardware attestation.\n\nApply with Original app certificate patch.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "RawResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name override (optional)",
+          "description": "Leave blank — read automatically from the app. Only set this if you changed the app's package name and the patch is using the wrong one.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof install source",
+      "description": "Makes the app think it was installed from a specific store (default: Google Play).\n\nUseful when an app blocks features or shows errors because it detects it was not installed from the Play Store.\n\nOnly affects what the app itself sees - does not change the real system install record.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "installerPackageName",
+          "title": "Store to impersonate",
+          "description": "Most apps only check for the Google Play Store, so the default is usually correct. Pick from the list, or type any package name directly if your app checks for a different store.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play Store": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Xiaomi GetApps": "com.xiaomi.mipicks",
+            "F-Droid": "org.fdroid.fdroid"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks Pdb Pro: premium badge plus every entitlement (no ads, hide online, unlimited rewinds/extends, super chats, visitors, view requests, virtual travel, extra IRL slots, Power PDB server, Wonder-chat reconnect, AI-friend limits, name colour, chat bubbles).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.134.6",
+              "versionCodes": {
+                "ARM64_V8A": 2694,
+                "ARMEABI_V7A": 2694,
+                "X86_64": 2694,
+                "X86": 2694
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}
