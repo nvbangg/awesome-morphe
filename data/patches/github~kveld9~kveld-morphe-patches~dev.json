@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.8.0-experimental.2",
+  "version": "2.8.0-experimental.3",
   "patches": [
     {
       "name": "Allow Screenshots",
@@ -351,8 +351,7 @@
         "BytecodePatch",
         "ResourcePatch",
         "RawResourcePatch",
-        "ResourcePatch",
-        "RawResourcePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -765,8 +764,7 @@
       "default": true,
       "dependencies": [
         "ResourcePatch",
-        "ResourcePatch",
-        "RawResourcePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -892,40 +890,11 @@
       ]
     },
     {
-      "name": "Clean Shared Links",
-      "description": "Removes tracking codes from links you share or copy.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.59",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Clean Start Page",
       "description": "Removes sponsored wallpapers, news feed and promo cards.",
       "default": true,
       "dependencies": [
-        "BytecodePatch",
-        "ResourcePatch"
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -2173,35 +2142,6 @@
       "options": []
     },
     {
-      "name": "Faster Startup",
-      "description": "Speeds up launch by disabling carrier customizations.",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch",
-        "RawResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.59",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Feed Ads & Content Filter",
       "description": "Filters ads, shopping tags, live cards, and clutter from your feed.",
       "default": true,
@@ -2481,32 +2421,6 @@
           "values": null
         }
       ]
-    },
-    {
-      "name": "Hide Battery Status",
-      "description": "Stops sites from reading your battery level to track you.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.97.59",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
     },
     {
       "name": "Hide Inbox Promos & Alerts",
@@ -3094,7 +3008,7 @@
     },
     {
       "name": "Remove Extra Files",
-      "description": "Deletes unused AI, VPN and AR files to shrink the app.",
+      "description": "Deletes unused AR and XR files to shrink the app.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -3116,7 +3030,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "removeVpnLibrary",
+          "title": "Remove VPN library",
+          "description": "Also deletes the WireGuard library. Brave VPN stops working.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Remove Extra Files",

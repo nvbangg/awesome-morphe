@@ -1,5 +1,5 @@
 {
-    "version": "1.10.0-dev.2",
+    "version": "1.11.0",
     "patches": [
         {
             "name": "Change ChMate package name",
@@ -82,7 +82,7 @@
         },
         {
             "name": "Haiagaru",
-            "description": "Haiagaruの機能とアプリ内設定を追加します。対応バージョンはChMate 0.8.10.191 dev／0.8.10.226 dev／0.8.10.242 devです。",
+            "description": "Haiagaruの機能と設定を追加します。対応:191／226／242 dev。基本機能は追加ダウンロード不要です。絵文字フォント・191画像判定修正・VPNは必要なものだけGitHubから保存し、各オプションのファイル選択で指定してください。未選択なら端末標準の絵文字と本体の画像判定を維持します。初めての方向け手順・配布元: https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
             "default": true,
             "category": null,
             "compatiblePackages": [
@@ -141,8 +141,8 @@
                 },
                 {
                     "key": "emojiFontPath",
-                    "title": "任意の絵文字フォント（任意）",
-                    "description": "パッチ実行PC上のTTF/OTFファイルの絶対パス。空欄なら内蔵Noto Color Emojiを使用します。",
+                    "title": "絵文字フォントを選択（任意）",
+                    "description": "GitHubからNotoColorEmoji.ttfを保存して選択: https://raw.githubusercontent.com/areteruhiro/Haiagaru-Morphe/79759fb0ab0fa30a6755be13a53546b06d2cdf8d/patches/src/main/resources/chmate/emoji/NotoColorEmoji.ttf 空欄は端末標準の絵文字を使用。手順・ライセンス: https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
                     "required": false,
                     "type": "kotlin.String",
                     "default": "",
@@ -169,10 +169,19 @@
                 {
                     "key": "imageNgTfliteFix",
                     "title": "191の自動NG画像判定クラッシュを修正",
-                    "description": "true=修正版TFLiteを適用（推奨）、false=元のライブラリを維持。191 devのみ対象です。",
+                    "description": "191 devのみ。trueと下の修正ファイル選択の両方で適用します。ファイル未選択またはfalseなら本体のライブラリを維持します。自動NG画像判定でクラッシュする方は導入手順を確認してください。https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
                     "required": false,
                     "type": "kotlin.String",
                     "default": "true",
+                    "values": null
+                },
+                {
+                    "key": "imageNgLibraryFile",
+                    "title": "191画像判定の修正ファイルを選択（任意）",
+                    "description": "GitHubからhaiagaru-image-ng.zipを保存して選択: https://raw.githubusercontent.com/areteruhiro/Haiagaru-Morphe/dev/optional-assets/haiagaru-image-ng.zip ZIPは展開不要。226／242には不要です。手順・ソース: https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
+                    "required": false,
+                    "type": "kotlin.String",
+                    "default": "",
                     "values": null
                 }
             ]
@@ -389,7 +398,7 @@
         },
         {
             "name": "画像取得専用VPN（実験用・検証中）",
-            "description": "ChMate単体のVPN Gate画像取得機能を追加します。初期状態は未選択。導入後もHaiagaru設定で有効化が必要です。対象の画像のみVPN経由で取得します。対象画像の表示・全経路の通信漏れ検証は未完了です。VPN運営者に接続元IPが見えることや、固有URLによる識別は防げません。",
+            "description": "必要な方だけ選択してください。GitHubからimage-stack.aarを保存: https://raw.githubusercontent.com/areteruhiro/Haiagaru-Morphe/79759fb0ab0fa30a6755be13a53546b06d2cdf8d/vpn/image-stack/prebuilt/image-stack.aar → 下のオプションで選択 → パッチ適用後にHaiagaru設定でVPNを有効化。AARは展開不要です。全経路の検証は未完了です。導入・ソース: https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
             "default": false,
             "category": null,
             "compatiblePackages": [
@@ -427,7 +436,17 @@
                     ]
                 }
             ],
-            "options": []
+            "options": [
+                {
+                    "key": "imageVpnLibraryFile",
+                    "title": "ダウンロードしたVPNライブラリを選択",
+                    "description": "GitHubからimage-stack.aarを保存して選択: https://raw.githubusercontent.com/areteruhiro/Haiagaru-Morphe/79759fb0ab0fa30a6755be13a53546b06d2cdf8d/vpn/image-stack/prebuilt/image-stack.aar AARは展開不要。https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
+                    "required": false,
+                    "type": "kotlin.String",
+                    "default": "",
+                    "values": null
+                }
+            ]
         }
     ]
 }
