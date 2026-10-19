@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "patches": [
     {
       "name": "Adapt to modern displays",
@@ -367,6 +367,58 @@
       "options": []
     },
     {
+      "name": "Disable all ads and ad components",
+      "description": "Disables the game's entire ad stack: AdMob mediation initialization and the banner, interstitial, rewarded and app-open load entry points; Meta Audience Network initialization and loads; and Amazon APS (DTB) ad requests. No ads of any format are fetched or shown.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.smilerlee.klondike",
+          "name": "Klondike Solitaire",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable analytics and tracking",
+      "description": "Disables AppsFlyer (session start and event logging), Facebook AppEvents (activation, events, purchases, user data) and DoodleBI, the game's own reporting layer and its only Firebase Analytics consumer. No usage or ad-revenue events leave the device through these channels.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.smilerlee.klondike",
+          "name": "Klondike Solitaire",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable banner and interstitial ads",
       "description": "No-ops the native bridge methods that show banner and interstitial ads (LiteRobTopActivity._enableBanner / _showInterstitial) and makes _hasCachedInterstitial report false. Rewarded video ads are left working.",
       "default": true,
@@ -590,6 +642,32 @@
           "targets": [
             {
               "version": "2.4.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ad and tracking components",
+      "description": "Removes from the manifest: the ad networks' and Facebook's auto-init providers (AdMob, Audience Network x2, Facebook) and Firebase's init provider, so none of those SDKs initialize at app start; and the ad-tracking permissions (AD_ID, the Ad Services permissions and the install referrer permission).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.smilerlee.klondike",
+          "name": "Klondike Solitaire",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
