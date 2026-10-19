@@ -5,8 +5,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from google_play_scraper import app as gplay_app
 from google_play_scraper.exceptions import NotFoundError
 
-from updater import normalize_image_url
-from utils import CONCURRENCY, OFFICIAL_BUNDLES_PATH, load_json
+from utils import CONCURRENCY, OFFICIAL_BUNDLES_PATH, load_json, normalize_image_url
 
 
 def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:

@@ -3,7 +3,7 @@
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from updater.repo_info import fetch_repo_details
+from repo_info import fetch_repo_details
 from utils import (
     CONCURRENCY,
     README_LINKS_PATH,

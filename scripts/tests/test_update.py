@@ -6,8 +6,10 @@ from pathlib import Path
 from unittest.mock import patch
 
 import audit_readme
+import repo_info
 import update as bundle_update
-from updater import gplay_scrape, local_parse, repo_info
+import whats_new
+from updater import gplay_scrape, local_parse
 from utils import PACKAGE_UNIVERSAL, load_json, save_json
 
 CURRENT_TIME_SECONDS = 1_800_000_000
@@ -45,6 +47,8 @@ class BundleUpdateTests(unittest.TestCase):
             HISTORY_PATH=self.history_path,
             CUSTOM_JSON_PATH=self.custom_path,
             OFFICIAL_BUNDLES_PATH=self.official_path,
+            BUNDLES_DIR=self.bundles_dir,
+            PATCHES_DIR=self.patches_dir,
         )
         path_patcher.start()
         self.addCleanup(path_patcher.stop)
@@ -61,11 +65,7 @@ class BundleUpdateTests(unittest.TestCase):
         repo_patcher = patch.object(
             repo_info,
             "fetch_repo_details",
-            return_value={
-                "stars": 7,
-                "description": "Repository",
-                "avatar_url": "https://example.com/avatar.png",
-            },
+            side_effect=AssertionError("Update must not request repository metadata"),
         )
         self.fetch_repo = repo_patcher.start()
         self.addCleanup(repo_patcher.stop)
@@ -94,8 +94,8 @@ class BundleUpdateTests(unittest.TestCase):
         sha: str | None = "downloaded-sha",
     ) -> Path:
         repos = load_json(self.repos_path)
-        entry = repos.setdefault(repo, {})
-        entry.setdefault(source, {"main": None, "dev": None})[branch] = sha
+        entry = repos.setdefault(f"https://{source}.com/{repo}", {})
+        entry[branch] = sha
         save_json(self.repos_path, repos)
         prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
         save_json(
@@ -157,7 +157,11 @@ class BundleUpdateTests(unittest.TestCase):
                     self.public_path,
                     {
                         "bundles": [
-                            {"repo": "owner/alpha", "patches": [{"name": "Old patch"}]}
+                            {
+                                "source": "github",
+                                "repo": "owner/alpha",
+                                "patches": [{"name": "Old patch"}],
+                            }
                         ],
                         "store": {"com.old.app": {"name": "Old app"}},
                     },
@@ -167,7 +171,9 @@ class BundleUpdateTests(unittest.TestCase):
                 self.assertEqual(catalog["store"], {})
                 self.assertEqual(catalog["compatibilities"], [])
                 self.assertEqual(
-                    load_json(self.repos_path)["owner/alpha"]["github"]["main"],
+                    load_json(self.repos_path)["https://github.com/owner/alpha"][
+                        "main"
+                    ],
                     "downloaded-sha",
                 )
                 self.assertTrue(path.exists())
@@ -195,7 +201,7 @@ class BundleUpdateTests(unittest.TestCase):
             None,
             [],
             {},
-            {"download_url": "https://example.com/bundle.mpp"},
+            {"download_url": None},
         ):
             with self.subTest(metadata=metadata):
                 self.add_target()
@@ -344,23 +350,23 @@ class BundleUpdateTests(unittest.TestCase):
             self.run_update()["bundles"][0]["patches"][0]["name"], "Main patch"
         )
 
-    def test_source_selection_keeps_timestamp_and_tie_rules(self) -> None:
-        for github_time, gitlab_time, previous_source, expected in [
-            (BUNDLE_TIME_MS, BUNDLE_TIME_MS + 1, None, "gitlab"),
-            (BUNDLE_TIME_MS, BUNDLE_TIME_MS, "gitlab", "gitlab"),
-            (BUNDLE_TIME_MS, BUNDLE_TIME_MS, None, "github"),
-        ]:
-            with self.subTest(expected=expected, previous=previous_source):
-                self.add_target(timestamp=github_time)
-                self.add_target(source="gitlab", timestamp=gitlab_time)
-                save_json(
-                    self.public_path,
-                    {"bundles": [{"repo": "owner/alpha", "source": previous_source}]},
-                )
-                self.assertEqual(self.run_update()["bundles"][0]["source"], expected)
-                self.assertTrue(
-                    self.summary.call_args.args[0].startswith("## 🔄 Update (1/1):")
-                )
+    def test_sources_remain_independent_even_with_the_same_repository_path(
+        self,
+    ) -> None:
+        self.add_target(patches=[self.app_patch("GitHub patch")])
+        self.add_target(
+            source="gitlab",
+            timestamp=BUNDLE_TIME_MS + 1,
+            patches=[self.app_patch("GitLab patch")],
+        )
+        catalog = self.run_update()
+        self.assertEqual(
+            {bundle["source"] for bundle in catalog["bundles"]}, {"github", "gitlab"}
+        )
+        self.assertEqual(len(catalog["bundles"]), 2)
+        self.assertTrue(
+            self.summary.call_args.args[0].startswith("## 🔄 Update (2/2):")
+        )
 
     def test_compatibility_is_deduplicated_once_without_changing_public_schema(
         self,
@@ -383,40 +389,25 @@ class BundleUpdateTests(unittest.TestCase):
                     self.assertEqual(patch_data["compatiblePackagesKey"], 0)
         self.assertIn(PACKAGE_UNIVERSAL, catalog["bundles"][0]["appFirstSeen"])
 
-    def test_repository_metadata_failures_do_not_remove_valid_bundle(self) -> None:
+    def test_repository_metadata_is_read_locally_without_network(self) -> None:
         self.add_target()
-        for details in (
-            {"is_404": True, "error": "Request failed (HTTP 404)"},
-            {"is_451": True, "error": "Request failed (HTTP 451)"},
-            {"error": "Request failed: timed out"},
-        ):
-            with self.subTest(details=details):
-                save_json(
-                    self.public_path,
-                    {
-                        "bundles": [
-                            {
-                                "repo": "owner/alpha",
-                                "stars": 17,
-                                "avatarUrl": "https://example.com/cached.png",
-                            }
-                        ]
-                    },
-                )
-                self.fetch_repo.return_value = details
-                catalog = self.run_update(mode="daily")
-                self.assertEqual(len(catalog["bundles"]), 1)
-                self.assertEqual(catalog["bundles"][0]["stars"], 17)
-                self.assertEqual(
-                    catalog["bundles"][0]["avatarUrl"], "https://example.com/cached.png"
-                )
-                self.summary.assert_called()
-                summary = self.summary.call_args.args[0]
-                self.assertIn("### Repository metadata (1)", summary)
-                self.assertIn(
-                    f"https://github.com/owner/alpha: {details['error']}", summary
-                )
-                self.assertNotIn("### Patch list", summary)
+        repos = load_json(self.repos_path)
+        repos["https://github.com/owner/alpha"].update(
+            {
+                "stars": 17,
+                "description": "Cached repo",
+                "avatarUrl": "https://example.com/cached.png",
+            }
+        )
+        save_json(self.repos_path, repos)
+        catalog = self.run_update("daily")
+        self.assertEqual(catalog["bundles"][0]["stars"], 17)
+        self.assertEqual(
+            catalog["bundles"][0]["avatarUrl"], "https://example.com/cached.png"
+        )
+        self.assertEqual(catalog["bundles"][0]["repoDescription"], "Cached repo")
+        self.fetch_repo.assert_not_called()
+        self.assertNotIn("Repository metadata", self.summary.call_args.args[0])
 
     def test_incomplete_apps_alone_are_grouped_under_update(self) -> None:
         self.add_target()
@@ -428,19 +419,23 @@ class BundleUpdateTests(unittest.TestCase):
         self.assertNotIn("### Patch list", summary)
         self.assertNotIn("### Repository metadata", summary)
 
-    def test_archived_repository_is_reported_without_excluding_bundle(self) -> None:
+    def test_archived_repository_keeps_catalog_flag_without_duplicate_warning(
+        self,
+    ) -> None:
         self.add_target()
-        self.fetch_repo.return_value = {"is_archived": True, "stars": 7}
+        repos = load_json(self.repos_path)
+        repos["https://github.com/owner/alpha"]["isArchived"] = True
+        save_json(self.repos_path, repos)
         catalog = self.run_update()
         self.assertTrue(catalog["bundles"][0]["isArchived"])
-        summary = self.summary.call_args.args[0]
-        self.assertIn("### Repository metadata (1)", summary)
-        self.assertIn("https://github.com/owner/alpha: Repository is archived", summary)
+        self.assertNotIn("Repository metadata", self.summary.call_args.args[0])
 
     def test_modes_keep_metadata_refresh_and_official_store_priority(self) -> None:
         self.add_target()
         existing_catalog = {
-            "bundles": [{"repo": "owner/alpha", "firstSeen": FIRST_SEEN_MS}],
+            "bundles": [
+                {"source": "github", "repo": "owner/alpha", "firstSeen": FIRST_SEEN_MS}
+            ],
             "store": {
                 "com.test.app": {
                     "name": "Cached app",
@@ -455,7 +450,7 @@ class BundleUpdateTests(unittest.TestCase):
         save_json(
             self.official_path,
             {
-                "bundles": [{"repo": "owner/alpha", "hotRank": 0}],
+                "bundles": [{"source": "github", "repo": "owner/alpha", "hotRank": 0}],
                 "store": {"com.test.app": {"name": "Official app"}},
             },
         )
@@ -465,9 +460,7 @@ class BundleUpdateTests(unittest.TestCase):
                 self.fetch_repo.reset_mock()
                 self.fetch_app.reset_mock()
                 catalog = self.run_update(mode)
-                self.assertEqual(
-                    self.fetch_repo.call_count, 0 if mode == "default" else 1
-                )
+                self.assertEqual(self.fetch_repo.call_count, 0)
                 self.assertEqual(
                     self.fetch_app.call_count, 1 if mode == "weekly" else 0
                 )
@@ -481,24 +474,44 @@ class BundleUpdateTests(unittest.TestCase):
         self.add_target()
         save_json(
             self.public_path,
-            {"bundles": [{"repo": "owner/alpha", "firstSeen": FIRST_SEEN_MS}]},
+            {
+                "bundles": [
+                    {
+                        "source": "github",
+                        "repo": "owner/alpha",
+                        "firstSeen": FIRST_SEEN_MS,
+                    }
+                ]
+            },
         )
         old_history = {"patches": ["Patch"]}
-        save_json(self.history_path, {"owner/alpha": old_history})
-        self.fetch_repo.return_value = {"full_name": "owner/renamed", "stars": 7}
+        save_json(self.history_path, {"https://github.com/owner/alpha": old_history})
+        repos = load_json(self.repos_path)
+        repos["https://github.com/owner/alpha"]["renamedTo"] = (
+            "https://github.com/owner/renamed"
+        )
+        save_json(self.repos_path, repos)
         catalog = self.run_update("daily")
         self.assertEqual(catalog["bundles"][0]["repo"], "owner/renamed")
         self.assertEqual(catalog["bundles"][0]["firstSeen"], FIRST_SEEN_MS)
-        self.assertEqual(load_json(self.history_path), {"owner/renamed": old_history})
-        self.assertEqual(set(load_json(self.hashes_path)), {"owner/renamed"})
-        self.assertEqual(set(load_json(self.repos_path)), {"owner/renamed"})
+        self.assertEqual(
+            load_json(self.history_path),
+            {"https://github.com/owner/renamed": old_history},
+        )
+        self.assertEqual(
+            set(load_json(self.hashes_path)), {"https://github.com/owner/renamed"}
+        )
+        self.assertEqual(
+            set(load_json(self.repos_path)), {"https://github.com/owner/renamed"}
+        )
         self.assertFalse(
             load_json(self.custom_path)["https://github.com/owner/alpha"]["enabled"]
         )
-        self.assertIn(
-            "https://github.com/owner/alpha: Renamed to https://github.com/owner/renamed",
-            self.summary.call_args.args[0],
+        self.assertNotIn(
+            "renamedTo", load_json(self.repos_path)["https://github.com/owner/renamed"]
         )
+        self.assertTrue((self.bundles_dir / "github~owner~renamed~main.json").is_file())
+        self.assertTrue((self.patches_dir / "github~owner~renamed~main.json").is_file())
 
     def test_rename_collision_filters_apps_hashes_and_history_before_scraping(
         self,
@@ -510,19 +523,26 @@ class BundleUpdateTests(unittest.TestCase):
         save_json(
             self.history_path,
             {
-                "owner/alpha": {"patches": ["Alpha"]},
-                "owner/beta": {"patches": ["Beta"]},
+                "https://github.com/owner/alpha": {"patches": ["Alpha"]},
+                "https://github.com/owner/beta": {"patches": ["Beta"]},
             },
         )
-        self.fetch_repo.return_value = {"full_name": "owner/beta", "stars": 7}
+        repos = load_json(self.repos_path)
+        repos["https://github.com/owner/alpha"]["renamedTo"] = (
+            "https://github.com/owner/beta"
+        )
+        save_json(self.repos_path, repos)
         catalog = self.run_update("daily")
         self.assertEqual(
             [bundle["repo"] for bundle in catalog["bundles"]], ["owner/beta"]
         )
         self.assertEqual(set(catalog["store"]), {"com.beta.app"})
-        self.assertEqual(set(load_json(self.hashes_path)), {"owner/beta"})
         self.assertEqual(
-            load_json(self.history_path), {"owner/beta": {"patches": ["Beta"]}}
+            set(load_json(self.hashes_path)), {"https://github.com/owner/beta"}
+        )
+        self.assertEqual(
+            load_json(self.history_path),
+            {"https://github.com/owner/beta": {"patches": ["Beta"]}},
         )
         self.assertEqual(
             [call.args[0] for call in self.fetch_app.call_args_list], ["com.beta.app"]
@@ -542,9 +562,9 @@ class BundleUpdateTests(unittest.TestCase):
         self.add_target(repo="owner/invalid", patches=[])
         self.add_target(repo="owner/skipped", sha=None)
         catalog = self.run_update()
-        self.assertEqual(len(catalog["bundles"]), 1)
+        self.assertEqual(len(catalog["bundles"]), 2)
         self.assertTrue(
-            self.summary.call_args.args[0].startswith("## 🔄 Update (1/2):")
+            self.summary.call_args.args[0].startswith("## 🔄 Update (2/3):")
         )
 
     def test_empty_repository_list_still_reports_zero_counts(self) -> None:
@@ -557,11 +577,18 @@ class BundleUpdateTests(unittest.TestCase):
         self,
     ) -> None:
         self.add_target()
-        save_json(self.history_path, {"owner/alpha": {"patches": ["Patch"]}})
+        save_json(
+            self.history_path,
+            {"https://github.com/owner/alpha": {"patches": ["Patch"]}},
+        )
         orphan_file = self.patches_dir / "orphan.json"
         save_json(orphan_file, {})
+        repos = load_json(self.repos_path)
+        repos["https://github.com/owner/alpha"]["renamedTo"] = (
+            "https://github.com/owner/renamed"
+        )
+        save_json(self.repos_path, repos)
         snapshot = self.snapshot()
-        self.fetch_repo.return_value = {"full_name": "owner/renamed", "stars": 7}
         with (
             patch.object(
                 gplay_scrape,
@@ -593,13 +620,67 @@ class BundleUpdateTests(unittest.TestCase):
         orphan_file = self.patches_dir / "orphan.json"
         save_json(orphan_file, {})
         snapshot = self.snapshot()
-        sources = {"owner/alpha": {"repo": "owner/alpha"}}
+        sources = {"https://github.com/owner/alpha": {"repo": "owner/alpha"}}
         local_hashes = local_parse.process(sources, {}, load_json(self.repos_path), {})
-        self.assertEqual(set(local_hashes), {"owner/alpha"})
-        self.assertIn("compatiblePackages", sources["owner/alpha"]["patches"][0])
-        self.assertNotIn("compatiblePackagesKey", sources["owner/alpha"]["patches"][0])
+        self.assertEqual(set(local_hashes), {"https://github.com/owner/alpha"})
+        self.assertIn(
+            "compatiblePackages",
+            sources["https://github.com/owner/alpha"]["patches"][0],
+        )
+        self.assertNotIn(
+            "compatiblePackagesKey",
+            sources["https://github.com/owner/alpha"]["patches"][0],
+        )
         self.assertEqual(self.snapshot(), snapshot)
         self.assertTrue(orphan_file.exists())
+
+    def test_app_name_comes_from_selected_branch(self) -> None:
+        main = self.app_patch()
+        main["compatiblePackages"][0]["name"] = "Stable app"
+        dev = self.app_patch()
+        dev["compatiblePackages"][0]["name"] = "Dev app"
+        self.add_target(timestamp=BUNDLE_TIME_MS + 1, patches=[main])
+        self.add_target(branch="dev", patches=[dev])
+        self.assertEqual(
+            self.run_update()["store"]["com.test.app"]["name"], "Stable app"
+        )
+
+    def test_official_status_and_metadata_do_not_leak_across_hosts(self) -> None:
+        self.add_target()
+        self.add_target(source="gitlab")
+        repos = load_json(self.repos_path)
+        repos["https://github.com/owner/alpha"].update(
+            {"stars": 100, "description": "GitHub"}
+        )
+        repos["https://gitlab.com/owner/alpha"].update(
+            {"stars": 5, "description": "GitLab"}
+        )
+        save_json(self.repos_path, repos)
+        save_json(
+            self.official_path,
+            {"bundles": [{"source": "github", "repo": "owner/alpha", "hotRank": 0}]},
+        )
+        bundles = {bundle["source"]: bundle for bundle in self.run_update()["bundles"]}
+        self.assertTrue(bundles["github"]["isOfficial"])
+        self.assertNotIn("isOfficial", bundles["gitlab"])
+        self.assertEqual(bundles["github"]["stars"], 100)
+        self.assertEqual(bundles["gitlab"]["stars"], 5)
+
+    def test_rename_preserves_other_host_and_keeps_new_files_readable(self) -> None:
+        self.add_target()
+        self.add_target(source="gitlab")
+        repos = load_json(self.repos_path)
+        repos["https://github.com/owner/alpha"]["renamedTo"] = (
+            "https://github.com/owner/new"
+        )
+        save_json(self.repos_path, repos)
+        catalog = self.run_update()
+        self.assertEqual(
+            {(bundle["source"], bundle["repo"]) for bundle in catalog["bundles"]},
+            {("github", "owner/new"), ("gitlab", "owner/alpha")},
+        )
+        self.assertIn("https://gitlab.com/owner/alpha", load_json(self.repos_path))
+        self.assertEqual(self.run_update(), catalog)
 
 
 class RepositoryMetadataTests(unittest.TestCase):
@@ -680,6 +761,58 @@ class RepositoryMetadataTests(unittest.TestCase):
                 self.assertIn(str(code), errors["unavailable"][0])
                 self.assertEqual(errors["other"], [])
                 self.assertIn("### Unavailable (1)", summary.call_args.args[0])
+
+
+class WhatsNewIdentityTests(unittest.TestCase):
+    def catalog(self) -> dict:
+        return {
+            "bundles": [
+                {
+                    "source": source,
+                    "repo": "owner/alpha",
+                    "name": source.title(),
+                    "hotRank": index,
+                    "patches": [{"name": source + " patch"}],
+                }
+                for index, source in enumerate(("github", "gitlab"))
+            ],
+            "store": {},
+        }
+
+    def test_baseline_and_diff_preserve_both_hosts(self) -> None:
+        catalog = self.catalog()
+        baseline = whats_new.build_new_bundles(catalog)
+        self.assertEqual(
+            set(baseline),
+            {"https://github.com/owner/alpha", "https://gitlab.com/owner/alpha"},
+        )
+        names, order = whats_new.extract_bundle_metadata(catalog["bundles"])
+        self.assertEqual(len(names), 2)
+        changes = whats_new.build_json_diff({}, baseline, {}, order)
+        markdown = whats_new.generate_markdown(changes, {}, {}, names, order)
+        self.assertIn("github=owner/alpha", markdown)
+        self.assertIn("gitlab=owner/alpha", markdown)
+        self.assertNotIn("github=https", markdown)
+        self.assertEqual(whats_new.build_json_diff(baseline, baseline, {}, order), {})
+
+    def test_missing_bundle_name_uses_the_repository_name(self) -> None:
+        catalog = self.catalog()
+        for bundle in catalog["bundles"]:
+            bundle.pop("name")
+        names, order = whats_new.extract_bundle_metadata(catalog["bundles"])
+        self.assertEqual(set(names.values()), {"alpha"})
+        changes = whats_new.build_json_diff(
+            {}, whats_new.build_new_bundles(catalog), {}, order
+        )
+        markdown = whats_new.generate_markdown(changes, {}, {}, {}, order)
+        self.assertIn("github=owner/alpha", markdown)
+        self.assertIn("gitlab=owner/alpha", markdown)
+
+    def test_missing_install_count_does_not_break_changelog_sorting(self) -> None:
+        key = whats_new.get_app_sort_key(
+            "com.test.app", {"com.test.app": {"name": "Test", "minInstalls": None}}
+        )
+        self.assertEqual(key[1], 0)
 
 
 if __name__ == "__main__":

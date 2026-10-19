@@ -138,11 +138,25 @@ class BundleFetchTests(unittest.TestCase):
         self.updated_path = self.parser_dir / "updated_files.txt"
         self.parsed_path = self.parser_dir / "parsed_files.txt"
         self.initial_repos = {
-            "owner/alpha": {
+            "https://github.com/owner/alpha": {
                 "name": "Alpha old",
-                "github": {"main": "main-old", "dev": "dev-old", "image": "image-old"},
+                "main": "main-old",
+                "dev": "dev-old",
+                "image": "image-old",
             }
         }
+        repo_info_patcher = patch.object(
+            bundle_fetch,
+            "fetch_repo_details",
+            return_value={"error": "Request failed (HTTP 503)"},
+        )
+        repo_info_patcher.start()
+        self.addCleanup(repo_info_patcher.stop)
+        refresh_patcher = patch.object(
+            bundle_fetch, "refresh_repo_metadata", return_value=[]
+        )
+        refresh_patcher.start()
+        self.addCleanup(refresh_patcher.stop)
         save_json(self.repos_path, self.initial_repos)
         self.bundle_data = {
             "download_url": "https://github.com/owner/alpha/releases/download/latest/bundle.mpp"
@@ -266,10 +280,10 @@ class BundleFetchTests(unittest.TestCase):
             self.assertEqual(
                 (self.mpp_dir / f"{file_prefix}.mpp").read_bytes(), self.mpp_bytes
             )
-        updated_repo = load_json(self.repos_path)["owner/alpha"]
+        updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
         self.assertEqual(updated_repo["name"], "Alpha new")
         for branch in DEFAULT_BRANCHES:
-            self.assertEqual(updated_repo["github"][branch], f"{branch}-new")
+            self.assertEqual(updated_repo[branch], f"{branch}-new")
         self.assertFalse(self.updated_path.exists())
         self.run_process.assert_not_called()
         self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
@@ -336,7 +350,9 @@ class BundleFetchTests(unittest.TestCase):
                     content,
                 )
                 self.assertEqual(
-                    load_json(self.repos_path)["owner/alpha"]["github"]["main"],
+                    load_json(self.repos_path)["https://github.com/owner/alpha"][
+                        "main"
+                    ],
                     "main-new",
                 )
                 self.run_process.assert_not_called()
@@ -488,9 +504,11 @@ class BundleFetchTests(unittest.TestCase):
                                 summary,
                             )
                         self.assertNotIn("HTTP 404/451", summary)
-                        updated_repo = load_json(self.repos_path)["owner/alpha"]
+                        updated_repo = load_json(self.repos_path)[
+                            "https://github.com/owner/alpha"
+                        ]
                         for branch in DEFAULT_BRANCHES:
-                            self.assertIsNone(updated_repo["github"][branch])
+                            self.assertIsNone(updated_repo[branch])
 
     def test_single_unavailable_metadata_branch_is_suppressed_in_summary(self) -> None:
         for other_failure in (None, TimeoutError("Timed out")):
@@ -725,7 +743,7 @@ class BundleFetchTests(unittest.TestCase):
         self.run_process.assert_called_once()
         for branch in DEFAULT_BRANCHES:
             self.assertIsNone(
-                load_json(self.repos_path)["owner/alpha"]["github"][branch]
+                load_json(self.repos_path)["https://github.com/owner/alpha"][branch]
             )
 
     def test_missing_or_blocked_image_is_cleared_without_warning(self) -> None:
@@ -772,7 +790,9 @@ class BundleFetchTests(unittest.TestCase):
                     old_contents = self.seed_target()
                     bundle_fetch.fetch_all_repos()
                     self.assertIsNone(
-                        load_json(self.repos_path)["owner/alpha"]["github"]["main"]
+                        load_json(self.repos_path)["https://github.com/owner/alpha"][
+                            "main"
+                        ]
                     )
                     for path, content in old_contents.items():
                         self.assertEqual(path.read_bytes(), content)
@@ -816,9 +836,11 @@ class BundleFetchTests(unittest.TestCase):
                 save_json(self.repos_path, self.initial_repos)
                 self.responses[self.bundle_data["download_url"]] = content
                 bundle_fetch.fetch_all_repos()
-                updated_repo = load_json(self.repos_path)["owner/alpha"]
+                updated_repo = load_json(self.repos_path)[
+                    "https://github.com/owner/alpha"
+                ]
                 self.assertEqual(updated_repo["name"], "Alpha old")
-                self.assertEqual(updated_repo["github"]["main"], "main-new")
+                self.assertEqual(updated_repo["main"], "main-new")
                 self.assertEqual(
                     (self.mpp_dir / "github~owner~alpha~main.mpp").read_bytes(),
                     content,
@@ -836,9 +858,9 @@ class BundleFetchTests(unittest.TestCase):
         )
         self.responses[self.bundle_data["download_url"]] = content
         bundle_fetch.fetch_all_repos()
-        updated_repo = load_json(self.repos_path)["owner/alpha"]
+        updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
         self.assertEqual(updated_repo["name"], "Alpha new")
-        self.assertEqual(updated_repo["github"]["main"], "main-new")
+        self.assertEqual(updated_repo["main"], "main-new")
         self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (1/1):")
         self.run_process.assert_not_called()
 
@@ -874,7 +896,9 @@ class BundleFetchTests(unittest.TestCase):
             ),
         ):
             bundle_fetch.fetch_all_repos(weekly=True)
-        self.assertIsNone(load_json(self.repos_path)["owner/alpha"]["github"]["main"])
+        self.assertIsNone(
+            load_json(self.repos_path)["https://github.com/owner/alpha"]["main"]
+        )
         self.assertTrue((self.patches_dir / "github~owner~alpha~main.json").exists())
         self.fetch_request.assert_not_called()
 
@@ -904,9 +928,11 @@ class BundleFetchTests(unittest.TestCase):
                 patch.object(bundle_fetch, "get_image_sha", return_value="image-new"),
             ):
                 bundle_fetch.fetch_all_repos(**{mode: True})
-                updated_repo = load_json(self.repos_path)["owner/alpha"]
-                self.assertEqual(updated_repo["github"]["image"], "image-new")
-                self.assertIsNone(updated_repo["github"]["main"])
+                updated_repo = load_json(self.repos_path)[
+                    "https://github.com/owner/alpha"
+                ]
+                self.assertEqual(updated_repo["image"], "image-new")
+                self.assertIsNone(updated_repo["main"])
                 self.assertEqual(updated_repo["name"], "Alpha old")
 
     def test_file_write_failure_stops_fetch(self) -> None:
@@ -977,9 +1003,9 @@ class BundleFetchTests(unittest.TestCase):
             patch.object(bundle_fetch, "save_json", wraps=save_json) as save,
         ):
             bundle_fetch.fetch_all_repos()
-        updated_repo = load_json(self.repos_path)["owner/alpha"]
-        self.assertEqual(updated_repo["github"]["main"], "main-new")
-        self.assertIsNone(updated_repo["github"]["dev"])
+        updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
+        self.assertEqual(updated_repo["main"], "main-new")
+        self.assertIsNone(updated_repo["dev"])
         self.assertEqual(updated_repo["name"], "Alpha new")
         self.assertEqual(
             sum(
@@ -993,11 +1019,12 @@ class BundleFetchTests(unittest.TestCase):
 
     def test_success_counts_repositories_once_across_sources_and_branches(self) -> None:
         repos = self.initial_repos.copy()
-        repos["owner/alpha"] = {
-            **repos["owner/alpha"],
-            "gitlab": {"main": "gitlab-old", "dev": None},
+        repos["https://gitlab.com/owner/alpha"] = {
+            "main": "gitlab-old",
+            "dev": None,
+            "name": "GitLab alpha",
         }
-        repos["owner/beta"] = {"github": {"main": "beta-old", "dev": None}}
+        repos["https://github.com/owner/beta"] = {"main": "beta-old", "dev": None}
         save_json(self.repos_path, repos)
 
         def process_branch(
@@ -1028,7 +1055,7 @@ class BundleFetchTests(unittest.TestCase):
         ):
             bundle_fetch.fetch_all_repos(daily=True)
         summary = self.summary.call_args.args[0]
-        self.assertTrue(summary.startswith("## 📥 Fetch (1/2):"))
+        self.assertTrue(summary.startswith("## 📥 Fetch (1/3):"))
         self.assertIn("Bundle image (3)", summary)
         self.assertEqual(load_json(self.repos_path), repos)
 
@@ -1038,6 +1065,228 @@ class BundleFetchTests(unittest.TestCase):
         self.assertEqual(self.summary.call_args.args[0], "## 📥 Fetch (0/0):")
         self.fetch_hash.assert_not_called()
         self.fetch_request.assert_not_called()
+
+    def test_main_name_wins_independently_of_worker_completion_order(self) -> None:
+        def process(
+            source: str, repo: str, branch: str, _sha: str | None, **_kwargs: object
+        ) -> bundle_fetch.BranchFetchResult:
+            return bundle_fetch.BranchFetchResult(
+                source,
+                repo,
+                branch,
+                "new",
+                status_changed=True,
+                bundle_name=f"{branch} name",
+            )
+
+        with (
+            patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES),
+            patch.object(bundle_fetch, "process_repo_branch", side_effect=process),
+        ):
+            bundle_fetch.fetch_all_repos()
+        self.assertEqual(
+            load_json(self.repos_path)["https://github.com/owner/alpha"]["name"],
+            "main name",
+        )
+
+    def test_dev_update_downloads_bundle_but_keeps_existing_main_name(self) -> None:
+        self.seed_target()
+        save_json(self.bundles_dir / "github~owner~alpha~main.json", self.bundle_data)
+        self.fetch_hash.side_effect = lambda _source, _repo, branch: (
+            "main-old" if branch == "main" else "dev-new"
+        )
+        with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
+            bundle_fetch.fetch_all_repos()
+        self.assertEqual(
+            load_json(self.repos_path)["https://github.com/owner/alpha"]["name"],
+            "Alpha old",
+        )
+        self.fetch_request.assert_any_call(
+            self.url("dev", "patches-list.json"), binary=True
+        )
+        self.assertTrue((self.mpp_dir / "github~owner~alpha~dev.mpp").is_file())
+
+    def test_switch_to_unchanged_dev_reads_its_name_when_local_mpp_is_absent(
+        self,
+    ) -> None:
+        save_json(self.bundles_dir / "github~owner~alpha~dev.json", self.bundle_data)
+        save_json(self.patches_dir / "github~owner~alpha~dev.json", self.patches_data)
+
+        def hash_for_branch(_source: str, _repo: str, branch: str) -> str:
+            if branch == "main":
+                raise self.http_error(
+                    self.url(branch, "patches-bundle.json"), HTTP_NOT_FOUND
+                )
+            return "dev-old"
+
+        self.fetch_hash.side_effect = hash_for_branch
+        with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
+            bundle_fetch.fetch_all_repos()
+        self.assertEqual(
+            load_json(self.repos_path)["https://github.com/owner/alpha"]["name"],
+            "Alpha new",
+        )
+        self.fetch_request.assert_called_once_with(
+            self.bundle_data["download_url"], binary=True
+        )
+
+    def test_new_empty_repository_entry_is_fetched(self) -> None:
+        save_json(self.repos_path, {"https://github.com/owner/alpha": {}})
+        bundle_fetch.fetch_all_repos()
+        self.assertEqual(
+            load_json(self.repos_path)["https://github.com/owner/alpha"]["main"],
+            "main-new",
+        )
+        self.assertEqual(
+            load_json(self.repos_path)["https://github.com/owner/alpha"]["name"],
+            "Alpha new",
+        )
+
+    def test_confirmed_rename_allows_download_from_the_new_repository(self) -> None:
+        new_url = "https://github.com/owner/new/releases/latest/bundle.mpp"
+        self.responses[self.url("main", "patches-bundle.json")] = json.dumps(
+            {"download_url": new_url}
+        ).encode()
+        self.responses[new_url] = self.mpp_bytes
+        result = bundle_fetch.process_repo_branch(
+            "github", "owner/alpha", "main", "main-old", renamed_repo="owner/new"
+        )
+        self.assertEqual(result.new_sha, "main-new")
+        self.assertIsNone(result.error_message)
+
+
+class RepositoryMetadataRefreshTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.url = "https://github.com/owner/alpha"
+        self.metadata = {
+            "main": "sha",
+            "dev": None,
+            "name": "Alpha",
+            "stars": 17,
+            "description": "Old",
+            "avatarUrl": "https://example.com/old.png",
+        }
+
+    def test_default_skips_complete_metadata_and_refreshes_missing_fields(self) -> None:
+        repos = {self.url: dict(self.metadata)}
+        with patch.object(
+            bundle_fetch,
+            "fetch_repo_details",
+            return_value={"stars": 23, "description": "New"},
+        ) as request:
+            self.assertEqual(bundle_fetch.refresh_repo_metadata(repos, False), [])
+            request.assert_not_called()
+            repos[self.url].pop("stars")
+            bundle_fetch.refresh_repo_metadata(repos, False)
+            request.assert_called_once_with(self.url)
+        self.assertEqual(repos[self.url]["stars"], 23)
+
+    def test_request_errors_preserve_all_metadata_and_pending_rename(self) -> None:
+        self.metadata["renamedTo"] = "https://github.com/owner/new"
+        for reason in (
+            "Request failed (HTTP 404)",
+            "Request failed (HTTP 451)",
+            "Request failed: timed out",
+        ):
+            with (
+                self.subTest(reason=reason),
+                patch.object(
+                    bundle_fetch, "fetch_repo_details", return_value={"error": reason}
+                ),
+            ):
+                repos = {self.url: dict(self.metadata)}
+                self.assertEqual(
+                    bundle_fetch.refresh_repo_metadata(repos, True),
+                    [f"{self.url}: {reason}"],
+                )
+                self.assertEqual(repos[self.url], self.metadata)
+
+    def test_archived_false_removes_flag_and_rename_only_records_destination(
+        self,
+    ) -> None:
+        repos = {self.url: {**self.metadata, "isArchived": True}}
+        with patch.object(
+            bundle_fetch,
+            "fetch_repo_details",
+            return_value={"full_name": "owner/new", "stars": 23},
+        ):
+            warnings = bundle_fetch.refresh_repo_metadata(repos, True)
+        self.assertNotIn("isArchived", repos[self.url])
+        self.assertEqual(repos[self.url]["renamedTo"], "https://github.com/owner/new")
+        self.assertEqual(set(repos), {self.url})
+        self.assertIn("Renamed to", warnings[0])
+        with patch.object(
+            bundle_fetch,
+            "fetch_repo_details",
+            return_value={"full_name": "OWNER/ALPHA", "is_archived": True},
+        ):
+            warnings = bundle_fetch.refresh_repo_metadata(repos, True)
+        self.assertNotIn("renamedTo", repos[self.url])
+        self.assertTrue(repos[self.url]["isArchived"])
+        self.assertIn("Repository is archived", warnings[0])
+
+    def test_null_hashes_do_not_trigger_repository_request(self) -> None:
+        with patch.object(bundle_fetch, "fetch_repo_details") as request:
+            self.assertEqual(
+                bundle_fetch.refresh_repo_metadata({self.url: {}}, True), []
+            )
+            request.assert_not_called()
+
+    def test_fetch_persists_metadata_once_and_defers_custom_source_changes(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            repos_path = root / "repos.json"
+            custom_path = root / "custom.json"
+            save_json(repos_path, {self.url: {"main": "sha", "name": "Alpha"}})
+            save_json(custom_path, {self.url: {"note": "Keep me"}})
+            custom_before = custom_path.read_bytes()
+
+            def unchanged(
+                source: str,
+                repo: str,
+                branch: str,
+                current_sha: str | None,
+                **kwargs: object,
+            ) -> bundle_fetch.BranchFetchResult:
+                self.assertEqual(kwargs["renamed_repo"], "owner/new")
+                return bundle_fetch.BranchFetchResult(source, repo, branch, current_sha)
+
+            with (
+                patch.multiple(
+                    bundle_fetch,
+                    REPOS_JSON_PATH=repos_path,
+                    BUNDLES_DIR=root / "bundles",
+                    PATCHES_DIR=root / "patches",
+                    MPP_DIR=root / "mpp",
+                ),
+                patch.object(
+                    bundle_fetch, "process_repo_branch", side_effect=unchanged
+                ),
+                patch.object(bundle_fetch, "run_bundle_parser"),
+                patch.object(
+                    bundle_fetch,
+                    "fetch_repo_details",
+                    return_value={
+                        "full_name": "owner/new",
+                        "stars": 23,
+                        "description": "New",
+                        "avatar_url": "https://example.com/avatar.png",
+                    },
+                ) as request,
+                patch.object(bundle_fetch, "append_step_summary") as summary,
+                patch.object(bundle_fetch, "save_json", wraps=save_json) as save,
+            ):
+                bundle_fetch.fetch_all_repos()
+                request.assert_called_once_with(self.url)
+                save.assert_called_once()
+                self.assertIn("Repository metadata (1)", summary.call_args.args[0])
+            metadata = load_json(repos_path)[self.url]
+            self.assertEqual(metadata["renamedTo"], "https://github.com/owner/new")
+            self.assertEqual(metadata["main"], "sha")
+            self.assertEqual(metadata["stars"], 23)
+            self.assertEqual(custom_path.read_bytes(), custom_before)
 
 
 if __name__ == "__main__":

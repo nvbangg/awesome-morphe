@@ -22,11 +22,15 @@ export const WhatsNewBundleCard = memo(function WhatsNewBundleCard({
 	onAppClick,
 	onPatchClick,
 }: WhatsNewBundleCardProps) {
-	const bundle = activeData?.bundleMap[repo.toLowerCase()];
+	const repositoryUrl = new URL(repo);
+	const repositoryPath = repositoryUrl.pathname.slice(1);
+	const source = repositoryUrl.hostname === "gitlab.com" ? "gitlab" : "github";
+	const fullBundleKey = `${source}:${repositoryPath}`;
+	const bundle = activeData?.bundleMap[fullBundleKey.toLowerCase()];
 	if (activeData && !bundle) return null;
 
-	const fullBundleKey = bundle ? bundle.key : repo;
-	const displayName = bundle?.name || repo.split("/")[1] || repo;
+	const displayName =
+		bundle?.name || repositoryPath.split("/").at(-1) || repositoryPath;
 	const isBundleNew = !!bundleData.isNew;
 
 	const validAppEntries = bundleData.apps
@@ -54,7 +58,7 @@ export const WhatsNewBundleCard = memo(function WhatsNewBundleCard({
 							{isBundleNew && <Badge variant="new" />}
 						</div>
 						<span className="text-xs font-medium text-primary dark:text-secondary truncate">
-							{repo}
+							{source}: {repositoryPath}
 						</span>
 					</div>
 				</div>

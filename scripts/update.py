@@ -6,8 +6,9 @@ import json
 import sys
 import time
 
-from updater import gplay_scrape, local_parse, repo_info
+from updater import gplay_scrape, local_parse
 from utils import (
+    BUNDLES_DIR,
     BUNDLES_JSON_PATH,
     CUSTOM_JSON_PATH,
     DEFAULT_BRANCHES,
@@ -17,11 +18,74 @@ from utils import (
     OFFICIAL_BUNDLES_PATH,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
+    PATCHES_DIR,
     REPOS_JSON_PATH,
     append_step_summary,
+    build_raw_url,
+    build_repo_url,
     load_json,
+    parse_repo_url,
     save_json,
 )
+
+
+def apply_renames(
+    bundle_sources: dict, repos_data: dict, custom_data: dict
+) -> tuple[dict[str, str], dict[str, str]]:
+    renames = {}
+    file_renames = {}
+    for old_url, metadata in list(repos_data.items()):
+        new_url = metadata.get("renamedTo")
+        if not new_url:
+            continue
+        source, old_repo = parse_repo_url(old_url)
+        new_source, new_repo = parse_repo_url(new_url)
+        if source != new_source or not new_repo or new_url.lower() == old_url.lower():
+            raise ValueError(f"Invalid rename: {old_url} -> {new_url}")
+        new_url = build_repo_url(source, new_repo)
+        existing_url = next(
+            (url for url in repos_data if url.lower() == new_url.lower()), None
+        )
+        if existing_url:
+            new_url = existing_url
+            bundle_sources.pop(old_url, None)
+        else:
+            file_renames[old_url] = new_url
+            repos_data[new_url] = {
+                key: value for key, value in metadata.items() if key != "renamedTo"
+            }
+            if old_url in bundle_sources:
+                bundle_sources[old_url]["repo"] = new_repo
+        repos_data.pop(old_url)
+        custom_data[old_url] = {
+            **custom_data.get(old_url, {}),
+            "enabled": False,
+            "note": f"Automatically disabled by GitHub Actions (Redirected/Renamed to {new_repo})",
+        }
+        custom_data.setdefault(
+            new_url,
+            {
+                "note": f"Automatically added by GitHub Actions (Redirected/Renamed from {old_repo})",
+            },
+        )
+        renames[old_url] = new_url
+    return renames, file_renames
+
+
+def move_renamed_files(renames: dict[str, str]) -> None:
+    for old_url, new_url in renames.items():
+        source, old_repo = parse_repo_url(old_url)
+        _, new_repo = parse_repo_url(new_url)
+        for directory in (BUNDLES_DIR, PATCHES_DIR):
+            for branch in DEFAULT_BRANCHES:
+                old_file = (
+                    directory / f"{source}~{old_repo.replace('/', '~')}~{branch}.json"
+                )
+                new_file = (
+                    directory / f"{source}~{new_repo.replace('/', '~')}~{branch}.json"
+                )
+                if old_file.is_file() and not new_file.exists():
+                    old_file.rename(new_file)
 
 
 def main() -> int:
@@ -37,44 +101,48 @@ def main() -> int:
     custom_data = load_json(CUSTOM_JSON_PATH, {})
     existing_bundles_data = load_json(BUNDLES_JSON_PATH, {})
     existing_bundles = {
-        bundle.get("repo"): bundle
+        build_repo_url(bundle.get("source"), bundle.get("repo")): bundle
         for bundle in existing_bundles_data.get("bundles", [])
         if bundle.get("repo")
     }
     apps_dict = existing_bundles_data.get("store", {})
     bundle_sources = {}
     total_repo_count = 0
-    for repo, repo_metadata in repos_data.items():
-        if not isinstance(repo_metadata, dict):
+    for repo_url, repo_metadata in repos_data.items():
+        source, repo = parse_repo_url(repo_url)
+        if not source or not repo or not isinstance(repo_metadata, dict):
             continue
-        if any(
-            isinstance(source_metadata := repo_metadata.get(source), dict)
-            and any(source_metadata.get(branch) for branch in DEFAULT_BRANCHES)
-            for source in ("github", "gitlab")
-        ):
+        if any(repo_metadata.get(branch) for branch in DEFAULT_BRANCHES):
             total_repo_count += 1
-        existing = existing_bundles.get(repo, {})
-        source_entry = {"repo": repo}
-        for field in (
-            "stars",
-            "avatarUrl",
-            "repoDescription",
-            "appFirstSeen",
-            "appUpdates",
-            "isArchived",
-        ):
+        existing = existing_bundles.get(repo_url, {})
+        source_entry = {"source": source, "repo": repo}
+        for field in ("appFirstSeen", "appUpdates"):
             if field in existing:
                 source_entry[field] = existing[field]
-        bundle_sources[repo] = source_entry
+        source_entry["stars"] = repo_metadata.get("stars", 0) - custom_data.get(
+            repo_url, {}
+        ).get("revancedStars", 0)
+        source_entry["repoDescription"] = repo_metadata.get("description") or ""
+        source_entry["avatarUrl"] = (
+            build_raw_url(source, repo, "main", "patches-bundle.png")
+            if repo_metadata.get("image")
+            else repo_metadata.get("avatarUrl") or ""
+        )
+        if repo_metadata.get("isArchived"):
+            source_entry["isArchived"] = True
+        bundle_sources[repo_url] = source_entry
 
-    errors: dict[str, list[str]] = {"patch_lists": [], "repo_metadata": []}
+    patch_list_errors: list[str] = []
     local_hashes = local_parse.process(
-        bundle_sources, apps_dict, repos_data, existing_hashes, errors, existing_bundles
+        bundle_sources,
+        apps_dict,
+        repos_data,
+        existing_hashes,
+        patch_list_errors,
+        existing_bundles,
     )
     successful_repo_count = len(local_hashes)
-    renames = repo_info.process(
-        bundle_sources, mode, existing_bundles, repos_data, custom_data, errors
-    )
+    renames, file_renames = apply_renames(bundle_sources, repos_data, custom_data)
     active_apps = {
         package_name
         for bundle in bundle_sources.values()
@@ -87,17 +155,22 @@ def main() -> int:
     }
     gplay_scrape.process(apps_dict, mode)
     official_ranks = {
-        repo.lower(): bundle.get("hotRank")
+        build_repo_url(bundle.get("source"), repo).lower(): bundle.get("hotRank")
         for bundle in load_json(OFFICIAL_BUNDLES_PATH, {}).get("bundles", [])
         if (repo := bundle.get("repo"))
     }
-    official_ranks["morpheapp/morphe-patches"] = -1
+    official_ranks["https://github.com/morpheapp/morphe-patches"] = -1
+    for old_url, new_url in renames.items():
+        if old_url.lower() in official_ranks:
+            official_ranks.setdefault(new_url.lower(), official_ranks[old_url.lower()])
 
     now_ms = int(time.time() * 1000)
 
     def get_bundle_sort_key(repo_key: str) -> tuple:
         bundle_entry = bundle_sources[repo_key]
-        hot_rank = official_ranks.get(repo_key.lower())
+        hot_rank = official_ranks.get(
+            build_repo_url(bundle_entry["source"], bundle_entry["repo"]).lower()
+        )
         name = (bundle_entry.get("name") or repo_key).lower()
         repo_lower = repo_key.lower()
 
@@ -128,7 +201,9 @@ def main() -> int:
     final_bundles = []
     for key in sorted_keys:
         bundle = bundle_sources[key]
-        is_official = key.lower() in official_ranks
+        is_official = (
+            build_repo_url(bundle["source"], bundle["repo"]).lower() in official_ranks
+        )
         ordered_bundle = {
             "source": bundle.get("source") or "",
             "repo": bundle.get("repo") or "",
@@ -224,9 +299,11 @@ def main() -> int:
             "store": apps_store,
         },
     )
-    final_repos = {bundle["repo"] for bundle in final_bundles}
+    final_repos = {
+        build_repo_url(bundle["source"], bundle["repo"]) for bundle in final_bundles
+    }
     cleaned_hashes = {
-        bundle["repo"]: local_hashes[repo_key]
+        build_repo_url(bundle["source"], bundle["repo"]): local_hashes[repo_key]
         for repo_key, bundle in bundle_sources.items()
         if repo_key in local_hashes
     }
@@ -235,17 +312,18 @@ def main() -> int:
         dict(sorted(cleaned_hashes.items(), key=lambda item: item[0].lower())),
     )
     history_data = dict(existing_history)
-    for old_repo, new_repo in renames.items():
-        if old_repo in history_data and new_repo not in history_data:
-            history_data[new_repo] = history_data[old_repo]
+    for old_url, new_url in renames.items():
+        if old_url in history_data and new_url not in history_data:
+            history_data[new_url] = history_data[old_url]
     cleaned_history = {
-        repo: history_data[repo]
-        for repo in sorted(history_data, key=str.lower)
-        if repo in final_repos
+        repo_url: history_data[repo_url]
+        for repo_url in sorted(history_data, key=str.lower)
+        if repo_url in final_repos
     }
     if cleaned_history != existing_history:
         save_json(HISTORY_PATH, cleaned_history)
     if renames:
+        move_renamed_files(file_renames)
         save_json(
             REPOS_JSON_PATH,
             dict(sorted(repos_data.items(), key=lambda item: item[0].lower())),
@@ -257,19 +335,15 @@ def main() -> int:
     )
 
     summary_sections = []
-    for category_name, category_errors in (
-        ("Patch list", errors["patch_lists"]),
-        ("Repository metadata", errors["repo_metadata"]),
-    ):
-        if category_errors:
-            sorted_errors = sorted(category_errors, key=str.lower)
-            print(f"  {category_name} ({len(sorted_errors)}):")
-            for error in sorted_errors:
-                print(f"    - {error}")
-            summary_sections.append(
-                f"### {category_name} ({len(sorted_errors)})\n\n"
-                + "\n".join(f"- {error}" for error in sorted_errors)
-            )
+    if patch_list_errors:
+        sorted_errors = sorted(patch_list_errors, key=str.lower)
+        print(f"  Patch list ({len(sorted_errors)}):")
+        for error in sorted_errors:
+            print(f"    - {error}")
+        summary_sections.append(
+            f"### Patch list ({len(sorted_errors)})\n\n"
+            + "\n".join(f"- {error}" for error in sorted_errors)
+        )
 
     if incomplete_apps:
         sorted_incomplete_apps = [

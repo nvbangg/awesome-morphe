@@ -12,7 +12,6 @@ from utils import (
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
     PATCHES_DIR,
-    build_repo_url,
     load_json,
     parse_repo_url,
     parse_timestamp,
@@ -152,7 +151,6 @@ def parse_patches_list(
 
 
 def load_branch_data(
-    source: str,
     file_prefix: str,
     branch: str,
     has_sha: bool,
@@ -168,16 +166,7 @@ def load_branch_data(
         return None, None, None, None
     bundle = load_json(bundle_file)
     download_url = bundle.get("download_url") if isinstance(bundle, dict) else None
-    mpp_source, mpp_repo = (
-        parse_repo_url(download_url)
-        if isinstance(download_url, str) and download_url.lower().endswith(".mpp")
-        else (None, None)
-    )
-    if (
-        mpp_source != source
-        or not mpp_repo
-        or mpp_repo.lower() != file_prefix.split("~", 1)[1].replace("~", "/").lower()
-    ):
+    if not isinstance(download_url, str) or not download_url:
         return None, None, None, None
     if not list_file.exists():
         return None, None, None, "Missing `patches-list.json`"
@@ -201,7 +190,7 @@ def process(
     apps_dict: dict,
     repos_data: dict,
     existing_hashes: dict,
-    errors: dict[str, list[str]] | None = None,
+    errors: list[str] | None = None,
     existing_bundles: dict | None = None,
 ) -> dict[str, dict[str, str]]:
     keys_to_remove = []
@@ -209,110 +198,70 @@ def process(
     all_new_hashes: dict[str, dict[str, str]] = {}
 
     print(f"\nParsing local patches and bundles for {len(bundle_sources)} sources...")
-    for repo, source_entry in bundle_sources.items():
-        if not repo or "/" not in repo:
+    for repo_url, source_entry in bundle_sources.items():
+        source, repo = parse_repo_url(repo_url)
+        if not source or not repo:
             continue
         owner = repo.split("/", 1)[0]
-        repo_metadata = repos_data.get(repo, {})
-        candidates = []
-
-        for source in ("github", "gitlab"):
-            source_metadata = repo_metadata.get(source)
-            if not isinstance(source_metadata, dict):
-                continue
-            main_sha = source_metadata.get("main")
-            dev_sha = source_metadata.get("dev")
-            if not main_sha and not dev_sha:
-                continue
-
-            file_prefix = f"{source}~{repo.replace('/', '~')}"
-            cur_discovered_names = {}
-            cur_main_bundle, cur_main_patches, cur_main_raw, main_reason = (
-                load_branch_data(
-                    source, file_prefix, "main", bool(main_sha), cur_discovered_names
-                )
-            )
-            main_patch_names = (
-                {patch["name"] for patch in cur_main_patches if "name" in patch}
-                if cur_main_patches
-                else set()
-            )
-            cur_dev_bundle, cur_dev_patches, cur_dev_raw, dev_reason = load_branch_data(
-                source,
-                file_prefix,
-                "dev",
-                bool(dev_sha),
-                cur_discovered_names,
-                is_dev_branch=True,
-                main_patch_names=main_patch_names,
-            )
-
-            branch_errors = [
-                (branch, reason)
-                for branch, reason in (("main", main_reason), ("dev", dev_reason))
-                if reason
-            ]
-            repo_url = build_repo_url(source, repo)
-            for branch, reason in branch_errors:
-                print(f"[-] {repo_url} ({branch}): {reason}")
-
-            if errors is not None and not (cur_main_patches or cur_dev_patches):
-                if main_reason and main_reason == dev_reason:
-                    errors["patch_lists"].append(f"{repo_url}: {main_reason}")
-                elif branch_errors:
-                    reasons = "; ".join(
+        repo_metadata = repos_data[repo_url]
+        main_sha = repo_metadata.get("main")
+        dev_sha = repo_metadata.get("dev")
+        if not main_sha and not dev_sha:
+            keys_to_remove.append(repo_url)
+            continue
+        file_prefix = f"{source}~{repo.replace('/', '~')}"
+        main_names = {}
+        dev_names = {}
+        main_bundle, main_patches, main_raw, main_reason = load_branch_data(
+            file_prefix,
+            "main",
+            bool(main_sha),
+            main_names,
+        )
+        main_patch_names = {patch["name"] for patch in main_patches or []}
+        dev_bundle, dev_patches, dev_raw, dev_reason = load_branch_data(
+            file_prefix,
+            "dev",
+            bool(dev_sha),
+            dev_names,
+            is_dev_branch=True,
+            main_patch_names=main_patch_names,
+        )
+        branch_errors = [
+            (branch, reason)
+            for branch, reason in (("main", main_reason), ("dev", dev_reason))
+            if reason
+        ]
+        for branch, reason in branch_errors:
+            print(f"[-] {repo_url} ({branch}): {reason}")
+        if not (main_patches or dev_patches):
+            keys_to_remove.append(repo_url)
+            if errors is not None and branch_errors:
+                reason = (
+                    main_reason
+                    if main_reason and main_reason == dev_reason
+                    else "; ".join(
                         f"({branch}) {reason}" for branch, reason in branch_errors
                     )
-                    errors["patch_lists"].append(f"{repo_url}: {reasons}")
-
-            if cur_main_patches or cur_dev_patches:
-                main_timestamp = (
-                    parse_timestamp(cur_main_bundle.get("created_at"))
-                    if cur_main_patches and cur_main_bundle
-                    else 0
                 )
-                dev_timestamp = (
-                    parse_timestamp(cur_dev_bundle.get("created_at"))
-                    if cur_dev_patches and cur_dev_bundle
-                    else 0
-                )
-                is_latest_dev = bool(
-                    cur_dev_patches
-                    and (not cur_main_patches or dev_timestamp > main_timestamp)
-                )
-                candidates.append(
-                    {
-                        "source": source,
-                        "main_patches": cur_main_patches,
-                        "patches": (
-                            cur_dev_patches if is_latest_dev else cur_main_patches
-                        ),
-                        "raw": cur_dev_raw if is_latest_dev else cur_main_raw,
-                        "timestamp": (
-                            dev_timestamp if is_latest_dev else main_timestamp
-                        ),
-                        "discovered_names": cur_discovered_names,
-                    }
-                )
-
-        if not candidates:
-            keys_to_remove.append(repo)
-            print(f"[-] Excluding {repo}: no usable local branch data")
+                errors.append(f"{repo_url}: {reason}")
+            print(f"[-] Excluding {repo_url}: no usable local branch data")
             continue
-
-        previous_source = (existing_bundles or {}).get(repo, {}).get("source")
-        chosen = max(
-            candidates,
-            key=lambda candidate: (
-                candidate["timestamp"],
-                candidate["source"] == previous_source,
-                candidate["source"] == "github",
-            ),
+        main_timestamp = (
+            parse_timestamp(main_bundle.get("created_at")) if main_patches else 0
         )
-        chosen_source = chosen["source"]
-        source_entry["source"] = chosen_source
-        source_entry["isPreRelease"] = not bool(chosen["main_patches"])
-        source_entry["updatedAt"] = chosen["timestamp"]
+        dev_timestamp = (
+            parse_timestamp(dev_bundle.get("created_at")) if dev_patches else 0
+        )
+        use_dev = bool(
+            dev_patches and (not main_patches or dev_timestamp > main_timestamp)
+        )
+        source_entry["source"] = source
+        source_entry["isPreRelease"] = not bool(main_patches)
+        source_entry["updatedAt"] = dev_timestamp if use_dev else main_timestamp
+        chosen_patches = dev_patches if use_dev else main_patches
+        chosen_raw_patches = dev_raw if use_dev else main_raw
+        discovered_names = dev_names if use_dev else main_names
 
         raw_name = repo_metadata.get("name") or ""
         if raw_name:
@@ -323,9 +272,6 @@ def process(
             )
         source_entry["name"] = raw_name or owner
 
-        chosen_patches = chosen["patches"]
-        chosen_raw_patches = chosen["raw"]
-        discovered_names = chosen["discovered_names"]
         raw_app_patches_map: dict[str, list[dict]] = {}
         for raw_patch in chosen_raw_patches or []:
             if not isinstance(raw_patch, dict):
@@ -352,7 +298,7 @@ def process(
         )
         current_apps_in_bundle: set[str] = set()
 
-        existing_bundle = (existing_bundles or {}).get(repo, {})
+        existing_bundle = (existing_bundles or {}).get(repo_url, {})
         existing_patches = {
             patch["name"]: patch
             for patch in existing_bundle.get("patches", [])
@@ -414,7 +360,7 @@ def process(
         }
 
         bundle_timestamp = source_entry.get("updatedAt", 0)
-        repo_hashes = existing_hashes.get(repo, {})
+        repo_hashes = existing_hashes.get(repo_url, {})
         new_repo_hashes = {}
         app_updates_map = (
             dict(source_entry.get("appUpdates"))
@@ -438,7 +384,7 @@ def process(
             for package_name in source_entry["appFirstSeen"]
             if package_name in app_updates_map
         }
-        all_new_hashes[repo] = new_repo_hashes
+        all_new_hashes[repo_url] = new_repo_hashes
 
     for key in keys_to_remove:
         bundle_sources.pop(key, None)
@@ -449,10 +395,9 @@ def process(
 def cleanup_orphan_files(repos_data: dict) -> None:
     target_files = {
         f"{source}~{repo.replace('/', '~')}~{branch}.json"
-        for repo, repo_metadata in repos_data.items()
-        if isinstance(repo_metadata, dict)
-        for source in ("github", "gitlab")
-        if isinstance(repo_metadata.get(source), dict)
+        for repo_url in repos_data
+        for source, repo in [parse_repo_url(repo_url)]
+        if source and repo
         for branch in DEFAULT_BRANCHES
     }
     for directory in (BUNDLES_DIR, PATCHES_DIR):

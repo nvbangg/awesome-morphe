@@ -9,6 +9,7 @@ from utils import (
     REPOS_JSON_PATH,
     ROOT_DIR,
     append_step_summary,
+    build_repo_url,
     load_json,
     parse_repo_url,
     save_json,
@@ -69,34 +70,19 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
         for existing_repo, existing_metadata in existing_repos.items()
         if isinstance(existing_metadata, dict)
     }
-    repos_sources = {}
+    synced = {}
     for repo_url, entry in merged.items():
-        if entry.get("enabled") is not False:
-            source, repo = parse_repo_url(repo_url)
-            if source and repo:
-                repo_lower = repo.lower()
-                if repo_lower not in repos_sources:
-                    canonical_repo = existing_lower.get(repo_lower, (repo, {}))[0]
-                    repos_sources[repo_lower] = (canonical_repo, set())
-                repos_sources[repo_lower][1].add(source)
-
-    new_repos_data = {}
-    for repo_lower in sorted(repos_sources):
-        canonical_repo, sources = repos_sources[repo_lower]
-        old_entry = existing_lower.get(repo_lower, ("", {}))[1]
-        repo_entry = {"name": old_entry["name"]} if "name" in old_entry else {}
-        for source in ("github", "gitlab"):
-            if source in sources:
-                old_source = old_entry.get(source, {})
-                source_entry = {
-                    "main": old_source.get("main"),
-                    "dev": old_source.get("dev"),
-                }
-                if "image" in old_source:
-                    source_entry["image"] = old_source["image"]
-                repo_entry[source] = source_entry
-        new_repos_data[canonical_repo] = repo_entry
-    return new_repos_data
+        if entry.get("enabled") is False:
+            continue
+        source, repo = parse_repo_url(repo_url)
+        if not source or not repo:
+            continue
+        canonical_url = build_repo_url(source, repo)
+        saved_url, metadata = existing_lower.get(
+            canonical_url.lower(), (canonical_url, {})
+        )
+        synced[saved_url] = dict(metadata)
+    return dict(sorted(synced.items(), key=lambda item: item[0].lower()))
 
 
 def main() -> int:

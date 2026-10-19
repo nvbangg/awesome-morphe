@@ -20,9 +20,11 @@ class DiscoverTests(unittest.TestCase):
         self.official_path = self.root / "official-bundles.json"
         self.saved_sources = {"https://github.com/owner/saved": {}}
         self.saved_repos = {
-            "owner/saved": {
+            "https://github.com/owner/saved": {
                 "name": "Saved bundle",
-                "github": {"main": "saved-sha", "dev": None, "image": "image-sha"},
+                "main": "saved-sha",
+                "dev": None,
+                "image": "image-sha",
             }
         }
         save_json(self.repos_path, self.saved_repos)
@@ -302,6 +304,23 @@ class DiscoverTests(unittest.TestCase):
             discover.main()
         self.assertEqual(self.repos_path.read_bytes(), snapshot)
         self.summary.assert_not_called()
+
+
+class RepositoryIdentityTests(unittest.TestCase):
+    def test_sync_keeps_hosts_independent_and_preserves_saved_fields(self) -> None:
+        github = "https://github.com/owner/repo"
+        gitlab = "https://gitlab.com/owner/repo"
+        saved = {
+            github: {
+                "main": "sha",
+                "stars": 2,
+                "renamedTo": "https://github.com/owner/new",
+            }
+        }
+        actual = discover._sync_repos({github.upper(): {}, gitlab: {}}, saved)
+        self.assertEqual(actual[github], saved[github])
+        self.assertEqual(actual[gitlab], {})
+        self.assertEqual(len(actual), 2)
 
 
 if __name__ == "__main__":

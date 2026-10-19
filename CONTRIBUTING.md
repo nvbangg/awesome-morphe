@@ -93,6 +93,27 @@ Add sources to [`data/discover/custom.json`](./data/discover/custom.json), or se
 }
 ```
 
+#### Repository State
+
+`data/repos.json` uses a full GitHub or GitLab repository URL as its key. Different hosts remain independent, even when their owner and repository paths match. New sources start as `{}`; discovery preserves existing hashes, names, repository metadata, and pending renames.
+
+```json
+{
+  "https://github.com/owner/repo": {
+    "main": "main-metadata-hash",
+    "dev": null,
+    "image": "main-image-hash",
+    "name": "Example Patches",
+    "description": "Example patch bundle",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/12345",
+    "stars": 100,
+    "isArchived": true
+  }
+}
+```
+
+`main`, `dev`, and `image` retain their hash/null meanings. `image` refers only to `patches-bundle.png` on `main`. Repository metadata is omitted until fetched; `isArchived` is present only when true. `renamedTo` contains the destination URL only while a rename is waiting for update to apply it. Hashes, history, and changelog bundle keys also use full repository URLs.
+
 ### [`fetch.py`](./scripts/fetch.py)
 
 Checks metadata hashes for GitHub and GitLab targets (`source`, repository, `main`/`dev` branch). Unchanged targets with a nonempty stored hash and both local JSON files skip downloads; a local `.mpp` is not required. The hash tracks downloaded data, not patch-list validity.
@@ -107,14 +128,18 @@ Each concurrent worker downloads metadata, checks its `.mpp` URL against the sou
 
 After workers finish, fetch runs the Kotlin [`bundle-parser`](./scripts/bundle-parser/) once for the current queue in `updated_files.txt`. The parser remains adapted from [Jman's Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) for this project and Morphe. Fetch removes the previous `parsed_files.txt` before launch. A parsed target receives its new hash only when the process succeeds, lists that target in the current success file, and the output file exists. Output content is checked later by update. Individual parse failures clear only those targets' hashes; parser launch/build failures or missing success reports stop the pipeline before update or publication. File-write failures also stop the pipeline.
 
-Fetch collects target results in memory and writes `data/repos.json` once after processing, including independent image updates. It does not use `pending_repos.json` or a separate parse script.
+Fetch selects one display name per repository after branch processing: a branch with a nonempty hash is available, and `main` takes priority over `dev`. This does not change whether a dev target is downloaded or parsed. An unchanged preferred branch keeps its saved name. When the preferred branch changes or no name has been saved, fetch reads that branch's local `.mpp`, downloading it if necessary. Missing manifest names retain the existing fallback. Name selection does not depend on timestamps or worker completion order.
 
-The Fetch summary always shows `Fetch (successful/total)`, counting each repository once across branches and sources. A repository succeeds when at least one branch completes fetching or parsing without an error and has a nonempty hash; unchanged branches count as successful, while retaining an old hash after a failed request does not. Image errors do not affect this count. Errors are grouped under **Bundle metadata**, **Bundle download**, **Patch list**, and **Bundle image**; only the metadata group's contents are collapsed inside a details block. Branch errors appear only when both `main` and `dev` fail for the same source and repository. Each error group counts distinct repository URLs and shows one line per repository. Identical branch errors appear once without branch labels; different errors in the same group share one line as `(main) reason; (dev) reason`. Errors in different groups remain in their respective groups with branch labels, so group counts can overlap. Requests report their actual HTTP status or exception reason. Metadata validation reports `Invalid data` or `Invalid download_url` without including the download URL. Patch-list HTTP 404 is reported only if parsing fails, as one generation failure. Image errors are independent of branch results; HTTP 404/451 means no image and produces no warning. Empty groups are omitted. Fatal parser or file-write failures stop the workflow; their details remain in workflow logs.
+Fetch also retrieves repository descriptions, avatars, stars, archive status, and canonical paths through `scripts/repo_info.py`, shared with the README audit. Default runs request missing metadata; daily/weekly runs refresh repositories with a nonempty branch hash. Existing repositories are checked before branch downloads so a confirmed rename can validate a download URL under the new path; newly downloaded repositories are checked afterward. Each repository is requested at most once per run. Request failures preserve saved metadata and branch hashes. Successful unarchive responses remove `isArchived`.
+
+A changed canonical path records `renamedTo` without changing the repository key or custom sources. Update applies the rename. Fetch collects results in memory and writes `data/repos.json` once after processing, including independent image and repository metadata updates. It does not use `pending_repos.json` or a separate parse script.
+
+The Fetch summary always shows `Fetch (successful/total)`, counting each repository URL once across branches. GitHub and GitLab URLs count separately. A repository succeeds when at least one branch completes fetching or parsing without an error and has a nonempty hash; unchanged branches count as successful, while retaining an old hash after a failed request does not. Image and repository-metadata errors do not affect this count. Errors are grouped under **Bundle metadata**, **Bundle download**, **Patch list**, **Bundle image**, and **Repository metadata**; only the metadata group's contents are collapsed inside a details block. Branch errors appear only when both `main` and `dev` fail for the same source and repository. Each error group counts distinct repository URLs and shows one line per repository. Identical branch errors appear once without branch labels; different errors in the same group share one line as `(main) reason; (dev) reason`. Errors in different groups remain in their respective groups with branch labels, so group counts can overlap. Requests report their actual HTTP status or exception reason. Metadata validation reports `Invalid data` or `Invalid download_url` without including the download URL. Patch-list HTTP 404 is reported only if parsing fails, as one generation failure. Image errors are independent of branch results; HTTP 404/451 means no image and produces no warning. Empty groups are omitted. Fatal parser or file-write failures stop the workflow; their details remain in workflow logs.
 
 #### Execution Modes
 
-- **Default:** Checks and downloads bundle updates, parsing only missing patch lists.
-- **`--daily`:** Also checks hashes of `patches-bundle.png`.
+- **Default:** Checks and downloads bundle updates, parses only missing patch lists, and fetches missing repository metadata.
+- **`--daily`:** Also checks hashes of `patches-bundle.png` on `main` and refreshes repository metadata.
 - **`--weekly`:** Includes daily behavior and checks `.mpp` availability for unchanged targets. HTTP 404/451 clears the branch hash; other request failures preserve it.
 
 Only metadata hashes trigger updates, so changes made solely to a patch list without changing its metadata are not detected.
@@ -125,29 +150,28 @@ Compiles bundle, patch, and app data into [`web/public/bundles.json`](./web/publ
 
 #### Bundle Selection
 
-Selects the valid GitHub or GitLab source with the newest `created_at` value. Ties keep the current source, or prefer GitHub for new bundles. Within that source, `dev` is selected when it is newer than `main` or no valid `main` exists; otherwise, `main` is selected.
+Each repository URL produces an independent bundle. GitHub and GitLab repositories with the same path can both appear on the website. Within each repository, `dev` is selected when its `created_at` is newer than `main` or no valid `main` exists; otherwise, `main` is selected. A timestamp tie selects `main`. Display names follow fetch's separate main-first rule.
 
-Bundles without valid `main` data are marked prerelease. Patches found only in `dev` are also marked prerelease when compared with `main`. Branches with null hashes are ignored. Downloaded and parser-generated patch lists share the same local validation: malformed JSON, invalid structure, empty lists, and template-only bundles are excluded without restoring previous patch data. A downloaded hash remains a download checkpoint, even when update rejects its patch list.
+Bundles without valid `main` data are marked prerelease. Patches found only in `dev` are also marked prerelease when compared with `main`. Branches with null hashes are ignored. Download URL ownership is checked by fetch; update does not repeat that check against local filenames after a rename. Downloaded and parser-generated patch lists share the same local validation: malformed JSON, invalid structure, empty lists, and template-only bundles are excluded without restoring previous patch data. A downloaded hash remains a download checkpoint, even when update rejects its patch list.
 
-The Update summary always shows `Update (successful/total)`. The total counts input repositories with at least one nonempty branch hash; success means at least one usable local branch. Both counts treat a repository as one item across branches and sources, before renames or repository merging. Repository-metadata warnings and incomplete app metadata do not reduce the success count. Incomplete apps missing a name appear first, with alphabetical package order within each group. Errors are grouped under **Patch list**, **Repository metadata**, and **Incomplete Apps**. Patch-list errors appear only when neither branch is usable for the same source and repository; a valid branch keeps the other branch's errors in console logs only. The Patch list group counts distinct repository URLs and shows one line per repository. Identical branch errors appear once without branch labels; different branch errors share one line as `(main) reason; (dev) reason`. Branches with null or empty hashes are skipped and do not count as usable branches. Invalid content reports `Invalid data`, empty patch lists report `No patches found`, and template-only lists identify `com.example.app`. Request failures report the actual HTTP status or exception reason. The summary does not repeat metadata-download or `.mpp` failures already handled by fetch, or report a separate total of excluded repositories. Empty groups are omitted. Summary sections use icons only in their level-two headings; level-three group headings have no icons.
+The Update summary always shows `Update (successful/total)`. The total counts input repositories with at least one nonempty branch hash; success means at least one usable local branch. Both counts treat a repository URL as one item across branches, before renames or rename collisions. Different hosts count separately. Incomplete app metadata does not reduce the success count. Incomplete apps missing a name appear first, with alphabetical package order within each group. Errors are grouped under **Patch list** and **Incomplete Apps**. Repository-metadata warnings belong to Fetch. Patch-list errors appear only when neither branch is usable for the same source and repository; a valid branch keeps the other branch's errors in console logs only. The Patch list group counts distinct repository URLs and shows one line per repository. Identical branch errors appear once without branch labels; different branch errors share one line as `(main) reason; (dev) reason`. Branches with null or empty hashes are skipped and do not count as usable branches. Invalid content reports `Invalid data`, empty patch lists report `No patches found`, and template-only lists identify `com.example.app`. Request failures report the actual HTTP status or exception reason. The summary does not repeat metadata-download or `.mpp` failures already handled by fetch, or report a separate total of excluded repositories. Empty groups are omitted. Summary sections use icons only in their level-two headings; level-three group headings have no icons.
 
 #### Metadata and Cleanup
 
-Fetches repository metadata from GitHub/GitLab and app metadata from Google Play. Nonempty app names, icons, and descriptions from [`data/official-bundles.json`](./data/official-bundles.json) take priority.
+Reads repository metadata from `data/repos.json` and fetches app metadata from Google Play. It does not request GitHub/GitLab repository metadata. Custom star adjustments and bundle-image precedence are applied locally. Nonempty app names, icons, and descriptions from [`data/official-bundles.json`](./data/official-bundles.json) take priority.
 
-Repository metadata request failures are reported without removing bundles whose local patch data is valid. Rename changes stay in memory until final output is ready. After repository selection and rename handling, apps no longer supported by a final bundle are removed before Google Play requests. Compatibility data stays inline during processing; the public compatibility table and keys are built once from the final patches, preserving the existing public schema.
+Pending renames stay in memory until final output is ready. Update transfers repository identity, hashes, history, and local bundle/patch-list filenames to the destination URL, disables the old custom source, enables discovery of the destination, and removes `renamedTo`. An existing destination keeps its data; the old source is discarded without merging across hosts. After branch selection and rename handling, apps no longer supported by a final bundle are removed before Google Play requests. Compatibility data stays inline during processing; the public compatibility table and keys are built once from the final patches, preserving the existing public schema.
 
 Only after the final catalog is built does update write the catalog, app hashes, cleaned history, and any renamed source configuration. Hashes and history use final repository names. Orphaned bundle and patch files are removed at the end; failures before final output leave these files and persisted state unchanged.
 
 #### Execution Modes
 
-- **Default:** Fetches repository metadata for new bundles and missing app metadata.
-- **`--daily`:** Refreshes repository metadata for all bundles and fetches missing app metadata.
-- **`--weekly`:** Includes daily behavior and refreshes Google Play metadata for all apps.
+- **Default / `--daily`:** Processes local bundle data and fetches missing app metadata.
+- **`--weekly`:** Also refreshes Google Play metadata for all apps.
 
 ### [`whats_new.py`](./scripts/whats_new.py)
 
-Compares current bundle, app, and patch names with [`data/history.json`](./data/history.json) to identify additions. Saves the latest 14 changelog entries to [`web/public/whats-new.json`](./web/public/whats-new.json), generates [`scripts/temp/whats-new.md`](./scripts/temp/whats-new.md) when there is content to announce, and updates history when a new entry is created.
+Uses full repository URLs to distinguish bundle identities and compares current bundle, app, and patch names with [`data/history.json`](./data/history.json) to identify additions. Saves the latest 14 changelog entries to [`web/public/whats-new.json`](./web/public/whats-new.json), generates [`scripts/temp/whats-new.md`](./scripts/temp/whats-new.md) when there is content to announce, and updates history when a new entry is created.
 
 ### [`telegram.py`](./scripts/telegram.py)
 

@@ -193,7 +193,6 @@ export function loadInitData(): Promise<ActiveData> {
 		const bundleMap: Record<string, Bundle> = {};
 		for (const bundle of bundleList) {
 			bundleMap[bundle.key.toLowerCase()] = bundle;
-			bundleMap[bundle.repo.toLowerCase()] = bundle;
 		}
 
 		const appMap = new Map<string, AppItem>();
