@@ -245,10 +245,10 @@ def process(
                 errors.append(f"{repo_url}: {reason}")
             continue
         main_timestamp = (
-            parse_timestamp(main_bundle.get("created_at")) if main_patches else 0
+            parse_timestamp(main_bundle.get("created_at")) if main_bundle else 0
         )
         dev_timestamp = (
-            parse_timestamp(dev_bundle.get("created_at")) if dev_patches else 0
+            parse_timestamp(dev_bundle.get("created_at")) if dev_bundle else 0
         )
         use_dev = bool(
             dev_patches and (not main_patches or dev_timestamp > main_timestamp)
@@ -256,7 +256,7 @@ def process(
         source_entry["source"] = source
         source_entry["isPreRelease"] = not bool(main_patches)
         source_entry["updatedAt"] = dev_timestamp if use_dev else main_timestamp
-        chosen_patches = dev_patches if use_dev else main_patches
+        chosen_patches = (dev_patches if use_dev else main_patches) or []
         chosen_raw_patches = dev_raw if use_dev else main_raw
         discovered_names = dev_names if use_dev else main_names
 

@@ -44,7 +44,11 @@ def audit_repos_and_links() -> str:
                     errors["warnings"].append(f"{url}: Repository is archived")
                 elif full_name := details.get("full_name"):
                     source, original_repo = parse_repo_url(url)
-                    if original_repo and full_name.lower() != original_repo.lower():
+                    if (
+                        source
+                        and original_repo
+                        and full_name.lower() != original_repo.lower()
+                    ):
                         errors["warnings"].append(
                             f"{url} -> {build_repo_url(source, full_name)}"
                         )

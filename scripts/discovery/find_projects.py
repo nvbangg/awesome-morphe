@@ -35,8 +35,8 @@ EXCLUDED_KEYWORDS = []
 
 TARGET_USERS = ["MorpheApp", "rushiranpise"]
 
-CREATED_AFTER = "2026-01-01"
-CREATED_WITHIN_DAYS = None
+CREATED_AFTER: str | None = "2026-01-01"
+CREATED_WITHIN_DAYS: int | None = None
 PUSHED_WITHIN_DAYS = 30
 
 PAGE_SIZE = 100
@@ -135,7 +135,7 @@ def matches_filter_criteria(repo: dict) -> bool:
 
 
 def search_repos() -> list[dict]:
-    unique_repos = {}
+    unique_repos: dict[str, dict] = {}
     queries = [build_search_query(kw) for kw in SEARCH_KEYWORDS] + [
         build_user_query(user) for user in TARGET_USERS
     ]

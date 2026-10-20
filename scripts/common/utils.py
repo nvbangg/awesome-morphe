@@ -66,7 +66,7 @@ def _set_query_param(url: str, pattern: str, param: str) -> str:
     return f"{url}&{param}" if "?" in url else f"{url}?{param}"
 
 
-def normalize_image_url(url: str) -> str:
+def normalize_image_url(url: object) -> str:
     if not url or not isinstance(url, str):
         return ""
     if url.startswith("/"):

@@ -119,6 +119,8 @@ def extract_bundle_metadata(
             continue
 
         repo_url = build_repo_url(source, repo)
+        if not repo_url:
+            continue
         bundle_names[repo_url] = bundle.get("name") or repo.split("/")[-1]
         bundle_order[repo_url] = rank
 
@@ -336,6 +338,8 @@ def generate_markdown(
         bundle_lines = []
         for repo_url in new_bundle_repos:
             source, repo_path = parse_repo_url(repo_url)
+            if not source or not repo_path:
+                continue
             display_name = bundle_names.get(repo_url) or repo_path.split("/")[-1]
             owner = repo_path.split("/")[0]
             owner_suffix = (
@@ -440,6 +444,8 @@ def generate_markdown(
                 continue
 
             source, repo_path = parse_repo_url(repo_url)
+            if not source or not repo_path:
+                continue
             display_name = bundle_names.get(repo_url) or repo_path.split("/")[-1]
             owner = repo_path.split("/")[0]
             owner_suffix = (

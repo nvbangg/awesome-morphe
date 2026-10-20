@@ -1,4 +1,5 @@
 import urllib.error
+from email.message import Message
 from unittest.mock import patch
 
 import pytest
@@ -15,7 +16,7 @@ class TestRepositoryMetadata:
 
     def http_error(self, code: int) -> urllib.error.HTTPError:
         error = urllib.error.HTTPError(
-            "https://example.com", code, "Failed", None, None
+            "https://example.com", code, "Failed", Message(), None
         )
         self.patch_context.callback(error.close)
         return error

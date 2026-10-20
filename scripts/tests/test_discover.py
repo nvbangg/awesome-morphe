@@ -1,3 +1,4 @@
+from email.message import Message
 from http.client import HTTPException
 from pathlib import Path
 from unittest.mock import patch
@@ -56,7 +57,7 @@ class TestDiscover:
     ) -> None:
         snapshot = self.official_path.read_bytes()
         saved_file = module.OUTPUT_PATH.read_bytes()
-        error = HTTPError("https://example.com", status, "Failed", None, None)
+        error = HTTPError("https://example.com", status, "Failed", Message(), None)
         self.patch_context.callback(error.close)
         self.open_url.side_effect = error
         assert (

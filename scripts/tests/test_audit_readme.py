@@ -1,3 +1,4 @@
+from email.message import Message
 from unittest.mock import patch
 from urllib.error import HTTPError
 
@@ -11,7 +12,7 @@ from discovery import audit_readme
 def test_audit_still_classifies_unavailable_repositories(code) -> None:
     repo_url = "https://github.com/owner/alpha"
     with (
-        HTTPError("https://example.com", code, "Failed", None, None) as error,
+        HTTPError("https://example.com", code, "Failed", Message(), None) as error,
         patch.object(repo_info.time, "sleep"),
         patch.object(repo_info, "fetch", side_effect=error),
         patch.object(audit_readme, "load_lines", side_effect=[[repo_url], []]),

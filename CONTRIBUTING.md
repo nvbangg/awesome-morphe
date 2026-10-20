@@ -218,6 +218,7 @@ Run Python checks from [`scripts/`](./scripts/):
 ```sh
 uv run ruff check --fix .
 uv run ruff format .
+uv run ty check
 ```
 
 Run Python tests from [`scripts/`](./scripts/) (network requests and Gradle are mocked):

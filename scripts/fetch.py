@@ -177,6 +177,8 @@ def process_repo_branch(
     patches_file = PATCHES_DIR / f"{file_prefix}.json"
     has_local_data = bundle_file.is_file() and patches_file.is_file()
     bundle_url = build_raw_url(source, repo, branch, "patches-bundle.json")
+    if not bundle_url:
+        return failed("Metadata hash is unavailable", "metadata", unavailable=True)
     bundle_content = None
     try:
         if source == "github":
@@ -261,11 +263,9 @@ def process_repo_branch(
                     parsed_url._replace(path="/".join(path_parts))
                 )
                 bundle_data["download_url"] = mpp_url
-        mpp_source, mpp_repo = (
-            parse_repo_url(mpp_url)
-            if isinstance(mpp_url, str) and mpp_url.lower().endswith(".mpp")
-            else (None, None)
-        )
+        if not isinstance(mpp_url, str) or not mpp_url.lower().endswith(".mpp"):
+            return failed("Invalid `download_url`", "metadata", True)
+        mpp_source, mpp_repo = parse_repo_url(mpp_url)
         if (
             mpp_source != source
             or not mpp_repo
@@ -293,6 +293,7 @@ def process_repo_branch(
     bundle_name = extract_mpp_name(mpp_content)
 
     patches_url = get_patches_list_url(source, repo, branch)
+    assert patches_url is not None
     try:
         patches_content = fetch(patches_url, binary=True)
     except urllib.error.HTTPError as error:
@@ -378,6 +379,7 @@ def collect_fetch_errors(results: list[BranchFetchResult]) -> dict[str, list[str
             continue
         repo_url = build_repo_url(source, repo)
         first_result = branch_results[0]
+        assert first_result.error_category is not None
         if all(
             (result.error_category, result.error_message)
             == (first_result.error_category, first_result.error_message)
@@ -391,6 +393,7 @@ def collect_fetch_errors(results: list[BranchFetchResult]) -> dict[str, list[str
             for result in sorted(
                 branch_results, key=lambda result: DEFAULT_BRANCHES.index(result.branch)
             ):
+                assert result.error_category is not None
                 category_errors.setdefault(result.error_category, []).append(
                     f"({result.branch}) {result.error_message}"
                 )
@@ -431,6 +434,8 @@ def refresh_repo_metadata(repos_data: dict, refresh: bool) -> list[str]:
             else:
                 metadata.pop("isArchived", None)
             source, repo = parse_repo_url(repo_url)
+            if not source or not repo:
+                continue
             full_name = details.get("full_name")
             if full_name and full_name.lower() != repo.lower():
                 metadata["renamedTo"] = build_repo_url(source, full_name)
@@ -528,8 +533,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         elif chosen.status_changed:
             metadata["name"] = metadata.get("name") or ""
         elif previous_preferred[repo_url] != preferred or metadata.get("name") is None:
-            source, repo = parse_repo_url(repo_url)
-            prefix = f"{source}~{repo.replace('/', '~')}~{preferred}"
+            prefix = chosen.target_name
             local_mpp = MPP_DIR / f"{prefix}.mpp"
             try:
                 content = (

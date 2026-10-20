@@ -87,6 +87,8 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
         if not source or not repo:
             continue
         canonical_url = build_repo_url(source, repo)
+        if not canonical_url:
+            continue
         saved_url, metadata = existing_lower.get(
             canonical_url.lower(), (canonical_url, {})
         )

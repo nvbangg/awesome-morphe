@@ -4,6 +4,7 @@ import threading
 import urllib.error
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
+from email.message import Message
 from pathlib import Path
 from unittest.mock import Mock, call, patch
 
@@ -23,7 +24,9 @@ class TestGithubBundle:
     @pytest.fixture(autouse=True)
     def prepare(self, patch_context) -> None:
         self.patch_context = patch_context
-        self.url = build_raw_url("github", "owner/alpha", "main", "patches-bundle.json")
+        url = build_raw_url("github", "owner/alpha", "main", "patches-bundle.json")
+        assert url is not None
+        self.url = url
         self.open_url = self.patch_context.enter_context(
             patch.object(bundle_fetch.urllib.request, "urlopen")
         )
@@ -48,7 +51,7 @@ class TestGithubBundle:
     def test_not_modified_preserves_hash_without_reading_body(self) -> None:
         body = io.BytesIO()
         self.open_url.side_effect = urllib.error.HTTPError(
-            self.url, 304, "Not Modified", None, body
+            self.url, 304, "Not Modified", Message(), body
         )
         assert bundle_fetch.get_github_bundle(self.url, "old-hash") == (
             "old-hash",
@@ -60,7 +63,9 @@ class TestGithubBundle:
 
     @pytest.mark.parametrize("code", (304, *HTTP_UNAVAILABLE_CODES, *HTTP_OTHER_CODES))
     def test_http_errors_propagate_with_actual_status(self, code) -> None:
-        error = urllib.error.HTTPError(self.url, code, "Request failed", None, None)
+        error = urllib.error.HTTPError(
+            self.url, code, "Request failed", Message(), None
+        )
         self.patch_context.callback(error.close)
         self.open_url.side_effect = error
         with pytest.raises(urllib.error.HTTPError) as raised:
@@ -129,7 +134,7 @@ class TestBundleFetch:
         self.repos_path = self.root / "repos.json"
         self.updated_path = self.parser_dir / "updated_files.txt"
         self.parsed_path = self.parser_dir / "parsed_files.txt"
-        self.initial_repos = {
+        self.initial_repos: dict[str, dict[str, str | None]] = {
             "https://github.com/owner/alpha": {
                 "name": "Alpha old",
                 "main": "main-old",
@@ -156,7 +161,9 @@ class TestBundleFetch:
         with zipfile.ZipFile(mpp_buffer, "w") as archive:
             archive.writestr("META-INF/MANIFEST.MF", "Name: Alpha new\n")
         self.mpp_bytes = mpp_buffer.getvalue()
-        self.responses = {self.bundle_data["download_url"]: self.mpp_bytes}
+        self.responses: dict[str, bytes | Exception] = {
+            self.bundle_data["download_url"]: self.mpp_bytes
+        }
         for branch in DEFAULT_BRANCHES:
             self.responses[self.url(branch, "patches-bundle.json")] = json.dumps(
                 self.bundle_data
@@ -200,7 +207,9 @@ class TestBundleFetch:
         )
 
     def url(self, branch: str, filename: str) -> str:
-        return build_raw_url("github", "owner/alpha", branch, filename)
+        url = build_raw_url("github", "owner/alpha", branch, filename)
+        assert url is not None
+        return url
 
     def download(self, url: str, binary: bool = False) -> str | bytes:
         response = self.responses[url]
@@ -209,7 +218,7 @@ class TestBundleFetch:
         return response if binary else response.decode()
 
     def http_error(self, url: str, code: int) -> urllib.error.HTTPError:
-        error = urllib.error.HTTPError(url, code, "Request failed", None, None)
+        error = urllib.error.HTTPError(url, code, "Request failed", Message(), None)
         self.patch_context.callback(error.close)
         return error
 
@@ -465,7 +474,9 @@ class TestBundleFetch:
     ) -> None:
 
         def get_hash(_source: str, _repo: str, branch: str) -> str:
-            raise self.responses[self.url(branch, "patches-bundle.json")]
+            error = self.responses[self.url(branch, "patches-bundle.json")]
+            assert isinstance(error, Exception)
+            raise error
 
         save_json(self.repos_path, self.initial_repos)
         self.summary.reset_mock()
@@ -908,6 +919,7 @@ class TestBundleFetch:
             "gitlab", "owner/alpha", "main", "patches-bundle.json"
         )
         patch_url = build_raw_url("gitlab", "owner/alpha", "main", "patches-list.json")
+        assert bundle_url is not None and patch_url is not None
         numeric_url = "https://gitlab.com/api/v4/projects/123/packages/generic/bundle/latest/bundle.mpp"
         rewritten_url = numeric_url.replace("/123/", "/owner%2Falpha/")
         self.responses[bundle_url] = json.dumps({"download_url": numeric_url}).encode()

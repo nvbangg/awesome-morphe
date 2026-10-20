@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import sys
 import urllib.error
+from email.message import Message
 from pathlib import Path
 from unittest.mock import patch
 
@@ -83,7 +84,7 @@ def test_connection_error_is_not_retried() -> None:
 
 def test_http_error_is_not_retried(patch_context) -> None:
     error = urllib.error.HTTPError(
-        "https://example.com/data", 503, "Unavailable", None, None
+        "https://example.com/data", 503, "Unavailable", Message(), None
     )
     patch_context.callback(error.close)
     with (
