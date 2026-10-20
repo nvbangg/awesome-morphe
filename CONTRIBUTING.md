@@ -7,14 +7,14 @@
 
 ```text
 awesome-morphe/
-├── .github/                            # Automation workflows
-├── data/                               # Raw fetched data, source configuration & sync state
-├── scripts/                            # Automated data-processing scripts
-├── web/                                # Website source code
+├── .github/                # Automation workflows
+├── data/                   # Raw fetched data, source configuration & sync state
+├── scripts/                # Automated data-processing scripts
+├── web/                    # Website source code
 │   ├── public/
-│   │   ├── bundles.json                # Metadata of all active bundles, patches & apps
-│   │   └── whats-new.json              # Rolling changelog
-│   └── ...                             # Other supporting files
+│   │   ├── bundles.json    # Metadata of all active bundles, patches & apps
+│   │   └── whats-new.json  # Rolling changelog
+│   └── ...                 # Other supporting files
 ├── CONTRIBUTING.md
 ├── LICENSE
 └── README.md

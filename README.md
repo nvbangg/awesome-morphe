@@ -28,18 +28,11 @@
 
 ---
 
-<div align="center"> 
-<picture>
-    <source
-      width="512px"
-      media="(prefers-color-scheme: dark)"
-      srcset="https://raw.githubusercontent.com/MorpheApp/.github/refs/heads/main/profile/assets/morphe-wordmark/morphe_wordmark_dark.svg"
-    />
-    <img 
-      width="512px"
-      src="https://raw.githubusercontent.com/MorpheApp/.github/refs/heads/main/profile/assets/morphe-wordmark/morphe_wordmark_light.svg"
-     alt="Morphe"/>
-</picture>
+<div align="center">
+
+![Morphe](https://raw.githubusercontent.com/MorpheApp/.github/refs/heads/main/profile/assets/morphe-wordmark/morphe_wordmark_dark.svg#gh-dark-mode-only)
+![Morphe](https://raw.githubusercontent.com/MorpheApp/.github/refs/heads/main/profile/assets/morphe-wordmark/morphe_wordmark_light.svg#gh-light-mode-only)
+
 </div>
 
 ## <a id="official"></a> ✅ Official
@@ -80,15 +73,15 @@
 
 - [Awesome Morphe Website](https://awesome-morphe.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/nvbangg/awesome-morphe)
 - [Morphe Community Patches](https://morphe-patches.software/)
-- [Morphe Patch Tracker](https://drnx64.github.io/morphe-track-patches/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/morphe-track-patches) 
+- [Morphe Patch Tracker](https://drnx64.github.io/morphe-track-patches/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/morphe-track-patches)
 - [Morphe Archive](https://rushiforai.github.io/morphe-archive/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/rushiforai/morphe-archive)
 - [Patch Bundle Registry](https://patch-bundles.jmancentral.com/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/Jman-Github/Patch-Bundle-Registry)
+- [Revanced External Bundles](https://revanced-external-bundles.brosssh.com/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/brosssh/revanced-external-bundles)
 <!-- - <details><summary><a href="https://patch-explorer.web.app/">Patch Explorer</a> <a href="https://gitlab.com/Paresh-Maheshwari/patch-explorer"><img src="https://img.shields.io/badge/Repo-black?style=social&logo=gitlab" alt="Repo"></a></summary>
 
   Alternative: [Patch Explorer](https://paresh-maheshwari.github.io/patch-explorer/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/Paresh-Maheshwari/patch-explorer)
   </details>
 - [Patch Atlas](https://patch-atlas.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/shakir2117/Patch-Atlas) -->
-- [Revanced External Bundles](https://revanced-external-bundles.brosssh.com/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/brosssh/revanced-external-bundles)
 <!-- - [Community Patch Space Explorer](https://dmh84.github.io/morphe-space-explorer/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/dmh84/morphe-space-explorer) -->
 
 ## <a id="projects"></a> 🛠️ Other Projects
@@ -124,7 +117,7 @@
 
 Maintained with ❤️ by **[@nvbangg](https://github.com/nvbangg)**
 
-<a href="https://github.com/nvbangg/awesome-morphe"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=1500&pause=1000&color=FF4F81&center=true&vCenter=true&width=490&lines=%E2%AD%90+Star+this+repo+if+you+find+it+useful!" alt="Typing SVG" /></a>
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&duration=1500&pause=1000&color=FF4F81&center=true&vCenter=true&width=490&lines=%E2%AD%90+Star+this+repo+if+you+find+it+useful)](https://github.com/nvbangg/awesome-morphe)
 
 </i></div>
 
