@@ -1,7 +1,61 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0",
+  "version": "1.4.0-dev.1",
   "patches": [
+    {
+      "name": "Change installer source",
+      "description": "Spoofs the installer source so the app appears to be installed from an app store.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "packageInstallerName",
+          "title": "Spoofed package installer name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.mipicks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Remove Ads",
+      "description": "Removes ads by preventing ad display methods from executing",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.dirgasena.remakefaceai",
+          "name": "Remake Face AI",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Unlock Premium",
       "description": "Unlocks all premium features and removes ads",
