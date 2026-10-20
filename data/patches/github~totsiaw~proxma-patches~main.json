@@ -1,7 +1,33 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "patches": [
+    {
+      "name": "Auto check-in & claim daily reward",
+      "description": "Claims the daily check-in reward on its own: opening the daily-rewards screen no longer waits for the check-in ad, the reward is granted right away. The missed-days restore and the day-10/20/30 milestone claim are untouched.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.jazzworld",
+          "name": "Simosa",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF6B35",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.3.4.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Block trackers",
       "description": "Stops the Insider, TikTok Business SDK and Mixpanel Session Replay trackers from initializing (event/attribution/session-replay tracking never starts). Leaves AWS Amplify, Firebase core/RemoteConfig/FCM and Google Ads init untouched so app data, push and the remote ad-config the ads patch relies on keep working.",
@@ -289,6 +315,56 @@
       "options": []
     },
     {
+      "name": "Google Maps API key (NetMonster)",
+      "description": "Optional: write YOUR OWN Google Maps API key so the map renders after re-signing (NetMonster's built-in key is cert-locked). Leave the key empty to leave the map as-is.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "cz.mroczis.netmonster",
+          "name": "NetMonster",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#00BCD4",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "4.0.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 27,
+              "description": null
+            },
+            {
+              "version": "5.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "5.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "maps-api-key",
+          "title": "Google Maps API key",
+          "description": "Your own unrestricted 'Maps SDK for Android' key (Google Cloud Console). NetMonster's built-in key is locked to their signing cert and dies on re-sign (blank map). Leave empty to keep the map disabled.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Remove Elite promotions",
       "description": "Removes the promoted Elite seller cards and the buyer-matchmaking recommendation slot from OLX India's listing feed — OLX's own paid placements, which the ad-removal patch does not cover.",
       "default": true,
@@ -330,6 +406,39 @@
           "targets": [
             {
               "version": "26.38.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes inDrive's Google ads — the banner, the card shown during and after a ride, and the full-screen ones — by switching the app's own Google Ads enable flags off, so it never asks Google for an ad. Rides, chat, payments and inDrive's own promo codes keep working.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "sinet.startup.inDriver",
+          "name": "inDrive",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#C1F11D",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "5.188.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "5.189.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 29,
@@ -625,6 +734,20 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 27,
+              "description": null
+            },
+            {
+              "version": "5.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "5.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
