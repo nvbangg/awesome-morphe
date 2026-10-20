@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "patches": [
     {
       "name": "Adapt to modern displays",
@@ -374,7 +374,7 @@
       "compatiblePackages": [
         {
           "packageName": "com.smilerlee.klondike",
-          "name": "Klondike Solitaire",
+          "name": "Solitaire",
           "description": null,
           "apkFileType": "APK",
           "appIconColor": null,
@@ -393,6 +393,32 @@
       "options": []
     },
     {
+      "name": "Disable analytics and telemetry",
+      "description": "Stops the app's event reporting: its own analytics forwarder and Firebase Analytics' event and user-property methods are no-oped, and the developer crash reporter is never started. Firebase Analytics collection was already disabled by the developer; this removes the remaining plumbing. Remote Config is left running - it is the app's configuration channel, not an event pipeline.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.alphainventor.filemanager",
+          "name": "File Manager",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.8.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable analytics and tracking",
       "description": "Disables AppsFlyer (session start and event logging), Facebook AppEvents (activation, events, purchases, user data) and DoodleBI, the game's own reporting layer and its only Firebase Analytics consumer. No usage or ad-revenue events leave the device through these channels.",
       "default": true,
@@ -400,7 +426,7 @@
       "compatiblePackages": [
         {
           "packageName": "com.smilerlee.klondike",
-          "name": "Klondike Solitaire",
+          "name": "Solitaire",
           "description": null,
           "apkFileType": "APK",
           "appIconColor": null,
@@ -575,6 +601,32 @@
       "options": []
     },
     {
+      "name": "Hide premium section in settings",
+      "description": "Hides the Premium category and its entry at the top of the Settings screen by setting both preferences invisible whenever the settings screen refreshes. Premium stays unlocked and the payment screen remains reachable from the main menu - only the Settings section is hidden.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.alphainventor.filemanager",
+          "name": "File Manager",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.8.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Material You icon",
       "description": "Replaces the legacy launcher icon with a Material You adaptive icon: white folder and WiFi glyph on the app's blue, with a monochrome layer for themed icons.",
       "default": true,
@@ -654,13 +706,39 @@
     },
     {
       "name": "Remove ad and tracking components",
+      "description": "Removes from the manifest: the AdMob and Firebase auto-init providers and Firebase's measurement and sessions components, so those SDKs do not start at app start; and the ad-tracking permissions (AD_ID, the Ad Services permissions and the install referrer permission).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.alphainventor.filemanager",
+          "name": "File Manager",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.8.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ad and tracking components",
       "description": "Removes from the manifest: the ad networks' and Facebook's auto-init providers (AdMob, Audience Network x2, Facebook) and Firebase's init provider, so none of those SDKs initialize at app start; and the ad-tracking permissions (AD_ID, the Ad Services permissions and the install referrer permission).",
       "default": true,
       "category": null,
       "compatiblePackages": [
         {
           "packageName": "com.smilerlee.klondike",
-          "name": "Klondike Solitaire",
+          "name": "Solitaire",
           "description": null,
           "apkFileType": "APK",
           "appIconColor": null,
@@ -720,6 +798,32 @@
           "targets": [
             {
               "version": "2.4.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove premium references",
+      "description": "Removes the visible premium branding: the Subscribe / Manage subscription entry is deleted from the main screen's menu, and the Premium section over the Preferences settings is removed outright (its settings move up into the plain list). The settings themselves stay, and the subscribe screen remains in the app but is no longer reachable.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.mediaarea.mediainfo",
+          "name": "MediaInfo",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -850,6 +954,58 @@
           "targets": [
             {
               "version": "2.4.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Reports a valid Premium Basic license to the app: the license manager's verdict methods are made to answer yes, so premium features unlock and ads stop (the app serves no ads to licensed users). The billing code itself is untouched - nothing is purchased.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.alphainventor.filemanager",
+          "name": "File Manager",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.8.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks MediaInfo's premium (the dark theme and subscriber features). The subscription verdict is a purely local Play Billing result held by the app's billing manager; this patch makes that verdict permanently 'subscribed'. No account or server is involved - the app has neither.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.mediaarea.mediainfo",
+          "name": "MediaInfo",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
