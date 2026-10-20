@@ -159,12 +159,9 @@ def process_repo_branch(
     bundle_downloads: BundleDownloads | None = None,
     renamed_repo: str | None = None,
 ) -> BranchFetchResult:
-    repo_url = build_repo_url(source, repo)
-
     def failed(
         message: str, category: str, unavailable: bool = False
     ) -> BranchFetchResult:
-        print(f"[-] {repo_url} ({branch}): {category}: {message}")
         return BranchFetchResult(
             source,
             repo,
@@ -349,10 +346,6 @@ def run_bundle_parser(targets: list[BranchFetchResult]) -> None:
         target.bundle_name = None
         target.error_category = "patch_list"
         target.error_message = "Failed to generate `patches-list.json`"
-        print(
-            f"[-] {build_repo_url(target.source, target.repo)} ({target.branch}): "
-            f"{target.error_message}"
-        )
 
 
 def process_image(
@@ -369,7 +362,6 @@ def process_image(
             return source, repo, None, current_image is not None, None
         reason = format_request_error(error)
         error_message = f"{repo_url}: {reason}"
-        print(f"[-] {repo_url}: image: {reason}")
         return source, repo, current_image, False, error_message
     return source, repo, remote_sha, remote_sha != current_image, None
 
@@ -428,7 +420,6 @@ def refresh_repo_metadata(repos_data: dict, refresh: bool) -> list[str]:
             if not details or details.get("error"):
                 reason = details.get("error", "Invalid repository data")
                 warnings.append(f"{repo_url}: {reason}")
-                print(f"[-] {repo_url}: {reason}")
                 continue
             metadata = repos_data[repo_url]
             metadata["description"] = details.get("description") or ""
@@ -592,9 +583,9 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     for category, title in FETCH_ERROR_SECTIONS.items():
         if not errors[category]:
             continue
-        content = "\n".join(
-            f"- {error}" for error in sorted(errors[category], key=str.lower)
-        )
+        sorted_errors = sorted(errors[category], key=str.lower)
+        print(f"{title}: {len(sorted_errors)} repositories")
+        content = "\n".join(f"- {error}" for error in sorted_errors)
         summary_sections.append(
             format_summary_section(title, content, len(errors[category]))
         )

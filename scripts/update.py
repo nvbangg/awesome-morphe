@@ -341,9 +341,7 @@ def main() -> int:
     summary_sections = []
     if patch_list_errors:
         sorted_errors = sorted(patch_list_errors, key=str.lower)
-        print(f"  Patch list ({len(sorted_errors)}):")
-        for error in sorted_errors:
-            print(f"    - {error}")
+        print(f"Patch list: {len(sorted_errors)} repositories")
         summary_sections.append(
             format_summary_section(
                 "Patch list",
@@ -356,11 +354,7 @@ def main() -> int:
         sorted_incomplete_apps = [
             app_issue for _has_name, app_issue in sorted(incomplete_apps)
         ]
-        print(
-            f"[-] Note: {len(sorted_incomplete_apps)} apps have incomplete metadata (missing icon/name):"
-        )
-        for app_issue in sorted_incomplete_apps:
-            print(f"  {app_issue}")
+        print(f"Incomplete apps: {len(sorted_incomplete_apps)}")
         summary_sections.append(
             format_summary_section(
                 "Incomplete Apps",

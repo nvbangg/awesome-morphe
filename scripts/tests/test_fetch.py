@@ -461,7 +461,7 @@ class TestBundleFetch:
     @pytest.mark.parametrize("main_code", HTTP_UNAVAILABLE_CODES)
     @pytest.mark.parametrize("dev_code", HTTP_UNAVAILABLE_CODES)
     def test_metadata_errors_preserve_codes_in_one_entry_per_repository(
-        self, stage, main_code, dev_code
+        self, stage, main_code, dev_code, capsys
     ) -> None:
 
         def get_hash(_source: str, _repo: str, branch: str) -> str:
@@ -477,8 +477,11 @@ class TestBundleFetch:
             bundle_fetch.fetch_all_repos()
         self.summary.assert_called_once()
         summary = self.summary.call_args.args[0]
+        console = capsys.readouterr().out
         assert "### Bundle metadata (1)" in summary
         assert summary.count("- https://") == 1
+        assert "Bundle metadata: 1 repositories" in console
+        assert "https://github.com/owner/alpha" not in console
         if main_code == dev_code:
             assert "(main)" not in summary
             assert "(dev)" not in summary
@@ -495,7 +498,7 @@ class TestBundleFetch:
 
     @pytest.mark.parametrize("other_failure", (None, TimeoutError("Timed out")))
     def test_single_unavailable_metadata_branch_is_suppressed_in_summary(
-        self, other_failure
+        self, other_failure, capsys
     ) -> None:
         save_json(self.repos_path, self.initial_repos)
         self.summary.reset_mock()
@@ -517,6 +520,7 @@ class TestBundleFetch:
         self.fetch_hash.side_effect = get_hash
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
+        console = capsys.readouterr().out
         if other_failure:
             self.summary.assert_called_once()
             summary = self.summary.call_args.args[0]
@@ -526,8 +530,13 @@ class TestBundleFetch:
             )
             assert "Timed out" in summary
             assert "404/451" not in summary
+            assert "Bundle metadata: 1 repositories" in console
         else:
             assert self.summary.call_args.args[0] == "## 📥 Fetch (1/1):"
+            assert "Bundle metadata:" not in console
+        assert "https://github.com/owner/alpha" not in console
+        assert "Processing 2 branch targets..." in console
+        assert "Fetch completed." in console
 
     def test_missing_metadata_is_grouped_by_source_and_repository(self) -> None:
         results = [
@@ -590,7 +599,9 @@ class TestBundleFetch:
         assert "(dev) Request failed (HTTP 404)" in summary
         assert "on main and dev" not in summary
 
-    def test_image_failure_is_reported_without_repeating_missing_metadata(self) -> None:
+    def test_image_failure_is_reported_without_repeating_missing_metadata(
+        self, capsys
+    ) -> None:
         self.fetch_hash.side_effect = self.http_error(
             self.url("main", "patches-bundle.json"), HTTP_NOT_FOUND
         )
@@ -605,6 +616,10 @@ class TestBundleFetch:
         assert summary.count("- https://") == 2
         assert "Bundle image (1)" in summary
         assert "Request failed: Image timeout" in summary
+        console = capsys.readouterr().out
+        assert "Bundle metadata: 1 repositories" in console
+        assert "Bundle image: 1 repositories" in console
+        assert "Request failed" not in console
 
     def test_identical_bundle_failures_have_one_entry_without_branches(self) -> None:
         self.responses[self.bundle_data["download_url"]] = self.http_error(
@@ -672,7 +687,7 @@ class TestBundleFetch:
         assert ("<details>" in download) == (result_count >= 10)
 
     def test_same_http_status_at_different_steps_keeps_both_branch_entries(
-        self,
+        self, capsys
     ) -> None:
         metadata_url = self.url("main", "patches-bundle.json")
         self.responses[metadata_url] = self.http_error(metadata_url, 403)
@@ -692,6 +707,10 @@ class TestBundleFetch:
         assert "(main) Request failed (HTTP 403)" in metadata_content
         assert "(dev) Request failed (HTTP 403)" not in metadata_content
         assert "(dev) Request failed (HTTP 403)" in download_content
+        console = capsys.readouterr().out
+        assert "Bundle metadata: 1 repositories" in console
+        assert "Bundle download: 1 repositories" in console
+        assert "https://github.com/owner/alpha" not in console
 
     @pytest.mark.parametrize("category", ("metadata", "bundle", "patch_list"))
     def test_branch_errors_are_suppressed_when_the_other_branch_succeeds(
@@ -728,7 +747,7 @@ class TestBundleFetch:
         assert load_json(self.repos_path) == self.initial_repos
 
     def test_both_parser_failures_report_only_one_patch_list_generation_failure(
-        self,
+        self, capsys
     ) -> None:
         for branch in DEFAULT_BRANCHES:
             url = self.url(branch, "patches-list.json")
@@ -749,6 +768,9 @@ class TestBundleFetch:
         assert "HTTP 404" not in summary
         assert summary.startswith("## 📥 Fetch (0/1):")
         assert summary.count("- https://") == 1
+        console = capsys.readouterr().out
+        assert "Failed to generate `patches-list.json`" not in console
+        assert "Patch list: 1 repositories" in console
         self.run_process.assert_called_once()
         for branch in DEFAULT_BRANCHES:
             assert (
@@ -985,7 +1007,7 @@ class TestBundleFetch:
         assert load_json(self.repos_path) == self.initial_repos
 
     def test_partial_batch_updates_only_successful_branch_name_and_saves_once(
-        self,
+        self, capsys
     ) -> None:
         for branch in DEFAULT_BRANCHES:
             patch_url = self.url(branch, "patches-list.json")
@@ -1024,6 +1046,7 @@ class TestBundleFetch:
         )
         self.run_process.assert_called_once()
         assert self.summary.call_args.args[0] == "## 📥 Fetch (1/1):"
+        assert "Failed to generate `patches-list.json`" not in capsys.readouterr().out
 
     def test_success_counts_repositories_once_across_sources_and_branches(self) -> None:
         repos = self.initial_repos.copy()
@@ -1242,7 +1265,7 @@ class TestRepositoryMetadataRefresh:
             request.assert_not_called()
 
     def test_fetch_persists_metadata_once_and_defers_custom_source_changes(
-        self, tmp_path: Path
+        self, tmp_path: Path, capsys
     ) -> None:
         root = tmp_path
         repos_path = root / "repos.json"
@@ -1293,3 +1316,6 @@ class TestRepositoryMetadataRefresh:
         assert metadata["main"] == "sha"
         assert metadata["stars"] == 23
         assert custom_path.read_bytes() == custom_before
+        console = capsys.readouterr().out
+        assert "Repository metadata: 1 repositories" in console
+        assert self.url not in console

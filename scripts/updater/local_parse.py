@@ -232,8 +232,6 @@ def process(
             for branch, reason in (("main", main_reason), ("dev", dev_reason))
             if reason
         ]
-        for branch, reason in branch_errors:
-            print(f"[-] {repo_url} ({branch}): {reason}")
         if not (main_patches or dev_patches):
             keys_to_remove.append(repo_url)
             if errors is not None and branch_errors:
@@ -245,7 +243,6 @@ def process(
                     )
                 )
                 errors.append(f"{repo_url}: {reason}")
-            print(f"[-] Excluding {repo_url}: no usable local branch data")
             continue
         main_timestamp = (
             parse_timestamp(main_bundle.get("created_at")) if main_patches else 0

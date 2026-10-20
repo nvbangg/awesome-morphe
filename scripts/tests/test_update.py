@@ -141,7 +141,7 @@ class TestBundleUpdate:
 
     @pytest.mark.parametrize("result_count", (9, 10))
     def test_patch_list_summary_collapses_at_ten_repositories(
-        self, result_count
+        self, result_count, capsys
     ) -> None:
         save_json(self.repos_path, {})
         for index in range(result_count):
@@ -151,6 +151,10 @@ class TestBundleUpdate:
         assert f"### Patch list ({result_count})" in summary
         assert ("<details>" in summary) == (result_count >= 10)
         assert summary.count("- https://") == result_count
+        console = capsys.readouterr().out
+        assert f"Patch list: {result_count} repositories" in console
+        assert "https://github.com/owner/repo-" not in console
+        assert "Excluding" not in console
 
     def snapshot(self) -> dict[Path, bytes]:
         return {path: path.read_bytes() for path in self.state_paths}
@@ -282,28 +286,22 @@ class TestBundleUpdate:
         assert patches["Dev patch"]["isPreRelease"]
         assert "isPreRelease" not in catalog["store"]["com.test.app"]
 
-    def test_invalid_main_does_not_exclude_valid_dev(self) -> None:
+    def test_invalid_main_does_not_exclude_valid_dev(self, capsys) -> None:
         self.add_target().write_text("{broken", encoding="utf-8")
         self.add_target(branch="dev", patches=[self.app_patch("Dev patch")])
-        with patch("builtins.print") as console:
-            catalog = self.run_update()
-        console.assert_any_call(
-            "[-] https://github.com/owner/alpha (main): Invalid data"
-        )
+        catalog = self.run_update()
+        assert "https://github.com/owner/alpha" not in capsys.readouterr().out
         assert catalog["bundles"][0]["isPreRelease"]
         assert catalog["store"]["com.test.app"]["isPreRelease"]
         summary = self.summary.call_args.args[0]
         assert "### Patch list" not in summary
         assert "Incomplete Apps" in summary
 
-    def test_invalid_dev_is_suppressed_when_main_is_valid(self) -> None:
+    def test_invalid_dev_is_suppressed_when_main_is_valid(self, capsys) -> None:
         self.add_target(patches=[self.app_patch("Main patch")])
         self.add_target(branch="dev", patches=[])
-        with patch("builtins.print") as console:
-            catalog = self.run_update()
-        console.assert_any_call(
-            "[-] https://github.com/owner/alpha (dev): No patches found"
-        )
+        catalog = self.run_update()
+        assert "https://github.com/owner/alpha" not in capsys.readouterr().out
         assert catalog["bundles"][0]["patches"][0]["name"] == "Main patch"
         assert "isPreRelease" not in catalog["bundles"][0]
         assert "### Patch list" not in self.summary.call_args.args[0]
@@ -419,7 +417,7 @@ class TestBundleUpdate:
         self.fetch_repo.assert_not_called()
         assert "Repository metadata" not in self.summary.call_args.args[0]
 
-    def test_incomplete_apps_alone_are_grouped_under_update(self) -> None:
+    def test_incomplete_apps_alone_are_grouped_under_update(self, capsys) -> None:
         self.add_target()
         self.run_update()
         self.summary.assert_called_once()
@@ -428,6 +426,9 @@ class TestBundleUpdate:
         assert "### Incomplete Apps (1)\n\n" in summary
         assert "### Patch list" not in summary
         assert "### Repository metadata" not in summary
+        console = capsys.readouterr().out
+        assert "Incomplete apps: 1" in console
+        assert "com.test.app" not in console
 
     def test_archived_repository_keeps_catalog_flag_without_duplicate_warning(
         self,
