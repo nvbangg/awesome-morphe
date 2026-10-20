@@ -31,6 +31,7 @@ from common.utils import (
     extract_mpp_name,
     fetch,
     format_request_error,
+    format_summary_section,
     get_auth_headers,
     load_json,
     load_lines,
@@ -594,11 +595,9 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         content = "\n".join(
             f"- {error}" for error in sorted(errors[category], key=str.lower)
         )
-        if category == "metadata":
-            content = (
-                f"<details>\n<summary>Show details</summary>\n\n{content}\n\n</details>"
-            )
-        summary_sections.append(f"### {title} ({len(errors[category])})\n\n{content}")
+        summary_sections.append(
+            format_summary_section(title, content, len(errors[category]))
+        )
     append_step_summary("\n\n".join(summary_sections))
     print(f"Fetch completed. Updated {updated_count} targets.")
 

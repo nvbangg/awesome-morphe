@@ -50,6 +50,7 @@ DEFAULT_BRANCHES = ("main", "dev")
 PACKAGE_UNIVERSAL = "__universal__"
 PACKAGE_EXAMPLE = "com.example.app"
 CONCURRENCY = 8
+SUMMARY_DETAILS_THRESHOLD = 10
 HOT_RANK_ACTIVE_DAYS = 30
 HOT_RANK_ACTIVE_MS = HOT_RANK_ACTIVE_DAYS * 24 * 60 * 60 * 1000
 
@@ -137,6 +138,16 @@ def fetch(
             return content
         decoded = content.decode("utf-8")
         return json.loads(decoded) if as_json else decoded
+
+
+def format_summary_section(
+    title: str, content: str, result_count: int, *, heading_level: int = 3
+) -> str:
+    if result_count >= SUMMARY_DETAILS_THRESHOLD:
+        content = (
+            f"<details>\n<summary>Show details</summary>\n\n{content}\n\n</details>"
+        )
+    return f"{'#' * heading_level} {title} ({result_count})\n\n{content}"
 
 
 def append_step_summary(markdown_content: str) -> None:

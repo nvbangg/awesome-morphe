@@ -9,6 +9,7 @@ from common.utils import (
     README_REPOS_PATH,
     build_repo_url,
     check_link_status,
+    format_summary_section,
     load_lines,
     parse_repo_url,
 )
@@ -84,8 +85,12 @@ def audit_repos_and_links() -> str:
     ):
         if category_errors:
             summary_sections.append(
-                f"#### {category_name} ({len(category_errors)})\n\n"
-                + "\n".join(f"- {error}" for error in sorted(category_errors))
+                format_summary_section(
+                    category_name,
+                    "\n".join(f"- {error}" for error in sorted(category_errors)),
+                    len(category_errors),
+                    heading_level=4,
+                )
             )
     if not any(errors.values()):
         summary_sections.append("- All repositories and links are active.")

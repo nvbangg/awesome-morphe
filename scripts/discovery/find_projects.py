@@ -19,6 +19,7 @@ from common.utils import (
     build_raw_url,
     check_link_status,
     fetch,
+    format_summary_section,
     load_json,
     load_lines,
     parse_repo_url,
@@ -234,7 +235,9 @@ def verify_and_export_repos(candidates: list[dict] | None = None) -> str:
 
     if not candidates:
         print("Candidate list is empty. Skipping verification.")
-        return "### New projects\n\nNo new standalone repositories found."
+        return format_summary_section(
+            "New projects", "No new standalone repositories found.", 0
+        )
 
     print(
         f"Checking {len(candidates)} candidates for patches-bundle.json and README...\n"
@@ -275,9 +278,7 @@ def verify_and_export_repos(candidates: list[dict] | None = None) -> str:
     ]
     query_lines = "\n".join(f"  - `{query}`" for query in queries)
     excluded_keywords = ", ".join(EXCLUDED_KEYWORDS)
-    summary_sections = [
-        f"### New projects\n\n- **Queries:**\n{query_lines}\n- **New Repositories Found:** `{len(repos)}`"
-    ]
+    summary_sections = [f"- **Queries:**\n{query_lines}"]
     if excluded_keywords:
         summary_sections.append(f"- **Excluded keywords:** {excluded_keywords}")
     if not repos:
@@ -300,7 +301,9 @@ def verify_and_export_repos(candidates: list[dict] | None = None) -> str:
     print(
         f"Saved {len(repos)} URLs to {NEW_PROJECTS_PATH.relative_to(ROOT_DIR)} (excluded {len(candidates) - len(repos)} patch bundles or without README)"
     )
-    return "\n\n".join(summary_sections)
+    return format_summary_section(
+        "New projects", "\n\n".join(summary_sections), len(repos)
+    )
 
 
 def main(argv: list[str] | None = None) -> str:

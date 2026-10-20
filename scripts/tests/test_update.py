@@ -151,6 +151,18 @@ class BundleUpdateTests(unittest.TestCase):
             self.assertEqual(bundle_update.main(), 0)
         return load_json(self.public_path)
 
+    def test_patch_list_summary_collapses_at_ten_repositories(self) -> None:
+        for result_count in (9, 10):
+            save_json(self.repos_path, {})
+            for index in range(result_count):
+                self.add_target(repo=f"owner/repo-{index}", patches=[])
+            with self.subTest(result_count=result_count):
+                self.run_update()
+                summary = self.summary.call_args.args[0]
+                self.assertIn(f"### Patch list ({result_count})", summary)
+                self.assertEqual("<details>" in summary, result_count >= 10)
+                self.assertEqual(summary.count("- https://"), result_count)
+
     def snapshot(self) -> dict[Path, bytes]:
         return {path: path.read_bytes() for path in self.state_paths}
 

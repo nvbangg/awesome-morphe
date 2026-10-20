@@ -51,6 +51,7 @@ jobs:
           if [ "$MODE" != "default" ]; then
             echo "args=--$MODE" >> "$GITHUB_OUTPUT"
           fi
+          printf '# Mode: %s\n\n' "$MODE" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Install Python dependencies
         run: python -m pip install -e scripts/

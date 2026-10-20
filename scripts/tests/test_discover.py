@@ -406,7 +406,9 @@ class DiscoverTests(unittest.TestCase):
                 self.assertIn("### README audit", summary)
                 self.assertIn("Repository is archived", summary)
                 self.assertIn("### New projects", summary)
-                self.assertIn("**New Repositories Found:** `1`", summary)
+                self.assertIn("### New projects (1)", summary)
+                self.assertNotIn("New Repositories Found", summary)
+                self.assertNotIn("<details>", summary)
                 self.assertNotIn("## 📋", summary)
                 self.assertNotIn("## 🔍", summary)
                 self.assertEqual(
@@ -414,6 +416,69 @@ class DiscoverTests(unittest.TestCase):
                     repository["html_url"] + "\n",
                 )
                 self.assertEqual(load_json(self.repos_path), self.saved_repos)
+
+    def test_project_details_depend_on_verified_project_count(self) -> None:
+        for result_count in (9, 10):
+            candidates = [
+                {
+                    "full_name": f"owner/project-{index}",
+                    "html_url": f"https://github.com/owner/project-{index}",
+                }
+                for index in range(result_count + 1)
+            ]
+            output_path = self.root / "new-projects.txt"
+            with (
+                self.subTest(result_count=result_count),
+                patch.multiple(
+                    find_projects,
+                    ROOT_DIR=self.root,
+                    PROJECTS_DIR=self.root,
+                    NEW_PROJECTS_PATH=output_path,
+                ),
+                patch.object(
+                    find_projects,
+                    "is_valid_candidate",
+                    side_effect=lambda repo, excluded_repo=candidates[-1]: (
+                        repo != excluded_repo
+                    ),
+                ),
+            ):
+                summary = find_projects.verify_and_export_repos(candidates)
+            self.assertTrue(
+                summary.startswith(f"### New projects ({result_count})\n\n")
+            )
+            self.assertEqual("<details>" in summary, result_count >= 10)
+            self.assertEqual(summary.count("#### [owner/project-"), result_count)
+            self.assertNotIn("New Repositories Found", summary)
+            self.assertEqual(len(output_path.read_text().splitlines()), result_count)
+
+    def test_audit_groups_collapse_independently_at_ten_results(self) -> None:
+        for result_count in (9, 10):
+            with (
+                self.subTest(result_count=result_count),
+                patch.object(
+                    audit_readme,
+                    "load_lines",
+                    side_effect=[
+                        [
+                            f"https://github.com/owner/repo-{index}"
+                            for index in range(result_count)
+                        ],
+                        ["https://example.com"],
+                    ],
+                ),
+                patch.object(
+                    audit_readme, "fetch_repo_details", return_value={"is_404": True}
+                ),
+                patch.object(
+                    audit_readme, "check_link_status", return_value={"error": "Timeout"}
+                ),
+            ):
+                summary = audit_readme.audit_repos_and_links()
+            unavailable, other = summary.split("#### Other Errors (1)")
+            self.assertIn(f"#### Unavailable ({result_count})", unavailable)
+            self.assertEqual("<details>" in unavailable, result_count >= 10)
+            self.assertNotIn("<details>", other)
 
     def test_extended_discovery_stops_when_no_bundle_sources_are_usable(self) -> None:
         for module in discover.PROVIDER_MODULES:

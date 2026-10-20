@@ -22,6 +22,7 @@ from common.utils import (
     append_step_summary,
     build_raw_url,
     build_repo_url,
+    format_summary_section,
     load_json,
     parse_repo_url,
     save_json,
@@ -344,8 +345,11 @@ def main() -> int:
         for error in sorted_errors:
             print(f"    - {error}")
         summary_sections.append(
-            f"### Patch list ({len(sorted_errors)})\n\n"
-            + "\n".join(f"- {error}" for error in sorted_errors)
+            format_summary_section(
+                "Patch list",
+                "\n".join(f"- {error}" for error in sorted_errors),
+                len(sorted_errors),
+            )
         )
 
     if incomplete_apps:
@@ -358,8 +362,11 @@ def main() -> int:
         for app_issue in sorted_incomplete_apps:
             print(f"  {app_issue}")
         summary_sections.append(
-            f"### Incomplete Apps ({len(sorted_incomplete_apps)})\n\n"
-            + "\n".join(sorted_incomplete_apps)
+            format_summary_section(
+                "Incomplete Apps",
+                "\n".join(sorted_incomplete_apps),
+                len(sorted_incomplete_apps),
+            )
         )
 
     append_step_summary(

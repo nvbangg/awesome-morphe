@@ -10,6 +10,7 @@ from common.utils import (
     ROOT_DIR,
     append_step_summary,
     build_repo_url,
+    format_summary_section,
     load_json,
     parse_repo_url,
     save_json,
@@ -117,8 +118,11 @@ def main(argv: list[str] | None = None) -> int:
     summary_sections = ["## 🔎 Discovery:"]
     if warnings:
         summary_sections.append(
-            "### Bundle sources\n\n"
-            + "\n".join(f"- {warning}" for warning in sorted(warnings))
+            format_summary_section(
+                "Bundle sources",
+                "\n".join(f"- {warning}" for warning in sorted(warnings)),
+                len(warnings),
+            )
         )
 
     if not provider_files:

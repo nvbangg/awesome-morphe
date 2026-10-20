@@ -658,6 +658,45 @@ class BundleFetchTests(unittest.TestCase):
                 self.fetch_request.call_args_list,
             )
 
+    def test_error_groups_collapse_independently_at_ten_repositories(self) -> None:
+        for result_count in (9, 10):
+            repos = {
+                f"https://github.com/owner/repo-{index}": {"main": None}
+                for index in range(result_count + 1)
+            }
+            save_json(self.repos_path, repos)
+
+            def failed_branch(
+                source: str,
+                repo: str,
+                branch: str,
+                current_sha: str | None,
+                metadata_repo: str = f"owner/repo-{result_count}",
+                **_kwargs: object,
+            ) -> bundle_fetch.BranchFetchResult:
+                return bundle_fetch.BranchFetchResult(
+                    source,
+                    repo,
+                    branch,
+                    current_sha,
+                    error_category="metadata" if repo == metadata_repo else "bundle",
+                    error_message="Request failed (HTTP 404)",
+                )
+
+            with (
+                self.subTest(result_count=result_count),
+                patch.object(
+                    bundle_fetch, "process_repo_branch", side_effect=failed_branch
+                ),
+            ):
+                bundle_fetch.fetch_all_repos()
+            summary = self.summary.call_args.args[0]
+            metadata, download = summary.split("### Bundle download")
+            self.assertIn("### Bundle metadata (1)", metadata)
+            self.assertNotIn("<details>", metadata)
+            self.assertIn(f"({result_count})", download)
+            self.assertEqual("<details>" in download, result_count >= 10)
+
     def test_same_http_status_at_different_steps_keeps_both_branch_entries(
         self,
     ) -> None:
@@ -674,11 +713,11 @@ class BundleFetchTests(unittest.TestCase):
         self.assertIn("(main) Request failed (HTTP 403)", summary)
         self.assertIn("(dev) Request failed (HTTP 403)", summary)
         self.assertEqual(summary.count("- https://"), len(DEFAULT_BRANCHES))
-        self.assertEqual(summary.count("<details>"), 1)
-        details_content, remaining_content = summary.split("</details>")
-        self.assertIn("(main) Request failed (HTTP 403)", details_content)
-        self.assertNotIn("(dev) Request failed (HTTP 403)", details_content)
-        self.assertIn("(dev) Request failed (HTTP 403)", remaining_content)
+        self.assertNotIn("<details>", summary)
+        metadata_content, download_content = summary.split("### Bundle download")
+        self.assertIn("(main) Request failed (HTTP 403)", metadata_content)
+        self.assertNotIn("(dev) Request failed (HTTP 403)", metadata_content)
+        self.assertIn("(dev) Request failed (HTTP 403)", download_content)
 
     def test_branch_errors_are_suppressed_when_the_other_branch_succeeds(self) -> None:
         for category in ("metadata", "bundle", "patch_list"):

@@ -107,6 +107,27 @@ class FetchHelperTests(unittest.TestCase):
 
 
 class StepSummaryTests(unittest.TestCase):
+    def test_result_count_controls_details_at_the_threshold(self) -> None:
+        for result_count in (0, 1, 9, 10, 11):
+            with self.subTest(result_count=result_count):
+                content = "\n".join(
+                    f"- Result {index}" for index in range(result_count)
+                )
+                section = utils.format_summary_section("Results", content, result_count)
+                self.assertTrue(section.startswith(f"### Results ({result_count})\n\n"))
+                self.assertIn(content, section)
+                if result_count >= 10:
+                    self.assertEqual(section.count("<details>"), 1)
+                    self.assertIn("<summary>Show details</summary>\n\n", section)
+                    self.assertTrue(section.endswith("\n\n</details>"))
+                else:
+                    self.assertNotIn("<details>", section)
+
+    def test_details_use_result_count_instead_of_content_line_count(self) -> None:
+        content = "\n".join(f"- Detail {index}" for index in range(20))
+        section = utils.format_summary_section("Warnings", content, 1, heading_level=4)
+        self.assertEqual(section, f"#### Warnings (1)\n\n{content}")
+
     def test_sections_in_separate_step_files_have_one_separator_each(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
