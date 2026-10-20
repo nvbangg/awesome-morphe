@@ -39,15 +39,18 @@ jobs:
         env:
           MODE: ${{ inputs.mode || 'default' }}
         run: |
+          read -r TODAY WEEK <<< "$(date -u -d '+1 hour' +'%Y-%m-%d %G-W%V')"
           if [ "${{ github.event_name }}" = "schedule" ]; then
             MODE=$(jq -r \
-              --arg today "$(date -u -d '+1 hour' +'%Y-%m-%d')" \
-              --arg week "$(date -u -d '+1 hour' +'%G-W%V')" '
+              --arg today "$TODAY" \
+              --arg week "$WEEK" '
               if .lastWeek != $week then "weekly"
               elif .lastDaily != $today then "daily"
               else "default" end' data/ci.json)
           fi
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "today=$TODAY" >> "$GITHUB_OUTPUT"
+          echo "week=$WEEK" >> "$GITHUB_OUTPUT"
           if [ "$MODE" != "default" ]; then
             echo "args=--$MODE" >> "$GITHUB_OUTPUT"
           fi
@@ -87,11 +90,11 @@ jobs:
         id: commit
         env:
           MODE: ${{ steps.mode.outputs.mode }}
+          TODAY: ${{ steps.mode.outputs.today }}
+          WEEK: ${{ steps.mode.outputs.week }}
         run: |
           COMMIT_MSG="Sync bundles"
           if [ "$MODE" != "default" ]; then
-            TODAY=$(date -u -d '+1 hour' +'%Y-%m-%d')
-            WEEK=$(date -u -d '+1 hour' +'%G-W%V')
             jq --arg d "$TODAY" --arg w "$WEEK" --arg m "$MODE" \
               '.lastDaily = $d | if $m == "weekly" then .lastWeek = $w else . end' data/ci.json > data/ci.tmp && mv data/ci.tmp data/ci.json
             COMMIT_MSG="Update history (${TODAY})"
