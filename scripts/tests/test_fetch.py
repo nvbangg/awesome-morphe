@@ -87,7 +87,12 @@ class TestGithubBundle:
         self.response.read.assert_not_called()
 
 
-def test_concurrent_targets_share_download_without_blocking_other_urls() -> None:
+@pytest.mark.parametrize(
+    "failure", (None, urllib.error.URLError("Download failed"), KeyboardInterrupt())
+)
+def test_concurrent_targets_share_download_without_blocking_other_urls(
+    failure: BaseException | None,
+) -> None:
     shared_url = "https://example.com/shared.mpp"
     other_url = "https://example.com/other.mpp"
     download_started = threading.Event()
@@ -99,6 +104,8 @@ def test_concurrent_targets_share_download_without_blocking_other_urls() -> None
         if url == shared_url:
             download_started.set()
             assert release_download.wait(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
+            if failure is not None:
+                raise failure
         return url.encode()
 
     with (
@@ -116,8 +123,16 @@ def test_concurrent_targets_share_download_without_blocking_other_urls() -> None
             )
         finally:
             release_download.set()
-        assert first.result() == shared_url.encode()
-        assert second.result() == shared_url.encode()
+        for result in (first, second):
+            if failure is None:
+                assert (
+                    result.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
+                    == shared_url.encode()
+                )
+            else:
+                with pytest.raises(type(failure)) as raised:
+                    result.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
+                assert raised.value is failure
     assert request.call_count == 2
 
 

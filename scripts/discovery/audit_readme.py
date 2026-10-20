@@ -31,10 +31,7 @@ def audit_repos_and_links() -> str:
             }
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
-                try:
-                    details = future.result()
-                except Exception as error:
-                    details = {"error": str(error)}
+                details = future.result()
 
                 if details.get("is_404"):
                     errors["unavailable"].append(f"{url}: 404 Not Found")
@@ -62,10 +59,7 @@ def audit_repos_and_links() -> str:
             }
             for future in as_completed(future_to_link):
                 url = future_to_link[future]
-                try:
-                    status = future.result()
-                except Exception as error:
-                    status = {"error": str(error)}
+                status = future.result()
 
                 if status.get("is_dead"):
                     errors["unavailable"].append(

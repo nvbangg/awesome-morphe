@@ -83,6 +83,7 @@ class BundleDownloads:
                 future.set_result(fetch(url, binary=True))
             except BaseException as error:
                 future.set_exception(error)
+                raise
         return future.result()
 
 

@@ -194,12 +194,10 @@ class TestDiscover:
         assert load_json(jman.OUTPUT_PATH) == {"https://github.com/owner/new": {}}
 
     def test_archive_extracts_and_deduplicates_source_links(self) -> None:
-        content = "\n".join(
-            [
-                "[GitHub](https://morphe.software/add-source?github=owner/new)",
-                "[Duplicate](https://morphe.software/add-source?github=owner/new)",
-                "[GitLab](https://morphe.software/add-source?gitlab=group/project)",
-            ]
+        content = (
+            "[GitHub](https://morphe.software/add-source?github=owner/new)\n"
+            "[Duplicate](https://morphe.software/add-source?github=owner/new)\n"
+            "[GitLab](https://morphe.software/add-source?gitlab=group/project)"
         )
         with patch.object(morphe_archive, "fetch", return_value=content):
             assert morphe_archive.discover() is None

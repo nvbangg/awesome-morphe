@@ -1,9 +1,10 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from http.client import HTTPException
 
 from google_play_scraper import app as gplay_app
-from google_play_scraper.exceptions import NotFoundError
+from google_play_scraper.exceptions import GooglePlayScraperException, NotFoundError
 
 from common.utils import (
     CONCURRENCY,
@@ -36,7 +37,7 @@ def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:
         return details, False
     except NotFoundError:
         return None, True
-    except Exception as error:
+    except (OSError, HTTPException, ValueError, GooglePlayScraperException) as error:
         print(f"[-] Error fetching Google Play details for {package_name}: {error}")
         return None, False
 
@@ -75,24 +76,21 @@ def process(apps_dict: dict, mode: str) -> None:
             }
             for future in as_completed(future_to_package):
                 package_name = future_to_package[future]
-                try:
-                    details, is_404 = future.result()
-                    current_app = apps_dict[package_name]
-                    if not is_404 and details:
-                        for key, value in details.items():
-                            if value is not None:
-                                current_app[key] = value
-                        for field in ("name", "iconUrl", "description"):
-                            if current_app.get(field) is None:
-                                current_app[field] = ""
-                    elif is_404:
-                        current_app["minInstalls"] = 0
-                        current_app["category"] = ""
-                        for field in ("name", "iconUrl", "description"):
-                            if current_app.get(field) is None:
-                                current_app[field] = ""
-                except Exception as error:
-                    print(f"[-] Error processing {package_name}: {error}")
+                details, is_404 = future.result()
+                current_app = apps_dict[package_name]
+                if not is_404 and details:
+                    for key, value in details.items():
+                        if value is not None:
+                            current_app[key] = value
+                    for field in ("name", "iconUrl", "description"):
+                        if current_app.get(field) is None:
+                            current_app[field] = ""
+                elif is_404:
+                    current_app["minInstalls"] = 0
+                    current_app["category"] = ""
+                    for field in ("name", "iconUrl", "description"):
+                        if current_app.get(field) is None:
+                            current_app[field] = ""
     print(
         f"\nSyncing with official store data ({len(official_store)} apps in store)..."
     )

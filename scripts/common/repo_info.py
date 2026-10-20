@@ -6,6 +6,7 @@ import json
 import time
 import urllib.error
 import urllib.request
+from http.client import HTTPException
 
 from common.utils import (
     UNAVAILABLE_HTTP_CODES,
@@ -64,7 +65,7 @@ def fetch_gitlab_repo_details(repo: str) -> dict:
                 "full_name": project.get("fullPath"),
                 "is_archived": bool(project.get("archived")),
             }
-    except Exception as error:
+    except (OSError, HTTPException, ValueError) as error:
         return {"error": format_request_error(error)}
 
 
@@ -96,7 +97,7 @@ def fetch_repo_details(repo_url: str) -> dict:
             "full_name": full_name,
             "is_archived": bool(response.get("archived")),
         }
-    except Exception as error:
+    except (OSError, HTTPException, ValueError) as error:
         details: dict[str, str | bool] = {"error": format_request_error(error)}
         if (
             isinstance(error, urllib.error.HTTPError)

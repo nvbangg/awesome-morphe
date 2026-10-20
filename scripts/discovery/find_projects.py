@@ -5,6 +5,7 @@ import time
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime, timedelta
+from http.client import HTTPException
 
 from common.utils import (
     CONCURRENCY,
@@ -149,7 +150,7 @@ def search_repos() -> list[dict]:
             url = f"https://api.github.com/search/repositories?q={encoded_query}&sort=updated&per_page={PAGE_SIZE}&page={page}"
             try:
                 page_data = fetch(url, timeout=SEARCH_TIMEOUT, as_json=True)
-            except Exception as error:
+            except (OSError, HTTPException, ValueError) as error:
                 print(f"Failed to fetch page {page}: {error}")
                 break
 

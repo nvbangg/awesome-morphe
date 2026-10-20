@@ -1,5 +1,6 @@
 import urllib.error
 from email.message import Message
+from http.client import HTTPException
 from unittest.mock import patch
 
 import pytest
@@ -30,30 +31,39 @@ class TestRepositoryMetadata:
                 expected[f"is_{code}"] = True
             assert details == expected
 
-    def test_connection_error_reports_reason_without_fabricating_http_status(
+    @pytest.mark.parametrize(
+        "error",
+        (
+            urllib.error.URLError("DNS lookup failed"),
+            HTTPException("Connection closed"),
+            ValueError("Invalid JSON"),
+        ),
+    )
+    def test_request_error_reports_reason_without_fabricating_http_status(
         self,
+        error: Exception,
     ) -> None:
-        with patch.object(
-            repo_info, "fetch", side_effect=urllib.error.URLError("DNS lookup failed")
-        ):
+        with patch.object(repo_info, "fetch", side_effect=error):
             details = repo_info.fetch_repo_details("https://github.com/owner/alpha")
-        assert details == {"error": "Request failed: DNS lookup failed"}
+        reason = error.reason if isinstance(error, urllib.error.URLError) else error
+        assert details == {"error": f"Request failed: {reason}"}
 
     @pytest.mark.parametrize(
         "failure_kind,expected",
         (
             ("http", "Request failed (HTTP 503)"),
             ("network", "Request failed: timed out"),
+            ("protocol", "Request failed: Connection closed"),
         ),
     )
     def test_gitlab_request_errors_report_actual_status_or_exception_reason(
         self, failure_kind, expected
     ) -> None:
-        error = (
-            self.http_error(503)
-            if failure_kind == "http"
-            else urllib.error.URLError("timed out")
-        )
+        error = {
+            "http": self.http_error(503),
+            "network": urllib.error.URLError("timed out"),
+            "protocol": HTTPException("Connection closed"),
+        }[failure_kind]
         self.open_url.side_effect = error
         assert repo_info.fetch_gitlab_repo_details("owner/alpha") == {"error": expected}
 

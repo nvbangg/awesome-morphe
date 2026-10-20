@@ -1,9 +1,12 @@
 import json
 from datetime import UTC, datetime, timedelta
+from http.client import HTTPException
 from pathlib import Path
 from unittest.mock import patch
+from urllib.error import URLError
 
 import pytest
+from google_play_scraper.exceptions import ExtraHTTPError
 
 import update as bundle_update
 from common import repo_info
@@ -708,8 +711,10 @@ class TestBundleUpdate:
         self.output.assert_not_called()
         assert load_json(self.history_path) == {}
 
+    @pytest.mark.parametrize("failure_stage", ("process", "fetch_app_details"))
     def test_failure_before_final_output_does_not_write_state_or_cleanup_files(
         self,
+        failure_stage,
     ) -> None:
         self.add_target()
         save_json(
@@ -727,7 +732,7 @@ class TestBundleUpdate:
         with (
             patch.object(
                 gplay_scrape,
-                "process",
+                failure_stage,
                 side_effect=RuntimeError("Unexpected processing failure"),
             ),
             pytest.raises(RuntimeError),
@@ -813,3 +818,34 @@ class TestBundleUpdate:
         } == {("github", "owner/new"), ("gitlab", "owner/alpha")}
         assert "https://gitlab.com/owner/alpha" in load_json(self.repos_path)
         assert self.run_update() == catalog
+
+
+@pytest.mark.parametrize(
+    "error",
+    (
+        URLError("DNS failed"),
+        HTTPException("Connection closed"),
+        ExtraHTTPError("HTTP 503"),
+        ValueError("Invalid JSON"),
+    ),
+)
+def test_google_play_request_failure_preserves_saved_app_and_updates_other_apps(
+    tmp_path: Path,
+    error: Exception,
+) -> None:
+    saved_app = {"name": "Saved app", "minInstalls": 100, "category": "Tools"}
+    apps = {"com.test.failed": dict(saved_app), "com.test.working": {}}
+
+    def fetch_app(package_name: str, **_kwargs: object) -> dict:
+        if package_name == "com.test.failed":
+            raise error
+        return {"title": "Working app"}
+
+    with (
+        patch.object(gplay_scrape, "gplay_app", side_effect=fetch_app),
+        patch.object(gplay_scrape, "OFFICIAL_BUNDLES_PATH", tmp_path / "official.json"),
+    ):
+        gplay_scrape.process(apps, "weekly")
+
+    assert apps["com.test.failed"] == saved_app
+    assert apps["com.test.working"]["name"] == "Working app"

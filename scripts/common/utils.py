@@ -8,6 +8,7 @@ import urllib.parse
 import urllib.request
 import zipfile
 from datetime import UTC, datetime
+from http.client import HTTPException
 from pathlib import Path
 from typing import Any
 
@@ -275,5 +276,5 @@ def check_link_status(url: str, timeout: int = 5) -> dict:
         if error.code in DEAD_LINK_HTTP_CODES:
             return {"is_dead": True, "error": f"HTTP {error.code}"}
         return {"error": f"HTTP {error.code}"}
-    except Exception as error:
+    except (OSError, HTTPException, ValueError) as error:
         return {"error": str(error)}
