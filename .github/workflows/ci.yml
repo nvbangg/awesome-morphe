@@ -56,11 +56,17 @@ jobs:
           fi
           printf '# Mode: %s\n\n' "$MODE" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Setup Python environment
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          working-directory: scripts
+          enable-cache: true
+
       - name: Install Python dependencies
-        run: python -m pip install -e scripts/
+        run: uv sync --project scripts --locked --no-dev
 
       - name: Discover bundles and projects
-        run: python scripts/discover.py ${{ steps.mode.outputs.args }}
+        run: uv run --project scripts --no-sync scripts/discover.py ${{ steps.mode.outputs.args }}
 
       - name: Setup Java environment
         uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
@@ -70,7 +76,7 @@ jobs:
           cache: "gradle"
 
       - name: Fetch new bundles
-        run: python scripts/fetch.py ${{ steps.mode.outputs.args }}
+        run: uv run --project scripts --no-sync scripts/fetch.py ${{ steps.mode.outputs.args }}
 
       - name: Check data changes
         if: steps.mode.outputs.mode == 'default'
@@ -83,7 +89,7 @@ jobs:
       - name: Update bundles data
         if: steps.mode.outputs.mode != 'default' || steps.changes.outputs.changed == 'true'
         id: update
-        run: python scripts/update.py ${{ steps.mode.outputs.args }}
+        run: uv run --project scripts --no-sync scripts/update.py ${{ steps.mode.outputs.args }}
 
       - name: Commit and push changes
         if: steps.changes.outputs.changed == 'true' || steps.update.outputs.success == 'true'
@@ -116,7 +122,7 @@ jobs:
         env:
           TG_CHAT: ${{ secrets.TG_CHAT }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
-        run: python scripts/telegram.py
+        run: uv run --project scripts --no-sync scripts/telegram.py
 
       - name: Cleanup old workflow runs
         if: steps.mode.outputs.mode != 'default'

@@ -27,7 +27,3 @@ def discover() -> str | None:
     }
 
     return export_provider("morphe-archive", discovered, OUTPUT_PATH)
-
-
-if __name__ == "__main__":
-    discover()

@@ -41,7 +41,3 @@ def discover() -> str | None:
     if discovered:
         save_json(OFFICIAL_BUNDLES_PATH, data)
     return export_provider("official", discovered, OUTPUT_PATH)
-
-
-if __name__ == "__main__":
-    discover()

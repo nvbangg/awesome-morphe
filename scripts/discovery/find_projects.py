@@ -1,6 +1,5 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-import argparse
 import re
 import time
 import urllib.parse
@@ -20,7 +19,6 @@ from common.utils import (
     check_link_status,
     fetch,
     format_summary_section,
-    load_json,
     load_lines,
     parse_repo_url,
     save_json,
@@ -180,18 +178,7 @@ def search_repos() -> list[dict]:
     return repos_list
 
 
-def filter_repos(repos: list[dict] | None = None) -> list[dict]:
-    if repos is None:
-        if not RAW_SEARCH_PATH.exists():
-            print(
-                f"Raw search file not found: {RAW_SEARCH_PATH.relative_to(ROOT_DIR)}. Run with --search first."
-            )
-            return []
-        repos = load_json(RAW_SEARCH_PATH, [])
-        print(
-            f"Loaded {len(repos)} repositories from {RAW_SEARCH_PATH.relative_to(ROOT_DIR)}"
-        )
-
+def filter_repos(repos: list[dict]) -> list[dict]:
     if not repos:
         print("Repository list is empty. Skipping filter step.")
         return []
@@ -221,18 +208,7 @@ def filter_repos(repos: list[dict] | None = None) -> list[dict]:
     return candidates
 
 
-def verify_and_export_repos(candidates: list[dict] | None = None) -> str:
-    if candidates is None:
-        if not RAW_FILTER_PATH.exists():
-            print(
-                f"Filtered file not found: {RAW_FILTER_PATH.relative_to(ROOT_DIR)}. Run with --filter first."
-            )
-            return "### New projects\n\nNo saved candidates available for verification."
-        candidates = load_json(RAW_FILTER_PATH, [])
-        print(
-            f"Loaded {len(candidates)} candidates from {RAW_FILTER_PATH.relative_to(ROOT_DIR)}"
-        )
-
+def verify_and_export_repos(candidates: list[dict]) -> str:
     if not candidates:
         print("Candidate list is empty. Skipping verification.")
         return format_summary_section(
@@ -306,41 +282,7 @@ def verify_and_export_repos(candidates: list[dict] | None = None) -> str:
     )
 
 
-def main(argv: list[str] | None = None) -> str:
-    parser = argparse.ArgumentParser(
-        description="Find and filter standalone repositories in the Morphe ecosystem."
-    )
-    parser.add_argument(
-        "--search",
-        action="store_true",
-        help="Fetch raw repositories from GitHub Search API.",
-    )
-    parser.add_argument(
-        "--filter",
-        action="store_true",
-        help="Filter raw repositories by keywords and exclusion list.",
-    )
-    parser.add_argument(
-        "--check",
-        action="store_true",
-        help="Verify patch bundle status and export output files.",
-    )
-
-    args = parser.parse_args(argv)
-
-    if args.search:
-        search_repos()
-    elif args.filter:
-        filter_repos()
-    elif args.check:
-        return verify_and_export_repos()
-    else:
-        raw_repos = search_repos()
-        candidates = filter_repos(raw_repos)
-        return verify_and_export_repos(candidates)
-
-    return ""
-
-
-if __name__ == "__main__":
-    print(main())
+def run() -> str:
+    raw_repos = search_repos()
+    candidates = filter_repos(raw_repos)
+    return verify_and_export_repos(candidates)

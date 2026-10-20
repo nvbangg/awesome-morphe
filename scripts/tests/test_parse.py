@@ -1,36 +1,36 @@
 import subprocess
-import tempfile
-import unittest
 from pathlib import Path
 from unittest.mock import patch
+
+import pytest
 
 import fetch as bundle_fetch
 from common.utils import load_lines, save_json
 
 
-class BundleParserTests(unittest.TestCase):
-    def setUp(self) -> None:
-        temporary_directory = tempfile.TemporaryDirectory()
-        self.addCleanup(temporary_directory.cleanup)
-        self.root = Path(temporary_directory.name)
+class TestBundleParser:
+    @pytest.fixture(autouse=True)
+    def prepare(self, tmp_path: Path, patch_context) -> None:
+        self.patch_context = patch_context
+        self.root = tmp_path
         self.patches_dir = self.root / "patches"
         self.patches_dir.mkdir()
         self.updated_path = self.root / "updated_files.txt"
         self.parsed_path = self.root / "parsed_files.txt"
         self.gradle_path = self.root / bundle_fetch.GRADLE_EXECUTABLE_NAME
-        path_patcher = patch.multiple(
-            bundle_fetch,
-            BUNDLE_PARSER_DIR=self.root,
-            PATCHES_DIR=self.patches_dir,
-            UPDATED_FILES_PATH=self.updated_path,
-            PARSED_FILES_PATH=self.parsed_path,
-            GRADLE_EXECUTABLE_PATH=self.gradle_path,
+        self.patch_context.enter_context(
+            patch.multiple(
+                bundle_fetch,
+                BUNDLE_PARSER_DIR=self.root,
+                PATCHES_DIR=self.patches_dir,
+                UPDATED_FILES_PATH=self.updated_path,
+                PARSED_FILES_PATH=self.parsed_path,
+                GRADLE_EXECUTABLE_PATH=self.gradle_path,
+            )
         )
-        path_patcher.start()
-        self.addCleanup(path_patcher.stop)
-        process_patcher = patch.object(bundle_fetch.subprocess, "run")
-        self.run_process = process_patcher.start()
-        self.addCleanup(process_patcher.stop)
+        self.run_process = self.patch_context.enter_context(
+            patch.object(bundle_fetch.subprocess, "run")
+        )
 
     def target(
         self, repo: str = "owner/alpha", branch: str = "main", source: str = "github"
@@ -50,10 +50,11 @@ class BundleParserTests(unittest.TestCase):
         targets: list[bundle_fetch.BranchFetchResult],
         content: str = '{"patches": [{"name": "Valid patch"}]}',
     ) -> None:
+
         def run_parser(
             *_args: object, **_kwargs: object
         ) -> subprocess.CompletedProcess:
-            self.assertFalse(self.parsed_path.exists())
+            assert not self.parsed_path.exists()
             for target in targets:
                 (self.patches_dir / f"{target.target_name}.json").write_text(
                     content, encoding="utf-8"
@@ -70,7 +71,7 @@ class BundleParserTests(unittest.TestCase):
         self.updated_path.write_text("mpp/stale.mpp", encoding="utf-8")
         bundle_fetch.run_bundle_parser([])
         self.run_process.assert_not_called()
-        self.assertFalse(self.updated_path.exists())
+        assert not self.updated_path.exists()
 
     def test_multiple_targets_use_one_batch_and_current_success_report(self) -> None:
         targets = [
@@ -87,28 +88,27 @@ class BundleParserTests(unittest.TestCase):
             text=True,
             check=True,
         )
-        self.assertEqual(
-            load_lines(self.updated_path),
-            [f"mpp/{target.target_name}.mpp" for target in targets],
-        )
-        self.assertTrue(all(target.new_sha == "new-sha" for target in targets))
+        assert load_lines(self.updated_path) == [
+            f"mpp/{target.target_name}.mpp" for target in targets
+        ]
+        assert all(target.new_sha == "new-sha" for target in targets)
 
     def test_process_failure_rejects_stale_success(self) -> None:
         target = self.target()
         self.parsed_path.write_text(f"{target.target_name}.json", encoding="utf-8")
         self.run_process.side_effect = subprocess.CalledProcessError(1, [])
-        with self.assertRaises(subprocess.CalledProcessError):
+        with pytest.raises(subprocess.CalledProcessError):
             bundle_fetch.run_bundle_parser([target])
-        self.assertFalse(self.parsed_path.exists())
+        assert not self.parsed_path.exists()
 
     def test_launch_error_stops_processing(self) -> None:
         self.run_process.side_effect = OSError("Cannot start parser")
-        with self.assertRaises(OSError):
+        with pytest.raises(OSError):
             bundle_fetch.run_bundle_parser([self.target()])
 
     def test_missing_success_report_stops_processing(self) -> None:
         self.run_process.return_value = subprocess.CompletedProcess([], 0)
-        with self.assertRaisesRegex(RuntimeError, "did not write"):
+        with pytest.raises(RuntimeError, match="did not write"):
             bundle_fetch.run_bundle_parser([self.target()])
 
     def test_partial_success_clears_only_failed_target_and_its_name(self) -> None:
@@ -120,11 +120,11 @@ class BundleParserTests(unittest.TestCase):
         )
         self.complete_parser([main_target])
         bundle_fetch.run_bundle_parser([main_target, dev_target])
-        self.assertEqual(main_target.new_sha, "new-sha")
-        self.assertEqual(main_target.bundle_name, "owner/alpha main")
-        self.assertIsNone(dev_target.new_sha)
-        self.assertIsNone(dev_target.bundle_name)
-        self.assertTrue(dev_target.error_message)
+        assert main_target.new_sha == "new-sha"
+        assert main_target.bundle_name == "owner/alpha main"
+        assert dev_target.new_sha is None
+        assert dev_target.bundle_name is None
+        assert dev_target.error_message
 
     def test_success_entry_without_output_clears_target(self) -> None:
         target = self.target()
@@ -137,32 +137,24 @@ class BundleParserTests(unittest.TestCase):
 
         self.run_process.side_effect = run_parser
         bundle_fetch.run_bundle_parser([target])
-        self.assertIsNone(target.new_sha)
+        assert target.new_sha is None
 
-    def test_output_content_validation_is_left_to_update(self) -> None:
-        for content in ("{broken", "{}", '{"patches": []}'):
-            with self.subTest(content=content):
-                target = self.target()
-                self.complete_parser([target], content=content)
-                bundle_fetch.run_bundle_parser([target])
-                self.assertEqual(target.new_sha, "new-sha")
-                self.assertEqual(
-                    (self.patches_dir / f"{target.target_name}.json").read_text(
-                        encoding="utf-8"
-                    ),
-                    content,
-                )
+    @pytest.mark.parametrize("content", ("{broken", "{}", '{"patches": []}'))
+    def test_output_content_validation_is_left_to_update(self, content) -> None:
+        target = self.target()
+        self.complete_parser([target], content=content)
+        bundle_fetch.run_bundle_parser([target])
+        assert target.new_sha == "new-sha"
+        assert (self.patches_dir / f"{target.target_name}.json").read_text(
+            encoding="utf-8"
+        ) == content
 
     def test_failed_target_can_be_parsed_in_a_later_run(self) -> None:
         target = self.target()
         self.complete_parser([])
         bundle_fetch.run_bundle_parser([target])
-        self.assertIsNone(target.new_sha)
+        assert target.new_sha is None
         target = self.target()
         self.complete_parser([target])
         bundle_fetch.run_bundle_parser([target])
-        self.assertEqual(target.new_sha, "new-sha")
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert target.new_sha == "new-sha"

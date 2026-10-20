@@ -139,7 +139,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Saved to {REPOS_JSON_PATH.relative_to(ROOT_DIR)}")
     if args.daily or args.weekly:
         summary_sections.append(audit_readme.audit_repos_and_links())
-        summary_sections.append(find_projects.main([]))
+        summary_sections.append(find_projects.run())
     if len(summary_sections) > 1:
         append_step_summary("\n\n".join(summary_sections))
     return 0

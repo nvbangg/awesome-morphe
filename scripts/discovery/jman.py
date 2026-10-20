@@ -33,7 +33,3 @@ def discover() -> str | None:
             discovered[canonical_url] = {}
 
     return export_provider("jman", discovered, OUTPUT_PATH)
-
-
-if __name__ == "__main__":
-    discover()
