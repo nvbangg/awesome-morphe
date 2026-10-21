@@ -1,7 +1,130 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "patches": [
+    {
+      "name": "Block app open reports",
+      "description": "Stops the app from telling BuzzCast every time you open it.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass signature check",
+      "description": "Stops Picsart from killing the process after a few seconds when the APK is re-signed.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.picsart.studio",
+          "name": "Picsart",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "30.9.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Delete button in pin menu",
+      "description": "Replaces the WhatsApp button in the menu that opens when you press and hold your saved pin with a trash button that deletes it.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pinterest",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.39.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "14.40.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "14.41.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
+      "description": "Stops the app from collecting your usage and advertising data.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Enable Premium",
       "description": "Forces the Premium state source before it is recalculated and adds the mod author signature below the Bisbi version.",
@@ -29,8 +152,64 @@
       "options": []
     },
     {
+      "name": "Hide Try PRO button",
+      "description": "Removes the \"Try PRO\" pill from the home toolbar and the create tab.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.picsart.studio",
+          "name": "Picsart",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "30.9.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide first recharge popups",
+      "description": "Hides the first-recharge offer pop-ups.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide home banner",
-      "description": "Hides the promotional banner carousel shown in the middle of the home live list.",
+      "description": "Hides the promotional banner in the middle of the home list.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -58,7 +237,7 @@
     },
     {
       "name": "Hide join and follow messages",
-      "description": "Hides the \"joined\" and \"followed the streamer\" messages in the live chat and the join banner at the top.",
+      "description": "Hides the \"joined\" and \"followed\" messages in live chats and the join banner at the top.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -86,7 +265,7 @@
     },
     {
       "name": "Hide live room cards",
-      "description": "Hides the rotating event/honor wall/daily recharge cards in the corner of live rooms.",
+      "description": "Hides the rotating event and gift cards in the corner of live rooms.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -114,7 +293,91 @@
     },
     {
       "name": "Hide live room notice",
-      "description": "Removes the 'healthy live streaming' notice shown in every live chat.",
+      "description": "Removes the \"healthy live streaming\" message shown in every live chat.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide rating prompts",
+      "description": "Stops the pop-ups that ask you to rate the app.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide splash promo",
+      "description": "Skips the full-screen promotion shown when the app opens.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.guochao.faceshow",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.2.92",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide update prompt",
+      "description": "Stops the pop-up that asks you to update the app.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -173,6 +436,34 @@
       "options": []
     },
     {
+      "name": "Remove Ads",
+      "description": "Removes ads from Picsart.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.picsart.studio",
+          "name": "Picsart",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "30.9.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove ads",
       "description": "Disables AdMob ads (banner, interstitial, app open, rewarded) and the consent form.",
       "default": true,
@@ -201,13 +492,13 @@
       "options": []
     },
     {
-      "name": "Spoof signature",
-      "description": "Spoof the Tinder package signature to fix push notifications (Enable to get notifications).",
-      "default": false,
+      "name": "Remove ads and video blocking",
+      "description": "Removes the AdMob banner and the rewarded video dialog (Schedule/Favorite).",
+      "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.tinder",
+          "packageName": "com.xinesoft.notifications",
           "name": null,
           "description": null,
           "apkFileType": null,
@@ -215,7 +506,33 @@
           "signatures": null,
           "targets": [
             {
-              "version": null,
+              "version": "1.11.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Spoofs the Tinder package signature to fix push notifications (Firebase rejects registration when the signature does not match the original).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD267A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.37.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -256,20 +573,20 @@
     },
     {
       "name": "Tinder Remove Ads",
-      "description": "Removes ads displayed between profiles in the swipe deck.",
+      "description": "Removes the ads shown between profiles in the swipe deck.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.tinder",
-          "name": null,
+          "name": "Tinder",
           "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD267A",
           "signatures": null,
           "targets": [
             {
-              "version": null,
+              "version": "17.37.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -282,20 +599,20 @@
     },
     {
       "name": "Tinder Remove Upsells",
-      "description": "Remove sponsored messages in the chat and upsell pop-ups (Likes You, Boost).",
+      "description": "Removes sponsored chat messages and upsell pop-ups (Likes You, Boost).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.tinder",
-          "name": null,
+          "name": "Tinder",
           "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD267A",
           "signatures": null,
           "targets": [
             {
-              "version": null,
+              "version": "17.37.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -308,53 +625,20 @@
     },
     {
       "name": "Tinder Unlimited Rewind",
-      "description": "Remove signature verification and enable Rewind locally.",
+      "description": "Makes RewindLastRec.invoke() skip the limit/paywall check and perform the rewind directly.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.tinder",
-          "name": null,
+          "name": "Tinder",
           "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD267A",
           "signatures": null,
           "targets": [
             {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Trash bubble on pin long press",
-      "description": "Replace the WhatsApp bubble in the long-press menu of a saved PIN with atrash can that deletes the PIN.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.pinterest",
-          "name": null,
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
-          "signatures": null,
-          "targets": [
-            {
-              "version": "14.39.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "14.40.0",
+              "version": "17.37.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -367,7 +651,38 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Forces the premium entitlement in Native Camera. Premium status is stored locally and controls features such as the sub-40-Mbps bitrate cap. Compatible with v1.4 and v1.4.1 (PairIP was removed in v1.4.1).",
+      "description": "Unlocks all premium features in Image & Video Date Fixer.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "eu.duong.imagedatefixer",
+          "name": "Image & Video Date Fixer",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1565C0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.10.1",
+              "versionCodes": {
+                "ARM64_V8A": 31000010,
+                "ARMEABI_V7A": 31000010,
+                "X86_64": 31000010,
+                "X86": 31000010
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Forces the premium entitlement in Native Camera. Premium status is stored locally and controls features such as the sub-40-Mbps bitrate cap. Also disables the PairIP license check when the app includes it. Compatible with v1.4, v1.4.1 and v1.4.4.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -388,6 +703,41 @@
             },
             {
               "version": "1.4.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.4.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks premium features in Picsart.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.picsart.studio",
+          "name": "Picsart",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "30.9.5",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -426,7 +776,7 @@
     },
     {
       "name": "Unlock SVIP",
-      "description": "Unlocks SVIP features, blocks purchase flow and Unity Ads.",
+      "description": "Unlocks SVIP features and removes ads and purchase pop-ups.",
       "default": true,
       "dependencies": [
         "ResourcePatch",

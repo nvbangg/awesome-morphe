@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.24.0",
+  "version": "1.25.0",
   "patches": [
     {
       "name": "AR Effects Slimmer",
@@ -224,7 +224,35 @@
     },
     {
       "name": "Block Telemetry & Trackers",
-      "description": "Neutralizes Microsoft OneDS/Aria lifecycle, aggregated-metric and failure-logging dispatch methods, stubs Singular attribution SDK initializers and dispatchers, nullifies ad measurement platform identifiers (AIFA, AppSetId), rewrites default telemetry endpoints inside telemetry packages and custom blocked hosts unscoped to 0.0.0.0, disables cross-sell, Floodgate, HockeyApp and DataTransport components, and strips advertising and preinstall attribution permissions.",
+      "description": "Neutralizes in-house statistics, ByteDance AppLog, AppLovin MAX, Google Measurement, AppMetrica, Tenjin, IronSource, and Pangle ad/telemetry dispatchers, redirects isolated tracking host literals to 0.0.0.0, disables ad and tracking manifest components, and injects opt-out metadata flags.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.excelliance.multiaccounts",
+          "name": "Multiple Accounts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.8.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block Telemetry & Trackers",
+      "description": "Neutralizes Microsoft OneDS/Aria aggregated-metric and failure-logging dispatch methods, stubs Singular attribution SDK initializers and dispatchers, nullifies ad measurement platform identifiers (AIFA, AppSetId), rewrites default telemetry endpoints inside telemetry packages and custom blocked hosts unscoped to 0.0.0.0, disables cross-sell, Floodgate, HockeyApp and DataTransport components, and strips advertising and preinstall attribution permissions.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -730,32 +758,6 @@
     },
     {
       "name": "Disable Login Requirement",
-      "description": "Removes login requirement and FTUX paywall screens. Cloud-backed features still require sign-in server-side.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.office.officehubrow",
-          "name": "Copilot",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#109CF0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "16.0.20604.20012",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable Login Requirement",
       "description": "Removes login requirement and FTUX paywall screens.",
       "default": true,
       "dependencies": [],
@@ -854,6 +856,84 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Multiaccounts Debloat (Setup)",
+      "description": "Disables non-functional ad-network WorkManager services and receivers, removes WorkManagerInitializer startup metadata, and strips RECEIVE_BOOT_COMPLETED in AndroidManifest.xml while strictly preserving clone container services.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.excelliance.multiaccounts",
+          "name": "Multiple Accounts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.8.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Multiaccounts Privacy Setup",
+      "description": "Configures network_security_config.xml to trust user CA certificates for TLS inspection while preserving cleartext traffic.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.excelliance.multiaccounts",
+          "name": "Multiple Accounts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.8.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Multiaccounts Telemetry Manifest Purge",
+      "description": "Strips advertising permissions, disables ad network providers, activities, services, and receivers, prunes telemetry registrars, and injects opt-out metadata flags in AndroidManifest.xml.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.excelliance.multiaccounts",
+          "name": "Multiple Accounts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.8.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Native Bloat Slimmer",
@@ -961,6 +1041,34 @@
           "targets": [
             {
               "version": "5.28.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Privacy Controls",
+      "description": "Neutralizes clipboard snooping in ByteDance AppLog attribution and disables OkHttp certificate pinning for network traffic auditing.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.excelliance.multiaccounts",
+          "name": "Multiple Accounts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.8.2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1234,6 +1342,32 @@
       "options": []
     },
     {
+      "name": "Sideload Compatibility",
+      "description": "Ensures compatibility for sideloaded installations by spoofing the official APK signature certificate for self-verification and neutralizing launch-blocking Google Play in-app update checks.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.excelliance.multiaccounts",
+          "name": "Multiple Accounts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.8.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Sideload Install Support",
       "description": "Ensures compatibility for sideloaded lab installs by allowing local installer source checks to report success and completing Play Integrity token requests. Required for sideloaded lab installs: without it the app routes to the Play Store.",
       "default": true,
@@ -1396,6 +1530,34 @@
       "options": []
     },
     {
+      "name": "Stop Background Wakeups",
+      "description": "Stops ad-SDK WorkManager background tasks to eliminate background wakeups and battery drain. Container virtualization processes, push notifications, and clone keep-alive services are strictly preserved.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.excelliance.multiaccounts",
+          "name": "Multiple Accounts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.8.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Suppress Paywalls",
       "description": "Suppresses subscription paywalls, onboarding upgrade dialogs, and promotional cards.",
       "default": true,
@@ -1420,6 +1582,69 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "UX Declutter",
+      "description": "Removes splash delays, short-circuits cloned-app launch ad gates, hides main screen promo banners, and suppresses rating prompts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.excelliance.multiaccounts",
+          "name": "Multiple Accounts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.8.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "skipSplashDelay",
+          "title": "Skip Splash Delay and Ad Stalls",
+          "description": "Eliminates the 1-second cold start delay timer in the launcher activity and short-circuits splash/launch ad gates so cloned apps and the main screen launch immediately.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "suppressRatingPrompt",
+          "title": "Suppress Rating Prompts",
+          "description": "Suppresses in-app 5-star rating dialogs and review prompts.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideNativeBanner",
+          "title": "Hide Main Screen Native Promo Banner",
+          "description": "Hides the native ad/promo banner on the main workspace screen and disables banner paging routines.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "skipFirstRunWizard",
+          "title": "Skip First-Run Privacy Wizard",
+          "description": "Bypasses the first-run privacy consent dialog and proceeds directly to workspace initialization.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Unlock 365 Family",
@@ -1569,6 +1794,32 @@
           "targets": [
             {
               "version": "3.1.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks SD Maid SE Pro features.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "eu.darken.sdmse",
+          "name": "SD Maid SE",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4CAF50",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.2.2-rc0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
