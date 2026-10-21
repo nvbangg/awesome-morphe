@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.15.7",
+  "version": "1.16.0",
   "patches": [
     {
       "name": "Ambient light",
@@ -1413,6 +1413,99 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Open in external browser",
+      "description": "Opens the web pages that SmartNews shows in its in-app browser in another installed browser instead: as a Custom Tab (the browser's own in-app browser) or in the browser app.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.gocro.smartnews.android",
+          "name": "SmartNews",
+          "description": "SmartNews pages in an external browser (26.9.20 and later)",
+          "apkFileType": "APK",
+          "appIconColor": "#0C73C7",
+          "signatures": [
+            "40f82012f7b7512d011eb9678a59c194892c863657f43e7c171d181b6bf5c700",
+            "867abbf06837d164a35e376c2e16f08381346e7f916b029ac53a45c36d744883"
+          ],
+          "targets": [
+            {
+              "version": "26.9.20",
+              "versionCodes": {
+                "ARM64_V8A": 1001139,
+                "ARMEABI_V7A": 1001139,
+                "X86_64": 1001139,
+                "X86": 1001139
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Automatically verified on the dedicated Android API 36 emulator."
+            },
+            {
+              "version": "26.10.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Universal APK and Google Play APKM: ad-free public feed and scrolling verified on the dedicated Android API 36 emulator."
+            },
+            {
+              "version": "26.10.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": "Universal APK and Google Play APKM: ad-free public feed and scrolling verified on the dedicated Android API 36 emulator."
+            },
+            {
+              "version": "26.10.30",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": "Universal APK and Google Play APKM: ad-free public feed and scrolling verified on the dedicated Android API 36 emulator."
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "browser",
+          "title": "Browser",
+          "description": "Package name of the browser, or several separated by commas (the first installed one is used). \"default\" uses the default browser app set in Android settings, which is also used when none of the chosen browsers is installed (without a default, the first installed browser).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "default",
+          "values": {
+            "Default browser (Android setting)": "default",
+            "Chrome": "com.android.chrome",
+            "Firefox": "org.mozilla.firefox",
+            "Brave": "com.brave.browser",
+            "Microsoft Edge": "com.microsoft.emmx",
+            "Samsung Internet": "com.sec.android.app.sbrowser",
+            "Vivaldi": "com.vivaldi.browser",
+            "Opera": "com.opera.browser",
+            "DuckDuckGo": "com.duckduckgo.mobile.android"
+          }
+        },
+        {
+          "key": "custom_tabs",
+          "title": "Use Custom Tabs",
+          "description": "Show pages in the browser's in-app browser (Custom Tabs) on top of SmartNews. Turn off to open them in the browser app itself.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "smart_view_articles",
+          "title": "Also open SmartView articles",
+          "description": "Also open articles that SmartNews shows in its SmartView reader, as their original page.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Player enhancements",
