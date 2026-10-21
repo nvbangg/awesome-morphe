@@ -1,12 +1,12 @@
 {
-  "version": "v0.15.0",
+  "version": "v0.16.0",
   "appNames": {
     "com.facebook.katana": "Facebook"
   },
   "patches": [
     {
       "name": "AMOLED black theme",
-      "description": "Makes Facebook's dark mode black, or a dark color you pick, instead of dark gray, which can save battery on OLED screens. Turn on dark mode in Facebook first. It isn't selected by default because undoing it means patching again. Turn on Expert mode in Manager to pick it.",
+      "description": "Makes Facebook's dark mode black, or a dark color you pick, instead of dark gray, which can save battery on OLED screens. Cards and menus stay a shade lighter than the page. Turn on Black cards in Hushfacebook settings > Appearance to make them black too. Turn on dark mode in Facebook first. It isn't selected by default because undoing it means patching again. Turn on Expert mode in Manager to pick it.",
       "category": "Theme",
       "use": false,
       "dependencies": [
@@ -395,7 +395,7 @@
     },
     {
       "name": "Clean up Reels",
-      "description": "Hides clutter on reels, such as the Follow button, comment previews, Remix and Use template buttons and Threads cards between reels, so more of the video shows, and can play each reel once instead of over and over, keep its original audio instead of a Meta AI dub, drop the search pill under the caption or hide the like, comment and share counts. It can also open a video you tap in the feed on its own, with no reels after it. Starts off. Turn on the parts you want in Hushfacebook settings > Reels and Watch.",
+      "description": "Hides clutter on reels, such as the Follow button, comment previews, Remix and Use template buttons and Threads cards between reels, so more of the video shows, and can play each reel once instead of over and over, keep its original audio instead of a Meta AI dub, drop the search suggestions under the caption, over the comments and at the top of a profile's reels, or hide the like, comment and share counts, the Save button, the speaker button or the line naming the reel's sound. It can also open a video you tap in the feed on its own, with no reels after it. Starts off. Turn on the parts you want in Hushfacebook settings > Reels and Watch.",
       "category": "Reels",
       "use": true,
       "dependencies": [
@@ -622,6 +622,44 @@
       "options": []
     },
     {
+      "name": "Don't save search history",
+      "description": "Stops Facebook from adding what you search for to your search history, so there's nothing to clear by hand. Searches already there stay until you delete them. Starts off. Turn it on in Hushfacebook settings > Search.",
+      "category": "Privacy",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "583.0.0.39.55"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "583.0.0.39.55",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475614366,
+                "ARMEABI_V7A": 475614365
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Don't send reel watch history",
       "description": "Stops sending Facebook the list of reels you've watched, so it learns less about what you watch. Reels you've already seen may come back. Starts off. Turn it on in Hushfacebook settings > Reels and Watch.",
       "category": "Privacy",
@@ -812,7 +850,7 @@
     },
     {
       "name": "Following feed on Home",
-      "description": "Makes Home show the newest posts from the friends, groups and Pages you follow instead of Facebook's ranked feed, so you see what they posted rather than what Facebook picks. Home shows, right below it, narrows Home to one of the Feeds tab's filters (Friends, Favorites, Groups or Pages). Starts off. Turn it on in Hushfacebook settings > Opening Facebook.",
+      "description": "Makes Home show the newest posts from the friends, groups and Pages you follow instead of Facebook's ranked feed, so you see what they posted rather than what Facebook picks. Home shows, right below it, asks Facebook for one of the Feeds tab's filters (Friends, Favorites, Groups or Pages) instead. When that filter has nothing new, Facebook can fill Home with suggested posts and reels, so pair it with Hide \"Suggested for you\" posts and Hide Reels in the feed. Starts off. Turn it on in Hushfacebook settings > Opening Facebook.",
       "category": "Feed",
       "use": true,
       "dependencies": [
@@ -963,7 +1001,7 @@
     },
     {
       "name": "Hide Menu promotions",
-      "description": "Hides the Upgrades and Also from Meta sections and the Muse card in Facebook's Menu, so the Menu has fewer ads for Meta's products. Settings, Help and your shortcuts stay. On by default. Turn it off in Hushfacebook settings > Menu. A switch there, off by default, also hides the Meta AI shortcut, and a list there hides the Menu tiles you pick, such as Marketplace or Gaming.",
+      "description": "Hides the Upgrades and Also from Meta sections and the Muse card in Facebook's Menu, so the Menu has fewer ads for Meta's products. Settings, Help and your shortcuts stay. On by default. Turn it off in Hushfacebook settings > Menu. A switch there, off by default, also hides the Meta AI shortcut, and a list there hides the Menu tiles and Help and Settings rows you pick, such as Gaming or Orders and payments.",
       "category": "Interface",
       "use": true,
       "dependencies": [
@@ -2133,7 +2171,7 @@
     },
     {
       "name": "Hushfacebook in the Menu",
-      "description": "Adds a Hushfacebook settings row to Facebook's Menu, at the end of Settings and privacy, so the settings are easy to find. A Saved row joins it while the Saved shortcut switch is on, and a Watch history row while the Watch history shortcut switch is. On by default. Turn it off with Settings row in Menu in Hushfacebook settings > Menu, unless it's the last way into the settings still on.",
+      "description": "Adds a Hushfacebook settings row to Facebook's Menu, at the end of Settings and privacy, so the settings are easy to find. A Saved row joins it while the Saved shortcut switch is on, a Watch history row while the Watch history shortcut switch is, and a Free stuff row, Marketplace's free listings, while the Free stuff shortcut switch under Marketplace is. On by default. Turn it off with Settings row in Menu in Hushfacebook settings > Menu, unless it's the last way into the settings still on.",
       "category": "Settings",
       "use": true,
       "dependencies": [
@@ -2332,7 +2370,7 @@
     },
     {
       "name": "Keep the reel speed",
-      "description": "A speed you pick in a reel's menu stays for the next reels until Facebook restarts, so you don't set it every time. On by default. A second switch for feed and Watch videos starts off. Both are in Hushfacebook settings > Reels and Watch.",
+      "description": "A speed you pick in a reel's menu stays for the next reels, even after Facebook restarts, so you don't set it every time. Pick normal speed to go back. On by default. A second switch for feed and Watch videos starts off. Both are in Hushfacebook settings > Reels and Watch.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -2525,7 +2563,7 @@
     },
     {
       "name": "Open comments with a gesture",
-      "description": "Open a reel's comments with a double tap or a long press, on the sheet the Comment button opens, instead of liking or holding. Starts off. Turn it on in Hushfacebook settings > Reels and Watch.",
+      "description": "Open a reel's comments with a double tap or a long press, on the sheet the Comment button opens, instead of liking or holding, and a feed post's with a long press on its photo or name line. Starts off. Turn it on in Hushfacebook settings > Reels and Watch.",
       "category": "Reels",
       "use": true,
       "dependencies": [
@@ -2902,7 +2940,7 @@
     },
     {
       "name": "Skip silent parts",
-      "description": "Plays videos, reels and stories past the silent stretches in their sound, so talks and how-tos get to the point sooner. Starts off. Turn it on in Hushfacebook settings > Playback.",
+      "description": "Plays videos, reels and stories past the silent stretches in their sound, so talks and how-tos get to the point sooner. Starts off. Turn it on in Hushfacebook settings > Playback. With Resume long videos patched too, a video's menu can keep the silent parts in that one video.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -3314,7 +3352,7 @@
     },
     {
       "name": "Turn off screen transitions",
-      "description": "Shows Facebook's tabs, Menu and new screens at once, without the slide between them, so the app feels quicker. Swipes and animations inside a page stay. Starts off. Turn it on in Hushfacebook settings > Appearance.",
+      "description": "Shows Facebook's tabs, Menu, photos and new screens at once, without the slide or zoom between them, so the app feels quicker. Swipes and animations inside a page stay. Starts off. Turn it on in Hushfacebook settings > Appearance.",
       "category": "Interface",
       "use": true,
       "dependencies": [
