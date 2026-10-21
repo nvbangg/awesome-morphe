@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.8.0-experimental.6",
+  "version": "2.8.0-experimental.7",
   "patches": [
     {
       "name": "Allow Screenshots",
@@ -3362,6 +3362,41 @@
       ]
     },
     {
+      "name": "Remove Translate Limit",
+      "description": "Removes the character limit for inline translation.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard Lite",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.5.1.993608717-lite_beta-armeabi-v7a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.5.1.993608717-lite_beta-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove Unused Screen Sizes",
       "description": "Deletes image folders for screen sizes you do not use.",
       "default": false,
@@ -4085,7 +4120,7 @@
         {
           "key": "stripOemSignals",
           "title": "Strip OEM Diagnostic & Background Signals",
-          "description": "Remove OEM attribution, launcher badges, AICore bindings, and proprietary TikTok internal IPC permissions. WARNING: Removing DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION may impact runtime dynamic broadcast receivers.",
+          "description": "Remove OEM attribution, launcher badges, AICore bindings, and proprietary TikTok internal IPC permissions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
