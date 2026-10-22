@@ -1,11 +1,11 @@
 {
-    "version": "1.2.0",
+    "version": "1.2.2",
     "patches": [
         {
-            "name": "Force landscape player",
-            "description": "Switches to landscape orientation when movie or series playback starts.",
+            "name": "Disable analytics",
+            "description": "Disables internal event tracking, ClickHouse telemetry, crash reporting, and AppMetrica SDK to enhance privacy and battery life.",
             "default": true,
-            "dependencies": [],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "free.zona",
@@ -19,10 +19,15 @@
                     "targets": [
                         {
                             "version": "3.0.75",
-                            "versionCodes": "{ARM64_V8A=1075, ARMEABI_V7A=1075, X86_64=1075, X86=1075}",
+                            "versionCodes": {
+                                "ARM64_V8A": 1075,
+                                "ARMEABI_V7A": 1075,
+                                "X86_64": 1075,
+                                "X86": 1075
+                            },
                             "isExperimental": false,
                             "minSdk": 21,
-                            "description": null
+                            "description": "APK: https://github.com/julay123/mobi.zona/releases"
                         }
                     ]
                 }
@@ -30,10 +35,10 @@
             "options": []
         },
         {
-            "name": "Preferred quality priority",
-            "description": "Plays at the quality from \"Preferred quality\" instead of the last quality chosen by hand, and keeps the chosen voice-over.",
+            "name": "Force landscape player",
+            "description": "Switches to landscape orientation when movie or series playback starts.",
             "default": true,
-            "dependencies": [],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "free.zona",
@@ -47,10 +52,15 @@
                     "targets": [
                         {
                             "version": "3.0.75",
-                            "versionCodes": "{ARM64_V8A=1075, ARMEABI_V7A=1075, X86_64=1075, X86=1075}",
+                            "versionCodes": {
+                                "ARM64_V8A": 1075,
+                                "ARMEABI_V7A": 1075,
+                                "X86_64": 1075,
+                                "X86": 1075
+                            },
                             "isExperimental": false,
                             "minSdk": 21,
-                            "description": null
+                            "description": "APK: https://github.com/julay123/mobi.zona/releases"
                         }
                     ]
                 }
@@ -61,7 +71,7 @@
             "name": "Install as a separate app",
             "description": "Installs the patched app beside the original one under its own package name and app name, so the original keeps updating on its own.",
             "default": false,
-            "dependencies": [],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "free.zona",
@@ -75,10 +85,15 @@
                     "targets": [
                         {
                             "version": "3.0.75",
-                            "versionCodes": "{ARM64_V8A=1075, ARMEABI_V7A=1075, X86_64=1075, X86=1075}",
+                            "versionCodes": {
+                                "ARM64_V8A": 1075,
+                                "ARMEABI_V7A": 1075,
+                                "X86_64": 1075,
+                                "X86": 1075
+                            },
                             "isExperimental": false,
                             "minSdk": 21,
-                            "description": null
+                            "description": "APK: https://github.com/julay123/mobi.zona/releases"
                         }
                     ]
                 }
@@ -100,6 +115,137 @@
                     "required": true,
                     "type": "kotlin.String",
                     "default": "FreeZona Morphe",
+                    "values": null
+                },
+                {
+                    "key": "iconColor",
+                    "title": "Icon mark color",
+                    "description": "ARGB color of the 'Z' launcher icon mark, e.g. #FFA855F7. Leave empty to keep the original blue color.",
+                    "required": false,
+                    "type": "kotlin.String",
+                    "default": "#FFA855F7",
+                    "values": null
+                },
+                {
+                    "key": "iconBackgroundColor",
+                    "title": "Icon background color",
+                    "description": "ARGB color of the launcher icon background, e.g. #FF2B1E3F. Leave empty to keep the original dark background.",
+                    "required": false,
+                    "type": "kotlin.String",
+                    "default": "",
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Preferred quality priority",
+            "description": "Plays at the quality from \"Preferred quality\" instead of the last quality chosen by hand, and waits for preferred quality sources before falling back.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "free.zona",
+                    "name": "FreeZona World",
+                    "description": null,
+                    "apkFileType": "APK_REQUIRED",
+                    "appIconColor": "#202124",
+                    "signatures": [
+                        "a40da80a59d170caa950cf15c18c454d47a39b26989d8b640ecd745ba71bf5dc"
+                    ],
+                    "targets": [
+                        {
+                            "version": "3.0.75",
+                            "versionCodes": {
+                                "ARM64_V8A": 1075,
+                                "ARMEABI_V7A": 1075,
+                                "X86_64": 1075,
+                                "X86": 1075
+                            },
+                            "isExperimental": false,
+                            "minSdk": 21,
+                            "description": "APK: https://github.com/julay123/mobi.zona/releases"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "waitTimeoutSeconds",
+                    "title": "Wait timeout for preferred quality (seconds)",
+                    "description": "Time to wait for slow 1080p stream providers (torrents/mirrors) before falling back to lower quality. If 1080p is found earlier, playback starts immediately.",
+                    "required": true,
+                    "type": "kotlin.Int",
+                    "default": 5,
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Video buffer",
+            "description": "Increases ExoPlayer video buffer duration to eliminate stutter and rebuffering on slow connections.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "free.zona",
+                    "name": "FreeZona World",
+                    "description": null,
+                    "apkFileType": "APK_REQUIRED",
+                    "appIconColor": "#202124",
+                    "signatures": [
+                        "a40da80a59d170caa950cf15c18c454d47a39b26989d8b640ecd745ba71bf5dc"
+                    ],
+                    "targets": [
+                        {
+                            "version": "3.0.75",
+                            "versionCodes": {
+                                "ARM64_V8A": 1075,
+                                "ARMEABI_V7A": 1075,
+                                "X86_64": 1075,
+                                "X86": 1075
+                            },
+                            "isExperimental": false,
+                            "minSdk": 21,
+                            "description": "APK: https://github.com/julay123/mobi.zona/releases"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "maxBufferMinutes",
+                    "title": "Max buffer duration (minutes)",
+                    "description": "Maximum duration of video ahead to buffer (default 20 min, original was 6 min).",
+                    "required": true,
+                    "type": "kotlin.Int",
+                    "default": 20,
+                    "values": null
+                },
+                {
+                    "key": "minBufferMinutes",
+                    "title": "Min buffer duration (minutes)",
+                    "description": "Minimum duration of video to buffer before playback considers itself adequately buffered (default 10 min, original was 5 min).",
+                    "required": true,
+                    "type": "kotlin.Int",
+                    "default": 10,
+                    "values": null
+                },
+                {
+                    "key": "bufferForPlaybackSeconds",
+                    "title": "Buffer for playback (seconds)",
+                    "description": "Duration of media to buffer before initial playback starts (default 3 s, original was 2.5 s).",
+                    "required": true,
+                    "type": "kotlin.Int",
+                    "default": 3,
+                    "values": null
+                },
+                {
+                    "key": "bufferForPlaybackAfterRebufferSeconds",
+                    "title": "Buffer after rebuffer (seconds)",
+                    "description": "Duration of media to buffer before playback resumes after rebuffering (default 5 s, original was 5 s).",
+                    "required": true,
+                    "type": "kotlin.Int",
+                    "default": 5,
                     "values": null
                 }
             ]

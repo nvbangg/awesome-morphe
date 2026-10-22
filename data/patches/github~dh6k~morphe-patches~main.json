@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "patches": [
     {
       "name": "Block Quetta bundled extension installation",
@@ -47,7 +47,7 @@
     },
     {
       "name": "Brave AMOLED theme",
-      "description": "Patch-time AMOLED dark theme (issue #21): rewrites Brave dark chrome surfaces to pure black (or a custom opaque hex). Optional text and accent colors (defaults keep Brave's #f0f2ff / #737ade). Forces Material You dynamic colors off in bytecode (the pref is non-persistent) and overrides system neutral night roles on Android 12+. Apply Dark theme in Brave to see it. Does not change web content force-dark, NTP theme collections, or add a runtime color picker. Default off.",
+      "description": "Patch-time AMOLED dark theme (issue #21): rewrites Brave dark chrome surfaces to pure black (or a custom opaque hex). Raised surfaces — buttons, cards, sheets and the Material You container ladder — can take their own surface color instead of one flat black, so the UI keeps an elevation step like Material 3. Optional text and accent colors (defaults keep Brave's #f0f2ff / #737ade). Forces Material You dynamic colors off in bytecode (the pref is non-persistent) and overrides system neutral night roles on Android 12+; leaving that force off keeps the Material You roles and low-lStar selectors untouched. Apply Dark theme in Brave to see it. Does not change web content force-dark, NTP theme collections, or add a runtime color picker. Default off.",
       "default": false,
       "dependencies": [
         "ResourcePatch"
@@ -143,7 +143,7 @@
         {
           "key": "backgroundColor",
           "title": "AMOLED background",
-          "description": "Opaque hex used for dark chrome surfaces. Use #000000 for pure black OLED. Example elevated near-black: #0a0a0a.",
+          "description": "Opaque hex for window backgrounds and the rest of dark chrome. Use #000000 for pure black OLED. Example elevated near-black: #0a0a0a.",
           "required": true,
           "type": "kotlin.String",
           "default": "#000000",
@@ -170,13 +170,91 @@
         {
           "key": "disableDynamicColors",
           "title": "Disable Material You dynamic colors",
-          "description": "Force Brave's wallpaper dynamic colors off so AMOLED surfaces are not replaced by system palette roles. The settings switch stays clickable but readers always return off.",
+          "description": "Force Brave's wallpaper dynamic colors off so AMOLED surfaces are not replaced by system palette roles. The settings switch stays clickable but readers always return off. Turning this off also stops the Material You role rewrite, so the wallpaper palette survives.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
+        },
+        {
+          "key": "surfaceUsesBackground",
+          "title": "Surfaces use the background color",
+          "description": "ON: buttons, cards and sheets share the AMOLED background — one flat black, the original behaviour. OFF: raised surfaces take the surface color below instead, keeping the brighter elevation step Material 3 uses.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "surfaceColor",
+          "title": "Surface / button color",
+          "description": "Opaque hex for raised surfaces — buttons, cards, sheets and the Material You container ladder. Only applied when 'Surfaces use the background color' is off. #1e2029 is Brave's own dark container tone.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#1e2029",
+          "values": null
         }
       ]
+    },
+    {
+      "name": "Brave NTP four-column tiles",
+      "description": "Experimental version-unpinned patch (issue #24): keeps the new-tab pinned and most-visited tiles in a four-column grid that extends downwards, the same layout Brave uses with no background image, and keeps that layout when a background image is enabled. Neutralizes the \"brave.new_tab_page.show_background_image\" gate in the NTP builder that otherwise forces the tiles into a single horizontally scrolling row. Default off.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.brave.browser_beta",
+          "name": "Brave Beta",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.brave.browser_nightly",
+          "name": "Brave Nightly",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Brave Origin",
