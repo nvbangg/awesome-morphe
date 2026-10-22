@@ -1,0 +1,114 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.0.0",
+  "patches": [
+    {
+      "name": "Change package name",
+      "description": "Changes the app's package name, account type and name, so the patched app installs next to the original X app instead of replacing it. Do not also select Morphe's own \"Change package name\" patch.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.19.1-release.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The patched app's package name. It must differ from the original app's to install both.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.twitter.android.xitter",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The name under the launcher icon. Leave empty to keep \"X\".",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Xitter",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Xitter",
+      "description": "Makes the app a client of a Xitter instance. Every address of X (x.com, twitter.com, twimg.com, t.co...) is sent to the instance instead, signed in with the instance's sessions, and the app's sign-in screens sign in to the instance. Nothing is sent to X.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.19.1-release.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "serverUrl",
+          "title": "Instance address",
+          "description": "The address of the Xitter instance, as you open it in a browser (for example https://xitter.example or http://192.168.1.5:3000).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "https://",
+          "values": null
+        },
+        {
+          "key": "clientToken",
+          "title": "Client app token",
+          "description": "Optional. A token from the instance's Admin > Client apps (xitter_...). Posts made from the app are then labelled with that app's name, such as \"Xitter for Android\".",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "blockThirdParty",
+          "title": "Block third-party services",
+          "description": "Also refuse connections to hosts that are neither X's nor the instance's (analytics, ads, crash reporting, payment and identity SDKs). X's own hosts are always refused.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "allowedHosts",
+          "title": "Allowed hosts",
+          "description": "Optional. Comma separated hosts the app may still reach while third-party services are blocked, e.g. a separate media domain of the instance.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    }
+  ]
+}
