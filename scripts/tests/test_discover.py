@@ -418,6 +418,47 @@ class TestDiscover:
         assert load_json(self.repos_path) == self.saved_repos
 
 
+@pytest.mark.parametrize("reverse_custom", (False, True))
+def test_merge_keeps_provider_priority_and_stable_case_conflicts(
+    reverse_custom,
+) -> None:
+    custom_items = [
+        (
+            "https://github.com/Owner/Repo",
+            {"enabled": False, "note": "Preferred custom"},
+        ),
+        (
+            "https://github.com/owner/repo",
+            {"enabled": True, "note": "Other custom", "extra": 7},
+        ),
+    ]
+    if reverse_custom:
+        custom_items.reverse()
+    providers = [
+        dict(custom_items),
+        {
+            "https://github.com/OWNER/REPO": {
+                "enabled": True,
+                "note": "Official",
+                "officialField": True,
+            }
+        },
+        {"https://github.com/owner/repo": {"note": "Archive", "archiveField": True}},
+        {"https://github.com/owner/repo": {"note": "Jman", "archiveField": False}},
+    ]
+    merged = discover._merge(providers)
+    assert merged == {
+        "https://github.com/Owner/Repo": {
+            "enabled": False,
+            "note": "Preferred custom",
+            "extra": 7,
+            "officialField": True,
+            "archiveField": True,
+        }
+    }
+    assert discover._sync_repos(merged, {}) == {}
+
+
 def test_sync_keeps_hosts_independent_and_preserves_saved_fields() -> None:
     github = "https://github.com/owner/repo"
     gitlab = "https://gitlab.com/owner/repo"

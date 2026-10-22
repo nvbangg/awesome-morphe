@@ -31,7 +31,6 @@ PROVIDERS = [
     "jman",
 ]
 PROVIDER_MODULES = [official, jman, morphe_archive]
-PROVIDER_PRIORITY = {f"{name}.json": index for index, name in enumerate(PROVIDERS)}
 
 
 def _run_providers() -> list[str]:
@@ -45,31 +44,23 @@ def _run_providers() -> list[str]:
     return warnings
 
 
-def _load_provider_files() -> list[tuple[str, dict]]:
+def _load_provider_files() -> list[dict]:
     return [
-        (f"{provider}.json", data)
+        data
         for provider in PROVIDERS
         if (data := load_provider_sources(BUNDLE_SOURCES_DIR / f"{provider}.json"))
     ]
 
 
-def _merge(provider_files: list[tuple[str, dict]]) -> dict:
-    groups = {}
-    for filename, provider_dict in provider_files:
-        priority = PROVIDER_PRIORITY.get(filename, 99)
-        for raw_key, data in provider_dict.items():
-            groups.setdefault(raw_key.lower(), []).append((priority, raw_key, data))
-
+def _merge(provider_files: list[dict]) -> dict:
+    canonical_keys = {}
     merged = {}
-    for entries in groups.values():
-        entries.sort(key=lambda entry: (entry[0], entry[1]))
-        final_key = entries[0][1]
-        merged_data = {}
-        for _, _, data in entries:
+    for provider_dict in provider_files:
+        for raw_key, data in sorted(provider_dict.items()):
+            final_key = canonical_keys.setdefault(raw_key.lower(), raw_key)
+            merged_data = merged.setdefault(final_key, {})
             for key, value in data.items():
-                if key not in merged_data:
-                    merged_data[key] = value
-        merged[final_key] = merged_data
+                merged_data.setdefault(key, value)
     return merged
 
 
