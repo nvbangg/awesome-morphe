@@ -1,10 +1,94 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when the release workflow (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.12.0",
+  "version": "1.14.1-dev.1",
   "patches": [
     {
       "name": "AMOLED black",
-      "description": "Makes Kick's dark background pure black for OLED screens, optionally with near-black cards and sheets. Starts off. Choose it in Lurk settings > Interface.",
+      "description": "Makes Kick's dark background pure black for OLED screens, optionally with near-black cards and sheets. Starts off. Choose it in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "AMOLED black",
+      "description": "Turns the dark grey of Rumble's raised surfaces (the bottom bar, search fields, cards, chips and tags) pure black for OLED screens, optionally near-black so their edges still show. Rumble's dark theme already draws pages, sheets and dialogs black; dividers and buttons keep their grey. Applies after a restart. Starts off. Turn it on in Lurk settings > Interface.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "AMOLED black",
+      "description": "Turns the dark theme's greys black on screens drawn with Android views: the window and navigation bar, Home, Browse and channel pages, the theatre and chat, whose backgrounds are repainted after each layout. Screens Twitch draws with Compose (parts of settings, the emote picker and some sheets) and pop-up sheets keep their dark grey. Only in Twitch's dark mode. Applies after a restart. Starts off. Turn it on in Lurk settings > Interface.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "31.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Anonymous chat",
+      "description": "Adds a switch that opens Kick's chat as a guest, the way Kick opens it when you're signed out, while the rest of the app stays signed in: the chat page gets neither your sign-in token nor your account's name and ID, so its own connection to Kick's chat isn't yours. Sending chat messages is disabled while it's on, and messages that mention you aren't highlighted. Kick can still tell that you are watching: the player's playback request (postPlayerTelemetry) and the app's own live connection still identify you. Checked signed out only; whether Kick then leaves you off a channel's chatter list needs an account to see. The switch applies after a restart. Starts off. Turn it on in Lurk settings > Chat. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -59,8 +143,36 @@
       "options": []
     },
     {
+      "name": "Auto-claim Drops",
+      "description": "Adds a switch that claims a Drop for your account as soon as Twitch's drops notification in a channel shows it as claimable, by pressing that notification's Claim button for you: the same claim request and the same \"claim\" analytics event a tap sends (Disable analytics blocks the event). Each drop is claimed once per app start. Needs a signed-in account and the notification, which shows while you watch a channel with Drops; drops earned elsewhere stay in your inventory. Checked against Twitch's code on Android's runtime, not yet with a real account. Starts off. Turn it on in Lurk settings > Chat.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "31.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Auto-claim channel points",
-      "description": "Adds a switch that claims the channel points bonus for your account as soon as its chest appears in a channel's chat, with the same request as tapping the chest. Each bonus is claimed once. Off by default; needs a signed-in account.",
+      "description": "Adds a switch that claims the channel points bonus for your account as soon as its chest appears in a channel's chat, with the same request as tapping the chest. Each bonus is claimed once. Needs a signed-in account. Checked against Twitch's code and with a stand-in for the claim service, not yet with a real account. The claim leaves out the chat mode a tap sends, which Twitch only adds to its analytics event. Starts off. Turn it on in Lurk settings > Chat.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -88,7 +200,7 @@
     },
     {
       "name": "Avoid stitched ads",
-      "description": "While Twitch's server stitches an ad break into a live stream, plays the stream instead from a picture-by-picture session, the kind Twitch itself shows during breaks, which gets no ads: at 360p at most, with sound, then back to the stream's own session and quality when the break is over. The player doesn't reload. The playback token for that session is requested without your account. When none can be had, the break plays, and Mute stitched ads still mutes and covers it. Native and React Native players; streams started while it's off are left alone.",
+      "description": "While Twitch's server stitches an ad break into a live stream, plays the stream instead from a picture-by-picture session, the kind Twitch itself shows during breaks, which gets no ads: at 360p at most, with sound, then back to the stream's own session and quality when the break is over. The player doesn't reload. The playback token for that session is requested without your account. If a break runs past 4 minutes or the stream's own playlist stops answering, the stream comes back on a new session instead; when your own token has under a minute left, that session's token is also requested without your account, and the rest of the stream plays as a signed-out viewer's (how that affects subscriber ad exemption, minutes watched and Drops is untested). When no picture-by-picture session can be had, the break plays, and Mute stitched ads still mutes and covers it. Native and React Native players; streams started while it's off are left alone, and turning it off during a break lets that break finish on picture-by-picture first. Does nothing for streams loaded through Playlist proxy.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -171,8 +283,36 @@
       "options": []
     },
     {
+      "name": "Background audio by default",
+      "description": "Makes Settings > Playback > Background Play default to Sound only: leaving the app keeps the sound playing instead of opening a picture-in-picture window. A choice made in Rumble's settings still wins. Starts off. Turn it on in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Block ads",
-      "description": "Removes video ads (before and during videos and live streams) and the ads in feeds and under videos, signed in or not. The app never requests them, so it never sends the ad server your advertising ID, and no ad or Boosted video impressions or clicks are reported.",
+      "description": "Removes video ads (before and during videos and live streams), the ads in feeds and under videos and Home's ad sections, signed in or not. The app never requests them, so it never sends the ad server your advertising ID. Boosted (paid) videos are left out of Home, related videos, search and categories, and no ad or Boosted video impressions or clicks are reported.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -228,7 +368,7 @@
     },
     {
       "name": "Block cookie notice",
-      "description": "Stops Rumble's Ketch consent SDK from loading, so the cookie notice never appears and no consent is recorded, and ignores consent recorded earlier. Rumble then keeps the analytics and ad tracking it gates on consent switched off. After restarting, Airship does not start; this may affect push notifications. Settings > Data Consent no longer opens.",
+      "description": "Stops Rumble's Ketch consent SDK from loading, so the cookie notice never appears and no consent is recorded, and ignores consent recorded earlier. AppsFlyer, Firebase Analytics, Crashlytics, Firebase Performance and the Facebook SDK's app events then stay off, as before anyone consents. Push notifications keep working: Airship, Rumble's push service, still starts after a restart, with only the essential purpose Rumble asks for and its own analytics off. Settings > Data Consent no longer opens.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -312,7 +452,7 @@
     },
     {
       "name": "Block update prompts",
-      "description": "Stops Kick from asking for or forcing an app update. A patched Kick can't be updated from Google Play, so update by patching a newer version. On by default. Turn it off in Lurk settings > Interface.",
+      "description": "Stops Kick from asking for or forcing an app update. A patched Kick can't be updated from Google Play, so update by patching a newer version. On by default. Turn it off in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -368,7 +508,7 @@
     },
     {
       "name": "Bypass VOD ad sessions",
-      "description": "Experimental: uses the original VOD URL instead of requesting a separate ad-session manifest. Does not remove ads stitched into live streams. Enable in Lurk settings after patching.",
+      "description": "Experimental: uses the original VOD URL instead of requesting a separate ad-session manifest. Does not remove ads stitched into live streams. Not selected by default; once included, its switch starts off. Turn it on in Lurk settings > Playback. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -544,6 +684,34 @@
     },
     {
       "name": "Chat keywords",
+      "description": "Highlights chat messages that mention you or contain your highlight words with a tinted background, optionally with a vibration, and hides messages with blocked words or from blocked users. Matching happens on your phone; nothing is sent anywhere. Mentions need a signed-in account; the word and user lists start empty. A hidden message can show for a moment before it disappears. Starts off. Turn it on in Lurk settings > Chat.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Chat keywords",
       "description": "Highlights live chat messages that mention you or contain your highlight words with a tinted background, optionally with a vibration, and hides messages with blocked words or from blocked users. Mentions are on by default; the word and user lists start empty. On by default. Turn it off in Lurk settings > Chat.",
       "default": true,
       "category": null,
@@ -616,6 +784,62 @@
           "targets": [
             {
               "version": "31.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Chat text size",
+      "description": "Sets the chat text size, from 12 to 24 pixels, and can pack chat messages closer together (compact chat). Kick's own chat settings have a text size for signed-in accounts; this one also works signed out and, while set, wins over Kick's. Kick's chat page draws the text, so a change to that page can stop it. Starts at Kick's size with compact chat off. Choose another in Lurk settings > Chat.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Chat timestamps",
+      "description": "Shows the time next to each chat message, in 24-hour (13:05) or 12-hour (1:05) format as on Twitch. Kick's own chat settings can show times for signed-in accounts; this one also works signed out and, while on, wins over Kick's. Kick's chat page draws the times, so a change to that page can stop it. Starts off. Turn it on in Lurk settings > Chat.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -767,6 +991,34 @@
       "options": []
     },
     {
+      "name": "Clip download",
+      "description": "Adds \"Download clip\" to the menu (⋮) of a clip in Twitch's clips feed, where clip links open. It asks gql.twitch.tv for the clip's video addresses and signed access token with the app's Client-ID only (no account), and Android's download manager saves the best quality as an MP4 in Downloads/Twitch. Starts off. Turn it on in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "31.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Clone app",
       "description": "Installs Kick under another package name alongside the original, with separate sign-in and settings. Sharing sign-in with Kick's broadcaster app may not work after re-signing.",
       "default": false,
@@ -883,6 +1135,62 @@
       ]
     },
     {
+      "name": "Compact chat",
+      "description": "Adds switches that leave chatters' badges out of native chat lines (Twitch's and third-party ones) and show emotes as their text, so no emote images load. Native live chat, chat history and VOD chat replay; React Native chat is unchanged. Starts off. Turn it on in Lurk settings > Chat.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "31.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Default playback speed",
+      "description": "Starts videos at a chosen playback speed instead of 1x, until you pick another speed in the player. Live streams without rewind still play at 1x. Starts off (1x). Choose a speed in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Default startup tab",
       "description": "Adds a choice of the screen Kick opens on instead of Home: Browse or Following. Links and notifications still open what they point to. Starts on Home. Choose another in Lurk settings > Interface.",
       "default": true,
@@ -968,7 +1276,7 @@
     },
     {
       "name": "Default video quality",
-      "description": "Sets the default adaptive quality ceiling to the selected height when that rendition exists. Kick can still choose a lower quality. The player's Auto option uses this ceiling. A lower starting ceiling can be set for mobile data in Lurk settings > Playback; it's off until then.",
+      "description": "Sets the default adaptive quality ceiling to the selected height when that rendition exists. Kick can still choose a lower quality. The player's Auto option uses this ceiling. A lower starting ceiling can be set for mobile data in Lurk settings > Playback; it's off until then. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -1012,8 +1320,8 @@
     },
     {
       "name": "Default video quality",
-      "description": "Starts videos at the chosen quality, or the closest one available, instead of 480p. Once you pick a quality in the player, Rumble keeps using that one. Starting live streams at it too, and a lower cap on mobile data, are separate settings that start off. On by default. Change it in Lurk settings > Playback.",
-      "default": false,
+      "description": "Starts videos at a chosen quality, or the closest one available, instead of Rumble's 480p. Once you pick a quality in the player, Rumble keeps using that one. Starting live streams at it too, and a lower cap on mobile data, are separate settings. Starts off (Rumble's default). Choose a quality in Lurk settings > Playback.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -1040,11 +1348,12 @@
         {
           "key": "quality",
           "title": "Quality",
-          "description": "The video height to start with, such as 1080. Can be changed later in Lurk settings.",
+          "description": "The video height to start with, such as 1080, or 0 for Rumble's default. Can be changed later in Lurk settings.",
           "required": true,
           "type": "kotlin.String",
-          "default": "1080",
+          "default": "0",
           "values": {
+            "Rumble's default": "0",
             "2160p": "2160",
             "1440p": "1440",
             "1080p": "1080",
@@ -1085,7 +1394,7 @@
     },
     {
       "name": "Default video quality",
-      "description": "Starts playback at the selected rendition when available, with Source as the default. Saved player choices, including Auto, take priority. Unavailable renditions use Twitch's fallback.",
+      "description": "Starts playback at the selected rendition when available, with Source as the default. Saved player choices, including Auto, take priority. Unavailable renditions use Twitch's fallback. A lower rendition for metered networks (mobile data, or Wi-Fi marked as metered) can be chosen in Lurk settings > Playback > On mobile data; it's the same as on Wi-Fi until then.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -1133,7 +1442,7 @@
     },
     {
       "name": "Disable analytics",
-      "description": "Disables Firebase Analytics collection, Insider and Datadog initialization/events, Mux/Datazoom player analytics and PAL nonce requests. Playback API requests remain necessary to obtain streams. Restart Kick after changing this setting. This does not remove video ads.",
+      "description": "Turns off Firebase Analytics, Insider (start-up, events and queued uploads), Datadog (its start-up, so its view, action, log and trace calls go nowhere), Mux and Datazoom player analytics, and Google PAL nonce requests. Kick's own API requests still run, including the playback request that returns the stream. A second switch, Block device fingerprinting, stops FingerprintJS Pro, which Kick uses to identify this device when you sign up, for age checks and when a signed-in session starts; it starts off because sign-up and age checks can fail while it is on. Disable analytics is on by default; turn it off in Lurk settings > Privacy and restart Kick. This does not remove video ads.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1189,7 +1498,7 @@
         {
           "key": "keepWatchProgress",
           "title": "Keep watch progress",
-          "description": "Keep sending watch progress (video, position and player state). Rumble may use it for your watch history and for creators' view counts. Can be changed later in Settings > Lurk.",
+          "description": "Keep sending watch progress events (video, position and player state), and only those. They carry your user ID, advertising ID and AppsFlyer ID. Rumble may use them for your watch history and for creators' view counts. Can be changed later in Lurk settings > Privacy.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1227,7 +1536,7 @@
     },
     {
       "name": "Disable autoplay",
-      "description": "Starts Kick's feed previews switched off. Existing preferences and Kick's own autoplay switch keep working. Does not change intentionally opened streams.",
+      "description": "Starts Kick's feed previews switched off. Existing preferences and Kick's own autoplay switch keep working. Does not change intentionally opened streams. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1255,8 +1564,8 @@
     },
     {
       "name": "Disable autoplay",
-      "description": "Stops Rumble from playing the next video when one ends, and from playing muted previews in feeds, including the featured video on Home. Only the defaults change: Settings > Playback can turn either back on.",
-      "default": false,
+      "description": "Stops Rumble from playing the next video when one ends, and from playing muted previews in feeds, including the featured video on Home. Only the defaults change: Settings > Playback can turn either back on. Starts off. Turn them on in Lurk settings > Playback.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -1283,19 +1592,19 @@
         {
           "key": "nextVideo",
           "title": "Next video",
-          "description": "Don't play the next video when one ends (Autoplay next video). Can be changed later in Settings > Lurk.",
+          "description": "Don't play the next video when one ends (Autoplay next video). Can be changed later in Lurk settings > Playback.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
           "key": "feedPreviews",
           "title": "Feed previews",
-          "description": "Don't play muted previews in feeds or the featured video on Home (Playback in feeds: Off). Can be changed later in Settings > Lurk.",
+          "description": "Don't play muted previews in feeds or the featured video on Home (Playback in feeds: Off). Can be changed later in Lurk settings > Playback.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         }
       ]
@@ -1348,8 +1657,36 @@
       ]
     },
     {
+      "name": "Disable tracking SDKs",
+      "description": "Switches Firebase Analytics and Firebase Performance off for good, so recorded consent can't turn them on, and stops the Facebook SDK from initializing itself fully, logging app events or reading the advertising ID by default. Crashlytics and AppsFlyer have no such switch and still follow consent; Block cookie notice keeps them off. Changes the APK when patching, so it has no switch in Lurk settings.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Don't save searches",
-      "description": "Stops Kick from saving what you search for on this device. Searches you saved earlier stay until you remove them. On by default. Turn it off in Lurk settings > Privacy.",
+      "description": "Stops Kick from saving what you search for on this device. Searches you saved earlier stay until you remove them. On by default. Turn it off in Lurk settings > Privacy. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1405,6 +1742,34 @@
     },
     {
       "name": "Fill screen",
+      "description": "Zooms streams and videos to fill the screen in landscape, cropping their top and bottom instead of showing black bars at the sides, on phones taller than 16:9. Vertical videos and the player next to the chat keep their bars. Starts off. Turn it on in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fill screen",
       "description": "Zooms videos to fill the screen in landscape, cropping the edges instead of showing black bars, on phones taller than 16:9. Starts off. Turn it on in Lurk settings > Playback.",
       "default": true,
       "category": null,
@@ -1433,7 +1798,7 @@
     },
     {
       "name": "Fix notifications",
-      "description": "Lets the patched app register for push notifications. Firebase only accepts Twitch's original package name and signing certificate, and refuses the re-signed app, so its registration requests send the original ones.",
+      "description": "Lets the patched app register for push notifications. Firebase only accepts Twitch's original package name and signing certificate, and refuses the re-signed app, so its registration requests send the original ones, which are what unpatched Twitch sends. Registration was checked; delivering a notification needs an account and wasn't. On by default; the switch is in Lurk settings > Interface and applies after a restart.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1461,7 +1826,7 @@
     },
     {
       "name": "Fix stuck start screen",
-      "description": "Opens Twitch when its start screen is still waiting after 5 seconds. Twitch waits for Branch's link lookup before it routes, and when that never answers, it stays on a blank start screen until it's closed, unpatched Twitch included.",
+      "description": "Opens Twitch when its start screen is still waiting after 5 seconds. Twitch waits for Branch's link lookup before it routes, and when that never answers, it stays on a blank start screen until it's closed, unpatched Twitch included. On by default; the switch is in Lurk settings > Interface.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1490,6 +1855,34 @@
     {
       "name": "Force ExoPlayer",
       "description": "Adds a switch that plays live channels and videos with the ExoPlayer backend Twitch still ships instead of Amazon IVS. Off until turned on in Lurk settings. Clips, encrypted streams and React Native players stay on IVS. Lurk patches that hook IVS, such as Normal latency, Mute stitched ads and Show video stats, don't act on ExoPlayer.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "31.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Force landscape",
+      "description": "Turns the screen to landscape when a live stream or video opens in Twitch's native theatre, and back to the orientation the app had when the theatre closes. Twitch's rotate button still switches to portrait. Home's feed previews don't rotate. Starts off. Turn it on in Lurk settings > Playback.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1545,8 +1938,8 @@
     },
     {
       "name": "Hide Clips",
-      "description": "Hides Clips tabs in Browse, channels and categories, and the popular-clips row on channels. Shared clip links still open.",
-      "default": false,
+      "description": "Hides Clips tabs in Browse, channels and categories, and the popular-clips row on channels. Shared clip links still open. Starts off. Turn it on in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -1629,7 +2022,7 @@
     },
     {
       "name": "Hide Home sections",
-      "description": "Hides the featured carousel, recommended streams and categories rows on Home, each with its own switch. Starts off. Turn them on in Lurk settings > Interface.",
+      "description": "Hides the featured carousel, recommended streams and categories rows on Home, each with its own switch. Starts off. Turn them on in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1712,9 +2105,37 @@
       "options": []
     },
     {
+      "name": "Hide Join and Shop buttons",
+      "description": "Hides the Join (paid channel membership) and Shop (a creator's store) buttons next to Follow on channels and videos, each with its own switch. Starts off. Turn them on in Lurk settings > Interface.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide KICKs tipping",
-      "description": "Hides the chat gift-shop button, KICKs purchase button and leaderboard tipping prompt.",
-      "default": false,
+      "description": "Hides the chat gift-shop button, KICKs purchase button and leaderboard tipping prompt. Received gifts still show. Starts off. Turn it on in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -1769,8 +2190,8 @@
     },
     {
       "name": "Hide Shorts",
-      "description": "Removes Shorts from the bottom bar, Home, My Feed, channel pages, categories and search. Shorts links still open.",
-      "default": false,
+      "description": "Removes Shorts from the bottom bar, Home, My Feed, channel pages, categories and search. Shorts links still open. Starts off. Turn it on in Lurk settings > Interface.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -1825,7 +2246,7 @@
     },
     {
       "name": "Hide chat highlights",
-      "description": "Hides pinned messages, polls and predictions, goals, sub and gift messages, host messages, reward redemptions, event and drops banners, pinned KICKs gifts and celebration prompts, each with its own switch. Other chat messages are unchanged. Starts off. Turn them on in Lurk settings > Interface.",
+      "description": "Hides pinned messages, polls and predictions, goals, sub and gift messages, host messages, reward redemptions, event and drops banners, pinned KICKs gifts and celebration prompts, each with its own switch. Other chat messages are unchanged. The sub, gift, host and reward lines inside chat are found by the class names of Kick's chat web page, which Kick can change at any time; those switches then stop hiding the lines until Lurk is updated. Starts off. Turn them on in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1880,6 +2301,34 @@
       "options": []
     },
     {
+      "name": "Hide comments and related videos",
+      "description": "Hides the comments under videos, and the related videos the video page lists, each with its own switch. Without related videos, Autoplay next video has nothing to play. Starts off. Turn them on in Lurk settings > Interface.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide mature content warning",
       "description": "Skips the content warning on streams, videos and clips with mature content labels, as if you had chosen Start Watching. Age, region, guardian and account restrictions still apply. Off by default.",
       "default": false,
@@ -1897,6 +2346,34 @@
           "targets": [
             {
               "version": "31.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide mature-content warning",
+      "description": "Skips Kick's \"18+ Mature Content Warning\" on mature streams when you're signed out, as if you had tapped \"I am 18+\". Signed in, Kick goes by your account's own age and this changes nothing; age checks Kick runs where the law requires them aren't touched. Starts off. Turn it on in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1936,8 +2413,36 @@
       "options": []
     },
     {
+      "name": "Hide premium-only videos",
+      "description": "Leaves videos only Rumble Premium members can watch out of Home, related videos, search and categories, unless your account has access to them. Other lists, such as channel pages and My Feed, may still show them. Starts off. Turn it on in Lurk settings > Interface.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide rating prompt",
-      "description": "Stops Kick from asking you to rate the app. On by default. Turn it off in Lurk settings > Interface.",
+      "description": "Stops Kick from asking you to rate the app. On by default. Turn it off in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1965,8 +2470,8 @@
     },
     {
       "name": "Hide subscription upsells",
-      "description": "Hides channel Subscribe and Gift a Sub buttons and the leaderboard gift-subscription prompt. Keeps the existing subscribed indicator.",
-      "default": false,
+      "description": "Hides channel Subscribe and Gift a Sub buttons and the leaderboard gift-subscription prompt. Keeps the existing subscribed indicator. Starts off. Turn it on in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -2021,8 +2526,8 @@
     },
     {
       "name": "Hide tipping and Rants",
-      "description": "Hides the Tip buttons on channels, videos and Shorts, Rants (paid live chat messages) and paying with Rumble Wallet. Rants other viewers send still show.",
-      "default": false,
+      "description": "Hides the Tip buttons on channels, videos and Shorts, Rants (paid live chat messages) and paying with Rumble Wallet. Rants other viewers send still show. Starts off. Turn it on in Lurk settings > Interface.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -2037,6 +2542,34 @@
           "targets": [
             {
               "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Highlight first-time chatters",
+      "description": "Tints a chatter's first message in a channel in native live chat, using the first-msg tag Twitch's chat server puts on it. Chat history, VOD replay and React Native chat carry no such tag. Starts off. Turn it on in Lurk settings > Chat.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "31.7.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2093,6 +2626,34 @@
           "targets": [
             {
               "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Latency badge",
+      "description": "Shows how far a live stream plays behind the broadcast on Twitch's native player in the theatre, read from the player itself once a second (the latency the stats panel reports). Tapping it reloads the stream through Twitch's own Retry, a new access token and playlist that start at the live edge: the native player has no seek to live. Feed previews, videos and clips show nothing. Starts off. Turn it on in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "31.7.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2216,6 +2777,34 @@
       "options": []
     },
     {
+      "name": "Mute stitched live ads",
+      "description": "Experimental: ads could not be observed signed out. While Kick's player reports an ad break stitched into a live stream, mutes the player and covers the video with black and a small \"Ad break\", then restores both when the break's time is up, it ends, or another stream loads. The ad still plays for its full length and can't be skipped; this only silences and hides it. It acts on the ad signals Kick's player can get: an ad cue or ad break from Amazon IVS, or an ad of a MediaTailor session, which Kick only starts with Disable analytics off. None arrived in signed-out sessions, so this was checked only with made-up ad signals fed to Kick's own player code. Starts off. Turn it on in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Navigation bar position",
       "description": "Adds a choice that moves Twitch's bottom navigation bar to the top of the screen and/or hides its labels, leaving only the icons. Twitch's own layout stays until another choice is made in Lurk settings.",
       "default": true,
@@ -2301,6 +2890,34 @@
     },
     {
       "name": "Player gestures",
+      "description": "In landscape, swipe up or down on the left of the video to change the brightness, on the right to change the volume. Rumble's own double-tap to skip stays. Starts off. Turn it on in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.21.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Player gestures",
       "description": "Sets the skip interval of the video (VOD) rewind and forward buttons and the media notification, and adds brightness (left) and volume (right) swipes on the video in landscape. Twitch's -10/+30 seconds stay until you choose another interval in Lurk settings; swipes start off.",
       "default": true,
       "category": null,
@@ -2329,7 +2946,7 @@
     },
     {
       "name": "Playlist proxy",
-      "description": "Sends live stream playlist requests to a proxy server you set in this patch's options, for example one that returns playlists without stitched ads. The proxy receives each request in full, including your signed playback token, which identifies your account: only use a proxy you trust. An http:// proxy gets an exception from Twitch's HTTPS-only rule for its host alone, and the token then travels unencrypted. Does nothing while the proxy URL is empty. Videos and clips are not proxied.",
+      "description": "Sends live stream playlist requests to a proxy server you set in this patch's options, for example one that returns playlists without stitched ads. The proxy sees which channel you watch and when, and receives each request in full, including your signed playback token, which identifies your account. The token is in the request's address (its query, or with {url} the whole Twitch URL), so the proxy's access logs can keep it. The proxy decides what the player plays and can add segments of its own: only use a proxy you trust. An http:// proxy gets an exception from Twitch's HTTPS-only rule for its host alone, and the token then travels unencrypted. Does nothing while the proxy URL is empty; once it's set, the patch's switch starts on (Lurk settings > Playback). Videos and clips are not proxied. Avoid stitched ads leaves proxied streams alone: the proxy decides what their playlists hold.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -2479,7 +3096,7 @@
     },
     {
       "name": "Remove tracking permissions",
-      "description": "Removes the advertising ID, ad measurement, install referrer and phone state permissions. Every SDK and Rumble's own requests then get an all-zero advertising ID.",
+      "description": "Removes the advertising ID, ad measurement, install referrer and phone state permissions. On Android 13 and newer, every SDK and Rumble's own requests then get an all-zero advertising ID; on Android 12 and older, Google Play services hands out the real one regardless, unless you delete it in Android's settings.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2563,7 +3180,7 @@
     },
     {
       "name": "Seek interval",
-      "description": "Sets how far the rewind and forward buttons skip in videos and rewound live streams: 5, 15, 20 or 30 seconds instead of 10. Starts at Kick's 10 seconds. Choose another in Lurk settings > Playback.",
+      "description": "Sets how far the rewind and forward buttons skip in videos and rewound live streams: 5, 15, 20 or 30 seconds instead of 10. Starts at Kick's 10 seconds. Choose another in Lurk settings > Playback. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2619,7 +3236,7 @@
     },
     {
       "name": "Show deleted messages",
-      "description": "Keeps chat messages that moderators delete, or remove with a timeout or ban, struck through with a (Deleted), (Timed out) or (Banned) label, the way Kick's chat shows them to moderators, along with its ban, timeout and unban lines. Large KICKs gifts in chat also get the moderators' menu, whose Delete is meant for the channel's moderators. A second switch keeps the chat when a moderator clears it. Both on by default, as on Twitch. Turn them off in Lurk settings > Chat.",
+      "description": "Keeps chat messages that moderators delete, or remove with a timeout or ban, struck through with a (Deleted), (Timed out) or (Banned) label, the way Kick's chat shows them to moderators, along with its ban, timeout and unban lines. Lurk turns this view on inside the chat page on your phone; the chat address the app sends to Kick stays as Kick builds it, so Kick's server sees no change. Large KICKs gifts in chat also get the moderators' menu, whose Delete does nothing unless you moderate the channel. Needs an Android System WebView that can run a script before the page's own (any current one). A second switch keeps the chat when a moderator clears it. Both on by default, as on Twitch. Turn them off in Lurk settings > Chat.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2703,6 +3320,34 @@
     },
     {
       "name": "Show exact counts",
+      "description": "Shows viewer and follower counts in full, such as 306,112 followers instead of 306.1K. Starts off. Turn it on in Lurk settings > Interface.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show exact counts",
       "description": "Shows view, like, comment, follower and \"watching now\" counts in full (12,345 instead of 12K). Starts off. Turn it on in Lurk settings > Interface.",
       "default": true,
       "category": null,
@@ -2731,7 +3376,35 @@
     },
     {
       "name": "Show video stats",
-      "description": "Adds the video stats button Twitch shows only to its staff to the native player: latency to the broadcaster, bitrate, buffer, dropped frames, codecs and server. Everything shown is local to the player.",
+      "description": "Shows a small panel in the corner of the player with what Kick's video player reports, refreshed every second: latency to the broadcaster, bitrate and the network estimate, buffer, dropped frames, quality and codecs. The numbers come from the player on your phone; nothing is sent anywhere, and the panel never takes a tap. Starts off. Turn it on in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.32.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show video stats",
+      "description": "Adds the video stats button Twitch shows only to its staff to the native player: latency to the broadcaster, bitrate, buffer, dropped frames, codecs and server, and for live streams the stream's uptime, from the stream age Twitch's playlist already carries. Everything shown is local to the player.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -2843,7 +3516,7 @@
     },
     {
       "name": "Stay on channel when it hosts",
-      "description": "When the channel you're watching hosts another one, Kick's host dialog waits for you instead of switching when its countdown ends: Watch now still switches, Cancel stays. Starts off. Turn it on in Lurk settings > Interface.",
+      "description": "When the channel you're watching hosts another one, Kick's host dialog waits for you instead of switching when its countdown ends: Watch now still switches, Cancel stays. Starts off. Turn it on in Lurk settings > Interface. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2899,7 +3572,7 @@
     },
     {
       "name": "Third-party badges",
-      "description": "Adds switches that show FrankerFaceZ and Chatterino badges and pronouns.alejo.io pronouns next to chatters' names in native and React Native chat. Each switch is off until turned on in Lurk settings. The badge switches download that service's public list of all badge holders (api.frankerfacez.com, api.chatterino.com) about once an hour and check it on the phone. The pronouns switch sends the username of each chatter whose message you see to pronouns.alejo.io. 7TV badges are not included.",
+      "description": "Adds switches that show FrankerFaceZ and Chatterino badges and pronouns.alejo.io pronouns next to chatters' names in native and React Native chat. Each switch is off until turned on in Lurk settings. The badge switches download that service's public list of all badge holders (api.frankerfacez.com, api.chatterino.com) about once an hour and check it on the phone, then load each badge's image from the https address the list names (FrankerFaceZ: cdn.frankerfacez.com; Chatterino: currently fourtf.com, but any host its list gives). The pronouns switch sends the username of each chatter whose message you see to pronouns.alejo.io. 7TV badges are not included.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2927,7 +3600,7 @@
     },
     {
       "name": "Third-party emotes",
-      "description": "Adds optional 7TV emotes to chat, the native picker and autocomplete, with zero-width layers and live set updates. Sends the channel owner's Kick user ID to 7tv.io, subscribes to set IDs at events.7tv.io and loads images from cdn.7tv.app. Starts off. Turn it on in Lurk settings > Chat.",
+      "description": "Adds optional 7TV emotes to chat, the native picker and autocomplete, with zero-width layers and live set updates. Sends the channel owner's Kick user ID to 7tv.io, asks again every 5 minutes while the chat is open, keeps a websocket to events.7tv.io open for the channel's emote sets and loads images from cdn.7tv.app, so 7TV can see which channels you watch and for how long. Starts off. Turn it on in Lurk settings > Chat. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2955,7 +3628,7 @@
     },
     {
       "name": "Third-party emotes",
-      "description": "Adds switches that show 7TV, BetterTTV and FrankerFaceZ emotes in chat, Twitch's chat history and VOD chat replay. Each switch is off until turned on in Lurk settings; when on, it sends the ID of the channel you watch to that service (7tv.io, api.betterttv.net, api.frankerfacez.com) for its emote lists and loads the emote images from its CDN. Not in the emote picker or autocomplete.",
+      "description": "Adds switches that show 7TV, BetterTTV and FrankerFaceZ emotes in chat, Twitch's chat history and VOD chat replay. When on, each sends the ID of the channel you watch to that service (7tv.io, api.betterttv.net, api.frankerfacez.com) for its emote lists and loads the emote images from its CDN. \"Emotes in the picker\" also lists them in the emote picker, one section per service, and in autocomplete after ':', from the same lists; that part was checked with Twitch's own picker and autocomplete code on Android's runtime, not in the app, which needs an account to open the picker. Starts off. Turn it on in Lurk settings > Chat.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2983,7 +3656,7 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Enables Rumble's local premium state after signing in and refreshing the profile, including ad-free playback and hiding premium upsells. Server-controlled content and subscription benefits still require server authorization.",
+      "description": "Turns on Rumble's local premium state once you sign in (or sign out and in again): the app then treats you as a Premium member, which skips its ad requests and Premium upsells. Rumble's server still decides premium-only videos, live gates, downloads and premium comments, and may refuse them. Checked on the app's code without a Rumble account; never tried signed in.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -3039,7 +3712,7 @@
     },
     {
       "name": "VOD chapters",
-      "description": "Adds a Chapters button to the native video (VOD) player that lists the stream's game and category changes and jumps to one through Twitch's own seek. The list comes from Twitch's public data, fetched with the app's client ID. On by default.",
+      "description": "Adds a Chapters button to the native video (VOD) player that lists the stream's game and category changes and jumps to one through Twitch's own seek. The list comes from Twitch's public data: one request to gql.twitch.tv per video the native player loads, feed previews included, with the app's client ID and without your account. On by default; the switch is in Lurk settings > Playback.",
       "default": true,
       "category": null,
       "compatiblePackages": [
