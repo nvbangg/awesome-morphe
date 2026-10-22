@@ -15,18 +15,13 @@ from common.utils import (
     PROJECTS_DIR,
     README_REPOS_PATH,
     ROOT_DIR,
-    TEMP_DIR,
     build_raw_url,
     check_link_status,
     fetch,
     format_summary_section,
     load_lines,
     parse_repo_url,
-    save_json,
 )
-
-RAW_SEARCH_PATH = TEMP_DIR / "raw-search.json"
-RAW_FILTER_PATH = TEMP_DIR / "raw-filter.json"
 
 SEARCH_KEYWORDS = ["morphe"]
 EXCLUDED_USERS = []
@@ -171,12 +166,7 @@ def search_repos() -> list[dict]:
             page += 1
             time.sleep(PAGE_DELAY_SECONDS)
 
-    repos_list = list(unique_repos.values())
-    save_json(RAW_SEARCH_PATH, repos_list)
-    print(
-        f"\nSaved {len(repos_list)} raw repositories to {RAW_SEARCH_PATH.relative_to(ROOT_DIR)}\n"
-    )
-    return repos_list
+    return list(unique_repos.values())
 
 
 def filter_repos(repos: list[dict]) -> list[dict]:
@@ -202,10 +192,6 @@ def filter_repos(repos: list[dict]) -> list[dict]:
         f"Filtered {len(candidates)} candidate repositories (excluded {len(repos) - len(candidates)} repositories)."
     )
 
-    save_json(RAW_FILTER_PATH, candidates)
-    print(
-        f"Saved {len(candidates)} candidates to {RAW_FILTER_PATH.relative_to(ROOT_DIR)}\n"
-    )
     return candidates
 
 

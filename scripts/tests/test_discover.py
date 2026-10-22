@@ -356,8 +356,6 @@ class TestDiscover:
             patch.multiple(
                 find_projects,
                 ROOT_DIR=self.root,
-                RAW_SEARCH_PATH=self.root / "raw-search.json",
-                RAW_FILTER_PATH=self.root / "raw-filter.json",
                 PROJECTS_DIR=project_dir,
                 NEW_PROJECTS_PATH=output_path,
                 SEARCH_KEYWORDS=["morphe"],
