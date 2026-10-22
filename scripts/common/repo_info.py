@@ -17,6 +17,16 @@ from common.utils import (
 )
 
 
+def _request_error(error: Exception) -> dict:
+    details: dict[str, str | bool] = {"error": format_request_error(error)}
+    if (
+        isinstance(error, urllib.error.HTTPError)
+        and error.code in UNAVAILABLE_HTTP_CODES
+    ):
+        details[f"is_{error.code}"] = True
+    return details
+
+
 @functools.cache
 def fetch_gitlab_user_avatar(owner: str) -> str | None:
     with contextlib.suppress(Exception):
@@ -52,9 +62,22 @@ def fetch_gitlab_repo_details(repo: str) -> dict:
     try:
         with urllib.request.urlopen(request, timeout=10) as response:
             data = json.loads(response.read().decode("utf-8"))
-            project = data.get("data", {}).get("project")
-            if not project:
-                return {"is_404": True, "error": "Repository not found or inaccessible"}
+            if not isinstance(data, dict):
+                return {"error": "Invalid repository data"}
+            if data.get("errors"):
+                return {"error": "Repository query failed"}
+            query_data = data.get("data")
+            if not isinstance(query_data, dict) or "project" not in query_data:
+                return {"error": "Invalid repository data"}
+            project = query_data["project"]
+            if project is None:
+                return {"error": "Repository not found or inaccessible"}
+            if (
+                not isinstance(project, dict)
+                or not isinstance(project.get("fullPath"), str)
+                or not project["fullPath"]
+            ):
+                return {"error": "Invalid repository data"}
             avatar = project.get("avatarUrl")
             if not avatar and "/" in repo:
                 avatar = fetch_gitlab_user_avatar(repo.split("/")[0])
@@ -67,7 +90,7 @@ def fetch_gitlab_repo_details(repo: str) -> dict:
                 "is_archived": bool(project.get("archived")),
             }
     except (OSError, HTTPException, ValueError) as error:
-        return {"error": format_request_error(error)}
+        return _request_error(error)
 
 
 def fetch_repo_details(repo_url: str, *, resolve_alias: bool = False) -> dict:
@@ -112,10 +135,4 @@ def fetch_repo_details(repo_url: str, *, resolve_alias: bool = False) -> dict:
             "is_archived": bool(response.get("archived")),
         }
     except (OSError, HTTPException, ValueError) as error:
-        details: dict[str, str | bool] = {"error": format_request_error(error)}
-        if (
-            isinstance(error, urllib.error.HTTPError)
-            and error.code in UNAVAILABLE_HTTP_CODES
-        ):
-            details[f"is_{error.code}"] = True
-        return details
+        return _request_error(error)

@@ -73,8 +73,37 @@ class TestRepositoryMetadata:
             b'{"data": {"project": null}}'
         )
         assert repo_info.fetch_gitlab_repo_details("owner/alpha") == {
-            "is_404": True,
             "error": "Repository not found or inaccessible",
+        }
+
+    @pytest.mark.parametrize(
+        "content,expected",
+        (
+            (
+                b'{"data": null, "errors": [{"message": "Query failed"}]}',
+                "Repository query failed",
+            ),
+            (b'{"data": null}', "Invalid repository data"),
+            (b"{}", "Invalid repository data"),
+            (b"[]", "Invalid repository data"),
+            (b'{"data": {}}', "Invalid repository data"),
+            (b'{"data": {"project": []}}', "Invalid repository data"),
+            (b'{"data": {"project": {}}}', "Invalid repository data"),
+        ),
+    )
+    def test_gitlab_invalid_query_response_returns_error(
+        self, content, expected
+    ) -> None:
+        self.open_url.side_effect = None
+        self.open_url.return_value.__enter__.return_value.read.return_value = content
+        assert repo_info.fetch_gitlab_repo_details("owner/alpha") == {"error": expected}
+
+    @pytest.mark.parametrize("code", (404, 451))
+    def test_gitlab_http_errors_keep_actual_audit_flags(self, code) -> None:
+        self.open_url.side_effect = self.http_error(code)
+        assert repo_info.fetch_gitlab_repo_details("owner/alpha") == {
+            "error": f"Request failed (HTTP {code})",
+            f"is_{code}": True,
         }
 
     def test_gitlab_alias_lookup_uses_rest_canonical_path(self) -> None:

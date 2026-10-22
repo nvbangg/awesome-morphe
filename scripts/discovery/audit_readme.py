@@ -36,7 +36,9 @@ def audit_repos_and_links() -> str:
                 if details.get("is_404"):
                     errors["unavailable"].append(f"{url}: 404 Not Found")
                 elif details.get("is_451"):
-                    errors["unavailable"].append(f"{url}: 451 DMCA Takedown")
+                    errors["unavailable"].append(
+                        f"{url}: 451 Unavailable For Legal Reasons"
+                    )
                 elif details.get("is_archived"):
                     errors["warnings"].append(f"{url}: Repository is archived")
                 elif full_name := details.get("full_name"):
