@@ -54,14 +54,14 @@ With `--daily` or `--weekly`, also audits repositories and links listed in `data
 
 #### Discovered Sources
 
-- Custom sources in [`data/discover/custom.json`](./data/discover/custom.json)
+- Custom sources in [`data/bundle-sources/custom.json`](./data/bundle-sources/custom.json)
 - [Morphe Community Patches](https://morphe-patches.software)
 - [Jman's Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry)
 - [Morphe Archive](https://github.com/rushiforai/morphe-archive)
 
 #### Custom Configuration
 
-Add sources to [`data/discover/custom.json`](./data/discover/custom.json), or set `enabled: false` to exclude them.
+Add sources to [`data/bundle-sources/custom.json`](./data/bundle-sources/custom.json), or set `enabled: false` to exclude them.
 
 ```json
 {

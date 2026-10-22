@@ -3,13 +3,13 @@
 import re
 from http.client import HTTPException
 
-from common.utils import DISCOVER_DIR, build_repo_url, fetch
+from common.utils import BUNDLE_SOURCES_DIR, build_repo_url, fetch
 from discovery import export_provider, report_provider_warning
 
 README_URL = (
     "https://raw.githubusercontent.com/rushiforai/morphe-archive/main/README.md"
 )
-OUTPUT_PATH = DISCOVER_DIR / "morphe-archive.json"
+OUTPUT_PATH = BUNDLE_SOURCES_DIR / "morphe-archive.json"
 _REPO_RE = re.compile(r"morphe\.software/add-source\?(github|gitlab)=([^)\s]+)")
 
 

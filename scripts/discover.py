@@ -5,7 +5,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from common.utils import (
-    DISCOVER_DIR,
+    BUNDLE_SOURCES_DIR,
     REPOS_JSON_PATH,
     ROOT_DIR,
     append_step_summary,
@@ -49,7 +49,7 @@ def _load_provider_files() -> list[tuple[str, dict]]:
     return [
         (f"{provider}.json", data)
         for provider in PROVIDERS
-        if (data := load_provider_sources(DISCOVER_DIR / f"{provider}.json"))
+        if (data := load_provider_sources(BUNDLE_SOURCES_DIR / f"{provider}.json"))
     ]
 
 

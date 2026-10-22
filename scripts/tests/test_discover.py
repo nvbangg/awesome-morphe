@@ -38,7 +38,7 @@ class TestDiscover:
         for patcher in (
             patch.multiple(
                 discover,
-                DISCOVER_DIR=self.discover_dir,
+                BUNDLE_SOURCES_DIR=self.discover_dir,
                 REPOS_JSON_PATH=self.repos_path,
                 ROOT_DIR=self.root,
             ),

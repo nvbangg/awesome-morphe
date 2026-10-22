@@ -29,7 +29,7 @@ from common.utils import (
     save_json,
     set_step_output,
 )
-from updater import gplay_scrape, local_parse, whats_new
+from updater import gplay_scrape, local_data, whats_new
 
 
 def apply_renames(
@@ -144,7 +144,7 @@ def main() -> int:
         bundle_sources[repo_url] = source_entry
 
     patch_list_errors: list[str] = []
-    local_hashes = local_parse.process(
+    local_hashes = local_data.process(
         bundle_sources,
         apps_dict,
         repos_data,
@@ -344,7 +344,7 @@ def main() -> int:
             dict(sorted(repos_data.items(), key=lambda item: item[0].lower())),
         )
         save_json(CUSTOM_JSON_PATH, custom_data)
-    local_parse.cleanup_orphan_files(repos_data)
+    local_data.cleanup_orphan_files(repos_data)
     print(
         f"Update completed. Saved {len(final_bundles)} bundles and {len(apps_store)} apps."
     )

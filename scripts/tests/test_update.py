@@ -11,7 +11,7 @@ from google_play_scraper.exceptions import ExtraHTTPError
 import update as bundle_update
 from common import repo_info
 from common.utils import PACKAGE_UNIVERSAL, load_json, save_json
-from updater import gplay_scrape, local_parse, whats_new
+from updater import gplay_scrape, local_data, whats_new
 
 CURRENT_TIME_SECONDS = 1_800_000_000
 BUNDLE_TIME_MS = 1_700_000_000_000
@@ -73,7 +73,7 @@ class TestBundleUpdate:
         )
         self.patch_context.enter_context(
             patch.multiple(
-                local_parse, BUNDLES_DIR=self.bundles_dir, PATCHES_DIR=self.patches_dir
+                local_data, BUNDLES_DIR=self.bundles_dir, PATCHES_DIR=self.patches_dir
             )
         )
         self.patch_context.enter_context(
@@ -224,7 +224,7 @@ class TestBundleUpdate:
         self.add_target(sha=None)
         self.add_target(branch="dev", sha=None)
         with patch.object(
-            local_parse, "load_branch_data", wraps=local_parse.load_branch_data
+            local_data, "load_branch_data", wraps=local_data.load_branch_data
         ) as load_branch:
             assert self.run_update()["bundles"] == []
         load_branch.assert_not_called()
@@ -345,7 +345,7 @@ class TestBundleUpdate:
         skipped_bundle_path = (
             self.bundles_dir / f"github~owner~alpha~{skipped_branch}.json"
         )
-        with patch.object(local_parse, "load_json", wraps=load_json) as read_local:
+        with patch.object(local_data, "load_json", wraps=load_json) as read_local:
             assert self.run_update()["bundles"] == []
         read_paths = [call.args[0] for call in read_local.call_args_list]
         assert skipped_patch_path not in read_paths
@@ -761,7 +761,7 @@ class TestBundleUpdate:
         save_json(orphan_file, {})
         snapshot = self.snapshot()
         sources = {"https://github.com/owner/alpha": {"repo": "owner/alpha"}}
-        local_hashes = local_parse.process(sources, {}, load_json(self.repos_path), {})
+        local_hashes = local_data.process(sources, {}, load_json(self.repos_path), {})
         assert set(local_hashes) == {"https://github.com/owner/alpha"}
         assert (
             "compatiblePackages"
