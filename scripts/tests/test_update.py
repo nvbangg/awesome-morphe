@@ -163,6 +163,57 @@ class TestBundleUpdate:
         return {path: path.read_bytes() for path in self.state_paths}
 
     @pytest.mark.parametrize(
+        "rejected",
+        (
+            None,
+            7,
+            {},
+            {"name": None},
+            {"name": 7},
+            {"name": []},
+            {"name": ""},
+            {"name": " "},
+        ),
+    )
+    def test_rejected_patch_does_not_change_app_hash_or_updates(self, rejected) -> None:
+        valid_patch = self.app_patch()
+        self.add_target(patches=[valid_patch])
+        baseline = self.run_update()
+        baseline_hashes = load_json(self.hashes_path)
+        if isinstance(rejected, dict):
+            rejected = {
+                **rejected,
+                "compatiblePackages": valid_patch["compatiblePackages"],
+            }
+        self.add_target(patches=[valid_patch, rejected])
+        catalog = self.run_update()
+        assert catalog == baseline
+        assert load_json(self.hashes_path) == baseline_hashes
+
+    @pytest.mark.parametrize(
+        "field,value",
+        (
+            ("description", "Changed description"),
+            ("options", [{"key": "setting", "title": "Changed option"}]),
+            (
+                "compatiblePackages",
+                [{"packageName": "com.test.app", "targets": [{"version": "2.0"}]}],
+            ),
+        ),
+    )
+    def test_accepted_patch_content_still_changes_app_hash(self, field, value) -> None:
+        valid_patch = self.app_patch()
+        self.add_target(patches=[valid_patch])
+        self.run_update()
+        previous_hashes = load_json(self.hashes_path)
+        self.add_target(
+            patches=[{**valid_patch, field: value}], timestamp=BUNDLE_TIME_MS + 1
+        )
+        catalog = self.run_update()
+        assert load_json(self.hashes_path) != previous_hashes
+        assert catalog["bundles"][0]["appUpdates"]["com.test.app"] == BUNDLE_TIME_MS + 1
+
+    @pytest.mark.parametrize(
         "invalid_kind",
         (
             "invalid-json",

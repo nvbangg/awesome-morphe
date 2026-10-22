@@ -182,7 +182,15 @@ def load_branch_data(
         return None, None, None, "Invalid data"
     if not patches:
         return None, None, None, reason
-    return bundle, patches, raw["patches"], None
+    accepted_names = {patch["name"] for patch in patches}
+    accepted_raw = [
+        patch
+        for patch in raw["patches"]
+        if isinstance(patch, dict)
+        and isinstance(patch.get("name"), str)
+        and patch["name"] in accepted_names
+    ]
+    return bundle, patches, accepted_raw, None
 
 
 def process(
