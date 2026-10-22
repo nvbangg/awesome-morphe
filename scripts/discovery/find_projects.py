@@ -2,23 +2,26 @@
 
 import re
 import time
+import urllib.error
 import urllib.parse
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime, timedelta
 from http.client import HTTPException
 
 from common.utils import (
     CONCURRENCY,
-    DEFAULT_BRANCHES,
+    DEAD_LINK_HTTP_CODES,
     EXCLUDED_REPOS_PATH,
     NEW_PROJECTS_PATH,
     PROJECTS_DIR,
     README_REPOS_PATH,
     ROOT_DIR,
     build_raw_url,
-    check_link_status,
     fetch,
+    format_request_error,
     format_summary_section,
+    get_auth_headers,
     load_lines,
     parse_repo_url,
 )
@@ -74,34 +77,29 @@ def build_user_query(user: str) -> str:
     return " ".join(parts)
 
 
-def is_patch_bundle(repo: str) -> bool:
-    for branch in DEFAULT_BRANCHES:
-        if not (url := build_raw_url("github", repo, branch, "patches-bundle.json")):
-            continue
-        status = check_link_status(url, timeout=HEAD_TIMEOUT)
-        if status.get("is_active"):
+def _file_exists(url: str) -> bool | None:
+    request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
+    try:
+        with urllib.request.urlopen(request, timeout=HEAD_TIMEOUT):
             return True
-        if status.get("error") and not status.get("is_dead"):
-            print(f"[-] Failed to check {repo} ({branch}): {status['error']}")
-    return False
-
-
-def has_readme(repo: str, branch: str = "main") -> bool:
-    if not (url := build_raw_url("github", repo, branch, "README.md")):
-        return False
-    status = check_link_status(url, timeout=HEAD_TIMEOUT)
-    if status.get("is_active"):
-        return True
-    if status.get("error") and not status.get("is_dead"):
-        print(f"[-] Failed to check README for {repo} ({branch}): {status['error']}")
-    return False
+    except urllib.error.HTTPError as error:
+        if error.code in DEAD_LINK_HTTP_CODES:
+            return False
+        print(f"[-] Failed to check {url}: {format_request_error(error)}")
+    except (OSError, HTTPException, ValueError) as error:
+        print(f"[-] Failed to check {url}: {format_request_error(error)}")
+    return None
 
 
 def is_valid_candidate(repo: dict) -> bool:
     full_name = repo.get("full_name", "")
-    if is_patch_bundle(full_name):
+    metadata_url = build_raw_url("github", full_name, "main", "patches-bundle.json")
+    readme_url = build_raw_url(
+        "github", full_name, repo.get("default_branch") or "main", "README.md"
+    )
+    if not metadata_url or not readme_url:
         return False
-    return has_readme(full_name, repo.get("default_branch") or "main")
+    return _file_exists(metadata_url) is False and _file_exists(readme_url) is True
 
 
 def matches_filter_criteria(repo: dict) -> bool:

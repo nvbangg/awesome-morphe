@@ -1,9 +1,67 @@
+from email.message import Message
 from pathlib import Path
 from unittest.mock import patch
+from urllib.error import HTTPError, URLError
 
 import pytest
 
 from discovery import find_projects
+
+
+@pytest.mark.parametrize(
+    "metadata_status", (200, 404, 410, 403, 451, 429, 503, "network")
+)
+@pytest.mark.parametrize("readme_available", (False, True))
+def test_candidate_checks_main_metadata_and_default_branch_readme(
+    metadata_status, readme_available, block_network, patch_context
+) -> None:
+    metadata_url = (
+        "https://raw.githubusercontent.com/owner/project/main/patches-bundle.json"
+    )
+    readme_url = "https://raw.githubusercontent.com/owner/project/develop/README.md"
+    calls = []
+    response = block_network.return_value
+    response.__enter__.return_value.geturl.return_value = (
+        "https://raw.githubusercontent.com/owner/renamed/develop/README.md"
+    )
+
+    def open_url(request, timeout):
+        assert request.get_method() == "HEAD"
+        assert timeout == find_projects.HEAD_TIMEOUT
+        calls.append(request.full_url)
+        status = (
+            metadata_status
+            if request.full_url == metadata_url
+            else 200
+            if readme_available
+            else 404
+        )
+        if status == "network":
+            raise URLError("DNS lookup failed")
+        if status != 200:
+            error = HTTPError(request.full_url, status, "Failed", Message(), None)
+            patch_context.callback(error.close)
+            raise error
+        return response
+
+    block_network.side_effect = open_url
+    result = find_projects.is_valid_candidate(
+        {"full_name": "owner/project", "default_branch": "develop"}
+    )
+    assert result == (metadata_status in (404, 410) and readme_available)
+    assert calls == (
+        [metadata_url, readme_url] if metadata_status in (404, 410) else [metadata_url]
+    )
+    response.__enter__.return_value.read.assert_not_called()
+
+
+def test_candidate_readme_failure_does_not_become_a_project(
+    block_network, patch_context
+) -> None:
+    missing = HTTPError("https://example.com/metadata", 404, "Missing", Message(), None)
+    patch_context.callback(missing.close)
+    block_network.side_effect = [missing, URLError("timed out")]
+    assert not find_projects.is_valid_candidate({"full_name": "owner/project"})
 
 
 @pytest.mark.parametrize("result_count", (9, 10))

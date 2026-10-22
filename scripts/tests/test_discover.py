@@ -333,16 +333,13 @@ class TestDiscover:
         excluded = {**repository, "full_name": "owner/excluded-project"}
         no_readme = {**repository, "full_name": "owner/no-readme"}
 
-        def link_status(url: str, **_kwargs: object) -> dict:
-            return {
-                "is_active": url.endswith(
-                    (
-                        "owner/new-project/develop/README.md",
-                        "owner/patch-bundle/dev/patches-bundle.json",
-                    )
-                ),
-                "is_dead": True,
-            }
+        def file_exists(url: str) -> bool:
+            return url.endswith(
+                (
+                    "owner/new-project/develop/README.md",
+                    "owner/patch-bundle/main/patches-bundle.json",
+                )
+            )
 
         with (
             patch.object(
@@ -384,7 +381,7 @@ class TestDiscover:
                     ["https://github.com/owner/excluded-project"],
                 ],
             ),
-            patch.object(find_projects, "check_link_status", side_effect=link_status),
+            patch.object(find_projects, "_file_exists", side_effect=file_exists),
         ):
             self.open_url.side_effect = URLError("offline")
             self.summary.reset_mock()
