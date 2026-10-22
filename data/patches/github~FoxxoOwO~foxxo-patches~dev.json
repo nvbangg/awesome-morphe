@@ -1,7 +1,44 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "patches": [
+    {
+      "name": "Chat only",
+      "description": "Turns Instagram into a chat-only messenger: opens Direct instead of the feed and removes the home feed, Reels, Explore, Stories, ads and suggestions. Long-press the Direct title (or the Profile tab) to open the Feurstagram settings.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FC483C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "447.0.0.55.81",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Clone",
       "description": "Renames the package and app label so the patched build installs alongside a stock Instagram instead of replacing it.",
@@ -78,249 +115,6 @@
       "options": []
     },
     {
-      "name": "Feed item filtering",
-      "description": "Drops ad/promo and suggested feed units at the JSON-parse layer, catching the ones injected inline into the timeline that URL blocking misses. Gated on the Ads and Suggested toggles.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Force SDR display",
-      "description": "Reroutes Instagram's window colour-mode changes so the app can be pinned to SDR, keeping the dark UI's blacks deep instead of the washed-out look HDR forces.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Install-packages permission",
-      "description": "Declares REQUEST_INSTALL_PACKAGES so the update dialog can download and install a new release directly instead of opening the browser.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Limit feed to following profiles",
-      "description": "Optionally restricts the home feed to accounts you follow, by rewriting the feed request's pagination header. Gated on the runtime toggle.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Network content blocking",
-      "description": "Blocks the feed, stories, explore, reels, ads, suggestions and tracking at the network layer, gated on the runtime toggles.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Popup hiding",
-      "description": "Drops Instagram's popups (\"Couldn't refresh feed\"), which a blocked surface raises on every failed request. Gated on the Instagram popups toggle.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Restart relay",
-      "description": "Declares the one-shot activity Feurstagram runs in its own process to bring Instagram back after the cache-clear restart.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Settings entry point",
-      "description": "Opens the Feurstagram settings on a long-press of the Home tab, and installs the surface hiders and update check.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Signature check bypass",
-      "description": "Forces Instagram's signing-certificate trust checks to always pass, so a re-signed APK is treated as an official Meta build and deep links route to their content instead of falling back to the home feed.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instagram.android",
-          "name": "Instagram",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC483C",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Unlock premium",
       "description": "Unlocks all AI Plant Doctor premium features by bypassing Google Play Billing and returning an active annual subscription.",
       "default": true,
@@ -336,7 +130,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.1.0",
+              "version": "3.3.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
