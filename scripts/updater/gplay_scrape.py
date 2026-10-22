@@ -9,6 +9,7 @@ from google_play_scraper.exceptions import GooglePlayScraperException, NotFoundE
 from common.utils import (
     CONCURRENCY,
     OFFICIAL_BUNDLES_PATH,
+    PACKAGE_UNIVERSAL,
     load_json,
     normalize_image_url,
 )
@@ -48,13 +49,13 @@ def process(apps_dict: dict, mode: str) -> None:
         official_data.get("store", {}) if isinstance(official_data, dict) else {}
     )
 
-    if mode == "weekly":
-        apps_to_scrape = list(apps_dict.keys())
-    else:
-        apps_to_scrape = [
-            package_name
-            for package_name, app_data in apps_dict.items()
-            if any(
+    apps_to_scrape = [
+        package_name
+        for package_name, app_data in apps_dict.items()
+        if package_name != PACKAGE_UNIVERSAL
+        and (
+            mode == "weekly"
+            or any(
                 app_data.get(field) is None
                 for field in (
                     "name",
@@ -64,7 +65,8 @@ def process(apps_dict: dict, mode: str) -> None:
                     "category",
                 )
             )
-        ]
+        )
+    ]
     if apps_to_scrape:
         print(
             f"\nScraping Google Play for {len(apps_to_scrape)} apps (mode: {mode})..."

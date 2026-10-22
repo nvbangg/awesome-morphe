@@ -900,3 +900,29 @@ def test_google_play_request_failure_preserves_saved_app_and_updates_other_apps(
 
     assert apps["com.test.failed"] == saved_app
     assert apps["com.test.working"]["name"] == "Working app"
+
+
+@pytest.mark.parametrize("mode", ("default", "daily", "weekly"))
+def test_universal_skips_google_play_and_keeps_official_metadata(mode) -> None:
+    apps = {PACKAGE_UNIVERSAL: {"name": "Saved universal"}, "com.test.app": {}}
+    official = {
+        "store": {
+            PACKAGE_UNIVERSAL: {
+                "name": "Universal patches",
+                "description": "Works with every app",
+                "iconUrl": "https://example.com/universal.png",
+            }
+        }
+    }
+    with (
+        patch.object(gplay_scrape, "load_json", return_value=official),
+        patch.object(
+            gplay_scrape,
+            "fetch_app_details",
+            return_value=({"name": "Real app"}, False),
+        ) as request,
+    ):
+        gplay_scrape.process(apps, mode)
+    request.assert_called_once_with("com.test.app")
+    assert apps[PACKAGE_UNIVERSAL] == official["store"][PACKAGE_UNIVERSAL]
+    assert apps["com.test.app"]["name"] == "Real app"
