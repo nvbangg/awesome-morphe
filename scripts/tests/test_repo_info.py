@@ -76,3 +76,27 @@ class TestRepositoryMetadata:
             "is_404": True,
             "error": "Repository not found or inaccessible",
         }
+
+    def test_gitlab_alias_lookup_uses_rest_canonical_path(self) -> None:
+        with (
+            patch.object(
+                repo_info,
+                "fetch",
+                return_value={
+                    "path_with_namespace": "group/owner/new",
+                    "star_count": 5,
+                },
+            ) as request,
+            patch.object(repo_info, "fetch_gitlab_repo_details") as graphql,
+        ):
+            details = repo_info.fetch_repo_details(
+                "https://gitlab.com/group/owner/old", resolve_alias=True
+            )
+        request.assert_called_once_with(
+            "https://gitlab.com/api/v4/projects/group%2Fowner%2Fold",
+            timeout=10,
+            as_json=True,
+        )
+        graphql.assert_not_called()
+        assert details["full_name"] == "group/owner/new"
+        assert details["stars"] == 5

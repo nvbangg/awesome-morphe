@@ -87,6 +87,36 @@ class BundleDownloads:
         return future.result()
 
 
+class RepositoryDetails:
+    def __init__(self) -> None:
+        self.futures: dict[tuple[str, bool], Future[dict]] = {}
+        self.lock = Lock()
+
+    def get(self, url: str, *, resolve_alias: bool = False) -> dict:
+        resolve_alias = resolve_alias and parse_repo_url(url)[0] == "gitlab"
+        key = (url.lower(), resolve_alias)
+        with self.lock:
+            future = self.futures.get(key)
+            if future is None:
+                future = Future()
+                self.futures[key] = future
+                owns_request = True
+            else:
+                owns_request = False
+        if owns_request:
+            try:
+                details = (
+                    fetch_repo_details(url, resolve_alias=True)
+                    if resolve_alias
+                    else fetch_repo_details(url)
+                )
+                future.set_result(details)
+            except BaseException as error:
+                future.set_exception(error)
+                raise
+        return future.result()
+
+
 @dataclass
 class BranchFetchResult:
     source: str
@@ -98,6 +128,7 @@ class BranchFetchResult:
     bundle_name: str | None = None
     error_message: str | None = None
     error_category: str | None = None
+    renamed_to: str | None = None
 
     @property
     def target_name(self) -> str:
@@ -159,7 +190,10 @@ def process_repo_branch(
     weekly: bool = False,
     bundle_downloads: BundleDownloads | None = None,
     renamed_repo: str | None = None,
+    repository_details: RepositoryDetails | None = None,
 ) -> BranchFetchResult:
+    renamed_to = None
+
     def failed(
         message: str, category: str, unavailable: bool = False
     ) -> BranchFetchResult:
@@ -171,6 +205,7 @@ def process_repo_branch(
             status_changed=unavailable,
             error_message=message,
             error_category=category,
+            renamed_to=renamed_to,
         )
 
     file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
@@ -269,12 +304,44 @@ def process_repo_branch(
                 )
                 bundle_data["download_url"] = mpp_url
         mpp_source, mpp_repo = parse_repo_url(mpp_url)
-        if (
-            mpp_source != source
-            or not mpp_repo
-            or mpp_repo.lower() not in {repo.lower(), (renamed_repo or repo).lower()}
-        ):
+        if mpp_source != source or not mpp_repo:
             return failed("Invalid `download_url`", "metadata", True)
+        if mpp_repo.lower() not in {repo.lower(), (renamed_repo or repo).lower()}:
+            repository_details = repository_details or RepositoryDetails()
+            repo_url = build_repo_url(source, repo)
+            assert repo_url is not None
+            details = repository_details.get(repo_url, resolve_alias=True)
+            canonical_repo = details.get("full_name")
+            if (
+                details.get("error")
+                or not isinstance(canonical_repo, str)
+                or not canonical_repo
+            ):
+                return failed(
+                    details.get("error") or "Could not verify repository identity",
+                    "metadata",
+                )
+            if canonical_repo.lower() != mpp_repo.lower():
+                download_repo_url = build_repo_url(source, mpp_repo)
+                assert download_repo_url is not None
+                download_details = repository_details.get(
+                    download_repo_url, resolve_alias=True
+                )
+                download_canonical = download_details.get("full_name")
+                if (
+                    download_details.get("error")
+                    or not isinstance(download_canonical, str)
+                    or not download_canonical
+                ):
+                    return failed(
+                        download_details.get("error")
+                        or "Could not verify repository identity",
+                        "metadata",
+                    )
+                if download_canonical.lower() != canonical_repo.lower():
+                    return failed("Invalid `download_url`", "metadata", True)
+            if canonical_repo.lower() != repo.lower():
+                renamed_to = build_repo_url(source, canonical_repo)
 
     except ValueError:
         return failed("Invalid `download_url`", "metadata", True)
@@ -320,6 +387,7 @@ def process_repo_branch(
         status_changed=True,
         needs_parse=patches_content is None,
         bundle_name=bundle_name,
+        renamed_to=renamed_to,
     )
 
 
@@ -405,7 +473,10 @@ def collect_fetch_errors(results: list[BranchFetchResult]) -> dict[str, list[str
     return errors
 
 
-def refresh_repo_metadata(repos_data: dict, refresh: bool) -> list[str]:
+def refresh_repo_metadata(
+    repos_data: dict, refresh: bool, repository_details: RepositoryDetails | None = None
+) -> list[str]:
+    repository_details = repository_details or RepositoryDetails()
     tasks = [
         url
         for url, metadata in repos_data.items()
@@ -419,7 +490,7 @@ def refresh_repo_metadata(repos_data: dict, refresh: bool) -> list[str]:
     ]
     warnings = []
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-        futures = {executor.submit(fetch_repo_details, url): url for url in tasks}
+        futures = {executor.submit(repository_details.get, url): url for url in tasks}
         for future in as_completed(futures):
             repo_url = futures[future]
             details = future.result()
@@ -461,7 +532,10 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         for url, metadata in repos_data.items()
         if any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
     }
-    repository_warnings = refresh_repo_metadata(repos_data, daily or weekly)
+    repository_details = RepositoryDetails()
+    repository_warnings = refresh_repo_metadata(
+        repos_data, daily or weekly, repository_details
+    )
     previous_preferred = {}
     for repo_url, repo_metadata in repos_data.items():
         source, repo = parse_repo_url(repo_url)
@@ -487,6 +561,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 renamed_repo=parse_repo_url(
                     repos_data[build_repo_url(task[0], task[1])].get("renamedTo")
                 )[1],
+                repository_details=repository_details,
             )
             for task in tasks
         ]
@@ -496,10 +571,14 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     errors = collect_fetch_errors(results)
     updated_count = 0
     for result in results:
+        repo_url = build_repo_url(result.source, result.repo)
+        repo_metadata = repos_data[repo_url]
+        if result.renamed_to and repo_metadata.get("renamedTo") != result.renamed_to:
+            repo_metadata["renamedTo"] = result.renamed_to
+            repository_warnings.append(f"{repo_url}: Renamed to {result.renamed_to}")
         if not result.status_changed:
             continue
         updated_count += 1
-        repo_metadata = repos_data[build_repo_url(result.source, result.repo)]
         repo_metadata[result.branch] = result.new_sha
     if image_tasks:
         print(f"Processing {len(image_tasks)} image targets...")
@@ -556,8 +635,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         updated_count += int(
             metadata.get("name") != initial_repos[repo_url].get("name")
         )
-    errors["repo_metadata"].extend(repository_warnings)
-    errors["repo_metadata"].extend(
+    repository_warnings.extend(
         refresh_repo_metadata(
             {
                 url: metadata
@@ -565,8 +643,10 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 if url not in checked_repos
             },
             daily or weekly,
+            repository_details,
         )
     )
+    errors["repo_metadata"].extend(dict.fromkeys(repository_warnings))
     if repos_data != initial_repos:
         save_json(
             REPOS_JSON_PATH,

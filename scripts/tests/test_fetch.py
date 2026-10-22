@@ -11,7 +11,13 @@ from unittest.mock import Mock, call, patch
 import pytest
 
 import fetch as bundle_fetch
-from common.utils import DEFAULT_BRANCHES, build_raw_url, load_json, save_json
+from common.utils import (
+    DEFAULT_BRANCHES,
+    build_raw_url,
+    load_json,
+    parse_repo_url,
+    save_json,
+)
 
 PATCH_LIST_BARRIER_TIMEOUT_SECONDS = 5
 DOWNLOAD_WAIT_TIMEOUT_SECONDS = 5
@@ -133,6 +139,41 @@ def test_concurrent_targets_share_download_without_blocking_other_urls(
                 with pytest.raises(type(failure)) as raised:
                     result.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
                 assert raised.value is failure
+    assert request.call_count == 2
+
+
+@pytest.mark.parametrize(
+    "details", ({"full_name": "owner/new"}, {"error": "Request failed (HTTP 503)"})
+)
+def test_repository_lookup_shares_success_and_failure_without_blocking_other_urls(
+    details,
+) -> None:
+    shared_url = "https://github.com/owner/old"
+    other_url = "https://github.com/owner/other"
+    started = threading.Event()
+    release = threading.Event()
+    cache = bundle_fetch.RepositoryDetails()
+
+    def lookup(url: str) -> dict:
+        if url == shared_url:
+            started.set()
+            assert release.wait(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
+        return details
+
+    with (
+        patch.object(bundle_fetch, "fetch_repo_details", side_effect=lookup) as request,
+        ThreadPoolExecutor(max_workers=3) as executor,
+    ):
+        first = executor.submit(cache.get, shared_url)
+        try:
+            assert started.wait(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
+            second = executor.submit(cache.get, shared_url.upper())
+            other = executor.submit(cache.get, other_url)
+            assert other.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS) == details
+        finally:
+            release.set()
+        assert first.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS) == details
+        assert second.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS) == details
     assert request.call_count == 2
 
 
@@ -876,9 +917,14 @@ class TestBundleFetch:
     )
     def test_invalid_metadata_clears_target(self, content) -> None:
         self.responses[self.url("main", "patches-bundle.json")] = content
-        result = bundle_fetch.process_repo_branch(
-            "github", "owner/alpha", "main", "main-old"
-        )
+        with patch.object(
+            bundle_fetch,
+            "fetch_repo_details",
+            side_effect=lambda url: {"full_name": parse_repo_url(url)[1]},
+        ):
+            result = bundle_fetch.process_repo_branch(
+                "github", "owner/alpha", "main", "main-old"
+            )
         assert result.new_sha is None
         assert not result.needs_parse
         assert result.error_message
@@ -1221,6 +1267,125 @@ class TestBundleFetch:
         )
         assert result.new_sha == "main-new"
         assert result.error_message is None
+
+    @pytest.mark.parametrize("source", ("github", "gitlab"))
+    @pytest.mark.parametrize("current_sha", (None, "main-old"))
+    @pytest.mark.parametrize("direction", ("forward", "reverse"))
+    def test_mismatched_asset_uses_confirmed_repository_identity(
+        self, source, current_sha, direction
+    ) -> None:
+        asset_repo = "owner/new" if direction == "forward" else "owner/old"
+        canonical_repo = "owner/new" if direction == "forward" else "owner/alpha"
+        asset_url = (
+            f"https://github.com/{asset_repo}/releases/download/v1/bundle.mpp"
+            if source == "github"
+            else f"https://gitlab.com/{asset_repo}/-/releases/v1/downloads/bundle.mpp"
+        )
+        metadata_url = build_raw_url(
+            source, "owner/alpha", "main", "patches-bundle.json"
+        )
+        patches_url = build_raw_url(source, "owner/alpha", "main", "patches-list.json")
+        assert metadata_url is not None and patches_url is not None
+        self.responses[metadata_url] = json.dumps({"download_url": asset_url}).encode()
+        self.responses[patches_url] = json.dumps(self.patches_data).encode()
+        self.responses[asset_url] = self.mpp_bytes
+        with patch.object(
+            bundle_fetch,
+            "fetch_repo_details",
+            return_value={"full_name": canonical_repo},
+        ) as request:
+            result = bundle_fetch.process_repo_branch(
+                source, "owner/alpha", "main", current_sha
+            )
+        assert result.new_sha == "main-new"
+        assert result.error_message is None
+        assert result.renamed_to == (
+            f"https://{source}.com/owner/new" if direction == "forward" else None
+        )
+        assert request.call_count == (1 if direction == "forward" else 2)
+        if source == "gitlab":
+            assert all(
+                item.kwargs == {"resolve_alias": True}
+                for item in request.call_args_list
+            )
+
+    @pytest.mark.parametrize("lookup", ("source", "asset"))
+    @pytest.mark.parametrize(
+        "details",
+        (
+            {},
+            {"error": "Request failed (HTTP 403)"},
+            {"error": "Request failed (HTTP 429)"},
+            {"error": "Request failed (HTTP 503)"},
+            {"error": "Request failed: timed out"},
+        ),
+    )
+    def test_identity_lookup_failure_preserves_sha_and_local_files(
+        self, lookup, details
+    ) -> None:
+        self.responses[self.url("main", "patches-bundle.json")] = json.dumps(
+            {"download_url": "https://github.com/owner/new/bundle.mpp"}
+        ).encode()
+        old_contents = self.seed_target()
+        responses = (
+            [details] if lookup == "source" else [{"full_name": "owner/alpha"}, details]
+        )
+        with patch.object(bundle_fetch, "fetch_repo_details", side_effect=responses):
+            result = bundle_fetch.process_repo_branch(
+                "github", "owner/alpha", "main", "main-old"
+            )
+        assert result.new_sha == "main-old"
+        assert not result.status_changed
+        assert not result.renamed_to
+        assert result.error_message == (
+            details.get("error") or "Could not verify repository identity"
+        )
+        for path, content in old_contents.items():
+            assert path.read_bytes() == content
+        self.fetch_request.assert_called_once_with(
+            self.url("main", "patches-bundle.json"), binary=True
+        )
+
+    def test_reused_alias_is_rejected_when_api_confirms_different_repository(
+        self,
+    ) -> None:
+        self.responses[self.url("main", "patches-bundle.json")] = json.dumps(
+            {"download_url": "https://github.com/owner/old/bundle.mpp"}
+        ).encode()
+        with patch.object(
+            bundle_fetch,
+            "fetch_repo_details",
+            side_effect=[{"full_name": "owner/alpha"}, {"full_name": "owner/old"}],
+        ):
+            result = bundle_fetch.process_repo_branch(
+                "github", "owner/alpha", "main", "main-old"
+            )
+        assert result.new_sha is None
+        assert result.error_message == "Invalid `download_url`"
+        self.fetch_request.assert_called_once_with(
+            self.url("main", "patches-bundle.json"), binary=True
+        )
+
+    def test_fetch_records_verified_rename_without_modifying_local_keys(self) -> None:
+        asset_url = "https://github.com/owner/new/releases/v1/bundle.mpp"
+        self.responses[self.url("main", "patches-bundle.json")] = json.dumps(
+            {"download_url": asset_url}
+        ).encode()
+        self.responses[asset_url] = self.mpp_bytes
+        save_json(self.repos_path, {"https://github.com/owner/alpha": {}})
+        with patch.object(
+            bundle_fetch, "fetch_repo_details", return_value={"full_name": "owner/new"}
+        ) as request:
+            bundle_fetch.fetch_all_repos()
+        repos = load_json(self.repos_path)
+        assert set(repos) == {"https://github.com/owner/alpha"}
+        assert (
+            repos["https://github.com/owner/alpha"]["renamedTo"]
+            == "https://github.com/owner/new"
+        )
+        assert repos["https://github.com/owner/alpha"]["main"] == "main-new"
+        assert (self.bundles_dir / "github~owner~alpha~main.json").is_file()
+        request.assert_called_once_with("https://github.com/owner/alpha")
 
 
 class TestRepositoryMetadataRefresh:

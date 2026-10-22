@@ -5,6 +5,7 @@ import functools
 import json
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from http.client import HTTPException
 
@@ -69,22 +70,35 @@ def fetch_gitlab_repo_details(repo: str) -> dict:
         return {"error": format_request_error(error)}
 
 
-def fetch_repo_details(repo_url: str) -> dict:
+def fetch_repo_details(repo_url: str, *, resolve_alias: bool = False) -> dict:
     source, repo = parse_repo_url(repo_url)
     if not source or not repo:
         return {}
 
-    if source == "gitlab":
+    if source == "gitlab" and not resolve_alias:
         time.sleep(0.1)
         return fetch_gitlab_repo_details(repo)
 
-    api_url = f"https://api.github.com/repos/{repo}"
+    api_url = (
+        f"https://api.github.com/repos/{repo}"
+        if source == "github"
+        else f"https://gitlab.com/api/v4/projects/{urllib.parse.quote(repo, safe='')}"
+    )
 
     try:
         time.sleep(0.1)
         response = fetch(api_url, timeout=10, as_json=True)
         if not response or not isinstance(response, dict):
             return {}
+
+        if source == "gitlab":
+            return {
+                "stars": response.get("star_count", 0),
+                "description": response.get("description"),
+                "avatar_url": response.get("avatar_url"),
+                "full_name": response.get("path_with_namespace"),
+                "is_archived": bool(response.get("archived")),
+            }
 
         avatar = response.get("owner", {}).get("avatar_url")
         full_name = response.get("full_name")
