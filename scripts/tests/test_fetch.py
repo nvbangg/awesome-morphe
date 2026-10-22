@@ -863,6 +863,15 @@ class TestBundleFetch:
             json.dumps(
                 {"download_url": "https://github.com/other/repo/bundle.mpp"}
             ).encode(),
+            *(
+                json.dumps({"download_url": url}).encode()
+                for url in (
+                    "http://github.com/owner/alpha/bundle.mpp",
+                    "https://notgithub.com/owner/alpha/bundle.mpp",
+                    "https://github.com.evil.example/owner/alpha/bundle.mpp",
+                    "https://example.com/github.com/owner/alpha/bundle.mpp",
+                )
+            ),
         ],
     )
     def test_invalid_metadata_clears_target(self, content) -> None:

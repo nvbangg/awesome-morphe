@@ -251,8 +251,12 @@ def process_repo_branch(
         return failed("Invalid data", "metadata", True)
     try:
         mpp_url = bundle_data.get("download_url")
-        if source == "gitlab" and isinstance(mpp_url, str):
-            parsed_url = urllib.parse.urlparse(mpp_url)
+        if not isinstance(mpp_url, str) or not mpp_url.lower().endswith(".mpp"):
+            return failed("Invalid `download_url`", "metadata", True)
+        parsed_url = urllib.parse.urlsplit(mpp_url)
+        if parsed_url.scheme != "https":
+            return failed("Invalid `download_url`", "metadata", True)
+        if source == "gitlab" and parsed_url.hostname == "gitlab.com":
             path_parts = parsed_url.path.split("/")
             if (
                 len(path_parts) > 5
@@ -260,12 +264,10 @@ def process_repo_branch(
                 and path_parts[4].isdigit()
             ):
                 path_parts[4] = urllib.parse.quote(repo, safe="")
-                mpp_url = urllib.parse.urlunparse(
+                mpp_url = urllib.parse.urlunsplit(
                     parsed_url._replace(path="/".join(path_parts))
                 )
                 bundle_data["download_url"] = mpp_url
-        if not isinstance(mpp_url, str) or not mpp_url.lower().endswith(".mpp"):
-            return failed("Invalid `download_url`", "metadata", True)
         mpp_source, mpp_repo = parse_repo_url(mpp_url)
         if (
             mpp_source != source

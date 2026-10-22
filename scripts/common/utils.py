@@ -97,7 +97,10 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[st
     result_headers = dict(headers) if headers else {}
     parsed_url = urllib.parse.urlparse(url)
     hostname = parsed_url.hostname or ""
-    is_github = hostname.endswith(("github.com", "githubusercontent.com"))
+    is_github = any(
+        hostname == domain or hostname.endswith(f".{domain}")
+        for domain in ("github.com", "githubusercontent.com")
+    )
 
     if "User-Agent" not in result_headers:
         if is_github:
@@ -114,6 +117,7 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[st
     )
     if (
         is_github
+        and parsed_url.scheme == "https"
         and github_token
         and not is_release_download
         and "Authorization" not in result_headers
@@ -226,23 +230,30 @@ def parse_timestamp(timestamp: Any) -> int:
     return 0
 
 
-_REPO_URL_RE = re.compile(
-    r"(?:raw\.)?(github|gitlab)(?:\.com|usercontent\.com)[:/]([^/#?]+)/([^/#?]+?)(?:\.git)?(?:[/#?]|$)",
-    re.IGNORECASE,
-)
-_GITLAB_API_PROJECT_URL_RE = re.compile(
-    r"^https?://gitlab\.com/api/v4/projects/([^/?#]+)(?:[/#?]|$)",
-    re.IGNORECASE,
-)
-
-
 def parse_repo_url(repo_url: str) -> tuple[str, str] | tuple[None, None]:
-    if repo_url and (match := _GITLAB_API_PROJECT_URL_RE.search(repo_url)):
-        project = urllib.parse.unquote(match.group(1)).strip("/")
-        return ("gitlab", project) if "/" in project else (None, None)
-    if repo_url and (match := _REPO_URL_RE.search(repo_url)):
-        source, owner, repo = match.groups()
-        return source.lower(), f"{owner}/{repo}"
+    if not repo_url:
+        return None, None
+    try:
+        parsed_url = urllib.parse.urlsplit(repo_url)
+    except ValueError:
+        return None, None
+    if parsed_url.scheme not in ("http", "https"):
+        return None, None
+    path = parsed_url.path.strip("/")
+    if parsed_url.hostname in ("github.com", "raw.githubusercontent.com"):
+        owner, separator, repository_path = path.partition("/")
+        repo = repository_path.split("/", 1)[0].removesuffix(".git")
+        if owner and separator and repo:
+            return "github", f"{owner}/{repo}"
+    elif parsed_url.hostname == "gitlab.com":
+        if path.startswith("api/v4/projects/"):
+            project = urllib.parse.unquote(
+                path.removeprefix("api/v4/projects/").split("/", 1)[0]
+            ).strip("/")
+        else:
+            project = path.split("/-/", 1)[0].removesuffix(".git")
+        if "/" in project and all(project.split("/")):
+            return "gitlab", project
     return None, None
 
 
