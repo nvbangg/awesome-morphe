@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "patches": [
     {
       "name": "Allow standalone install (split-less APK)",
@@ -169,9 +169,11 @@
     },
     {
       "name": "Disable SSL pinning",
-      "description": "Removes MyDialog's certificate pin comparison while keeping standard TLS validation, so HTTPS traffic can be inspected with a user-installed CA.",
+      "description": "Removes certificate pinning at both layers (OkHttp pin comparison and the platform network-security-config pin-set) and trusts user-installed CAs, so HTTPS traffic can be inspected with a MITM proxy. Normal TLS validation stays intact.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "net.omobio.dialogsc",
@@ -302,6 +304,37 @@
       "options": []
     },
     {
+      "name": "Fix SIM identifier access",
+      "description": "Replaces the IMSI lookup with the public getSimOperator() call so the pre-login flow passes on Android 11+ where re-signed builds lost carrier privileges ('App Error: NO IMSI'). Falls back to Dialog's 41305 on SIM-less devices.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "net.omobio.dialogsc",
+          "name": "MyDialog",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F26522",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.6.5",
+              "versionCodes": {
+                "ARM64_V8A": 1130100213,
+                "ARMEABI_V7A": 1130100213,
+                "X86_64": 1130100213,
+                "X86": 1130100213
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Fix app icon",
       "description": "Gives the default launcher icon a real foreground. The base APK ships an adaptive icon with a null foreground (the visible icon normally comes from a theme alias enabled at runtime).",
       "default": true,
@@ -409,37 +442,6 @@
           "values": null
         }
       ]
-    },
-    {
-      "name": "Mock SIM identifiers",
-      "description": "Answers the app's IMSI lookup with a Dialog (41303) prefix on SIM-less devices so the app proceeds past 'App Error: NO IMSI'. Off by default; harmless to enable, but the real IMSI is preferred.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "net.omobio.dialogsc",
-          "name": "MyDialog",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#F26522",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.6.5",
-              "versionCodes": {
-                "ARM64_V8A": 1130100213,
-                "ARMEABI_V7A": 1130100213,
-                "X86_64": 1130100213,
-                "X86": 1130100213
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
     },
     {
       "name": "No profile-visitor limit",
