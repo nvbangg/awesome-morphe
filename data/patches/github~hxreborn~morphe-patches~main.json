@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.58.0",
+  "version": "1.59.0-dev.10",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -766,7 +766,7 @@
                 "X86": 8699017
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -795,7 +795,7 @@
     },
     {
       "name": "All-In-One",
-      "description": "Enables video playback and downloads, removes ads and upsell prompts, bypasses the region block, and unlocks the hidden Laboratory menu. Requires Android 10 or later.",
+      "description": "Enables video playback and downloads, removes ads and upsell prompts, and unlocks the Laboratory menu. Requires Android 10 or later.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -831,7 +831,7 @@
     },
     {
       "name": "All-In-One",
-      "description": "Unlocks premium playback and removes ads, the region block and forced updates. Requires Android 10 or later.",
+      "description": "Unlocks video playback and removes ads and forced updates. Requires Android 10 or later.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1067,7 +1067,7 @@
     },
     {
       "name": "Bypass session expiry",
-      "description": "Renews the session in the background instead of asking to sign in again. The sign-in prompt appears only when renewal fails.",
+      "description": "Keeps the account signed in after the session expires. Asks to sign in again only if renewal fails.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -2008,42 +2008,72 @@
           "targets": [
             {
               "version": "Android V1.79.2",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1792510364,
+                "ARMEABI_V7A": 1792510364,
+                "X86_64": 1792510364,
+                "X86": 1792510364
+              },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.79.1",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1792167278,
+                "ARMEABI_V7A": 1792167278,
+                "X86_64": 1792167278,
+                "X86": 1792167278
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.52",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1791404757,
+                "ARMEABI_V7A": 1791404757,
+                "X86_64": 1791404757,
+                "X86": 1791404757
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.51",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1789498935,
+                "ARMEABI_V7A": 1789498935,
+                "X86_64": 1789498935,
+                "X86": 1789498935
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.49",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1788442704,
+                "ARMEABI_V7A": 1788442704,
+                "X86_64": 1788442704,
+                "X86": 1788442704
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.47",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1786018144,
+                "ARMEABI_V7A": 1786018144,
+                "X86_64": 1786018144,
+                "X86": 1786018144
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
@@ -2122,7 +2152,7 @@
                 "X86": 302400127
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -2169,6 +2199,45 @@
                 "ARMEABI_V7A": 32,
                 "X86_64": 32,
                 "X86": 32
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
+      "description": "Stops Firebase Analytics, Crashlytics, Adjust and MoEngage from collecting usage data.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "ResourcePatch",
+        "ResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "im.thebot.messenger",
+          "name": "botim",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#1F8EFA",
+          "signatures": [
+            "4a75cf385d6aa8530a1a34ba4ed089da6bf1ae6989f62757839fd01e4f2fcd99"
+          ],
+          "targets": [
+            {
+              "version": "4.19.1",
+              "versionCodes": {
+                "ARM64_V8A": 7132,
+                "ARMEABI_V7A": 7132,
+                "X86_64": 7132,
+                "X86": 7132
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -2384,6 +2453,45 @@
     },
     {
       "name": "Disable tracking",
+      "description": "Stops Firebase Analytics, Crashlytics and Sessions from collecting usage data.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "ResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.internet.speed.meter.lite",
+          "name": "Internet Speed Meter Lite",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#3070C0",
+          "signatures": [
+            "802dcbe0db7955225c2f432aafed521681b835e274e0337aba8477b39c0261cf"
+          ],
+          "targets": [
+            {
+              "version": "1.7.0-lite",
+              "versionCodes": {
+                "ARM64_V8A": 57,
+                "ARMEABI_V7A": 57,
+                "X86_64": 57,
+                "X86": 57
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
       "description": "Stops Firebase Analytics and Crashlytics from collecting usage data.",
       "default": true,
       "category": null,
@@ -2534,6 +2642,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "ResourcePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -2605,6 +2714,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "ResourcePatch",
         "ResourcePatch",
         "ResourcePatch"
       ],
@@ -2878,6 +2988,7 @@
       "category": null,
       "dependencies": [
         "ResourcePatch",
+        "ResourcePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -3034,7 +3145,7 @@
                 "X86": 130906
               },
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -3187,42 +3298,72 @@
           "targets": [
             {
               "version": "Android V1.79.2",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1792510364,
+                "ARMEABI_V7A": 1792510364,
+                "X86_64": 1792510364,
+                "X86": 1792510364
+              },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.79.1",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1792167278,
+                "ARMEABI_V7A": 1792167278,
+                "X86_64": 1792167278,
+                "X86": 1792167278
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.52",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1791404757,
+                "ARMEABI_V7A": 1791404757,
+                "X86_64": 1791404757,
+                "X86": 1791404757
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.51",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1789498935,
+                "ARMEABI_V7A": 1789498935,
+                "X86_64": 1789498935,
+                "X86": 1789498935
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.49",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1788442704,
+                "ARMEABI_V7A": 1788442704,
+                "X86_64": 1788442704,
+                "X86": 1788442704
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.47",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1786018144,
+                "ARMEABI_V7A": 1786018144,
+                "X86_64": 1786018144,
+                "X86": 1786018144
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
@@ -3260,7 +3401,7 @@
                 "X86": 996
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -3478,7 +3619,7 @@
                 "X86": 996
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -3552,7 +3693,7 @@
                 "X86": 29
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             },
             {
@@ -3564,7 +3705,7 @@
                 "X86": 30
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -3575,7 +3716,7 @@
     {
       "name": "GmsCore support",
       "description": "Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed.",
-      "default": false,
+      "default": true,
       "category": null,
       "dependencies": [
         "ResourcePatch",
@@ -3651,7 +3792,7 @@
                 "X86": 45
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -3750,7 +3891,7 @@
     {
       "name": "GmsCore support",
       "description": "Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed.",
-      "default": false,
+      "default": true,
       "category": null,
       "dependencies": [
         "BytecodePatch",
@@ -3921,7 +4062,7 @@
     {
       "name": "GmsCore support",
       "description": "Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed.",
-      "default": false,
+      "default": true,
       "category": null,
       "dependencies": [
         "BytecodePatch",
@@ -3960,7 +4101,7 @@
                 "X86": 8699017
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -4118,7 +4259,7 @@
     {
       "name": "GmsCore support",
       "description": "Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed.",
-      "default": false,
+      "default": true,
       "category": null,
       "dependencies": [
         "BytecodePatch",
@@ -4183,7 +4324,7 @@
                 "X86": 272606010
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             },
             {
@@ -4195,7 +4336,7 @@
                 "X86": 272606020
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -4206,7 +4347,7 @@
     {
       "name": "GmsCore support",
       "description": "Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed.",
-      "default": false,
+      "default": true,
       "category": null,
       "dependencies": [
         "ResourcePatch",
@@ -4232,7 +4373,7 @@
                 "X86": 3830
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -4280,7 +4421,7 @@
                 "X86": 8699017
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -4361,6 +4502,122 @@
       "options": []
     },
     {
+      "name": "Hide More screen items",
+      "description": "Hides Viber Dating, Your News, promotional banners and upsell entries from the More screen.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.viber.voip",
+          "name": "Viber",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#7360F2",
+          "signatures": [
+            "6e9857865c0d4568e02ef76dc838ed282a3d24b12c7027b3926190d99b42fe09"
+          ],
+          "targets": [
+            {
+              "version": "29.1.1.0",
+              "versionCodes": {
+                "ARM64_V8A": 1290101,
+                "ARMEABI_V7A": 1290101,
+                "X86_64": 1290101,
+                "X86": 1290101
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideBusinessAccount",
+          "title": "Hide Business Account",
+          "description": "Hides Business Account from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideDating",
+          "title": "Hide Viber Dating",
+          "description": "Hides Viber Dating from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideEsim",
+          "title": "Hide eSIM",
+          "description": "Hides eSIM from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideFreeStickers",
+          "title": "Hide Get free stickers",
+          "description": "Hides Get free stickers from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hidePromotionalBanners",
+          "title": "Hide promotional banners",
+          "description": "Hides promotional banners from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideRakutenAccount",
+          "title": "Hide Rakuten account",
+          "description": "Hides Rakuten account from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideViberOut",
+          "title": "Hide Viber Out",
+          "description": "Hides Viber Out from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideViberPlus",
+          "title": "Hide Viber Plus",
+          "description": "Hides Viber Plus from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideYourNews",
+          "title": "Hide Your News",
+          "description": "Hides Your News from the More screen.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Hide Settings links",
       "description": "Hides the Web and Desktop app, Blog, Help and Support links in Settings.",
       "default": true,
@@ -4400,7 +4657,7 @@
                 "X86": 8699017
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -4606,7 +4863,7 @@
                 "X86": 45
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -5233,6 +5490,40 @@
     },
     {
       "name": "Hide ads",
+      "description": "Hides ads in the chat list, the More screen, Explore, search and after calls.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.viber.voip",
+          "name": "Viber",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#7360F2",
+          "signatures": [
+            "6e9857865c0d4568e02ef76dc838ed282a3d24b12c7027b3926190d99b42fe09"
+          ],
+          "targets": [
+            {
+              "version": "29.1.1.0",
+              "versionCodes": {
+                "ARM64_V8A": 1290101,
+                "ARMEABI_V7A": 1290101,
+                "X86_64": 1290101,
+                "X86": 1290101
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
       "description": "Hides ads in the library, story pages, reader and comments. Rewarded videos for coins still play.",
       "default": true,
       "category": null,
@@ -5257,7 +5548,7 @@
                 "X86": 3830
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -5701,13 +5992,102 @@
                 "X86": 660
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
         }
       ],
       "options": []
+    },
+    {
+      "name": "Hide navigation buttons",
+      "description": "Hides the selected tabs from the bottom navigation bar.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.viber.voip",
+          "name": "Viber",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#7360F2",
+          "signatures": [
+            "6e9857865c0d4568e02ef76dc838ed282a3d24b12c7027b3926190d99b42fe09"
+          ],
+          "targets": [
+            {
+              "version": "29.1.1.0",
+              "versionCodes": {
+                "ARM64_V8A": 1290101,
+                "ARMEABI_V7A": 1290101,
+                "X86_64": 1290101,
+                "X86": 1290101
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideCalls",
+          "title": "Hide Calls",
+          "description": "Hides the Calls tab.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideChatgpt",
+          "title": "Hide ChatGPT",
+          "description": "Hides the ChatGPT tab.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideExplore",
+          "title": "Hide Explore",
+          "description": "Hides the Explore tab.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideMarketplace",
+          "title": "Hide Marketplace",
+          "description": "Hides the Marketplace tab.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hidePay",
+          "title": "Hide Pay",
+          "description": "Hides the Pay tab.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideShortica",
+          "title": "Hide Shortica",
+          "description": "Hides the Shortica tab.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Hide permanent notification",
@@ -6335,7 +6715,7 @@
                 "X86": 8699017
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -6466,7 +6846,7 @@
     },
     {
       "name": "Inspect AI requests",
-      "description": "Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads, and keeps a log, so you can watch your photo fly to China or the US.",
+      "description": "Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads, and keeps a log.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -6737,12 +7117,12 @@
               "description": null
             },
             {
-              "version": "2.1.4-nogms",
+              "version": "2.1.5-nogms",
               "versionCodes": {
-                "ARM64_V8A": 78,
-                "ARMEABI_V7A": 78,
-                "X86_64": 78,
-                "X86": 78
+                "ARM64_V8A": 79,
+                "ARMEABI_V7A": 79,
+                "X86_64": 79,
+                "X86": 79
               },
               "isExperimental": false,
               "minSdk": 29,
@@ -7128,18 +7508,6 @@
               "isExperimental": false,
               "minSdk": 24,
               "description": null
-            },
-            {
-              "version": "1.62.0",
-              "versionCodes": {
-                "ARM64_V8A": 284,
-                "ARMEABI_V7A": 284,
-                "X86_64": 284,
-                "X86": 284
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
             }
           ]
         }
@@ -7265,7 +7633,7 @@
     },
     {
       "name": "Override certificate pinning",
-      "description": "Overrides certificate pinning, allowing to inspect traffic via a proxy.",
+      "description": "Lets a proxy inspect the app's network traffic. Requires the proxy's certificate installed on the device.",
       "default": false,
       "category": null,
       "dependencies": [],
@@ -7726,6 +8094,43 @@
     },
     {
       "name": "Remove ads",
+      "description": "Removes ads and the prompts to allow them.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.internet.speed.meter.lite",
+          "name": "Internet Speed Meter Lite",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#3070C0",
+          "signatures": [
+            "802dcbe0db7955225c2f432aafed521681b835e274e0337aba8477b39c0261cf"
+          ],
+          "targets": [
+            {
+              "version": "1.7.0-lite",
+              "versionCodes": {
+                "ARM64_V8A": 57,
+                "ARMEABI_V7A": 57,
+                "X86_64": 57,
+                "X86": 57
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
       "description": "Removes the banner ads, the ad consent prompt and the Pro upgrade prompts.",
       "default": true,
       "category": null,
@@ -7798,96 +8203,34 @@
     },
     {
       "name": "Remove app protection",
-      "description": "Lets a patched build start.",
+      "description": "Lets a patched build start. Cast in Musicolet requires both apps patched with the same signing key.",
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
         {
-          "packageName": "com.nieruo.healthapp",
-          "name": "Catzy",
+          "packageName": "in.krosbits.castplugin",
+          "name": "Cast Plug-in for Musicolet",
           "description": null,
           "apkFileType": "APKS_REQUIRED",
-          "appIconColor": "#4059B9",
+          "appIconColor": "#44AF6D",
           "signatures": [
-            "9cf85b81cc307a9dc367d5421dbe47737724275e92781c95768a8eef9e529a39"
+            "8a4d4121f541e3644c1fd1e5c3502eb4bea49792cafd26e600d413cd1f10851f"
           ],
           "targets": [
             {
-              "version": "1.61.0",
+              "version": "1.9",
               "versionCodes": {
-                "ARM64_V8A": 281,
-                "ARMEABI_V7A": 281,
-                "X86_64": 281,
-                "X86": 281
+                "ARM64_V8A": 9,
+                "ARMEABI_V7A": 9,
+                "X86_64": 9,
+                "X86": 9
               },
               "isExperimental": false,
               "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.62.0",
-              "versionCodes": {
-                "ARM64_V8A": 284,
-                "ARMEABI_V7A": 284,
-                "X86_64": 284,
-                "X86": 284
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove app protection",
-      "description": "Lets a patched build start.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.keepa.mobile",
-          "name": "Keepa",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#256A93",
-          "signatures": [
-            "43329e3a67415def40f307e5a7b3343498db9a821f436785d0a5487c636b9bcd"
-          ],
-          "targets": [
-            {
-              "version": "6.2.1",
-              "versionCodes": {
-                "ARM64_V8A": 56014,
-                "ARMEABI_V7A": 56014,
-                "X86_64": 56014,
-                "X86": 56014
-              },
-              "isExperimental": false,
-              "minSdk": 30,
-              "description": null
-            },
-            {
-              "version": "6.3.1",
-              "versionCodes": {
-                "ARM64_V8A": 56714,
-                "ARMEABI_V7A": 56714,
-                "X86_64": 56714,
-                "X86": 56714
-              },
-              "isExperimental": false,
-              "minSdk": 30,
               "description": null
             }
           ]
@@ -7897,7 +8240,7 @@
     },
     {
       "name": "Remove chat protection",
-      "description": "Allows copying, sharing, forwarding and downloading messages protected by the sender's chat privacy settings or Time Machine.",
+      "description": "Allows copying, sharing, forwarding and downloading messages in chats with chat privacy or Time Machine turned on.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -8139,7 +8482,7 @@
     },
     {
       "name": "Remove free accounts limit",
-      "description": "Removes the limit for maximum free accounts logged in.",
+      "description": "Removes the limit on signed-in free accounts.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -8641,12 +8984,12 @@
               "description": null
             },
             {
-              "version": "2.1.4-nogms",
+              "version": "2.1.5-nogms",
               "versionCodes": {
-                "ARM64_V8A": 78,
-                "ARMEABI_V7A": 78,
-                "X86_64": 78,
-                "X86": 78
+                "ARM64_V8A": 79,
+                "ARMEABI_V7A": 79,
+                "X86_64": 79,
+                "X86": 79
               },
               "isExperimental": false,
               "minSdk": 29,
@@ -8683,18 +9026,6 @@
                 "ARMEABI_V7A": 281,
                 "X86_64": 281,
                 "X86": 281
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.62.0",
-              "versionCodes": {
-                "ARM64_V8A": 284,
-                "ARMEABI_V7A": 284,
-                "X86_64": 284,
-                "X86": 284
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -8898,7 +9229,7 @@
     },
     {
       "name": "Show AI progress",
-      "description": "Reads the current stage off the real network activity instead of the fake progress bar InShot ships.",
+      "description": "Shows the current stage of AI Remove and Enhance on their loading screens.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -9528,7 +9859,7 @@
     },
     {
       "name": "Spoof signature",
-      "description": "Fixes Firebase Installations rejecting the re-signed app.",
+      "description": "Enables push notifications.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -9599,12 +9930,12 @@
               "description": null
             },
             {
-              "version": "2.1.4-nogms",
+              "version": "2.1.5-nogms",
               "versionCodes": {
-                "ARM64_V8A": 78,
-                "ARMEABI_V7A": 78,
-                "X86_64": 78,
-                "X86": 78
+                "ARM64_V8A": 79,
+                "ARMEABI_V7A": 79,
+                "X86_64": 79,
+                "X86": 79
               },
               "isExperimental": false,
               "minSdk": 29,
@@ -9836,18 +10167,6 @@
                 "ARMEABI_V7A": 281,
                 "X86_64": 281,
                 "X86": 281
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.62.0",
-              "versionCodes": {
-                "ARM64_V8A": 284,
-                "ARMEABI_V7A": 284,
-                "X86_64": 284,
-                "X86": 284
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -10410,7 +10729,7 @@
     },
     {
       "name": "Unlock full version",
-      "description": "Unlocks the Off-Road Explorer features gated behind activation.",
+      "description": "Unlocks the Off-Road Explorer features.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -10470,7 +10789,7 @@
                 "X86": 996
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -10480,7 +10799,7 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Grants the pro entitlement, which removes the ads and the paywalled tools.",
+      "description": "Unlocks the Pro tools and removes ads.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -10542,7 +10861,7 @@
                 "X86": 29
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             },
             {
@@ -10554,7 +10873,7 @@
                 "X86": 30
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -10719,7 +11038,7 @@
                 "X86": 302400127
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -10880,7 +11199,12 @@
           "targets": [
             {
               "version": "1.0.216",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 216,
+                "ARMEABI_V7A": 216,
+                "X86_64": 216,
+                "X86": 216
+              },
               "isExperimental": false,
               "minSdk": 24,
               "description": null
@@ -10892,7 +11216,7 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Unlocks member-only titles and shows the account as Premium. Requires a signed-in account.",
+      "description": "Unlocks member-only titles, shows the account as Premium and removes the premium bundle offer. Requires a signed-in account.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -10998,18 +11322,6 @@
                 "ARMEABI_V7A": 281,
                 "X86_64": 281,
                 "X86": 281
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.62.0",
-              "versionCodes": {
-                "ARM64_V8A": 284,
-                "ARMEABI_V7A": 284,
-                "X86_64": 284,
-                "X86": 284
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -11138,7 +11450,7 @@
                 "X86": 45
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -11186,7 +11498,7 @@
                 "X86": 660
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -11234,7 +11546,7 @@
                 "X86": 87
               },
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 24,
               "description": null
             },
             {
@@ -11246,7 +11558,7 @@
                 "X86": 88
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -11747,6 +12059,45 @@
     },
     {
       "name": "Unlock premium",
+      "description": "Unlocks the notification dialog, smart notifications, themes, notification accent and the starting hour of the day.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.internet.speed.meter.lite",
+          "name": "Internet Speed Meter Lite",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#3070C0",
+          "signatures": [
+            "802dcbe0db7955225c2f432aafed521681b835e274e0337aba8477b39c0261cf"
+          ],
+          "targets": [
+            {
+              "version": "1.7.0-lite",
+              "versionCodes": {
+                "ARM64_V8A": 57,
+                "ARMEABI_V7A": 57,
+                "X86_64": 57,
+                "X86": 57
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
       "description": "Unlocks unlimited journals and widgets, premium templates, brushes, papers, stamp options, HD video export without a watermark, more pictures per page, longer PDF imports and sync for every journal.",
       "default": true,
       "category": null,
@@ -11817,7 +12168,7 @@
                 "X86": 50138
               },
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -11969,12 +12320,12 @@
               "description": null
             },
             {
-              "version": "2.1.4-nogms",
+              "version": "2.1.5-nogms",
               "versionCodes": {
-                "ARM64_V8A": 78,
-                "ARMEABI_V7A": 78,
-                "X86_64": 78,
-                "X86": 78
+                "ARM64_V8A": 79,
+                "ARMEABI_V7A": 79,
+                "X86_64": 79,
+                "X86": 79
               },
               "isExperimental": false,
               "minSdk": 29,
@@ -12121,6 +12472,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -12819,62 +13171,6 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Unlocks all premium features.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.spocky.projengmenu",
-          "name": "Projectivy Launcher",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#F08029",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.72",
-              "versionCodes": {
-                "ARM64_V8A": 97,
-                "ARMEABI_V7A": 97,
-                "X86_64": 97,
-                "X86": 97
-              },
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            },
-            {
-              "version": "4.71",
-              "versionCodes": {
-                "ARM64_V8A": 95,
-                "ARMEABI_V7A": 95,
-                "X86_64": 95,
-                "X86": 95
-              },
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            },
-            {
-              "version": "4.70",
-              "versionCodes": {
-                "ARM64_V8A": 92,
-                "ARMEABI_V7A": 92,
-                "X86_64": 92,
-                "X86": 92
-              },
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock premium",
       "description": "Unlocks all regions. Removes ads and the upgrade button.",
       "default": true,
       "category": null,
@@ -13054,7 +13350,7 @@
                 "X86": 318
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -13207,42 +13503,72 @@
           "targets": [
             {
               "version": "Android V1.79.2",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1792510364,
+                "ARMEABI_V7A": 1792510364,
+                "X86_64": 1792510364,
+                "X86": 1792510364
+              },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.79.1",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1792167278,
+                "ARMEABI_V7A": 1792167278,
+                "X86_64": 1792167278,
+                "X86": 1792167278
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.52",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1791404757,
+                "ARMEABI_V7A": 1791404757,
+                "X86_64": 1791404757,
+                "X86": 1791404757
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.51",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1789498935,
+                "ARMEABI_V7A": 1789498935,
+                "X86_64": 1789498935,
+                "X86": 1789498935
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.49",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1788442704,
+                "ARMEABI_V7A": 1788442704,
+                "X86_64": 1788442704,
+                "X86": 1788442704
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
             },
             {
               "version": "Android V1.78.47",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 1786018144,
+                "ARMEABI_V7A": 1786018144,
+                "X86_64": 1786018144,
+                "X86": 1786018144
+              },
               "isExperimental": false,
               "minSdk": 26,
               "description": null
@@ -13254,7 +13580,7 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Unlocks running and logging workouts, progress tracking and personal records (AI workout generation is not included).",
+      "description": "Unlocks running and logging workouts, progress tracking and personal records. AI workout generation is not included.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -13334,10 +13660,12 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. The News feed is not included.",
+      "description": "Unlocks ad removal, light theme, custom images, list view types, quick ratings, transparent widgets, and the News feed.",
       "default": true,
       "category": null,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.michaldrabik.showly2",
@@ -13470,7 +13798,7 @@
                 "X86": 272606010
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             },
             {
@@ -13482,7 +13810,7 @@
                 "X86": 272606020
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -13572,6 +13900,40 @@
                 "ARMEABI_V7A": 227812,
                 "X86_64": 227812,
                 "X86": 227812
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks Gold: unblurred photos of the people who liked or visited you, the Gold crown, and the advanced search filters.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "app.threesome.dating",
+          "name": "3way",
+          "description": null,
+          "apkFileType": "XAPK_REQUIRED",
+          "appIconColor": "#FF5B66",
+          "signatures": [
+            "5f7a94bcfa985d974a41a58899a6b5f1481d266fd82d7dae904d83d9e3f60415"
+          ],
+          "targets": [
+            {
+              "version": "3.1.0",
+              "versionCodes": {
+                "ARM64_V8A": 1053,
+                "ARMEABI_V7A": 1053,
+                "X86_64": 1053,
+                "X86": 1053
               },
               "isExperimental": false,
               "minSdk": 26,
@@ -13692,7 +14054,7 @@
                 "X86": 130906
               },
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -13907,7 +14269,7 @@
                 "X86": 3830
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -13942,6 +14304,42 @@
               },
               "isExperimental": false,
               "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium (root)",
+      "description": "Unlocks food preferences, diet alerts and the full history. Search and offline downloads need a paid subscription. Requires a root mount install.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "io.yuka.android",
+          "name": "Yuka",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#6AC259",
+          "signatures": [
+            "a7e3c4a612680186937b02e7b89574d5fd62798b8cb668973992fa89f6198fcb"
+          ],
+          "targets": [
+            {
+              "version": "5.7",
+              "versionCodes": {
+                "ARM64_V8A": 875,
+                "ARMEABI_V7A": 875,
+                "X86_64": 875,
+                "X86": 875
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -14025,7 +14423,7 @@
                 "X86": 1523
               },
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -14221,7 +14619,7 @@
                 "X86": 8699017
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 24,
               "description": null
             }
           ]
