@@ -1,12 +1,12 @@
 {
-  "version": "v0.17.0",
+  "version": "v0.18.0",
   "appNames": {
     "com.facebook.katana": "Facebook"
   },
   "patches": [
     {
       "name": "AMOLED black theme",
-      "description": "Makes Facebook's dark mode black, or a dark color you pick, instead of dark gray, which can save battery on OLED screens. Cards and menus stay a shade lighter than the page. Turn on Black cards in Hushfacebook settings > Appearance to make them black too, and Lines between posts there for a thin gray line between posts in the feed. Turn on dark mode in Facebook first. It isn't selected by default because undoing it means patching again. Turn on Expert mode in Manager to pick it.",
+      "description": "Makes Facebook's dark mode black, or a dark color you pick, instead of dark gray, which can save battery on OLED screens. Cards and menus stay a shade lighter than the page. Turn on Black cards in Hushfacebook settings > Appearance to make them black too, and Lines between posts there for a thin gray line between posts in the feed. Light background color there gives light mode a soft color in place of white. Turn on dark mode in Facebook first. It isn't selected by default because undoing it means patching again. Turn on Expert mode in Manager to pick it.",
       "category": "Theme",
       "use": false,
       "dependencies": [
@@ -385,7 +385,7 @@
     },
     {
       "name": "Clean up Reels",
-      "description": "Hides clutter on reels, such as the Follow button, comment previews, Remix and Use template buttons and Threads cards between reels, so more of the video shows, and can play each reel once instead of over and over, keep its original audio instead of a Meta AI dub, drop the search suggestions under the caption, over the comments and at the top of a profile's reels, or hide the like, comment and share counts, the Save button, the speaker button or the line naming the reel's sound. It can also open a video you tap in the feed on its own, with no reels after it. Starts off. Turn on the parts you want in Hushfacebook settings > Reels and Watch.",
+      "description": "Hides clutter on reels, such as the Follow button, comment previews, Remix and Use template buttons and Threads cards between reels, so more of the video shows, and can play each reel once instead of over and over, keep its original audio instead of a Meta AI dub, drop the search suggestions under the caption, over the comments and at the top of a profile's reels, or hide the like, comment and share counts, the Save button, the speaker button or the line naming the reel's sound. It can also open a video you tap in the feed on its own, with no reels after it, stop the \"This is taking a while\" message when a video is slow to load, and play whole reels in the feed's Reels row instead of the same second over and over. Starts off. Turn on the parts you want in Hushfacebook settings > Reels and Watch.",
       "category": "Reels",
       "use": true,
       "dependencies": [
@@ -422,7 +422,7 @@
     },
     {
       "name": "Comment sheet options",
-      "description": "Small fixes for comments. Stop a long press on Like from opening reactions, hide the GIF and sticker buttons, show every reply without tapping View replies, load a whole reply thread as you scroll, hide Related groups under group posts, hide comments with shop links or your words, hide who is typing and the new comments pop-up, and hide the comment box under full-screen videos. Starts off. Turn on the parts you want in Hushfacebook settings > Comments.",
+      "description": "Small fixes for comments. Stop a long press on Like from opening reactions, hide the GIF and sticker buttons, show every reply without tapping View replies, load a whole reply thread as you scroll, open more replies with a tap anywhere on their row, hide Related groups under group posts, hide comments with shop links or your words, hide who is typing and the new comments pop-up, and hide the comment box under full-screen videos. Starts off. Turn on the parts you want in Hushfacebook settings > Comments.",
       "category": "Comments",
       "use": true,
       "dependencies": [
@@ -607,7 +607,7 @@
     },
     {
       "name": "Don't save search history",
-      "description": "Stops Facebook from adding what you search for to your search history, so there's nothing to clear by hand. Searches already there stay until you delete them. Starts off. Turn it on in Hushfacebook settings > Search.",
+      "description": "Stops Facebook from adding what you search for, and the pages and profiles you open from a search, to your search history, so there's nothing to clear by hand. Searches already there stay until you delete them. Starts off. Turn it on in Hushfacebook settings > Search.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -679,8 +679,44 @@
       "options": []
     },
     {
+      "name": "Double tap to skip",
+      "description": "A double tap on the left or right edge of a reel or video skips back or forward 10 seconds, or 5 on one under 30 seconds. Starts off. Turn it on in Hushfacebook settings > Reels and Watch.",
+      "category": "Reels",
+      "use": true,
+      "dependencies": [
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "584.0.0.51.56"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "584.0.0.51.56",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475817393
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Download any photo",
-      "description": "Shows Save photo on every photo you open, even where the poster turned saving off, and saves the largest size so you get the best copy. On by default. Turn it off in Hushfacebook settings > Downloads.",
+      "description": "Shows Save photo on every photo you open, even where the poster turned saving off, and saves the largest size so you get the best copy. A GIF comment gets Save GIF when you long-press it. On by default. Turn it off in Hushfacebook settings > Downloads.",
       "category": "Downloads",
       "use": true,
       "dependencies": [
@@ -975,7 +1011,7 @@
     },
     {
       "name": "Hide Menu promotions",
-      "description": "Hides the Upgrades and Also from Meta sections and the Muse card in Facebook's Menu, so the Menu has fewer ads for Meta's products. Settings, Help and your shortcuts stay. On by default. Turn it off in Hushfacebook settings > Menu. A switch there, off by default, also hides the Meta AI shortcut, and a list there hides the Menu tiles and Help and Settings rows you pick, such as Gaming or Orders and payments.",
+      "description": "Hides the Upgrades and Also from Meta sections and the Muse card in Facebook's Menu, so the Menu has fewer ads for Meta's products. Settings, Help and your shortcuts stay. On by default. Turn it off in Hushfacebook settings > Menu. Switches there, off by default, also hide the Meta AI shortcut or the whole Help and support section and keep Settings and privacy open, and a list there hides the Menu tiles and Help and Settings rows you pick, such as Gaming or Orders and payments.",
       "category": "Interface",
       "use": true,
       "dependencies": [
@@ -1342,6 +1378,43 @@
       "name": "Hide posts by words",
       "description": "Hides feed posts with words you list, or from people, Pages or sites you list, so you skip topics you're tired of. Photo, video, link and colored background posts can go too. Starts off. Turn it on in Hushfacebook settings > News feed.",
       "category": "Feed",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "584.0.0.51.56"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "584.0.0.51.56",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475817393
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide profile notes",
+      "description": "Hides the note bubble on profile pictures, the Drop a thought prompt on your own profile included. Starts off. Turn it on in Hushfacebook settings > News feed.",
+      "category": "Interface",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -2040,7 +2113,7 @@
     },
     {
       "name": "Hold a reel for 2x",
-      "description": "Hold a reel to play it at double speed, and let go to go back to normal. Handy for skimming. The reel's more button still opens Facebook's long-press menu. Starts off. Turn it on in Hushfacebook settings > Reels and Watch.",
+      "description": "Hold a reel to play it at double speed, and let go to go back to normal. Handy for skimming. The reel's more button still opens Facebook's long-press menu. A second switch does the same for videos playing in the feed and in Watch. Both start off. Turn them on in Hushfacebook settings > Reels and Watch.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -2079,6 +2152,43 @@
       "name": "Hold back analytics uploads",
       "description": "Stops Facebook sending its usage reports in the background and skips the learning jobs it runs on your phone, so less about how you use the app leaves it. A second switch holds back the camera roll processing that uploads your photos and details about them for sharing suggestions. Both start off. Turn them on in Hushfacebook settings > Privacy, then restart Facebook.",
       "category": "Privacy",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "584.0.0.51.56"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "584.0.0.51.56",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475817393
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Home header text",
+      "description": "Shows your own words or picture at the top of Home instead of the Facebook logo. Words take Facebook's own colors for light and dark mode. Type them in Hushfacebook settings > Appearance > Home header text, or pick a picture under Home header picture. Blank keeps Facebook's logo.",
+      "category": "Theme",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -2381,6 +2491,42 @@
       "options": []
     },
     {
+      "name": "Longer music on photo stories",
+      "description": "A song you add to a photo for your Story plays for up to 30 seconds instead of 15. Starts off. Turn it on in Hushfacebook settings > Stories.",
+      "category": "Stories",
+      "use": true,
+      "dependencies": [
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "584.0.0.51.56"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "584.0.0.51.56",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475817393
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Marketplace only",
       "description": "Turns Facebook into a Marketplace app for buying and selling without the feed. The tab bar keeps only Marketplace, Notifications and your profile or Menu, and Facebook opens on Marketplace. The Events only switch does the same for Events once you pin Events in Facebook's Customize the bar. Both start off. Turn one on in Hushfacebook settings > Opening Facebook, then restart Facebook.",
       "category": "Navigation",
@@ -2429,6 +2575,42 @@
         "BytecodePatch",
         "Hushfacebook settings",
         "ResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "584.0.0.51.56"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "584.0.0.51.56",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475817393
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Newest reels first",
+      "description": "Plays the newest posted of the reels Facebook has loaded for you first in the Reels tab, instead of Facebook's own pick. It can't fetch newer reels. Starts off. Turn it on in Hushfacebook settings > Reels and Watch.",
+      "category": "Reels",
+      "use": true,
+      "dependencies": [
+        "Hushfacebook settings"
       ],
       "compatiblePackages": {
         "com.facebook.katana": [
@@ -2646,6 +2828,42 @@
       "name": "Picture-in-picture",
       "description": "Keeps reels and videos from the Reels and Video tabs, or full screen, playing in a small window when you leave Facebook, so you can watch while using another app. Needs Android 12 or later. Starts off. Turn it on in Hushfacebook settings > Playback.",
       "category": "Playback",
+      "use": true,
+      "dependencies": [
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "584.0.0.51.56"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "584.0.0.51.56",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475817393
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Pinch to zoom",
+      "description": "Pinch a story or a photo on someone's profile to zoom in, like you can on photos in the feed. It goes back when you let go, unless you turn on Stay zoomed under it, which keeps the zoom until you tap or press Back. Starts off. Turn it on in Hushfacebook settings > Stories.",
+      "category": "Stories",
       "use": true,
       "dependencies": [
         "Hushfacebook settings"
@@ -3085,6 +3303,42 @@
       "name": "Tag suggestions only after @",
       "description": "Stops Facebook offering people to tag while you type ordinary words in posts and comments, so names don't pop up in your way. Typing @ still brings up the list. Starts off. Turn it on in Hushfacebook settings > Writing.",
       "category": "Comments",
+      "use": true,
+      "dependencies": [
+        "Hushfacebook settings"
+      ],
+      "compatiblePackages": {
+        "com.facebook.katana": [
+          "584.0.0.51.56"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Facebook",
+          "packageName": "com.facebook.katana",
+          "description": null,
+          "appIconColor": 550655,
+          "signatures": [
+            "911d604446084ca7f4760b775bfc160fa8702441240a7258645d7a72c4312d27",
+            "e3f9e1e0cf99d0e56a055ba65e241b3399f7cea524326b0cdd6ec1327ed0fdc1"
+          ],
+          "targets": [
+            {
+              "version": "584.0.0.51.56",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 475817393
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Tap shows the controls",
+      "description": "A tap on a playing reel shows its controls and lets it keep playing, so you can skip or mute without stopping it. The button in the middle still pauses. Starts off. Turn it on in Hushfacebook settings > Reels and Watch.",
+      "category": "Reels",
       "use": true,
       "dependencies": [
         "Hushfacebook settings"
