@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0-dev.5",
+  "version": "1.0.0-dev.7",
   "patches": [
     {
       "name": "Avoid notifications for visible conversations",
@@ -27,6 +27,50 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Choose upcoming alarm notification time",
+      "description": "Choose the advance notice in Morphe, with separate notifications and skip actions for each alarm occurrence. Keeps native ringing times and alarm definitions.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.clock",
+          "name": "Fossify Clock",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.6.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "leadMinutes",
+          "title": "Upcoming alarm notice (minutes)",
+          "description": "Minutes before each alarm, from 1 to 1440. Chosen when patching; patch the original APK again to change it.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 120,
+          "values": {
+            "10 minutes": 10,
+            "30 minutes": 30,
+            "1 hour": 60,
+            "2 hours": 120,
+            "6 hours": 360,
+            "12 hours": 720,
+            "24 hours": 1440
+          }
+        }
+      ]
     },
     {
       "name": "Dismiss notifications when marking conversations read",
@@ -107,6 +151,32 @@
       "options": []
     },
     {
+      "name": "Navigate to the parent task",
+      "description": "Add a parent-task arrow to the existing editor. Keeps Back behavior and the current filter; asks whether to save, discard or cancel when the draft has changes. Official project F-Droid APK 15.13 only.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.tasks",
+          "name": "Tasks.org",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "15.13",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Prefer each track's embedded cover",
       "description": "Use file-specific cover artwork before shared album art, retaining the original fallback and worker callback.",
       "default": true,
@@ -159,6 +229,58 @@
       "options": []
     },
     {
+      "name": "Restore widget editing from the search menu",
+      "description": "Open the existing widget editor from the search bar menu when the Edit button is hidden, without changing the preference or stored widgets.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "de.mm20.launcher2.release",
+          "name": "Kvaesitso",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Separate all-day reminder defaults",
+      "description": "Choose three separate default reminders for new all-day events in Calendar settings. Keeps timed-event defaults, existing events and the use-last-reminders setting.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.calendar",
+          "name": "Fossify Calendar",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Show emails and notes from merged contacts",
       "description": "Include duplicate contact emails and notes in the detail view without changing stored contact records.",
       "default": true,
@@ -174,6 +296,32 @@
           "targets": [
             {
               "version": "1.6.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Zoom article images",
+      "description": "Open article images in a separate viewer with pinch, pan, double-tap and accessible zoom controls. Linked images offer View image or Open link. Uses Feeder's existing image loader and network policy. Official project F-Droid APK 2.25.0 only.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.nononsenseapps.feeder",
+          "name": "Feeder",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.25.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
