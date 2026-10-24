@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.60.0-dev.4",
+  "version": "1.60.0",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -9172,6 +9172,50 @@
       "options": []
     },
     {
+      "name": "Sign-in token",
+      "description": "Signs in on a standard install with an App Check token. Requires a token copied from Yuka installed from Google Play on a rooted phone. Steps are in the Yuka section of the README.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.yuka.android",
+          "name": "Yuka",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#6AC259",
+          "signatures": [
+            "a7e3c4a612680186937b02e7b89574d5fd62798b8cb668973992fa89f6198fcb"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.7",
+              "versionCodes": {
+                "ARM64_V8A": 875,
+                "ARMEABI_V7A": 875,
+                "X86_64": 875,
+                "X86": 875
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appCheckToken",
+          "title": "App Check token",
+          "description": "Copy it from Yuka installed from Google Play on a rooted phone. Steps: github.com/hxreborn/morphe-patches#yuka",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Skip headers and footers",
       "description": "Adds an option to skip headers, footers and page numbers during text-to-speech. Applies to PDF and DjVu documents.",
       "default": true,
@@ -13914,8 +13958,8 @@
       "options": []
     },
     {
-      "name": "Unlock premium (root)",
-      "description": "Unlocks food preferences, diet alerts and the full history. Search and offline downloads need a paid subscription. Requires a root mount install.",
+      "name": "Unlock premium",
+      "description": "Unlocks food preferences, diet alerts and the full history. Search and offline downloads don't work. Signing in on a standard install needs Sign-in token. A root mount install signs in without it.",
       "default": true,
       "category": null,
       "compatiblePackages": [

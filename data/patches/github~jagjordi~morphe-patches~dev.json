@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.25.0",
+  "version": "1.26.0",
   "patches": [
     {
       "name": "Bypass private DNS",
@@ -22,6 +22,99 @@
             "Cloudflare (1.1.1.1)": "1.1.1.1",
             "Cloudflare secondary (1.0.0.1)": "1.0.0.1"
           }
+        }
+      ]
+    },
+    {
+      "name": "Open data for premium fields",
+      "description": "Fills the aircraft panel fields that the Flightradar24 server withholds from non-subscribers using open data: extended Mode S values (IAS, TAS, Mach, outside air temperature, GPS altitude and wind) from the adsb.lol and adsb.fi public APIs, serial number and aircraft age from the OpenSky Network aircraft database, and the flight information region from VATSpy boundaries. The aircraft and FIR data are downloaded once a month from a GitHub release. Values the server does send are never replaced.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.flightradar24free",
+          "name": "Flightradar24",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#327CB5",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "11.12.0",
+              "versionCodes": {
+                "ARM64_V8A": 111200000,
+                "ARMEABI_V7A": 111200000,
+                "X86_64": 111200000,
+                "X86": 111200000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "openDataBaseUrl",
+          "title": "Open data bundle URL",
+          "description": "Base URL that serves aircraft.db.gz and firs.json.gz. Defaults to the weekly build published as the open-data prerelease of jagjordi/morphe-patches.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "https://github.com/jagjordi/morphe-patches/releases/download/open-data/",
+          "values": null
+        },
+        {
+          "key": "adsbApiUrl",
+          "title": "ADS-B aggregator URL",
+          "description": "Base URL of a readsb style v2 API, queried as <url><hex>. Defaults to api.adsb.lol; opendata.adsb.fi is tried as a fallback.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "https://api.adsb.lol/v2/hex/",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Open weather radar",
+      "description": "Draws the precipitation radar layers (global, North American and Australian) from RainViewer's public radar tiles when Flightradar24 does not issue weather credentials to the account. Layers that have no open source (satellite cloud, forecast wind, icing, turbulence and lightning) are left as they are.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.flightradar24free",
+          "name": "Flightradar24",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#327CB5",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "11.12.0",
+              "versionCodes": {
+                "ARM64_V8A": 111200000,
+                "ARMEABI_V7A": 111200000,
+                "X86_64": 111200000,
+                "X86": 111200000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "radarIndexUrl",
+          "title": "Radar index URL",
+          "description": "RainViewer weather maps index that lists the current radar frames.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "https://api.rainviewer.com/public/weather-maps.json",
+          "values": null
         }
       ]
     },

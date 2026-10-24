@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "patches": [
     {
       "name": "Car Scanner - Premium status",
@@ -110,6 +110,60 @@
       "options": []
     },
     {
+      "name": "Monet - Unlock premium",
+      "description": "Original premium unlock from Doom's Patches, updated here for Monet 1.0.97. Unlock local premium features. Select only one Monet premium patch.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.klevico.monet",
+          "name": "Monet",
+          "description": null,
+          "apkFileType": "APK",
+          "formFactor": "TV",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.0.97",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Monet - Unlock premium (Experimental, any version)",
+      "description": "Original premium unlock from Doom's Patches, updated here for Monet 1.0.97. Experimental variant with no version restriction; requires a matching native layout. Select only one Monet premium patch.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.klevico.monet",
+          "name": "Monet",
+          "description": null,
+          "apkFileType": "APK",
+          "formFactor": "TV",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "NuvioTV - Android TV launcher channels",
       "description": "Choose individual catalogs and tracking lists, Library, and Upcoming to publish as Android TV launcher channels.",
       "default": false,
@@ -198,8 +252,35 @@
       "options": []
     },
     {
+      "name": "NuvioTV - Fix startup track reselection",
+      "description": "Prevents a startup ExoPlayer crash when track reselection requests a seek before a playing media period exists.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nuvio.tv",
+          "name": "NuvioTV",
+          "description": null,
+          "apkFileType": "APK",
+          "formFactor": "TV",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.0-beta.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "NuvioTV - GitHub APK updates",
-      "description": "Checks Santodan GitHub releases for APK updates using NuvioTV's native download and installation flow. Set the installed release version when patching each APK.",
+      "description": "Checks GitHub APK releases, shares native download progress and opens Android's APK installer for foreground install progress. Defaults to this bundle's version.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -235,10 +316,10 @@
         {
           "key": "releaseVersion",
           "title": "Installed APK release version",
-          "description": "Version of THIS patched APK, matching its GitHub release tag without v (for example 0.12.0). Increase for every APK release, including patch-only updates.",
+          "description": "Version of THIS APK, matching its GitHub release tag without v. Defaults to the patch bundle version; override only if publishing the APK under a different version.",
           "required": true,
           "type": "kotlin.String",
-          "default": "0.12.0",
+          "default": "0.14.0",
           "values": null
         }
       ]
@@ -306,7 +387,8 @@
       "description": "Merges Nuvio Sync and connected tracking-provider progress, preserving the previous snapshot while providers refresh.",
       "default": false,
       "dependencies": [
-        "BytecodePatch"
+        "BytecodePatch",
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -479,7 +561,9 @@
       "name": "NuvioTV - Side-by-side installation",
       "description": "Installs a separately named NuvioTV clone using a configurable package name and app name.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.nuvio.tv",
