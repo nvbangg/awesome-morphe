@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.18.0",
+  "version": "1.19.0",
   "patches": [
     {
       "name": "Add-on support",
@@ -35,7 +35,7 @@
     },
     {
       "name": "Block marketing notifications",
-      "description": "Blocks in-app promotional prompts, modals, promotion banners and Firebase In-App Messaging popups. Note: this only affects in-app promotions. Match-alert push delivery on re-signed builds needs \"GmsCore support\" with MicroG RE (issue #25).",
+      "description": "Blocks promo popups and banners.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -48,12 +48,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
               },
               "isExperimental": false,
               "minSdk": null,
@@ -66,7 +66,7 @@
     },
     {
       "name": "Block marketing popups",
-      "description": "Blocks the server-configured promo dialog, Firebase In-App Messaging popups and in-app promo strips. Push notifications are not affected.",
+      "description": "Blocks promo popups.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -97,7 +97,7 @@
     },
     {
       "name": "Block telemetry & trackers",
-      "description": "Blocks Sentry crash reporting, Adjust and Branch attribution, Facebook app events and Amplitude ad-ID and legacy event uploads. Push notifications and purchases keep working.",
+      "description": "Disables analytics, tracking and crash reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -130,7 +130,7 @@
     },
     {
       "name": "Brave Origin",
-      "description": "Unlocks Brave Origin and enables feature toggle controls.",
+      "description": "Unlocks Brave Origin.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -145,7 +145,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.97.56",
+              "version": "1.98.60",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -158,7 +158,7 @@
     },
     {
       "name": "Disable Datadog telemetry",
-      "description": "Stops Datadog real-user monitoring (sessions, screens, taps, crashes, ANRs and network traces). Other analytics in the app are not changed.",
+      "description": "Disables Datadog monitoring.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -189,7 +189,7 @@
     },
     {
       "name": "Disable Facebook SDK",
-      "description": "Blocks Facebook Audience Network ads and disables Facebook event tracking while keeping Facebook Login working.",
+      "description": "Disables Facebook ads and tracking. Facebook login keeps working.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -204,12 +204,43 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable FotMob+ promo popup",
+      "description": "Disables the FotMob+ promo popup.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mobilefootie.wc2010",
+          "name": "FotMob",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00985F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "239.17834.20261016",
+              "versionCodes": {
+                "ARM64_V8A": 17834,
+                "ARMEABI_V7A": 17834,
+                "X86_64": 17834,
+                "X86": 17834
               },
               "isExperimental": false,
               "minSdk": null,
@@ -222,7 +253,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Turns on the ad-free entitlement so Alarm Clock Xtreme shows no banner, interstitial or consent ads. Only the ad-free feature is changed; the other shop features keep their purchase state.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -253,7 +284,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables Google Mobile Ads banner, native, interstitial, rewarded and app-open ads, and the ad networks mediated through it.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -286,7 +317,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Turns off Business Calendar 2's ad-serving gate and the \"ads or Pro\" dialog, stops FairBid from starting, preloading or showing interstitials, and disables Facebook Audience Network's auto-initialization.",
+      "description": "Removes all ads and the \"ads or Pro\" dialog.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -317,7 +348,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the ads in feeds and articles, the banner ads and the splash ad, and stops the Google and Amazon ad SDKs from starting. Ads inside videos are part of the stream and stay.",
+      "description": "Removes ads from feeds, articles and the splash screen.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -348,7 +379,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the banner and interstitial ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -379,7 +410,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, native, interstitial, rewarded and app-open ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -410,7 +441,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the banner and interstitial ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -441,7 +472,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial and rewarded ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -472,7 +503,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Experimental: hides sponsored new tab images (including full-page takeovers) and the \"Earn BAT for viewing ads\" Rewards signup popup.",
+      "description": "Hides sponsored new tab images and the Brave Rewards ads popup.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -485,7 +516,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.97.56",
+              "version": "1.98.60",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,
@@ -498,7 +529,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native, app-open and rewarded ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -529,7 +560,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Blocks every Google Mobile Ads load (banner, native, interstitial, rewarded, app-open and the networks mediated through it), CREX's own Parth house ads and Meta Audience Network banners. Rewarded videos never load, so their rewards are not granted; use with Enable Premium, which makes the app hide its ad slots.",
+      "description": "Removes all ads. Rewarded videos no longer give rewards.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -560,7 +591,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the banner ads and empty ad slots in articles, listings, results and the live programme list, and the pre-roll ads before live channels and videos.",
+      "description": "Removes banner ads and video ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -591,7 +622,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the banner ad and skips the ad consent form, which otherwise closes the app for free users who refuse consent. Skipping the consent flow also removes the in-app privacy options entry and skips the app's Crashlytics setup, both of which run from that flow.",
+      "description": "Removes ads and the ad consent form.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -624,7 +655,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes banner, native and app-open ads and skips the ad consent form.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -655,7 +686,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the 'notes_edit_banner' unit from utils/AdManager and the app-open ad from App$AppOpenAdManager. Both are gated on the single App.isAdFree() check, which normally depends on a VIP subscription.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -686,7 +717,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the banner and in-feed ads, the ads in the Stories and Clips players and the pre-roll ads on free videos. Ads inserted into live and premium streams are part of the stream and stay.",
+      "description": "Removes ads, including video pre-rolls on free videos.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -699,12 +730,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "8.33.0",
+              "version": "8.34.1",
               "versionCodes": {
-                "ARM64_V8A": 113758,
-                "ARMEABI_V7A": 113758,
-                "X86_64": 113758,
-                "X86": 113758
+                "ARM64_V8A": 113929,
+                "ARMEABI_V7A": 113929,
+                "X86_64": 113929,
+                "X86": 113929
               },
               "isExperimental": false,
               "minSdk": null,
@@ -717,7 +748,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes banner, interstitial, rewarded and app-open ads: every ad load is reported to the app as \"no ad available\", so screens that wait for an ad carry on without it. Also skips PairIP's Play license check that otherwise kills the app when it is not installed from Play. Playback and playlists are unchanged.",
+      "description": "Removes all ads and skips the Play license check.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -748,7 +779,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables Google ads, in-app ad slots and video ads. Bookmaker strips and odds are hidden by Hide betting content.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -779,7 +810,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes banner, native, interstitial, rewarded and app-open ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -792,12 +823,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "2.3.548",
+              "version": "2.3.585",
               "versionCodes": {
-                "ARM64_V8A": 868,
-                "ARMEABI_V7A": 868,
-                "X86_64": 868,
-                "X86": 868
+                "ARM64_V8A": 905,
+                "ARMEABI_V7A": 905,
+                "X86_64": 905,
+                "X86": 905
               },
               "isExperimental": false,
               "minSdk": null,
@@ -810,7 +841,38 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native, app-open and rewarded ads, and the squad builder's video ad panel.",
+      "description": "Removes all ads.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mobilefootie.wc2010",
+          "name": "FotMob",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00985F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "239.17834.20261016",
+              "versionCodes": {
+                "ARM64_V8A": 17834,
+                "ARMEABI_V7A": 17834,
+                "X86_64": 17834,
+                "X86": 17834
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -841,7 +903,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes ads from fronts and articles, and the swipe-in ad pages between articles.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -872,7 +934,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables native and banner ads and hides the \"Remove ads\" upsell.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -903,38 +965,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Switches the app to its built-in no-ads provider, removing banner, interstitial and video pre-roll ads (Yandex, Wortise and mediated networks).",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "ru.iptvremote.android.iptv",
-          "name": "IPTV",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1976D2",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.1.25",
-              "versionCodes": {
-                "ARM64_V8A": 5010,
-                "ARMEABI_V7A": 5010,
-                "X86_64": 5010,
-                "X86": 5010
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable ads",
-      "description": "Removes the banner and interstitial ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -965,7 +996,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Stops every Google Mobile Ads banner, interstitial, native, rewarded and app-open ad from loading, including the Teads and Equativ ads it mediates. Taboola sponsored content and ads inside web pages are not removed.",
+      "description": "Removes Google ads. Taboola and ads inside web pages stay.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -978,12 +1009,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "10.69.1",
+              "version": "10.70.0",
               "versionCodes": {
-                "ARM64_V8A": 1616,
-                "ARMEABI_V7A": 1616,
-                "X86_64": 1616,
-                "X86": 1616
+                "ARM64_V8A": 1620,
+                "ARMEABI_V7A": 1620,
+                "X86_64": 1620,
+                "X86": 1620
               },
               "isExperimental": true,
               "minSdk": null,
@@ -996,7 +1027,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables Librera's banner, interstitial and rewarded ads by reporting ads as switched off and the reward window as open, so the Google Mobile Ads SDK never starts.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1027,7 +1058,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Forces AdsRemovalSettings.areAdsDisabled() to return true, disabling banner, interstitial, MPU, hero placement, coverage sponsorship and announcement ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1058,7 +1089,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Turns on the app's own ad-free mode, which removes the banner and the full-screen video ad shown before the auto clicker starts.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -1122,7 +1153,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Experimental, not yet tested on a device. Removes banner, native, sticky, interstitial and video preroll ads and the Taboola sponsored links under articles. Pro content stays server-side and is not unlocked.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1153,7 +1184,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables Moon+ Reader's banner, interstitial, exit and native ads by forcing the central ad gate to always report ads as disabled.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1184,7 +1215,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native/inline and app-open ads and hides the empty ad slots.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1215,7 +1246,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native, app-open and rewarded ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1228,12 +1259,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "15.146.0",
+              "version": "15.147.0",
               "versionCodes": {
-                "ARM64_V8A": 1045009496,
-                "ARMEABI_V7A": 1045009496,
-                "X86_64": 1045009496,
-                "X86": 1045009496
+                "ARM64_V8A": 1045019512,
+                "ARMEABI_V7A": 1045019512,
+                "X86_64": 1045019512,
+                "X86": 1045019512
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1246,7 +1277,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native, app-open and rewarded ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1277,7 +1308,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native and rewarded ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1308,7 +1339,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native, app-open and rewarded ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1339,7 +1370,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables Google Mobile Ads (AdMob) initialization and the app's own ad placements, removing banner, interstitial, rewarded, native and mediated ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1370,7 +1401,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, rewarded, app-open and native ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1401,7 +1432,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, rewarded and app-open ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1432,7 +1463,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, feed, native, preroll and rewarded ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1445,12 +1476,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1463,7 +1494,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, interstitial, native, app-open and rewarded ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1494,7 +1525,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the banner, in-article and interstitial ads, the betting odds banners and the Outbrain recommendations.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [
         "BytecodePatch",
@@ -1528,7 +1559,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Hides banner and native ads and the ad slots in the call log and inbox, and turns off interstitial and app-open ads, so actions such as Click to WhatsApp run at once. Also turns off the remaining ad checks (including rewarded ads), the ad campaign and ad config syncs, the \"Explore Truecaller Premium\" row in the contacts list and the \"Recommended Offers\" (Offer Hub) entry.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1541,12 +1572,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1559,7 +1590,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the banner ad at the bottom of the map and stops the ad SDK from starting.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -1592,7 +1623,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables banner, native, interstitial and splash (app-open) ads and skips the splash ad wait. Opt-in rewarded ads keep working for make-up prayers and rewards.",
+      "description": "Removes all ads. Opt-in rewarded ads keep working.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -1625,7 +1656,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Disables the banner and full-screen ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1656,7 +1687,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes the display and native ads from section fronts, articles and market pages, without leaving empty ad slots, and the pre-roll ads before videos.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1687,7 +1718,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Hides ad cards on the home, scores, game, team and league screens, above articles and on video screens, turns off Taboola stream ads and removes video pre-roll ads.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1700,12 +1731,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.10.3",
+              "version": "12.26.1",
               "versionCodes": {
-                "ARM64_V8A": 11166823,
-                "ARMEABI_V7A": 11166823,
-                "X86_64": 11166823,
-                "X86": 11166823
+                "ARM64_V8A": 11168590,
+                "ARMEABI_V7A": 11168590,
+                "X86_64": 11168590,
+                "X86": 11168590
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1718,7 +1749,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Stops the bundled Calldorado ad SDK: no in-app ads and no after-call ad screen.",
+      "description": "Removes all ads, including the after-call ad screen.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1749,7 +1780,7 @@
     },
     {
       "name": "Disable article limit",
-      "description": "Removes the article limit wall, the warm-up prompt and the offline wall, and stops counting article views. The free sign-in prompt and the \"Support the Guardian\" button stay.",
+      "description": "Removes the article limit.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1779,8 +1810,8 @@
       "options": []
     },
     {
-      "name": "Disable contact upload",
-      "description": "Stops Truecaller from sending your saved contacts' numbers to its servers (chat contact discovery, friends' Premium status and the Call Assistant whitelist) and hides the contact editor's name suggestion upload. Contacts, dialer search and caller ID keep working. Truecaller Chat no longer finds which of your contacts use it, and with the Call Assistant your saved contacts are no longer whitelisted.",
+      "name": "Disable auto-launch",
+      "description": "Stops Truecaller from opening itself in the background.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1793,12 +1824,43 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable contact upload",
+      "description": "Stops uploading your contacts. Chat can no longer find which contacts use it.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.41.5",
+              "versionCodes": {
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1811,7 +1873,7 @@
     },
     {
       "name": "Disable default launcher reminder",
-      "description": "Stops the notification that asks you to set the app as the default launcher. It only appears while another launcher is the default.",
+      "description": "Disables the reminder to set the app as default launcher.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -1842,7 +1904,7 @@
     },
     {
       "name": "Disable license check",
-      "description": "Skips the Play Store license check so the patched app starts.",
+      "description": "Disables the Play Store license check so the app starts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1873,7 +1935,7 @@
     },
     {
       "name": "Disable license check",
-      "description": "Skips the Play Store license check so the patched app starts.",
+      "description": "Disables the Play Store license check so the app starts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1904,7 +1966,7 @@
     },
     {
       "name": "Disable license check",
-      "description": "Skips the Play Store license check so the patched app starts.",
+      "description": "Disables the Play Store license check so the app starts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1935,7 +1997,7 @@
     },
     {
       "name": "Disable license check",
-      "description": "Skips the Play Store license check so the patched app starts.",
+      "description": "Disables the Play Store license check so the app starts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1948,12 +2010,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.4.4",
+              "version": "1.4.5",
               "versionCodes": {
-                "ARM64_V8A": 56,
-                "ARMEABI_V7A": 56,
-                "X86_64": 56,
-                "X86": 56
+                "ARM64_V8A": 57,
+                "ARMEABI_V7A": 57,
+                "X86_64": 57,
+                "X86": 57
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1966,7 +2028,7 @@
     },
     {
       "name": "Disable license check",
-      "description": "Skips the Play Store license check so the patched app starts.",
+      "description": "Disables the Play Store license check so the app starts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1997,7 +2059,7 @@
     },
     {
       "name": "Disable live stream ads",
-      "description": "Plays live channels from the plain stream instead of the Google DAI stream with inserted ads. Turn this off if a live channel stops playing.",
+      "description": "Removes ads from live channels. Turn off if a channel stops playing.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2027,8 +2089,39 @@
       "options": []
     },
     {
+      "name": "Disable nags",
+      "description": "Disables default dialer, permission and survey prompts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.41.5",
+              "versionCodes": {
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable promotions",
-      "description": "Hides the GetJar and SportsPass partner banners, tiles, search cards and suggestions, the \"Discover\" app offers card and the keyboard promotion notification.",
+      "description": "Hides partner promotions and app offers.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2059,7 +2152,7 @@
     },
     {
       "name": "Disable rating prompts",
-      "description": "Stops the app's feedback (sentiment) dialog and the Google Play review request.",
+      "description": "Disables the rating prompts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2090,7 +2183,7 @@
     },
     {
       "name": "Disable rating prompts",
-      "description": "Stops the Google Play rating request that opens after a few app starts, and the Play Store page it opens when that request fails.",
+      "description": "Disables the rating prompt.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2121,7 +2214,7 @@
     },
     {
       "name": "Disable rating prompts",
-      "description": "Hides the rating banner and the in-app rating dialog.",
+      "description": "Disables the rating prompts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2152,7 +2245,38 @@
     },
     {
       "name": "Disable rating prompts",
-      "description": "Stops the Google Play rating request that opens after a mail is sent.",
+      "description": "Disables the rating prompt.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mobilefootie.wc2010",
+          "name": "FotMob",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00985F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "239.17834.20261016",
+              "versionCodes": {
+                "ARM64_V8A": 17834,
+                "ARMEABI_V7A": 17834,
+                "X86_64": 17834,
+                "X86": 17834
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable rating prompts",
+      "description": "Disables the rating prompt.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2183,7 +2307,7 @@
     },
     {
       "name": "Disable rating prompts",
-      "description": "Stops the in-app rating dialog that opens after repeated app starts.",
+      "description": "Disables the rating prompt.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2196,12 +2320,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2214,7 +2338,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Firebase Analytics (including automatic events), Crashlytics crash reporting, Fyber's crash handler and the sale promo push notifications. Remote Config keeps working.",
+      "description": "Disables analytics, crash reporting and sale promo notifications.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -2247,7 +2371,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Turns off mParticle analytics (which also removes the Apptentive surveys and rating prompts), Datadog, comScore, Crashlytics crash reports, Branch attribution tracking, the Beam event reporting and the event forwarding to Braze.",
+      "description": "Disables analytics, tracking and crash reporting.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2278,7 +2402,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables AppsFlyer event logging, app-logged Firebase Analytics events and Crashlytics exception reporting.",
+      "description": "Disables analytics and crash reporting.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2309,7 +2433,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Experimental: turns off P3A analytics and the usage ping on every start (overriding the in-app switches), stops crash report uploads and drops the install-referrer attribution code.",
+      "description": "Disables usage analytics and crash reports.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -2322,7 +2446,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.97.56",
+              "version": "1.98.60",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,
@@ -2335,7 +2459,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Firebase Analytics, Crashlytics, Performance Monitoring and Piano (Cxense) page events. Push notifications keep working.",
+      "description": "Disables analytics and crash reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -2368,7 +2492,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Firebase Analytics and Crashlytics, Amplitude, Braze, Singular and Rudderstack tracking. Push notifications keep working.",
+      "description": "Disables analytics and crash reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -2401,7 +2525,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Adobe Analytics, AppsFlyer, Apptentive, Chartbeat, Comscore, Crashlytics, Firebase Analytics, MediaMelon, Mux, New Relic, Permutive and Storyteller tracking. AppsFlyer deep links may stop opening the app on the right page. Push notifications keep working.",
+      "description": "Disables analytics, tracking and crash reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -2416,12 +2540,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "8.33.0",
+              "version": "8.34.1",
               "versionCodes": {
-                "ARM64_V8A": 113758,
-                "ARMEABI_V7A": 113758,
-                "X86_64": 113758,
-                "X86": 113758
+                "ARM64_V8A": 113929,
+                "ARMEABI_V7A": 113929,
+                "X86_64": 113929,
+                "X86": 113929
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2434,7 +2558,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Stops Glean telemetry uploads (including the pings that ignore the in-app switch), the daily usage ping, Adjust marketing attribution, Sentry and Socorro crash report uploads and Nimbus experiment downloads. Crashes still show the local crash screen.",
+      "description": "Disables telemetry and crash report uploads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2463,7 +2587,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Stops the daily usage ping, even when its setting is turned on, and Nimbus experiment downloads. The other Glean telemetry is already off in Firefox Focus. Crash reports are still sent only when you choose to send them.",
+      "description": "Disables the usage ping and experiments.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2494,7 +2618,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables AppsFlyer, Apptentive, Crashlytics, Firebase Analytics and Performance collection, and Facebook automatic event logging. Facebook Login and push notifications keep working.",
+      "description": "Disables analytics and crash reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -2527,7 +2651,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Sentry crash and performance reports, UXCam session recording, Airship analytics and Branch attribution tracking. Push notifications and Branch deep links keep working; Airship in-app messages triggered by app events no longer show.",
+      "description": "Disables analytics, session recording and crash reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -2542,12 +2666,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "2.3.548",
+              "version": "2.3.585",
               "versionCodes": {
-                "ARM64_V8A": 868,
-                "ARMEABI_V7A": 868,
-                "X86_64": 868,
-                "X86": 868
+                "ARM64_V8A": 905,
+                "ARMEABI_V7A": 905,
+                "X86_64": 905,
+                "X86": 905
               },
               "isExperimental": true,
               "minSdk": null,
@@ -2560,7 +2684,38 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Firebase Analytics, Crashlytics, Ophan, the push \"received\" beacon and the third-party tracking SDKs (Comscore, Nielsen, Adjust, Braze, Permutive). News, live blog and football alerts keep working; Braze marketing pushes and in-app messages stop.",
+      "description": "Disables analytics and crash reporting.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mobilefootie.wc2010",
+          "name": "FotMob",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00985F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "239.17834.20261016",
+              "versionCodes": {
+                "ARM64_V8A": 17834,
+                "ARMEABI_V7A": 17834,
+                "X86_64": 17834,
+                "X86": 17834
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable telemetry",
+      "description": "Disables analytics, tracking and crash reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -2593,7 +2748,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Firebase Analytics, advertising ID collection and Crashlytics reports.",
+      "description": "Disables analytics and crash reporting.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2655,7 +2810,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Firebase Analytics event logging and Crashlytics crash reporting.",
+      "description": "Disables analytics and crash reporting.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2668,12 +2823,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "16.63.0-261008",
+              "version": "16.64.0-261015",
               "versionCodes": {
-                "ARM64_V8A": 1606300,
-                "ARMEABI_V7A": 1606300,
-                "X86_64": 1606300,
-                "X86": 1606300
+                "ARM64_V8A": 1606400,
+                "ARMEABI_V7A": 1606400,
+                "X86_64": 1606400,
+                "X86": 1606400
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2686,7 +2841,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables AppsFlyer and Firebase Analytics (including its automatic events), plus Crashlytics crash reporting.",
+      "description": "Disables analytics and crash reporting.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2699,12 +2854,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2717,7 +2872,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Blocks Google Analytics and Tag Manager, Adobe Analytics, INFOnline and m6r tracking, and hides the advertising ID from the web app.",
+      "description": "Disables analytics and tracking.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -2750,7 +2905,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Turns off the app start tracker, CleverTap (event tracking, its SDK start, profile refresh and CleverTap marketing pushes), AppsFlyer attribution, Firebase Analytics (including advertising ID collection), Crashlytics crash reports and Firebase Sessions.",
+      "description": "Disables analytics, tracking and crash reporting.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2763,12 +2918,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2781,7 +2936,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Stops Firebase Analytics events.",
+      "description": "Disables analytics.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -2814,7 +2969,7 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Disables Firebase Analytics, Crashlytics reports and AppsFlyer and Adjust attribution.",
+      "description": "Disables analytics and crash reporting.",
       "default": true,
       "dependencies": [
         "ResourcePatch",
@@ -2848,7 +3003,7 @@
     },
     {
       "name": "Disable update prompts",
-      "description": "Stops the Play Store in-app update prompt. An old version may still stop working if Digi Sport's servers drop support for it.",
+      "description": "Disables the in-app update prompt.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2879,7 +3034,7 @@
     },
     {
       "name": "Disable update prompts",
-      "description": "Hides the \"update available\" and \"update required\" dialogs. An old version may still stop working if Flashscore's servers drop support for it.",
+      "description": "Disables the update prompts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2910,7 +3065,7 @@
     },
     {
       "name": "Disable update prompts",
-      "description": "Hides the \"This app is out of date\" screen and the new version popup, so the patched version keeps working.",
+      "description": "Disables the update prompts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2941,7 +3096,7 @@
     },
     {
       "name": "Disable update prompts",
-      "description": "Stops the Google Play in-app update prompts and the app's own \"update required\" page, so the app does not block you from using the patched version.",
+      "description": "Disables the update prompts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2954,12 +3109,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2972,7 +3127,7 @@
     },
     {
       "name": "Enable FotMob+",
-      "description": "Removes ads and the FotMob+ paywall. On 238 and newer it also unlocks the exclusive app icons (More > FotMob+). The membership screen still shows no subscription; early access is managed by FotMob.",
+      "description": "Unlocks FotMob+ and removes ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2985,12 +3140,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "238.17794.20261012",
+              "version": "239.17834.20261016",
               "versionCodes": {
-                "ARM64_V8A": 17794,
-                "ARMEABI_V7A": 17794,
-                "X86_64": 17794,
-                "X86": 17794
+                "ARM64_V8A": 17834,
+                "ARMEABI_V7A": 17834,
+                "X86_64": 17834,
+                "X86": 17834
               },
               "isExperimental": false,
               "minSdk": null,
@@ -3003,7 +3158,7 @@
     },
     {
       "name": "Enable Full Version",
-      "description": "Bypasses the Play license check so the paid app runs as licensed.",
+      "description": "Unlocks the full version.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3034,7 +3189,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks the VIP interface and removes ads. Premium data the AiScore server delivers (e.g. predictions, dropping odds) is validated server-side and is not unlocked.",
+      "description": "Unlocks VIP features and removes ads. Server data like predictions stays locked.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3065,7 +3220,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks the Pro/Premium features and lifts the free-version feature locks.",
+      "description": "Unlocks Pro features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3096,7 +3251,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks the premium version (removes ads and lifts premium limits).",
+      "description": "Unlocks premium features and removes ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3127,7 +3282,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks the app's Pro plan. Features the BoxBox server grants by account (UserProfiles.isPro) may stay locked.",
+      "description": "Unlocks Pro features. Account-based Pro features may stay locked.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3158,7 +3313,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks all donation-gated settings, including dynamic GMS and suspend. Note: patched builds cannot validate genuine donation tokens, so the Brefoil count is forced; use the official build to have a real donation recognized.",
+      "description": "Unlocks donation-only features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3189,7 +3344,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Treats the CREX Premium subscription as active on this device, which removes ads (including in the floating score) wherever the app checks the plan. The CREX Premium menu entry still asks you to sign in and shows no plan, and server-checked content such as FanCode live streams stays locked.",
+      "description": "Unlocks Premium and removes ads. FanCode streams stay locked.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3220,7 +3375,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks Duplila Premium: no watermark, the higher mirroring resolution and the other premium-only actions. Premium is checked on the device only; the license check is disabled as well so the patched app starts.",
+      "description": "Unlocks Premium features.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -3253,7 +3408,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks the VIP-only fonts, note backgrounds, stickers and drawing tools. The app checks entitlement entirely locally — there is no license server — so forcing the App.isVip() gate to return true unlocks everything, and stays unlocked even though BillingManager resets the underlying purchase flags from Play on every startup.",
+      "description": "Unlocks VIP features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3284,7 +3439,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Experimental: marks every RevenueCat entitlement as active on the Java side, which is what the app's Dart premium check reads. Server-side features (account sync, recordings, the always-current EPG) still depend on the Expert backend and are not changed.",
+      "description": "Experimental: unlocks premium features. Server features stay locked.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -3315,7 +3470,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Forces User.hasPremium() to return true, unlocking premium features locked behind the RevenueCat subscription entitlement.",
+      "description": "Unlocks premium features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3346,7 +3501,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks Fishing Points premium features and removes ads.",
+      "description": "Unlocks premium features and removes ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3377,7 +3532,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks Hyperion Premium features without a purchase or the Launcher Key app.",
+      "description": "Unlocks premium features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3408,40 +3563,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks the Pro-only access control settings (parental PIN, locking playlist/EPG/proxy/import-export/recording settings, hiding playlist URLs) and suppresses the in-app review prompt. Start on boot and autoplay last channel are only implemented in the separate IPTV Pro app and stay unavailable.",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "ru.iptvremote.android.iptv",
-          "name": "IPTV",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1976D2",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.1.25",
-              "versionCodes": {
-                "ARM64_V8A": 5010,
-                "ARMEABI_V7A": 5010,
-                "X86_64": 5010,
-                "X86": 5010
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Premium",
-      "description": "Unlocks the 'Advanced device settings' features (Personalized Volume, Adaptive Audio, accessibility configs, hearing protection, etc.) that LibrePods gates behind the Play Store 'Unlock advanced features' one-time purchase. The patch forces the premium entitlement (PlayBillingProvider's _isPremium StateFlow) to always be true.",
+      "description": "Unlocks the advanced device settings.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3472,7 +3594,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks the Monefy Pro features.",
+      "description": "Unlocks Pro features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3503,7 +3625,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks Native Camera premium (RAW DNG, 10-bit/HLG/UHDR video, boosted modes and the higher bitrate cap). Premium is a local flag; the license check is disabled as well so the patched app starts.",
+      "description": "Unlocks premium features.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -3518,12 +3640,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.4.4",
+              "version": "1.4.5",
               "versionCodes": {
-                "ARM64_V8A": 56,
-                "ARMEABI_V7A": 56,
-                "X86_64": 56,
-                "X86": 56
+                "ARM64_V8A": 57,
+                "ARMEABI_V7A": 57,
+                "X86_64": 57,
+                "X86": 57
               },
               "isExperimental": false,
               "minSdk": null,
@@ -3536,7 +3658,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks OsmAnd Pro, Maps+ and live updates.",
+      "description": "Unlocks OsmAnd Pro, Maps+ and Android Auto.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3549,12 +3671,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.4.10",
+              "version": "5.4.11",
               "versionCodes": {
-                "ARM64_V8A": 5410,
-                "ARMEABI_V7A": 5410,
-                "X86_64": 5410,
-                "X86": 5410
+                "ARM64_V8A": 5411,
+                "ARMEABI_V7A": 5411,
+                "X86_64": 5411,
+                "X86": 5411
               },
               "isExperimental": false,
               "minSdk": null,
@@ -3567,7 +3689,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks Pi Music Player Premium (ad-free) by forcing the local purchase-state checks to true.",
+      "description": "Unlocks premium features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3598,7 +3720,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks Pro Launcher Pro features without a subscription.",
+      "description": "Unlocks Pro features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3629,7 +3751,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks 365Scores premium features (ad-free, tipster, plus, delayed notifications and notification sounds).",
+      "description": "Unlocks premium features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3660,7 +3782,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks Simple Radio Premium (ad-free listening) by forcing the local subscription checks to true.",
+      "description": "Unlocks premium features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3691,7 +3813,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks Premium+ by reporting the lifetime and ad-free purchases as owned.",
+      "description": "Unlocks Premium+ features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3722,7 +3844,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Marks the account as premium in the app. Note: AI insights and other premium content are served by Sofascore's servers for paying accounts and are not unlocked; use \"Disable ads\" for an ad-free app.",
+      "description": "Unlocks premium features. AI insights stay locked.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3735,12 +3857,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
               },
               "isExperimental": false,
               "minSdk": null,
@@ -3753,7 +3875,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks the Premium interface and the Premium features that are checked on the device. Features backed by Truecaller's servers (Call Assistant, family sharing, Who viewed / searched for me data, Identify AI, cloud call recording, fraud insurance, the verified badge) are reported as unavailable.",
+      "description": "Unlocks premium features. Server features like Who viewed me stay locked.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3766,12 +3888,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -3784,7 +3906,7 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks #Notepad premium and hides the paywall and in-app ad slots.",
+      "description": "Unlocks premium features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3815,7 +3937,7 @@
     },
     {
       "name": "Enable Premium+",
-      "description": "Enables app features locked behind the subscription paywall.",
+      "description": "Unlocks Premium+ features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3846,7 +3968,7 @@
     },
     {
       "name": "Enable Pro",
-      "description": "Unlocks the FairEmail pro features.",
+      "description": "Unlocks Pro features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3877,7 +3999,7 @@
     },
     {
       "name": "Enable Pro",
-      "description": "Unlocks jetAudio Premium, all plugins and the ad unlocker.",
+      "description": "Unlocks premium features and plugins.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3908,7 +4030,7 @@
     },
     {
       "name": "Enable Pro",
-      "description": "Unlocks Textra Pro: removes ads and unlocks the paid features.",
+      "description": "Unlocks Pro features and removes ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3939,7 +4061,7 @@
     },
     {
       "name": "Enable Pro",
-      "description": "Unlocks Unified Remote Full by forcing the local license status check.",
+      "description": "Unlocks the full version.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3970,7 +4092,7 @@
     },
     {
       "name": "Enable about:config",
-      "description": "Opens about:config in release builds, where Firefox normally blocks it.",
+      "description": "Enables about:config.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3999,7 +4121,7 @@
     },
     {
       "name": "Enable about:config",
-      "description": "Enables about:config, the page for viewing and changing the browser engine's preferences. Type about:config in the address bar to open it.",
+      "description": "Enables about:config.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4030,7 +4152,7 @@
     },
     {
       "name": "Fix T9 contact search",
-      "description": "Builds Truecaller's T9 dialer search index for new contacts each time the app opens, instead of waiting for the 12-hour background job. Helps when T9 finds no saved contacts after a fresh install.",
+      "description": "Fixes T9 search not finding new contacts.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4043,12 +4165,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4061,7 +4183,7 @@
     },
     {
       "name": "Fix native encryption check",
-      "description": "Makes the app start after re-signing. The stock libagora-ey.so refuses to load in a re-signed build, so its storage-key getters are replaced with the values from the developer-signed APK. The library is never loaded.",
+      "description": "Fixes the app not starting after patching.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4092,7 +4214,7 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed. FotMob's Sign in with Google needs it. FotMob's automatic sign-in at first start is skipped, because MicroG RE would show it as an account chooser; use the Sign in with Google button instead.",
+      "description": "Makes Google sign-in and Google services work. Requires MicroG RE. Sign in with the Sign in with Google button.",
       "default": false,
       "dependencies": [
         "ResourcePatch",
@@ -4108,12 +4230,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "238.17794.20261012",
+              "version": "239.17834.20261016",
               "versionCodes": {
-                "ARM64_V8A": 17794,
-                "ARMEABI_V7A": 17794,
-                "X86_64": 17794,
-                "X86": 17794
+                "ARM64_V8A": 17834,
+                "ARMEABI_V7A": 17834,
+                "X86_64": 17834,
+                "X86": 17834
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4126,7 +4248,7 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed.",
+      "description": "Makes Google sign-in and Google services work. Requires MicroG RE.",
       "default": false,
       "dependencies": [
         "ResourcePatch",
@@ -4173,7 +4295,7 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed. Shazam's Sign in with Google needs it. Shazam's automatic sign-in attempts are skipped, because MicroG RE would show them as an account chooser; use the Sign in with Google button instead.",
+      "description": "Makes Google sign-in and Google services work. Requires MicroG RE. Sign in with the Sign in with Google button.",
       "default": false,
       "dependencies": [
         "ResourcePatch",
@@ -4189,12 +4311,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "16.63.0-261008",
+              "version": "16.64.0-261015",
               "versionCodes": {
-                "ARM64_V8A": 1606300,
-                "ARMEABI_V7A": 1606300,
-                "X86_64": 1606300,
-                "X86": 1606300
+                "ARM64_V8A": 1606400,
+                "ARMEABI_V7A": 1606400,
+                "X86_64": 1606400,
+                "X86": 1606400
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4207,7 +4329,7 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed.",
+      "description": "Makes Google sign-in and Google services work. Requires MicroG RE.",
       "default": false,
       "dependencies": [
         "ResourcePatch",
@@ -4223,12 +4345,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4254,7 +4376,7 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Makes Google sign-in and Google APIs work in the patched app by using MicroG RE instead of Google Play services. Requires MicroG RE to be installed. Truecaller's Google sign-in and Google Drive backup need it.",
+      "description": "Makes Google sign-in and Google services work. Requires MicroG RE. Needed for Google Drive backup.",
       "default": true,
       "dependencies": [
         "ResourcePatch",
@@ -4270,12 +4392,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4288,7 +4410,7 @@
     },
     {
       "name": "Hide Assistant tab",
-      "description": "Turns off the Call Assistant feature, which removes the Assistant tab.",
+      "description": "Turns off Call Assistant and hides its tab.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4301,12 +4423,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4319,7 +4441,7 @@
     },
     {
       "name": "Hide Blocking tab",
-      "description": "Removes the Blocking tab from the bottom bar. Spam blocking keeps working.",
+      "description": "Hides the Blocking tab from the bottom navigation bar.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4332,12 +4454,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4350,7 +4472,7 @@
     },
     {
       "name": "Hide Messages tab",
-      "description": "Removes the Messages tab from the bottom bar and always opens Calls. SMS notifications still open their conversation. When Calls is the only tab left, the bottom bar shrinks to the height of the system navigation bar.",
+      "description": "Hides the Messages tab from the bottom navigation bar.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4363,12 +4485,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4381,7 +4503,7 @@
     },
     {
       "name": "Hide Premium tab",
-      "description": "Removes the Premium tab from the bottom bar and the Premium entry from the Settings screen.",
+      "description": "Hides the Premium tab and the Premium entry in settings.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4394,12 +4516,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4412,7 +4534,7 @@
     },
     {
       "name": "Hide Scam feed",
-      "description": "Turns off the Scam Feed, which removes its tab and menu entry and stops its notifications.",
+      "description": "Turns off the Scam feed, its tab and its notifications.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4425,12 +4547,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4443,7 +4565,7 @@
     },
     {
       "name": "Hide Wear OS settings",
-      "description": "Removes the \"Truecaller for Wear OS\" entry from the Settings screen.",
+      "description": "Hides the Wear OS entry in settings.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4456,12 +4578,43 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide after-call screen for contacts",
+      "description": "Hides the after-call screen for saved contacts.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.41.5",
+              "versionCodes": {
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4474,7 +4627,7 @@
     },
     {
       "name": "Hide betting content",
-      "description": "Hides odds and betting content: the betting, odds, line and player prop blocks on game pages, the odds and trending bets modules in feeds, and the betting link and disclaimer on the Scores screen.",
+      "description": "Hides odds and betting content.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4505,7 +4658,7 @@
     },
     {
       "name": "Hide betting content",
-      "description": "Hides odds in match lists and match summaries, the match and league Odds tabs, the league Winner Odds block, bet buttons, the bookmaker strip, betting bonuses and the gift icon, bookmakers next to TV channels and gambling notices.",
+      "description": "Hides odds and betting content.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4536,7 +4689,38 @@
     },
     {
       "name": "Hide betting content",
-      "description": "Hides odds, bookmaker links and betting offers: odds in lists and match pages, the Odds tabs, Bet365 sign-up links and the promotions for streaming, tickets and betting.",
+      "description": "Hides odds and betting content.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mobilefootie.wc2010",
+          "name": "FotMob",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00985F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "239.17834.20261016",
+              "versionCodes": {
+                "ARM64_V8A": 17834,
+                "ARMEABI_V7A": 17834,
+                "X86_64": 17834,
+                "X86": 17834
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide betting content",
+      "description": "Hides odds and betting content.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4549,12 +4733,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4567,7 +4751,7 @@
     },
     {
       "name": "Hide betting odds",
-      "description": "Hides the bookmaker odds block in soccer match rows.",
+      "description": "Hides betting odds in match lists.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4598,7 +4782,7 @@
     },
     {
       "name": "Hide betting promotions",
-      "description": "Hides the sportsbook promotion banner.",
+      "description": "Hides sportsbook promotions.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4611,12 +4795,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "12.10.3",
+              "version": "12.26.1",
               "versionCodes": {
-                "ARM64_V8A": 11166823,
-                "ARMEABI_V7A": 11166823,
-                "X86_64": 11166823,
-                "X86": 11166823
+                "ARM64_V8A": 11168590,
+                "ARMEABI_V7A": 11168590,
+                "X86_64": 11168590,
+                "X86": 11168590
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4629,7 +4813,7 @@
     },
     {
       "name": "Hide business media",
-      "description": "Hides the brand images and promo video on business contact details, and the verified business campaign cards in contact details and on the in-call and after-call screens. The description, website and call, message, save and block buttons stay.",
+      "description": "Hides brand images, videos and campaign cards on business contacts.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4642,12 +4826,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4660,7 +4844,7 @@
     },
     {
       "name": "Hide family button",
-      "description": "Turns off Family Protect, which removes the family button at the top of the home screen and its onboarding and notifications.",
+      "description": "Turns off Family Protection and hides its button.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4673,12 +4857,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4691,7 +4875,7 @@
     },
     {
       "name": "Hide partner promotions",
-      "description": "Hides the \"Watch on\" banners that link to streaming partners. This also hides the links to HBO Max and discovery+ that open the event you are reading about.",
+      "description": "Hides the \"Watch on\" streaming partner banners.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4704,12 +4888,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "8.33.0",
+              "version": "8.34.1",
               "versionCodes": {
-                "ARM64_V8A": 113758,
-                "ARMEABI_V7A": 113758,
-                "X86_64": 113758,
-                "X86": 113758
+                "ARM64_V8A": 113929,
+                "ARMEABI_V7A": 113929,
+                "X86_64": 113929,
+                "X86": 113929
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4722,7 +4906,7 @@
     },
     {
       "name": "Hide premium banners",
-      "description": "Hides the membership card on the Me screen and the membership offer cards in the home feed.",
+      "description": "Hides the membership banners.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -4755,7 +4939,7 @@
     },
     {
       "name": "Hide promotional prompts",
-      "description": "Experimental: stops the recurring \"Set Brave as default browser\" dialog, the \"Rate Brave\" dialog and card, retention and Rewards promo notifications, the search widget promo and the VPN card in Settings.",
+      "description": "Hides the recurring default browser, rating and promo prompts.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4768,7 +4952,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.97.56",
+              "version": "1.98.60",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,
@@ -4781,7 +4965,7 @@
     },
     {
       "name": "Hide promotional prompts",
-      "description": "Stops Firefox's own promotions: in-app messages and their notifications, microsurveys, the \"Set as default browser\" prompts (at start, in onboarding and in the follow-up onboarding days), the onboarding sign-in page and the rating prompt. Sign-in, Set as default browser and Rate on Google Play in settings keep working.",
+      "description": "Hides default browser, rating and promo prompts.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4810,7 +4994,7 @@
     },
     {
       "name": "Hide promotional prompts",
-      "description": "Hides the search widget promotion that opens after erasing your history and the tip bubbles (\"Start browsing\", tracking protection, erase tabs, privacy settings).",
+      "description": "Hides the search widget promo and tip bubbles.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4841,7 +5025,7 @@
     },
     {
       "name": "Hide promotions",
-      "description": "Hides the cross-promotion articles from other RCS&RDS apps below articles and the \"Exclusive online · live\" bar on Home.",
+      "description": "Hides cross-promotion articles and the live bar on Home.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4871,8 +5055,39 @@
       "options": []
     },
     {
+      "name": "Hide promotions",
+      "description": "Hides promo banners, referral offers and Who viewed me promos.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.41.5",
+              "versionCodes": {
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide sponsored articles",
-      "description": "Hides sponsored articles in section listings and in the article widgets below an article.",
+      "description": "Hides sponsored articles.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4903,7 +5118,7 @@
     },
     {
       "name": "Hide sponsored content",
-      "description": "Removes sponsored links, sites, suggestions and articles from search and the news feed. The news feed is built from the sponsored article list, so it may show fewer posts or none at all.",
+      "description": "Hides sponsored links and articles. The news feed may show few posts.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -4934,7 +5149,7 @@
     },
     {
       "name": "Hide sponsored content",
-      "description": "Hides the sponsored shortcuts on the home screen, sponsored stories and sponsored Firefox Suggest results in the address bar. Regular stories, shortcuts and suggestions stay.",
+      "description": "Hides sponsored shortcuts, stories and suggestions.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4963,7 +5178,7 @@
     },
     {
       "name": "Hide upsells",
-      "description": "Hides the upgrade offer that appears after swiping away ads. The upgrade entries in Settings and the side menu stay.",
+      "description": "Hides the upgrade offer.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -4994,7 +5209,7 @@
     },
     {
       "name": "Keep background tabs loaded",
-      "description": "Experimental: keeps the content processes of background tabs at background priority instead of letting them drop to idle, so Android is less likely to kill them and tabs reload less often. Raises memory use, and cannot stop Android from killing the whole app. Shows the last screenshot of a tab while it reloads.",
+      "description": "Experimental: keeps background tabs loaded so they reload less often. Uses more memory.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -5023,7 +5238,7 @@
     },
     {
       "name": "Open in Morphe YouTube apps",
-      "description": "Makes \"Open in YouTube Music\" and \"Open in YouTube\" open the Morphe-patched apps when they are installed, falling back to the stock apps otherwise.",
+      "description": "Opens songs in the Morphe YouTube apps when installed.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -5038,12 +5253,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "16.63.0-261008",
+              "version": "16.64.0-261015",
               "versionCodes": {
-                "ARM64_V8A": 1606300,
-                "ARMEABI_V7A": 1606300,
-                "X86_64": 1606300,
-                "X86": 1606300
+                "ARM64_V8A": 1606400,
+                "ARMEABI_V7A": 1606400,
+                "X86_64": 1606400,
+                "X86": 1606400
               },
               "isExperimental": false,
               "minSdk": null,
@@ -5079,7 +5294,7 @@
     },
     {
       "name": "Remove ads",
-      "description": "Unlocks the ad-free purchase.",
+      "description": "Removes all ads.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -5110,7 +5325,7 @@
     },
     {
       "name": "Remove screenshot restriction",
-      "description": "Allows screenshots and screen recording in apps that block them, by never setting the FLAG_SECURE window flag or a secure SurfaceView. Does not unprotect DRM-protected video.",
+      "description": "Allows screenshots and screen recording in apps that block them.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -5118,7 +5333,7 @@
     },
     {
       "name": "Restore classic call log",
-      "description": "Experimental: turns off the redesigned call log, which brings back the classic call log and its \"Frequently called\" setting. Swipe right to call and swipe left for SMS stay available.",
+      "description": "Experimental: restores the classic call log.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -5131,12 +5346,43 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show caller number in call log",
+      "description": "Shows the caller's number in the new call log for callers who aren't in your contacts.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0087FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.41.5",
+              "versionCodes": {
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -5149,7 +5395,7 @@
     },
     {
       "name": "Skip ad consent form",
-      "description": "Skips Google's ad consent form at startup and in the GDPR screens, and hides the then empty ad consent section in Settings. Use it together with Disable ads.",
+      "description": "Skips the ad consent form.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -5180,7 +5426,7 @@
     },
     {
       "name": "Spoof signature",
-      "description": "Fixes push notifications (goal alerts) on patched builds by reporting AiScore's original signing certificate to Firebase.",
+      "description": "Fixes push notifications (goal alerts).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -5211,7 +5457,7 @@
     },
     {
       "name": "Spoof signature",
-      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "description": "Fixes Google features that check the app's original signature.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -5224,12 +5470,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "238.17794.20261012",
+              "version": "239.17834.20261016",
               "versionCodes": {
-                "ARM64_V8A": 17794,
-                "ARMEABI_V7A": 17794,
-                "X86_64": 17794,
-                "X86": 17794
+                "ARM64_V8A": 17834,
+                "ARMEABI_V7A": 17834,
+                "X86_64": 17834,
+                "X86": 17834
               },
               "isExperimental": false,
               "minSdk": null,
@@ -5242,7 +5488,7 @@
     },
     {
       "name": "Spoof signature",
-      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "description": "Fixes Google features that check the app's original signature.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -5273,7 +5519,7 @@
     },
     {
       "name": "Spoof signature",
-      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working. Also connects Shazam to Spotify through Spotify's login page in a browser tab instead of the Spotify app, which rejects the patched app.",
+      "description": "Fixes Google features and the Spotify connection.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -5288,12 +5534,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "16.63.0-261008",
+              "version": "16.64.0-261015",
               "versionCodes": {
-                "ARM64_V8A": 1606300,
-                "ARMEABI_V7A": 1606300,
-                "X86_64": 1606300,
-                "X86": 1606300
+                "ARM64_V8A": 1606400,
+                "ARMEABI_V7A": 1606400,
+                "X86_64": 1606400,
+                "X86": 1606400
               },
               "isExperimental": false,
               "minSdk": null,
@@ -5306,7 +5552,7 @@
     },
     {
       "name": "Spoof signature",
-      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "description": "Fixes Google features that check the app's original signature.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -5319,12 +5565,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.10.05",
+              "version": "26.10.12",
               "versionCodes": {
-                "ARM64_V8A": 261005002,
-                "ARMEABI_V7A": 261005002,
-                "X86_64": 261005002,
-                "X86": 261005002
+                "ARM64_V8A": 261012002,
+                "ARMEABI_V7A": 261012002,
+                "X86_64": 261012002,
+                "X86": 261012002
               },
               "isExperimental": false,
               "minSdk": null,
@@ -5337,7 +5583,7 @@
     },
     {
       "name": "Spoof signature",
-      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "description": "Fixes Google features that check the app's original signature.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -5350,12 +5596,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,
@@ -5368,7 +5614,7 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Unlocks Business Calendar 2 Pro by forcing the app's own complete-pro and force-pro status to true. Billing is not touched.",
+      "description": "Unlocks Pro features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -5399,7 +5645,7 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Unlocks Hevy Pro features that run on your device's workout data (unlimited routines, custom exercises, advanced stats and graphs). Pro features Hevy's servers provide, like cloud limits and Hevy Coach, can stay locked.",
+      "description": "Unlocks Pro features. Server features like Hevy Coach stay locked.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -5430,7 +5676,7 @@
     },
     {
       "name": "Unlock secret settings",
-      "description": "Reveals the hidden debug menu without tapping the Firefox logo five times: Secret Settings, Install add-on from file, the custom add-on collection, Nimbus experiments, the Sync debug menu and Gecko logs.",
+      "description": "Unlocks the hidden debug settings.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -5459,7 +5705,7 @@
     },
     {
       "name": "Use SMS for verification codes",
-      "description": "Reads the phone verification code from the SMS inbox instead of Google's SMS Retriever, for devices without Google Play services or with MicroG. Phone verification can still fail on modified builds, because Truecaller's servers check the app.",
+      "description": "Reads the verification code from SMS. Verification can still fail on patched apps.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": [
@@ -5472,12 +5718,12 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.40.5",
+              "version": "26.41.5",
               "versionCodes": {
-                "ARM64_V8A": 2640005,
-                "ARMEABI_V7A": 2640005,
-                "X86_64": 2640005,
-                "X86": 2640005
+                "ARM64_V8A": 2641005,
+                "ARMEABI_V7A": 2641005,
+                "X86_64": 2641005,
+                "X86": 2641005
               },
               "isExperimental": false,
               "minSdk": null,

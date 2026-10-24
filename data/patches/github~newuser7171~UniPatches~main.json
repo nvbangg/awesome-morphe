@@ -1,11 +1,11 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.33.0",
+  "version": "1.34.0",
   "patches": [
     {
       "name": "Ads Block Patch ( Experimental, Enhanced, Overlay Support, UniManager Support )",
       "category": "Ads Block Enhanced",
-      "description": "A merged ad-control patch based on Nai64's No Ads and Ads Free Rewards patches, plus\nliteral-host blocking inspired by Entree and Adobo. Block common ad formats, choose the\nSDKs to target, optionally grant ad rewards without an ad, and redirect matching literal\nad/tracker hosts embedded in the APK.\n\nHost filters are small embedded subsets inspired by uBlock Origin, EasyList, AdGuard,\nOISD, HaGeZi Pro mini, Privacy Essentials, EasyPrivacy, and Peter Lowe's list; they are\nnot downloaded full subscriptions. Each filter is independently toggleable. They only\naffect hosts stored as literal strings by the app; they cannot block dynamically generated\nhosts, encrypted traffic, or requests made entirely inside Google Play services.\n\nCompatibility: when combined with Disable Forced Online Checks, keep that patch's “Exclude\nad SDK and networking code” option enabled; otherwise blocked ad hosts may be treated as\nonline and retried. PairIP Firebase cleanup/removal can disable Firebase-backed reward,\nsign-in, billing, and attribution flows, which this patch cannot restore.\n\nThis patch includes an optional Universal Overlay addon. To use the addon, patch Ads Block Patch\ntogether with Universal Overlay and select one or more of its three overlay addon modules:\n“Block Ads”, “Ads Free Rewards”, and “Block Ads / Tracking Hosts”. Ad runtime policy is\nenabled automatically when at least one of these Ads runtime modules is enabled in patch\nsettings. The selected modules\nappear under “Ad control hook modules” in Universal Overlay when selected. Host blocking\nstarts according to the Enable Block Ads / Tracking Hosts master setting. Universal Overlay is required for the runtime policy to be\ninstalled; if it is not selected, the normal static ad controls still work but these\nruntime addon modules are not available.\nRuntime changes last for the current app process and affect only methods and literal hosts\nsuccessfully instrumented by this patch. Its policy is attached to the selected overlay's\nown startup bridge, including a manual Activity override; it does not independently choose\nan Application or Activity. Native, dynamically generated, unsupported, or unrecognized\nSDK paths remain unchanged.\n\nCredits: Nai64Patches from Nai64; host-blocking approach inspired by Entree and Adobo.",
+      "description": "Merged ad-control patch based on Nai64's No Ads patch, with selectable SDK/ad-format blocking\nand optional literal-host filters inspired by Entree and Adobo. Filters are embedded,\ntoggleable subsets; they affect literal hosts only, not dynamically generated or encrypted\ntraffic or requests made entirely inside Google Play services.\n\nCompatibility: when combined with Disable Forced Online Checks, keep that patch's “Exclude\nad SDK and networking code” option enabled; otherwise blocked ad hosts may be treated as\nonline and retried. PairIP Firebase cleanup/removal can disable Firebase-backed reward,\nsign-in, billing, and attribution flows, which this patch cannot restore.\n\nThis patch includes an optional Universal Overlay addon. To use the addon, patch Ads Block Patch\ntogether with Universal Overlay and select one or more of its three overlay addon modules:\n“Block Ads”, “Ads Free Rewards”, and “Block Ads / Tracking Hosts”. Ad runtime policy is\nenabled automatically when at least one of these Ads runtime modules is enabled in patch\nsettings. The selected modules\nappear under “Ad control hook modules” in Universal Overlay when selected. Host blocking\nstarts according to the Enable Block Ads / Tracking Hosts master setting. Universal Overlay is required for the runtime policy to be\ninstalled; if it is not selected, the normal static ad controls still work but these\nruntime addon modules are not available.\nRuntime changes last for the current app process and affect only methods and literal hosts\nsuccessfully instrumented by this patch. Its policy is attached to the selected overlay's\nown startup bridge, including a manual Activity override; it does not independently choose\nan Application or Activity. Native, dynamically generated, unsupported, or unrecognized\nSDK paths remain unchanged.\n\nCredits: Nai64Patches from Nai64; host-blocking approach inspired by Entree and Adobo.",
       "default": false,
       "dependencies": [
         "Resolve Real Application (internal)",
@@ -468,7 +468,7 @@
     {
       "name": "Bypass Emulator Detection",
       "category": "Bypass Emulator Detection",
-      "description": "Hides common emulator traces by spoofing Build info and related checks so apps are less likely\nto identify an emulator. This patch is marked for enhancement in future updates; coverage is\ncurrently limited to the checks it can safely recognize.\n\nCompatibility: PairIP Bypass and other server-side integrity systems can still reject a\ndevice when entitlement is bound to genuine device signals, package identity, or attestation.\nCombining spoofing with those patches is app-specific and cannot safely bypass remote checks.\n\nCredits: Nai64Patches from Nai64.",
+      "description": "Spoofs common Build and device checks to reduce emulator detection. Coverage is limited to\nchecks this patch can safely recognize.\n\nCompatibility: PairIP Bypass and other server-side integrity systems can still reject a\ndevice when entitlement is bound to genuine device signals, package identity, or attestation.\nCombining spoofing with those patches is app-specific and cannot safely bypass remote checks.\n\nCredits: Nai64Patches from Nai64.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -491,7 +491,7 @@
     {
       "name": "Bypass Forced Updates (Experimental)",
       "category": "Bypass Forced Updates",
-      "description": "Try to bypass high-confidence client-side forced-update screens. Start with the defaults;\neach option handles a different part of an update flow. This cannot bypass a server that\nrefuses old app versions, and an unsupported app may still require an update.",
+      "description": "Try to bypass high-confidence client-side forced-update screens. This cannot bypass a server\nthat refuses old app versions, and an unsupported app may still require an update.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -537,7 +537,7 @@
     {
       "name": "Control Embedded Auth / Stores Patch ( Enhanced )",
       "category": "Embedded Auth / Stores",
-      "description": "Control embedded Google Play, Firebase, Google Pay, location, licensing, sign-in, and store availability behavior.\n\nChoose real Google Play Services, GmsCore, or Zero Google Play behavior. GmsCore mode includes Maps-on-MicroG compatibility and supports package and main-activity overrides.\n\nAll controls are optional and apply only to matching methods or manifest components.\n\nCompatibility: use InApp Emulation Patch for purchase-flow and catalog behavior. This patch\nonly controls embedded services, licensing, and store checks. Its optional GmsCore startup\nActivity override should not target a third-party sign-in or billing Activity. When combined\nwith Universal Overlay, use the overlay's Activity override only when automatic launcher\nresolution cannot identify the app's real entry Activity.\n\nCredits to Nai64 for the majority of the original Google Services, Firebase, licensing, location, store, and GmsCore functionality. UniPatches provides the merged settings, compatibility guards, and patch organization.",
+      "description": "Controls embedded Google Play, Firebase, Google Pay, location, licensing, sign-in, and store checks.\nChoose real Google Play Services, GmsCore, or Zero Google Play behavior; GmsCore supports Maps-on-MicroG,\npackage, and main-activity overrides. Controls apply only to matching methods or manifest components.\n\nThis patch only controls embedded services, licensing, and store checks. Its optional GmsCore startup\nActivity override should not target a third-party sign-in or billing Activity. When combined\nwith Universal Overlay, use the overlay's Activity override only when automatic launcher\nresolution cannot identify the app's real entry Activity.\n\nCredits to Nai64 for the majority of the original Google Services, Firebase, licensing, location, store, and GmsCore functionality. UniPatches provides the merged settings, compatibility guards, and patch organization.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -742,7 +742,7 @@
     {
       "name": "Custom App Display Patch (Experimental, Enhanced)",
       "category": "Custom App Display Enhanced",
-      "description": "Adjust an APK's display compatibility: screen shape, Unity window-size request, preferred\nrefresh rate, Unity renderer preference, ANGLE preference, and Android game-category hint.\nStart with Display scaling. Android and the app can ignore any request.\n\nResolution and renderer overrides currently target Unity activities. Scaling removes Android\naspect-ratio restrictions where present; it cannot universally rescale every game engine.\n\nCustom App Resolution and game-optimization inspiration: Nai64Patches from Nai64.\nFrame-rate, graphics-driver, ANGLE, and aspect-ratio controls are UniPatches work.\n\nCompatibility: when combined with Universal Overlay, keep Activity injection and display\noverrides scoped to the launcher unless a broader scope is required. Broad Activity changes\ncan affect overlay, sign-in, billing, or other third-party screens. When combined with\nLegacy App Compatibility, both patches may change display or manifest compatibility values;\nreview the final generated manifest.",
+      "description": "Adjust APK display compatibility, including scaling, refresh rate, Unity renderer, ANGLE, and\ngame-category settings. Android and the app can ignore any request.\n\nResolution and renderer overrides currently target Unity activities. Scaling removes Android\naspect-ratio restrictions where present; it cannot universally rescale every game engine.\n\nCustom App Resolution and game-optimization inspiration: Nai64Patches from Nai64.\nFrame-rate, graphics-driver, ANGLE, and aspect-ratio controls are UniPatches work.\n\nCompatibility: when combined with Universal Overlay, keep Activity injection and display\noverrides scoped to the launcher unless a broader scope is required. Broad Activity changes\ncan affect overlay, sign-in, billing, or other third-party screens. When combined with\nLegacy App Compatibility, both patches may change display or manifest compatibility values;\nreview the final generated manifest.",
       "default": false,
       "dependencies": [
         "Resolve Real Application (internal)",
@@ -867,7 +867,7 @@
     {
       "name": "Custom App Output Patch (Experimental, Enhanced)",
       "category": "Custom App Output Enhanced",
-      "description": "Customize an APK's install identity and launcher presentation in one patch. Start with the\nlauncher name or icon; enable Clone only when you need a side-by-side copy. Name, icon,\nhide-icon, and clone options are\nindependent. This cannot preserve original-app data when a package or signing identity\nchanges. Clone mode rewrites supported manifest identifiers only; it does not rewrite\nbytecode strings, explicit process names, task affinities, or arbitrary SDK configuration.\nA clone has a new Android package identity and normally a new signing identity: package- or\ncertificate-bound OAuth, Firebase, Google Play Games, billing, deep links, and server\nlicenses may therefore not work and cannot be repaired safely by this patch. If PairIP\nBypass is also enabled, server/package-bound PairIP enforcement can still reject the clone.\n\nInspired by Nai64Patches from Nai64: Clone, Custom App Icon, and Hide App Icon patches.\nThe optional Preserve App Data After Uninstall setting applies Android's fragile-user-data\nand backup compatibility flags. It does not guarantee data retention, and it cannot carry\ndata from the original package into a clone with a different package identity.\nFor target SDK compatibility, use Improve Legacy App / Game Compatibility for Modern\nAndroid Patch. Keeping target SDK handling there avoids duplicate manifest changes.",
+      "description": "Customizes APK install identity and launcher presentation. Name, icon, hide-icon, and Clone\nare independent; Clone enables side-by-side install. This cannot preserve original-app data when a package or signing identity\nchanges. Clone mode rewrites supported manifest identifiers only; it does not rewrite\nbytecode strings, explicit process names, task affinities, or arbitrary SDK configuration.\nA clone has a new Android package identity and normally a new signing identity: package- or\ncertificate-bound OAuth, Firebase, Google Play Games, billing, deep links, and server\nlicenses may therefore not work and cannot be repaired safely by this patch. If PairIP\nBypass is also enabled, server/package-bound PairIP enforcement can still reject the clone.\n\nInspired by Nai64Patches from Nai64: Clone, Custom App Icon, and Hide App Icon patches.\nThe optional Preserve App Data After Uninstall setting applies Android's fragile-user-data\nand backup compatibility flags. It does not guarantee data retention, and it cannot carry\ndata from the original package into a clone with a different package identity.\nFor target SDK compatibility, use Improve Legacy App / Game Compatibility for Modern\nAndroid Patch. Keeping target SDK handling there avoids duplicate manifest changes.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -997,7 +997,7 @@
     {
       "name": "Disable Forced Online Checks (Experimental)",
       "category": "Bypass Forced Online Checks",
-      "description": "Try to bypass high-confidence client-side “internet required” gates. Start with Auto mode.\nThis cannot bypass server-side login, entitlement, multiplayer, or game-state checks.\n\nCompatibility: Ads Block Patch can intentionally block ad hosts. Keep “Exclude ad SDK and\nnetworking code” enabled when both patches are selected so blocked ads are not falsely told\nthe device is online and repeatedly retried. This does not bypass server-enforced online play.",
+      "description": "Try to bypass high-confidence client-side “internet required” gates. This cannot bypass\nserver-side login, entitlement, multiplayer, or game-state checks.\n\nCompatibility: Ads Block Patch can intentionally block ad hosts. Keep “Exclude ad SDK and\nnetworking code” enabled when both patches are selected so blocked ads are not falsely told\nthe device is online and repeatedly retried. This does not bypass server-enforced online play.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -1068,9 +1068,58 @@
       ]
     },
     {
+      "name": "Embed Frida Gadget ( Advanced )",
+      "category": "Frida Gadget",
+      "description": "Embeds Frida Gadget and selected JavaScript in an APK. Extra scripts load in order; an empty\nentry leaves the APK unchanged. Minimal Footprint Mode disables script file watching; it is not stealth.\n\nWarning : This patch has the potential to modify internals of patched APK at runtime depending on given JavaScript files, but is also detectable! Use this patch at your own risk.",
+      "default": false,
+      "dependencies": [
+        "Resolve Real Application (internal)",
+        "Frida Gadget payload (internal)"
+      ],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "fridaGadgetFile",
+          "title": "Frida Gadget > Gadget file input",
+          "description": "Optional Frida Gadget .so or .so.xz file. Leave empty to fetch the latest official matching Gadget during patching with SHA-256 verification.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "fridaGadgetMinimalFootprint",
+          "title": "Frida Gadget > Minimal Footprint Mode",
+          "description": "Disable script file watching and keep runtime behavior minimal. This is compatibility-focused, not stealth or anti-detection behavior.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "fridaGadgetEntryScript",
+          "title": "Frida Gadget > Scripts > Entry / First JavaScript file",
+          "description": "Required UTF-8 JavaScript file selected through Morphe Manager. It is embedded and loaded first. Leave empty to skip this patch entirely.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "fridaGadgetAdditionalScripts",
+          "title": "Frida Gadget > Scripts > Additional JavaScript files",
+          "description": "Optional patch-time paths, one per row. No artificial path-count limit. Exact final .js files are embedded in order and share script scope; invalid inputs stop patching with an error.",
+          "required": false,
+          "type": "kotlin.collections.List<kotlin.String>",
+          "default": [],
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Hill Climb Racing Example Overlay Addon",
       "category": "Hill Climb Racing Example Overlay",
-      "description": "Example overlay addon for Hill Climb Racing (com.fingersoft.hillclimb), used together with UniPatches Universal Overlay.\n        It adds six safe, mock-only app-specific preview modules to the shared overlay: A\n        - Add Coins\n        - Add Gems\n        - Add Paints \n        - Vehicle Selection\n        - Stage Selection\n        - Garage Selection. \n        All these six module options are enabled by default and can be disabled independently. \n        \n        Module settings and Preview actions are session-only; this example addon never reads or changes currencies, vehicles, stages, garage state, purchases, save files, or game bytecode.",
+      "description": "Example-only Hill Climb Racing (com.fingersoft.hillclimb) addon for UniPatches Universal Overlay.\n        Adds six mock-only preview modules: Add Coins, Add Gems, Add Paints, Vehicle Selection, Stage Selection, and Garage Selection.\n\n        Options are disabled by default.\n        \n        Settings and previews are session-only and never change game state or bytecode.",
       "default": false,
       "dependencies": [
         "Universal Overlay Patch v2.6.1 ( Experimental, UniManager Support )"
@@ -1101,7 +1150,7 @@
           "description": "Expose the mock Add Coins preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1110,7 +1159,7 @@
           "description": "Expose the mock Add Gems preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1119,7 +1168,7 @@
           "description": "Expose the mock Add Paints preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1128,7 +1177,7 @@
           "description": "Expose the mock vehicle selection preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1137,7 +1186,7 @@
           "description": "Expose the mock stage selection preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -1146,255 +1195,7 @@
           "description": "Expose the mock garage selection preview module in the shared Universal Overlay.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Improve Legacy App / Game Compatibility for Modern Android Patch ( Experimental, Enhanced )",
-      "category": "Legacy App Compatibility",
-      "description": "Improve compatibility for older apps and games on modern Android versions. This patch combines\nlegacy manifest, storage, screen, native runtime, network, shared-library, and optional device\nidentity compatibility controls, including a configurable OpenIAB dynamic receiver compatibility\nfix. Spoof Target SDK can help older apps that modern Android may\nrefuse to install or launch, but changing the reported target can also enable newer platform\nbehavior and cannot repair incompatible application code.\n\nFor Google Play license checks or Google Play Services checks, use Control Embedded Auth / Stores\nPatch. Those options are intentionally kept separate to prevent overlapping injections.\n\nThis patch cannot restore shut-down servers, missing CPU architecture support, server licensing,\nPlay Integrity, or unsupported native code. Conservative compatibility features are enabled by\ndefault; more invasive native, network, storage, library, and identity options remain disabled.\n\nExperimental: Its functionalities are not guaranteed to work in all apps.\n\nCredits: Nai64Patches from Nai64 for the original legacy compatibility functionality. Hidden API\nbypass uses AndroidHiddenApiBypass by LSPosed (Apache-2.0). UniPatches\nprovides the merged settings, validation, manifest safeguards, compatibility organization, and provides suppress GPlay Login UI patch option.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "legacyCompatibilitySpoofTargetSdk",
-          "title": "Legacy App Compatibility > Installation and manifest > Spoof Target SDK",
-          "description": "Report a compatible target SDK so older apps can install or launch on modern Android. This may change platform behavior and does not repair incompatible code.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityTargetSdk",
-          "title": "Legacy App Compatibility > Installation and manifest > Target SDK version",
-          "description": "Target SDK to write when Spoof Target SDK is enabled. Values outside the supported range 23..40 are rejected because modern Android can block them. Default: 34.",
-          "required": false,
-          "type": "kotlin.Int",
-          "default": 34,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilitySpoofMinSdk",
-          "title": "Legacy App Compatibility > Installation and manifest > Spoof Min SDK",
-          "description": "Rewrite android:minSdkVersion. This is the attribute the package installer gates on, so it is what clears INSTALL_FAILED_OLDER_SDK on an older device. Lowering it does not repair code that calls newer platform APIs.",
-          "required": false,
-          "type": "kotlin.Boolean",
           "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityMinSdk",
-          "title": "Legacy App Compatibility > Installation and manifest > Min SDK version",
-          "description": "Min SDK to write when Spoof Min SDK is enabled. Set this to the API level of the device you are installing on (28 = Android 9). Default: 28.",
-          "required": false,
-          "type": "kotlin.Int",
-          "default": 28,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityReviver",
-          "title": "Legacy App Compatibility > Installation and manifest > Legacy App Reviver",
-          "description": "Enable selected manifest compatibility declarations for older apps. The sub-options apply only when this feature is enabled.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityApacheLegacy",
-          "title": "Legacy App Compatibility > Installation and manifest > Apache HTTP legacy library",
-          "description": "When Legacy App Reviver is enabled, add org.apache.http.legacy as an optional shared library for old HttpClient users.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityForegroundService",
-          "title": "Legacy App Compatibility > Installation and manifest > Foreground service permission",
-          "description": "When Legacy App Reviver is enabled, declare FOREGROUND_SERVICE for older background-service apps.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityExactAlarms",
-          "title": "Legacy App Compatibility > Installation and manifest > Exact alarm permissions",
-          "description": "When Legacy App Reviver is enabled, declare exact-alarm permissions. Android may still require user approval.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityBluetooth",
-          "title": "Legacy App Compatibility > Installation and manifest > Bluetooth permissions",
-          "description": "When Legacy App Reviver is enabled, declare modern Bluetooth permissions. Declarations do not grant runtime access.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityOpenIabReceiverRegistrationMode",
-          "title": "Legacy App Compatibility > Runtime compatibility > Fix OpenIAB dynamic receiver registration",
-          "description": "Automatic applies the fix only when the exact OpenIAB UnityPlugin call, receiver ownership, resolvable IntentFilter actions, recognized internal or external-store action set, and safe register layout are confirmed. It uses NOT_EXPORTED for internal receivers and EXPORTED only for verified external-store broadcasts; unknown or mixed actions are skipped. Disabled leaves OpenIAB unchanged. Force applies the exact method fix for troubleshooting and may affect external billing broadcasts. Automatic is recommended.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "automatic",
-          "values": {
-            "Automatic (recommended)": "automatic",
-            "Disabled": "disabled",
-            "Force OpenIAB receiver fix": "force"
-          }
-        },
-        {
-          "key": "legacyCompatibilityHiddenApi",
-          "title": "Legacy App Compatibility > Runtime compatibility > Bypass Hidden API Restrictions",
-          "description": "Exempt all hidden non-SDK interfaces for this app on Android 9 and newer, so old apps using reflection on framework internals keep working. Applies at app startup; affects only this app's process.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityTrustCertificates",
-          "title": "Legacy App Compatibility > Runtime compatibility > Trust All Certificates",
-          "description": "Security risk: disables TLS certificate and hostname validation for HttpsURLConnection traffic, allowing man-in-the-middle interception. Only enable for legacy apps whose servers use expired or self-signed certificates. WebView traffic is not covered.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityRedirectLegacyStorage",
-          "title": "Legacy App Compatibility > Runtime compatibility > Redirect Legacy External Storage Paths",
-          "description": "Rewrite Environment.getExternalStorageDirectory and getExternalStoragePublicDirectory calls to app-scoped directories so games and apps writing to storage root no longer crash or lose saves. Applies to direct calls in app bytecode.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityReceiverFixAppWide",
-          "title": "Legacy App Compatibility > Runtime compatibility > Fix Dynamic Receiver Registrations (App Wide)",
-          "description": "Wrap every Context.registerReceiver call that has no receiver flags with a runtime branch passing RECEIVER_NOT_EXPORTED on Android 13 and newer. Without it, apps targeting SDK 33+ crash at registration. System broadcasts still reach NOT_EXPORTED receivers, but custom broadcasts sent by other apps may no longer arrive. OpenIAB classes are left to the dedicated OpenIAB option.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityRepairExportFlags",
-          "title": "Legacy App Compatibility > Installation and manifest > Repair Missing Component Export Flags",
-          "description": "Add missing android:exported values to activities, aliases, services, and receivers that have intent filters. Do NOT enable this together with Export All Activities because they overlap. If both are selected accidentally, Export All Activities takes precedence.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityExportAllActivities",
-          "title": "Legacy App Compatibility > Installation and manifest > Export All Activities",
-          "description": "Set android:exported=true on every activity and activity-alias. Do NOT enable this together with Repair Missing Component Export Flags because they overlap. If both are selected accidentally, this option takes precedence.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityAllowCleartext",
-          "title": "Legacy App Compatibility > Installation and manifest > Allow Cleartext Traffic",
-          "description": "Allow HTTP traffic through android:usesCleartextTraffic. Existing networkSecurityConfig is preserved and may continue restricting cleartext traffic.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityRelaxLibraries",
-          "title": "Legacy App Compatibility > Installation and manifest > Relax Shared Libraries",
-          "description": "Mark required uses-library entries as optional so missing shared libraries do not block installation. The app may still crash if it actually requires a library.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityPackageVisibility",
-          "title": "Legacy App Compatibility > Installation and manifest > Bypass Package Visibility",
-          "description": "Declare QUERY_ALL_PACKAGES so old apps can detect the Play Store and other installed apps on Android 11 and newer instead of receiving NameNotFoundException.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityManifestAttributes",
-          "title": "Legacy App Compatibility > Installation and manifest > Extra Manifest Compatibility Attributes",
-          "description": "Enable android:largeHeap (bigger heap for old games), android:hardwareAccelerated (fixes blank screens in apps that disabled GPU rendering; may conflict with software-drawing apps), and android:layoutInDisplayCutoutMode=shortEdges (avoid letterboxing on notched displays).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityLegacyStorage",
-          "title": "Legacy App Compatibility > Storage and display > Legacy External Storage",
-          "description": "Request the Android 10 legacy shared-storage model and add WRITE_EXTERNAL_STORAGE if absent. Android 11 and newer may ignore this setting.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityAllScreens",
-          "title": "Legacy App Compatibility > Storage and display > Support All Screens",
-          "description": "Remove compatible-screens restrictions and mark common screen sizes and densities as supported.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityDisableHeapTagging",
-          "title": "Legacy App Compatibility > Native runtime > Disable Heap Pointer Tagging",
-          "description": "Disable native heap pointer tagging for older native apps that fail under newer Android memory behavior.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityVmSafeMode",
-          "title": "Legacy App Compatibility > Native runtime > VM Safe Mode",
-          "description": "Disable selected VM AOT/JIT optimizations for compatibility. This can reduce performance.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilitySpoofImei",
-          "title": "Legacy App Compatibility > Device compatibility > Spoof IMEI",
-          "description": "Replace recognized TelephonyManager IMEI getter results. This is limited to matching bytecode calls.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "legacyCompatibilityImei",
-          "title": "Legacy App Compatibility > Device compatibility > IMEI value",
-          "description": "Exactly 15 digits used when Spoof IMEI is enabled. Invalid values are rejected.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "000000000000000",
           "values": null
         }
       ]
@@ -1594,6 +1395,454 @@
       ]
     },
     {
+      "name": "Legacy App Compatibility Patch ( Experimental, Enhanced )",
+      "category": "Legacy App Compatibility",
+      "description": "Improves older apps and games on modern Android with opt-in manifest, storage, display,\nfile-sharing, network, native-library, OpenIAB, and OBB fixes. Includes target SDK controls,\ndiagnostics, API-gated package visibility and foreground-service types, selected-domain\ncleartext, and FileProvider sharing for app-private files.\n\nPresets add ordinary fixes; Custom booleans start off. Ambiguous receiver calls are skipped.\nNative checks reject APK library collisions during relocation and DT_TEXTREL for target SDK 23+.\nWith LicenseChecker, keep standard ExpansionDownloader launcher and run LVL before\nstaged OBB validation. Deny/error\nblocks Unity; unsupported flows fail closed. Target SDK spoofing cannot repair code.\n\nDoes not bypass Google licensing or Play Services. Use Control Embedded Auth / Stores Patch\nfor those. It cannot restore stopped servers, unsupported ABIs, server licensing,\nPlay Integrity, or incompatible native code.\n\nCredits: Nai64Patches from Nai64 for the original compatibility functionality. LSPosed for\nthe Hidden API bypass approach and AndroidHiddenApiBypass (Apache-2.0).",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "legacyCompatibilityPreset",
+          "title": "Legacy App Compatibility > Preset",
+          "description": "Custom (default) uses your individual settings; boolean options default off and OpenIAB defaults to automatic. Android 4.x through Android 14+ describe the APK's original era, not your device. Era presets add receiver and missing-export repairs plus relevant Apache HTTP, foreground-service and Bluetooth declarations. User-enabled choices remain enabled. Presets never change your target SDK controls, OpenIAB mode, OBB options, paths, numbers, text, or explicit high-risk opt-ins. These settings remain available with every preset.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "custom",
+          "values": {
+            "Custom": "custom",
+            "Android 4.x origin": "android_4_x",
+            "Android 5–6 origin": "android_5_6",
+            "Android 7–9 origin": "android_7_9",
+            "Android 10 origin": "android_10",
+            "Android 11 origin": "android_11",
+            "Android 12/12L origin": "android_12",
+            "Android 13 origin": "android_13",
+            "Android 14+ origin": "android_14_plus"
+          }
+        },
+        {
+          "key": "legacyCompatibilityDiagnosticsOnly",
+          "title": "Legacy App Compatibility > Diagnostics > Preflight Only (No APK Changes)",
+          "description": "Scan the manifest and recognized bytecode fingerprints, report proposed fixes, API ranges, and uncertainty, but do not modify the APK. Rerun with this off to apply selected fixes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilitySpoofTargetSdk",
+          "title": "Legacy App Compatibility > Installation and manifest > Spoof Target SDK",
+          "description": "Try this if Android blocks an older app from installing or launching because its target SDK is too old. Lowering the target can restore older Android behavior and reduce platform protections; it cannot fix incompatible app code. Leave off unless you have this specific problem.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityTargetSdk",
+          "title": "Legacy App Compatibility > Installation and manifest > Target SDK version",
+          "description": "Changes which Android version this app declares it was designed for. This may help install older apps, but does not upgrade their code or guarantee compatibility. Higher values can activate newer Android restrictions. Examples: 24 = Android 7.0; 27 = Android 8.1; 29 = Android 10; 34 = Android 14. Use the lowest value required by your device’s installation error. Ignored when Spoof Target SDK is disabled. Accepted range: 23–40; default: 24.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 24,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilitySpoofMinSdk",
+          "title": "Legacy App Compatibility > Installation and manifest > Spoof Min SDK",
+          "description": "Rewrite android:minSdkVersion. This is the attribute the package installer gates on, so it is what clears INSTALL_FAILED_OLDER_SDK on an older device. Lowering it does not repair code that calls newer platform APIs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityMinSdk",
+          "title": "Legacy App Compatibility > Installation and manifest > Min SDK version",
+          "description": "Min SDK to write when Spoof Min SDK is enabled. Set this to the API level of the device you are installing on (28 = Android 9). Default: 28.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 28,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityReviver",
+          "title": "Legacy App Compatibility > Installation and manifest > Legacy App Reviver",
+          "description": "Turn this on to add the compatibility declarations selected below. Leave it off if the app does not need them; enabling declarations does not grant runtime permissions or guarantee the app will work.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityApacheLegacy",
+          "title": "Legacy App Compatibility > Installation and manifest > Apache HTTP legacy library",
+          "description": "Use when the app crashes or fails to start because it uses the removed Apache HttpClient library. Adds that library as optional; it will not help if the app needs other missing libraries. Requires Legacy App Reviver.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityForegroundService",
+          "title": "Legacy App Compatibility > Installation and manifest > Foreground service permission",
+          "description": "Use when an older app starts a foreground service and fails because its manifest lacks this permission. This only declares permission; Android may require additional service permissions or user-visible behavior. Requires Legacy App Reviver.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityExactAlarms",
+          "title": "Legacy App Compatibility > Installation and manifest > Exact alarm permission",
+          "description": "Use only if the app's reminders or scheduled actions must run at an exact time and are blocked by the missing declaration. Android can still require user approval, and this does not grant that approval. Requires Legacy App Reviver.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityBluetooth",
+          "title": "Legacy App Compatibility > Installation and manifest > Bluetooth permissions",
+          "description": "Use when the app needs Bluetooth discovery or connections on newer Android. The manifest declarations do not grant runtime access; Android may still show permission prompts. Requires Legacy App Reviver.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityOpenIabReceiverRegistrationMode",
+          "title": "Legacy App Compatibility > Runtime compatibility > Fix OpenIAB dynamic receiver registration",
+          "description": "Choose Automatic (recommended) if OpenIAB billing broadcasts fail: it patches only a recognized UnityPlugin receiver setup and skips uncertain cases. Disabled leaves it unchanged. Force applies the fix even when automatic checks cannot confirm the setup; this may stop external-store billing broadcasts, so use only to diagnose a known OpenIAB issue.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "automatic",
+          "values": {
+            "Automatic (recommended)": "automatic",
+            "Disabled": "disabled",
+            "Force OpenIAB receiver fix": "force"
+          }
+        },
+        {
+          "key": "legacyCompatibilityHiddenApi",
+          "title": "Legacy App Compatibility > Runtime compatibility > Bypass Hidden API Restrictions",
+          "description": "Try this only if the app fails because it uses hidden Android framework APIs through reflection. It bypasses the non-SDK API restriction for this app's process on Android 9+, which can reduce stability and security; leave off otherwise. Takes effect at app startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityTrustCertificates",
+          "title": "Legacy App Compatibility > Runtime compatibility > Trust All Certificates",
+          "description": "Last-resort workaround if this app cannot connect because its server uses an expired or self-signed certificate. It disables certificate and hostname checks for HttpsURLConnection, so attackers on the network could read or alter traffic. Do not use for sensitive accounts or payments. Does not affect WebView; requires the separate risk acknowledgement.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityAcknowledgeTrustCertificates",
+          "title": "Legacy App Compatibility > Runtime compatibility > Acknowledge Trust-All TLS Risk",
+          "description": "Enable only after understanding that Trust All Certificates allows network interception by disabling TLS checks. It is required for that option to take effect; leave both off unless diagnosing a certificate problem.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityRedirectLegacyStorage",
+          "title": "Legacy App Compatibility > Runtime compatibility > Redirect Legacy External Storage Paths",
+          "description": "Try this if the app crashes or loses saves because it writes directly to the shared-storage root. Those API calls are redirected to app-specific storage, which can break shared-file access and OBB paths. Leave off if the app relies on files visible to other apps or uses conventional OBB directories.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityRepairFileUriSharing",
+          "title": "Legacy App Compatibility > File sharing > Repair file:// shares for modern Android",
+          "description": "Opt in only when Android blocks an app's file:// Intent share. Rewrites only verified Uri.fromFile calls passed to Intent.setData, setDataAndType, or EXTRA_STREAM; unrecognized call sites are skipped. Shares only files from app-private storage through a non-exported provider. Provider setup or unsafe paths fail closed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityReceiverFixAppWide",
+          "title": "Legacy App Compatibility > Runtime compatibility > Fix Dynamic Receiver Registrations (App Wide)",
+          "description": "Try this if receiver registration crashes on Android 13+. Each call is classified from its statically resolved IntentFilter actions: app-only calls are private, known system/store actions stay exported, and ambiguous calls are skipped with a warning. The fix can miss dynamic filters or expose exported receivers to other apps; OpenIAB is handled separately.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityRepairExportFlags",
+          "title": "Legacy App Compatibility > Installation and manifest > Repair Missing Component Export Flags",
+          "description": "Use if Android refuses to install the APK because a component with an intent filter has no exported setting. The patch fills only missing values; exported components can be launched by other apps, so enable only to fix that install error. Do not combine with Export All Activities; if both are on, that option takes precedence.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityExportAllActivities",
+          "title": "Legacy App Compatibility > Installation and manifest > Export All Activities",
+          "description": "Use only if a launcher activity is not visible or Android rejects the APK because an activity or alias with an intent filter lacks an exported setting. It exposes those matching components to other apps; existing explicit values are preserved. Do not combine with Repair Missing Component Export Flags.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityAllowCleartext",
+          "title": "Legacy App Compatibility > Installation and manifest > Allow Cleartext Traffic Everywhere",
+          "description": "Global fallback: allow unencrypted HTTP to every host. Traffic can be read or changed on the network. Never use for logins, payments, or other sensitive data. Mutually exclusive with selected-domain cleartext.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityAllowSelectedCleartextDomains",
+          "title": "Legacy App Compatibility > Installation and manifest > Allow Cleartext for Selected Domains",
+          "description": "Allow unencrypted HTTP only for listed hostnames using Android network security config (API 24+). No presets enable this. Mutually exclusive with the global fallback.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityCleartextDomains",
+          "title": "Legacy App Compatibility > Installation and manifest > Cleartext Domains",
+          "description": "Exact hostnames allowed to use unencrypted HTTP, one per entry. No URLs, paths, ports, or wildcards. Example: api.example.com.",
+          "required": false,
+          "type": "kotlin.collections.List<kotlin.String>",
+          "default": [],
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityApplyForegroundServiceTypes",
+          "title": "Legacy App Compatibility > Installation and manifest > Apply Foreground Service Types",
+          "description": "Opt in only when logs show Android rejects an existing foreground service because its type is missing. Add explicit Service=Type mappings; the patch adds only matching FGS permissions, never guesses a type or adds runtime permissions. Confirm runtime/user-consent prerequisites (camera, location, microphone, media projection) separately. specialUse and systemExempted are rejected because app-specific eligibility cannot be verified.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityForegroundServiceTypeMappings",
+          "title": "Legacy App Compatibility > Installation and manifest > Foreground Service Type Mappings",
+          "description": "One mapping per service: com.example.SyncService=dataSync. Use | to combine types for one service. Relative names are resolved against the app package. phoneCall requires a predeclared MANAGE_OWN_CALLS permission; mappings are never preset-generated.",
+          "required": false,
+          "type": "kotlin.collections.List<kotlin.String>",
+          "default": [],
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityRelaxLibraries",
+          "title": "Legacy App Compatibility > Installation and manifest > Relax Shared Libraries",
+          "description": "Use if Android will not install the app because an optional device library is missing. This lets installation continue, but the app may crash or lose features if it truly needs that library.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityPlayStoreVisibility",
+          "title": "Legacy App Compatibility > Installation and manifest > Enable Package Visibility Allowlist",
+          "description": "Request visibility only for packages in Package Visibility Allowlist. Android 11/API 30+ presets enable this toggle; effective targetSdk must also be 30+. No broad QUERY_ALL_PACKAGES permission is added.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityPackageVisibilityAllowlist",
+          "title": "Legacy App Compatibility > Installation and manifest > Package Visibility Allowlist",
+          "description": "Exact package names this app must query, one per entry. Add only packages the app genuinely checks, such as com.google.android.gms. Presets never change this list.",
+          "required": false,
+          "type": "kotlin.collections.List<kotlin.String>",
+          "default": [
+            "com.android.vending"
+          ],
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityManifestAttributes",
+          "title": "Legacy App Compatibility > Installation and manifest > Extra Manifest Compatibility Attributes",
+          "description": "Try if the app runs out of memory or shows a blank screen: enables a larger heap and hardware-accelerated drawing. The larger heap can increase memory pressure, and GPU drawing may break apps that depend on software rendering; leave off if the app already displays and runs correctly.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityLegacyStorage",
+          "title": "Legacy App Compatibility > Storage and display > Legacy External Storage",
+          "description": "Use if an older app cannot read or save files because it expects the Android 10 shared-storage model. Android 11+ may ignore this request, and it does not bypass newer storage restrictions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityExpansionObbPath",
+          "title": "Legacy App Compatibility > Expansion data and OBB > Expansion OBB file",
+          "description": "Select the app's matching main or patch .obb file only when it fails to start because its Play expansion data is missing. Use the exact version and package naming expected by the app; leave empty if it does not need an OBB.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityRelocateExpansionNativeLibraries",
+          "title": "Legacy App Compatibility > Expansion data and OBB > Relocate native libraries from OBB",
+          "description": "Use if native .so files are stored inside the selected OBB. Copies full libraries into APK ABI folders when safe; for a verified *_proxy.so pair, preserves the APK proxy and stages the full library at its expected assets/libs path. Unknown collisions fail instead of overwriting existing libraries.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityRemoveRelocatedNativeLibrariesFromObb",
+          "title": "Legacy App Compatibility > Expansion data and OBB > Remove relocated native libraries from embedded OBB",
+          "description": "Use together with library relocation and OBB embedding to avoid storing the same native libraries twice. It removes those copied .so entries from the APK's embedded OBB only; the selected source OBB file is not changed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityEmbedExpansionObb",
+          "title": "Legacy App Compatibility > Expansion data and OBB > Embed and stage expansion OBB",
+          "description": "Use when the app needs an OBB at first launch. The file is bundled inside the APK and copied to the expected OBB folder; this can greatly increase APK size. If a LicenseChecker exists, only the recognized Google ExpansionDownloader flow is supported: its original LVL service check is forced before OBB validation, and deny/error blocks Unity. Unsupported flows fail closed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityBypassExpansionDownloader",
+          "title": "Legacy App Compatibility > Expansion data and OBB > Bypass known Unity expansion downloader",
+          "description": "Use only for the standard Google ExpansionDownloader when bundled OBB data should skip its download UI. Requires Embed and stage expansion OBB. If LicenseChecker exists, DownloaderActivity remains launcher, existing LVL service check runs first, download controls stay hidden during that check, and only allow continues to OBB validation/Unity. Deny/error blocks launch; unsupported flows fail closed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityAllScreens",
+          "title": "Legacy App Compatibility > Storage and display > Support All Screens",
+          "description": "Enable so Android can install the app on phones and tablets whose screen size or density is not listed in its original manifest. This changes compatibility declarations, not the app's layout; some screens may still display poorly.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityExtractNativeLibs",
+          "title": "Legacy App Compatibility > Native runtime > Extract native libraries",
+          "description": "Use if an older game cannot load its native .so files from the APK. Android will extract those libraries during installation, using more device storage; leave off if native libraries already load normally.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityDisableHeapTagging",
+          "title": "Legacy App Compatibility > Native runtime > Disable Heap Pointer Tagging",
+          "description": "Try this if an older native game crashes on startup with a memory/tagging-related error on newer Android. It changes native memory behavior for compatibility; leave off if there is no such crash.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityVmSafeMode",
+          "title": "Legacy App Compatibility > Native runtime > VM Safe Mode",
+          "description": "Try this only if an older app crashes or misbehaves because of Android runtime compilation. Disabling selected optimizations can make the app slower; leave off unless testing shows it fixes the problem.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilitySpoofImei",
+          "title": "Legacy App Compatibility > Device compatibility > Spoof IMEI",
+          "description": "Use only if the app refuses to run because it expects an IMEI value. Replaces recognized IMEI getter results with the value below; only matching calls are changed, and apps may use other identifiers instead. Avoid using an identifier that belongs to another device.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "legacyCompatibilityImei",
+          "title": "Legacy App Compatibility > Device compatibility > IMEI value",
+          "description": "Enter exactly 15 digits to return from the IMEI calls affected by Spoof IMEI. Invalid values are rejected. This is an app-compatibility override, not a real device identifier.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "000000000000000",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Native Library Injector",
+      "category": "Native Library Injection",
+      "description": "Stage an ELF shared library into the APK and load it at startup with\nSystem.loadLibrary. The library's JNI_OnLoad runs automatically, so\nIL2CPP/Unity mod menus and other JNI libraries need no extra Java class.\n\nThe ABI is read from the ELF header: arm64-v8a, armeabi-v7a, x86, or\nx86_64. By default the APK must already contain lib/<abi>/; adding a new\nABI to an APK that already ships native libraries can change which\nlibraries Android selects. Selecting libTool.so stages\nlib/<abi>/libTool.so and injects System.loadLibrary(\"Tool\").\n\nLoad target Auto uses a custom Application when the manifest declares\none, otherwise the launcher Activity. Application loads in every app\nprocess; the launcher Activity loads only in the main process. Injection\nhappens before the target's super.onCreate, so the library starts before\napplication code.",
+      "default": false,
+      "dependencies": [
+        "Native Library Staging (internal)",
+        "Resolve Real Application (internal)"
+      ],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "nativeLibraryFile",
+          "title": "Library > Shared library (.so)",
+          "description": "ELF shared object to add to the APK. Its machine field selects the ABI. The APK must already contain lib/<abi>/ unless Require matching ABI directory is disabled. Example: libTool.so.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "nativeLibraryName",
+          "title": "Library > Load name override",
+          "description": "Bare name passed to System.loadLibrary. Leave empty to derive it from the file: libTool.so becomes Tool. Do not include the lib prefix, the .so suffix, or a path.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "nativeLibraryRequireAbi",
+          "title": "Library > Require matching ABI directory",
+          "description": "Fail instead of adding a new ABI to an APK that has no lib/<abi>/ entry. Recommended: adding an ABI can change which native libraries Android loads.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "nativeLibraryLoadTarget",
+          "title": "Startup > Load target",
+          "description": "Auto uses Application when the manifest declares one, otherwise the launcher Activity. Application loads in every app process. Launcher loads only in the main process.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "auto",
+          "values": {
+            "Auto (Application, else launcher)": "auto",
+            "Application (all processes)": "application",
+            "Launcher activity (main process)": "launcher"
+          }
+        }
+      ]
+    },
+    {
       "name": "No Ads (Experimental)",
       "category": null,
       "description": "Blocks ads by type. Pick what to block. For rewarded ads use Ads Free Rewards instead. Select this standalone patch instead of Control App Ads for the same app.\n\nCredits: Nai64Patches from Nai64.",
@@ -1673,7 +1922,7 @@
     {
       "name": "PairIP Bypass Patch (Experimental, Enhanced)",
       "category": "PairIP Bypass Enhanced",
-      "description": "A merged experimental PairIP bypass for common legacy, V2, and V3 protection layouts.\n\nAutomatic mode applies compatible strategies up to the selected risk level. It defaults to\nLow and Med Risk Strategies; that setting includes medium-risk strategies, while Low, Med,\nand High Risk Strategies also includes invasive high-risk strategies.\n\nTurn off automatic mode to test individual strategies. Manual selections are independent of\nthe automatic risk-level setting. Firebase auto-init disabling, Firebase component removal,\nand the LicenseClient FULL_CHECK_OK state strategy are manual-only: automatic mode ignores\nthem at every risk level, including “Low, Med, and High Risk Strategies.” Every manual\nstrategy is disabled by default.\n\nThis patch is experimental and app-dependent. It does not bypass server-side Play Integrity,\nserver-side licensing, or other server-side enforcement.\n\nCompatibility: cloned APKs can still fail when PairIP or a server binds entitlement to the\noriginal package or signing certificate. Firebase component removal can break Firebase Auth,\nGoogle Play Games, billing, analytics, and ad rewards. Device spoofing can also change apps'\ndevice-integrity behavior. These identity and server-side conditions cannot be fixed safely\nby combining PairIP Bypass with Custom App Output, Ads Block Patch, or Emulator Detection.\n\nCompatibility: when combining this patch with Universal Overlay, the shared overlay startup\nbridge is preserved. PairIP Application redirect and Application.onCreate bypass strategies\nmay be skipped if they would make that bridge unreachable. If combining this patch with\nCustom App Output, apply package cloning only when package- or certificate-bound services\nare not required.\n\nThis enhanced patch is a merged product of the PairIP bypass patches from the credited\ndevelopers, with improvements for broader functionality, safer strategy selection, and usability.\n\nCredits: Nai64Patches from Nai64, Entree, kondratjev, and rushiranpise (Doom).",
+      "description": "Merged experimental PairIP bypass for common legacy, V2, and V3 protection layouts.\nAutomatic mode applies compatible strategies through the selected risk level; disable it to\ntest individual strategies. Manual strategies remain disabled by default and are independent\nof the automatic risk level.\n\nThis patch is experimental and app-dependent. It does not bypass server-side Play Integrity,\nserver-side licensing, or other server-side enforcement.\n\nCompatibility: cloned APKs can still fail when PairIP or a server binds entitlement to the\noriginal package or signing certificate. Firebase component removal can break Firebase Auth,\nGoogle Play Games, billing, analytics, and ad rewards. Device spoofing can also change apps'\ndevice-integrity behavior. These identity and server-side conditions cannot be fixed safely\nby combining PairIP Bypass with Custom App Output, Ads Block Patch, or Emulator Detection.\n\nCompatibility: when combining this patch with Universal Overlay, the shared overlay startup\nbridge is preserved. PairIP Application redirect and Application.onCreate bypass strategies\nmay be skipped if they would make that bridge unreachable. If combining this patch with\nCustom App Output, apply package cloning only when package- or certificate-bound services\nare not required.\n\nThis enhanced patch is a merged product of the PairIP bypass patches from the credited\ndevelopers, with improvements for broader functionality, safer strategy selection, and usability.\n\nCredits: Nai64Patches from Nai64, Entree, kondratjev, and rushiranpise (Doom).",
       "default": false,
       "dependencies": [
         "PairIP Compatibility Diagnostics (internal)"
@@ -2137,17 +2386,20 @@
       ]
     },
     {
-      "name": "Permission Guard Patch (Experimental)",
-      "category": "Privacy",
-      "description": "Remove selected dangerous permission declarations from the patched APK manifest. All\npermission controls are disabled by default; select each permission group before patching.\n\nThis is a static manifest patch, not a runtime permission manager. It does not revoke\npermissions already granted to an installed app, stop native or privileged access, or\nprevent an app from requesting a permission at runtime. Android may still deny requests,\nand the app may lose features or fail if it requires a selected permission.\n\nStorage covers legacy external-storage permissions. Media covers Android 13+ photo, video,\naudio, and selected-photo permissions. Nearby devices covers modern Bluetooth and nearby\nWi-Fi declarations; Bluetooth covers legacy Bluetooth declarations.",
+      "name": "Permission Guard Patch ( Experimental, Overlay Support, UniManager Support )",
+      "category": "Permission Guard",
+      "description": "Keeps declared permissions while guarding selected Android permission checks and requests.\nOptional Universal Overlay controls can change blocked groups at runtime.\n\nThis patch includes an optional Universal Overlay addon. To use it, patch Permission Guard Patch\ntogether with Universal Overlay and enable “Overlay integration > Runtime controls > Permission Guard”.\nThe Permission Guard module then appears in Universal Overlay and exposes the same runtime state to\nUniManager when “Quick setup > UniManager > Enable UniManager integration” is enabled. Internet\nAccess only guards instrumented INTERNET checks and requests; it does not stop socket traffic.\nNative, privileged, already-granted, and unknown permission paths remain outside this guard.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "Resolve Real Application (internal)",
+        "Permission Guard UniManager registration"
+      ],
       "compatiblePackages": null,
       "options": [
         {
           "key": "permissionGuardCamera",
-          "title": "Permission Guard > Camera",
-          "description": "Remove CAMERA permission declaration.",
+          "title": "Permission groups > Camera > Block Camera",
+          "description": "Block camera permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2155,8 +2407,8 @@
         },
         {
           "key": "permissionGuardMicrophone",
-          "title": "Permission Guard > Microphone",
-          "description": "Remove RECORD_AUDIO permission declaration.",
+          "title": "Permission groups > Microphone > Block Microphone",
+          "description": "Block microphone permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2164,8 +2416,8 @@
         },
         {
           "key": "permissionGuardLocation",
-          "title": "Permission Guard > Location",
-          "description": "Remove coarse, fine, and background location declarations.",
+          "title": "Permission groups > Location > Block Location",
+          "description": "Block location permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2173,8 +2425,8 @@
         },
         {
           "key": "permissionGuardContacts",
-          "title": "Permission Guard > Contacts",
-          "description": "Remove contacts and account access declarations.",
+          "title": "Permission groups > Contacts > Block Contacts",
+          "description": "Block contacts permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2182,8 +2434,8 @@
         },
         {
           "key": "permissionGuardPhone",
-          "title": "Permission Guard > Phone",
-          "description": "Remove phone-state, call, voicemail, and SIP declarations.",
+          "title": "Permission groups > Phone > Block Phone",
+          "description": "Block phone permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2191,8 +2443,8 @@
         },
         {
           "key": "permissionGuardSms",
-          "title": "Permission Guard > SMS",
-          "description": "Remove SMS, MMS, and WAP push declarations.",
+          "title": "Permission groups > SMS > Block SMS",
+          "description": "Block SMS permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2200,8 +2452,8 @@
         },
         {
           "key": "permissionGuardCalendar",
-          "title": "Permission Guard > Calendar",
-          "description": "Remove calendar read and write declarations.",
+          "title": "Permission groups > Calendar > Block Calendar",
+          "description": "Block calendar permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2209,8 +2461,8 @@
         },
         {
           "key": "permissionGuardStorage",
-          "title": "Permission Guard > Storage",
-          "description": "Remove legacy and broad external-storage declarations.",
+          "title": "Permission groups > Storage > Block Storage",
+          "description": "Block storage permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2218,8 +2470,8 @@
         },
         {
           "key": "permissionGuardMedia",
-          "title": "Permission Guard > Media (Photos, Music)",
-          "description": "Remove modern photo, video, audio, and selected-photo declarations.",
+          "title": "Permission groups > Media > Block Media",
+          "description": "Block media permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2227,8 +2479,17 @@
         },
         {
           "key": "permissionGuardNotifications",
-          "title": "Permission Guard > Notifications",
-          "description": "Remove POST_NOTIFICATIONS declaration.",
+          "title": "Permission groups > Notifications > Block Notifications",
+          "description": "Block notification permission checks and requests at runtime.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "permissionGuardInternet",
+          "title": "Permission groups > Internet > Block INTERNET Permission Checks",
+          "description": "Block instrumented INTERNET permission checks and requests at runtime. This does not stop socket traffic.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2236,8 +2497,8 @@
         },
         {
           "key": "permissionGuardNearbyDevices",
-          "title": "Permission Guard > Nearby devices",
-          "description": "Remove modern nearby-device and Bluetooth scan/connect declarations.",
+          "title": "Permission groups > Nearby devices > Block Nearby Devices",
+          "description": "Block nearby-device permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2245,11 +2506,29 @@
         },
         {
           "key": "permissionGuardBluetooth",
-          "title": "Permission Guard > Bluetooth",
-          "description": "Remove legacy Bluetooth declarations.",
+          "title": "Permission groups > Legacy Bluetooth > Block Legacy Bluetooth",
+          "description": "Block legacy Bluetooth permission checks and requests at runtime.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "permissionGuardRuntimeOverlay",
+          "title": "Overlay integration > Runtime controls > Permission Guard",
+          "description": "Add the Permission Guard settings module to Universal Overlay when Universal Overlay is selected.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "permissionGuardEnableUniManagerIntegration",
+          "title": "Quick setup > UniManager > Enable UniManager integration",
+          "description": "Expose Permission Guard runtime defaults to UniManager when the Universal Overlay runtime module is enabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -2269,7 +2548,7 @@
     {
       "name": "Universal Overlay Patch v2.6.1 ( Experimental, UniManager Support )",
       "category": "★ Universal Overlay",
-      "description": "A customizable in-app overlay for Android apps and games. For a quick first build: choose a visual\npreset, select the overlay modules you want, optionally supply an icon image, then patch. Modules\nare excluded and disabled by default. Monitor modules show information, Activity modules control\nthe current Activity, Hook modules make best-effort changes to app behavior, System modules\ncontrol Android capabilities, and Advanced modules provide opt-in diagnostics. Text is the\ndefault legacy icon; an optional image replaces it completely, while the advanced Multi-parts editor\nsupports custom drawn icons, and can be conveniently made in Icon Builder local website in UniPatches repo.\n\nUI presets can save and reuse supported appearance and advanced icon\nsettings. The title, description, repository button text, and repository button URL remain\ncontrolled by the visible Morphe settings. Module selections and module behavior are excluded\nbecause hook and module combinations can be app-specific.\n\nExperimental : This patch may not work on all apps.\n\nCompatibility: this patch owns one shared startup bridge for its runtime and integrated\nmodules. PairIP Bypass preserves that bridge when its Application startup strategies run\nafter Universal Overlay. If a patched APK still has an unusual entry point, use the explicit\nActivity override rather than selecting a library or SDK Activity. Custom App Display,\nControl App Ads, Ads Block Patch and InApp Emulation attach to this bridge when their\nruntime addons are enabled; they should not create a second overlay runtime.\n\nInApp Emulation has an optional overlay addon that adds an InApp Emulation module to this menu.\nThe module can show a themed confirmation popup before emulated purchases, let you save product\nidentifiers to skip later popups during the current app session, and manage those saved products\nfrom its Settings button. To enable it, select InApp Emulation Patch, enable its Enable Overlay\nModule setting, enable Universal Overlay in the same patch operation, and keep Initially enable\npopups before buying products enabled if popups should start enabled. The addon does not control\ncatalog discovery, receipt verification, legacy inventory behavior, or native IL2CPP patching.\n\nAds Block Patch can also add runtime ad-control modules here, but Universal Overlay does not\npatch ad SDKs by itself. To use them, select Ads Block Patch and Universal Overlay,\nenable the desired options under Ads Block Patch's Overlay integration > Runtime controls. The\nAds runtime policy is enabled automatically when at least one of those modules is selected.\nThe available modules are Block\nAds, Ads Free Rewards, and Block Ads / Tracking Hosts. Their initial runtime values come from\nthe Ads Block Patch settings, and later changes are session-only. When both patches are selected,\nAds Block Patch attaches its policy to this overlay's exact startup bridge, including an explicit\nActivity override, instead of selecting a separate Activity.\n\nAttribution: The idea and initial works of Universal Overlay Patch are from Zanuaimi / Noobite.",
+      "description": "Customizable in-app overlay for Android apps and games. Choose a visual preset, select modules,\noptionally supply an icon, then patch. Modules are excluded and disabled by default; Monitor,\nActivity, Hook, System, and Advanced modules provide runtime controls and diagnostics.\n\nUI presets reuse supported appearance and icon settings; Morphe settings control the title,\ndescription, repository button text, and repository URL. Module selections remain app-specific.\n\nExperimental : This patch may not work on all apps.\n\nCompatibility: this patch owns one shared startup bridge for its runtime and integrated\nmodules. PairIP Bypass preserves that bridge when its Application startup strategies run\nafter Universal Overlay. If a patched APK still has an unusual entry point, use the explicit\nActivity override rather than selecting a library or SDK Activity. Custom App Display,\nControl App Ads, Ads Block Patch and InApp Emulation attach to this bridge when their\nruntime addons are enabled; they should not create a second overlay runtime.\n\nInApp Emulation can add its purchase-confirmation module to this menu. Enable its overlay\nmodule and Universal Overlay in the same patch run; popups can start enabled from its\nsettings. The addon does not control catalog discovery, receipt verification, legacy\ninventory, or native IL2CPP patching.\n\nAds Block Patch can add runtime ad controls here but does not patch ad SDKs by itself.\nSelect Universal Overlay and enable Ads Block Patch's Overlay integration > Runtime controls.\nThe policy is enabled automatically when any module is selected. Modules are Block Ads,\nAds Free Rewards, and Block Ads / Tracking Hosts; initial values come from Ads Block Patch\nand later changes are session-only. The policy attaches to this overlay's exact startup\nbridge, including an explicit Activity override.\n\nAttribution: The idea and initial works of Universal Overlay Patch are from Zanuaimi / Noobite.",
       "default": false,
       "dependencies": [
         "Resolve Real Application (internal)",

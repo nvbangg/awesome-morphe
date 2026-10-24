@@ -1,7 +1,30 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.24.0",
+  "version": "1.25.0",
   "patches": [
+    {
+      "name": "Bypass private DNS",
+      "description": "Resolves the app's OkHttp requests with DNS over HTTPS sent directly to a public resolver by IP address, so hosts blocked by the phone's private DNS (for example map tile servers on an ad-blocking resolver) still load. Applies to any app that bundles OkHttp with its class names intact.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "dohServer",
+          "title": "DNS over HTTPS resolver",
+          "description": "IP address of the DNS over HTTPS resolver to query. It must serve the JSON API over HTTPS on its IP address, as Google and Cloudflare do.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "8.8.8.8",
+          "values": {
+            "Google (8.8.8.8)": "8.8.8.8",
+            "Google secondary (8.8.4.4)": "8.8.4.4",
+            "Cloudflare (1.1.1.1)": "1.1.1.1",
+            "Cloudflare secondary (1.0.0.1)": "1.0.0.1"
+          }
+        }
+      ]
+    },
     {
       "name": "Unlock Business Premium",
       "description": "Unlocks Business-tier features in Flightradar24: ad-free experience, weather layers, ATC routes, 3D view, flight history playback, unlimited saved locations and the country of registration. Works with or without a Flightradar24 account. Serial number and aircraft age stay locked because the server never sends them to non-subscribers.",
