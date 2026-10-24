@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0-dev.2",
+  "version": "1.9.0-dev.3",
   "apps": [
     {
       "packageName": "com.adobe.reader",
@@ -47,11 +47,11 @@
         }
       ],
       "patchNames": [
+        "Local Premium",
         "Remove Ads and Tracking",
         "Remove Attribution",
         "Remove Login",
         "Remove Useless/Promotional Items",
-        "Unlock Premium",
         "Use System Font"
       ],
       "supportedVersions": [
@@ -1255,6 +1255,72 @@
     },
     {
       "name": "Local Premium",
+      "description": "Enables locally executable premium OCR, editing, compression, and password protection tools without cloud or GenAI access.",
+      "default": true,
+      "category": "Features",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.adobe.scan.android",
+          "name": "Adobe Scan",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1473E6",
+          "signatures": [
+            "b6dd0562256487fcd6c98cde137858ef50d9adb9f9cd2f1ca58c5357efdf0faf"
+          ],
+          "targets": [
+            {
+              "version": "26.09.25",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "enableLocalPdfCompression",
+          "title": "Local PDF Compression",
+          "description": "Replaces Adobe Document Cloud post-save compression with on-device JPEG stream re-compression. Overrides Compress PDF removal when enabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableLocalPdfProtection",
+          "title": "Local PDF Password Protection",
+          "description": "Replaces Adobe Document Cloud password encryption with AES-256 on-device PDF protection and offline removal.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableLocalPdfExport",
+          "title": "Local PDF Export",
+          "description": "Replaces Adobe Document Cloud export with on-device editable Word, Excel, and PowerPoint conversion. Layout reconstruction is best-effort.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableLocalPdfCombine",
+          "title": "Local PDF Combine",
+          "description": "Combines local Adobe Scan documents into a new PDF on device without changing the originals.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Local Premium",
       "description": "Enables local Premium membership status across profile and account screens, removes upgrade promotions, banners, icons, and server-dependent profile statistics, and enriches public cache details (description, hints, owner) when server blocks basic accounts.",
       "default": true,
       "category": "Interface",
@@ -2033,15 +2099,6 @@
           "key": "removeSaveAsWord",
           "title": "Remove Save as Word Doc",
           "description": "Removes the cloud-dependent Save as Word doc option from scan cards.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "removeCompressPdf",
-          "title": "Remove Compress PDF",
-          "description": "Removes the broken Compress PDF option from file option menus and the Share sheet.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -2914,7 +2971,7 @@
     },
     {
       "name": "Remove Useless/Promotional Items",
-      "description": "Removes promotional, feedback, and support items from Settings and file menus.",
+      "description": "Removes promotional, feedback, and broken cloud items from Settings and file menus.",
       "default": false,
       "category": "Interface",
       "dependencies": [],
@@ -3001,6 +3058,42 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "removeGenerativeSummary",
+          "title": "Generative Summary",
+          "description": "Removes Generative summary actions from the File Options bottom sheet.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeEditText",
+          "title": "Edit Text",
+          "description": "Removes Edit text from file option menus, the preview bottom toolbar, and scan cards.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeMove",
+          "title": "Move",
+          "description": "Removes Move file from file option menus across all surfaces.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeCompressPdf",
+          "title": "Compress PDF",
+          "description": "Removes Compress PDF from file option menus and Send compressed from the Share sheet. Automatically skipped if Local PDF Compression is enabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -3513,54 +3606,6 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Unlock Premium",
-      "description": "Enables locally executable premium OCR, editing, compression, and page-organization tools without cloud or GenAI access.",
-      "default": true,
-      "category": "Features",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.adobe.scan.android",
-          "name": "Adobe Scan",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1473E6",
-          "signatures": [
-            "b6dd0562256487fcd6c98cde137858ef50d9adb9f9cd2f1ca58c5357efdf0faf"
-          ],
-          "targets": [
-            {
-              "version": "26.09.25",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 32,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "removeBrokenFeatures",
-          "title": "Remove Broken Features",
-          "description": "Removes broken cloud-dependent actions like Generative summary.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "unlockCloudTools",
-          "title": "Enable Cloud Tools (Experimental)",
-          "description": "Enables Combine, Export, and Protect PDF for signed-in accounts with compatible Adobe Document Cloud access.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
           "values": null
         }
       ]
