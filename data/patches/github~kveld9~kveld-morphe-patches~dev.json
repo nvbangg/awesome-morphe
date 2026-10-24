@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.9.0-experimental.3",
+  "version": "2.9.0-experimental.4",
   "patches": [
     {
       "name": "Allow Screenshots",
@@ -768,89 +768,6 @@
       ]
     },
     {
-      "name": "Brave AMOLED theme",
-      "description": "Applies high-contrast true black (#000000) styling to Brave dark theme chrome. Neutral dark surfaces are rewritten to OLED black, with optional elevated tones for cards and sheets. Supports custom text and accent colors, and disables Material You dynamic wallpaper palettes so custom dark styling remains intact.",
-      "default": false,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.brave.browser",
-          "name": "Brave Private Web Browser, VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF4500",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.98.60",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": "Download Bravemonoarm64.apk (arm64) or BraveMonoarm.apk (arm32) v1.98.60 from github.com/brave/brave-browser/releases; Universal builds unsupported"
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "backgroundColor",
-          "title": "AMOLED background color",
-          "description": "Opaque hexadecimal color for primary backgrounds and base window chrome. Use #000000 for pure OLED black.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#000000",
-          "values": null
-        },
-        {
-          "key": "textColor",
-          "title": "Text ink color",
-          "description": "Opaque hexadecimal color applied to primary and secondary text labels. Defaults to Brave light slate ink (#f0f2ff).",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#f0f2ff",
-          "values": null
-        },
-        {
-          "key": "accentColor",
-          "title": "Accent highlight color",
-          "description": "Opaque hexadecimal color for interactive highlights, active switches, and links. Defaults to Brave purple-blue accent (#737ade).",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#737ade",
-          "values": null
-        },
-        {
-          "key": "disableDynamicColors",
-          "title": "Disable Material You dynamic colors",
-          "description": "Prevents Android 12+ wallpaper palette extraction from replacing AMOLED dark surfaces. When disabled, dynamic system colors take precedence.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "surfaceUsesBackground",
-          "title": "Surfaces use the background color",
-          "description": "When enabled, cards, sheets, and dialogs share the primary background color. When disabled, elevated surfaces use the dedicated surface color below.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "surfaceColor",
-          "title": "Surface / button color",
-          "description": "Opaque hexadecimal color for elevated surfaces such as cards and dialogs. Only active when 'Surfaces use the background color' is disabled. Defaults to #1e2029.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "#1e2029",
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Brave Origin",
       "description": "Unlocks Brave Origin feature switches.",
       "default": true,
@@ -1169,6 +1086,152 @@
           "required": false,
           "type": "kotlin.String",
           "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom Brave theme",
+      "description": "Applies custom colors to Brave dark mode chrome, defaulting to pure OLED black for battery saving on OLED screens.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.60",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download Bravemonoarm64.apk (arm64) or BraveMonoarm.apk (arm32) v1.98.60 from github.com/brave/brave-browser/releases; Universal builds unsupported"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "backgroundColor",
+          "title": "Background color",
+          "description": "Opaque hexadecimal color for primary backgrounds and base window chrome. Defaults to pure OLED black (#000000).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "surfaceUsesBackground",
+          "title": "Surfaces use background color",
+          "description": "When enabled, cards, sheets, and dialogs share the primary background color. When disabled, elevated surfaces use the dedicated surface color below.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "surfaceColor",
+          "title": "Surface / container color",
+          "description": "Opaque hexadecimal color for elevated surfaces such as cards, sheets, and dialogs. Defaults to OLED black (#000000); use #1e2029 for visible depth between tiers.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "textColor",
+          "title": "Text ink color",
+          "description": "Opaque hexadecimal color applied to primary text labels. Defaults to Brave light slate ink (#f0f2ff).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#f0f2ff",
+          "values": null
+        },
+        {
+          "key": "accentColor",
+          "title": "Accent highlight color",
+          "description": "Opaque hexadecimal color for interactive highlights, active switches, and links. Defaults to Brave purple-blue accent (#737ade).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#737ade",
+          "values": null
+        },
+        {
+          "key": "disableDynamicColors",
+          "title": "Disable Material You dynamic colors",
+          "description": "Prevents Android 12+ wallpaper palette extraction from replacing dark surfaces. When disabled, dynamic system colors take precedence.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "windowBackgroundColor",
+          "title": "Window background color",
+          "description": "Opaque hexadecimal color for root window backgrounds in two-tier surface mode. Defaults to pure black (#000000).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "cardColor",
+          "title": "Preference card color",
+          "description": "Opaque hexadecimal color for preference item cards in Settings. Defaults to OLED black (#000000); use #1e2029 for visible depth between tiers.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "enablePreferenceCards",
+          "title": "Style preference rows as cards",
+          "description": "Wraps settings and preference rows in rounded card shapes when two-tier surfaces are enabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "modulateTextLuminance",
+          "title": "Modulate text tiers by luminance",
+          "description": "When enabled, scales text brightness across primary, secondary, and disabled tiers using luminance ratios. When disabled, applies the text ink color uniformly.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "patchMaterialYouRoles",
+          "title": "Patch Material You system color roles",
+          "description": "Rewrites Android system neutral and surface container color roles in values-v31+ directories to theme colors.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "patchLStarSelectors",
+          "title": "Patch color state list lStar selectors",
+          "description": "Rewrites tonal luminance selectors in color resources to match custom background and container surfaces.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "patchVectorDrawables",
+          "title": "Patch vector drawable surface fills",
+          "description": "Rewrites hardcoded background and container fill colors inside vector drawables to match theme colors.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]

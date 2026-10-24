@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0-dev.5",
+  "version": "1.9.0-dev.7",
   "apps": [
     {
       "packageName": "com.adobe.reader",
@@ -312,6 +312,7 @@
         }
       ],
       "patchNames": [
+        "Enable Notifications and Live Activities",
         "Remove Ads",
         "Remove Tracking",
         "Unlock Hidden Features",
@@ -1194,6 +1195,63 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Enable Notifications and Live Activities",
+      "description": "Enables Firebase Cloud Messaging (FCM) push notifications and Live Activities (live game score lockscreen and notification drawer updates) by spoofing the release certificate SHA-1, bypassing Play Services signature checks for MicroG, and activating the live score tracker gate.",
+      "default": true,
+      "category": "Notifications",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nhl.gc1112.free",
+          "name": "NHL",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": [
+            "2309209340875f6f8a008ea25dbd98d8a03e482704d43211933d2b9a91923aff"
+          ],
+          "targets": [
+            {
+              "version": "17.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "spoofCertificateHash",
+          "title": "Spoof Certificate SHA-1",
+          "description": "Spoofs the release signing certificate SHA-1 in Firebase Installations requests so FCM registration succeeds on re-signed APKs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "supportMicroG",
+          "title": "Support MicroG & Unverified Play Services",
+          "description": "Bypasses GoogleSignatureVerifier checks to allow push registration with MicroG and unverified Play Services.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceLiveActivitiesEnabled",
+          "title": "Force Live Activities Enabled",
+          "description": "Forces the Live Activity game score tracker toggle to be available on all live and upcoming games.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -2549,7 +2607,7 @@
         {
           "key": "disableOneTrustCmp",
           "title": "Disable OneTrust CMP",
-          "description": "Neutralizes OneTrust CMP tracking consent popups, network calls, and forces consent queries to Denied.",
+          "description": "Neutralizes OneTrust CMP tracking consent popups, network calls, and routes consent checks so push notification SDKs remain consented while advertising and tracking remain denied.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
