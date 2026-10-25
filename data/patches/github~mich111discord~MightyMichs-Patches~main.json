@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.11.1",
+  "version": "1.12.0",
   "patches": [
     {
       "name": "Bypass Login Requirements",
@@ -37,6 +37,199 @@
       "options": []
     },
     {
+      "name": "Change app name",
+      "description": "Sets a custom application label (best-effort).",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "Display name shown under the launcher icon.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Patched App",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Rewrites the manifest package attribute (experimental).",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "New package name, e.g. com.example.patched",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change version code",
+      "description": "Overrides android:versionCode (and optional versionName).",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "versionCode",
+          "title": "Version code",
+          "description": "Integer versionCode to write into the manifest.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "999999999",
+          "values": null
+        },
+        {
+          "key": "versionName",
+          "title": "Version name",
+          "description": "Optional versionName string.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Disable Telemetry",
+      "description": "Disables analytics and telemetry event tracking.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.piriform.ccleaner",
+          "name": "CCleaner",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1A73E8",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.08.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads (basic)",
+      "description": "Best-effort no-op of common ad SDK load/show methods.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable all telemetry",
+      "description": "Best-effort disable of Firebase/AppsFlyer/Mixpanel/Segment style track methods.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable screenshot restriction",
+      "description": "Best-effort bypass of FLAG_SECURE screenshot blocks.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Enable premium license",
+      "description": "Best-effort unlock of ESET premium UI / client-side license flags. Native libems + server checks may still limit some features.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.eset.ems2.gp",
+          "name": "ESET Mobile Security",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0094A0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.0.17.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Force region",
+      "description": "Forces TikTok store_region-related getters to a chosen ISO country code.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#010101",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.4.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "region",
+          "title": "Region (ISO country)",
+          "description": "ISO-3166-1 alpha-2 country code to spoof (e.g. US, GB, JP, KR, PL).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "US",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove INTERNET permission",
+      "description": "Removes INTERNET / ACCESS_NETWORK_STATE permissions from the manifest.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Remove Internet permission (Nova)",
       "description": "Removes INTERNET permission from Nova Launcher and disables network-only entry points so Nova does not crash.",
       "default": true,
@@ -67,6 +260,33 @@
             },
             {
               "version": "8.8.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Disables common TikTok ad load/show methods (best-effort).",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#010101",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.4.3",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -174,7 +394,68 @@
           "signatures": null,
           "targets": [
             {
-              "version": "2.2.4",
+              "version": "1.93.4",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks InShot Pro: no export watermark, no ads, paid filters/effects/HD. On-device AI tools may still require original signing key.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.camerasideas.instashot",
+          "name": "InShot",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF2558",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.214.1539",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.243.1555",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks CCleaner Premium / Pro features (Ultimate Multi + Lifetime style).",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.piriform.ccleaner",
+          "name": "CCleaner",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1A73E8",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.08.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -213,22 +494,22 @@
       "options": []
     },
     {
-      "name": "Unlock Premium ",
-      "description": "Unlocks InShot premium by forcing billing methods to return true.",
+      "name": "Unlock Premium",
+      "description": "Unlocks MagoVideo premium / VIP (no watermark, pro features).",
       "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.camerasideas.instashot",
-          "name": "InShot",
+          "packageName": "mobi.charmer.magovideo",
+          "name": "MagoVideo",
           "description": null,
           "apkFileType": "APK",
           "appIconColor": "#FF5722",
           "signatures": null,
           "targets": [
             {
-              "version": "2.243.1555",
+              "version": "5.7.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -339,33 +620,6 @@
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock Premium (Experimental)",
-      "description": "Unlocks MagoVideo premium by forcing the premium check method h0 to return true. WARNING: May cause crashes.",
-      "default": false,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "mobi.charmer.magovideo",
-          "name": "MagoVideo",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF5722",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.7.1",
-              "versionCodes": null,
-              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -647,33 +901,6 @@
     },
     {
       "name": "Unlock Premium Features",
-      "description": "Unlocks Guitar Tuner premium.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.ovelin.guitartuna",
-          "name": "Guitar Tuner",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF5722",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "7.102.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock Premium Features",
       "description": "Forces the purchase verification method to always return true, unlocking premium features in My Diary.",
       "default": true,
       "category": null,
@@ -725,6 +952,40 @@
               "version": "1.02.165.0923",
               "versionCodes": null,
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium Features",
+      "description": "Unlocks ReelShort VIP (vip_status=1) and unlocks ad-gated episodes.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.newleaf.app.android.victor",
+          "name": "ReelShort",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E50914",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.2.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "4.2.00",
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -813,33 +1074,6 @@
               "version": "1.02.111.0915",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock Premium Features (Experimental)",
-      "description": "Unlocks ReelShort premium by forcing getVip_status and isVipFreeAdvUnlock to return true. WARNING: May cause crashes.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.newleaf.app.android.victor",
-          "name": "ReelShort",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FF5722",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.2.00",
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }

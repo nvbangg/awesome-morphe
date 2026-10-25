@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.1",
+  "version": "1.8.2",
   "patches": [
     {
       "name": "AMOLED dark theme force",
@@ -412,6 +412,42 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom font",
+      "description": "Injects a custom TTF/OTF/WOFF2 font file into the app and rewrites every android:fontFamily and app:fontFamily attribute across resource XMLs to use it. Requested in https://github.com/sqzass/patches/issues/5.",
+      "default": false,
+      "category": "Interface",
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "fontPath",
+          "title": "Font File Path",
+          "description": "Absolute path to a .ttf, .otf, or .woff2 font file. Leave empty to skip injection.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "rewriteFontAttributes",
+          "title": "Rewrite Font Attributes",
+          "description": "Replace android:fontFamily and app:fontFamily attributes in all resource XML files with the injected font.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "rewriteManifestFont",
+          "title": "Set Application-level Font",
+          "description": "Add android:fontFamily to the <application> element in the manifest as a global fallback (API 26+ / Android 8.0+ only).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         }
       ]
