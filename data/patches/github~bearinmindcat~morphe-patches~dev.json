@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.5.7",
+  "version": "2.6.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -128,8 +128,8 @@
     },
     {
       "name": "Alert distances",
-      "description": "How far ahead, in metres, Waze warns of police, hazards, crashes, traffic jams and speed cameras. The defaults are the old Waze mods' (CGE); Waze's own are lower for most of them. They can be changed later in Customization, at the bottom of Waze's side menu.",
-      "default": false,
+      "description": "How early each alert is announced.",
+      "default": true,
       "category": null,
       "dependencies": [
         "BytecodePatch"
@@ -239,7 +239,7 @@
     },
     {
       "name": "All moods",
-      "description": "Every mood can be chosen: the ones Waze keeps for higher ranks and the beta moods it hides.",
+      "description": "Unlocks every mood, beta ones too.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -414,8 +414,47 @@
       "options": []
     },
     {
+      "name": "Bigger alert pins",
+      "description": "Bigger alert pins on the map.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "size",
+          "title": "Pin size (%)",
+          "description": "50–300. Waze: 100.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 150,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Bigger speedometer",
-      "description": "Bigger digits on the speedometer, and on the speed limit sign beside it, so they can be read at a glance. The sizes can be changed later in Customization, at the bottom of Waze's side menu, where a switch also gives Waze's own sizes back.",
+      "description": "Bigger speedometer and speed limit digits.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -454,7 +493,7 @@
         {
           "key": "units",
           "title": "Unit label (dp)",
-          "description": "The \"mph\" or \"km/h\" under the speed. Waze: 12.",
+          "description": "The mph or km/h label. Waze: 12.",
           "required": true,
           "type": "kotlin.Int",
           "default": 14,
@@ -634,7 +673,7 @@
     },
     {
       "name": "Change app name",
-      "description": "Sets the name shown under the launcher icon, in the app switcher and on Android Auto.",
+      "description": "Renames Waze.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -661,7 +700,7 @@
         {
           "key": "appName",
           "title": "App name",
-          "description": "The name shown under the launcher icon, in the app switcher and on Android Auto.",
+          "description": "Shown on the home screen and Android Auto.",
           "required": true,
           "type": "kotlin.String",
           "default": "De-Waze",
@@ -839,7 +878,7 @@
     },
     {
       "name": "Full black",
-      "description": "Waze's dark mode in true black for AMOLED screens: the app's dark backgrounds are black, and with Black night map the night map's background too. Roads, labels, buttons and text keep their colours.",
+      "description": "True black dark mode for AMOLED screens.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -868,7 +907,7 @@
         {
           "key": "blackMap",
           "title": "Black night map",
-          "description": "The night map's background black as well, from Waze's next start. It can be switched later in Customization, at the bottom of Waze's side menu.",
+          "description": "The night map in black too.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -878,7 +917,7 @@
     },
     {
       "name": "Hide ads",
-      "description": "Removes the sponsored pins on the map and on Android Auto, the full-screen ads shown while you are stopped, and the ad statistics Waze sends.",
+      "description": "Removes sponsored pins, stop ads and ad tracking.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1011,7 +1050,7 @@
     },
     {
       "name": "Map skin",
-      "description": "The old Waze mods' map skin, as changes to Waze's own: bigger map labels, a wider navigation arrow head and a warm day background. It is applied as Waze starts, and can be switched off or changed later in Customization, at the bottom of Waze's side menu; changes show from Waze's next start.",
+      "description": "Bigger map labels, a wider arrow and a warm day background.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1076,7 +1115,7 @@
         {
           "key": "arrowHead",
           "title": "Navigation arrow head width",
-          "description": "As a multiple of the arrow's tail width. Waze: 3.0.",
+          "description": "Times the tail width. Waze: 3.0.",
           "required": true,
           "type": "kotlin.Float",
           "default": 10.0,
@@ -1085,7 +1124,7 @@
         {
           "key": "dayBackground",
           "title": "Day map background (hex)",
-          "description": "Waze: fafcfa, near white.",
+          "description": "Waze: fafcfa.",
           "required": true,
           "type": "kotlin.String",
           "default": "ebe7dd",
@@ -1095,7 +1134,7 @@
     },
     {
       "name": "Navigation distances",
-      "description": "How far ahead Android Auto gives its heads-up, and how long a jam must last before the traffic bar shows it. The defaults are the old Waze mods' (Chuppito). They can be changed later in Customization, at the bottom of Waze's side menu.",
+      "description": "Android Auto heads-up distances and the traffic bar threshold.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1152,7 +1191,7 @@
     },
     {
       "name": "No AI reporting",
-      "description": "Turns off conversational reporting, Waze's Gemini voice assistant for reports, together with its activation dialog, tips and onboarding.",
+      "description": "Turns off Gemini voice reporting.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1181,7 +1220,7 @@
     },
     {
       "name": "No Google Assistant",
-      "description": "Keeps Google Assistant out of Waze: no Assistant button, onboarding or settings entry, whatever Waze's server enables for your region.",
+      "description": "Removes Google Assistant from Waze.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1240,7 +1279,7 @@
     },
     {
       "name": "Open without device location",
-      "description": "Waze opens with the phone's location switched off -- the map, search and planning work, and it picks up your position as soon as location is switched on -- instead of stopping at \"To use Waze, turn on device location\". Waze still needs the location permission. Can be switched off later in Customization, at the bottom of Waze's side menu.",
+      "description": "Opens Waze with location off and uses it once it is on. Still needs the location permission.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1486,7 +1525,7 @@
     },
     {
       "name": "Report speed limit",
-      "description": "Turns on Waze's own switch for correcting the speed limit from the speedometer, the old mods' \"Report speed limit\". Waze's server keeps it off; what it shows is not verified here.",
+      "description": "Lets you correct speed limits from the speedometer (unverified).",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1515,7 +1554,7 @@
     },
     {
       "name": "Share alerts with Maps",
-      "description": "Hands the alerts Waze is tracking -- police, crashes, hazards, traffic jams, closures and speed cameras -- to Ungoogled Maps on the same phone, where Waze alerts in Waze & external data source puts them on the map. Nothing leaves the phone. Waze has to be signed in and open; in the background is enough.",
+      "description": "Shows Waze alerts in Ungoogled Maps on this phone. Waze must be signed in and open.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1544,7 +1583,7 @@
     },
     {
       "name": "Speed camera sound at any speed",
-      "description": "Plays the speed camera sound for every camera, not only when you are over the speed limit.",
+      "description": "Plays the camera sound even when you are not speeding.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1606,7 +1645,7 @@
     },
     {
       "name": "Speed cameras everywhere",
-      "description": "Turns speed camera and police alerts back on in the countries where Waze's server switches them off. Warning of speed cameras is against the law in some of those countries.",
+      "description": "Camera and police alerts in every country. Camera warnings are illegal in some.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1635,7 +1674,7 @@
     },
     {
       "name": "Speed limit sign",
-      "description": "The style of the speed limit sign beside the speedometer, whatever the country. It can be changed later in Customization, at the bottom of Waze's side menu.",
+      "description": "One speed limit sign style in every country.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1664,7 +1703,7 @@
         {
           "key": "style",
           "title": "Sign style",
-          "description": "Waze picks one by country.",
+          "description": "Waze picks by country.",
           "required": true,
           "type": "kotlin.String",
           "default": "us",
@@ -1708,7 +1747,7 @@
     },
     {
       "name": "Stay awake in the background",
-      "description": "Lets Waze keep running in the background without a route for the chosen time -- Waze's server allows 10 minutes -- so that its alerts keep reaching Maps while you navigate there. Costs battery; Waze still closes itself when you close it. The time can be changed later in Customization, at the bottom of Waze's side menu.",
+      "description": "Keeps Waze running without a route so its alerts keep reaching Maps. Uses more battery.",
       "default": false,
       "category": null,
       "dependencies": [
@@ -1737,7 +1776,7 @@
         {
           "key": "minutes",
           "title": "Minutes in the background",
-          "description": "How long Waze may run in the background without a route. Waze: 10.",
+          "description": "Waze: 10.",
           "required": true,
           "type": "kotlin.Int",
           "default": 180,
