@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.2.0",
+  "version": "2.3.0-dev.2",
   "patches": [
     {
       "name": "Browser setup prompts only once",
@@ -165,7 +165,7 @@
     },
     {
       "name": "Remove ads, proxy & restrictions",
-      "description": "Removes CashRaven background bandwidth sharing, all ads and sponsor/unlock gates, external browser redirects, the startup Telegram join dialog, promo marquee banners, forced-update lockouts, promo push notifications, and clone/sniffer checks.",
+      "description": "Removes CashRaven background bandwidth sharing, all ads and sponsor/unlock gates, external browser redirects, the startup Telegram join dialog, promo marquee banners, forced-update lockouts, and promo push notifications. Optional clone/sniffer-check bypass and native-library stripping are off by default.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -229,7 +229,7 @@
           "description": "Allows running inside work profiles, app cloners, or alongside HTTP debugging tools.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         },
         {
@@ -238,7 +238,87 @@
           "description": "Removes ~7.7 MB of unused CashRaven residential-proxy (libcr_android.so, libjnidispatch.so), Unity Coherence (libunitycoherencenative.so), legacy MIPS/armeabi folders, and WebView ad-viewer assets.",
           "required": false,
           "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove ads, telemetry & restrictions",
+      "description": "Replaces native signature-locked config decryption in pure Java, removes all banner/popunder/timer ads and the local NanoHTTPD ad server, suppresses the startup Telegram popup and player watermarks, strips Firebase telemetry and push notifications, and bypasses update lockouts. Optional root/sniffer bypass and native/telemetry stripping are off by default.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.pro.cricztv",
+          "name": "CricZ TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#08C7D6",
+          "signatures": [
+            "9ff349c0c047abd68e169980484b43926b6ff2d251a430fe44e3ae3e2930e1d2"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.3",
+              "versionCodes": {
+                "ARM64_V8A": 10,
+                "ARMEABI_V7A": 10,
+                "X86_64": 10,
+                "X86": 10
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 6.0+), build 10"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hidePromoMarquee",
+          "title": "Hide promo announcement bar",
+          "description": "Hides the scrolling promo announcement card on the Events and Player screens.",
+          "required": false,
+          "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        },
+        {
+          "key": "removePushNotifications",
+          "title": "Remove push notifications",
+          "description": "Disables PushService and Firebase Cloud Messaging, skips Android 13+ notification permission prompts, and removes notification permissions and receivers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassUpdateGate",
+          "title": "Bypass update & force-update screen",
+          "description": "Skips forced and optional update lockouts on Splash startup and Player exit.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassEnvironmentChecks",
+          "title": "Bypass root & sniffer checks",
+          "description": "Neutralizes RootBeer/su root lockouts, Frida/sniffer package checks, and proxy-certificate lockouts. Not needed on ordinary phones/TVs; MainActivity startup tamper crash-bombs are always neutralized separately.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripNativeAndTelemetryBloat",
+          "title": "Strip native & telemetry bloat",
+          "description": "Removes libnative-lib.so across all ABIs (plus libtoolChecker.so when the root bypass is enabled) plus Firebase Analytics, Crashlytics, Sessions, DataTransport, and AdServices manifest entries. Purely a size saving; the libraries are never loaded once their Java entry points are removed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         }
       ]

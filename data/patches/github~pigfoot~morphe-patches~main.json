@@ -1,7 +1,254 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "patches": [
+    {
+      "name": "CamScanner disable ads",
+      "description": "Suppress qualified ad entry points with reviewed manifest cleanup. Rewarded videos are blocked by default; an explicit 7.27.0-only lottery skip experiment can forward the original task/code flow without video. Server grants are not guaranteed or overridden.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "CamScanner restore trust on re-signed builds",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.intsig.camscanner",
+          "name": "CamScanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.26.5.2609160000",
+              "versionCodes": {
+                "ARM64_V8A": 72651,
+                "ARMEABI_V7A": 72651
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.27.0.2609220000",
+              "versionCodes": {
+                "ARM64_V8A": 72701,
+                "ARMEABI_V7A": 72701
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "rewardedVideos",
+          "title": "Rewarded videos",
+          "description": "Block by default. The lottery-only skip experiment requires online 7.27.0; it preserves actual server results, not guaranteed rewards. Includes scoped initialization recovery without diagnostics or extra quota queries.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "block",
+          "values": {
+            "Block videos (no reward flow)": "block",
+            "Skip lottery video (experimental, 7.27.0 only)": "skip-lottery"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CamScanner local premium features",
+      "description": "Experimental local account-status features. Does not unlock server credits or cloud quotas.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "CamScanner restore trust on re-signed builds"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.intsig.camscanner",
+          "name": "CamScanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.26.5.2609160000",
+              "versionCodes": {
+                "ARM64_V8A": 72651,
+                "ARMEABI_V7A": 72651
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.27.0.2609220000",
+              "versionCodes": {
+                "ARM64_V8A": 72701,
+                "ARMEABI_V7A": 72701
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "folderLimit",
+          "title": "Folder limit",
+          "description": null,
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": {
+            "Keep original limit": 0,
+            "5000 folders": 5000
+          }
+        }
+      ]
+    },
+    {
+      "name": "CamScanner offline mode",
+      "description": "Revoke all app INTERNET declarations. Includes ad suppression; preserves real platform connectivity. External apps/services and offline error flows require device testing.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "CamScanner restore trust on re-signed builds",
+        "CamScanner disable ads"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.intsig.camscanner",
+          "name": "CamScanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.26.5.2609160000",
+              "versionCodes": {
+                "ARM64_V8A": 72651,
+                "ARMEABI_V7A": 72651
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.27.0.2609220000",
+              "versionCodes": {
+                "ARM64_V8A": 72701,
+                "ARMEABI_V7A": 72701
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "CamScanner reduce telemetry and app logging",
+      "description": "Suppress qualified Firebase Analytics/Crashlytics/Performance/Sessions and app network/cache/local logging. Preserve unrelated Firebase services. Not a guarantee of zero telemetry.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "CamScanner restore trust on re-signed builds",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.intsig.camscanner",
+          "name": "CamScanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.26.5.2609160000",
+              "versionCodes": {
+                "ARM64_V8A": 72651,
+                "ARMEABI_V7A": 72651
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.27.0.2609220000",
+              "versionCodes": {
+                "ARM64_V8A": 72701,
+                "ARMEABI_V7A": 72701
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "CamScanner restore trust on re-signed builds",
+      "description": "Required compatibility for supported re-signed standard/Shizuku installs: preserve original request signing and recover exact obsolete/error-only API Center caches. No diagnostic overlays. No forced host, global signature spoofing, authentication-result changes or INTERNET grant. Root mount is not qualified.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.intsig.camscanner",
+          "name": "CamScanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.26.5.2609160000",
+              "versionCodes": {
+                "ARM64_V8A": 72651,
+                "ARMEABI_V7A": 72651
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.27.0.2609220000",
+              "versionCodes": {
+                "ARM64_V8A": 72701,
+                "ARMEABI_V7A": 72701
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Change package name",
       "description": "Optional parallel installation with a default or custom package name. Without this patch the original package is retained. The app name is unchanged; providers, permissions and links are isolated when selected.",
