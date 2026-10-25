@@ -444,6 +444,56 @@
       ]
     },
     {
+      "name": "Inspect HTTPS traffic (adb reverse proxy)",
+      "description": "Routes RN network traffic through 127.0.0.1:8080 on the device (adb reverse tunnel to mitmproxy). Off by default; needs the tunnel and a trusted CA.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "net.omobio.dialogsc",
+          "name": "MyDialog",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F26522",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.6.5",
+              "versionCodes": {
+                "ARM64_V8A": 1130100213,
+                "ARMEABI_V7A": 1130100213,
+                "X86_64": 1130100213,
+                "X86": 1130100213
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "Proxy host",
+          "title": null,
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "127.0.0.1",
+          "values": null
+        },
+        {
+          "key": "Proxy port",
+          "title": null,
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "8080",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "No profile-visitor limit",
       "description": "Lifts Pdb's client-side cap of 3 profile-visitor views per hour (the 'slow down' sheet). Toggle: Pdb Extras → Limits → 'No profile-visitor limit'. The bytecode ships always-on and is inert until the switch is on.",
       "default": true,
@@ -727,6 +777,37 @@
           }
         }
       ]
+    },
+    {
+      "name": "Spoof stock signing cert hash",
+      "description": "Makes NativeUtils.setAppToken() return the stock app's certificate hash instead of the patched build's, so the server-side device/app integrity verdict ('App Error: NO IMSI') is not tripped by the re-signed APK.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "net.omobio.dialogsc",
+          "name": "MyDialog",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F26522",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.6.5",
+              "versionCodes": {
+                "ARM64_V8A": 1130100213,
+                "ARMEABI_V7A": 1130100213,
+                "X86_64": 1130100213,
+                "X86": 1130100213
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Unlock Pro",

@@ -1,9 +1,136 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.0.1",
+  "version": "2.2.0",
   "patches": [
     {
-      "name": "GinArena Patch",
+      "name": "Browser setup prompts only once",
+      "description": "Shows the browser accessibility and shortcut-menu-strip setup prompts once, then records each as shown as soon as it appears so closing the browser before dismissing it cannot make it repeat.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "idm.internet.download.manager",
+          "name": "1DM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#43A047",
+          "signatures": [
+            "9f48b6b2741fe7e4f78ea7375f469e99086c07f45a6c7f38407f0483d2451ce7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.0",
+              "versionCodes": {
+                "ARM64_V8A": 30257,
+                "ARMEABI_V7A": 30257,
+                "X86_64": 30257,
+                "X86": 30257
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": "Universal APKM (160-640 dpi, Android 7.0+), build 30257"
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Preset browser settings",
+      "description": "Sets fresh-install browser fallbacks for normal and incognito modes: Brave search, matching suggestions, and Google search by image by default. Saved or imported choices are preserved and can be changed later in 1DM.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "idm.internet.download.manager",
+          "name": "1DM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#43A047",
+          "signatures": [
+            "9f48b6b2741fe7e4f78ea7375f469e99086c07f45a6c7f38407f0483d2451ce7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.0",
+              "versionCodes": {
+                "ARM64_V8A": 30257,
+                "ARMEABI_V7A": 30257,
+                "X86_64": 30257,
+                "X86": 30257
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": "Universal APKM (160-640 dpi, Android 7.0+), build 30257"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "searchEngine",
+          "title": "Search engine",
+          "description": "Fresh-install fallback for normal and incognito browsing. Saved or imported choices are not overwritten.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "brave",
+          "values": {
+            "Brave": "brave",
+            "Google": "google",
+            "DuckDuckGo": "duckduckgo",
+            "DuckDuckGo Lite": "duckduckgo-lite",
+            "Bing": "bing",
+            "StartPage": "startpage",
+            "StartPage Mobile": "startpage-mobile",
+            "Yahoo": "yahoo",
+            "Yahoo Japan": "yahoo-japan",
+            "Yandex": "yandex",
+            "Yandex (Russian)": "yandex-russian",
+            "Baidu": "baidu",
+            "AOL": "aol"
+          }
+        },
+        {
+          "key": "searchSuggestions",
+          "title": "Search suggestions",
+          "description": "Fresh-install fallback for normal and incognito browsing. Match uses the selected provider when 1DM supports it, otherwise None.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "match",
+          "values": {
+            "Match search engine": "match",
+            "Brave": "brave",
+            "Google": "google",
+            "DuckDuckGo": "duckduckgo",
+            "Baidu": "baidu",
+            "Yahoo": "yahoo",
+            "Yahoo Japan": "yahoo-japan",
+            "AOL": "aol",
+            "None": "none"
+          }
+        },
+        {
+          "key": "reverseImageSearch",
+          "title": "Search by image",
+          "description": "Fresh-install fallback for normal and incognito browsing. Brave and DuckDuckGo are not supported by 1DM for reverse image search.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "google",
+          "values": {
+            "Google": "google",
+            "Bing": "bing",
+            "Yandex": "yandex",
+            "SauceNAO": "saucenao",
+            "Sogou": "sogou",
+            "TinEye": "tineye"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Remove ads and promotions",
       "description": "Removes visible banner/full-screen ads and 1DM+ promotions from free 1DM 20.0 (30257), including the downloads-home VPN promo bar and sponsored browser start-page tiles. User shortcuts remain available.",
       "default": true,
       "category": null,
@@ -35,6 +162,86 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Remove ads, proxy & restrictions",
+      "description": "Removes CashRaven background bandwidth sharing, all ads and sponsor/unlock gates, external browser redirects, the startup Telegram join dialog, promo marquee banners, forced-update lockouts, promo push notifications, and clone/sniffer checks.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.cricfytv.sports",
+          "name": "CRICFy TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#EE4326",
+          "signatures": [
+            "f2cd86fcbc92461a3300cec47b6f74d20f0c89dd7162ecc333b3dd2c16e79841"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.3",
+              "versionCodes": {
+                "ARM64_V8A": 53,
+                "ARMEABI_V7A": 53,
+                "X86_64": 53,
+                "X86": 53
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 53"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hidePromoMarquee",
+          "title": "Hide promo marquee ticker",
+          "description": "Hides the scrolling announcement/redirect marquee bar on Home and Player screens.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassUpdateGate",
+          "title": "Bypass update & force-update screen",
+          "description": "Skips optional and forced update prompts on Splash startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockPromoPushNotifications",
+          "title": "Block promotional push notifications",
+          "description": "Suppresses promotional/browser-redirect FCM notifications and skips the startup notification permission prompt while preserving silent RemoteConfig API updates.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassEnvironmentChecks",
+          "title": "Bypass clone, work-profile & sniffer checks",
+          "description": "Allows running inside work profiles, app cloners, or alongside HTTP debugging tools.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripNativeBloat",
+          "title": "Strip proxy & ad native libraries",
+          "description": "Removes ~7.7 MB of unused CashRaven residential-proxy (libcr_android.so, libjnidispatch.so), Unity Coherence (libunitycoherencenative.so), legacy MIPS/armeabi folders, and WebView ad-viewer assets.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     }
   ]
 }
