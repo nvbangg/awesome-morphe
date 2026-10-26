@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.0.0-dev.2",
+  "version": "2.0.0-dev.5",
   "patches": [
     {
       "name": "Add Boost Search bottom navigation",
@@ -140,7 +140,7 @@
     {
       "name": "Automatically undelete Imgur images",
       "description": "Loads deleted Imgur images from the Wayback Machine.",
-      "default": false,
+      "default": true,
       "category": "Undelete",
       "compatiblePackages": [
         {
@@ -167,7 +167,7 @@
     {
       "name": "Automatically undelete Reddit content",
       "description": "Restores deleted and removed posts and comments from Arctic Shift, and their media from the Wayback Machine.",
-      "default": false,
+      "default": true,
       "category": "Undelete",
       "compatiblePackages": [
         {
@@ -193,8 +193,8 @@
     },
     {
       "name": "Boost Morphe settings",
-      "description": "Adds a Morphe section and a reorganized settings screen with search. The classic settings stay available.",
-      "default": false,
+      "description": "Adds a native-style Morphe section while keeping Boost's original settings screens.",
+      "default": true,
       "category": "Interface",
       "compatiblePackages": [
         {
@@ -223,6 +223,33 @@
       "description": "Opens Search right away on a list of active subreddits.",
       "default": true,
       "category": "Feed",
+      "compatiblePackages": [
+        {
+          "packageName": "com.rubenmayayo.reddit",
+          "name": "Boost for Reddit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.14.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Configure editor image hosting",
+      "description": "Uses Imgur Free or your configured ImgBB account for images attached to comments and text posts.",
+      "default": true,
+      "category": "Comments & posting",
       "compatiblePackages": [
         {
           "packageName": "com.rubenmayayo.reddit",
@@ -642,7 +669,7 @@
     },
     {
       "name": "Fix Boost code block rendering",
-      "description": "Fixes fenced code and parenthesized links in feed previews and directly rendered HTML.",
+      "description": "Fixes fenced code and parenthesized links in feed previews that bypass Boost's HTML preprocessing.",
       "default": true,
       "category": "Comments & posting",
       "compatiblePackages": [
@@ -672,33 +699,6 @@
       "description": "Makes the image widget open the post it shows instead of an older one.",
       "default": true,
       "category": "Interface",
-      "compatiblePackages": [
-        {
-          "packageName": "com.rubenmayayo.reddit",
-          "name": "Boost for Reddit",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
-          "signatures": null,
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.14.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Fix Boost native image upload",
-      "description": "Uploads image posts and galleries to Reddit, and images in comments or text posts to Imgur, or ImgBB if you choose it. GIF and video uploads are unchanged.",
-      "default": false,
-      "category": "Comments & posting",
       "compatiblePackages": [
         {
           "packageName": "com.rubenmayayo.reddit",
@@ -1010,9 +1010,36 @@
       "options": []
     },
     {
-      "name": "Hook exception handler",
-      "description": "Catches Boost's crashes for debugging. Only enable this for development.",
-      "default": false,
+      "name": "Import and export OAuth tokens",
+      "description": "Adds native-style Morphe settings to transfer Reddit account tokens using JSON files or the clipboard.",
+      "default": true,
+      "category": "Login & API",
+      "compatiblePackages": [
+        {
+          "packageName": "com.rubenmayayo.reddit",
+          "name": "Boost for Reddit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.14.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Log exceptions",
+      "description": "Logs reported errors and fatal crashes, viewable in Morphe settings.",
+      "default": true,
       "category": "Advanced",
       "compatiblePackages": [
         {
@@ -1372,8 +1399,35 @@
     {
       "name": "Prefer high refresh rate",
       "description": "Requests a high display refresh rate for Boost on adaptive-refresh devices.",
-      "default": false,
+      "default": true,
       "category": "Interface",
+      "compatiblePackages": [
+        {
+          "packageName": "com.rubenmayayo.reddit",
+          "name": "Boost for Reddit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.14.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Preview images in the editor",
+      "description": "Shows previews of supported image URLs above the comment or text-post editor.",
+      "default": true,
+      "category": "Comments & posting",
       "compatiblePackages": [
         {
           "packageName": "com.rubenmayayo.reddit",
@@ -1480,7 +1534,7 @@
     {
       "name": "Restore GIF URL insertion",
       "description": "Adds an option to the image menu to insert a GIF from its URL.",
-      "default": false,
+      "default": true,
       "category": "Comments & posting",
       "compatiblePackages": [
         {
@@ -1509,33 +1563,6 @@
       "description": "Shows an \"End of feed\" row with a Refresh button below the last post when a feed has no more posts, instead of silently stopping. Home sorted by Best ends after a few hundred posts.",
       "default": true,
       "category": "Feed",
-      "compatiblePackages": [
-        {
-          "packageName": "com.rubenmayayo.reddit",
-          "name": "Boost for Reddit",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
-          "signatures": null,
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.14.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Show inline Giphy previews in comments",
-      "description": "Adds inline media previews below Boost comment text for Giphy links and direct static image URLs.",
-      "default": true,
-      "category": "Comments & posting",
       "compatiblePackages": [
         {
           "packageName": "com.rubenmayayo.reddit",
@@ -2225,7 +2252,7 @@
     {
       "name": "Support keyboard GIF insertion",
       "description": "Lets you insert GIFs and images from your keyboard while writing, when the keyboard provides a public link.",
-      "default": false,
+      "default": true,
       "category": "Comments & posting",
       "compatiblePackages": [
         {
@@ -2329,6 +2356,33 @@
           "targets": [
             {
               "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Use Reddit for image uploads",
+      "description": "Uses Boost's native Reddit uploader for image posts and galleries.",
+      "default": true,
+      "category": "Comments & posting",
+      "compatiblePackages": [
+        {
+          "packageName": "com.rubenmayayo.reddit",
+          "name": "Boost for Reddit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.14.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

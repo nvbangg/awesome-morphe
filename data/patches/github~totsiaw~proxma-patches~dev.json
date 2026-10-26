@@ -1,7 +1,101 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.15.1",
+  "version": "1.27.2",
   "patches": [
+    {
+      "name": "Auto check-in & claim daily reward",
+      "description": "Claims today's daily check-in and today's Daily Rewards rung on their own, once a day, a few seconds after the app has loaded them — no ad and nothing to tap. The missed-days restore and the day-10/20/30 milestone claim are untouched.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.jazzworld",
+          "name": "Simosa",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF6B35",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.3.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            },
+            {
+              "version": "3.3.4.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Auto-claim daily rewards",
+      "description": "Claims daily streak MBs and Answer & Win quiz rewards automatically via background JobScheduler jobs scheduled from MainActivity.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.telenor.pakistan.mytelenor",
+          "name": "My Telenor",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#00A8E0",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "4.2.63",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Background daily check-in worker",
+      "description": "Runs the Simosa daily check-in from a 24-hour WorkManager job that this patch adds to the app, with two-tier token auth, stale-token retry, a per-account day latch and a status notification.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.jazzworld",
+          "name": "Simosa",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF6B35",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.3.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            },
+            {
+              "version": "3.3.4.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Block trackers",
       "description": "Stops the Insider, TikTok Business SDK and Mixpanel Session Replay trackers from initializing (event/attribution/session-replay tracking never starts). Leaves AWS Amplify, Firebase core/RemoteConfig/FCM and Google Ads init untouched so app data, push and the remote ad-config the ads patch relies on keep working.",
@@ -17,7 +111,7 @@
           "signatures": [],
           "targets": [
             {
-              "version": "4.2.62",
+              "version": "4.2.63",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
@@ -43,10 +137,36 @@
           "signatures": [],
           "targets": [
             {
-              "version": "4.2.62",
+              "version": "4.2.63",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block update prompt",
+      "description": "Forces Remote Config to report latest_version_name=1.0.3 and android_latest_build=34, matching the installed version so the force-update dialog never appears.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.storywise.storywise",
+          "name": "Storywise",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#6C63FF",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "1.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 25,
               "description": null
             }
           ]
@@ -73,6 +193,46 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass Play license check (NetMonster)",
+      "description": "Removes Google Play's PairIP license check so a re-signed NetMonster 5.0.x build runs instead of being blocked by the \"Get this app from Play\" screen. Without it, patched 5.0.0 / 5.0.1 open the Play Store on launch and close. No effect on 4.0.4, which has no such check.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "cz.mroczis.netmonster",
+          "name": "NetMonster",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#00BCD4",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "4.0.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 27,
+              "description": null
+            },
+            {
+              "version": "5.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "5.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -121,7 +281,7 @@
           "signatures": [],
           "targets": [
             {
-              "version": "4.2.62",
+              "version": "4.2.63",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
@@ -159,6 +319,32 @@
       "options": []
     },
     {
+      "name": "Bypass login",
+      "description": "Restores a signed-in user from an embedded assets/sw_cred.json (pre-formatted Firebase credential file) into SharedPreferences before FirebaseAuth initialises, so the constructor picks up the stored user. Falls back to anonymous sign-in (H3/h + zzacq.zza) if the asset is missing. Also short-circuits the Google sign-in provider flow (O5/p pswitch_5) to reuse the current user.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.storywise.storywise",
+          "name": "Storywise",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#6C63FF",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "1.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 25,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Bypass signature verification",
       "description": "Disables Simosa's anti-tamper signature check so a re-signed APK launches normally instead of stalling on the splash / \"version is not correct\" dialog.",
       "default": true,
@@ -173,10 +359,76 @@
           "signatures": [],
           "targets": [
             {
+              "version": "3.3.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            },
+            {
               "version": "3.3.4.2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Dark theme (black background)",
+      "description": "Makes Simosa a dark app: screens, sheets, dialogs and menus use the dark palette (near-black background, light text) instead of the light one, including on Android 12+ where the app would otherwise take a light colour scheme from the wallpaper. The app's own red/orange branding and its white cards are left alone so text on them stays readable.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.jazzworld",
+          "name": "Simosa",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF6B35",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.3.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            },
+            {
+              "version": "3.3.4.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Force dark mode",
+      "description": "Rewrites foodpanda's baked-in Bento color constants to dark equivalents so the app renders a real dark theme. The app ships no dark palette — R8 merged its light and dark token sets into one identical set of dex constants — so theme, force-dark and values-night changes have no effect. Brand colors are left untouched.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.global.foodpanda.android",
+          "name": "foodpanda",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#D70F64",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "26.38.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -211,6 +463,115 @@
       "options": []
     },
     {
+      "name": "Google Maps API key (NetMonster)",
+      "description": "Optional: write YOUR OWN Google Maps API key so the map renders after re-signing (NetMonster's built-in key is cert-locked). Leave the key empty to leave the map as-is.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "cz.mroczis.netmonster",
+          "name": "NetMonster",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#00BCD4",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "4.0.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 27,
+              "description": null
+            },
+            {
+              "version": "5.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "5.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "maps-api-key",
+          "title": "Google Maps API key",
+          "description": "Your own unrestricted 'Maps SDK for Android' key (Google Cloud Console). NetMonster's built-in key is locked to their signing cert and dies on re-sign (blank map). Leave empty to keep the map disabled.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Elite promotions",
+      "description": "Removes the promoted Elite seller cards and the buyer-matchmaking recommendation slot from OLX India's listing feed — OLX's own paid placements, which the ad-removal patch does not cover.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.southasia",
+          "name": "OLX India",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#002F34",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "20.07.001",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Shop, Social+ and Lifestyle tabs",
+      "description": "Removes the Shop, Social+ and Lifestyle tabs from the bottom bar, leaving Home and Account (plus any optional tab this build enables). Nothing is deleted: those screens still exist and still open if the app routes to them (a deep link, a tile, a notification) — they just no longer take a tab.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.jazzworld",
+          "name": "Simosa",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF6B35",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.3.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            },
+            {
+              "version": "3.3.4.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove ads",
       "description": "Removes foodpanda's adtech banner ads (all placements: order-tracking, home, discovery, reels) and the forced PandaMart \"CrossSell\" popup, and suppresses the forced in-app review prompt (DeliveryHero InAppRatingActivity).",
       "default": true,
@@ -226,6 +587,39 @@
           "targets": [
             {
               "version": "26.38.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes inDrive's Google ads — the banner, the card shown during and after a ride, and the full-screen ones — by switching the app's own Google Ads enable flags off, so it never asks Google for an ad. Rides, chat, payments and inDrive's own promo codes keep working.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "sinet.startup.inDriver",
+          "name": "inDrive",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#C1F11D",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "5.188.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "5.189.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 29,
@@ -277,7 +671,7 @@
           "signatures": [],
           "targets": [
             {
-              "version": "4.2.62",
+              "version": "4.2.63",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
@@ -290,7 +684,7 @@
     },
     {
       "name": "Remove ads",
-      "description": "Removes native feed ads (Google GMA), the full-height ad slot, and the \"Buy with Delivery\" promo section (bar, cards and View all) from OLX. Pinned to the 18.8.0 build (matches that build's obfuscated feed classes).",
+      "description": "Removes native feed ads (Google GMA), the full-height ad slot, the \"Buy with Delivery\" promo section (bar, cards and View all), the three item-page banner slots, and the home-screen banner slots from OLX. Pinned to the 18.8.0 build (matches that build's obfuscated feed, item-page and home classes).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -307,6 +701,32 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes ads from OLX India by disabling the in-house Baxter ad SDK at its own enable predicate (com.naspers.advertising.baxterandroid.f.d()). Every ad path — native feed, full-page, interstitial, swipe, adpv and the ad view itself — already checks this predicate, so disabling it stops the ad requests rather than just hiding the boxes.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.southasia",
+          "name": "OLX India",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#002F34",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "20.07.001",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
               "description": null
             }
           ]
@@ -385,6 +805,13 @@
           "signatures": [],
           "targets": [
             {
+              "version": "3.3.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            },
+            {
               "version": "3.3.4.2",
               "versionCodes": null,
               "isExperimental": false,
@@ -410,6 +837,13 @@
           "appIconColor": "#FF6B35",
           "signatures": [],
           "targets": [
+            {
+              "version": "3.3.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            },
             {
               "version": "3.3.4.2",
               "versionCodes": null,
@@ -449,6 +883,32 @@
       "options": []
     },
     {
+      "name": "Unlock pass",
+      "description": "Unlocks paid content (Monthly Pass: lessons, tutor, reports) by forging pass-expiry and active fields in Firestore document maps the app reads. Also forces latest_version_name and android_latest_build to installed values when present in a Firestore doc, blocking the update prompt via the Firestore path.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.storywise.storywise",
+          "name": "Storywise",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#6C63FF",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "1.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 25,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock premium (NetMonster)",
       "description": "Unlocks NetMonster Premium — forces the Adapty entitlement collector to always report premium active, so real-time LTE/NR-NSA location calculation is unlocked, ads are removed, and the status shows Active without a subscription.",
       "default": true,
@@ -469,6 +929,20 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 27,
+              "description": null
+            },
+            {
+              "version": "5.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "5.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
