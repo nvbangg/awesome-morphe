@@ -1,6 +1,8 @@
 import { memo } from "react";
 import { Badge } from "@/components/common/Badge";
 import { BundleAvatar } from "@/components/common/ItemAvatar";
+import { GitHubIcon } from "@/components/common/icons/GitHubIcon";
+import { GitLabIcon } from "@/components/common/icons/GitLabIcon";
 import type { ActiveData, WhatsNewBundleChange } from "@/types/data";
 import { getAppMeta } from "@/utils";
 import { WhatsNewAppCard } from "./WhatsNewAppCard";
@@ -57,8 +59,13 @@ export const WhatsNewBundleCard = memo(function WhatsNewBundleCard({
 							<span className="truncate">{displayName}</span>
 							{isBundleNew && <Badge variant="new" />}
 						</div>
-						<span className="text-xs font-medium text-primary dark:text-secondary truncate">
-							{source}: {repositoryPath}
+						<span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary dark:text-secondary truncate">
+							{source === "gitlab" ? (
+								<GitLabIcon className="size-3.5 text-warning shrink-0" />
+							) : (
+								<GitHubIcon className="size-3.5 text-foreground shrink-0" />
+							)}
+							<span className="truncate">{repositoryPath}</span>
 						</span>
 					</div>
 				</div>
