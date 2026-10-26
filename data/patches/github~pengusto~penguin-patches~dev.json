@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0-dev.7",
+  "version": "1.0.1",
   "patches": [
     {
       "name": "Avoid notifications for visible conversations",
@@ -69,6 +69,60 @@
             "12 hours": 720,
             "24 hours": 1440
           }
+        }
+      ]
+    },
+    {
+      "name": "Configure custom OAuth for Infinity+",
+      "description": "Use a configured Reddit OAuth client consistently through login and token exchange in Infinity+ 8.3.4, without the app subscription gate.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ml.docilealligator.infinityforreddit.plus",
+          "name": "Infinity+",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.3.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "client-id",
+          "title": "OAuth client ID",
+          "description": "Public Reddit installed-app client ID you are authorized to use. Never enter a password, client secret or login token.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "redirect-uri",
+          "title": "Registered redirect URI",
+          "description": "Exact custom-scheme redirect registered for this OAuth client. No shared-client default.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "user-agent",
+          "title": "API user agent",
+          "description": "Identifying user agent for the configured client; nonempty printable ASCII.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
         }
       ]
     },
