@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "patches": [
     {
       "name": "Bike mode",
-      "description": "Bicycle-specific GO reminders (Retrieve bike in N stops / SOON / NOW) with editable templates. Exact stock Transit 6.3.5 build.",
+      "description": "Bicycle-specific GO reminders (Get bike in N stops / SOON / NOW) with editable templates. Exact stock Transit 6.3.5 build.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -130,35 +130,6 @@
       ]
     },
     {
-      "name": "Motion Cues automation",
-      "description": "Turns Motion Cues on after 45 seconds aboard a vehicle during GO and off when you leave it. Needs Motion Cues, Display over other apps and Usage Access. Experimental: not yet verified on a live ride.",
-      "default": false,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "com.thetransitapp.droid",
-          "name": "Transit",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#00AA77",
-          "signatures": null,
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "6.3.5",
-              "versionCodes": {
-                "ARM64_V8A": 5127740
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Personal Maps API key",
       "description": "Uses your own Maps SDK for Android key so the map renders in patched Transit. Enter the key in this patch's options.",
       "default": false,
@@ -196,6 +167,43 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Physical Activity spoof [RECEIVER]",
+      "description": "Receives activity overrides from same-signer transmitters through standard Google Activity Recognition subscriptions. Supports sampling, transitions and legacy sampling; no app-specific hooks.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Physical Activity spoof [TRANSMITTER]",
+      "description": "Publishes IN_VEHICLE immediately while GO confirms you are aboard a vehicle. Requires a same-signer app patched with Physical Activity spoof [RECEIVER].",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.thetransitapp.droid",
+          "name": "Transit",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00AA77",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.3.5",
+              "versionCodes": {
+                "ARM64_V8A": 5127740
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     }
   ]
 }

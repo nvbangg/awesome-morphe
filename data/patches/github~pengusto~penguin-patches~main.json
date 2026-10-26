@@ -1,10 +1,264 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0-dev.1",
+  "version": "1.0.1",
   "patches": [
     {
+      "name": "Avoid notifications for visible conversations",
+      "description": "Check visible conversation on the main thread before posting an incoming-message notification.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.messages",
+          "name": "Fossify Messages",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Choose upcoming alarm notification time",
+      "description": "Choose the advance notice in Morphe, with separate notifications and skip actions for each alarm occurrence. Keeps native ringing times and alarm definitions.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.clock",
+          "name": "Fossify Clock",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.6.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "leadMinutes",
+          "title": "Upcoming alarm notice (minutes)",
+          "description": "Minutes before each alarm, from 1 to 1440. Chosen when patching; patch the original APK again to change it.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 120,
+          "values": {
+            "10 minutes": 10,
+            "30 minutes": 30,
+            "1 hour": 60,
+            "2 hours": 120,
+            "6 hours": 360,
+            "12 hours": 720,
+            "24 hours": 1440
+          }
+        }
+      ]
+    },
+    {
+      "name": "Configure custom OAuth for Infinity+",
+      "description": "Use a configured Reddit OAuth client consistently through login and token exchange in Infinity+ 8.3.4, without the app subscription gate.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ml.docilealligator.infinityforreddit.plus",
+          "name": "Infinity+",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.3.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "client-id",
+          "title": "OAuth client ID",
+          "description": "Public Reddit installed-app client ID you are authorized to use. Never enter a password, client secret or login token.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "redirect-uri",
+          "title": "Registered redirect URI",
+          "description": "Exact custom-scheme redirect registered for this OAuth client. No shared-client default.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "user-agent",
+          "title": "API user agent",
+          "description": "Identifying user agent for the configured client; nonempty printable ASCII.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Dismiss notifications when marking conversations read",
+      "description": "Remove the selected conversation's notification after Mark as read in the conversation list.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.messages",
+          "name": "Fossify Messages",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep background conversations unread",
+      "description": "Do not mark incoming messages read when their conversation is left in the background.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.messages",
+          "name": "Fossify Messages",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep favorites consistent after folder rename or removal",
+      "description": "Update nested favorite paths after successful single or multiple renames and remove nested favorites with their deleted parent.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.filemanager",
+          "name": "Fossify File Manager",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.6.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Navigate to the parent task",
+      "description": "Add a parent-task arrow to the existing editor. Keeps Back behavior and the current filter; asks whether to save, discard or cancel when the draft has changes. Official project F-Droid APK 15.13 only.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.tasks",
+          "name": "Tasks.org",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "15.13",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Prefer each track's embedded cover",
+      "description": "Use file-specific cover artwork before shared album art, retaining the original fallback and worker callback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.musicplayer",
+          "name": "Fossify Music Player",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.8.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Readable Calendar descriptions",
-      "description": "Native Outlook/Exchange HTML preview with explicit source editing; preserves the original editor text.",
+      "description": "Readable day/agenda summaries and native Outlook/Exchange HTML preview with explicit source editing; preserves the original editor text.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -18,6 +272,110 @@
           "targets": [
             {
               "version": "1.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Restore widget editing from the search menu",
+      "description": "Open the existing widget editor from the search bar menu when the Edit button is hidden, without changing the preference or stored widgets.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "de.mm20.launcher2.release",
+          "name": "Kvaesitso",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Separate all-day reminder defaults",
+      "description": "Choose three separate default reminders for new all-day events in Calendar settings. Keeps timed-event defaults, existing events and the use-last-reminders setting.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.calendar",
+          "name": "Fossify Calendar",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show emails and notes from merged contacts",
+      "description": "Include duplicate contact emails and notes in the detail view without changing stored contact records.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.fossify.contacts",
+          "name": "Fossify Contacts",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.6.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Zoom article images",
+      "description": "Open article images in a separate viewer with pinch, pan, double-tap and accessible zoom controls. Linked images offer View image or Open link. Uses Feeder's existing image loader and network policy. Official project F-Droid APK 2.25.0 only.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.nononsenseapps.feeder",
+          "name": "Feeder",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.25.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
