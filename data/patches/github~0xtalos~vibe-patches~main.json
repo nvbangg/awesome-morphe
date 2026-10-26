@@ -1,17 +1,18 @@
 {
-  "version": "v1.3.2",
+  "version": "v1.4.0",
   "appNames": {
+    "com.hdoapp.hdo_box": "HDO Box",
     "com.scores365": "365Scores"
   },
   "patches": [
     {
       "name": "Block update screen",
-      "description": "Blocks the 'This app is out of date' update screen and popup on launch.",
+      "description": "Hides the 'This app is out of date' update screen, new version popup, and Google Play services update prompt.",
       "use": true,
       "dependencies": [],
       "compatiblePackages": {
         "com.scores365": [
-          "14.9.5"
+          "14.9.7"
         ]
       },
       "compatibility": [
@@ -19,10 +20,10 @@
           "name": "365Scores",
           "packageName": "com.scores365",
           "description": null,
-          "appIconColor": null,
+          "appIconColor": 16761095,
           "targets": [
             {
-              "version": "14.9.5",
+              "version": "14.9.7",
               "experimental": false
             }
           ]
@@ -37,7 +38,7 @@
       "dependencies": [],
       "compatiblePackages": {
         "com.scores365": [
-          "14.9.5"
+          "14.9.7"
         ]
       },
       "compatibility": [
@@ -45,10 +46,10 @@
           "name": "365Scores",
           "packageName": "com.scores365",
           "description": null,
-          "appIconColor": null,
+          "appIconColor": 16761095,
           "targets": [
             {
-              "version": "14.9.5",
+              "version": "14.9.7",
               "experimental": false
             }
           ]
@@ -58,12 +59,12 @@
     },
     {
       "name": "Disable ads",
-      "description": "Removes banner and interstitial advertisements from 365Score.",
+      "description": "Disables Google Mobile Ads (AdMob) initialization and the app's own ad placements, removing banner, interstitial, rewarded, native and mediated ads.",
       "use": true,
       "dependencies": [],
       "compatiblePackages": {
         "com.scores365": [
-          "14.9.5"
+          "14.9.7"
         ]
       },
       "compatibility": [
@@ -71,10 +72,38 @@
           "name": "365Scores",
           "packageName": "com.scores365",
           "description": null,
-          "appIconColor": null,
+          "appIconColor": 16761095,
           "targets": [
             {
-              "version": "14.9.5",
+              "version": "14.9.7",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable analytics",
+      "description": "Disables Firebase Analytics collection, automatic screen reporting and advertising id collection, and prevents the app from re-enabling them.",
+      "use": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.hdoapp.hdo_box": [
+          "4.4.7"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "HDO Box",
+          "packageName": "com.hdoapp.hdo_box",
+          "description": null,
+          "appIconColor": 14726264,
+          "targets": [
+            {
+              "version": "4.4.7",
               "experimental": false
             }
           ]
@@ -89,7 +118,7 @@
       "dependencies": [],
       "compatiblePackages": {
         "com.scores365": [
-          "14.9.5"
+          "14.9.7"
         ]
       },
       "compatibility": [
@@ -97,10 +126,10 @@
           "name": "365Scores",
           "packageName": "com.scores365",
           "description": null,
-          "appIconColor": null,
+          "appIconColor": 16761095,
           "targets": [
             {
-              "version": "14.9.5",
+              "version": "14.9.7",
               "experimental": false
             }
           ]
@@ -109,15 +138,16 @@
       "options": []
     },
     {
-      "name": "MicroG integration",
-      "description": "Allows Google Sign-In and account sync to work on non-rooted devices by redirecting Google Play Services to ReVanced GmsCore / MicroG.",
-      "use": false,
+      "name": "GmsCore support",
+      "description": "Makes Google sign-in and Google APIs work by routing them to MicroG RE instead of Google Play services. Requires MicroG RE (app.revanced.android.gms) and a Google account added in it.",
+      "use": true,
       "dependencies": [
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
       ],
       "compatiblePackages": {
         "com.scores365": [
-          "14.9.5"
+          "14.9.7"
         ]
       },
       "compatibility": [
@@ -125,10 +155,88 @@
           "name": "365Scores",
           "packageName": "com.scores365",
           "description": null,
-          "appIconColor": null,
+          "appIconColor": 16761095,
           "targets": [
             {
-              "version": "14.9.5",
+              "version": "14.9.7",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes Unity Ads by answering the app's ad plugin locally, so no ad is ever initialized, loaded or displayed.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.hdoapp.hdo_box": [
+          "4.4.7"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "HDO Box",
+          "packageName": "com.hdoapp.hdo_box",
+          "description": null,
+          "appIconColor": 14726264,
+          "targets": [
+            {
+              "version": "4.4.7",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove tracking permissions",
+      "description": "Removes the advertising id (AD_ID) and Privacy Sandbox (AdServices) permissions.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.hdoapp.hdo_box": [
+          "4.4.7"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "HDO Box",
+          "packageName": "com.hdoapp.hdo_box",
+          "description": null,
+          "appIconColor": 14726264,
+          "targets": [
+            {
+              "version": "4.4.7",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Makes the app report its original signing certificate to itself, so Firebase and Google APIs restricted to the original app keep working.",
+      "use": false,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.scores365": [
+          "14.9.7"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "365Scores",
+          "packageName": "com.scores365",
+          "description": null,
+          "appIconColor": 16761095,
+          "targets": [
+            {
+              "version": "14.9.7",
               "experimental": false
             }
           ]
@@ -143,7 +251,7 @@
       "dependencies": [],
       "compatiblePackages": {
         "com.scores365": [
-          "14.9.5"
+          "14.9.7"
         ]
       },
       "compatibility": [
@@ -151,10 +259,10 @@
           "name": "365Scores",
           "packageName": "com.scores365",
           "description": null,
-          "appIconColor": null,
+          "appIconColor": 16761095,
           "targets": [
             {
-              "version": "14.9.5",
+              "version": "14.9.7",
               "experimental": false
             }
           ]
