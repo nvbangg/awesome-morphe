@@ -1,0 +1,251 @@
+{
+    "version": "1.0.1",
+    "patches": [
+        {
+            "name": "Bypass security and package checks",
+            "description": "Bypasses package verification in AuthBridge and BuildInfo to prevent profile crash and unofficial client warnings, disables dangerous app detection, and disables VPN detection in music.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Clone app",
+            "description": "Changes the package name to com.vk.im.morphe so the messenger can be installed side-by-side with the official one.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "packageName",
+                    "title": "Package name",
+                    "description": "Package name to use for the cloned app.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "Default",
+                    "values": {
+                        "Default": "Default"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Disable audio ads",
+            "description": "Disables audio ads in the VK music player by routing to the built-in stub ads component.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Disable telemetry",
+            "description": "Disables MyTracker, Firebase Analytics, Crashlytics and OK Tracer crash/telemetry uploads. VK's internal AppStartReporter / BaseAnalyticsSender are intentionally left intact because they carry notification-sync/heartbeat traffic (stubbing them made the unread badge stick and delayed message pushes).",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Fix push notifications",
+            "description": "Sends the official package name and signing certificate in Firebase requests, so a re-signed or cloned app gets an FCM token and receives push notifications in the background.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide clips ads",
+            "description": "Removes commercial video ads, market promos, and sponsored content from VK Clips.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide feed ads",
+            "description": "Hides sponsored posts, ad cards, story ads, promo banners, and shopping ads wherever VK Messenger shows posts, stories, services, or clips. Recommendations are left intact.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Native anti-tamper bypass",
+            "description": "Neutralizes signature and integrity checks in libvkcore.so and libvkmedia.so to prevent crashing on custom-signed APKs.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Video ads",
+            "description": "Blocks video player in-stream advertisements (prerolls, midrolls, postrolls, ad overlays), attached promo ad cards below videos, and VK Video / RuStore download prompts.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.332",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        }
+    ]
+}
