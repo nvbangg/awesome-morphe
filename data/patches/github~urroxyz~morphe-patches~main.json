@@ -1,7 +1,34 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "patches": [
+    {
+      "name": "Better translate UX",
+      "description": "Changes translation languages with ISO/BCP language codes followed by whitespace. Adds an optional compact language-pair editor in Gboard settings.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "18.0.3.954559732-release-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Bike mode",
       "description": "Bicycle-specific GO reminders (Get bike in N stops / SOON / NOW) with editable templates. Exact stock Transit 6.3.5 build.",
@@ -30,6 +57,97 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "ClipCascade sync",
+      "description": "Adds pooled remote clipboard history, images and Send to all devices. Supports ClipCascade P2S/P2P. Configure the required server/account patch options before patching.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "18.0.3.954559732-release-arm64-v8a",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "clipCascadeServer",
+          "title": "Server URL",
+          "description": "Required. ClipCascade server base URL, including https:// (or http:// on a trusted local network). No /login suffix.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "clipCascadeUsername",
+          "title": "Username",
+          "description": "Required. Your ClipCascade username.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "clipCascadePassword",
+          "title": "Password",
+          "description": "Required. Your original ClipCascade password. Credentials are stored in the patched APK; do not share it.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "clipCascadeMaxBytes",
+          "title": "Maximum clipboard size (bytes)",
+          "description": "Local limit for text/images, up to 16777216 bytes. The P2S server's limit also applies. Default: 8 MiB.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "8388608",
+          "values": null
+        },
+        {
+          "key": "clipCascadeEncryption",
+          "title": "End-to-end encryption",
+          "description": "Must match the other clients.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "clipCascadeSalt",
+          "title": "Encryption salt",
+          "description": "Must match the other clients; stock default is empty.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "clipCascadeIterations",
+          "title": "Key derivation iterations",
+          "description": "Must match the other clients. Stock default: 664937.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "664937",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Custom weather sources",
