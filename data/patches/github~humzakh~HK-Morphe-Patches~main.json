@@ -1,7 +1,71 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "patches": [
+    {
+      "name": "Apple WeatherKit",
+      "description": "Fetches weather from Apple WeatherKit in place of Niagara's weather service. Requires a WeatherKit key.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "bitpit.launcher",
+          "name": "Niagara Launcher",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.16.34",
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "team-id",
+          "title": "Team ID",
+          "description": "The Team ID of your Apple Developer account.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "key-id",
+          "title": "Key ID",
+          "description": "The ID of a key with WeatherKit enabled.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "services-id",
+          "title": "Services ID",
+          "description": "The identifier of a Services ID registered for WeatherKit, e.g. com.example.weatherkit.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "private-key",
+          "title": "Private key",
+          "description": "The contents of your WeatherKit private key.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
     {
       "name": "Fix \"Other Discussions\"",
       "description": "Fixes the \"Other Discussions\" feature.",

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.28.0",
+  "version": "1.30.0",
   "patches": [
     {
       "name": "AR Effects Slimmer",
@@ -193,44 +193,6 @@
         }
       ],
       "options": []
-    },
-    {
-      "name": "Block Telemetry & Trackers",
-      "description": "Neutralizes Microsoft OneDS/Aria aggregated-metric and failure-logging dispatch methods, stubs Singular attribution SDK initializers and dispatchers, nullifies ad measurement platform identifiers (AIFA, AppSetId), rewrites default telemetry endpoints inside telemetry packages and custom blocked hosts unscoped to 0.0.0.0, disables cross-sell, Floodgate, HockeyApp and DataTransport components, and strips advertising and preinstall attribution permissions.",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.office.officehubrow",
-          "name": "Copilot",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#109CF0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "16.0.20604.20012",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": "Download com.microsoft.office.officehubrow v16.0.20604.20012 (APKM) arm64-v8a 120-480dpi versionCode 45489613 (BUNDLE 32 S) from APKMirror"
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "custom-blocked-hosts",
-          "title": "Custom Blocked Hosts",
-          "description": "Comma-separated list of additional telemetry hostnames or domains to redirect to 0.0.0.0. Single-label, credentialed-URL, and IPv6 entries are skipped.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": null,
-          "values": null
-        }
-      ]
     },
     {
       "name": "Block Telemetry & Trackers",
@@ -440,32 +402,6 @@
     },
     {
       "name": "Bypass Code Transparency",
-      "description": "Skips the code-transparency failure dialog and reports local verification success, unblocking sideloaded installs.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.office.officehubrow",
-          "name": "Copilot",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#109CF0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "16.0.20604.20012",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": "Download com.microsoft.office.officehubrow v16.0.20604.20012 (APKM) arm64-v8a 120-480dpi versionCode 45489613 (BUNDLE 32 S) from APKMirror"
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass Code Transparency",
       "description": "Bypasses the code transparency checks.",
       "default": true,
       "dependencies": [],
@@ -640,32 +576,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": "Download com.lemon.lvoverseas v19.9.0 (APK) arm64-v8a nodpi versionCode 19900002 from APKMirror"
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Copilot Companion Native Slimmer",
-      "description": "Strips optional companion native binaries (React Native, Hermes, SlimCV) via in-situ zeroing. WARNING: Hermes and React Native are load-bearing for React Native initialization - enabling this WILL crash Copilot React Native surfaces (Copilot chat host) with UnsatisfiedLinkError. The HockeyApp native exception handler (proven UnsatisfiedLinkError in OfficeApplication.onMAMCreate) and voice/dictation SDKs (libofficevoicesdk, libofficevoicetranscriptionsdk; proven dlopen FATAL on boot path) are load-bearing at startup and are therefore never stripped.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.office.officehubrow",
-          "name": "Copilot",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#109CF0",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "16.0.20604.20012",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": "Download com.microsoft.office.officehubrow v16.0.20604.20012 (APKM) arm64-v8a 120-480dpi versionCode 45489613 (BUNDLE 32 S) from APKMirror"
             }
           ]
         }
@@ -951,6 +861,34 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Neutralize Play Billing",
+      "description": "Stubs Google Play Billing client calls and disables billing manifest components for graceful degradation on devices without GMS.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.lemon.lvoverseas",
+          "name": "CapCut",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "19.9.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download com.lemon.lvoverseas v19.9.0 (APK) arm64-v8a nodpi versionCode 19900002 from APKMirror"
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Offline Only",
@@ -1788,6 +1726,34 @@
               "isExperimental": false,
               "minSdk": null,
               "description": "Download com.mi.earphone v1.38.0i (XAPK bundle) from APKPure"
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Use Places API (New)",
+      "description": "Switches search autocomplete from Places API (Legacy) to Places API (New). Legacy Places is not available in new Cloud projects. Requires Places API (New) to be enabled for the API key.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tranzmate",
+          "name": "Moovit",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1864E4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.203.0.1812",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download com.tranzmate v5.203.0.1812 (APKM) arm64-v8a 160-640dpi versionCode 1812 (BUNDLE 31 S) from APKMirror"
             }
           ]
         }
