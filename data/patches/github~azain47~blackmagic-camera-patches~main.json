@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "patches": [
     {
       "name": "Configurable bitrate tiers",
-      "description": "Rescales the LOW / MEDIUM / HIGH video bitrate tiers to 25% / 50% / 75% of the encoder's maximum (MAX is unchanged). At 1080p30 H.265 on a flagship this turns the stock 6 / 9 / 12 / 160 Mbps options into usable ~40 / 80 / 120 / 160 Mbps steps, removing the order-of-magnitude gap between HIGH and MAX.",
+      "description": "Rescales the LOW / MEDIUM / HIGH video bitrate tiers to a configurable percentage of the encoder's maximum (MAX is unchanged); defaults are 25 / 50 / 75 %. At 1080p30 H.265 on a flagship this turns the stock 6 / 9 / 12 / 160 Mbps options into usable ~40 / 80 / 120 / 160 Mbps steps, removing the order-of-magnitude gap to MAX.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -29,7 +29,35 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "lowPercent",
+          "title": "LOW tier (% of encoder max)",
+          "description": "LOW bitrate as a percentage of the encoder's maximum (1-100).",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 25,
+          "values": null
+        },
+        {
+          "key": "mediumPercent",
+          "title": "MEDIUM tier (% of encoder max)",
+          "description": "MEDIUM bitrate as a percentage of the encoder's maximum (1-100).",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 50,
+          "values": null
+        },
+        {
+          "key": "highPercent",
+          "title": "HIGH tier (% of encoder max)",
+          "description": "HIGH bitrate as a percentage of the encoder's maximum (1-100).",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 75,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Disable license check",
