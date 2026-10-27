@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.6.4",
+  "version": "2.7.1",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -296,8 +296,35 @@
       "options": []
     },
     {
+      "name": "Always incognito",
+      "description": "Never learns from what you type.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Any media app",
-      "description": "Navigation's Default media app (Settings > Navigation) offers every music and podcast app that works with Android Auto, such as Poweramp, not only Spotify, YouTube Music and Pandora.",
+      "description": "Navigation's Default media app (Settings > Navigation) offers every music and podcast app that works with Android Auto, such as Poweramp, also where Google switches media controls off. YouTube Music and Spotify only connect to Google's own Maps.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -636,10 +663,11 @@
     },
     {
       "name": "Bypass Play Services checks",
-      "description": "Makes Maps' bundled Play services signature and availability checks always pass, so it runs re-signed and with Play services disabled or absent, and lets it load tiles, search and routing by sending Google's own package and certificate in the identity headers the Maps backend checks. Where Play services rejects the re-signed app, Maps degrades instead of crashing.",
+      "description": "Makes Maps' bundled Play services signature and availability checks always pass, so it runs re-signed and with Play services disabled or absent, and lets it load tiles, search and routing by sending Google's own package and certificate in the identity headers the Maps backend checks. Where Play services rejects the re-signed app, Maps degrades instead of crashing. Also skips Google's \"isn't Play Protect certified\" page, and with no Play services at all uses Android's own Cronet so the map still loads.",
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -696,6 +724,43 @@
           "required": true,
           "type": "kotlin.String",
           "default": "Ungoogled Maps",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change app name",
+      "description": "Renames Samsung Keyboard, so the two keyboards can be told apart.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "Shown in the keyboard list and App info.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Private Keyboard",
           "values": null
         }
       ]
@@ -816,6 +881,46 @@
       ]
     },
     {
+      "name": "Change package name",
+      "description": "Installs next to the system Samsung Keyboard under its own package name.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.honeyboard",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Customization screen",
       "description": "Adds a Customization row under Settings on the account sheet, with switches for the patches here that can be turned back off inside the app.",
       "default": true,
@@ -837,6 +942,93 @@
           "targets": [
             {
               "version": "26.36.04.973607363",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable telemetry",
+      "description": "Turns off Samsung Analytics, crash reports and typed-text collection.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable non-One UI ROM support",
+      "description": "Makes Samsung Gallery installable and usable on non-One UI ROMs.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.gallery3d",
+          "name": "Samsung Gallery",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F0466E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "15.9.01.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable non-One UI ROM support",
+      "description": "Makes Samsung Notes installable and usable on non-One UI ROMs.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.notes",
+          "name": "Samsung Notes",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E8412C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.4.48.15",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1248,6 +1440,33 @@
       "options": []
     },
     {
+      "name": "No GIF tracking",
+      "description": "Stops GIPHY and Tenor view and share pings.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "No Google Assistant",
       "description": "Removes Google Assistant from Waze.",
       "default": false,
@@ -1464,6 +1683,33 @@
       "options": []
     },
     {
+      "name": "Remove internet permission",
+      "description": "Keeps the keyboard offline. GIFs, stickers, translation, AI tools and language downloads stop working.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove permissions",
       "description": "Removes permissions that only serve Google-account features or Google's data collection: background location, physical activity, contacts, microphone (voice search stops working), camera (Lens and Live View stop working), car speed, advertising ID, push messages and Google services settings. Left out with Add microG-RE support, whose account features need them.",
       "default": true,
@@ -1492,7 +1738,7 @@
     },
     {
       "name": "Remove sign-in prompts",
-      "description": "Removes Google's sign-in prompts: the first-launch \"Make it your map\" page, the search screen's \"Tired of typing?\" card and the account sheet's \"Sign in\" pill. Tapping \"Your profile\" (or the pill, where it still shows) answers with a \"Can't sign in\" toast instead of nothing. Left out with Add microG-RE support, which signs in.",
+      "description": "Removes Google's sign-in prompts: the first-launch \"Make it your map\" page, the search screen's \"Tired of typing?\" card and the account sheet's \"Sign in\" pill. Tapping \"Your profile\" (or the pill, where it still shows) answers with a \"Can't sign in\" toast instead of nothing. With Add microG-RE support, which signs in, only the first-launch page and the card go.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1812,6 +2058,33 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Stop remote updates",
+      "description": "Ignores keyboard policies pushed from Samsung's servers.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Theme",
