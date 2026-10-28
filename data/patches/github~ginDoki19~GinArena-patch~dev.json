@@ -1,10 +1,67 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.4.2",
+  "version": "2.5.0-dev.2",
   "patches": [
     {
+      "name": "AdBlocker turbo & userscript bundle",
+      "description": "Syncs SHA-256-verified weekly pre-compiled AdBlocker binary engines (28 default lists including OISD, HaGeZi Pro, uBlock, EasyList, and AdGuard) from GitHub to eliminate 14-90s CPU compilation lag on low-end devices with automatic Local Turbo fallback, and optionally seeds and auto-updates the mobile-adapted Bypass All Shortlinks userscript.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "idm.internet.download.manager",
+          "name": "1DM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#43A047",
+          "signatures": [
+            "9f48b6b2741fe7e4f78ea7375f469e99086c07f45a6c7f38407f0483d2451ce7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.0",
+              "versionCodes": {
+                "ARM64_V8A": 30257,
+                "ARMEABI_V7A": 30257,
+                "X86_64": 30257,
+                "X86": 30257
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": "Universal APKM (160-640 dpi, Android 7.0+), build 30257"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "adblockerMode",
+          "title": "AdBlocker engine mode",
+          "description": "Cloud Pre-Built downloads SHA-256-verified weekly pre-compiled binary filter engines from GitHub to skip heavy on-device compilation, falling back automatically to Local Turbo if you customize filter lists. Local Turbo keeps all compilation on-device with buffered I/O, background CPU priority, and 7-day auto-update.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "cloud_sync",
+          "values": {
+            "Cloud Pre-Built + Weekly Auto-Sync (Recommended)": "cloud_sync",
+            "Local Turbo Parser + Weekly Auto-Rebuild": "local_turbo",
+            "Stock 1DM": "stock"
+          }
+        },
+        {
+          "key": "bundleBypassShortlinks",
+          "title": "Bundle Bypass All Shortlinks userscript",
+          "description": "Seeds and weekly auto-updates the mobile-adapted Bypass All Shortlinks Debloated userscript (.1dmus with offline-cached MonkeyConfig, explicit @connect hosts, and zero warnings). Preserves your enabled/disabled state and never re-installs if deleted.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Browser setup prompts only once",
-      "description": "Shows the browser accessibility and shortcut-menu-strip setup prompts once, then records each as shown as soon as it appears so closing the browser before dismissing it cannot make it repeat.",
+      "description": "Shows the default-browser, accessibility, shortcut-menu-strip, and adblocker setup prompts once, recording each as shown as soon as it appears so closing the browser before dismissing cannot make it repeat.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -113,6 +170,40 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Optimize cold start and battery",
+      "description": "Eliminates cold-start Chromium WebView initialization in Download Manager and background services, defers Browser AdBlock filter parsing until Browser launch, defers the CheckAppVersion subprocess past startup, and pauses MainActivity's 1 Hz background wakeup loop when minimized.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "idm.internet.download.manager",
+          "name": "1DM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#43A047",
+          "signatures": [
+            "9f48b6b2741fe7e4f78ea7375f469e99086c07f45a6c7f38407f0483d2451ce7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.0",
+              "versionCodes": {
+                "ARM64_V8A": 30257,
+                "ARMEABI_V7A": 30257,
+                "X86_64": 30257,
+                "X86": 30257
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": "Universal APKM (160-640 dpi, Android 7.0+), build 30257"
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Preset browser settings",
@@ -243,7 +334,7 @@
     },
     {
       "name": "Remove ads and promotions",
-      "description": "Removes visible banner/full-screen ads and 1DM+ promotions from free 1DM 20.0 (30257), including the downloads-home VPN promo bar and sponsored browser start-page tiles. User shortcuts remain available.",
+      "description": "Removes banner, interstitial, fallback, and Amazon ads, 1DM+ sale/VPN/drawer/rate promotions, sponsored browser tiles, promo FCM topics, and 17 ad/telemetry SDK initializers and native/asset payloads from free 1DM 20.0 (30257).",
       "default": true,
       "category": null,
       "compatiblePackages": [
