@@ -1,0 +1,1469 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.0.0",
+  "patches": [
+    {
+      "name": "DHU adapter",
+      "description": "Adapts the app to an automotive head unit (Zeekr DHU) with a high resolution screen that reports a low density: readable single-DPI scaling, floating back/settings button and the opt-in compatibility fixes of zeekr-adapt. Uses Pine framework hooks installed from android:appComponentFactory before Application.onCreate. Preset: automotive de-mask (isAutomotiveOS → false, blank screen fix).",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "display",
+          "title": "Display / UI",
+          "description": "Category 1. Raises the density the app perceives, recomputes screen dp from the real usable pixels, unlocks orientation, adds the floating back/settings button, rounded corners, WebView text zoom and user agent. Disable for a bare shell (--no-display).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "metricsDpi",
+          "title": "Rendering DPI",
+          "description": "Density used for DisplayMetrics (rendering). Bigger means a larger UI. Keep it equal to the layout DPI. Can also be changed at runtime in the settings panel.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "configDpi",
+          "title": "Layout DPI",
+          "description": "Density written into Configuration (resource and layout selection). zeekr-adapt keeps it equal to the rendering DPI, a split density breaks fixed-size views.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "forceOrientation",
+          "title": "Unlock orientation",
+          "description": "Turns every Activity.setRequestedOrientation call into UNSPECIFIED, so portrait-locked apps follow the landscape head unit (--no-orientation disables it).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "fullscreen",
+          "title": "Fullscreen",
+          "description": "Hides the system bars in every activity. Off by default, the dp recompute accounts for the visible bars.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButton",
+          "title": "Floating button",
+          "description": "Draggable floating button in every activity. Tap: back, long press: settings panel (DPI, button size, alpha, color, restart).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "backButtonOnlySettings",
+          "title": "Floating button opens settings only",
+          "description": "The button shows the current DPI and a tap opens the settings panel instead of going back.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButtonSize",
+          "title": "Floating button size (dp)",
+          "description": "Size of the floating button, 24 to 96 dp.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 48,
+          "values": null
+        },
+        {
+          "key": "backButtonAlpha",
+          "title": "Floating button opacity",
+          "description": "Opacity of the floating button, 0.05 to 1.0.",
+          "required": true,
+          "type": "kotlin.Float",
+          "default": 0.5,
+          "values": null
+        },
+        {
+          "key": "backButtonColor",
+          "title": "Floating button color",
+          "description": "Color of the floating button as #RRGGBB.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#4CAF50",
+          "values": null
+        },
+        {
+          "key": "roundedCorners",
+          "title": "Rounded corners",
+          "description": "Clips the activity content to rounded corners.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "roundedCornersRadius",
+          "title": "Corner radius (dp)",
+          "description": "Radius of the rounded corners.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 16,
+          "values": null
+        },
+        {
+          "key": "fontOverride",
+          "title": "Font override",
+          "description": "File name of a font inside the app's assets/fonts/ to apply to every TextView. Empty: off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "userAgentOverride",
+          "title": "WebView user agent",
+          "description": "Returned by WebSettings.getDefaultUserAgent. Fixes web-rendered maps rejected by tile servers. Empty: keep the system user agent.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+          "values": null
+        },
+        {
+          "key": "rootBypass",
+          "title": "Root bypass",
+          "description": "Category 2. Hides root and su from the app: Build.TAGS, File.exists, Runtime.exec, ProcessBuilder, PackageManager and root SystemProperties. For apps that refuse to run on rooted or userdebug head units.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "emulatorBypass",
+          "title": "Emulator bypass",
+          "description": "Category 3. De-genericises Build.* and qemu/goldfish SystemProperties.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "automotiveFix",
+          "title": "Automotive de-mask",
+          "description": "Category 4. isAutomotiveOS() and hasSystemFeature(automotive) return false, UiModeManager reports NORMAL, Configuration.uiMode loses CAR and the Android Auto connection query is blocked. Fixes the blank/white screen of car-aware apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "networkBypass",
+          "title": "Network bypass",
+          "description": "Category 5a. NetworkCapabilities.hasCapability/hasTransport and NetworkInfo.isConnected report connected (head unit internet over Ethernet/TBOX without Android validation).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "simReady",
+          "title": "SIM ready",
+          "description": "Category 5b. getSimState returns READY and key_use_cellular_data reads true. Harmful to SIM-aware apps such as phone number registration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "mediaBridge",
+          "title": "Zeekr MediaCenter bridge",
+          "description": "Category 6. Registers the app's MediaSession with ZeekrMediaCenterService: steering wheel control, cover art, metadata and reboot resume. Adds CoverProvider, RecoveryReceiver and the com.zeekr.mediacenter package query. Media apps only.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "allowCapture",
+          "title": "Allow screen capture",
+          "description": "Category 7. Strips FLAG_SECURE so the screen can be captured or mirrored.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "debug",
+          "title": "Debug logging",
+          "description": "Category 8. Verbose logs, read with adb logcat -s DhuAdapter.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "copySign",
+          "title": "Copy original signature",
+          "description": "Category 9. Stores the genuine signer certificate of the original APK and returns it to the app's own signature self-check. Requires the original, store-signed APK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "DHU adapter",
+      "description": "Adapts the app to an automotive head unit (Zeekr DHU) with a high resolution screen that reports a low density: readable single-DPI scaling, floating back/settings button and the opt-in compatibility fixes of zeekr-adapt. Uses Pine framework hooks installed from android:appComponentFactory before Application.onCreate. Preset: root, emulator, network and SIM gate bypass, Zeekr MediaCenter.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.apple.android.music",
+          "name": "Apple Music",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#FA2D48",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "display",
+          "title": "Display / UI",
+          "description": "Category 1. Raises the density the app perceives, recomputes screen dp from the real usable pixels, unlocks orientation, adds the floating back/settings button, rounded corners, WebView text zoom and user agent. Disable for a bare shell (--no-display).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "metricsDpi",
+          "title": "Rendering DPI",
+          "description": "Density used for DisplayMetrics (rendering). Bigger means a larger UI. Keep it equal to the layout DPI. Can also be changed at runtime in the settings panel.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "configDpi",
+          "title": "Layout DPI",
+          "description": "Density written into Configuration (resource and layout selection). zeekr-adapt keeps it equal to the rendering DPI, a split density breaks fixed-size views.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "forceOrientation",
+          "title": "Unlock orientation",
+          "description": "Turns every Activity.setRequestedOrientation call into UNSPECIFIED, so portrait-locked apps follow the landscape head unit (--no-orientation disables it).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "fullscreen",
+          "title": "Fullscreen",
+          "description": "Hides the system bars in every activity. Off by default, the dp recompute accounts for the visible bars.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButton",
+          "title": "Floating button",
+          "description": "Draggable floating button in every activity. Tap: back, long press: settings panel (DPI, button size, alpha, color, restart).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "backButtonOnlySettings",
+          "title": "Floating button opens settings only",
+          "description": "The button shows the current DPI and a tap opens the settings panel instead of going back.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButtonSize",
+          "title": "Floating button size (dp)",
+          "description": "Size of the floating button, 24 to 96 dp.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 48,
+          "values": null
+        },
+        {
+          "key": "backButtonAlpha",
+          "title": "Floating button opacity",
+          "description": "Opacity of the floating button, 0.05 to 1.0.",
+          "required": true,
+          "type": "kotlin.Float",
+          "default": 0.5,
+          "values": null
+        },
+        {
+          "key": "backButtonColor",
+          "title": "Floating button color",
+          "description": "Color of the floating button as #RRGGBB.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#4CAF50",
+          "values": null
+        },
+        {
+          "key": "roundedCorners",
+          "title": "Rounded corners",
+          "description": "Clips the activity content to rounded corners.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "roundedCornersRadius",
+          "title": "Corner radius (dp)",
+          "description": "Radius of the rounded corners.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 16,
+          "values": null
+        },
+        {
+          "key": "fontOverride",
+          "title": "Font override",
+          "description": "File name of a font inside the app's assets/fonts/ to apply to every TextView. Empty: off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "userAgentOverride",
+          "title": "WebView user agent",
+          "description": "Returned by WebSettings.getDefaultUserAgent. Fixes web-rendered maps rejected by tile servers. Empty: keep the system user agent.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+          "values": null
+        },
+        {
+          "key": "rootBypass",
+          "title": "Root bypass",
+          "description": "Category 2. Hides root and su from the app: Build.TAGS, File.exists, Runtime.exec, ProcessBuilder, PackageManager and root SystemProperties. For apps that refuse to run on rooted or userdebug head units.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "emulatorBypass",
+          "title": "Emulator bypass",
+          "description": "Category 3. De-genericises Build.* and qemu/goldfish SystemProperties.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "automotiveFix",
+          "title": "Automotive de-mask",
+          "description": "Category 4. isAutomotiveOS() and hasSystemFeature(automotive) return false, UiModeManager reports NORMAL, Configuration.uiMode loses CAR and the Android Auto connection query is blocked. Fixes the blank/white screen of car-aware apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "networkBypass",
+          "title": "Network bypass",
+          "description": "Category 5a. NetworkCapabilities.hasCapability/hasTransport and NetworkInfo.isConnected report connected (head unit internet over Ethernet/TBOX without Android validation).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "simReady",
+          "title": "SIM ready",
+          "description": "Category 5b. getSimState returns READY and key_use_cellular_data reads true. Harmful to SIM-aware apps such as phone number registration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "mediaBridge",
+          "title": "Zeekr MediaCenter bridge",
+          "description": "Category 6. Registers the app's MediaSession with ZeekrMediaCenterService: steering wheel control, cover art, metadata and reboot resume. Adds CoverProvider, RecoveryReceiver and the com.zeekr.mediacenter package query. Media apps only.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "allowCapture",
+          "title": "Allow screen capture",
+          "description": "Category 7. Strips FLAG_SECURE so the screen can be captured or mirrored.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "debug",
+          "title": "Debug logging",
+          "description": "Category 8. Verbose logs, read with adb logcat -s DhuAdapter.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "copySign",
+          "title": "Copy original signature",
+          "description": "Category 9. Stores the genuine signer certificate of the original APK and returns it to the app's own signature self-check. Requires the original, store-signed APK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "DHU adapter",
+      "description": "Adapts the app to an automotive head unit (Zeekr DHU) with a high resolution screen that reports a low density: readable single-DPI scaling, floating back/settings button and the opt-in compatibility fixes of zeekr-adapt. Uses Pine framework hooks installed from android:appComponentFactory before Application.onCreate. Preset: Zeekr MediaCenter, original signature for the app's self-check.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.spotify.music",
+          "name": "Spotify",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#1ED760",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "display",
+          "title": "Display / UI",
+          "description": "Category 1. Raises the density the app perceives, recomputes screen dp from the real usable pixels, unlocks orientation, adds the floating back/settings button, rounded corners, WebView text zoom and user agent. Disable for a bare shell (--no-display).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "metricsDpi",
+          "title": "Rendering DPI",
+          "description": "Density used for DisplayMetrics (rendering). Bigger means a larger UI. Keep it equal to the layout DPI. Can also be changed at runtime in the settings panel.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "configDpi",
+          "title": "Layout DPI",
+          "description": "Density written into Configuration (resource and layout selection). zeekr-adapt keeps it equal to the rendering DPI, a split density breaks fixed-size views.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "forceOrientation",
+          "title": "Unlock orientation",
+          "description": "Turns every Activity.setRequestedOrientation call into UNSPECIFIED, so portrait-locked apps follow the landscape head unit (--no-orientation disables it).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "fullscreen",
+          "title": "Fullscreen",
+          "description": "Hides the system bars in every activity. Off by default, the dp recompute accounts for the visible bars.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButton",
+          "title": "Floating button",
+          "description": "Draggable floating button in every activity. Tap: back, long press: settings panel (DPI, button size, alpha, color, restart).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "backButtonOnlySettings",
+          "title": "Floating button opens settings only",
+          "description": "The button shows the current DPI and a tap opens the settings panel instead of going back.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButtonSize",
+          "title": "Floating button size (dp)",
+          "description": "Size of the floating button, 24 to 96 dp.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 48,
+          "values": null
+        },
+        {
+          "key": "backButtonAlpha",
+          "title": "Floating button opacity",
+          "description": "Opacity of the floating button, 0.05 to 1.0.",
+          "required": true,
+          "type": "kotlin.Float",
+          "default": 0.5,
+          "values": null
+        },
+        {
+          "key": "backButtonColor",
+          "title": "Floating button color",
+          "description": "Color of the floating button as #RRGGBB.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#4CAF50",
+          "values": null
+        },
+        {
+          "key": "roundedCorners",
+          "title": "Rounded corners",
+          "description": "Clips the activity content to rounded corners.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "roundedCornersRadius",
+          "title": "Corner radius (dp)",
+          "description": "Radius of the rounded corners.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 16,
+          "values": null
+        },
+        {
+          "key": "fontOverride",
+          "title": "Font override",
+          "description": "File name of a font inside the app's assets/fonts/ to apply to every TextView. Empty: off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "userAgentOverride",
+          "title": "WebView user agent",
+          "description": "Returned by WebSettings.getDefaultUserAgent. Fixes web-rendered maps rejected by tile servers. Empty: keep the system user agent.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+          "values": null
+        },
+        {
+          "key": "rootBypass",
+          "title": "Root bypass",
+          "description": "Category 2. Hides root and su from the app: Build.TAGS, File.exists, Runtime.exec, ProcessBuilder, PackageManager and root SystemProperties. For apps that refuse to run on rooted or userdebug head units.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "emulatorBypass",
+          "title": "Emulator bypass",
+          "description": "Category 3. De-genericises Build.* and qemu/goldfish SystemProperties.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "automotiveFix",
+          "title": "Automotive de-mask",
+          "description": "Category 4. isAutomotiveOS() and hasSystemFeature(automotive) return false, UiModeManager reports NORMAL, Configuration.uiMode loses CAR and the Android Auto connection query is blocked. Fixes the blank/white screen of car-aware apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "networkBypass",
+          "title": "Network bypass",
+          "description": "Category 5a. NetworkCapabilities.hasCapability/hasTransport and NetworkInfo.isConnected report connected (head unit internet over Ethernet/TBOX without Android validation).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "simReady",
+          "title": "SIM ready",
+          "description": "Category 5b. getSimState returns READY and key_use_cellular_data reads true. Harmful to SIM-aware apps such as phone number registration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "mediaBridge",
+          "title": "Zeekr MediaCenter bridge",
+          "description": "Category 6. Registers the app's MediaSession with ZeekrMediaCenterService: steering wheel control, cover art, metadata and reboot resume. Adds CoverProvider, RecoveryReceiver and the com.zeekr.mediacenter package query. Media apps only.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "allowCapture",
+          "title": "Allow screen capture",
+          "description": "Category 7. Strips FLAG_SECURE so the screen can be captured or mirrored.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "debug",
+          "title": "Debug logging",
+          "description": "Category 8. Verbose logs, read with adb logcat -s DhuAdapter.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "copySign",
+          "title": "Copy original signature",
+          "description": "Category 9. Stores the genuine signer certificate of the original APK and returns it to the app's own signature self-check. Requires the original, store-signed APK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "DHU adapter",
+      "description": "Adapts the app to an automotive head unit (Zeekr DHU) with a high resolution screen that reports a low density: readable single-DPI scaling, floating back/settings button and the opt-in compatibility fixes of zeekr-adapt. Uses Pine framework hooks installed from android:appComponentFactory before Application.onCreate. Preset: Zeekr MediaCenter.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.youtube.music",
+          "name": "YouTube Music",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "display",
+          "title": "Display / UI",
+          "description": "Category 1. Raises the density the app perceives, recomputes screen dp from the real usable pixels, unlocks orientation, adds the floating back/settings button, rounded corners, WebView text zoom and user agent. Disable for a bare shell (--no-display).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "metricsDpi",
+          "title": "Rendering DPI",
+          "description": "Density used for DisplayMetrics (rendering). Bigger means a larger UI. Keep it equal to the layout DPI. Can also be changed at runtime in the settings panel.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "configDpi",
+          "title": "Layout DPI",
+          "description": "Density written into Configuration (resource and layout selection). zeekr-adapt keeps it equal to the rendering DPI, a split density breaks fixed-size views.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "forceOrientation",
+          "title": "Unlock orientation",
+          "description": "Turns every Activity.setRequestedOrientation call into UNSPECIFIED, so portrait-locked apps follow the landscape head unit (--no-orientation disables it).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "fullscreen",
+          "title": "Fullscreen",
+          "description": "Hides the system bars in every activity. Off by default, the dp recompute accounts for the visible bars.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButton",
+          "title": "Floating button",
+          "description": "Draggable floating button in every activity. Tap: back, long press: settings panel (DPI, button size, alpha, color, restart).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "backButtonOnlySettings",
+          "title": "Floating button opens settings only",
+          "description": "The button shows the current DPI and a tap opens the settings panel instead of going back.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButtonSize",
+          "title": "Floating button size (dp)",
+          "description": "Size of the floating button, 24 to 96 dp.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 48,
+          "values": null
+        },
+        {
+          "key": "backButtonAlpha",
+          "title": "Floating button opacity",
+          "description": "Opacity of the floating button, 0.05 to 1.0.",
+          "required": true,
+          "type": "kotlin.Float",
+          "default": 0.5,
+          "values": null
+        },
+        {
+          "key": "backButtonColor",
+          "title": "Floating button color",
+          "description": "Color of the floating button as #RRGGBB.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#4CAF50",
+          "values": null
+        },
+        {
+          "key": "roundedCorners",
+          "title": "Rounded corners",
+          "description": "Clips the activity content to rounded corners.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "roundedCornersRadius",
+          "title": "Corner radius (dp)",
+          "description": "Radius of the rounded corners.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 16,
+          "values": null
+        },
+        {
+          "key": "fontOverride",
+          "title": "Font override",
+          "description": "File name of a font inside the app's assets/fonts/ to apply to every TextView. Empty: off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "userAgentOverride",
+          "title": "WebView user agent",
+          "description": "Returned by WebSettings.getDefaultUserAgent. Fixes web-rendered maps rejected by tile servers. Empty: keep the system user agent.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+          "values": null
+        },
+        {
+          "key": "rootBypass",
+          "title": "Root bypass",
+          "description": "Category 2. Hides root and su from the app: Build.TAGS, File.exists, Runtime.exec, ProcessBuilder, PackageManager and root SystemProperties. For apps that refuse to run on rooted or userdebug head units.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "emulatorBypass",
+          "title": "Emulator bypass",
+          "description": "Category 3. De-genericises Build.* and qemu/goldfish SystemProperties.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "automotiveFix",
+          "title": "Automotive de-mask",
+          "description": "Category 4. isAutomotiveOS() and hasSystemFeature(automotive) return false, UiModeManager reports NORMAL, Configuration.uiMode loses CAR and the Android Auto connection query is blocked. Fixes the blank/white screen of car-aware apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "networkBypass",
+          "title": "Network bypass",
+          "description": "Category 5a. NetworkCapabilities.hasCapability/hasTransport and NetworkInfo.isConnected report connected (head unit internet over Ethernet/TBOX without Android validation).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "simReady",
+          "title": "SIM ready",
+          "description": "Category 5b. getSimState returns READY and key_use_cellular_data reads true. Harmful to SIM-aware apps such as phone number registration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "mediaBridge",
+          "title": "Zeekr MediaCenter bridge",
+          "description": "Category 6. Registers the app's MediaSession with ZeekrMediaCenterService: steering wheel control, cover art, metadata and reboot resume. Adds CoverProvider, RecoveryReceiver and the com.zeekr.mediacenter package query. Media apps only.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "allowCapture",
+          "title": "Allow screen capture",
+          "description": "Category 7. Strips FLAG_SECURE so the screen can be captured or mirrored.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "debug",
+          "title": "Debug logging",
+          "description": "Category 8. Verbose logs, read with adb logcat -s DhuAdapter.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "copySign",
+          "title": "Copy original signature",
+          "description": "Category 9. Stores the genuine signer certificate of the original APK and returns it to the app's own signature self-check. Requires the original, store-signed APK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "DHU adapter",
+      "description": "Adapts the app to an automotive head unit (Zeekr DHU) with a high resolution screen that reports a low density: readable single-DPI scaling, floating back/settings button and the opt-in compatibility fixes of zeekr-adapt. Uses Pine framework hooks installed from android:appComponentFactory before Application.onCreate. Preset: Display / UI only.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.telegram.messenger",
+          "name": "Telegram",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#2AABEE",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "display",
+          "title": "Display / UI",
+          "description": "Category 1. Raises the density the app perceives, recomputes screen dp from the real usable pixels, unlocks orientation, adds the floating back/settings button, rounded corners, WebView text zoom and user agent. Disable for a bare shell (--no-display).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "metricsDpi",
+          "title": "Rendering DPI",
+          "description": "Density used for DisplayMetrics (rendering). Bigger means a larger UI. Keep it equal to the layout DPI. Can also be changed at runtime in the settings panel.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "configDpi",
+          "title": "Layout DPI",
+          "description": "Density written into Configuration (resource and layout selection). zeekr-adapt keeps it equal to the rendering DPI, a split density breaks fixed-size views.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "forceOrientation",
+          "title": "Unlock orientation",
+          "description": "Turns every Activity.setRequestedOrientation call into UNSPECIFIED, so portrait-locked apps follow the landscape head unit (--no-orientation disables it).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "fullscreen",
+          "title": "Fullscreen",
+          "description": "Hides the system bars in every activity. Off by default, the dp recompute accounts for the visible bars.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButton",
+          "title": "Floating button",
+          "description": "Draggable floating button in every activity. Tap: back, long press: settings panel (DPI, button size, alpha, color, restart).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "backButtonOnlySettings",
+          "title": "Floating button opens settings only",
+          "description": "The button shows the current DPI and a tap opens the settings panel instead of going back.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButtonSize",
+          "title": "Floating button size (dp)",
+          "description": "Size of the floating button, 24 to 96 dp.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 48,
+          "values": null
+        },
+        {
+          "key": "backButtonAlpha",
+          "title": "Floating button opacity",
+          "description": "Opacity of the floating button, 0.05 to 1.0.",
+          "required": true,
+          "type": "kotlin.Float",
+          "default": 0.5,
+          "values": null
+        },
+        {
+          "key": "backButtonColor",
+          "title": "Floating button color",
+          "description": "Color of the floating button as #RRGGBB.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#4CAF50",
+          "values": null
+        },
+        {
+          "key": "roundedCorners",
+          "title": "Rounded corners",
+          "description": "Clips the activity content to rounded corners.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "roundedCornersRadius",
+          "title": "Corner radius (dp)",
+          "description": "Radius of the rounded corners.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 16,
+          "values": null
+        },
+        {
+          "key": "fontOverride",
+          "title": "Font override",
+          "description": "File name of a font inside the app's assets/fonts/ to apply to every TextView. Empty: off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "userAgentOverride",
+          "title": "WebView user agent",
+          "description": "Returned by WebSettings.getDefaultUserAgent. Fixes web-rendered maps rejected by tile servers. Empty: keep the system user agent.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+          "values": null
+        },
+        {
+          "key": "rootBypass",
+          "title": "Root bypass",
+          "description": "Category 2. Hides root and su from the app: Build.TAGS, File.exists, Runtime.exec, ProcessBuilder, PackageManager and root SystemProperties. For apps that refuse to run on rooted or userdebug head units.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "emulatorBypass",
+          "title": "Emulator bypass",
+          "description": "Category 3. De-genericises Build.* and qemu/goldfish SystemProperties.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "automotiveFix",
+          "title": "Automotive de-mask",
+          "description": "Category 4. isAutomotiveOS() and hasSystemFeature(automotive) return false, UiModeManager reports NORMAL, Configuration.uiMode loses CAR and the Android Auto connection query is blocked. Fixes the blank/white screen of car-aware apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "networkBypass",
+          "title": "Network bypass",
+          "description": "Category 5a. NetworkCapabilities.hasCapability/hasTransport and NetworkInfo.isConnected report connected (head unit internet over Ethernet/TBOX without Android validation).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "simReady",
+          "title": "SIM ready",
+          "description": "Category 5b. getSimState returns READY and key_use_cellular_data reads true. Harmful to SIM-aware apps such as phone number registration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "mediaBridge",
+          "title": "Zeekr MediaCenter bridge",
+          "description": "Category 6. Registers the app's MediaSession with ZeekrMediaCenterService: steering wheel control, cover art, metadata and reboot resume. Adds CoverProvider, RecoveryReceiver and the com.zeekr.mediacenter package query. Media apps only.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "allowCapture",
+          "title": "Allow screen capture",
+          "description": "Category 7. Strips FLAG_SECURE so the screen can be captured or mirrored.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "debug",
+          "title": "Debug logging",
+          "description": "Category 8. Verbose logs, read with adb logcat -s DhuAdapter.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "copySign",
+          "title": "Copy original signature",
+          "description": "Category 9. Stores the genuine signer certificate of the original APK and returns it to the app's own signature self-check. Requires the original, store-signed APK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "DHU adapter (any app)",
+      "description": "Adapts the app to an automotive head unit (Zeekr DHU) with a high resolution screen that reports a low density: readable single-DPI scaling, floating back/settings button and the opt-in compatibility fixes of zeekr-adapt. Uses Pine framework hooks installed from android:appComponentFactory before Application.onCreate. Only Display / UI is on by default, enable the other categories as needed. Do not combine with the app specific \"DHU adapter\" patch.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "display",
+          "title": "Display / UI",
+          "description": "Category 1. Raises the density the app perceives, recomputes screen dp from the real usable pixels, unlocks orientation, adds the floating back/settings button, rounded corners, WebView text zoom and user agent. Disable for a bare shell (--no-display).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "metricsDpi",
+          "title": "Rendering DPI",
+          "description": "Density used for DisplayMetrics (rendering). Bigger means a larger UI. Keep it equal to the layout DPI. Can also be changed at runtime in the settings panel.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "configDpi",
+          "title": "Layout DPI",
+          "description": "Density written into Configuration (resource and layout selection). zeekr-adapt keeps it equal to the rendering DPI, a split density breaks fixed-size views.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 280,
+          "values": {
+            "200 dpi (x1.25)": 200,
+            "240 dpi (x1.5)": 240,
+            "280 dpi (x1.75, default)": 280,
+            "320 dpi (x2.0)": 320,
+            "360 dpi (x2.25)": 360
+          }
+        },
+        {
+          "key": "forceOrientation",
+          "title": "Unlock orientation",
+          "description": "Turns every Activity.setRequestedOrientation call into UNSPECIFIED, so portrait-locked apps follow the landscape head unit (--no-orientation disables it).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "fullscreen",
+          "title": "Fullscreen",
+          "description": "Hides the system bars in every activity. Off by default, the dp recompute accounts for the visible bars.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButton",
+          "title": "Floating button",
+          "description": "Draggable floating button in every activity. Tap: back, long press: settings panel (DPI, button size, alpha, color, restart).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "backButtonOnlySettings",
+          "title": "Floating button opens settings only",
+          "description": "The button shows the current DPI and a tap opens the settings panel instead of going back.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "backButtonSize",
+          "title": "Floating button size (dp)",
+          "description": "Size of the floating button, 24 to 96 dp.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 48,
+          "values": null
+        },
+        {
+          "key": "backButtonAlpha",
+          "title": "Floating button opacity",
+          "description": "Opacity of the floating button, 0.05 to 1.0.",
+          "required": true,
+          "type": "kotlin.Float",
+          "default": 0.5,
+          "values": null
+        },
+        {
+          "key": "backButtonColor",
+          "title": "Floating button color",
+          "description": "Color of the floating button as #RRGGBB.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#4CAF50",
+          "values": null
+        },
+        {
+          "key": "roundedCorners",
+          "title": "Rounded corners",
+          "description": "Clips the activity content to rounded corners.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "roundedCornersRadius",
+          "title": "Corner radius (dp)",
+          "description": "Radius of the rounded corners.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 16,
+          "values": null
+        },
+        {
+          "key": "fontOverride",
+          "title": "Font override",
+          "description": "File name of a font inside the app's assets/fonts/ to apply to every TextView. Empty: off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "userAgentOverride",
+          "title": "WebView user agent",
+          "description": "Returned by WebSettings.getDefaultUserAgent. Fixes web-rendered maps rejected by tile servers. Empty: keep the system user agent.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Mozilla/5.0 (Linux; Android 13; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+          "values": null
+        },
+        {
+          "key": "rootBypass",
+          "title": "Root bypass",
+          "description": "Category 2. Hides root and su from the app: Build.TAGS, File.exists, Runtime.exec, ProcessBuilder, PackageManager and root SystemProperties. For apps that refuse to run on rooted or userdebug head units.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "emulatorBypass",
+          "title": "Emulator bypass",
+          "description": "Category 3. De-genericises Build.* and qemu/goldfish SystemProperties.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "automotiveFix",
+          "title": "Automotive de-mask",
+          "description": "Category 4. isAutomotiveOS() and hasSystemFeature(automotive) return false, UiModeManager reports NORMAL, Configuration.uiMode loses CAR and the Android Auto connection query is blocked. Fixes the blank/white screen of car-aware apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "networkBypass",
+          "title": "Network bypass",
+          "description": "Category 5a. NetworkCapabilities.hasCapability/hasTransport and NetworkInfo.isConnected report connected (head unit internet over Ethernet/TBOX without Android validation).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "simReady",
+          "title": "SIM ready",
+          "description": "Category 5b. getSimState returns READY and key_use_cellular_data reads true. Harmful to SIM-aware apps such as phone number registration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "mediaBridge",
+          "title": "Zeekr MediaCenter bridge",
+          "description": "Category 6. Registers the app's MediaSession with ZeekrMediaCenterService: steering wheel control, cover art, metadata and reboot resume. Adds CoverProvider, RecoveryReceiver and the com.zeekr.mediacenter package query. Media apps only.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "allowCapture",
+          "title": "Allow screen capture",
+          "description": "Category 7. Strips FLAG_SECURE so the screen can be captured or mirrored.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "debug",
+          "title": "Debug logging",
+          "description": "Category 8. Verbose logs, read with adb logcat -s DhuAdapter.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "copySign",
+          "title": "Copy original signature",
+          "description": "Category 9. Stores the genuine signer certificate of the original APK and returns it to the app's own signature self-check. Requires the original, store-signed APK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    }
+  ]
+}
