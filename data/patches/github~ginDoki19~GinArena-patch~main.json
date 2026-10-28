@@ -1,10 +1,67 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "patches": [
     {
+      "name": "AdBlocker turbo & userscript bundle",
+      "description": "Syncs SHA-256-verified pre-compiled AdBlocker binary engines + per-list filter archives (28 default lists, ~1.22M active rules) automatically in the background with instant Hosts & filters hydration, accelerates on-device filter compilation via 64 KB write buffering + foreground thread scheduling, and optionally seeds and auto-updates the mobile-adapted Bypass All Shortlinks userscript.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "idm.internet.download.manager",
+          "name": "1DM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#43A047",
+          "signatures": [
+            "9f48b6b2741fe7e4f78ea7375f469e99086c07f45a6c7f38407f0483d2451ce7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.0",
+              "versionCodes": {
+                "ARM64_V8A": 30257,
+                "ARMEABI_V7A": 30257,
+                "X86_64": 30257,
+                "X86": 30257
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": "Universal APKM (160-640 dpi, Android 7.0+), build 30257"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "adblockerMode",
+          "title": "AdBlocker engine mode",
+          "description": "Cloud Pre-Built downloads SHA-256-verified pre-compiled binary filter engines and per-list archives from GitHub automatically in the background (zero on-device compilation lag and full Hosts & filters counts/sizes/dates), falling back automatically to Local Turbo if you customize filter lists. Local Turbo keeps all compilation on-device with 64 KB buffered I/O, foreground CPU scheduling, and 7-day auto-update.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "cloud_sync",
+          "values": {
+            "Cloud Pre-Built + Auto-Sync (Recommended)": "cloud_sync",
+            "Local Turbo Parser + Auto-Rebuild": "local_turbo",
+            "Stock 1DM": "stock"
+          }
+        },
+        {
+          "key": "bundleBypassShortlinks",
+          "title": "Bundle Bypass All Shortlinks userscript",
+          "description": "Seeds and auto-updates the mobile-adapted Bypass All Shortlinks Debloated userscript (.1dmus with offline-cached MonkeyConfig, explicit @connect hosts, and zero warnings). Preserves your enabled/disabled state and never re-installs if deleted.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Browser setup prompts only once",
-      "description": "Shows the browser accessibility and shortcut-menu-strip setup prompts once, then records each as shown as soon as it appears so closing the browser before dismissing it cannot make it repeat.",
+      "description": "Shows the default-browser, accessibility, shortcut-menu-strip, and adblocker setup prompts once, recording each as shown as soon as it appears so closing the browser before dismissing cannot make it repeat.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -113,6 +170,40 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Optimize cold start and battery",
+      "description": "Eliminates cold-start Chromium WebView initialization in Download Manager and background services, defers Browser AdBlock filter parsing until Browser launch, defers the CheckAppVersion subprocess past startup, pauses MainActivity's 1 Hz background wakeup loop when minimized, and keeps 1DM alive in Android Recents on Back press without killing background downloads.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "idm.internet.download.manager",
+          "name": "1DM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#43A047",
+          "signatures": [
+            "9f48b6b2741fe7e4f78ea7375f469e99086c07f45a6c7f38407f0483d2451ce7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.0",
+              "versionCodes": {
+                "ARM64_V8A": 30257,
+                "ARMEABI_V7A": 30257,
+                "X86_64": 30257,
+                "X86": 30257
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": "Universal APKM (160-640 dpi, Android 7.0+), build 30257"
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Preset browser settings",
@@ -243,7 +334,7 @@
     },
     {
       "name": "Remove ads and promotions",
-      "description": "Removes visible banner/full-screen ads and 1DM+ promotions from free 1DM 20.0 (30257), including the downloads-home VPN promo bar and sponsored browser start-page tiles. User shortcuts remain available.",
+      "description": "Removes banner, interstitial, fallback, and Amazon ads, 1DM+ sale/VPN/drawer/rate promotions, sponsored browser tiles, promo FCM topics, and 17 ad/telemetry SDK initializers and native/asset payloads from free 1DM 20.0 (30257).",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -462,6 +553,86 @@
           "key": "stripNativeAndTelemetryBloat",
           "title": "Strip native & telemetry bloat",
           "description": "Removes libnative-lib.so across all ABIs (plus libtoolChecker.so when the root bypass is enabled) plus Firebase Analytics, Crashlytics, Sessions, DataTransport, and AdServices manifest entries. Purely a size saving; the libraries are never loaded once their Java entry points are removed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove ads, telemetry & restrictions",
+      "description": "Replaces native signature-locked config decryption in pure Java so encrypted channel and event feeds keep loading after Morphe re-signs the APK, removes all banner/start/support/external ads, optionally disables the in-app web view, suppresses update lockouts, and optionally bypasses root/sniffer/proxy-cert checks. Strips Firebase telemetry and push notifications.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.live.sktechtv",
+          "name": "SK Tech TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#08C7D6",
+          "signatures": [
+            "9ff349c0c047abd68e169980484b43926b6ff2d251a430fe44e3ae3e2930e1d2"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.7",
+              "versionCodes": {
+                "ARM64_V8A": 17,
+                "ARMEABI_V7A": 17,
+                "X86_64": 17,
+                "X86": 17
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 6.0+), build 17"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "removePushNotifications",
+          "title": "Remove push notifications",
+          "description": "Disables PushService and Firebase Cloud Messaging, skips Android 13+ notification permission prompts, and removes notification permissions and receivers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassUpdateGate",
+          "title": "Bypass update & force-update screen",
+          "description": "Skips forced and optional update lockouts on Splash startup and Player exit, and removes the REQUEST_INSTALL_PACKAGES permission used by the in-app self-updater.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassEnvironmentChecks",
+          "title": "Bypass root & sniffer checks",
+          "description": "Neutralizes RootBeer/su root lockouts, Frida/sniffer package checks, and proxy-certificate lockouts. Not needed on ordinary phones/TVs; MainActivity startup tamper crash-bombs are always neutralized separately.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripNativeAndTelemetryBloat",
+          "title": "Strip native & telemetry bloat",
+          "description": "Removes libnative-lib.so across all ABIs (plus libtoolChecker.so when the root bypass is enabled) plus Firebase Analytics, Crashlytics, Sessions, DataTransport, and AdServices manifest entries. Purely a size saving; the libraries are never loaded once their Java entry points are removed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "disableWebActivity",
+          "title": "Disable WebActivity (potential ad surface)",
+          "description": "Stubs WebActivity.onCreate to immediately finish() the activity. SK Tech TV's WebActivity is a generic in-app WebView that could be repurposed for ad landing pages via remote app.txt config; disabling it ensures no remote-config-driven WebView ad can ever render. Off by default: WebActivity also opens legitimate in-app links, and the config sanitizer already blanks the ad sponsor URLs.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
