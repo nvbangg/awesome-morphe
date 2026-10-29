@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0",
+  "version": "1.6.1-dev.1",
   "patches": [
     {
       "name": "Block Ad Server",
@@ -30,7 +30,7 @@
     },
     {
       "name": "Enable Online Pro",
-      "description": "Experimental companion patch that keeps byAir's online Pro gates open without forcing the crash-prone global entitlement refresh path.",
+      "description": "Experimental companion patch that keeps byAir's online Pro status from being downgraded: forces the pro-status sync to always persist isSubscriber = true into the local user table, so a later RevenueCat refresh or a failed network round-trip cannot turn Pro back off.",
       "default": false,
       "dependencies": [
         "BytecodePatch"
@@ -50,6 +50,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "2.42.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -58,7 +65,7 @@
     },
     {
       "name": "Enable Pro",
-      "description": "Suppresses the main byAir paywall, unlock banners, local user gating, and the notifications preferences \"All\" gate.",
+      "description": "Unlocks byAir Pro: forces the RevenueCat entitlement to \"subscriber\" and marks the local user as a subscriber, which is what the pro banner, flight-details and flight-time gates read.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -72,6 +79,13 @@
           "targets": [
             {
               "version": "2.41.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.42.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -209,6 +223,13 @@
             },
             {
               "version": "1.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.7.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -532,6 +553,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.7.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -561,6 +589,13 @@
             },
             {
               "version": "1.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.7.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -683,6 +718,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.4.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -769,7 +811,7 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Forces Atlas Photo's Hermes (React Native) JS runtime to treat every session as a Pro subscriber by patching the setIsProMember reducer so its isPro field is always truthy. Unlocks all Pro features and removes the Pro paywall.",
+      "description": "Forces Atlas Photo's Hermes (React Native) JS runtime to treat every session as a Pro subscriber by patching the setIsProMember store writer, so the isProMember flag is always truthy. Unlocks all Pro features and removes the Pro paywall.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [

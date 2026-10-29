@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.17.0-dev.1",
+  "version": "1.20.0-dev.1",
   "patches": [
     {
       "name": "Disable Swrve (expert)",
@@ -73,9 +73,9 @@
       "options": []
     },
     {
-      "name": "Disable ThreatMetrix (expert)",
-      "description": "Stops ThreatMetrix initialization and security profiling, omitting its session headers. Login, checkout or other protected requests may fail. Independent and off by default.",
-      "default": false,
+      "name": "Disable ThreatMetrix",
+      "description": "Stops ThreatMetrix initialization, device/security profiling and its session headers. Independent and enabled by default.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -486,7 +486,7 @@
     {
       "name": "Disable tracking",
       "description": "Stops NPO Tag/Topspin/DAM, STER targeting, Bitmovin/Sentry collection, Cast/TV-ad diagnostics and Google telemetry collection/uploads, including queued batches. Preserves playback, authentication and functional Cast controls.",
-      "default": false,
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -727,6 +727,40 @@
     },
     {
       "name": "Disable tracking",
+      "description": "Disables OSB, Comscore, Sentry and optional Facebook/Firebase measurement, tracking identifiers and queued telemetry. Includes Hide ads. Keeps manual privacy choices and functional account, guide and messaging paths.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.tvgids",
+          "name": "TVgids.nl",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": [
+            "3d945a319ab73ffdcae24f3b9bf031891f4e362160c83bc8e5369a1a4ceb638f"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.0.16",
+              "versionCodes": {
+                "ARM64_V8A": 106691,
+                "ARMEABI_V7A": 106691,
+                "X86_64": 106691,
+                "X86": 106691
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
       "description": "Disables audited analytics, profiling, advertising identifiers and known stored telemetry uploads. Preserves account authentication, push infrastructure and native media playback.",
       "default": true,
       "category": null,
@@ -752,6 +786,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
+      "description": "Disables inspected Tealium, Snowplow, NPAW, advertising-ID, New Relic and automatic Google/Facebook measurement paths, including queued CCT uploads. Functional services remain; full traffic acceptance is pending.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.rtl.videoland.v2",
+          "name": "Videoland Android TV",
+          "description": "Development patches for the inspected Android TV split set. Premium playback is user-confirmed; ad-supported playback feedback is requested.",
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "6c7782ca5cabbaaf0546c31b63b7a5ed112ef6a00a5422fa263c2516dee2c141"
+          ],
+          "formFactor": "TV",
+          "targets": [
+            {
+              "version": "1.117.0",
+              "versionCodes": {
+                "ARM64_V8A": 1622,
+                "ARMEABI_V7A": 1622,
+                "X86_64": 1622,
+                "X86": 1622
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -1001,8 +1069,42 @@
     },
     {
       "name": "Fix PairIP startup",
+      "description": "Stops 9292's local Play licensing entry point from redirecting re-signed builds to Play and scheduling shutdown. Preserves native application initialization, journeys, tickets and payment checks.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.negentwee",
+          "name": "9292",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "7ad4a3503739803a8eec7f2f8d9a4e678d6f33f9b77d5be81e2c089371352af6"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.48.1",
+              "versionCodes": {
+                "ARM64_V8A": 32189,
+                "ARMEABI_V7A": 32189,
+                "X86_64": 32189,
+                "X86": 32189
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix PairIP startup",
       "description": "Restores the exact TV startup data and lifecycle helpers, AppAuth discovery and token requests, network updates and audio-route events. Retains native VM execution for other protected callbacks.",
-      "default": false,
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -1023,6 +1125,40 @@
                 "ARMEABI_V7A": 245497937,
                 "X86_64": 245497937,
                 "X86": 245497937
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Google sign-in via microG-Re",
+      "description": "Routes Google sign-in through an installed microG-Re with Credential Manager support. Preserves the original route when that service is unavailable; device sign-in testing is required.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.marktplaats.android",
+          "name": "Marktplaats",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "742dc275b25928621a8fbdb4362876825c8aec6a4afdbd04d0b8d72b9ca22052"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.17.0",
+              "versionCodes": {
+                "ARM64_V8A": 633462,
+                "ARMEABI_V7A": 633462,
+                "X86_64": 633462,
+                "X86": 633462
               },
               "isExperimental": false,
               "minSdk": 32,
@@ -1794,7 +1930,7 @@
     {
       "name": "Hide ads",
       "description": "Suppresses nullable preroll inputs and the optional IMA ad loader. Uses the player's existing content-only path while retaining real content, DRM, subtitles and player state.",
-      "default": false,
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -2001,6 +2137,40 @@
     },
     {
       "name": "Hide ads",
+      "description": "Removes ad placements, their reserved space and explicitly branded promotions. Stops ad-only configuration requests and native ad startup/loading while preserving guide and editorial content.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.tvgids",
+          "name": "TVgids.nl",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": [
+            "3d945a319ab73ffdcae24f3b9bf031891f4e362160c83bc8e5369a1a4ceb638f"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.0.16",
+              "versionCodes": {
+                "ARM64_V8A": 106691,
+                "ARMEABI_V7A": 106691,
+                "X86_64": 106691,
+                "X86": 106691
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
       "description": "Hides native ad placements and publisher marketing cards, and blocks display/video ad activation while preserving articles, content playback and navigation.",
       "default": true,
       "category": null,
@@ -2026,6 +2196,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
+      "description": "Suppresses client video, banner and pause-ad requests. Uses the supplied live fallback when Yospace resource creation is omitted. Ad-supported playback and server-side coverage need feedback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.rtl.videoland.v2",
+          "name": "Videoland Android TV",
+          "description": "Development patches for the inspected Android TV split set. Premium playback is user-confirmed; ad-supported playback feedback is requested.",
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "6c7782ca5cabbaaf0546c31b63b7a5ed112ef6a00a5422fa263c2516dee2c141"
+          ],
+          "formFactor": "TV",
+          "targets": [
+            {
+              "version": "1.117.0",
+              "versionCodes": {
+                "ARM64_V8A": 1622,
+                "ARMEABI_V7A": 1622,
+                "X86_64": 1622,
+                "X86": 1622
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -2655,6 +2859,74 @@
     },
     {
       "name": "Skip consent screens",
+      "description": "Prevents the startup cookie popup from being displayed and requests the SDK's reject-all choice. Manual privacy settings remain available.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.marktplaats.android",
+          "name": "Marktplaats",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "742dc275b25928621a8fbdb4362876825c8aec6a4afdbd04d0b8d72b9ca22052"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.17.0",
+              "versionCodes": {
+                "ARM64_V8A": 633462,
+                "ARMEABI_V7A": 633462,
+                "X86_64": 633462,
+                "X86": 633462
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip consent screens",
+      "description": "Rejects advertising and analytics consent before startup onboarding is selected. Allows local trips, favourites and tickets through 9292's separate functional-data service. Includes ad and tracking controls and preserves native completion handling.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.negentwee",
+          "name": "9292",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "7ad4a3503739803a8eec7f2f8d9a4e678d6f33f9b77d5be81e2c089371352af6"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.48.1",
+              "versionCodes": {
+                "ARM64_V8A": 32189,
+                "ARMEABI_V7A": 32189,
+                "X86_64": 32189,
+                "X86": 32189
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip consent screens",
       "description": "Skips automatic Didomi UI and the first guest login welcome through its original Skip completion; preserves existing consent, accounts and manual privacy/login choices.",
       "default": true,
       "category": null,
@@ -2820,6 +3092,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip consent screens",
+      "description": "Skips automatic privacy-consent screens after disabling ads and tracking. Records no consent choice and preserves manual cookie settings and existing choices.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.tvgids",
+          "name": "TVgids.nl",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": [
+            "3d945a319ab73ffdcae24f3b9bf031891f4e362160c83bc8e5369a1a4ceb638f"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.0.16",
+              "versionCodes": {
+                "ARM64_V8A": 106691,
+                "ARMEABI_V7A": 106691,
+                "X86_64": 106691,
+                "X86": 106691
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]

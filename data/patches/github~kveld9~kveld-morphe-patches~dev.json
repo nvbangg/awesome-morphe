@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.10.0-experimental.3",
+  "version": "2.10.0-experimental.4",
   "patches": [
     {
       "name": "Allow Screenshots",
@@ -1047,7 +1047,8 @@
       "description": "Removes sponsored wallpapers, news feed and promo cards.",
       "default": true,
       "dependencies": [
-        "BytecodePatch"
+        "BytecodePatch",
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -1069,6 +1070,15 @@
         }
       ],
       "options": [
+        {
+          "key": "wallpaperImage",
+          "title": "Custom NTP wallpaper",
+          "description": "Image file on this device used as New Tab background; empty keeps the clean blank page.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
         {
           "key": "hideTopSites",
           "title": "Hide shortcut tiles",
@@ -1228,7 +1238,7 @@
     },
     {
       "name": "Custom Brave theme",
-      "description": "Applies custom colors to Brave dark mode chrome, defaulting to pure OLED black for battery saving on OLED screens.",
+      "description": "Applies custom colors to Brave chrome across dark and light modes, defaulting to pure OLED black for battery saving on OLED screens.",
       "default": false,
       "dependencies": [
         "ResourcePatch"
@@ -1256,7 +1266,7 @@
         {
           "key": "backgroundColor",
           "title": "Background color",
-          "description": "Opaque hexadecimal color for primary backgrounds and base window chrome. Defaults to pure OLED black (#000000).",
+          "description": "Opaque hexadecimal color for primary backgrounds and base window chrome across dark and light modes. Defaults to pure OLED black (#000000).",
           "required": true,
           "type": "kotlin.String",
           "default": "#000000",
@@ -1283,7 +1293,7 @@
         {
           "key": "textColor",
           "title": "Text ink color",
-          "description": "Opaque hexadecimal color applied to primary text labels. Defaults to Brave light slate ink (#f0f2ff).",
+          "description": "Opaque hexadecimal color applied to primary text labels across dark and light chrome. Defaults to Brave light slate ink (#f0f2ff).",
           "required": true,
           "type": "kotlin.String",
           "default": "#f0f2ff",
@@ -1292,7 +1302,7 @@
         {
           "key": "accentColor",
           "title": "Accent highlight color",
-          "description": "Opaque hexadecimal color for interactive highlights, active switches, and links. Defaults to Brave purple-blue accent (#737ade).",
+          "description": "Opaque hexadecimal color for interactive highlights, active switches, and links across dark and light chrome. Defaults to Brave purple-blue accent (#737ade).",
           "required": true,
           "type": "kotlin.String",
           "default": "#737ade",
@@ -1301,7 +1311,7 @@
         {
           "key": "disableDynamicColors",
           "title": "Disable Material You dynamic colors",
-          "description": "Prevents Android 12+ wallpaper palette extraction from replacing dark surfaces. When disabled, dynamic system colors take precedence.",
+          "description": "Prevents Android 12+ wallpaper palette extraction from replacing theme surfaces. When disabled, dynamic system colors take precedence.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
