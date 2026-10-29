@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "patches": [
     {
       "name": "CamScanner disable ads",
@@ -346,6 +346,69 @@
               },
               "isExperimental": false,
               "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "PiTT GmsCore Google sign-in",
+      "description": "Route only qualified legacy Google sign-in to app.revanced.android.gms (MicroG-RE 7.2.2 reference). Requires MicroG-RE installed separately. Keeps PiTT package and original Google client; restores the original certificate metadata only in the qualified Firebase Auth HTTP header, preserving real Firebase verification; does not fabricate tokens, accounts or purchases.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.ihad.ptt",
+          "name": "PiTT",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.0.0",
+              "versionCodes": {
+                "ARM64_V8A": 40892
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "PiTT local sponsored features",
+      "description": "Keep the qualified local sponsored state enabled for original ad suppression and IP-detail quota gates, and suppress only the false no-purchased-subscription expiry notice. Subscription UI may reflect this local override. Preserves receipt verification and network code; does not create purchases, valid receipts, backend subscription rights or a zero-telemetry guarantee.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.ihad.ptt",
+          "name": "PiTT",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.0.0",
+              "versionCodes": {
+                "ARM64_V8A": 40892
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]
