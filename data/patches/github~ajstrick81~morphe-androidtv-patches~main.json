@@ -1,5 +1,5 @@
 {
-  "version": "1.45.0",
+  "version": "1.46.0",
   "appNames": {
     "com.disney.disneyplus": "Disney+ Android TV",
     "com.espn.score_center": "ESPN Android TV",
@@ -17,7 +17,8 @@
     "com.twentyfouri.tvbridge.rte": "RTÉ Player Android TV",
     "com.tubitv": "Tubi Android TV",
     "tv.twitch.android.app": "Twitch",
-    "com.univision.prendetv": "ViX Android TV"
+    "com.univision.prendetv": "ViX Android TV",
+    "com.xumo.xumo.tv": "Xumo Play Android TV"
   },
   "patches": [
     {
@@ -530,6 +531,68 @@
       "options": []
     },
     {
+      "name": "Enable WebView debugging",
+      "description": "Debug only: enables chrome://inspect on the RaiPlay WebView so the SPA console and native-bridge traffic can be inspected. Do not leave enabled.",
+      "use": false,
+      "dependencies": [],
+      "compatiblePackages": {
+        "it.rainet.androidtv": [
+          "5.0.1",
+          "5.0.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "RaiPlay Android TV",
+          "packageName": "it.rainet.androidtv",
+          "description": null,
+          "appIconColor": 8007671,
+          "targets": [
+            {
+              "version": "5.0.1",
+              "experimental": false
+            },
+            {
+              "version": "5.0.0",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix live HLS variant 404",
+      "description": "Fixes live channels (e.g. Rai 2) that fail with an error toast because the relinker hands the Android TV app the bitrate-capped HLS variant playlist_ma_1800-3600.m3u8, which does not exist on the Akamai origin (HTTP 404). The URL is rewritten to the full master playlist_ma.m3u8; the hdnea token (acl=/*) stays valid. Other URLs are left untouched.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "it.rainet.androidtv": [
+          "5.0.1",
+          "5.0.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "RaiPlay Android TV",
+          "packageName": "it.rainet.androidtv",
+          "description": null,
+          "appIconColor": 8007671,
+          "targets": [
+            {
+              "version": "5.0.1",
+              "experimental": false
+            },
+            {
+              "version": "5.0.0",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "HBO Max - Block SSAI Ad Origins",
       "description": "Reproduces the AdGuard DNS ad-block inside the app: fails media3 segment requests to HBO's SSAI ad origins (amer-free/emea-free.prd.media.max.com, gmss, FreeWheel) so the player's resiliency layer falls back to the clean, ad-free manifest — removing the stitched ad VIDEO the default Disable Ads patch leaves behind. OPT-IN: works on a fresh start, but a RESUMED session that reaches a mid-roll throws a fatal 'Couldn't Play Content' (39999) error, so it is default-off pending the upstream connection-layer fix.",
       "use": false,
@@ -574,6 +637,47 @@
       "name": "HBO Max - Disable Ads",
       "description": "Suppresses nonlinear overlay ads (Bolt), SSAI linear ad timeline registration (GMSS/AdSparx), and live stream preroll ad timeline entry generation for all content types.",
       "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.wbd.hbomax": [
+          "7.9.0.61",
+          "7.7.0.78",
+          "7.5.0.73",
+          "7.2.0.41"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "HBO Max Android TV",
+          "packageName": "com.wbd.hbomax",
+          "description": null,
+          "appIconColor": 16777215,
+          "targets": [
+            {
+              "version": "7.9.0.61",
+              "experimental": false
+            },
+            {
+              "version": "7.7.0.78",
+              "experimental": false
+            },
+            {
+              "version": "7.5.0.73",
+              "experimental": false
+            },
+            {
+              "version": "7.2.0.41",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "HBO Max - Playback Speed",
+      "description": "Adds a remote-navigable on-screen speed control (0.5x–2.0x) to the HBO Max player. Opt-in; touches no DRM, ad, or network code. Not device-verified yet.",
+      "use": false,
       "dependencies": [],
       "compatiblePackages": {
         "com.wbd.hbomax": [
@@ -1136,6 +1240,32 @@
     },
     {
       "name": "Skip ads",
+      "description": "Removes Pluto TV's on-demand (VOD) ads on the v17.x rebuild (the Paramount+/AVIA player stack). Four layers: (1+2) force AVIA's DAI and IMA shouldPlayAd() gates to false so the pre-roll ad pods are skipped natively; (3) drop the ad <Period>s from the stitched multi-period DASH manifest at AVIA's own DashParser and re-base the content periods into a contiguous timeline, so the mid-roll ad VIDEO is never played AND the seekbar tracks correctly; (4) suppress the ID3/CLID3-driven CSAI ad call on static VOD manifests. Fail-open: a manifest it can't rewrite is passed through unchanged (ads remain, playback never breaks). LIVE TV ads are real broadcast time in the linear feed and are not removable. Validated on-device, 17.2.0.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "tv.pluto.android": [
+          "17.2.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pluto TV Android TV",
+          "packageName": "tv.pluto.android",
+          "description": null,
+          "appIconColor": 12103684,
+          "targets": [
+            {
+              "version": "17.2.0",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip ads",
       "description": "Multi-layer ad suppression targeting the SSAI schedule, impression reporting, and the Volley network chokepoint.",
       "use": true,
       "dependencies": [
@@ -1169,6 +1299,7 @@
       "dependencies": [],
       "compatiblePackages": {
         "it.rainet.androidtv": [
+          "5.0.1",
           "5.0.0"
         ]
       },
@@ -1179,6 +1310,10 @@
           "description": null,
           "appIconColor": 8007671,
           "targets": [
+            {
+              "version": "5.0.1",
+              "experimental": false
+            },
             {
               "version": "5.0.0",
               "experimental": false
@@ -1274,6 +1409,32 @@
             },
             {
               "version": "4.51.0_tv",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip ads",
+      "description": "Removes Xumo Play's client-inserted (CSAI) VOD ads by no-opping the player's ad-play step (playAmsOrImaAd) so fetched VAST/AMS/IMA ads are never played and content continues. Applies to both the VOD and Live TV players. FreeWheel SSAI ads that are server-stitched into the stream are not removable client-side and may remain; Xumo is migrating toward SSAI, so coverage can vary by title and region. Not yet device-verified on 4.9.147.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.xumo.xumo.tv": [
+          "4.9.147"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Xumo Play Android TV",
+          "packageName": "com.xumo.xumo.tv",
+          "description": null,
+          "appIconColor": 29670,
+          "targets": [
+            {
+              "version": "4.9.147",
               "experimental": false
             }
           ]
