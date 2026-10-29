@@ -1,7 +1,42 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.10.0-dev.3",
+  "version": "1.12.0-dev.1",
   "patches": [
+    {
+      "name": "Disable Swrve (expert)",
+      "description": "Reduces data sharing by stopping the remaining Swrve user and device updates and background push activity. Includes the standard ad, tracking and consent controls. Push notifications and Swrve channel synchronization stop working; shared Firebase authentication and configuration remain available.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.rtl.rtlnieuws",
+          "name": "RTL Nieuws",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "80d91716e88298892a4d34076ae3562ac9e2212e08048d09dbfeca2c26a6ed92",
+            "862a0a19d90fe0c678bde313d7a8606e3a97a0c209ab0b56626eb8eaf18571f9"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "12.7.1",
+              "versionCodes": {
+                "ARM64_V8A": 1558,
+                "ARMEABI_V7A": 1558,
+                "X86_64": 1558,
+                "X86": 1558
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Disable Swrve and location upload",
       "description": "Replaces the Swrve engagement SDK (device profile, sessions, user properties, marketing messages) with its built-in no-op and stops uploading the background location with the Swrve ID. Weather alerts are delivered through Swrve, so this also disables all push alerts.",
@@ -476,6 +511,40 @@
                 "ARMEABI_V7A": 23136515,
                 "X86_64": 23136515,
                 "X86": 23136515
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
+      "description": "Disables audited analytics, profiling, advertising identifiers and known stored telemetry uploads. Preserves account authentication, push infrastructure and native media playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.vi",
+          "name": "Voetbal International",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "3d508fb86865e48353a506426baa57319215103dc9bcc5b8f34fa870ebe492be"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.13.52",
+              "versionCodes": {
+                "ARM64_V8A": 910,
+                "ARMEABI_V7A": 910,
+                "X86_64": 910,
+                "X86": 910
               },
               "isExperimental": false,
               "minSdk": 32,
@@ -1454,7 +1523,7 @@
     },
     {
       "name": "Hide ads",
-      "description": "Suppresses native DPG/branded placements and client-side video advertising using real no-ad callbacks and media inputs; preserves account, token, DRM and purchase outcomes.",
+      "description": "Suppresses native placements, client-side video ads and built-in/Swrve in-app campaigns before display; preserves media, accounts, purchases and manual notification/push services.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1512,6 +1581,40 @@
                 "ARMEABI_V7A": 23136515,
                 "X86_64": 23136515,
                 "X86": 23136515
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
+      "description": "Hides native ad placements and publisher marketing cards, and blocks display/video ad activation while preserving articles, content playback and navigation.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.vi",
+          "name": "Voetbal International",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "3d508fb86865e48353a506426baa57319215103dc9bcc5b8f34fa870ebe492be"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.13.52",
+              "versionCodes": {
+                "ARM64_V8A": 910,
+                "ARMEABI_V7A": 910,
+                "X86_64": 910,
+                "X86": 910
               },
               "isExperimental": false,
               "minSdk": 32,
@@ -1834,6 +1937,40 @@
     },
     {
       "name": "Read full articles",
+      "description": "Requests complete article bodies through the shipped app API and removes locked Pro overlays. Preserves actual account and subscription state; media availability remains controlled by the publisher.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.vi",
+          "name": "Voetbal International",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "3d508fb86865e48353a506426baa57319215103dc9bcc5b8f34fa870ebe492be"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.13.52",
+              "versionCodes": {
+                "ARM64_V8A": 910,
+                "ARMEABI_V7A": 910,
+                "X86_64": 910,
+                "X86": 910
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Read full articles",
       "description": "Renders all editorial body components received from the article API using the normal successful empty marketing-template result, without changing account or purchase entitlements.",
       "default": true,
       "category": null,
@@ -1904,7 +2041,7 @@
     },
     {
       "name": "Skip consent screens",
-      "description": "Skips automatic custom and player consent presentation with tracking disabled; preserves stored choices, initialized player return and manual privacy settings.",
+      "description": "Includes ad and tracking controls. Prevents startup notification permission requests and cookie dialog creation; removes Cookie instellingen from the menu before display. Preserves stored choices, player completion, manual notification settings and push services.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2238,6 +2375,40 @@
                 "ARMEABI_V7A": 23136515,
                 "X86_64": 23136515,
                 "X86": 23136515
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip consent screens",
+      "description": "Stops startup and manually reopened advertising-consent forms before display, without inventing a consent choice. Preserves the app's age check for betting features.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.vi",
+          "name": "Voetbal International",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "3d508fb86865e48353a506426baa57319215103dc9bcc5b8f34fa870ebe492be"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.13.52",
+              "versionCodes": {
+                "ARM64_V8A": 910,
+                "ARMEABI_V7A": 910,
+                "X86_64": 910,
+                "X86": 910
               },
               "isExperimental": false,
               "minSdk": 32,
