@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0-dev.3",
+  "version": "1.6.0-dev.12",
   "patches": [
     {
       "name": "DNS Changer - Force Pro test D2",
@@ -185,6 +185,42 @@
       "options": []
     },
     {
+      "name": "Prezzi Benzina - Custom signer response F6 (ARM64)",
+      "description": "Experimental: use a user-supplied public X.509 DER/Base64 certificate in the locally returned PackageInfo. Does not re-sign APK or alter server verification. Do not combine with F5.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.vernazza.androidfuel",
+          "name": "Prezzi Benzina",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.26.10.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "signingCertificateDerBase64",
+          "title": "Custom signing certificate DER (Base64)",
+          "description": "Paste the Base64 contents of the public X.509 DER certificate (no PEM headers).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Prezzi Benzina - Entitlement diagnostics D1",
       "description": "Logs original Premium, price history and ads decisions without modifying purchases or feature access.",
       "default": false,
@@ -209,6 +245,42 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Prezzi Benzina - Personal Google Maps key M1",
+      "description": "Replace the Maps SDK manifest API key with your own Google Cloud key. Enter it in patch options; no certificate spoofing.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.vernazza.androidfuel",
+          "name": "Prezzi Benzina",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.26.10.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "Your Google Maps API key",
+          "title": null,
+          "description": null,
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Prezzi Benzina - Remove ads A1",
@@ -237,8 +309,8 @@
       "options": []
     },
     {
-      "name": "Prezzi Benzina - Signature trace F1 (ARM64)",
-      "description": "Experimental: logs signature lookups made by Google Maps inside the app process. Diagnostic only; ARM64.",
+      "name": "Prezzi Benzina - Signature trace F5 (ARM64)",
+      "description": "Experimental read-only inspection of returned PackageInfo signing certificates (SHA-1/SHA-256) and call stacks. No signature changes.",
       "default": false,
       "category": null,
       "compatiblePackages": [
