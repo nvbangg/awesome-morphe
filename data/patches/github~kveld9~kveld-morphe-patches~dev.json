@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.10.0-experimental.5",
+  "version": "2.10.0-experimental.7",
   "patches": [
     {
       "name": "Allow Screenshots",
@@ -1228,7 +1228,7 @@
     },
     {
       "name": "Custom Brave theme",
-      "description": "Applies custom colors to Brave chrome across dark and light modes, defaulting to pure OLED black for battery saving on OLED screens.",
+      "description": "Applies custom colors to Brave dark mode chrome, defaulting to pure OLED black for battery saving on OLED screens.",
       "default": false,
       "dependencies": [
         "ResourcePatch"
@@ -1256,10 +1256,19 @@
         {
           "key": "backgroundColor",
           "title": "Background color",
-          "description": "Opaque hexadecimal color for primary backgrounds and base window chrome across dark and light modes. Defaults to pure OLED black (#000000).",
+          "description": "Opaque hexadecimal color for primary backgrounds and base window chrome. Defaults to pure OLED black (#000000).",
           "required": true,
           "type": "kotlin.String",
           "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "surfaceUsesBackground",
+          "title": "Surfaces use background color",
+          "description": "When enabled, cards, sheets, and dialogs share the primary background color. When disabled, elevated surfaces use the dedicated surface color below.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         },
         {
@@ -1274,7 +1283,7 @@
         {
           "key": "textColor",
           "title": "Text ink color",
-          "description": "Opaque hexadecimal color applied to primary text labels across dark and light chrome. Defaults to Brave light slate ink (#f0f2ff).",
+          "description": "Opaque hexadecimal color applied to primary text labels. Defaults to Brave light slate ink (#f0f2ff).",
           "required": true,
           "type": "kotlin.String",
           "default": "#f0f2ff",
@@ -1283,10 +1292,19 @@
         {
           "key": "accentColor",
           "title": "Accent highlight color",
-          "description": "Opaque hexadecimal color for interactive highlights, active switches, and links across dark and light chrome. Defaults to Brave purple-blue accent (#737ade).",
+          "description": "Opaque hexadecimal color for interactive highlights, active switches, and links. Defaults to Brave purple-blue accent (#737ade).",
           "required": true,
           "type": "kotlin.String",
           "default": "#737ade",
+          "values": null
+        },
+        {
+          "key": "disableDynamicColors",
+          "title": "Disable Material You dynamic colors",
+          "description": "Prevents Android 12+ wallpaper palette extraction from replacing dark surfaces. When disabled, dynamic system colors take precedence.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         },
         {
@@ -1305,24 +1323,6 @@
           "required": false,
           "type": "kotlin.String",
           "default": "#000000",
-          "values": null
-        },
-        {
-          "key": "surfaceUsesBackground",
-          "title": "Surfaces use background color",
-          "description": "When enabled, cards, sheets, and dialogs share the primary background color. When disabled, elevated surfaces use the dedicated surface color below.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableDynamicColors",
-          "title": "Disable Material You dynamic colors",
-          "description": "Prevents Android 12+ wallpaper palette extraction from replacing theme surfaces. When disabled, dynamic system colors take precedence.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
           "values": null
         },
         {
@@ -1368,6 +1368,45 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom NTP wallpaper",
+      "description": "Forces the Brave new-tab background to a custom PNG chosen at patch time. Rewrites the Java ambient wallpaper catalog (BackgroundImage drawable resource id) and makes wallpaper callbacks use it instead of native branded/URL images. Crop the image to your screen resolution before selecting it. Default off.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Private Web Browser, VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.62",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download Bravemonoarm64.apk (arm64) or BraveMonoarm.apk (arm32) v1.98.62 from github.com/brave/brave-browser/releases; Universal builds unsupported"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customWallpaper",
+          "title": "Custom NTP wallpaper",
+          "description": "PNG wallpaper used as the Brave new-tab background. Crop it to your current screen resolution first, then select that file here. 480-8192 px on each side, maximum 8 MiB.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
           "values": null
         }
       ]

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0",
+  "version": "1.10.0-dev.1",
   "patches": [
     {
       "name": "Block Quetta bundled extension installation",
@@ -600,6 +600,53 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Keep Bare Extensions Child Processes Alive",
+      "description": "Experimental version-unpinned structural/data-flow patch: starts one main-process foreground service with persistent low-priority notification and forces STRONG binding plus IMPORTANT priority only for extension child processes (detected via --extension-process). Renderer and GPU children keep stock priority. Tolerates routine signature, register, and helper-name changes; ambiguous targets fail closed. Mitigates LMK kills only. To hide the notification, use Android Settings > Apps > Bare > Notifications (the keep-alive service stays active either way).",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "org.barebrowser",
+          "name": "Bare Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "notificationTitle",
+          "title": "Notification title",
+          "description": "First line of the keep-alive notification. Blank falls back to default.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Extension background protection active",
+          "values": null
+        },
+        {
+          "key": "notificationText",
+          "title": "Notification text",
+          "description": "Second line of the keep-alive notification. Blank falls back to default.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Reduces likelihood of extension runtime reclaim",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Keep Titanium Extensions Child Processes Alive",

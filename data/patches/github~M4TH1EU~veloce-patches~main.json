@@ -2,8 +2,134 @@
     "version": "1.0.0",
     "patches": [
         {
+            "name": "Allow Veloce car host",
+            "description": "Trust Veloce (or a custom host package and signing certificate) in Home Assistant full. Preserves validation of other hosts. Car telemetry requires host support.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "io.homeassistant.companion.android",
+                    "name": "Home Assistant full",
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": "Verified patch application on 2026.10.1-full; requires HaCarAppService and hosts_allowlist."
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hostCertificate",
+                    "title": "Host signing certificate",
+                    "description": "SHA-256 of the certificate signing the installed host APK. Defaults to Veloce's release certificate. Override for a differently signed build. Colons and spaces are accepted; no private key is needed.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "19fc3edb260878c016297c74965b5be95d8777060654cbac77b86e9191d6c38e",
+                    "values": null
+                },
+                {
+                    "key": "hostPackage",
+                    "title": "Host package name",
+                    "description": "Application ID of the host to allow. Defaults to Veloce; change this for a custom host build.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "ch.broillet.veloce",
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Allow Veloce media browsing",
+            "description": "Add Veloce (or a custom host package) to Audiobookshelf's accepted media browsers. Other callers keep their existing access policy.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.audiobookshelf.app",
+                    "name": "Audiobookshelf",
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": "Verified patch application on 0.14.2-beta; requires the browser package validator."
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hostPackage",
+                    "title": "Host package name",
+                    "description": "Application ID of the host to allow. Defaults to Veloce; change this for a custom host build.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "ch.broillet.veloce",
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Allow Veloce media browsing",
+            "description": "Trust Veloce (or a custom host package, UID and signing certificate) and use Spotify's existing Android Auto browser integration.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.spotify.music",
+                    "name": "Spotify",
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": "Verified patch application on 9.1.94.1929."
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hostCertificate",
+                    "title": "Host signing certificate",
+                    "description": "SHA-256 of the certificate signing the installed host APK. Defaults to Veloce's release certificate. Override for a differently signed build. Colons and spaces are accepted; no private key is needed.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "19fc3edb260878c016297c74965b5be95d8777060654cbac77b86e9191d6c38e",
+                    "values": null
+                },
+                {
+                    "key": "hostPackage",
+                    "title": "Host package name",
+                    "description": "Application ID of the host to allow. Defaults to Veloce; change this for a custom host build.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "ch.broillet.veloce",
+                    "values": null
+                }
+            ]
+        },
+        {
             "name": "Allow custom car hosts",
-            "description": "Allow Veloce and other custom AndroidX car hosts to connect to Waze. Disables Waze's AndroidX host allowlist.",
+            "description": "Add Veloce (or a custom host package and signing certificate) to Waze's AndroidX host allowlist. Preserves validation of other hosts.",
             "default": true,
             "category": null,
             "compatiblePackages": [
@@ -25,7 +151,26 @@
                     ]
                 }
             ],
-            "options": []
+            "options": [
+                {
+                    "key": "hostPackage",
+                    "title": "Host package name",
+                    "description": "Application ID of the host to allow. Defaults to Veloce; change this for a custom host build.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "ch.broillet.veloce",
+                    "values": null
+                },
+                {
+                    "key": "hostCertificate",
+                    "title": "Host signing certificate",
+                    "description": "SHA-256 of the certificate signing the installed host APK. Defaults to Veloce's release certificate. Override for a differently signed build. Colons and spaces are accepted; no private key is needed.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "19fc3edb260878c016297c74965b5be95d8777060654cbac77b86e9191d6c38e",
+                    "values": null
+                }
+            ]
         }
     ]
 }
