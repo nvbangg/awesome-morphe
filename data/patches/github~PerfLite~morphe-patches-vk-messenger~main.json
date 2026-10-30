@@ -1,0 +1,253 @@
+{
+    "version": "1.0.0",
+    "patches": [
+        {
+            "name": "App icon colors",
+            "description": "Recolors the launcher icon: the cyan plate, the blue speech bubble and the white dots.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.329",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "plateColor",
+                    "title": "Icon plate color",
+                    "description": "Color of the large plate behind the icon (#RRGGBB or #AARRGGBB).",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "#6C4DFF",
+                    "values": null
+                },
+                {
+                    "key": "bubbleColor",
+                    "title": "Icon bubble color",
+                    "description": "Color of the speech bubble on the icon (#RRGGBB or #AARRGGBB).",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "#3A1FCC",
+                    "values": null
+                },
+                {
+                    "key": "glyphColor",
+                    "title": "Icon dots color",
+                    "description": "Color of the three dots on the icon (#RRGGBB or #AARRGGBB).",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "#FFFFFF",
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Bypass VPN detection",
+            "description": "Bypasses VPN and proxy detection across the application so messages and calls work over VPN.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.329",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Bypass security and package checks",
+            "description": "Bypasses package verification in AuthBridge and BuildInfo to prevent profile crash and unofficial client warnings, disables dangerous app detection, and disables VPN detection.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.329",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Clone app",
+            "description": "Changes the package name to com.vk.im.morphe so VK Messenger can be installed side-by-side with the official app.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.329",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "packageName",
+                    "title": "Package name",
+                    "description": "Package name to use for the cloned app.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "Default",
+                    "values": {
+                        "Default": "Default"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Disable telemetry",
+            "description": "Disables MyTracker analytics. VK's internal AppStartReporter / BaseAnalyticsSender are intentionally left intact because they carry notification-sync/heartbeat traffic.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.329",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Fix Tracer manifest for clone",
+            "description": "Points the OK Tracer manifest at the cloned package name, otherwise its upload thread throws IllegalStateException and takes the app down on login.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.329",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Fix push notifications",
+            "description": "Sends the official package name and signing certificate in Firebase requests, so a re-signed or cloned app gets an FCM token and receives push notifications in the background.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.329",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Native anti-tamper bypass",
+            "description": "Neutralizes the signature checks in libvkmedia.so that exit the process when the APK carries a custom signing key.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.vk.im",
+                    "name": "VK Messenger",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#0077FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.329",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 28,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        }
+    ]
+}
