@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.28.0",
+  "version": "1.29.0",
   "patches": [
     {
       "name": "App name",
@@ -21,14 +21,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -64,14 +64,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -85,15 +85,15 @@
           "type": "kotlin.String",
           "default": "highest",
           "values": {
-            "highest": "Highest available (the video's best, 8K included)",
-            "4320": "8K (4320p)",
-            "2160": "4K (2160p)",
-            "1440": "1440p",
-            "1080": "1080p (Full HD)",
-            "720": "720p HD",
-            "480": "480p",
-            "360": "360p",
-            "auto": "Auto (the app's own per-video choice)"
+            "Highest available (the video's best, 8K included)": "highest",
+            "8K (4320p)": "4320",
+            "4K (2160p)": "2160",
+            "1440p": "1440",
+            "1080p (Full HD)": "1080",
+            "720p HD": "720",
+            "480p": "480",
+            "360p": "360",
+            "Auto (the app's own per-video choice)": "auto"
           }
         }
       ]
@@ -117,14 +117,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -214,14 +214,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -247,14 +247,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -268,8 +268,8 @@
           "type": "kotlin.String",
           "default": "app.morphe.android.youtube",
           "values": {
-            "app.morphe.android.youtube": "Clone — separate app next to the store app (recommended)",
-            "com.google.android.apps.youtube.vr.oculus": "Replace the official app — removes the store copy; Meta then treats this build as YouTube VR"
+            "Clone — separate app next to the store app (recommended)": "app.morphe.android.youtube",
+            "Replace the official app — removes the store copy; Meta then treats this build as YouTube VR": "com.google.android.apps.youtube.vr.oculus"
           }
         },
         {
@@ -293,6 +293,41 @@
       ]
     },
     {
+      "name": "Patch settings",
+      "description": "Builds the in-headset \"Patch settings\" hub and the SponsorBlock settings screen. The resource half of the SponsorBlock patch, which mines what this patch restructures the XML with.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.youtube.vr.oculus",
+          "name": "YouTube VR",
+          "description": "The Meta Quest build of YouTube VR. These patches make playback ad-free, add SponsorBlock and a starting video quality, and install as a clone beside the store app.",
+          "apkFileType": "APK",
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.89.09",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Verified: every fingerprint was re-derived against this build."
+            },
+            {
+              "version": "1.88.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Verified: every fingerprint was re-derived against this build."
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "QUIC (HTTP/3)",
       "description": "Adds the in-headset switch for QUIC, the transport under HTTP/3: TLS over UDP, used for this app's API and media requests. Leave it on unless playback stalls on a network that blocks or throttles UDP 443 (corporate Wi-Fi, many VPNs), where turning it off forces TCP/TLS. A change applies after the app restarts.",
       "default": true,
@@ -311,14 +346,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -354,14 +389,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -387,14 +422,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -417,11 +452,11 @@
           "type": "kotlin.String",
           "default": "skip-once",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -432,11 +467,11 @@
           "type": "kotlin.String",
           "default": "manual-skip",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -447,11 +482,11 @@
           "type": "kotlin.String",
           "default": "manual-skip",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -462,11 +497,11 @@
           "type": "kotlin.String",
           "default": "manual-skip",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -477,11 +512,11 @@
           "type": "kotlin.String",
           "default": "manual-skip",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -492,11 +527,11 @@
           "type": "kotlin.String",
           "default": "ignore",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -507,11 +542,11 @@
           "type": "kotlin.String",
           "default": "ignore",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -522,11 +557,11 @@
           "type": "kotlin.String",
           "default": "ignore",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -537,11 +572,11 @@
           "type": "kotlin.String",
           "default": "manual-skip",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         },
         {
@@ -552,11 +587,11 @@
           "type": "kotlin.String",
           "default": "manual-skip",
           "values": {
-            "skip": "Skip automatically (a backwards seek skips it again)",
-            "skip-once": "Skip automatically once (a backwards seek stays)",
-            "manual-skip": "Show a Skip button in the player (nothing is skipped until it is pressed)",
-            "seekbar-only": "Show on the seekbar only (never skips)",
-            "ignore": "Leave alone"
+            "Skip automatically (a backwards seek skips it again)": "skip",
+            "Skip automatically once (a backwards seek stays)": "skip-once",
+            "Show a Skip button in the player (nothing is skipped until it is pressed)": "manual-skip",
+            "Show on the seekbar only (never skips)": "seekbar-only",
+            "Leave alone": "ignore"
           }
         }
       ]
@@ -580,14 +615,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
@@ -623,14 +658,14 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             },
             {
               "version": "1.88.10",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
-              "description": null
+              "description": "Verified: every fingerprint was re-derived against this build."
             }
           ]
         }
