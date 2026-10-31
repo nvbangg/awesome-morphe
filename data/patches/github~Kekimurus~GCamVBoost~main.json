@@ -1,0 +1,382 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.0.0",
+  "patches": [
+    {
+      "name": "Clone Google Camera",
+      "description": "Changes the package name (default com.google.android.GoogleCameraEng) so the patched app installs next to the stock Google Camera. Renames provider authorities and custom permissions in the manifest and the matching strings in code.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.GoogleCamera",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.google.android.GoogleCameraEng",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name for the cloned app. Must differ from any Google Camera already installed.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.google.android.GoogleCameraEng",
+          "values": null
+        },
+        {
+          "key": "appLabel",
+          "title": "App name",
+          "description": "Optional launcher name for the clone, for example \"Camera Eng\". Leave empty to keep the original name.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "renameCodeReferences",
+          "title": "Rename package name in code",
+          "description": "Replaces hard-coded references to the old package name in code, so internal intents open the clone instead of the stock app.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Fix Magic Capture crash",
+      "description": "Bypasses EdgeTPU JNI native initialization in Magic Capture and falls back to CPU scoring to prevent SIGABRT crashes on non-stock signatures.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.GoogleCameraEng",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.google.android.GoogleCamera",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "patchAddMeEdgeTpu",
+          "title": "Also fix Add Me (All-In) EdgeTPU crash",
+          "description": "Makes Add Me use its CPU models instead of the EdgeTPU ones, which crash (SIGABRT) on re-signed builds.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Fix MediaProvider invalid column crash",
+      "description": "Prevents IllegalArgumentException crashes on file_name and restore_path columns when saving Video Boost or querying MediaStore without stock Google Photos signatures.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.GoogleCameraEng",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.google.android.GoogleCamera",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "stripContentValuesPut",
+          "title": "Strip file_name and restore_path from ContentValues",
+          "description": "Neutralizes ContentValues.put() calls for proprietary file_name and restore_path columns.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "remapStandardColumns",
+          "title": "Remap columns to standard MediaStore equivalents",
+          "description": "Replaces file_name with _display_name and restore_path with relative_path in query projections and Cursor lookups.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Fix launcher app shortcuts",
+      "description": "Updates static launcher shortcuts (Take a selfie, Take a video) in shortcuts.xml so they target the modified package instead of throwing 'App isn't installed'.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.GoogleCameraEng",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.google.android.GoogleCamera",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "targetPackageName",
+          "title": "Target package name",
+          "description": "The package name that launcher shortcut intents should open. Leave empty to use the app's own package name (recommended).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Video Boost shortcuts",
+      "description": "Adds two launcher shortcuts that open video mode with Video Boost on or off (\"Video VB On\" and \"Video VB Off\" by default).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.GoogleCameraEng",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.google.android.GoogleCamera",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "onLabel",
+          "title": "Video Boost on label",
+          "description": "Name of the shortcut that opens video mode with Video Boost on.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Video VB On",
+          "values": null
+        },
+        {
+          "key": "offLabel",
+          "title": "Video Boost off label",
+          "description": "Name of the shortcut that opens video mode with Video Boost off.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Video VB Off",
+          "values": null
+        },
+        {
+          "key": "keepOriginalVideoShortcut",
+          "title": "Keep original Video shortcut",
+          "description": "Also keep the stock \"Video\" shortcut. Most launchers only show the first 4 shortcuts.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Video Boost startup state",
+      "description": "Controls Video Boost when the camera opens: remember the last setting (default), always on, or always off. Video Boost can still be switched on and off as usual.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.GoogleCameraEng",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.google.android.GoogleCamera",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "mode",
+          "title": "Video Boost on launch",
+          "description": "What Video Boost is set to when the camera opens. Launcher shortcuts from \"Video Boost shortcuts\" override this.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "remember",
+          "values": {
+            "Remember last setting": "remember",
+            "Always on": "on",
+            "Always off (stock)": "off"
+          }
+        },
+        {
+          "key": "rememberDefaultOn",
+          "title": "First launch: Video Boost on",
+          "description": "With \"Remember last setting\", whether Video Boost starts on before it has ever been changed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    }
+  ]
+}
