@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "patches": [
     {
       "name": "Block Ad Server",
@@ -30,7 +30,7 @@
     },
     {
       "name": "Enable Online Pro",
-      "description": "Experimental companion patch that keeps byAir's online Pro gates open without forcing the crash-prone global entitlement refresh path.",
+      "description": "Experimental companion patch that keeps byAir's online Pro status from being downgraded: forces the pro-status sync to always persist isSubscriber = true into the local user table, so a later RevenueCat refresh or a failed network round-trip cannot turn Pro back off.",
       "default": false,
       "dependencies": [
         "BytecodePatch"
@@ -50,6 +50,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "2.42.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -58,7 +65,7 @@
     },
     {
       "name": "Enable Pro",
-      "description": "Suppresses the main byAir paywall, unlock banners, local user gating, and the notifications preferences \"All\" gate.",
+      "description": "Unlocks byAir Pro: forces the RevenueCat entitlement to \"subscriber\" and marks the local user as a subscriber, which is what the pro banner, flight-details and flight-time gates read.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -72,6 +79,13 @@
           "targets": [
             {
               "version": "2.41.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.42.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -161,6 +175,32 @@
       "options": []
     },
     {
+      "name": "Remove Interstitial Ads",
+      "description": "Stops the between-games Unity LevelPlay/IronSource interstitial from being loaded or shown. The app's own `mm_noads_new` purchase sets `Settings.playWithJokerOld` to suppress it, so this also gives that paid behaviour to builds without the purchase.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "sapan.marriagedroid",
+          "name": "Marriage Card Game",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#C62828",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "15.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove License Activity",
       "description": "Removes the PairIP LicenseActivity from AndroidManifest.xml.",
       "default": true,
@@ -209,6 +249,13 @@
             },
             {
               "version": "1.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.7.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -421,6 +468,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "2.42.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -429,7 +483,7 @@
     },
     {
       "name": "Remove Watermark",
-      "description": "Patches the procedural GLSL shader in libharwin_native.so to disable the \"PRISMATICA\" watermark in the video player and exported videos.",
+      "description": "Removes the \"PRISMATICA\" watermark from the live preview and GPU exports by retargeting the free-tier gate of the procedural GLSL fragment shader embedded in libharwin_native.so: `if (uIsPro == 0)` becomes `if (uIsPro == 2)`, a value the renderer can never pass because the uniform is filled from one native field that only holds 0 or 1. Builds that already gate on `uIsPro == 2` (1.5.8 and later) have the branch unreachable and are reported as already watermark-free instead of failing.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -480,6 +534,67 @@
       "options": []
     },
     {
+      "name": "Scan camera QR to join Wi-Fi",
+      "description": "EXPERIMENTAL. Only one setup has been tested: a ZV-E10 on app 3.6.0 over Wi-Fi Direct (Smartphone Connect). It hooks several internal screens of Sony's app, so a Sony update can break it, and some failures fall back to the stock behaviour without an error. Works together with ZV-E10 Wi-Fi support, which you need to enable as well.\n\nOne-step Wi-Fi connection for the original ZV-E10. Scan the QR code the camera shows (Network > Smartphone Connect / Ctrl w/ Smartphone) and the app joins the camera's hotspot, runs its own search, and selects the ZV-E10 for you, so you land on the connected page with Remote Shooting and Import. No typing the password into Android's Wi-Fi settings.\n\nHOW: adds a \"ZV-E10\" row to the first-time model picker (the stock guide for the Mark II is a Bluetooth pairing that does not work on the ZV-E10) and puts the same prompt in front of the gear menu's \"Connect only via Wi-Fi\". The prompt offers: Reconnect to the last camera (saved after a successful join, no scan needed), Scan the camera's QR code, or Already connected. Android's own Wi-Fi approval prompt still appears each time.\n\nWORKS: the Wi-Fi QR of Sony cameras that use the \"W01:S:…;P:…;C:…;M:…;\" format; Remote Shooting after the connection (tested on a ZV-E10, app 3.6.0, Wi-Fi Direct / Smartphone Connect).\n\nCAMERA LIMITS (the ZV-E10 itself; no patch can change these):\n- The Wi-Fi QR only exists on the camera's Smartphone Connect screen, so the camera must be showing it every time you connect.\n- Bluetooth pairing does not work on the ZV-E10 (its Bluetooth service lacks what the app needs). This patch replaces it with the QR.\n- Movies are not copied automatically, and Import and Send to Smartphone only work with PC Remote off (see ZV-E10 Wi-Fi support).\n\nANDROID LIMITS: Android's own Wi-Fi approval prompt appears every time, Location must be on, and joining does not work while a VPN is on.\n\nNOT COVERED BY THIS PATCH: Import, other cameras, and reconnecting after the camera was restarted were not checked. It adds the CAMERA permission.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.ips.portalapp",
+          "name": "Creators' App",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F1F1F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.5.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.6.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip Public Zone Rewarded Ad",
+      "description": "Skips the rewarded Unity LevelPlay video that gates the Public Zone matchmaker and reports it as watched immediately, so the room search starts at once. The app's `mm_noads_new` purchase does not cover this ad.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "sapan.marriagedroid",
+          "name": "Marriage Card Game",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#C62828",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "15.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Skip hourly gift cooldown",
       "description": "Removes the one-hour countdown gate on the lobby gift button, so the gift screen opens on every press instead of after the timer. The window is computed on the device (account.giftTimeStamp + 1 h) - this only removes that gate; whether the server accepts a claim inside the hour is up to the server.",
       "default": true,
@@ -495,6 +610,39 @@
           "targets": [
             {
               "version": "2.8.45",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip mandatory sign-in",
+      "description": "Creators' App forces a Creators' Cloud sign-in before connecting a first camera when the region is mainland China, or when a Sony server flag turns it on for other regions. This makes that check always answer \"not required\", so no region workaround is needed. Sign-in stays available and optional.\n\nSUPPORTED: connecting a first camera without signing in, on any region. First-launch sign-in was already skippable. With this on, the upstream tip of choosing Hong Kong as the region is not needed.\nNOT SUPPORTED: Creators' Cloud features (cloud upload, cloud registration) still need an account. Not tested on a device.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.ips.portalapp",
+          "name": "Creators' App",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F1F1F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.5.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.6.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -532,6 +680,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.7.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -561,6 +716,13 @@
             },
             {
               "version": "1.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.7.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -683,6 +845,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.4.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -769,7 +938,7 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Forces Atlas Photo's Hermes (React Native) JS runtime to treat every session as a Pro subscriber by patching the setIsProMember reducer so its isPro field is always truthy. Unlocks all Pro features and removes the Pro paywall.",
+      "description": "Forces Atlas Photo's Hermes (React Native) JS runtime to treat every session as a Pro subscriber by patching the setIsProMember store writer, so the isProMember flag is always truthy. Unlocks all Pro features and removes the Pro paywall.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -783,6 +952,168 @@
           "targets": [
             {
               "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks Prismatica Pro by pinning PurchaseService._pro at its single startup writer in the Dart AOT snapshot (libapp.so). The pro flag is a plain bool with no receipt or signature check; `initialize` restores it from one SharedPreferences bool and every paywall reads one bit of it. The patch retargets the null-coalesce branch and rewrites the false literal to the exact value a real purchase writes (NULL+0x20), and does the same in the async catch handler, so no Pro feature can fall back to the paywall. Covered: Batch Export, cross-project grade copy/paste. Grading tools are free and unchanged. Statically and packaging verified on 1.5.8; not yet exercised on a device.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.harwin.prismatica",
+          "name": "Prismatica Pro",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#8B5CF6",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "ZV-E10 USB support",
+      "description": "EXPERIMENTAL. Not yet tested on a device with app 3.6.0; the behaviour below is what the upstream project saw on 3.5.0 with the same changes.\n\nLets Creators' App use the original ZV-E10 over USB (PC Remote): adds it to the supported-camera list and forces USB sessions into remote-control mode. NOTE: this applies to every camera on USB, so other cameras lose USB contents transfer with it (the app cannot know the model before it connects).\n\nWORKS over USB (camera set to PC Remote: On, Cnct Method: USB): connection, live view and exposure controls, photo capture, automatic copy of photos to the phone, movie recording.\n\nCAMERA LIMITS (the ZV-E10 itself; no patch can change these):\n- Over USB the camera only offers PC Remote, and in PC Remote it exposes no storage and refuses to send images. So Import and Send to Smartphone cannot work over USB. Use Wi-Fi with PC Remote off to transfer.\n- A movie is never copied automatically after recording: the camera's save-destination setting covers still images only.\n- Bluetooth pairing does not work on the ZV-E10, but over USB it is not needed: the camera appears by itself, there is no Add camera step.\n\nNOT COVERED BY THIS PATCH:\n- The Import button is not hidden on the USB camera card (upstream hides it; that part is not ported). Tapping it shows a storage error, which is expected.\n- Other firmware versions, other app versions, other cameras.\n\nHOW TO USE: on the camera set Network > PC Remote Function to PC Remote: On and PC Remote Cnct Method: USB. Plug the camera into the phone with a data-capable USB-C cable and allow USB access for Creators' App when Android asks. The ZV-E10 then appears by itself on the Cameras tab (no scan, no picker) with a Remote Shooting button. If another app (e.g. Gallery) asks for USB access, tap Cancel, or live view stops until you reconnect. Set Still Img. Save Dest. to PC+Camera so photos also stay on the card. Uninstall the original app first (different signing key).\nSupport list is from the upstream project (ZV-E10 firmware 2.03, app 3.5.0); it has not been re-tested on 3.6.0.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.ips.portalapp",
+          "name": "Creators' App",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F1F1F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.5.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.6.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "ZV-E10 Wi-Fi support",
+      "description": "EXPERIMENTAL. Only one setup has been tested: a ZV-E10 on app 3.6.0 over Wi-Fi Direct (Smartphone Connect). PC Remote over Wi-Fi, Import, other firmware and other app versions are untested, and it may stop working when Sony updates the app.\n\nLets Creators' App list, connect to and use the original ZV-E10 over Wi-Fi (PC Remote and Smartphone Connect): accepts its protocol version, keeps a PC Remote session in remote-control mode, and enables Import / camera-initiated transfer.\n\nWORKS over Wi-Fi: connection, live view and exposure controls, photo capture, automatic copy of photos to the phone, movie recording. With Smartphone Connect (PC Remote OFF on the camera) also Send to Smartphone from the camera and Import (browse the card from the phone). Upstream saw all of this on 3.5.0; this patch's own device test on 3.6.0 covered connection and Remote Shooting.\n\nCAMERA LIMITS (the ZV-E10 itself; no patch can change these):\n- It offers two Wi-Fi services with different abilities: PC Remote (remote control) and Smartphone Connect / Send to Smartphone (file transfer).\n- While PC Remote is on, the camera exposes no storage and refuses to send images, so Import and Send to Smartphone cannot work then. Turn PC Remote off to transfer.\n- Smartphone Connect works over Wi-Fi Direct only (the camera's own hotspot), not through a router. PC Remote also works through a router (access point).\n- A movie is never copied automatically after recording: the camera's save-destination setting covers still images only. Use Import or send it from the camera.\n- Bluetooth pairing does not work: the ZV-E10's Bluetooth service lacks what the app's pairing flow needs (it stops right after bonding). Use the Wi-Fi search list, or the QR patch, instead.\n\nNOT COVERED BY THIS PATCH: other firmware versions, other app versions, other cameras.\n\nSETUP (from upstream's testing on 3.5.0): for remote control set the camera's Network > PC Remote Function to PC Remote: On, with Cnct Method Wi-Fi Access Point or Wi-Fi Direct; in the app use Cameras > gear icon > Connect only via Wi-Fi. For transfer / Import turn PC Remote OFF, start Send to Smartphone or Smartphone Connect on the camera, join its DIRECT-... hotspot, then Connect only via Wi-Fi. Set Still Img. Save Dest. to PC+Camera (or Phone+Camera) so photos also stay on the card. Uninstall the original app first (different signing key).\nSupport list is from the upstream project (ZV-E10 firmware 2.03, app 3.5.0); it has not been re-tested on 3.6.0.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.ips.portalapp",
+          "name": "Creators' App",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F1F1F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.5.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.6.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "ZV-E10 core",
+      "description": "Shared fixes for using the original ZV-E10 with Creators' App: skips the SDIO_GetDeviceLog request the camera rejects (which poisons the session), keeps a remote-control session out of contents-transfer mode, and starts live view when it is already running. Enabled automatically by the Wi-Fi and USB patches; does nothing on its own.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.ips.portalapp",
+          "name": "Creators' App",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F1F1F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.5.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.6.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "ZV-E10 debug trace",
+      "description": "Debug only. Logs the app's PTP/IP session with the camera (every operation it sends, whether the camera answered, failed or timed out, and who closed the session) to logcat under the tag ZVPATCH. Use it to find out why a connected camera does not open Remote Shooting or Import: `adb logcat -s ZVPATCH`. Not for everyday use.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.sony.ips.portalapp",
+          "name": "Creators' App",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F1F1F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.5.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.6.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
