@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "patches": [
     {
       "name": "Allow standalone install (split-less APK)",
@@ -69,7 +69,7 @@
     {
       "name": "Chat button on profiles",
       "description": "Adds a 'Chat' entry to the profile screen's ⋯ menu: opens your conversation with that user when one exists, otherwise their profile (channels are server-created — no fake channel making).",
-      "default": true,
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -725,6 +725,37 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Relocate runtime MMKV copy",
+      "description": "Copies the bundled MMKV library to a fresh file name so a stale copy from another ABI can never be loaded (fixes emulator crashes; no effect on a clean device).",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "pdb.app",
+          "name": "Pdb",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.135.1",
+              "versionCodes": {
+                "ARM64_V8A": 2709,
+                "ARMEABI_V7A": 2709,
+                "X86_64": 2709,
+                "X86": 2709
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Remove AI assistant FAB (+ footer patch id)",
