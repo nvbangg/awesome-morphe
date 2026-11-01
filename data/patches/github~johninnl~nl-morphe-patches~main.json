@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.14.0",
+  "version": "1.19.1",
   "patches": [
     {
       "name": "Alert distances",
@@ -267,6 +267,87 @@
       ]
     },
     {
+      "name": "Broadcast navigation data",
+      "description": "Shares current speed, road limits and observed average-speed zone progress with compatible local apps, also in the background without an overlay.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.flitsmeister",
+          "name": "Flitsmeister",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "ba4fdde5ed7d1082f6ba1af87df2ca39c81b094af20d36ff55b583aa3e3353e6"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "14.17",
+              "versionCodes": {
+                "ARM64_V8A": 1287,
+                "ARMEABI_V7A": 1287,
+                "X86_64": 1287,
+                "X86": 1287
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "receiverPackage",
+          "title": "Receiver package",
+          "description": "Optional target Android package. Blank sends to running compatible local receivers.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Broadcast navigation data",
+      "description": "Broadcasts current speed, the road speed limit and average-speed zone observations locally, including in the background. No overlay required.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "receiverPackage",
+          "title": "Receiver package",
+          "description": "Optional target app package. Blank broadcasts to running compatible local receivers.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Change app name",
       "description": "Renames Waze.",
       "default": true,
@@ -400,6 +481,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ThreatMetrix",
+      "description": "Stops device/security profiling and its session headers.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "be.tweedehands.m",
+          "name": "2dehands",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "7c2c46aca6a23f0523b69cac1a21f03078be6fd41b3811874c4be1344c23ba47"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.19.0",
+              "versionCodes": {
+                "ARM64_V8A": 633464,
+                "ARMEABI_V7A": 633464,
+                "X86_64": 633464,
+                "X86": 633464
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -1595,6 +1710,40 @@
     },
     {
       "name": "Disable tracking",
+      "description": "Stops optional analytics, marketing, Gemius/CIM and device profiling.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "be.tweedehands.m",
+          "name": "2dehands",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "7c2c46aca6a23f0523b69cac1a21f03078be6fd41b3811874c4be1344c23ba47"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.19.0",
+              "versionCodes": {
+                "ARM64_V8A": 633464,
+                "ARMEABI_V7A": 633464,
+                "X86_64": 633464,
+                "X86": 633464
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
       "description": "Disables audited analytics, profiling, advertising identifiers and known stored telemetry uploads. Preserves account authentication, push infrastructure and native media playback.",
       "default": true,
       "category": null,
@@ -2195,6 +2344,61 @@
       ]
     },
     {
+      "name": "Gearslip music browser support",
+      "description": "Allows installed Gearslip hosts to browse YouTube Music using their actual Android caller UID, without Google Android Auto.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.youtube.music",
+          "name": "YouTube Music",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "app.morphe.android.apps.youtube.music",
+          "name": "YouTube Music",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageNames",
+          "title": "Trusted Gearslip packages",
+          "description": "Comma-separated installed Gearslip host package names. Each caller must own its package under its actual callback UID.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.seb3thehacker.gearslip",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Google sign-in via microG-Re",
       "description": "Routes Google sign-in through an installed microG-Re with Credential Manager support. Preserves the original route when that service is unavailable; device sign-in testing is required.",
       "default": true,
@@ -2221,6 +2425,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Guest mode",
+      "description": "Adds Continue as guest to onboarding, allows reopening without an account and hides the guest sign-up card. Keeps optional login and services that require a genuine account.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.flitsmeister",
+          "name": "Flitsmeister",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "ba4fdde5ed7d1082f6ba1af87df2ca39c81b094af20d36ff55b583aa3e3353e6"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "14.17",
+              "versionCodes": {
+                "ARM64_V8A": 1287,
+                "ARMEABI_V7A": 1287,
+                "X86_64": 1287,
+                "X86": 1287
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -4138,6 +4376,40 @@
     },
     {
       "name": "Hide ads",
+      "description": "Removes display/native ads, paid seller placements, promotional search cards and advertising measurements.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "be.tweedehands.m",
+          "name": "2dehands",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "7c2c46aca6a23f0523b69cac1a21f03078be6fd41b3811874c4be1344c23ba47"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.19.0",
+              "versionCodes": {
+                "ARM64_V8A": 633464,
+                "ARMEABI_V7A": 633464,
+                "X86_64": 633464,
+                "X86": 633464
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
       "description": "Hides native ad placements and publisher marketing cards, and blocks display/video ad activation while preserving articles, content playback and navigation.",
       "default": true,
       "category": null,
@@ -4401,6 +4673,60 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Hide apps from drawer",
+      "description": "Hides selected packages from Gearslip's discovered app tiles. Does not disable or uninstall apps; Gearslip's built-in Settings remain available.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "app.seb3thehacker.gearslip",
+          "name": "Gearslip",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#7C95D6",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "0.3.12-alpha",
+              "versionCodes": {
+                "ARM64_V8A": 12,
+                "ARMEABI_V7A": 12,
+                "X86_64": 12,
+                "X86": 12
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "0.3.31-alpha",
+              "versionCodes": {
+                "ARM64_V8A": 13,
+                "ARMEABI_V7A": 13,
+                "X86_64": 13,
+                "X86": 13
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hiddenPackages",
+          "title": "Packages to hide",
+          "description": "Comma-separated Android package names. Empty keeps Gearslip's own exclusions only. All discovered tiles from each listed package are hidden.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Hide empty listening carousel",
@@ -4735,6 +5061,50 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep music player entries",
+      "description": "Keeps a music app's player available when it also provides a car Settings screen, including YT Music Morphe. Uses Gearslip's existing docked player.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "app.seb3thehacker.gearslip",
+          "name": "Gearslip",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#7C95D6",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "0.3.12-alpha",
+              "versionCodes": {
+                "ARM64_V8A": 12,
+                "ARMEABI_V7A": 12,
+                "X86_64": 12,
+                "X86": 12
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "0.3.31-alpha",
+              "versionCodes": {
+                "ARM64_V8A": 13,
+                "ARMEABI_V7A": 13,
+                "X86_64": 13,
+                "X86": 13
+              },
+              "isExperimental": false,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -6566,6 +6936,40 @@
     },
     {
       "name": "Skip consent screens",
+      "description": "Hides startup and manual privacy forms and requests genuine reject-all consent.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "be.tweedehands.m",
+          "name": "2dehands",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "7c2c46aca6a23f0523b69cac1a21f03078be6fd41b3811874c4be1344c23ba47"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.19.0",
+              "versionCodes": {
+                "ARM64_V8A": 633464,
+                "ARMEABI_V7A": 633464,
+                "X86_64": 633464,
+                "X86": 633464
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip consent screens",
       "description": "Stops startup and manually reopened advertising-consent forms before display, without inventing a consent choice. Preserves the app's age check for betting features.",
       "default": true,
       "category": null,
@@ -7014,6 +7418,33 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Support Gearslip",
+      "description": "Allows the official Gearslip release host while retaining Android Auto host validation.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Unlock Plus",
