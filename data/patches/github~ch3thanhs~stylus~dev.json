@@ -1,10 +1,58 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.3",
+  "version": "1.9.0",
   "patches": [
     {
-      "name": "Custom font (GitHub)",
-      "description": "Replaces GitHub's bundled Inter and Mona Sans UI fonts with a custom font file.",
+      "name": "Custom font",
+      "description": "Replaces the bundled DM Sans UI fonts with your own font.",
+      "default": false,
+      "category": "Font",
+      "compatiblePackages": [
+        {
+          "packageName": "com.x8bit.bitwarden",
+          "name": "Bitwarden",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#175DDC",
+          "signatures": [
+            "24e06c04c208048f19f1c993b4dda4430ea8b06db8375ea0e37b834696b9ac3a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customFontFile",
+          "title": "Custom font",
+          "description": "The file path to your font. Tap the file picker and select it. The font must be in TTF or OTF format. A variable font is recommended so heading and body text keep their different weights.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "fontFeatureSettings",
+          "title": "Font feature settings",
+          "description": "Optional OpenType features for the custom font. For example, enter 'ss01' 1 to use Inter's open-style digits. You can also paste a CSS declaration such as font-feature-settings: \"ss01\" 1;. Android ignores features that the selected font does not support.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom font",
+      "description": "Replaces the bundled Inter and Mona Sans UI fonts with your own font.",
       "default": false,
       "category": "Font",
       "compatiblePackages": [
@@ -33,7 +81,7 @@
         {
           "key": "customFontFile",
           "title": "Custom font",
-          "description": "The file path to your font file. Tap the file picker and select it. The font file must be in TTF or OTF format. A variable font is recommended so heading and body text keep their different weights.",
+          "description": "The file path to your font. Tap the file picker and select it. The font must be in TTF or OTF format. A variable font is recommended so heading and body text keep their different weights.",
           "required": true,
           "type": "kotlin.String",
           "default": null,
@@ -42,8 +90,8 @@
       ]
     },
     {
-      "name": "Custom font (Where is my Train)",
-      "description": "Replaces Where is my Train's bundled Google Sans, Nunito Sans, and Roboto UI fonts with a custom font file. Optional OpenType feature settings can enable alternate digits such as Inter's ss01 open-style numbers.",
+      "name": "Custom font",
+      "description": "Replaces the bundled Google Sans, Nunito Sans, and Roboto UI fonts with your own font.",
       "default": false,
       "category": "Font",
       "compatiblePackages": [
@@ -72,7 +120,7 @@
         {
           "key": "customFontFile",
           "title": "Custom font",
-          "description": "The file path to your font file. Tap the file picker and select it. The font file must be in TTF or OTF format. A variable font is recommended so heading and body text keep their different weights.",
+          "description": "The file path to your font. Tap the file picker and select it. The font must be in TTF or OTF format. A variable font is recommended so heading and body text keep their different weights.",
           "required": true,
           "type": "kotlin.String",
           "default": null,
@@ -90,8 +138,47 @@
       ]
     },
     {
-      "name": "Custom monospace font (GitHub)",
-      "description": "Replaces GitHub's bundled Roboto Mono code font with a custom monospace font file.",
+      "name": "Custom monospace font",
+      "description": "Replaces the bundled Roboto Mono font with your own monospace font.",
+      "default": false,
+      "category": "Font",
+      "compatiblePackages": [
+        {
+          "packageName": "com.x8bit.bitwarden",
+          "name": "Bitwarden",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#175DDC",
+          "signatures": [
+            "24e06c04c208048f19f1c993b4dda4430ea8b06db8375ea0e37b834696b9ac3a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customMonospaceFontFile",
+          "title": "Custom monospace font",
+          "description": "The file path to your monospace font. Tap the file picker and select it. The font must be in TTF or OTF format.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom monospace font",
+      "description": "Replaces the bundled Roboto Mono code font with your own monospace font.",
       "default": false,
       "category": "Font",
       "compatiblePackages": [
@@ -120,7 +207,7 @@
         {
           "key": "customMonospaceFontFile",
           "title": "Custom monospace font",
-          "description": "The file path to your monospace font file. Tap the file picker and select it. The font file must be in TTF or OTF format.",
+          "description": "The file path to your monospace font. Tap the file picker and select it. The font must be in TTF or OTF format.",
           "required": true,
           "type": "kotlin.String",
           "default": null,
@@ -129,8 +216,8 @@
       ]
     },
     {
-      "name": "Force system font (Bitwarden)",
-      "description": "Renders the app using the device's system font instead of DM Sans / Roboto.",
+      "name": "Force system font",
+      "description": "Uses the device's system font for UI text. Monospace text keeps its bundled font.",
       "default": true,
       "category": "Font",
       "compatiblePackages": [
@@ -146,7 +233,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2026.10.0",
+              "version": "2026.10.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 29,
@@ -158,8 +245,8 @@
       "options": []
     },
     {
-      "name": "Force system font (GitHub)",
-      "description": "Renders GitHub UI text using the device system font by overriding bundled font resources at runtime.",
+      "name": "Force system font",
+      "description": "Uses the device's system font for UI text.",
       "default": true,
       "category": "Font",
       "compatiblePackages": [
@@ -187,8 +274,8 @@
       "options": []
     },
     {
-      "name": "Force system font (Telegram)",
-      "description": "Renders the app using the device's system font instead of Telegram's bundled font.",
+      "name": "Force system font",
+      "description": "Uses the device's system font for all app text.",
       "default": true,
       "category": "Font",
       "compatiblePackages": [
@@ -236,8 +323,8 @@
       "options": []
     },
     {
-      "name": "Force system font (Where is my Train)",
-      "description": "Renders the app using the device's system font instead of Google Sans / Nunito Sans.",
+      "name": "Force system font",
+      "description": "Uses the device's system font for UI text.",
       "default": true,
       "category": "Font",
       "compatiblePackages": [
@@ -265,8 +352,8 @@
       "options": []
     },
     {
-      "name": "Force system font (including monospace) (GitHub)",
-      "description": "Renders GitHub UI and monospace text using the device system UI font.",
+      "name": "Force system font (including monospace)",
+      "description": "Uses the device's system font for UI and monospace text.",
       "default": false,
       "category": "Font",
       "compatiblePackages": [

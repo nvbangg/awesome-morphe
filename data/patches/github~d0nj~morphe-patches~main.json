@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.1",
+  "version": "1.4.2",
   "patches": [
     {
       "name": "Fix home screen numbers tile",
-      "description": "Niagara's Channels feature registers a diagnostic tip whose message is a giant fingerprint of concatenated hashCode() integers of up to 30 channel items (~850 digits). Because the provider accepts every tip request, this shows up as a tile of giant numbers on the home feed whenever the channel list refreshes, which happens when apps are installed, updated or removed (for example through ADB). Makes the provider decline tip requests so the diagnostic tip is never shown.",
+      "description": "Stops a Channels diagnostic tip from rendering as a tile of giant numbers on the home feed.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -30,7 +30,7 @@
     },
     {
       "name": "Remove analytics",
-      "description": "Disables all telemetry in Niagara Launcher: the weekly usage-report upload (app launches, notification metadata, survey responses), retention milestone events, GDPR consent sync, Singular attribution sessions and events (advertising ID, app set ID, install referrer, FCM token) and the runtime Firebase Analytics opt-in.",
+      "description": "Disables Niagara's usage-report uploads, retention events and analytics SDK sessions.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -92,6 +92,32 @@
           "description": null,
           "apkFileType": null,
           "appIconColor": "#6200EE",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Use Open-Meteo for weather",
+      "description": "Fetches weather from the free Open-Meteo API instead of Niagara's, so the at-a-glance tile works without an account.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "bitpit.launcher",
+          "name": "Niagara Launcher",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#1E88E5",
           "signatures": null,
           "targets": [
             {

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.11.0-dev.1",
+  "version": "1.11.0-dev.3",
   "patches": [
     {
       "name": "Bypass Zalo Drive Contacts permission gate",
@@ -292,7 +292,7 @@
     },
     {
       "name": "Configurable native backup interval",
-      "description": "Sets Zalo's automatic backup interval to 1, 3, 6 or 12 hours. Existing backup requirements still apply.",
+      "description": "Sets Zalo 26.08.01's automatic backup interval to 1, 3, 6 or 12 hours. Existing backup requirements still apply. For 26.10.02 use the in-app interval settings.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -309,15 +309,6 @@
               "version": "26.08.01",
               "versionCodes": {
                 "ARM64_V8A": 260801903
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "26.10.02",
-              "versionCodes": {
-                "ARM64_V8A": 261002903
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -568,8 +559,8 @@
     },
     {
       "name": "Enable stranger notifications",
-      "description": "Allows notifications for Stranger Box messages. Other notification settings, message delivery and server restrictions still apply.",
-      "default": false,
+      "description": "Adds an in-app switch to allow Stranger Box notifications, enabled by default. Off uses Zalo's native gate; other settings and delivery restrictions still apply.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -797,7 +788,7 @@
     },
     {
       "name": "Hide navigation tabs",
-      "description": "Adds Zeldris patches settings to control the Discovery and Timeline tabs.",
+      "description": "Adds settings to control the Discovery and Timeline tabs.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -817,6 +808,35 @@
               },
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide suggested accounts",
+      "description": "Removes suggested-account units from the Threads feed. Other suggestion surfaces are unchanged.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.barcelona",
+          "name": "Threads",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "453.0.0.56.79",
+              "versionCodes": {
+                "ARM64_V8A": 512308696
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -848,6 +868,35 @@
               "minSdk": 24,
               "description": null
             },
+            {
+              "version": "26.10.02",
+              "versionCodes": {
+                "ARM64_V8A": 261002903
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Native backup interval settings",
+      "description": "Adds a backup interval choice in Zeldris Patches. Native is the default; existing backup requirements apply.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.zing.zalo",
+          "name": "Zalo",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0068FF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
             {
               "version": "26.10.02",
               "versionCodes": {
@@ -1036,7 +1085,7 @@
     },
     {
       "name": "Remove media backup age limit",
-      "description": "Includes media of any age in Zalo's Google Drive backup. Drive retention and excluded media still apply.",
+      "description": "Includes media of any age in Drive backup and restore. Drive retention and excluded media still apply.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1074,7 +1123,7 @@
     },
     {
       "name": "Suppress outbound seen status",
-      "description": "Stops sending read receipts. Incoming read status and message delivery are unaffected.",
+      "description": "Stops sending read receipts while preserving delivery acknowledgements.",
       "default": true,
       "category": null,
       "compatiblePackages": [
