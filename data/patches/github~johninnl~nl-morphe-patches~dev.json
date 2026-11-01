@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0-dev.7",
+  "version": "1.23.0-dev.1",
   "patches": [
     {
       "name": "Alert distances",
@@ -139,6 +139,84 @@
       "options": []
     },
     {
+      "name": "Allow high refresh rate",
+      "description": "Lets Waze select supported phone display modes up to an adjustable ceiling. Does not guarantee rendering FPS.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "targetRefreshRate",
+          "title": "Refresh rate ceiling (Hz)",
+          "description": "60 to 120 Hz. Editable in Customization. Restart Waze after changing it; higher rates may use more power.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 90,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Auto zoom",
+      "description": "Keeps your auto-zoom choice after settings sync. Choose off, on or by speed.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "mode",
+          "title": "Auto-zoom mode",
+          "description": "Also editable in Customization after patching.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "speed",
+          "values": {
+            "Off": "no",
+            "On": "yes",
+            "By speed": "speed"
+          }
+        }
+      ]
+    },
+    {
       "name": "Average speed zone bar",
       "description": "Bar with progress and your average speed in an average speed zone. Off until switched on.",
       "default": true,
@@ -268,7 +346,7 @@
     },
     {
       "name": "Broadcast navigation data",
-      "description": "Shares current speed, road limits and observed average-speed zone progress with compatible local apps, also in the background without an overlay.",
+      "description": "Shares current speed, road limits, road alerts and approaching/active average-speed zones with compatible local apps, also in the background without an overlay.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -312,7 +390,7 @@
     },
     {
       "name": "Broadcast navigation data",
-      "description": "Broadcasts current speed, the road speed limit and average-speed zone observations locally, including in the background. No overlay required.",
+      "description": "Broadcasts current speed, road limits, road alerts and approaching/active average-speed zones locally, including in the background. No overlay required.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -346,6 +424,97 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Car alerts as notifications",
+      "description": "Uses car notifications for supported Waze alerts. Availability depends on the car host.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Car reconnect grace period",
+      "description": "Defers Android Auto projection shutdown for brief disconnections. Leaves the phone background timeout unchanged.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "minutes",
+          "title": "Reconnect grace period (minutes)",
+          "description": "1 to 10 minutes. Also editable in Customization; restart Waze/reconnect to apply.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 2,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Car traffic meter",
+      "description": "Enables the traffic meter on supported car navigation screens.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Change app name",
@@ -481,6 +650,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ThreatMetrix",
+      "description": "Stops device/security profiling and its session headers.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "be.tweedehands.m",
+          "name": "2dehands",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "7c2c46aca6a23f0523b69cac1a21f03078be6fd41b3811874c4be1344c23ba47"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.19.0",
+              "versionCodes": {
+                "ARM64_V8A": 633464,
+                "ARMEABI_V7A": 633464,
+                "X86_64": 633464,
+                "X86": 633464
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -1676,6 +1879,40 @@
     },
     {
       "name": "Disable tracking",
+      "description": "Stops optional analytics, marketing, Gemius/CIM and device profiling.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "be.tweedehands.m",
+          "name": "2dehands",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "7c2c46aca6a23f0523b69cac1a21f03078be6fd41b3811874c4be1344c23ba47"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.19.0",
+              "versionCodes": {
+                "ARM64_V8A": 633464,
+                "ARMEABI_V7A": 633464,
+                "X86_64": 633464,
+                "X86": 633464
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
       "description": "Disables audited analytics, profiling, advertising identifiers and known stored telemetry uploads. Preserves account authentication, push infrastructure and native media playback.",
       "default": true,
       "category": null,
@@ -1980,6 +2217,86 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "External speed controls",
+      "description": "Use De-Waze or Flitsmeister speed, limits, road warnings and partial average-zone progress in Vela and Android Auto, with native fallback and provider settings.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "app.vela",
+          "name": "Vela Maps",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": [
+            "29938b4858063e42e677ff95c901cd48248a7f032a3ae85f9b9e5617568b0d36"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "0.5.2621",
+              "versionCodes": {
+                "ARM64_V8A": 46210,
+                "ARMEABI_V7A": 46210,
+                "X86_64": 46210,
+                "X86": 46210
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Extra map info",
+      "description": "Separate switches for an always-visible compass and available toll prices.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "compass",
+          "title": "Always show compass",
+          "description": "Adds a compass switch in Customization.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "tolls",
+          "title": "Toll prices",
+          "description": "Shows prices when supplied with route data. Adds a separate switch in Customization.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Fix Google Maps",
@@ -2357,6 +2674,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Guest mode",
+      "description": "Adds Continue as guest to onboarding, allows reopening without an account and hides the guest sign-up card. Keeps optional login and services that require a genuine account.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "nl.flitsmeister",
+          "name": "Flitsmeister",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "ba4fdde5ed7d1082f6ba1af87df2ca39c81b094af20d36ff55b583aa3e3353e6"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "14.17",
+              "versionCodes": {
+                "ARM64_V8A": 1287,
+                "ARMEABI_V7A": 1287,
+                "X86_64": 1287,
+                "X86": 1287
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -4274,6 +4625,40 @@
     },
     {
       "name": "Hide ads",
+      "description": "Removes display/native ads, paid seller placements, promotional search cards and advertising measurements.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "be.tweedehands.m",
+          "name": "2dehands",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "7c2c46aca6a23f0523b69cac1a21f03078be6fd41b3811874c4be1344c23ba47"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.19.0",
+              "versionCodes": {
+                "ARM64_V8A": 633464,
+                "ARMEABI_V7A": 633464,
+                "X86_64": 633464,
+                "X86": 633464
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
       "description": "Hides native ad placements and publisher marketing cards, and blocks display/video ad activation while preserving articles, content playback and navigation.",
       "default": true,
       "category": null,
@@ -4540,8 +4925,8 @@
     },
     {
       "name": "Hide apps from drawer",
-      "description": "Hides selected packages from Gearslip's discovered app tiles. Does not disable or uninstall apps; Gearslip's built-in Settings remain available.",
-      "default": false,
+      "description": "Adds an Apps card to Gearslip's phone settings. Every installed car app is ticked by default; unticking one hides its tile from the car drawer. Does not disable or uninstall apps.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -4580,17 +4965,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "hiddenPackages",
-          "title": "Packages to hide",
-          "description": "Comma-separated Android package names. Empty keeps Gearslip's own exclusions only. All discovered tiles from each listed package are hidden.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "",
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
       "name": "Hide empty listening carousel",
@@ -4865,6 +5240,33 @@
       "options": []
     },
     {
+      "name": "Hide recent destinations",
+      "description": "Hides the native recent-destination list. Waze still stores the history; favorites and future events stay available.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide unavailable content",
       "description": "Hides subscription-required catalogue entries and action buttons, and removes empty seasons. Preserves content available to the current account and other access checks.",
       "default": true,
@@ -4891,6 +5293,40 @@
               },
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Individual Wuplay catalog rows",
+      "description": "Choose individual published Wuplay catalogs in Monet's Content picker, with Wuplay icons and refresh independent of Recommendations. Requires Wuplay's catalog publisher.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.klevico.monet",
+          "name": "Monet Android TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": [
+            "4bec386a6baae56f0694d3be54f67e0625b973109e0dbb947df2a5d0254975e0"
+          ],
+          "formFactor": "TV",
+          "targets": [
+            {
+              "version": "1.1.0",
+              "versionCodes": {
+                "ARM64_V8A": 134,
+                "ARMEABI_V7A": 134,
+                "X86_64": 134,
+                "X86": 134
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -4941,6 +5377,43 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Lane guidance",
+      "description": "Enables lane guidance and optional straight-ahead hints. Keeps your Waze lane-guidance preference.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "straightAhead",
+          "title": "Straight-ahead hints",
+          "description": "Adds a separate switch in Customization. Lane data must be available for the road.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Map skin",
@@ -5020,6 +5493,97 @@
           "required": true,
           "type": "kotlin.String",
           "default": "ebe7dd",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Native camera and hazard controls",
+      "description": "Keeps selected Waze camera and crosswalk alerts enabled, including map and notification gates. Needs Waze data.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "phone",
+          "title": "Phone-use cameras",
+          "description": "Adds a separate Customization switch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bus",
+          "title": "Bus-lane cameras",
+          "description": "Adds a separate Customization switch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "carpool",
+          "title": "Carpool-lane cameras",
+          "description": "Adds a separate Customization switch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hov",
+          "title": "HOV-lane cameras",
+          "description": "Adds a separate Customization switch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "noise",
+          "title": "Noise cameras",
+          "description": "Adds a separate Customization switch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "raisedCrosswalks",
+          "title": "Raised crosswalks",
+          "description": "Adds a separate Customization switch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "highwayCrosswalks",
+          "title": "Highway crosswalks",
+          "description": "Adds a separate Customization switch.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -5153,6 +5717,40 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Publish selected catalog channels",
+      "description": "Choose which default-profile Home catalogs to publish in Settings > Catalogs > TV channels. Publishes Android TV preview channels with artwork and Wuplay links; requires Android TV 8 or later.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "app.wuplay.androidtv",
+          "name": "Wuplay Android TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": [
+            "ae406f7d398ae1ae418238f83d07554e6aa6cf5855b66edb9c4c85995d435e7f"
+          ],
+          "formFactor": "TV",
+          "targets": [
+            {
+              "version": "0.9.4-beta",
+              "versionCodes": {
+                "ARM64_V8A": 49,
+                "ARMEABI_V7A": 49,
+                "X86_64": 49,
+                "X86": 49
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -6732,6 +7330,40 @@
     },
     {
       "name": "Skip consent screens",
+      "description": "Hides startup and manual privacy forms and requests genuine reject-all consent.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "be.tweedehands.m",
+          "name": "2dehands",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "7c2c46aca6a23f0523b69cac1a21f03078be6fd41b3811874c4be1344c23ba47"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "16.19.0",
+              "versionCodes": {
+                "ARM64_V8A": 633464,
+                "ARMEABI_V7A": 633464,
+                "X86_64": 633464,
+                "X86": 633464
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip consent screens",
       "description": "Stops startup and manually reopened advertising-consent forms before display, without inventing a consent choice. Preserves the app's age check for betting features.",
       "default": true,
       "category": null,
@@ -7024,6 +7656,52 @@
       "options": []
     },
     {
+      "name": "Speed bump controls",
+      "description": "Independent controls to show speed bumps on the map and silence their on-route warnings.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "map",
+          "title": "Map markers",
+          "description": "Adds Show speed bumps on map in Customization.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "silence",
+          "title": "Silence warnings",
+          "description": "Adds a separate suppression switch; does not hide map markers.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Speed camera alerts",
       "description": "Chime when a speed camera is ahead, from OpenStreetMap, in any country. No map pins or routing. Off until switched on.",
       "default": true,
@@ -7105,6 +7783,61 @@
       "options": []
     },
     {
+      "name": "Speed limit controls",
+      "description": "Keeps the speed limit visible and enables limit-drop warnings with an editable distance.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "alwaysShow",
+          "title": "Always show speed limit",
+          "description": "Adds a separate visibility switch. Reporting and sign style stay independent.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "limitDrops",
+          "title": "Limit-drop warnings",
+          "description": "Adds a separate warning switch in Customization.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "distance",
+          "title": "Limit-drop warning distance (m)",
+          "description": "0 to 20000 metres. Also editable in Customization after patching.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 1000,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Speed limit sign",
       "description": "One speed limit sign style in every country.",
       "default": false,
@@ -7183,7 +7916,7 @@
     },
     {
       "name": "Support Gearslip",
-      "description": "Allows the official Gearslip release host while retaining Android Auto host validation.",
+      "description": "Accepts Gearslip as a car host by package name, whichever key signed it, so a patched Gearslip keeps working. Other hosts keep Android Auto host validation.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -7235,6 +7968,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Enables locally enforced premium features and saves the premium preference on launcher startup.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.overdevs.at4k",
+          "name": "AT4K Launcher",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": [
+            "bfc84ab1296c72653ebca20a2f4cd293bc342a67dd4c61df931edfbad5271685"
+          ],
+          "formFactor": "TV",
+          "targets": [
+            {
+              "version": "1.2",
+              "versionCodes": {
+                "ARM64_V8A": 19,
+                "ARMEABI_V7A": 19,
+                "X86_64": 19,
+                "X86": 19
+              },
+              "isExperimental": false,
+              "minSdk": 27,
               "description": null
             }
           ]

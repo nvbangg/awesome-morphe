@@ -1,7 +1,74 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "patches": [
+    {
+      "name": "AMOLED dark theme",
+      "description": "Makes Strava dark mode true-black for OLED screens: the dark surface colors (#141413 / #21211f / #43423f) are remapped to a black ladder. Light mode is untouched.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FC4C02",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "480.15",
+              "versionCodes": {
+                "ARM64_V8A": 12399564,
+                "ARMEABI_V7A": 12399564,
+                "X86_64": 12399564,
+                "X86": 12399564
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "485.12",
+              "versionCodes": {
+                "ARM64_V8A": 12400090,
+                "ARMEABI_V7A": 12400090,
+                "X86_64": 12400090,
+                "X86": 12400090
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.9",
+              "versionCodes": {
+                "ARM64_V8A": 12400193,
+                "ARMEABI_V7A": 12400193,
+                "X86_64": 12400193,
+                "X86": 12400193
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.11",
+              "versionCodes": {
+                "ARM64_V8A": 12400195,
+                "ARMEABI_V7A": 12400195,
+                "X86_64": 12400195,
+                "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Allow standalone install (split-less APK)",
       "description": "Removes Pdb's base-APK split requirement (requiredSplitTypes=base__abi,base__density) so the single patched APK installs. Required when patching the App Bundle's base APK.",
@@ -96,6 +163,83 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Custom app name",
+      "description": "Renames the launcher label (Settings > Apps, home screen) to the value of the stravaAppName option. Leave the option empty to keep the original name.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FC4C02",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "480.15",
+              "versionCodes": {
+                "ARM64_V8A": 12399564,
+                "ARMEABI_V7A": 12399564,
+                "X86_64": 12399564,
+                "X86": 12399564
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "485.12",
+              "versionCodes": {
+                "ARM64_V8A": 12400090,
+                "ARMEABI_V7A": 12400090,
+                "X86_64": 12400090,
+                "X86": 12400090
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.9",
+              "versionCodes": {
+                "ARM64_V8A": 12400193,
+                "ARMEABI_V7A": 12400193,
+                "X86_64": 12400193,
+                "X86": 12400193
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.11",
+              "versionCodes": {
+                "ARM64_V8A": 12400195,
+                "ARMEABI_V7A": 12400195,
+                "X86_64": 12400195,
+                "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "stravaAppName",
+          "title": "Custom launcher name",
+          "description": "The app name shown in the launcher and app drawer. Empty = keep \"Strava\".",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Disable AppsFlyer",
@@ -314,6 +458,186 @@
                 "ARMEABI_V7A": 2709,
                 "X86_64": 2709,
                 "X86": 2709
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Extra settings resources",
+      "description": "Registers the Extra Settings activity and applies the accent color.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FC4C02",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "480.15",
+              "versionCodes": {
+                "ARM64_V8A": 12399564,
+                "ARMEABI_V7A": 12399564,
+                "X86_64": 12399564,
+                "X86": 12399564
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "485.12",
+              "versionCodes": {
+                "ARM64_V8A": 12400090,
+                "ARMEABI_V7A": 12400090,
+                "X86_64": 12400090,
+                "X86": 12400090
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.9",
+              "versionCodes": {
+                "ARM64_V8A": 12400193,
+                "ARMEABI_V7A": 12400193,
+                "X86_64": 12400193,
+                "X86": 12400193
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.11",
+              "versionCodes": {
+                "ARM64_V8A": 12400195,
+                "ARMEABI_V7A": 12400195,
+                "X86_64": 12400195,
+                "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "stravaAccent",
+          "title": "Accent color",
+          "description": "Replaces the Strava orange brand color family app-wide.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Strava orange",
+          "values": {
+            "Strava orange": "Strava orange",
+            "Material You (Android 12+)": "Material You (Android 12+)",
+            "Blue": "Blue",
+            "Green": "Green",
+            "Purple": "Purple",
+            "Pink": "Pink",
+            "Teal": "Teal",
+            "Red": "Red",
+            "Mono": "Mono"
+          }
+        },
+        {
+          "key": "suConsoleExport",
+          "title": "Export SuperUser debug console",
+          "description": "Exports Strava's hidden SuperUserToolsActivity for adb access (feature-switch console, modular-UI tools, network settings). DEBUG-ONLY: any on-device app could then launch it. Off by default.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "false",
+          "values": {
+            "true": "true",
+            "false": "false"
+          }
+        },
+        {
+          "key": "unlockShareOverlays",
+          "title": "Unlock share overlay designs",
+          "description": "Removes the subscriber lock from the sticker/share overlay carousel (all client-rendered designs become selectable).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "true",
+          "values": {
+            "true": "true",
+            "false": "false"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Extra settings screen",
+      "description": "Adds an 'Extra Settings' entry at the top of Settings with theme mode switching and patch info. Accent color is a build-time option.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FC4C02",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "480.15",
+              "versionCodes": {
+                "ARM64_V8A": 12399564,
+                "ARMEABI_V7A": 12399564,
+                "X86_64": 12399564,
+                "X86": 12399564
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "485.12",
+              "versionCodes": {
+                "ARM64_V8A": 12400090,
+                "ARMEABI_V7A": 12400090,
+                "X86_64": 12400090,
+                "X86": 12400090
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.9",
+              "versionCodes": {
+                "ARM64_V8A": 12400193,
+                "ARMEABI_V7A": 12400193,
+                "X86_64": 12400193,
+                "X86": 12400193
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.11",
+              "versionCodes": {
+                "ARM64_V8A": 12400195,
+                "ARMEABI_V7A": 12400195,
+                "X86_64": 12400195,
+                "X86": 12400195
               },
               "isExperimental": false,
               "minSdk": null,
@@ -789,6 +1113,73 @@
       "options": []
     },
     {
+      "name": "Remove Data Peek upsells",
+      "description": "Removes server-driven subscription upsells (Data Peek carousel, replay card, prediction banner, SubPreview banners, Maps explore card) with runtime toggles in Extra Settings, and strips the Settings Subscriptions section.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FC4C02",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "480.15",
+              "versionCodes": {
+                "ARM64_V8A": 12399564,
+                "ARMEABI_V7A": 12399564,
+                "X86_64": 12399564,
+                "X86": 12399564
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "485.12",
+              "versionCodes": {
+                "ARM64_V8A": 12400090,
+                "ARMEABI_V7A": 12400090,
+                "X86_64": 12400090,
+                "X86": 12400090
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.9",
+              "versionCodes": {
+                "ARM64_V8A": 12400193,
+                "ARMEABI_V7A": 12400193,
+                "X86_64": 12400193,
+                "X86": 12400193
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.11",
+              "versionCodes": {
+                "ARM64_V8A": 12400195,
+                "ARMEABI_V7A": 12400195,
+                "X86_64": 12400195,
+                "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove ads",
       "description": "Disables Pdb's ad SDKs (GMS, AppLovin, Vungle, Yandex, Pangle) and turns off in-app ad initialisation.",
       "default": true,
@@ -809,6 +1200,75 @@
                 "ARMEABI_V7A": 2709,
                 "X86_64": 2709,
                 "X86": 2709
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Strips Sentry, Embrace and Facebook analytics, disables Firebase analytics, and empties the advertising ID (push notifications keep working).",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FC4C02",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "480.15",
+              "versionCodes": {
+                "ARM64_V8A": 12399564,
+                "ARMEABI_V7A": 12399564,
+                "X86_64": 12399564,
+                "X86": 12399564
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "485.12",
+              "versionCodes": {
+                "ARM64_V8A": 12400090,
+                "ARMEABI_V7A": 12400090,
+                "X86_64": 12400090,
+                "X86": 12400090
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.9",
+              "versionCodes": {
+                "ARM64_V8A": 12400193,
+                "ARMEABI_V7A": 12400193,
+                "X86_64": 12400193,
+                "X86": 12400193
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.11",
+              "versionCodes": {
+                "ARM64_V8A": 12400195,
+                "ARMEABI_V7A": 12400195,
+                "X86_64": 12400195,
+                "X86": 12400195
               },
               "isExperimental": false,
               "minSdk": null,
@@ -985,6 +1445,73 @@
                 "ARMEABI_V7A": 1130100213,
                 "X86_64": 1130100213,
                 "X86": 1130100213
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks Strava Premium features (spoofs PAID state + far-future expiry). Also re-enables password login after OTP.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FC4C02",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "480.15",
+              "versionCodes": {
+                "ARM64_V8A": 12399564,
+                "ARMEABI_V7A": 12399564,
+                "X86_64": 12399564,
+                "X86": 12399564
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "485.12",
+              "versionCodes": {
+                "ARM64_V8A": 12400090,
+                "ARMEABI_V7A": 12400090,
+                "X86_64": 12400090,
+                "X86": 12400090
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.9",
+              "versionCodes": {
+                "ARM64_V8A": 12400193,
+                "ARMEABI_V7A": 12400193,
+                "X86_64": 12400193,
+                "X86": 12400193
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "486.11",
+              "versionCodes": {
+                "ARM64_V8A": 12400195,
+                "ARMEABI_V7A": 12400195,
+                "X86_64": 12400195,
+                "X86": 12400195
               },
               "isExperimental": false,
               "minSdk": null,
