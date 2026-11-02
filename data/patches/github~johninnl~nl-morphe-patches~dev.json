@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.27.0-dev.2",
+  "version": "1.28.0-dev.1",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -3262,30 +3262,12 @@
     },
     {
       "name": "Gearslip music browser support",
-      "description": "Allows installed Gearslip hosts to browse YouTube Music using their actual Android caller UID, without Google Android Auto.",
+      "description": "Adds Gearslip access to personal Home and Library using the app's existing account. Enable Morphe's Android Auto patch alongside it. Verifies the real Android caller identity.",
       "default": true,
       "category": null,
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": null,
-          "signatures": null,
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        },
-        {
-          "packageName": "app.morphe.android.apps.youtube.music",
           "name": "YouTube Music",
           "description": null,
           "apkFileType": "APK",
@@ -3331,25 +3313,8 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2.2.0",
-              "versionCodes": {
-                "ARM64_V8A": 1116,
-                "ARMEABI_V7A": 1116,
-                "X86_64": 1116,
-                "X86": 1116
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "2.3.0",
-              "versionCodes": {
-                "ARM64_V8A": 1121,
-                "ARMEABI_V7A": 1121,
-                "X86_64": 1121,
-                "X86": 1121
-              },
+              "version": null,
+              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -3362,48 +3327,6 @@
           "key": "packageNames",
           "title": "Trusted Gearslip packages",
           "description": "Comma-separated Gearslip host packages. Myspoti retains its UID ownership checks for browsing and search.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "app.seb3thehacker.gearslip",
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Gearslip personal library",
-      "description": "Adds personal Home and Library browsing for Gearslip using the installed Morphe Android Auto library enhancements and the app's existing account session.",
-      "default": true,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "app.morphe.android.apps.youtube.music",
-          "name": "YouTube Music",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": null,
-          "signatures": null,
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "9.30.53",
-              "versionCodes": {
-                "ARM64_V8A": 93053240,
-                "ARMEABI_V7A": 93053240,
-                "X86_64": 93053240,
-                "X86": 93053240
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "packageNames",
-          "title": "Trusted Gearslip packages",
-          "description": "Use the same installed host packages as Gearslip music browser support. Content routing uses the captured browser identity.",
           "required": true,
           "type": "kotlin.String",
           "default": "app.seb3thehacker.gearslip",
@@ -6234,7 +6157,7 @@
     },
     {
       "name": "Keep music player entries",
-      "description": "Keeps a music app's player available when it also provides a car Settings screen, including YT Music Morphe. Uses Gearslip's existing docked player.",
+      "description": "Shows only the music player when an app also provides a car Settings service, including YT Music Morphe. Uses Gearslip's existing docked player.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -6559,6 +6482,38 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Native navigation for Gearslip and Android Auto",
+      "description": "Shows this patched Maps app's original Android Auto map and navigation UI through a native navigation service. Requires the full Android Auto app for its car UI resources.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FFFFFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.43.05.1002020710",
+              "versionCodes": {
+                "ARM64_V8A": 1068844719,
+                "ARMEABI_V7A": 1068844719,
+                "X86_64": 1068844719,
+                "X86": 1068844719
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Navigation distances",
