@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.33.0",
+  "version": "1.35.1",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -872,7 +872,7 @@
     },
     {
       "name": "Change app name",
-      "description": "Sets the launcher and in-app app name.",
+      "description": "Sets the launcher and app-switcher name, with a choice of launcher icon styles on light or dark backgrounds.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -909,6 +909,30 @@
           "type": "kotlin.String",
           "default": "Ungoogled Maps",
           "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "Automatic follows the Legacy icon patch. Original keeps Google's icon. A supplied light or dark style overrides Legacy icon for the launcher; in-app artwork and splash screen stay unchanged.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "automatic",
+          "values": {
+            "Automatic (follow Legacy icon)": "automatic",
+            "Original Google Maps": "original",
+            "Classic pin - Light": "classic_pin_light",
+            "Classic pin - Dark": "classic_pin_dark",
+            "Outlined pin - Light": "outlined_pin_light",
+            "Outlined pin - Dark": "outlined_pin_dark",
+            "Classic map tile - Light": "classic_map_tile_light",
+            "Classic map tile - Dark": "classic_map_tile_dark",
+            "Raised map pin - Light": "raised_map_pin_light",
+            "Raised map pin - Dark": "raised_map_pin_dark",
+            "Gradient pin - Light": "gradient_pin_light",
+            "Gradient pin - Dark": "gradient_pin_dark",
+            "Folded map - Light": "folded_map_light",
+            "Folded map - Dark": "folded_map_dark"
+          }
         }
       ]
     },
@@ -1022,6 +1046,60 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Custom branding",
+      "description": "Changes Myspoti's launcher icon and app name. Choose from six bundled icons or keep the original.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "app.myspoti.stable",
+          "name": "Myspoti",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customName",
+          "title": "App name",
+          "description": "Name shown in the launcher and Android app information. Leave empty to keep the original name.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "Launcher icon applied when patching. Original keeps Myspoti's current icon.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "original",
+          "values": {
+            "Original": "original",
+            "Classic Spotify Green": "classic_green",
+            "Elegant dark Spotify": "elegant_dark",
+            "Emerald Spotify on pitch black": "emerald_black",
+            "Dark emerald Spotify glass": "emerald_glass",
+            "Platinum Spotify on charcoal": "platinum_charcoal",
+            "Black Spotify on warm white": "black_warm_white"
+          }
+        }
+      ]
     },
     {
       "name": "Customization screen",

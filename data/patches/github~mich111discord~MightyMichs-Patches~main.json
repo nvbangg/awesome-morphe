@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "patches": [
     {
       "name": "Bypass Login Requirements",
@@ -37,8 +37,17 @@
       "options": []
     },
     {
+      "name": "Bypass in-app purchase",
+      "description": "Best-effort local Play Billing bypass for offline games (Purchase state = PURCHASED, acknowledged = true). Does not defeat server-side validation.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Change app name",
-      "description": "Sets a custom application label (best-effort).",
+      "description": "Sets a custom application / launcher display name (strings.xml + manifest labels).",
       "default": false,
       "category": null,
       "dependencies": [],
@@ -57,7 +66,7 @@
     },
     {
       "name": "Change package name",
-      "description": "Rewrites the manifest package attribute (experimental).",
+      "description": "Appends \".mightymich\" to the package name by default. Changing the package name of the app can lead to unexpected issues.",
       "default": false,
       "category": null,
       "dependencies": [],
@@ -66,10 +75,30 @@
         {
           "key": "packageName",
           "title": "Package name",
-          "description": "New package name, e.g. com.example.patched",
-          "required": false,
+          "description": "The name of the package to rename the app to. \"Default\" appends \".mightymich\" to the original package.",
+          "required": true,
           "type": "kotlin.String",
-          "default": null,
+          "default": "Default",
+          "values": {
+            "Default": "Default"
+          }
+        },
+        {
+          "key": "updatePermissions",
+          "title": "Update permissions",
+          "description": "Rewrite package-scoped custom permissions. Fixes some install errors; can break features in certain apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "updateProviders",
+          "title": "Update providers",
+          "description": "Rewrite provider android:authorities that start with the old package name. Fixes some install errors; can break features.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -103,33 +132,6 @@
       ]
     },
     {
-      "name": "Disable Telemetry",
-      "description": "Disables analytics and telemetry event tracking.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.piriform.ccleaner",
-          "name": "CCleaner",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#1A73E8",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "26.08.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Disable ads (basic)",
       "description": "Best-effort no-op of common ad SDK load/show methods.",
       "default": false,
@@ -157,6 +159,54 @@
       "options": []
     },
     {
+      "name": "Disable signature verification",
+      "description": "Allows re-signed MiXplorer builds by adding the installed signing cert fingerprint to the internal allow-list.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mixplorer",
+          "name": "MiXplorer",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.71.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable premium license",
       "description": "Best-effort unlock of ESET premium UI / client-side license flags. Native libems + server checks may still limit some features.",
       "default": true,
@@ -173,6 +223,40 @@
           "targets": [
             {
               "version": "12.0.17.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix video engine on re-sign",
+      "description": "Stops the bundled video engine library from terminating the process when the APK is re-signed. Covers arm64-v8a and armeabi-v7a copies of libisvideoengine.so so the editor can load after a custom signature.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.camerasideas.instashot",
+          "name": "InShot",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF2558",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.214.1539",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.243.1555",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -219,6 +303,150 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Hide browser Download component",
+      "description": "Removes DownloadActivity intent-filters so MiXplorer is not offered in browser/Firefox download choosers.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mixplorer",
+          "name": "MiXplorer",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.71.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Limit Copy to share menu",
+      "description": "Removes CopyActivity VIEW filters (open-with) while keeping SEND filters so Copy remains in the system share menu.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mixplorer",
+          "name": "MiXplorer",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.71.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove HTTP/HTTPS intent filters",
+      "description": "Strips http/https schemes from VIEW/BROWSABLE intent-filters so MiXplorer is not offered for web links.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mixplorer",
+          "name": "MiXplorer",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.71.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.71.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Remove INTERNET permission",
@@ -298,22 +526,83 @@
       "options": []
     },
     {
-      "name": "Unlimited Coins (Experimental)",
-      "description": "Gives unlimited coins in POU. WARNING: May cause crashes or reset progress.",
+      "name": "Spoof device & network",
+      "description": "Spoofs device model/manufacturer, hides common root/emulator signals, and can force simple in-app network type checks.",
       "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "deviceModel",
+          "title": "Device model",
+          "description": "Value for model-style getters, e.g. Pixel 8. Empty = leave unchanged.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "manufacturer",
+          "title": "Manufacturer",
+          "description": "Value for manufacturer-style getters, e.g. Google. Empty = leave unchanged.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "hideRoot",
+          "title": "Hide root",
+          "description": "Force common isRooted / RootBeer / su-check methods to return false.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideEmulator",
+          "title": "Hide emulator",
+          "description": "Force common isEmulator checks to return false.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "connectionType",
+          "title": "Connection type",
+          "description": "Best-effort force of in-app network type / connected helpers.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "default",
+          "values": {
+            "Default (no change)": "default",
+            "Wi-Fi": "wifi",
+            "Mobile data": "mobile",
+            "Ethernet": "ethernet",
+            "No connection": "none"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unlimited Energy",
+      "description": "Bypasses energy limits so lessons can be started freely (bonus QoL).",
+      "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "me.pou.app",
-          "name": "Pou",
+          "packageName": "com.sideme",
+          "name": "SideMe",
           "description": null,
           "apkFileType": "APK",
-          "appIconColor": "#8BC34A",
+          "appIconColor": "#6C5CE7",
           "signatures": null,
           "targets": [
             {
-              "version": "1.4.135",
+              "version": "1.19.5",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -325,9 +614,9 @@
       "options": []
     },
     {
-      "name": "Unlock Everything (Experimental)",
-      "description": "Unlocks all items in POU and bypasses integrity check. WARNING: May cause crashes.",
-      "default": false,
+      "name": "Unlimited coins",
+      "description": "Forces Pou's coin balance getter to a very large value so shop and unlock checks always pass (local save).",
+      "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
@@ -340,7 +629,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.4.135",
+              "version": "1.4.139",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -406,11 +695,88 @@
       "options": []
     },
     {
-      "name": "Unlock Premium",
-      "description": "Unlocks InShot Pro: no export watermark, no ads, paid filters/effects/HD. On-device AI tools may still require original signing key.",
+      "name": "Unlock Photoshop Premium",
+      "description": "Forces local Adobe Photoshop entitlement checks to paid/ENTITLED. Cloud-only features may still require a server-side Adobe subscription.",
       "default": true,
       "category": null,
       "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.adobe.photoshop.retail",
+          "name": "Adobe Photoshop",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#001E36",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.7.0.2322",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.7.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Forces Call Filter local subscription flag isSubscribed to true (SharedPreferences reads + persist on app start).",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "callfilter.app",
+          "name": "Call Filter",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1976D2",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.50.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.50.1",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.50.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Enables InShot Pro entitlements offline: export without watermark, no interstitial ads, and access to paid effects, transitions, stickers and HD. Built-in AI features that validate the store signature in native code may still refuse a re-signed package.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "RawResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.camerasideas.instashot",
@@ -441,33 +807,6 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Unlocks CCleaner Premium / Pro features (Ultimate Multi + Lifetime style).",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.piriform.ccleaner",
-          "name": "CCleaner",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#1A73E8",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "26.08.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock Premium",
       "description": "Unlocks VivaCut Pro by forcing IapService.F()Z to return true. WARNING: May cause crashes.",
       "default": true,
       "category": null,
@@ -483,6 +822,33 @@
           "targets": [
             {
               "version": "3.9.9",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks SideMe Super / Premium subscription features.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sideme",
+          "name": "SideMe",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6C5CE7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.19.5",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -566,33 +932,6 @@
               "version": "26.09.21",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock Premium (Experimental)",
-      "description": "Unlocks Callfilter.app premium by forcing the 'isSubscribed' check to return true. WARNING: May cause crashes or unexpected behavior. ",
-      "default": false,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "callfilter.app",
-          "name": "Callfilter.app",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#2196F3",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -792,6 +1131,40 @@
     },
     {
       "name": "Unlock Premium Features",
+      "description": "Forces local VIP membership (status, type, expire) and unlocks ad/paywall episode flags. Server-side purchases are not forged.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.newleaf.app.android.victor",
+          "name": "ReelShort",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E50914",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.2.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "4.2.00",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium Features",
       "description": "Unlocks Screen Translate Premium.",
       "default": true,
       "category": null,
@@ -952,40 +1325,6 @@
               "version": "1.02.165.0923",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock Premium Features",
-      "description": "Unlocks ReelShort VIP (vip_status=1) and unlocks ad-gated episodes.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.newleaf.app.android.victor",
-          "name": "ReelShort",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#E50914",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.2.20",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "4.2.00",
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -1309,6 +1648,35 @@
           "targets": [
             {
               "version": "5.5.83",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock everything",
+      "description": "Sets shop item prices to zero and relaxes lock UI gates so items can be obtained freely (works best with Unlimited coins).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "me.pou.app",
+          "name": "Pou",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#8BC34A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.4.139",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
