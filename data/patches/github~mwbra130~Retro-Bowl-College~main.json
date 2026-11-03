@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.50.0",
+  "version": "1.57.0",
   "patches": [
     {
       "name": "Add settings",
@@ -37,6 +37,32 @@
       "dependencies": [],
       "compatiblePackages": [
         {
+          "packageName": "com.diskwalaapp",
+          "name": "DiskWala",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E8A317",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "27.3",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP application checks",
+      "description": "Required for re-signed builds: PairIP's Application class runs the signature and license checks at startup. This rewrites that one method so it only registers the app context and never calls either check, instead of relying on the checks themselves being stubbed.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
           "packageName": "com.instantbits.cast.webvideo",
           "name": "Web Video Caster",
           "description": null,
@@ -46,6 +72,32 @@
           "targets": [
             {
               "version": "6.1.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
+      "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends non-Play installs to a Play Store block page. Disables that check, its verdict handler, both block-page launchers, the delayed shutdown, and the block activity itself so the patched app can open.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.diskwalaapp",
+          "name": "DiskWala",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E8A317",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "27.3",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,
@@ -136,6 +188,48 @@
     },
     {
       "name": "Change installer source",
+      "description": "Spoofs the installer source so the app appears to be installed from Google Play everywhere it is read. Pre-selected companion for the DiskWala patch set — keep it on.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.diskwalaapp",
+          "name": "DiskWala",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E8A317",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "27.3",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageInstallerName",
+          "title": "Spoofed package installer name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.mipicks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Change installer source",
       "description": "Spoofs the installer source so the app appears to be installed from an app store. Required for Enable Pro to take effect — keep it on.",
       "default": true,
       "dependencies": [],
@@ -178,6 +272,48 @@
     },
     {
       "name": "Change installer source",
+      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for Smart MP3 Tagger: its PairIP local installer check is live, so a re-signed build fails the license check without it — keep it on.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "tageditor.automatictageditor.audiotagging.audioedit.mp3edit",
+          "name": "Smart MP3 Tagger",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4CAF50",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.130",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageInstallerName",
+          "title": "Spoofed package installer name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.mipicks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Change installer source",
       "description": "Spoofs the installer source so the app appears to be installed from an app store.",
       "default": false,
       "dependencies": [],
@@ -192,6 +328,90 @@
           "targets": [
             {
               "version": "8.4.1",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageInstallerName",
+          "title": "Spoofed package installer name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.mipicks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Change installer source",
+      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for Video Cutter: its PairIP local installer check is live, so a re-signed build fails the license check without it — keep it on.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.losslessvideocutter",
+          "name": "Video Cutter",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6B4C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.4.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageInstallerName",
+          "title": "Spoofed package installer name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.mipicks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Change installer source",
+      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for Yin Yang Launcher: its PairIP local installer check is live, so a re-signed build fails the license check without it — keep it on.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.yinyang.launcher",
+          "name": "Yin Yang Launcher",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#607D8B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.13.1",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,
@@ -383,6 +603,32 @@
       "dependencies": [],
       "compatiblePackages": [
         {
+          "packageName": "com.diskwalaapp",
+          "name": "DiskWala",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E8A317",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "27.3",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable PairIP license activity",
+      "description": "Required for re-signed builds: removes PairIP's LicenseActivity from the manifest entirely, so the Play Store block page and license error dialog can never be shown, whatever tries to open them.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
           "packageName": "com.instantbits.cast.webvideo",
           "name": "Web Video Caster",
           "description": null,
@@ -394,6 +640,58 @@
               "version": "6.1.0",
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Full",
+      "description": "Unlocks Unified Remote Full for free, as if the one-time Full purchase were bought: 70+ remotes, no ads, screen mirroring, floating remotes, extended keyboard, widgets and quick actions, voice commands, custom remotes, IR and NFC actions.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.Relmtech.Remote",
+          "name": "Unified Remote",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#43A047",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.25.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Lifetime Pro",
+      "description": "Turns on the app's Pro state (no ads, unlimited functions) as if the one-time \"Super Pro Forever\" purchase were owned — the lifetime state, with nothing to expire.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "tageditor.automatictageditor.audiotagging.audioedit.mp3edit",
+          "name": "Smart MP3 Tagger",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4CAF50",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.8.130",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -420,6 +718,32 @@
               "version": "26.42.0",
               "versionCodes": null,
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Turns on Premium (no ads, real file names, HD downloads, faster streaming) as if subscribed. Keep the pre-selected PairIP bypass patches on — a re-signed build cannot pass PairIP's startup license check without them.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.diskwalaapp",
+          "name": "DiskWala",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E8A317",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "27.3",
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -508,6 +832,32 @@
     },
     {
       "name": "Enable Premium",
+      "description": "Grants Premium, whose only features over Basic are no ads and VIP support: removes all banner and interstitial ads (the player, playlists and equalizer are already free).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jrtstudio.AnotherMusicPlayer",
+          "name": "Rocket Player",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.3.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
       "description": "Unlocks Patrocine (Cifra Club Pro) and removes ads: registered users get no interstitials and banner hosts treat them as registered.",
       "default": true,
       "dependencies": [],
@@ -524,6 +874,32 @@
               "version": "3.7.36",
               "versionCodes": null,
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Unlocks Yin Yang Pro for free, as if the Lifetime purchase were bought: all clocks, fonts, live wallpapers and icons. Also enable the Change installer source patch (pre-selected) — it is required for the patched app to pass the license check.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.yinyang.launcher",
+          "name": "Yin Yang Launcher",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#607D8B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.13.1",
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -863,6 +1239,34 @@
     },
     {
       "name": "Remove ads",
+      "description": "Removes ads (Appodeal mediation and the direct Amazon ads path), hides the app's own promo banner strip and the green \"Upgrade to 1DM+\" bar in the settings drawer. Does NOT unlock 1DM+ features — 1DM+ is a separate paid app and its features are not in this app.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "idm.internet.download.manager",
+          "name": "1DM: Browser & Video Download",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#6A1B9A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
       "description": "Stops interstitial ad breaks and native ads in the notes list from loading (Google Mobile Ads). Rewarded ads that unlock features when watched are left working. Does not unlock premium.",
       "default": true,
       "dependencies": [],
@@ -905,6 +1309,32 @@
               "version": "1.2.31",
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes all ads, as if the Remove Ads purchase were bought. Also enable the Change installer source patch (pre-selected).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.losslessvideocutter",
+          "name": "Video Cutter",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6B4C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.4.6",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
