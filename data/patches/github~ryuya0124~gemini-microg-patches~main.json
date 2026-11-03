@@ -1,11 +1,11 @@
 {
-    "version": "0.1.1",
+    "version": "0.2.0",
     "patches": [
         {
-            "name": "Account Switch Lock Bypass",
-            "description": "アカウント切り替えロックのタイムアウトをスキップし、スプラッシュ画面からの即時初期化を可能にします。",
+            "name": "Account ID Fallback for Clone",
+            "description": "AGSA アカウント名から Account ID への変換失敗例外（flgu）を防止し、デフォルト AccountId でフォールバックします。",
             "default": false,
-            "dependencies": [],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "com.google.android.googlequicksearchbox",
@@ -13,7 +13,33 @@
                     "description": null,
                     "apkFileType": null,
                     "appIconColor": null,
-                    "signatures": [],
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Account Switch Lock Bypass",
+            "description": "アカウント切り替えロックのタイムアウトをスキップし、スプラッシュ画面からの即時初期化を可能にします。",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
                     "targets": [
                         {
                             "version": null,
@@ -31,7 +57,7 @@
             "name": "Account Sync Binder Loop Fix",
             "description": "AccountSyncService へのバインド失敗による無限リトライと Binder リミットクラッシュを防止します。",
             "default": false,
-            "dependencies": [],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "com.google.android.googlequicksearchbox",
@@ -39,269 +65,7 @@
                     "description": null,
                     "apkFileType": null,
                     "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Account ID Fallback for Clone",
-            "description": "AGSA アカウント名から Account ID への変換失敗例外（flgu）を防止し、デフォルト AccountId でフォールバックします。",
-            "default": false,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.googlequicksearchbox",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Gemini Standalone Support",
-            "description": "Gemini アプリの AndroidManifest.xml から Split APK 制約（requiredSplitTypes等）を除去し単体インストール可能にします。",
-            "default": true,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.apps.bard",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Gemini Redirect to Cloned Google App",
-            "description": "Gemini アプリからの連携先 Google アプリをクローン版（com.google.android.googlequicksearchbox.morphe）へリダイレクトします。",
-            "default": true,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.apps.bard",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Google App Manifest Tweaks",
-            "description": "アプリ表示名を 'Google (Morphe)' に変更し、MicroG可視性を付与し、Split制約解除とクラッシュレシーバー無効化を行います。",
-            "default": true,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.googlequicksearchbox",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "GmsCore Bytecode Redirect (MicroG RE 7.0.0)",
-            "description": "Google アプリ内部の GMS パッケージ名・権限・Provider authority を MicroG RE へリダイレクトします。",
-            "default": true,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.googlequicksearchbox",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "GmsCore Signature and Availability Bypass",
-            "description": "Google Play Services の署名不一致 (SERVICE_INVALID) や可用性チェックを常時成功 (SUCCESS / true) にバイパスします。",
-            "default": true,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.googlequicksearchbox",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "MicroG Account Permissions",
-            "description": "Requests account access and microG extended access on Gemini startup.",
-            "default": true,
-            "dependencies": [
-                "Google App Manifest Tweaks"
-            ],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.googlequicksearchbox",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Google App Package Clone Support",
-            "description": "クローン版 Google アプリ内の完全一致パッケージ名を .morphe へリダイレクトします。",
-            "default": true,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.googlequicksearchbox",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Process Name Spoofing for Clone Support",
-            "description": "クローン環境下でプロセス名から .morphe を自動除去し、Dagger DI コンポーネントの初期化クラッシュを防止します。",
-            "default": true,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.googlequicksearchbox",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
-                    "targets": [
-                        {
-                            "version": null,
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Bypass Work Profile Gemini Restriction",
-            "description": "セキュアフォルダ（Work Profile）環境下でGeminiネイティブUIの起動を拒否しWeb版へリダイレクトする制限をバイパスします。",
-            "default": true,
-            "dependencies": [],
-            "compatiblePackages": [
-                {
-                    "packageName": "com.google.android.googlequicksearchbox",
-                    "name": null,
-                    "description": null,
-                    "apkFileType": null,
-                    "appIconColor": null,
-                    "signatures": [],
+                    "signatures": null,
                     "targets": [
                         {
                             "version": null,
@@ -319,7 +83,7 @@
             "name": "Allow Work Profile Gemini Eligibility",
             "description": "Secure FolderでのWORK_PROFILE_NOT_SUPPORTED (19)を、既存のプロファイル許可分岐で回避します。",
             "default": true,
-            "dependencies": [],
+            "category": null,
             "compatiblePackages": [
                 {
                     "packageName": "com.google.android.googlequicksearchbox",
@@ -327,7 +91,267 @@
                     "description": null,
                     "apkFileType": null,
                     "appIconColor": null,
-                    "signatures": [],
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Bypass Work Profile Gemini Restriction",
+            "description": "セキュアフォルダ（Work Profile）環境下でGeminiネイティブUIの起動を拒否しWeb版へリダイレクトする制限をバイパスします。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Gemini Redirect to Cloned Google App",
+            "description": "Gemini アプリからの連携先 Google アプリをクローン版（com.google.android.googlequicksearchbox.morphe）へリダイレクトします。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.bard",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Gemini Standalone Support",
+            "description": "Gemini アプリの AndroidManifest.xml から Split APK 制約（requiredSplitTypes等）を除去し単体インストール可能にします。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.bard",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "GmsCore Bytecode Redirect (MicroG RE 7.0.0)",
+            "description": "Google アプリ内部の GMS パッケージ名・権限・Provider authority を MicroG RE へリダイレクトします。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "GmsCore Signature and Availability Bypass",
+            "description": "Google Play Services の署名不一致 (SERVICE_INVALID) や可用性チェックを常時成功 (SUCCESS / true) にバイパスします。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Google App Manifest Tweaks",
+            "description": "アプリ表示名を 'Google (Morphe)' に変更し、MicroG可視性を付与し、Split制約解除とクラッシュレシーバー無効化を行います。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Google App Package Clone Support",
+            "description": "クローン版 Google アプリ内の完全一致パッケージ名を .morphe へリダイレクトします。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "MicroG Account Permissions",
+            "description": "Requests account access and microG extended access on Gemini startup.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "MicroG Device Compliance Redirect",
+            "description": "microG利用時にGoogleアプリ内の未認定警告へ転送するローカル分岐を抑止します。端末認定は変更しません。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Process Name Spoofing for Clone Support",
+            "description": "クローン環境下でプロセス名から .morphe を自動除去し、Dagger DI コンポーネントの初期化クラッシュを防止します。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
                     "targets": [
                         {
                             "version": null,

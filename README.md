@@ -88,7 +88,6 @@
 
 [![rushiranpise/helper-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=rushiranpise&repo=helper-for-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/rushiranpise/helper-for-morphe)
 [![Paresh-Maheshwari/morphe-ai](https://github-stats-extended.vercel.app/api/pin?username=Paresh-Maheshwari&repo=morphe-ai&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Paresh-Maheshwari/morphe-ai)
-[![nvbangg/builder-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=nvbangg&repo=builder-for-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/nvbangg/builder-for-morphe)
 [![d3ffen/patchit](https://github-stats-extended.vercel.app/api/pin?username=d3ffen&repo=patchit&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/d3ffen/patchit)
 [![heval99/sideport](https://github-stats-extended.vercel.app/api/pin?username=heval99&repo=sideport&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/heval99/sideport)
 [![GROWNUPS/Patchium](https://github-stats-extended.vercel.app/api/pin?username=GROWNUPS&repo=Patchium&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GROWNUPS/Patchium)

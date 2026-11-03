@@ -1,5 +1,5 @@
 {
-  "version": "1.48.0",
+  "version": "1.48.2",
   "appNames": {
     "com.disney.disneyplus": "Disney+ Android TV",
     "com.espn.score_center": "ESPN Android TV",
@@ -1303,32 +1303,6 @@
     },
     {
       "name": "Skip ads",
-      "description": "Removes Pluto TV's on-demand (VOD) ads on the v17.x rebuild (the Paramount+/AVIA player stack). Four layers: (1+2) force AVIA's DAI and IMA shouldPlayAd() gates to false so the pre-roll ad pods are skipped natively; (3) drop the ad <Period>s from the stitched multi-period DASH manifest at AVIA's own DashParser and re-base the content periods into a contiguous timeline, so the mid-roll ad VIDEO is never played AND the seekbar tracks correctly; (4) suppress the ID3/CLID3-driven CSAI ad call on static VOD manifests. Fail-open: a manifest it can't rewrite is passed through unchanged (ads remain, playback never breaks). LIVE TV ads are real broadcast time in the linear feed and are not removable. Validated on-device, 17.2.0.",
-      "use": true,
-      "dependencies": [],
-      "compatiblePackages": {
-        "tv.pluto.android": [
-          "17.2.0"
-        ]
-      },
-      "compatibility": [
-        {
-          "name": "Pluto TV Android TV",
-          "packageName": "tv.pluto.android",
-          "description": null,
-          "appIconColor": 12103684,
-          "targets": [
-            {
-              "version": "17.2.0",
-              "experimental": false
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Skip ads",
       "description": "Multi-layer ad suppression targeting the SSAI schedule, impression reporting, and the Volley network chokepoint.",
       "use": true,
       "dependencies": [
@@ -1498,6 +1472,32 @@
           "targets": [
             {
               "version": "4.9.147",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip ads (v17)",
+      "description": "Removes Pluto TV's on-demand (VOD) ads on the v17.x rebuild (the Paramount+/AVIA player stack). Four layers: (1+2) force AVIA's DAI and IMA shouldPlayAd() gates to false so the pre-roll ad pods are skipped natively; (3) drop the ad <Period>s from the stitched multi-period DASH manifest at AVIA's own DashParser and re-base the content periods into a contiguous timeline, so the mid-roll ad VIDEO is never played AND the seekbar tracks correctly; (4) suppress the ID3/CLID3-driven CSAI ad call on static VOD manifests. Also hides pause ads and stops ad impression beacons for the removed breaks. Fail-open: a manifest it can't rewrite is passed through unchanged (ads remain, playback never breaks). LIVE TV ads are real broadcast time in the linear feed and are not removable. Validated on-device, 17.2.0.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "tv.pluto.android": [
+          "17.2.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pluto TV Android TV",
+          "packageName": "tv.pluto.android",
+          "description": null,
+          "appIconColor": 12103684,
+          "targets": [
+            {
+              "version": "17.2.0",
               "experimental": false
             }
           ]
