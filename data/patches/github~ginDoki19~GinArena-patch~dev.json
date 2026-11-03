@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "patches": [
     {
       "name": "AdBlocker turbo & userscript bundle",
-      "description": "Syncs SHA-256-verified pre-compiled AdBlocker binary engines + per-list filter archives (28 default lists, ~1.22M active rules) automatically in the background with instant Hosts & filters hydration, accelerates on-device filter compilation via 64 KB write buffering + foreground thread scheduling, and optionally seeds and auto-updates the mobile-adapted Bypass All Shortlinks userscript.",
+      "description": "Updates the built-in ad blocker automatically in seconds instead of minutes, and can add a shortlink bypass userscript.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -38,7 +38,7 @@
         {
           "key": "adblockerMode",
           "title": "AdBlocker engine mode",
-          "description": "Cloud Pre-Built downloads SHA-256-verified pre-compiled binary filter engines and per-list archives from GitHub automatically in the background (zero on-device compilation lag and full Hosts & filters counts/sizes/dates), falling back automatically to Local Turbo if you customize filter lists. Local Turbo keeps all compilation on-device with 64 KB buffered I/O, foreground CPU scheduling, and 7-day auto-update.",
+          "description": "Cloud downloads ready-made filters in seconds (recommended). Local Turbo builds them on your device, faster than stock. Stock leaves 1DM unchanged.",
           "required": true,
           "type": "kotlin.String",
           "default": "cloud_sync",
@@ -51,7 +51,7 @@
         {
           "key": "bundleBypassShortlinks",
           "title": "Bundle Bypass All Shortlinks userscript",
-          "description": "Seeds and auto-updates the mobile-adapted Bypass All Shortlinks Debloated userscript (.1dmus with offline-cached MonkeyConfig, explicit @connect hosts, and zero warnings). Preserves your enabled/disabled state and never re-installs if deleted.",
+          "description": "Installs and auto-updates a mobile shortlink bypass userscript. Keeps your on/off choice, and never returns if you delete it.",
           "required": true,
           "type": "kotlin.Boolean",
           "default": true,
@@ -61,7 +61,7 @@
     },
     {
       "name": "Browser setup prompts only once",
-      "description": "Shows the default-browser, accessibility, shortcut-menu-strip, and adblocker setup prompts once, recording each as shown as soon as it appears so closing the browser before dismissing cannot make it repeat.",
+      "description": "Shows the one-time browser setup prompts only once, even if you close the browser early.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -95,7 +95,7 @@
     },
     {
       "name": "Clean Me page",
-      "description": "Removes the Status Saver, Legal, and Help sections from the Me page while keeping the 8-item local tools grid, App Theme, Settings, and Custom Pop-up Play.",
+      "description": "Removes Status Saver, Legal, and Help from the Me page.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -129,7 +129,7 @@
     },
     {
       "name": "Custom codec",
-      "description": "Bundles an MX Player v3.1.0 custom codec (aio-v3.1.0_r1.zip, architecture ZIP, or libffmpeg.mx.so*) directly into the app for out-of-the-box E-AC-3, TrueHD, MLP, DTS, and AC-3 software audio decoding.",
+      "description": "Bundles a custom codec so AC-3, E-AC-3, DTS, and TrueHD audio play out of the box.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -173,7 +173,7 @@
     },
     {
       "name": "Optimize cold start and battery",
-      "description": "Eliminates cold-start Chromium WebView initialization in Download Manager and background services, defers Browser AdBlock filter parsing until Browser launch, defers the CheckAppVersion subprocess past startup, pauses MainActivity's 1 Hz background wakeup loop when minimized, and keeps 1DM alive in Android Recents on Back press without killing background downloads.",
+      "description": "Makes the app open faster, use less battery in the background, and stay in Recents when you press Back.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -207,7 +207,7 @@
     },
     {
       "name": "Preset browser settings",
-      "description": "Sets fresh-install browser fallbacks for normal and incognito modes: Brave search, matching suggestions, and Google search by image by default. Saved or imported choices are preserved and can be changed later in 1DM.",
+      "description": "Sets Brave as the default search engine on fresh installs. You can change it anytime in 1DM.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -300,7 +300,7 @@
     },
     {
       "name": "Remove ads & bloat",
-      "description": "Removes banner, folder, player, interstitial, rewarded, app-open, exit, and Me-page ads, removes the Home horizontal shortcut strip and online Zodiac App Themes, and disables Live TV, mxplay OTT streaming, MX Tube, Shorts, and Games while keeping Local Music, All-Files-Access setup, and 1-tap Classic Themes working offline and online.",
+      "description": "Removes ads and online extras like Live TV, Tube, Shorts, and Games for a clean local player.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -334,7 +334,7 @@
     },
     {
       "name": "Remove ads and promotions",
-      "description": "Removes banner, interstitial, fallback, and Amazon ads, 1DM+ sale/VPN/drawer/rate promotions, sponsored browser tiles, promo FCM topics, and 17 ad/telemetry SDK initializers and native/asset payloads from free 1DM 20.0 (30257).",
+      "description": "Removes banner and popup ads, upgrade offers, and sponsored shortcuts.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -368,7 +368,7 @@
     },
     {
       "name": "Remove ads, popups & restrictions",
-      "description": "Replaces the native signature-locked decryption in pure Java so encrypted channel and event feeds keep loading after Morphe re-signs the APK, and removes start/player/support/external ads plus the automatic Telegram promo dialog.",
+      "description": "Removes ads and promo popups, and keeps channels working after patching.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -402,7 +402,7 @@
     },
     {
       "name": "Remove ads, proxy & restrictions",
-      "description": "Removes CashRaven background bandwidth sharing, all ads and sponsor/unlock gates, external browser redirects, the startup Telegram join dialog, promo marquee banners, forced-update lockouts, and promo push notifications. Optional clone/sniffer-check bypass and native-library stripping are off by default.",
+      "description": "Stops background bandwidth sharing and removes ads, sponsor popups, and forced updates.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -466,7 +466,7 @@
         {
           "key": "blockPromoPushNotifications",
           "title": "Block promotional push notifications",
-          "description": "Suppresses promotional/browser-redirect FCM notifications and skips the startup notification permission prompt while preserving silent RemoteConfig API updates.",
+          "description": "Blocks promotional push notifications and skips the notification permission prompt.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -484,7 +484,7 @@
         {
           "key": "stripNativeBloat",
           "title": "Strip proxy & ad native libraries",
-          "description": "Removes ~7.7 MB of unused CashRaven residential-proxy (libcr_android.so, libjnidispatch.so), Unity Coherence (libunitycoherencenative.so), legacy MIPS/armeabi folders, and WebView ad-viewer assets.",
+          "description": "Deletes unused proxy/ad libraries to save about 7.7 MB. Not needed for ad removal.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -494,7 +494,7 @@
     },
     {
       "name": "Remove ads, telemetry & restrictions",
-      "description": "Replaces native signature-locked config decryption in pure Java, removes all banner/popunder/timer ads and the local NanoHTTPD ad server, suppresses the startup Telegram popup and player watermarks, strips Firebase telemetry and push notifications, and bypasses update lockouts. Optional root/sniffer bypass and native/telemetry stripping are off by default.",
+      "description": "Removes ads, promo popups, and tracking, and keeps channels working after patching.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -555,7 +555,7 @@
         {
           "key": "bypassEnvironmentChecks",
           "title": "Bypass root & sniffer checks",
-          "description": "Neutralizes RootBeer/su root lockouts, Frida/sniffer package checks, and proxy-certificate lockouts. Not needed on ordinary phones/TVs; MainActivity startup tamper crash-bombs are always neutralized separately.",
+          "description": "Bypasses root and sniffer-app lockouts. Only turn this on if the app refuses to run on your device.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -564,7 +564,7 @@
         {
           "key": "stripNativeAndTelemetryBloat",
           "title": "Strip native & telemetry bloat",
-          "description": "Removes libnative-lib.so across all ABIs (plus libtoolChecker.so when the root bypass is enabled) plus Firebase Analytics, Crashlytics, Sessions, DataTransport, and AdServices manifest entries. Purely a size saving; the libraries are never loaded once their Java entry points are removed.",
+          "description": "Deletes unused libraries and tracking components to save space. Not needed for ad removal.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -574,7 +574,7 @@
     },
     {
       "name": "Remove ads, telemetry & restrictions",
-      "description": "Replaces native signature-locked config decryption in pure Java so encrypted channel and event feeds keep loading after Morphe re-signs the APK, removes all banner/start/support/external ads, optionally disables the in-app web view, suppresses update lockouts, and optionally bypasses root/sniffer/proxy-cert checks. Strips Firebase telemetry and push notifications.",
+      "description": "Removes ads, tracking, and forced updates, and keeps channels working after patching.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -617,7 +617,7 @@
         {
           "key": "bypassUpdateGate",
           "title": "Bypass update & force-update screen",
-          "description": "Skips forced and optional update lockouts on Splash startup and Player exit, and removes the REQUEST_INSTALL_PACKAGES permission used by the in-app self-updater.",
+          "description": "Skips forced update screens. With this on the app never updates itself — re-patch a newer stock version to update.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -626,7 +626,7 @@
         {
           "key": "bypassEnvironmentChecks",
           "title": "Bypass root & sniffer checks",
-          "description": "Neutralizes RootBeer/su root lockouts, Frida/sniffer package checks, and proxy-certificate lockouts. Not needed on ordinary phones/TVs; MainActivity startup tamper crash-bombs are always neutralized separately.",
+          "description": "Bypasses root and sniffer-app lockouts. Only turn this on if the app refuses to run on your device.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -635,7 +635,7 @@
         {
           "key": "stripNativeAndTelemetryBloat",
           "title": "Strip native & telemetry bloat",
-          "description": "Removes libnative-lib.so across all ABIs (plus libtoolChecker.so when the root bypass is enabled) plus Firebase Analytics, Crashlytics, Sessions, DataTransport, and AdServices manifest entries. Purely a size saving; the libraries are never loaded once their Java entry points are removed.",
+          "description": "Deletes unused libraries and tracking components to save space. Not needed for ad removal.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -644,7 +644,7 @@
         {
           "key": "disableWebActivity",
           "title": "Disable WebActivity (potential ad surface)",
-          "description": "Stubs WebActivity.onCreate to immediately finish() the activity. SK Tech TV's WebActivity is a generic in-app WebView that could be repurposed for ad landing pages via remote app.txt config; disabling it ensures no remote-config-driven WebView ad can ever render. Off by default: WebActivity also opens legitimate in-app links, and the config sanitizer already blanks the ad sponsor URLs.",
+          "description": "Closes the in-app web view so ads cannot open landing pages. Pages that legitimately use it, like score pages, will close too.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -654,7 +654,7 @@
     },
     {
       "name": "Remove bottom navigation bar",
-      "description": "Removes the bottom navigation bar from the UI and moves Me to the upper-right corner of the Home toolbar. Leave unchecked to keep the bottom navigation bar.",
+      "description": "Removes the bottom navigation bar and moves Me to the top-right corner.",
       "default": false,
       "category": null,
       "compatiblePackages": [

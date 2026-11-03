@@ -1,7 +1,42 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0",
+  "version": "1.7.1",
   "patches": [
+    {
+      "name": "Addon subtitles in subtitle menu (Vimu)",
+      "description": "Lists the addon subtitles from Stremio in Vimu's subtitle menu. Runs with the Intro Skip (Vimu) patch.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "net.gtvbox.videoplayer",
+          "name": "Vimu",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F6FEB",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.00 ST",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "12.00",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Auto-pick best stream",
       "description": "Skips the stream list and plays the top ranked stream. Enable Always show stream list to see every stream.",
@@ -140,7 +175,9 @@
       "name": "External player result (Vimu)",
       "description": "Returns position and duration from Vimu so Stremio saves progress. Runs with the Intro Skip (Vimu) patch.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "net.gtvbox.videoplayer",
@@ -237,7 +274,8 @@
       "default": true,
       "dependencies": [
         "RawResourcePatch",
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -334,8 +372,180 @@
       "options": []
     },
     {
+      "name": "Mod settings",
+      "description": "Adds one Mod settings screen with every setting of these patches: from Stremio Settings on TV 1.10.4/1.12.0, from the launcher shortcut or App info on phone 2.x.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stremio.one",
+          "name": "Stremio",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#5B67F1",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Mod settings manifest",
+      "description": "Declares the Mod settings screen in the manifest. Runs with Mod settings.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stremio.one",
+          "name": "Stremio",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#5B67F1",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Progress journal provider (Vimu)",
+      "description": "Declares the progress journal provider. Runs with External player result (Vimu).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "net.gtvbox.videoplayer",
+          "name": "Vimu",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F6FEB",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.00 ST",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "12.00",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Re-sign check (Vimu)",
+      "description": "Lets the app run after re-signing.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "net.gtvbox.videoplayer",
+          "name": "Vimu",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1F6FEB",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.00 ST",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "12.00",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remember tracks per show",
       "description": "Remembers the last audio and subtitle choice for each series and applies it to other episodes.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stremio.one",
+          "name": "Stremio",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#5B67F1",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Side-by-side install",
+      "description": "Installs the patched app separately as Stremio Morphe (package com.stremio.one.morphe) so it can sit next to the normal Stremio instead of replacing it. Off by default.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stremio.one",
+          "name": "Stremio",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#5B67F1",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Smoother playback",
+      "description": "Frame-rate matching (Seamless only / Always / Off), a larger, debrid-friendly playback buffer, and no stream re-open freeze when arriving addon subtitles would not change what is on screen, for Stremio's own player.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [

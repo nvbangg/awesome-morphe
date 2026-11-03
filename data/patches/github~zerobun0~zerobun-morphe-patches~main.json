@@ -1,0 +1,63 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.0.0",
+  "patches": [
+    {
+      "name": "Follower tracker",
+      "description": "Captures follower and following lists as you scroll them and sends them to your self-hosted tracker, which records who joined and who left, and when. Uses only the requests the app already makes. Apply alongside Piko.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FC483C",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "452.1.0.53.64",
+              "versionCodes": {
+                "ARM64_V8A": 385811006
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "trackerUrl",
+          "title": "Tracker URL",
+          "description": "Where captured rows are sent.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "https://insta.zerobun.com/egress/followers",
+          "values": null
+        },
+        {
+          "key": "trackerToken",
+          "title": "Tracker token",
+          "description": "INSTA_RELAY_TOKEN from the server's .env. Sent as a Bearer token.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "batchSize",
+          "title": "Batch size",
+          "description": "Rows buffered before each upload (1-200).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "50",
+          "values": null
+        }
+      ]
+    }
+  ]
+}
