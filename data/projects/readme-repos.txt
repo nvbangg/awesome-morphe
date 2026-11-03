@@ -2,10 +2,10 @@ https://github.com/brosssh/morphe-mcp
 https://github.com/brosssh/revanced-external-bundles
 https://github.com/Graywizard888/Enhancify
 https://github.com/hoo-dles/jadx-morphe
-https://github.com/Jman-Github/Awesome-ReVanced
+https://github.com/Jman-Github/Awesome-Android-Patching
 https://github.com/Jman-Github/Patch-Bundle-Registry
-https://github.com/Jman-Github/Universal-ReVanced-Manager
-https://github.com/jpa102/morphe_feature_flags
+https://github.com/Jman-Github/Universal-Patch-Manager
+https://github.com/jpa102/more_feature_flags
 https://github.com/MorpheApp/jadb
 https://github.com/MorpheApp/MicroG-RE
 https://github.com/MorpheApp/morphe-branding
@@ -20,7 +20,6 @@ https://github.com/MorpheApp/morphe-patches-library
 https://github.com/MorpheApp/morphe-patches-template
 https://github.com/MorpheApp/morphe-website
 https://github.com/nvbangg/awesome-morphe
-https://github.com/nvbangg/builder-for-morphe
 https://github.com/Paresh-Maheshwari/morphe-ai
 https://github.com/Paresh-Maheshwari/patch-explorer
 https://github.com/rushiforai/morphe-archive
@@ -30,7 +29,7 @@ https://github.com/thedjchi/Shizuku
 https://github.com/Xisrr1/Revancify-Xisr
 https://gitlab.com/Paresh-Maheshwari/patch-explorer
 https://github.com/MorpheApp/PotHelper
-https://github.com/drnx64/morphe-track-patches
+https://github.com/drnx64/fresh-morphe
 https://github.com/crimera/morphe-bytecode
 https://github.com/Akash-Sriram/morphe-fetch
 https://github.com/GROWNUPS/Patchium

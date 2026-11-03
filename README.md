@@ -73,7 +73,7 @@
 
 - [Awesome Morphe Website](https://awesome-morphe.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/nvbangg/awesome-morphe)
 - [Morphe Community Patches](https://morphe-patches.software/)
-- [Morphe Patch Tracker](https://drnx64.github.io/morphe-track-patches/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/morphe-track-patches)
+- [Fresh Morphe](https://drnx64.github.io/fresh-morphe/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/fresh-morphe)
 - [Morphe Archive](https://rushiforai.github.io/morphe-archive/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/rushiforai/morphe-archive)
 - [Patch Bundle Registry](https://patch-bundles.jmancentral.com/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/Jman-Github/Patch-Bundle-Registry)
 - [Revanced External Bundles](https://revanced-external-bundles.brosssh.com/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/brosssh/revanced-external-bundles)
@@ -96,9 +96,9 @@
 [![hoo-dles/jadx-morphe](https://github-stats-extended.vercel.app/api/pin?username=hoo-dles&repo=jadx-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/hoo-dles/jadx-morphe)
 [![crimera/morphe-bytecode](https://github-stats-extended.vercel.app/api/pin?username=crimera&repo=morphe-bytecode&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/crimera/morphe-bytecode)
 [![brosssh/morphe-mcp](https://github-stats-extended.vercel.app/api/pin?username=brosssh&repo=morphe-mcp&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/brosssh/morphe-mcp)
-[![jpa102/morphe_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=morphe_feature_flags&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/morphe_feature_flags)
-[![Jman-Github/Universal-ReVanced-Manager](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Universal-ReVanced-Manager&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Universal-ReVanced-Manager)
-[![Jman-Github/Awesome-ReVanced](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Awesome-ReVanced&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Awesome-ReVanced)
+[![jpa102/more_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=more_feature_flags&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/more_feature_flags)
+[![Jman-Github/Universal-Patch-Manager](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Universal-Patch-Manager&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Universal-Patch-Manager)
+[![Jman-Github/Awesome-Android-Patching](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Awesome-Android-Patching&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Awesome-Android-Patching)
 [![Xisrr1/Revancify-Xisr](https://github-stats-extended.vercel.app/api/pin?username=Xisrr1&repo=Revancify-Xisr&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Xisrr1/Revancify-Xisr)
 [![Graywizard888/Enhancify](https://github-stats-extended.vercel.app/api/pin?username=Graywizard888&repo=Enhancify&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Graywizard888/Enhancify)
 
@@ -106,8 +106,7 @@
 
 > [!NOTE]
 > Pre-patched sources are not listed here for safety and liability reasons.  
-> ⚠️ Only download or [build your own APKs](https://github.com/nvbangg/builder-for-morphe#-build-your-own-apks) from trusted open-source builder repositories.  
-> If you still want to explore them, see [Jman’s list](https://github.com/Jman-Github/Awesome-ReVanced#%EF%B8%8F-builder)
+> If you still want to explore them, see [Jman’s list](https://github.com/Jman-Github/Awesome-Android-Patching#%EF%B8%8F-builder)
 
 ---
 
