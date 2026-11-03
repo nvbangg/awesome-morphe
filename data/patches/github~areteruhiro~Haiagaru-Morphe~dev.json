@@ -1,5 +1,5 @@
 {
-    "version": "1.20.2",
+    "version": "1.22.1",
     "patches": [
         {
             "name": "Change ChMate package name",
@@ -72,10 +72,10 @@
                 {
                     "key": "versionCode",
                     "title": "Version code",
-                    "description": "Defaults to the maximum Android distribution version code (2100000000). Allows switching between supported ChMate versions when package and signing key match. A lower-code APK cannot normally overwrite it. Clear to keep the original version code. Does not add support for unsupported versions.",
+                    "description": "Defaults to the maximum signed 32-bit version code (2147483647) for sideloaded APKs. This exceeds Google Play's distribution limit. Allows switching between supported ChMate versions when package and signing key match. A lower-code APK cannot normally overwrite it. Clear to keep the original version code. Does not add support for unsupported versions.",
                     "required": false,
                     "type": "kotlin.Int",
-                    "default": 2100000000,
+                    "default": 2147483647,
                     "values": null
                 }
             ]
@@ -271,48 +271,6 @@
             "options": []
         },
         {
-            "name": "Migrate ChMate data with Shizuku",
-            "description": "Optionally copy shared data from the original ChMate package using Shizuku.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "jp.co.airfront.android.a2chMate",
-                    "name": "ChMate",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#607D8B",
-                    "signatures": [
-                        "7dd84d97df4666fbc8188b8d6167ce59314636997f0edae82d685fffda4059d2"
-                    ],
-                    "targets": [
-                        {
-                            "version": "0.8.10.191 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 21,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.226 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        },
-                        {
-                            "version": "0.8.10.242 dev",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": 23,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
             "name": "Save ChMate crash logs",
             "description": "Save uncaught ChMate crash logs to Download/Haiagaru.",
             "default": true,
@@ -398,7 +356,7 @@
         },
         {
             "name": "画像取得専用VPN（実験用・検証中）",
-            "description": "必要な方だけ選択してください。Releaseのhaiagaru-image-vpn-v2.zipを保存: https://github.com/areteruhiro/Haiagaru-Morphe/releases/download/1.12.0-dev.4/haiagaru-image-vpn-v2.zip → 下のオプションで選択 → パッチ適用後にHaiagaru設定でVPNを有効化。Image NG用ZIPとは別です。展開不要。導入・ソース: https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
+            "description": "必要な方だけ選択してください。Releaseのhaiagaru-image-vpn-v2.zipを保存: https://github.com/areteruhiro/Haiagaru-Morphe/releases/latest/download/haiagaru-image-vpn-v2.zip → 下のオプションで選択 → パッチ適用後にHaiagaru設定でVPNを有効化。Image NG用ZIPとは別です。展開不要。導入・ソース: https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
             "default": false,
             "category": null,
             "compatiblePackages": [
@@ -440,7 +398,7 @@
                 {
                     "key": "imageVpnLibraryFile",
                     "title": "VPN用haiagaru-image-vpn-v2.zip／image-stack.aarを選択",
-                    "description": "VPN専用ファイル: https://github.com/areteruhiro/Haiagaru-Morphe/releases/download/1.12.0-dev.4/haiagaru-image-vpn-v2.zip Image NG用haiagaru-image-ng.zipは選択しないでください。従来AARも利用可能: https://raw.githubusercontent.com/areteruhiro/Haiagaru-Morphe/79759fb0ab0fa30a6755be13a53546b06d2cdf8d/vpn/image-stack/prebuilt/image-stack.aar 展開不要。https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
+                    "description": "VPN専用ファイル: https://github.com/areteruhiro/Haiagaru-Morphe/releases/latest/download/haiagaru-image-vpn-v2.zip Image NG用haiagaru-image-ng.zipは選択しないでください。従来AARも利用可能: https://raw.githubusercontent.com/areteruhiro/Haiagaru-Morphe/dev/vpn/image-stack/prebuilt/image-stack.aar 展開不要。https://github.com/areteruhiro/Haiagaru-Morphe/blob/dev/docs/optional-assets.md",
                     "required": false,
                     "type": "kotlin.String",
                     "default": "",

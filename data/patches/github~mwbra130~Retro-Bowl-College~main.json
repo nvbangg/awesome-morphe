@@ -1,0 +1,1141 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.50.0",
+  "patches": [
+    {
+      "name": "Add settings",
+      "description": "Long-press the Home tab in Strava's bottom bar to open 'Morphe patch settings'. Lets you toggle feed cleanup, route trim, bottom bar tabs and the launcher name/icon at runtime, without re-patching.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FC5200",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "486.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP application checks",
+      "description": "Required for re-signed builds: PairIP's Application class runs the signature and license checks at startup. This rewrites that one method so it only registers the app context and never calls either check, instead of relying on the checks themselves being stubbed.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instantbits.cast.webvideo",
+          "name": "Web Video Caster",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.1.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
+      "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends non-Play installs to a Play Store block page. Disables that check, its verdict handler, both block-page launchers, the delayed shutdown, and the block activity itself so the patched app can open.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instantbits.cast.webvideo",
+          "name": "Web Video Caster",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.1.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP signature check",
+      "description": "Required for re-signed builds: PairIP checks the APK signature at startup and crashes the app on launch when it is not the developer's. Disables that one check so the patched app can start.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instantbits.cast.webvideo",
+          "name": "Web Video Caster",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.1.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass integrity check",
+      "description": "Stops the Play Integrity (Raindrop) verdict from blocking the app. If the app already shows App Blocked, reinstall it fresh after patching.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.lucky_apps.RainViewer",
+          "name": "RainViewer",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.4.1",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Change installer source",
+      "description": "Spoofs the installer source so the app appears to be installed from an app store. Required for Enable Pro to take effect — keep it on.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.hapibits.soundlift",
+          "name": "Echo",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#FFB300",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageInstallerName",
+          "title": "Spoofed package installer name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.mipicks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Change installer source",
+      "description": "Spoofs the installer source so the app appears to be installed from an app store.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.lucky_apps.RainViewer",
+          "name": "RainViewer",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.4.1",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageInstallerName",
+          "title": "Spoofed package installer name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.mipicks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Change installer source",
+      "description": "Spoofs the installer source so the app appears to be installed from an app store.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.subtlesignals.gradientweather",
+          "name": "Gradient Weather",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#6C7BFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.3.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageInstallerName",
+          "title": "Spoofed package installer name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play": "com.android.vending",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.mipicks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom app name and icon",
+      "description": "Changes the app's displayed name and launcher icon. The icon choices are Strava's own built-in alternate icons, plus an accent-colored one. Name and icon can later be switched at runtime from the patch settings screen.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FC5200",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "486.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The custom name the launcher can show. The original name stays available in the patch settings screen.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Strava Custom",
+          "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "The launcher icon. Uses Strava's own built-in alternate icons, plus an accent-colored one.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "default",
+          "values": {
+            "Default": "default",
+            "Accent": "Accent",
+            "Local Legend": "LocalLegend",
+            "XOM": "Xom",
+            "Trophy": "Trophy",
+            "Medal": "Medal",
+            "Hiking": "Hiking",
+            "Cycling": "Cycling",
+            "Running": "Running",
+            "Kudos": "Kudos",
+            "Sticker": "Sticker",
+            "Pride": "Pride",
+            "Road": "Road",
+            "Gravel": "Gravel",
+            "Teal": "Teal",
+            "Red": "Red",
+            "Black": "Black"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom theme colors",
+      "description": "Replaces Strava's brand orange (#FC5200) accent color in the app's native screens with a color of your choice.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FC5200",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "486.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "accentColor",
+          "title": "Accent color",
+          "description": "The accent color that replaces Strava orange.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#FC5200",
+          "values": {
+            "Strava orange": "#FC5200",
+            "Sunset orange": "#FF6B00",
+            "Blue": "#0066FF",
+            "Violet": "#7C4DFF",
+            "Teal": "#00BFA5",
+            "Green": "#00C853",
+            "Pink": "#FF4081",
+            "Red": "#E53935",
+            "Slate": "#546E7A"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Disable PairIP license activity",
+      "description": "Required for re-signed builds: removes PairIP's LicenseActivity from the manifest entirely, so the Play Store block page and license error dialog can never be shown, whatever tries to open them.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instantbits.cast.webvideo",
+          "name": "Web Video Caster",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.1.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Turns on the app's premium state (premium features, no ads) as if a lifetime premium were active.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "droom.sleepIfUCan",
+          "name": "Alarmy",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6B4C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.42.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Unlocks Premium (the one-time all-features purchase) and every individually sold feature.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.chimbori.hermitcrab",
+          "name": "Hermit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#2E7D32",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "31.8.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Turns on the app's Pro state (no ads, Pro features) as if the Pro version were purchased.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nicedayapps.iss_free",
+          "name": "ISS Live Now",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.7.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Unlocks RainViewer Pro. Use with Change installer source.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.lucky_apps.RainViewer",
+          "name": "RainViewer",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.4.1",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Unlocks Patrocine (Cifra Club Pro) and removes ads: registered users get no interstitials and banner hosts treat them as registered.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.studiosol.afinadorlite",
+          "name": "Tuner",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#009688",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.7.36",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Premium",
+      "description": "Unlocks Gradient Weather Premium. Use With Spoof Install Source",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.subtlesignals.gradientweather",
+          "name": "Gradient Weather",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#6C7BFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.3.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Pro",
+      "description": "Unlocks Echo Pro (the lifetime tier: Auto EQ, limiter, compressor and all other Pro features). Use with Change installer source.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.hapibits.soundlift",
+          "name": "Echo",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#FFB300",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Pro",
+      "description": "Turns on the app's Pro state (no ads, Pro features) as if the lifetime plan were active.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.swiftsofts.rokuremote",
+          "name": "Roku Remote",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF9800",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.3.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable password login",
+      "description": "Shows the email and password login option instead of forcing the one-time email code flow. Your password is still checked by Strava's servers exactly as in the official app.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FC5200",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "486.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Free store",
+      "description": "The in-game store is free. Just tap \"Buy\" and the item is yours — no payment needed. For an ad-free game, just buy the ad-block item from the store.",
+      "default": true,
+      "dependencies": [
+        "RawResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.yodo1.crossyroad",
+          "name": "Crossy Road",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7CB342",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide feed elements",
+      "description": "Hides who-to-follow suggestions, suggested challenges and other clutter cards from the activity feed. Requires the 'Hide subscription promotions' patch, which provides the shared feed filtering.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FC5200",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "486.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "followSuggestions",
+          "title": "Who to Follow",
+          "description": "Popular athletes, followers, people near you etc.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "challengeSuggestions",
+          "title": "Suggested Challenges",
+          "description": "Random challenges Strava wants you to join.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "joinChallenge",
+          "title": "Join Challenge",
+          "description": "Challenges your follows have joined.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "joinClub",
+          "title": "Joined a club",
+          "description": "Clubs your follows have joined.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "activityLookback",
+          "title": "Activity lookback",
+          "description": "Your activity from X years ago",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "localEvents",
+          "title": "Local events",
+          "description": "The 'See what events are happening' local events carousel.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Hide subscription promotions",
+      "description": "Hides subscription upsell modules and promotional cards from the feed and other modular screens. UI cleanup only: does not unlock any paid features.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FC5200",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "486.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "upselling",
+          "title": "Upselling",
+          "description": "Elements that suggest you subscribe.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "promo",
+          "title": "Promotions",
+          "description": "Elements that promote features, challenges, clubs, etc.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Local route privacy trim",
+      "description": "Trims extra route distance from both ends of the activity map on this device only, on top of Strava's own privacy filtering. Display-only: recorded and uploaded data are unchanged, and other people still see the activity exactly as your Strava privacy settings dictate.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.strava",
+          "name": "Strava",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FC5200",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "486.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "trimMeters",
+          "title": "Meters to trim",
+          "description": "Extra meters of route hidden from each end of the activity map on this device.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 200,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove ads",
+      "description": "Stops banner, interstitial and app-open ads from loading (AppLovin MAX). Rewarded ads for hints are left working.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pixel.art.coloring.color.number",
+          "name": "Happy Color",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF7043",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.24.1",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Stops interstitial ad breaks and native ads in the notes list from loading (Google Mobile Ads). Rewarded ads that unlock features when watched are left working. Does not unlock premium.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.inotesapp.inotes",
+          "name": "Notes",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FFB300",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.2.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Stops banner and interstitial ads from loading (Google Mobile Ads).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.optimageeks.vehico_app",
+          "name": "Vehico",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.2.31",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlimited coins & unlocks",
+      "description": "Sets cash to 9,999,999, every upgrade card to 10,000, unlocks ALL vehicles and characters (no spinning needed), unlocks the Pro Pass, slot/lottery machines, completes all main + side missions, and maxes vehicle durability. Backs up your save before touching it. To revert: place an empty file named SR2_RESTORE.txt in Android/data/com.rkgames.basisgame/files/ and open the game.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.rkgames.basisgame",
+          "name": "Smashy Road 2",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF8C00",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.54",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.45",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlimited gold",
+      "description": "Your coin balance always shows 65,535 and spending coins always works without deducting any — pull the prize machine and buy coin characters as much as you want.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.yodo1.crossyroad",
+          "name": "Crossy Road",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7CB342",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock All Slot Machines",
+      "description": "Unlocks all slot machines (1/2/3) without Google Play purchase. Patches the native ownership checks to always grant the machines.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.rkgames.basisgame",
+          "name": "Smashy Road 2",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF8C00",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.54",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.45",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks Poweramp's full version state and Feature Package #1.",
+      "default": true,
+      "dependencies": [
+        "RawResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.maxmpz.audioplayer",
+          "name": "Poweramp",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#FF6A00",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "build-1031-bundle-play",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock all characters",
+      "description": "Every character is unlocked and playable — paid, coin, prize machine, progress and secret characters included. Your real collection progress is not changed; characters are unlocked while the patch is applied.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.yodo1.crossyroad",
+          "name": "Crossy Road",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7CB342",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks all games (VIP). The store sees the one-time VIP purchase as owned — no real purchase is made.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.MustBeFun.GamesInOneWatchGames",
+          "name": "Games In One - Watch Games",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#42A5F5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "0.4.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks the full version. No real purchase is made.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.newstargames.retrobowlcollege",
+          "name": "Retro Bowl College",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1B3A5C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks Web Video Caster Premium (ad removal, ad block, bookmarks, queue and the other premium features). No real purchase is made.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instantbits.cast.webvideo",
+          "name": "Web Video Caster",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.1.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}
