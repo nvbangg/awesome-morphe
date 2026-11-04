@@ -1,0 +1,1264 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.7.9",
+  "patches": [
+    {
+      "name": "Allow user certificates (MITM)",
+      "description": "Makes the app trust user-installed CA certificates so an intercepting proxy (Burp/mitmproxy) can read its HTTPS traffic on an unrooted device. Overwrites any existing network security config to trust system + user CAs and permit cleartext. For inspecting your own app/account traffic; does not defeat certificate pinning (see the pinning-bypass patch).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "makeDebuggable",
+          "title": null,
+          "description": "Also set android:debuggable=\"true\" (enables adb run-as disk access). Leave off unless you need it — some apps detect debuggable builds.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Auto-reject OneTrust consent banner",
+      "description": "Universally suppresses the OneTrust cookie/TCF consent banner in any app that bundles OneTrust. Persists a real 'Banner - Reject All' decision so non-essential tracking is rejected, and no-ops the setupUI render path so the banner never appears on any launch.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block tracking hosts (okhttp)",
+      "description": "Drops any okhttp request to known analytics/tracking hosts (Amplitude, AppsFlyer, Braze, Facebook app-events) with an IOException, before a connection is opened. Covers JS-fetch trackers that bypass the native-SDK kills.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "co.feeld",
+          "name": "Feeld",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#151515",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP integrity",
+      "description": "Severs PairIP's startup path (attachBaseContext short-circuits to super; verifyIntegrity and StartupLauncher.launch no-op) so a re-signed APK does not hit the libpairipcore SIGSEGV. Does not defeat server-side Play Integrity login attestation.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.4.1-release.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass certificate pinning",
+      "description": "No-ops OkHttp's CertificatePinner so pinned hosts accept an intercepting proxy's certificate. Covers the common Java/OkHttp case (class Lokhttp3/CertificatePinner;). Does not defeat native/NDK pinning (Flutter, BoringSSL) or OkHttp shaded to a non-okhttp3 package.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Bypass forced update (spoof app version)",
+      "description": "Reports a very high app version (99.0.0) from react-native-device-info so Feeld's \"version not supported\" force-update wall never triggers. Overrides versionName at its native source, covering both the appVersion constant and the x-app-version header; buildNumber is unchanged.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "co.feeld",
+          "name": "Feeld",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#151515",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass native certificate validation (X)",
+      "description": "Neutralises X's custom X509TrustManager (com.x.android.io.impl.d) so an intercepting proxy with a user-installed CA can read X's native API traffic. Pair with the universal MITM patches (user certs + OkHttp pinning bypass). For inspecting your own device's traffic; leave off for normal use.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.7.1-release.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass version deprecation notice",
+      "description": "Reports a newer app version to X, so the server stops serving the full-screen \"This app is out of date\" gate that cannot be dismissed. Rewrites the hardcoded version constant in the X-Twitter-Client-Version header, the User-Agent, and the app-config version getters.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.7.1-release.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "spoofedVersion",
+          "title": "Spoofed app version",
+          "description": "The version string reported to X. Must keep X's <major>.<minor>.<patch>-release.<n> shape. Raise it if the deprecation gate returns.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "12.99.0-release.0",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Disable AdMob banners",
+      "description": "Turns the AppAdmobBannerLoader composable into a no-op so the lite-version banner ad never renders.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "dk.tacit.android.foldersync.lite",
+          "name": "FolderSync",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.8.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable AdMob interstitials",
+      "description": "Neutralises the synthetic Runnable that loads and shows AdMob interstitial ads on navigation events.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "dk.tacit.android.foldersync.lite",
+          "name": "FolderSync",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.8.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Adapty tracking",
+      "description": "Stops the Adapty subscription SDK from opening any connection (it uses java.net, bypassing the okhttp block), killing its device-fingerprinting analytics and the ipify IP lookup. Adapty treats it as a network failure. May affect subscription entitlement sync for paying users.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "co.feeld",
+          "name": "Feeld",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#151515",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable AppsFlyer tracking",
+      "description": "Stops the AppsFlyer SDK from starting, so it never uploads launches, installs, or attribution events to *.appsflyer.com / appsflyersdk.com.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "co.feeld",
+          "name": "Feeld",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#151515",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Boost upsell",
+      "description": "Suppresses the standard Boost upsell popup (\"Get Tinder Plus / Gold / Platinum\" prompt that surfaces when out of Boosts).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Braze tracking",
+      "description": "Short-circuits the Braze network executor so no analytics/session data is ever POSTed to *.braze.eu; Braze treats it as a transient network failure.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "co.feeld",
+          "name": "Feeld",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#151515",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Facebook tracking",
+      "description": "Stops Facebook's GraphRequest transport from opening any connection (it uses java.net, bypassing the okhttp block), killing app-events (/activities) and gatekeeper (/mobile_sdk_gk) calls to graph.facebook.com. Also breaks 'Continue with Facebook' login.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "co.feeld",
+          "name": "Feeld",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#151515",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Likes You Gold upsell modal",
+      "description": "Stops the \"pick one of the people who liked you\" Gold Home teaser from appearing, which also removes the crash that happened when selecting a face launched the Gold paywall.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Meetup+ trial panels",
+      "description": "Removes the 'Try Meetup+ free for 7 days' banner composable from every screen that embeds it.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable MemberSub paywalls",
+      "description": "Closes the Compose-era Meetup+ paywall activities (MemberSubActivity and MemberSubWebViewActivity) before they render, blocking the popups that profile views, message composition, and other upsells now route through.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable MyLikes upsell",
+      "description": "Suppresses the \"You've liked amazing people\" Tinder Platinum popup on the Likes Sent tab.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable PairIP license check",
+      "description": "Universally bypasses Google Play PairIP's license verification (the Play-ownership gate that blocks sideloaded installs). Applies to any PairIP-licensed app; does not defeat PairIP's native VM/integrity layer.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Platinum Likes upsell",
+      "description": "Suppresses the \"Be Seen Faster / Upgrade Likes\" Tinder Platinum popup.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Primetime Boost upsell",
+      "description": "Suppresses the Primetime Boost upsell popup.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Rokt partner offers",
+      "description": "Removes the 'Powered by Rokt' third-party offer popups (e.g. the post-signup Disney+ interstitial) by no-oping the mParticle RoktKit.execute funnel so no Rokt placement renders.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Secret Admirer upsell",
+      "description": "Suppresses the Secret Admirer (Gold) upsell popup.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Sentry telemetry",
+      "description": "Short-circuits the Sentry HTTP transport so no crash reports, performance traces, or Session Replay recordings are uploaded to *.ingest.sentry.io. Returns Sentry's own SUCCESS result so the event is silently dropped with no retries.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "co.feeld",
+          "name": "Feeld",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#151515",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads-bouncer rewarded-video paywall",
+      "description": "Suppresses the \"Watch an ad to keep swiping\" rewarded-video bottom sheet shown when out of likes.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable all Meetup paywalls",
+      "description": "Single toggle that applies every Meetup+ paywall patch at once (intro, step-up, MemberSub, profile, trial panels, unprompted, and attendees paywall panels). Default-off: enable this on its own instead of the individual patches, not alongside them.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable all Tinder paywalls & ads",
+      "description": "Single toggle that applies every safe Tinder ad/upsell patch at once (Boost, MyLikes, Platinum Likes, Primetime, Secret Admirer, headless purchase, Likes You Gold, rewarded video, ads-bouncer paywall, and both swipe-stack ad injectors). Default-off: enable this on its own instead of the individual patches, not alongside them. Excludes the purchase-breaking generic paywall patches.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable consent prompt",
+      "description": "Suppresses Tinder's in-house TCF consent popup (\"Privacy preference centre\") by taking CmpLifecycleObserver's existing no-prompt branch unconditionally. No consent is granted, so non-essential tracking stays unpermitted and the popup never appears.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable curated swipe-stack ads",
+      "description": "Stops Tinder inserting sponsored ad cards into curated card stacks (AdCuratedCardStackInjector.shouldInsertAdRec -> false).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable dynamic paywall sheet",
+      "description": "Suppresses the generic server-driven paywall sheet (PaywallDialogFragment) that LaunchPaywallFlow renders for most upgrade prompts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable headless purchase upsell",
+      "description": "Suppresses the headless-purchase confirmation upsell popup.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable intro paywall",
+      "description": "Suppresses the Meetup+ intro paywall that pops up on fresh login.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable license check",
+      "description": "Bypasses the Google Play license verification that blocks sideloaded installs.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "hidratenow.com.hidrate.hidrateandroid",
+          "name": "Hidrate Spark",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00BCD4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.6.9",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable main swipe-stack ads",
+      "description": "Stops Tinder inserting sponsored ad cards into the main swipe rec-stack (AdMainCardStackInjector.shouldInsertAdRec -> false).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable payment check",
+      "description": "Bypasses the premium subscription check so all features are unlocked.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "hidratenow.com.hidrate.hidrateandroid",
+          "name": "Hidrate Spark",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00BCD4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.6.9",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable paywall flow",
+      "description": "Short-circuits the central LaunchPaywallFlow entry. Suppresses every paywall routed through paywallflow but also disables legitimate purchase flows.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable profile paywall",
+      "description": "Stops the Meetup+ subscription popup from appearing when tapping a member's name or 'See full profile'.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable rewarded-video modal",
+      "description": "Suppresses the standalone rewarded-video bottom sheet (e.g. \"watch an ad to get a Rewind\").",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.tinder",
+          "name": "Tinder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FD5564",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.15.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable step-up paywalls",
+      "description": "Closes the Meetup+ step-up paywall Activity before it renders, blocking every popup that routes through it (RSVP, messaging, attendees, waitlist, group members, profile).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable unprompted paywalls",
+      "description": "Forces AppSettings.getShouldShowUnpromptedPaywall / getShouldShowEventUnpromptedPaywall to false so Meetup+ paywalls do not pop up on their own.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide GIF replies from media tab",
+      "description": "Removes replies whose attached media is an animated GIF from the profile Media tab, so reaction-GIF replies don't crowd out the account's own photos and videos.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.7.1-release.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ad containers",
+      "description": "Collapses every AdMob BannerAd slot to zero pixels. Pair with 'Remove ads' to also strip the empty Met Office-branded strip the homepage banner slot leaves behind.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "uk.gov.metoffice.weather.android",
+          "name": "Met Office",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#005E9E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.40.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide attendees paywall panels",
+      "description": "Hides the 'Learn more about attendees / Unlock full details' teaser on event pages and the 'Learn more about who will be there. Try for free.' banner on the Attendees list.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Inject Google Maps API key",
+      "description": "Replaces the manifest's com.google.android.maps.v2.API_KEY with a user-supplied key. REQUIRED for Maps to render on sideloaded builds — Meetup's production key is cert-fingerprint-locked and rejects requests from any re-signed APK.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "mapsKey",
+          "title": null,
+          "description": "Google Cloud Maps SDK for Android API key. Leave empty to skip (Maps will stay broken).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove ads",
+      "description": "Stops banner, interstitial, rewarded, and app-open ads from loading by no-opping the react-native-google-mobile-ads native bridge entry points.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "uk.gov.metoffice.weather.android",
+          "name": "Met Office",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#005E9E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.40.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove promoted timeline items",
+      "description": "Drops promoted (ad / \"Sponsored\") posts, event summaries, and trends from every timeline before they are rendered. RE artifact for X 12.4.1, which is native-PairIP-wrapped and not sideload-patchable unrooted — default-off.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.4.1-release.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show age-restricted and sensitive media",
+      "description": "Drops the media-visibility results X attaches to covered posts, so neither the age-restricted \"verify your age\" cover nor the ordinary sensitive-media cover is ever built and the media renders directly. Complements Piko's \"Show sensitive media\", which handles the older sensitive-media warning but not the age-verification variant.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.7.1-release.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show media tab for sensitive profiles",
+      "description": "Bypasses the empty profile Media tab X shows for withheld sensitive media - the \"@user hasn't posted media\" state the server returns when the viewer is not authorised for sensitive content - by rebuilding the tab from the posts-and-replies timeline, which is not withheld, trimmed to the owner's own posts with media (reposts excluded). Only affected profiles are touched, and only after their empty media timeline is seen once; profiles whose media grid loads normally keep the server's full grid unchanged. The posts-and-replies source is sparser than the real grid, so an account that mostly reposts shows few own-media items and older media fills in as you scroll.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "X",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.7.1-release.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unblur profile content",
+      "description": "Disables the Compose blur overlay Meetup applies to gated profile fields, group lists, and member rows so the underlying data is visible.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.meetup",
+          "name": "Meetup",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#ED1C40",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2026.04.10.2881",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}
