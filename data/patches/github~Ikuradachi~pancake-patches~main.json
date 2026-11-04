@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "patches": [
     {
       "name": "Clean Me page",
@@ -122,6 +122,136 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Disable Datadog telemetry setup",
+      "description": "Selects the app's disabled Datadog implementation, preserving shared initialization and consent observers.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.127.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Firebase analytics after consent initialization",
+      "description": "Keeps Firebase Analytics collection disabled when consent updates arrive. Collection before the first update remains possible.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.127.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Mux playback analytics events",
+      "description": "Drops Mux playback analytics events while retaining player and ad initialization. Local SDK metadata remains.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.127.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Segment analytics events",
+      "description": "Blocks new Segment events, identification and screen payloads. SDK initialization and previously queued events remain.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.127.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable automatic Crashlytics uploads",
+      "description": "Denies automatic crash report uploads. Local crash recording and explicit report submission remain available.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.127.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Disable floating ads",
@@ -650,6 +780,78 @@
           "key": "hideOpusTab",
           "title": "Hide Community (Opus) tab",
           "description": "Hides the Community (Opus) tab from the home tab bar.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Proxy token requests",
+      "description": "Routes token acquisition and refresh through your SOCKS proxy, with optional proxy authentication.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.127.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "proxyHost",
+          "title": "SOCKS proxy host",
+          "description": "Hostname or IP address only, without scheme, credentials, or port. Use brackets for IPv6.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "proxyPort",
+          "title": "SOCKS proxy port",
+          "description": "Explicit port from 1 to 65535. Enter as a string when using a JSON options file.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "proxyUsername",
+          "title": "SOCKS proxy username",
+          "description": "Optional printable ASCII username (1–255 characters). Credentials are embedded in the patched APK. Leave both credential fields blank for no authentication.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "proxyPassword",
+          "title": "SOCKS proxy password",
+          "description": "Optional printable ASCII password (1–255 characters). Credentials are embedded in the patched APK. Supply both username and password together.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "tokenDiagnostics",
+          "title": "Local token diagnostics",
+          "description": "Logs token HTTP status and exception class names only, under MorpheTokenProxy. Enable for troubleshooting.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,

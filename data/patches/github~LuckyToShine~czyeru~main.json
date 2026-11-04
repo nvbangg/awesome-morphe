@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -685,6 +685,48 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Disable forced update",
+      "description": "Reports a newer app version to the school's server and hides the store update pop-up, so the app keeps working instead of getting stuck loading when a new version comes out.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "edu.uvmnet.servicio_alumno",
+          "name": "Conexión Lince UVM",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#D7282F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.0.63",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appVersion",
+          "title": "App version",
+          "description": "Version sent to the school's server in the X-App-Version header, as X.Y.Z.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "1.0.64",
+          "values": {
+            "1.0.64 (current)": "1.0.64",
+            "1.0.65": "1.0.65"
+          }
+        }
+      ]
     },
     {
       "name": "Disable login requirement",

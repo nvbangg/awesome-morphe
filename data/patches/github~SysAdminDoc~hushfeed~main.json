@@ -1720,6 +1720,24 @@
           "values": null
         },
         {
+          "key": "hide_comment_like_count",
+          "title": "Default: hide comment like count",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_comment_dislike",
+          "title": "Default: hide comment dislike",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "comment_search",
           "title": "Default: comment search",
           "description": null,
@@ -3943,7 +3961,7 @@
     },
     {
       "name": "Feed text sizes",
-      "description": "Lets you make video descriptions, creator names and post dates bigger or smaller, so they're easier to read. Starts off. Pick a size in Hushfeed settings > Feed screen.",
+      "description": "Lets you make video descriptions, creator names and post dates bigger or smaller, or give them a color and a backdrop, so they're easier to read. Starts off. Pick them in Hushfeed settings > Feed screen.",
       "category": "Interface",
       "use": true,
       "dependencies": [
@@ -3996,6 +4014,24 @@
           "required": false,
           "type": "kotlin.Int",
           "default": 0,
+          "values": null
+        },
+        {
+          "key": "feed_text_color",
+          "title": "Default: feed text color",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "off",
+          "values": null
+        },
+        {
+          "key": "feed_text_backdrop",
+          "title": "Default: feed text backdrop",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "off",
           "values": null
         }
       ]
@@ -4196,7 +4232,7 @@
     },
     {
       "name": "Ghost mode",
-      "description": "Stops TikTok telling people you viewed their story or profile, or that you're typing. What TikTok already recorded stays. A separate switch hides your online status. Starts off. Turn it on in Hushfeed settings > Privacy.",
+      "description": "Stops TikTok telling people you viewed their story or profile, or that you're typing. What TikTok already recorded stays. Each of the three has its own switch under it, and a separate one hides your online status. Starts off. Turn it on in Hushfeed settings > Privacy.",
       "category": "Privacy",
       "use": true,
       "dependencies": [
@@ -4249,6 +4285,33 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "ghost_hide_story_views",
+          "title": "Default: ghost hide story views",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "ghost_hide_profile_visits",
+          "title": "Default: ghost hide profile visits",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "ghost_hide_typing",
+          "title": "Default: ghost hide typing",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -4343,7 +4406,7 @@
     },
     {
       "name": "Hide already seen videos",
-      "description": "Remembers the videos you've watched and hides them when the feed sends them again, so you only see new ones. The list stays on your phone. Starts off. Turn it on in Hushfeed settings > Feed filter.",
+      "description": "Remembers the videos you've watched and hides them when the feed sends them again, so you only see new ones. It can also keep a watch history you can search and reopen videos from. Both stay on your phone. Starts off. Turn them on in Hushfeed settings > Feed filter.",
       "category": "Feed",
       "use": true,
       "dependencies": [
@@ -4406,6 +4469,15 @@
           "required": false,
           "type": "kotlin.Int",
           "default": 0,
+          "values": null
+        },
+        {
+          "key": "local_watch_history",
+          "title": "Default: local watch history",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         }
       ]
@@ -5540,6 +5612,33 @@
           "values": null
         },
         {
+          "key": "hide_following_all_button",
+          "title": "Default: hide following all button",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_story_create",
+          "title": "Default: hide story create",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_repost_chip",
+          "title": "Default: hide repost chip",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "hide_detail_comment_bar",
           "title": "Default: hide detail comment bar",
           "description": null,
@@ -6372,6 +6471,56 @@
       ]
     },
     {
+      "name": "Keep the next videos in full screen",
+      "description": "From most pages, TikTok's full screen view opens with only the video you were on, so there's nothing to swipe to and it can't move on by itself. This brings the videos after it along. Starts off. Turn it on in Hushfeed settings > Playback.",
+      "category": "Playback",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "RawResourcePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.6.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
+          ],
+          "targets": [
+            {
+              "version": "47.6.3",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
+              }
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "full_screen_next_videos",
+          "title": "Default: full screen next videos",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Keep the screen's brightness in the camera",
       "description": "Stops TikTok from turning your screen brighter while you film, edit or post a video. Starts off. Turn it on in Hushfeed settings > App.",
       "category": "Interface",
@@ -6423,7 +6572,7 @@
     },
     {
       "name": "Keep the screen's refresh rate",
-      "description": "Stops TikTok slowing your screen down to the video's frame rate, so scrolling stays smooth on 90 or 120 Hz phones. Starts off. Turn it on in Hushfeed settings > App.",
+      "description": "Stops TikTok slowing your screen down to the video's frame rate, so scrolling stays smooth on 90 or 120 Hz phones. TikTok doesn't ask on every phone, and where it doesn't, this changes nothing. Starts off. Turn it on in Hushfeed settings > App.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -7944,6 +8093,15 @@
           "required": false,
           "type": "kotlin.String",
           "default": "us",
+          "values": null
+        },
+        {
+          "key": "simspoof_time_zone",
+          "title": "Default: simspoof time zone",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         },
         {

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.2.0-dev.3",
+  "version": "2.2.0-dev.4",
   "patches": [
     {
       "name": "Add-on support",
@@ -276,6 +276,182 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "DNS filter",
+      "description": "Forces a family-safe DNS filter and locks the browser's Secure DNS setting.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": [
+            "9c2db70513515fdbfbbc585b3edf3d7123d4dc67c94ffd306361c1d79bbf18ac"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "dohUrl",
+          "title": "DNS-over-HTTPS resolver",
+          "description": "The https address of the DNS-over-HTTPS resolver the browser must use.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "https://doh.cleanbrowsing.org/doh/family-filter/",
+          "values": {
+            "CleanBrowsing Family": "https://doh.cleanbrowsing.org/doh/family-filter/",
+            "CleanBrowsing Adult": "https://doh.cleanbrowsing.org/doh/adult-filter/",
+            "Cloudflare for Families": "https://family.cloudflare-dns.com/dns-query",
+            "AdGuard Family": "https://family.adguard-dns.com/dns-query"
+          }
+        },
+        {
+          "key": "dohMode",
+          "title": "Mode",
+          "description": "Strict never uses the normal DNS, so nothing loads while the resolver is unreachable. Fallback is easier to get around.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "strict",
+          "values": {
+            "Strict (no browsing when the resolver is down)": "strict",
+            "Fallback (use the normal DNS when the resolver is down)": "fallback"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DNS filter",
+      "description": "Forces a family-safe DNS filter and locks the browser's Secure DNS setting.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.mozilla.firefox",
+          "name": "Firefox",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF7139",
+          "signatures": [
+            "a78b62a5165b4494b2fead9e76a280d22d937fee6251aece599446b2ea319b04"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "159.0",
+              "versionCodes": {
+                "X86_64": 2016191886,
+                "ARM64_V8A": 2016191887
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "dohUrl",
+          "title": "DNS-over-HTTPS resolver",
+          "description": "The https address of the DNS-over-HTTPS resolver the browser must use.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "https://doh.cleanbrowsing.org/doh/family-filter/",
+          "values": {
+            "CleanBrowsing Family": "https://doh.cleanbrowsing.org/doh/family-filter/",
+            "CleanBrowsing Adult": "https://doh.cleanbrowsing.org/doh/adult-filter/",
+            "Cloudflare for Families": "https://family.cloudflare-dns.com/dns-query",
+            "AdGuard Family": "https://family.adguard-dns.com/dns-query"
+          }
+        },
+        {
+          "key": "dohMode",
+          "title": "Mode",
+          "description": "Strict never uses the normal DNS, so nothing loads while the resolver is unreachable. Fallback is easier to get around.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "strict",
+          "values": {
+            "Strict (no browsing when the resolver is down)": "strict",
+            "Fallback (use the normal DNS when the resolver is down)": "fallback"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DNS filter",
+      "description": "Forces a family-safe DNS filter and locks the browser's Secure DNS setting.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.mozilla.focus",
+          "name": "Firefox Focus",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#7542E5",
+          "signatures": [
+            "6203a473be36d64ee37f87fa500edbc79eab930610ab9b9fa4ca7d5c1f1b4ffc"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "158.0.2",
+              "versionCodes": {
+                "ARM64_V8A": 402940253,
+                "ARMEABI_V7A": 402940253,
+                "X86_64": 402940253,
+                "X86": 402940253
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "dohUrl",
+          "title": "DNS-over-HTTPS resolver",
+          "description": "The https address of the DNS-over-HTTPS resolver the browser must use.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "https://doh.cleanbrowsing.org/doh/family-filter/",
+          "values": {
+            "CleanBrowsing Family": "https://doh.cleanbrowsing.org/doh/family-filter/",
+            "CleanBrowsing Adult": "https://doh.cleanbrowsing.org/doh/adult-filter/",
+            "Cloudflare for Families": "https://family.cloudflare-dns.com/dns-query",
+            "AdGuard Family": "https://family.adguard-dns.com/dns-query"
+          }
+        },
+        {
+          "key": "dohMode",
+          "title": "Mode",
+          "description": "Strict never uses the normal DNS, so nothing loads while the resolver is unreachable. Fallback is easier to get around.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "strict",
+          "values": {
+            "Strict (no browsing when the resolver is down)": "strict",
+            "Fallback (use the normal DNS when the resolver is down)": "fallback"
+          }
+        }
+      ]
     },
     {
       "name": "Disable Datadog telemetry",
@@ -6545,6 +6721,80 @@
       "options": []
     },
     {
+      "name": "Hide competitions",
+      "description": "Hides the competitions you pick in Patch settings from match lists, leagues and search.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mobilefootie.wc2010",
+          "name": "FotMob",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00985F",
+          "signatures": [
+            "99eb36651caf7752dc34770ee1afbf5b5f4e07a906243904104eb5acc9ffbaf4"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "240.17974.20261023",
+              "versionCodes": {
+                "ARM64_V8A": 17974,
+                "ARMEABI_V7A": 17974,
+                "X86_64": 17974,
+                "X86": 17974
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide competitions",
+      "description": "Hides the competitions you pick in Patch settings from match lists, leagues and search.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sofascore.results",
+          "name": "Sofascore",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#384CF4",
+          "signatures": [
+            "ecd3a2c9902adbef2653b105924a97f1755bbebb93c5f2b2a1fb56c7b009f841"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.10.19",
+              "versionCodes": {
+                "ARM64_V8A": 261019002,
+                "ARMEABI_V7A": 261019002,
+                "X86_64": 261019002,
+                "X86": 261019002
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide countries",
       "description": "Hides the countries you pick in Patch settings from match lists, leagues and search.",
       "default": false,
@@ -6586,6 +6836,7 @@
       "description": "Hides the countries you pick in Patch settings from match lists, leagues and search.",
       "default": false,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [

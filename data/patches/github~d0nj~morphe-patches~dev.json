@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.0-dev.3",
+  "version": "1.7.0-dev.4",
   "patches": [
     {
       "name": "Custom weather provider",
-      "description": "Serves the at-a-glance weather tile without a Niagara account, using Open-Meteo or Breezy Weather. Breezy Weather needs version 6.1.0 or newer with at least one location, and Niagara must be granted the \"Read Breezy Weather data\" permission from Niagara's app info → Permissions screen.",
+      "description": "Serves the at-a-glance weather tile without a Niagara account, using Open-Meteo, MET Norway or Breezy Weather. Breezy Weather needs version 6.1.0 or newer with at least one location, and Niagara must be granted the \"Read Breezy Weather data\" permission from Niagara's app info → Permissions screen.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -32,12 +32,13 @@
         {
           "key": "weatherProvider",
           "title": "Weather provider",
-          "description": "Source for the at-a-glance tile's forecast. Open-Meteo works out of the box. Breezy Weather reads your installed Breezy Weather app (6.1.0+, at least one location) — grant Niagara the Breezy Weather read permission from Niagara's app info → Permissions.",
+          "description": "Source for the at-a-glance tile's forecast. Open-Meteo and MET Norway work out of the box. Breezy Weather reads your installed Breezy Weather app (6.1.0+, at least one location) — grant Niagara the Breezy Weather read permission from Niagara's app info → Permissions.",
           "required": true,
           "type": "kotlin.String",
           "default": "open-meteo",
           "values": {
             "Open-Meteo": "open-meteo",
+            "MET Norway": "met-norway",
             "Breezy Weather": "breezy-weather"
           }
         }

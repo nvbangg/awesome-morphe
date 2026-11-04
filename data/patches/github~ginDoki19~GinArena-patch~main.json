@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.7.1",
+  "version": "2.8.0",
   "patches": [
     {
       "name": "AdBlocker turbo & userscript bundle",
@@ -556,6 +556,77 @@
           "key": "bypassEnvironmentChecks",
           "title": "Bypass root & sniffer checks",
           "description": "Bypasses root and sniffer-app lockouts. Only turn this on if the app refuses to run on your device.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripNativeAndTelemetryBloat",
+          "title": "Strip native & telemetry bloat",
+          "description": "Deletes unused libraries and tracking components to save space. Not needed for ad removal.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove ads, telemetry & restrictions",
+      "description": "Removes ads, tracking, and forced updates, and keeps channels working after patching.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.playfy.tv",
+          "name": "Playfy TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#5E35B1",
+          "signatures": [
+            "38cde288f060fa8f476ab6811ff215767c35117bf6248fd8ad157cd4566898cc"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.7",
+              "versionCodes": {
+                "ARM64_V8A": 8,
+                "ARMEABI_V7A": 8,
+                "X86_64": 8,
+                "X86": 8
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 5.0+), build 8"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "removePushNotifications",
+          "title": "Remove push notifications",
+          "description": "Disables FCM push notifications and the notification permission prompt.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassUpdateGate",
+          "title": "Bypass update & force-update screen",
+          "description": "Skips forced update screens. With this on the app never updates itself — re-patch a newer stock version to update.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassEnvironmentChecks",
+          "title": "Bypass sniffer-app check",
+          "description": "Bypasses the sniffer-app lockout. Only turn this on if the app refuses to run on your device.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
