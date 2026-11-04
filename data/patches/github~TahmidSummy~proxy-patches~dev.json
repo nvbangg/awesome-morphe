@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "patches": [
     {
       "name": "Proxy",
-      "description": "Routes all of the app's traffic through your HTTP or HTTPS proxy, with optional username and password. Nothing goes direct, even if the proxy is down.",
+      "description": "Routes all of the app's traffic through your HTTP, HTTPS or SOCKS5 proxy, with optional username and password. Change it any time in the app: long-press the app icon → Proxy settings. Nothing goes direct, even if the proxy is down, unless you turn on \"Run without proxy\" there.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -37,35 +37,39 @@
       "options": [
         {
           "key": "proxyHost",
-          "title": "Proxy host",
-          "description": "Hostname or IP address of the proxy, for example proxy.example.com.",
-          "required": true,
+          "title": "Proxy host (optional)",
+          "description": "Starting value. Hostname or IP address of the proxy, for example proxy.example.com. You can also leave this empty and set it in the app (long-press the app icon → Proxy settings). Until a proxy is set, the app has no internet.",
+          "required": false,
           "type": "kotlin.String",
-          "default": null,
+          "default": "",
           "values": null
         },
         {
           "key": "proxyPort",
           "title": "Proxy port",
-          "description": "Port of the proxy, for example 443 for an HTTPS proxy or 8080 for a plain HTTP proxy.",
-          "required": true,
+          "description": "Starting value. For example 443 for an HTTPS proxy, 8080 for a plain HTTP proxy, or 1080 for SOCKS5.",
+          "required": false,
           "type": "kotlin.Int",
           "default": 443,
           "values": null
         },
         {
-          "key": "useTls",
-          "title": "HTTPS (TLS) proxy",
-          "description": "On: the connection to the proxy itself is encrypted (an \"HTTPS proxy\", such as Caddy forward_proxy). Off: a plain HTTP proxy.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
+          "key": "proxyType",
+          "title": "Proxy type",
+          "description": "Starting value. HTTPS: the connection to the proxy itself is encrypted (such as Caddy forward_proxy). HTTP: a plain HTTP proxy. SOCKS5: a SOCKS5 proxy (not encrypted).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "https",
+          "values": {
+            "HTTPS (encrypted connection to the proxy)": "https",
+            "HTTP": "http",
+            "SOCKS5": "socks5"
+          }
         },
         {
           "key": "username",
-          "title": "Username",
-          "description": "Proxy username. Leave empty if the proxy has no login. Stored in plain text inside the patched app, so don't share the patched APK.",
+          "title": "Username (optional)",
+          "description": "Starting value. Leave empty if the proxy has no login. Stored in plain text inside the patched app, so don't share the patched APK.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
@@ -73,8 +77,8 @@
         },
         {
           "key": "password",
-          "title": "Password",
-          "description": "Proxy password. Leave empty if the proxy has no login.",
+          "title": "Password (optional)",
+          "description": "Starting value. Leave empty if the proxy has no login.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
