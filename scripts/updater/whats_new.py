@@ -19,6 +19,7 @@ from common.utils import (
 
 WHATS_NEW_MAX_ENTRIES = 14
 DISPLAY_ITEM_LIMIT = 2
+NEW_ENTRY_LIMIT = 20
 EXISTING_ENTRY_LIMIT = 9
 EXISTING_ITEM_LIMIT = 4
 NEW_APP_THRESHOLD = 10
@@ -351,25 +352,35 @@ def generate_markdown(
             bundle_lines.append(
                 f"+ 📦 (✨New) [{display_name}]({bundle_url}){owner_suffix}"
             )
+        remaining_count = len(bundle_lines) - NEW_ENTRY_LIMIT
+        if remaining_count > 0:
+            bundle_lines = bundle_lines[:NEW_ENTRY_LIMIT]
+            bundle_label = "bundle" if remaining_count == 1 else "bundles"
+            bundle_lines.append(f"- _...and {remaining_count} more {bundle_label}_")
         markdown_sections.append("\n".join(bundle_lines))
 
     if new_apps_map:
         app_lines = []
         is_compact = len(new_apps_map) > NEW_APP_THRESHOLD
-        for package_name in sorted(
+        sorted_new_packages = sorted(
             new_apps_map.keys(),
             key=lambda package_name: get_app_sort_key(
                 package_name,
                 app_metadata,
                 app_patch_counts.get(package_name, len(new_apps_map[package_name])),
             ),
-        ):
+        )
+        for package_name in sorted_new_packages[:NEW_ENTRY_LIMIT]:
             app_name = format_app_name(package_name, app_metadata)
             app_url = make_url(app=package_name)
             app_lines.append(f"+ 📱 (✨New) [{app_name}]({app_url})")
             if not is_compact:
                 patch_list = list(new_apps_map[package_name].values())
                 app_lines.extend(render_patches(package_name, patch_list))
+        remaining_count = len(sorted_new_packages) - NEW_ENTRY_LIMIT
+        if remaining_count > 0:
+            app_label = "app" if remaining_count == 1 else "apps"
+            app_lines.append(f"- _...and {remaining_count} more {app_label}_")
         markdown_sections.append("\n".join(app_lines))
 
     if existing_apps_new_patches_map:
