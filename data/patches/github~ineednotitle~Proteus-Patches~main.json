@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -1501,7 +1501,7 @@
     },
     {
       "name": "Disable PairIP license check",
-      "description": "Disables PairIP license verification, VM checks, and repeated background checks.",
+      "description": "Disables PairIP license verification: integrity/VM checks, the licensing\nclient and repeated background checks.\n\nApplies to any app. No effect if the app does not use PairIP.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -3837,7 +3837,7 @@
     },
     {
       "name": "Spoof Widevine / DRM level",
-      "description": "Reports Widevine L1 (hardware DRM) to apps that check DRM level locally.\n\nUseful for apps that refuse to play HD/4K content on L3 devices or after re-signing.\n\nDoes not bypass server-side DRM - Netflix, Disney+ and similar are not affected.",
+      "description": "Reports Widevine L1 (hardware DRM) to apps that check DRM level locally.\n\nUseful for apps that refuse to play HD/4K content on L3 devices or after re-signing.\n\nDoes not bypass server-side DRM - Netflix, Disney+ and similar are not affected.\nApplies to any app; no effect if the app does not query Widevine.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -3931,6 +3931,15 @@
           "key": "packageName",
           "title": "Package name override (optional)",
           "description": "Leave blank — read automatically from the app. Only set this if you changed the app's package name and the patch is using the wrong one.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "signature",
+          "title": "Certificate Base64 override (optional)",
+          "description": "Leave blank to read the original certificate from the APK automatically. Only paste a Base64-encoded DER certificate here if auto-detection fails (for example because the APK was already re-signed).",
           "required": false,
           "type": "kotlin.String",
           "default": null,
