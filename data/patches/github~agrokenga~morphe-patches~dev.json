@@ -1,0 +1,323 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (Semaphore CI) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.1.0-dev.7",
+  "patches": [
+    {
+      "name": "Cheats Screen Unlock",
+      "description": "Makes the in-game Cheats screen reachable by redirecting the Settings -> Credits button to SystemScreen.OpenCheats. Single-player UI only; it does not grant items, currency, or purchases.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "cheatsScreenUnlockEnable",
+          "title": "Open Cheats from Settings -> Credits",
+          "description": "Patch SystemScreen.OpenCredits to jump to SystemScreen.OpenCheats. The Credits button then opens the Cheats panel. Disabled by default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Example Patch",
+      "description": "Example patch to start with.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.example.app",
+          "name": "XYZ app",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0045",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.0.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "IAP Bypass Patch",
+      "description": "Mocks PlayFab Catalog API for IAP fulfillment without platform billing.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "IAP Free (All Items)",
+      "description": "Makes all in-game store purchases free by bypassing the PlayFab server and Play Store UI. Patches IAPService.PurchaseBundle to return immediately without calling IStoreController.InitiatePurchase, and patches StoreService.PurchaseItem for in-game store purchases.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "iapFreeEnable",
+          "title": "Make all store items free",
+          "description": "Patch IAPService.PurchaseBundle and StoreService.PurchaseItem to bypass the PlayFab server and Play Store UI. Purchases are registered but not automatically granted. Disabled by default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "IAP Full Bypass",
+      "description": "Bypasses PlayFab validation and grants items locally, setting price to free.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "iapFullBypassEnabled",
+          "title": "Enable IAP Full Bypass",
+          "description": "If false, the patch is inactive.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "IAP Native Probe",
+      "description": "Read-only diagnostics for libil2cpp.so: hashes the library and checks whether the KoPP2 2.21.4 PurchaseItem and IAP grant-function offsets are reachable in both ABIs.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "iapProbeWriteBack",
+          "title": "Test APK write-back",
+          "description": "Append one harmless byte to libil2cpp.so so the patcher has to rewrite and re-align the native-library entry. Disabled by default; enable only to verify the extract -> edit -> rebuild -> install pipeline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Native Method Patch Demo",
+      "description": "Replaces the harmless CheatsScreen.ShowCheatAlert method with an immediate return in both libil2cpp.so ABIs. Demonstrates static ELF RVA mapping and byte patching; it does not touch billing, purchases, entitlements, or networking.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "nativeMethodPatchDemoEnable",
+          "title": "Patch ShowCheatAlert (demo)",
+          "description": "Replace CheatsScreen.ShowCheatAlert with an immediate return. This is a harmless UI alert, not billing or purchase code. Disabled by default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Native Visual Feedback",
+      "description": "Hooks every probed purchase and PlayFab method in libil2cpp.so and logs \"CALLED: <method>\" through NGUIDebug's on-screen overlay. Diagnostic only; it does not change any return value, response, entitlement, or purchase result.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "nativeVisualFeedbackEnable",
+          "title": "Show native call log overlay",
+          "description": "Install diagnostic hooks for the probed purchase and PlayFab methods. The hooks only log; they do not alter return values or purchases. Disabled by default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "On-screen Game Log",
+      "description": "Adds a touch-through, auto-scrolling log panel over the lower 30% of the screen, with padding from the screen edges. It shows this process's logcat output (Unity Debug.Log, native and Java logs). Diagnostic only; no game state is changed.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}

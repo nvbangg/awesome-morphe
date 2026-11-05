@@ -1,0 +1,111 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (Semaphore CI) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.0.0",
+  "patches": [
+    {
+      "name": "Example Patch",
+      "description": "Example patch to start with.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.example.app",
+          "name": "XYZ app",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0045",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.0.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "IAP Bypass Patch",
+      "description": "Mocks PlayFab Catalog API for IAP fulfillment without platform billing.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "IAP Native Probe",
+      "description": "Read-only diagnostics for libil2cpp.so: hashes the library and checks whether the KoPP2 2.21.4 PurchaseItem and IAP grant-function offsets are reachable in both ABIs.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.paradoxplaza.kopp2",
+          "name": "KoPP2",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFD700",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.21.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "iapProbeWriteBack",
+          "title": "Test APK write-back",
+          "description": "Append one harmless byte to libil2cpp.so so the patcher has to rewrite and re-align the native-library entry. Disabled by default; enable only to verify the extract -> edit -> rebuild -> install pipeline.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    }
+  ]
+}

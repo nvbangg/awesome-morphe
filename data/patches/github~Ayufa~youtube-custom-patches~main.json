@@ -1,0 +1,149 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.1.0",
+  "patches": [
+    {
+      "name": "Hide live chat clutter",
+      "description": "Hides the pinned message banner and poll cards in live chat. Each can be toggled in Morphe settings (Ayufa patch settings) without re-patching. For YouTube 21.30.216.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube",
+          "name": "YouTube",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "5aad2bee6db95d17e05a08d7d1e64c10a1511879154483916b6ae6c7fd9cb0c6",
+            "3d7a1223019aa39d9ea0e3436ab7c0896bfb4fb679f4de5fe7c23f326c8f994a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "21.30.216",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideLiveChatPinnedBanner",
+          "title": "Hide pinned message banner",
+          "description": "Hides the pinned comment (banner) shown above the live chat.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideLiveChatPolls",
+          "title": "Hide live chat polls",
+          "description": "Hides poll (questionnaire) cards shown in the live chat.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Live latency keeper",
+      "description": "Periodically checks live stream playback and automatically seeks to the live edge when playback has fallen behind. Can be toggled in Morphe settings (Ayufa patch settings) without re-patching. For YouTube 20.26.46 (Android 8.0) and 21.30.216. Requires the official Morphe patches to be applied as well.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube",
+          "name": "YouTube",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "5aad2bee6db95d17e05a08d7d1e64c10a1511879154483916b6ae6c7fd9cb0c6",
+            "3d7a1223019aa39d9ea0e3436ab7c0896bfb4fb679f4de5fe7c23f326c8f994a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.26.46",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.google.android.youtube",
+          "name": "YouTube",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "5aad2bee6db95d17e05a08d7d1e64c10a1511879154483916b6ae6c7fd9cb0c6",
+            "3d7a1223019aa39d9ea0e3436ab7c0896bfb4fb679f4de5fe7c23f326c8f994a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "21.30.216",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "liveLatencyCheckIntervalSeconds",
+          "title": "Check interval",
+          "description": "How often to check how far live playback is behind the live edge.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 45,
+          "values": {
+            "15 seconds": 15,
+            "30 seconds": 30,
+            "45 seconds": 45,
+            "60 seconds": 60,
+            "120 seconds": 120
+          }
+        },
+        {
+          "key": "liveLatencyThresholdSeconds",
+          "title": "Catch-up threshold",
+          "description": "Seek to the live edge when playback is behind it by more than this.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 15,
+          "values": {
+            "10 seconds": 10,
+            "15 seconds": 15,
+            "30 seconds": 30,
+            "60 seconds": 60
+          }
+        },
+        {
+          "key": "liveLatencySafetySeconds",
+          "title": "Live edge safety margin",
+          "description": "Seek to this many seconds before the live edge, to avoid rebuffering at the very edge.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 2,
+          "values": {
+            "0 seconds": 0,
+            "2 seconds": 2,
+            "5 seconds": 5
+          }
+        }
+      ]
+    }
+  ]
+}

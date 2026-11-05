@@ -1,0 +1,135 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.6.0",
+  "patches": [
+    {
+      "name": "ADB server log",
+      "description": "Writes the native ADB server's own log to /data/local/tmp/tvqa-server.log and lets its debug messages through. The server is started again every few seconds and nothing of what it says is reachable otherwise: its logger is built at a level that drops every message, and its output is sent to /dev/null. Use this to find out why it ends, not as a fix.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "dev.vodik7.tvquickactions",
+          "name": "tvQuickActions Pro",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1565C0",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.8.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Never stop itself",
+      "description": "Keeps the app from stopping its own package. Stop recent apps, Restart app and Force stop app all end in `am force-stop <package>` run over ADB, and the app is in the recents list it works from, so once an ADB connection is up the app stops itself, restarts, and loops every few seconds. The app only skips the foreground app, and only when the matching preference is enabled, so this covers what the preference does not. Custom ADB command actions are covered too, and such a command is logged under the TVQA-GUARD tag before it is dropped.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "dev.vodik7.tvquickactions",
+          "name": "tvQuickActions Pro",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1565C0",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.8.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock native engine",
+      "description": "Patches the native engine libraries so that they run on a re-signed APK. The anti-tamper constructor of libd.so that destroys a global mutex is disabled, and the trap instructions the verification routine plants inside its own code - udf #0 (SIGILL) and stores of the markers 0xdead and 0xdeadbeef (SIGSEGV) - are replaced by no-ops, leaving the routine's work intact. This is what makes Web Widget Overlay and button emulation work. The only `system()` call of liba.so, which force-stops the app when the ADB speed-up server loads it, is turned into no-ops as well, which is what stops the app from killing itself in a loop.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "dev.vodik7.tvquickactions",
+          "name": "tvQuickActions Pro",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1565C0",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.8.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Makes the bundled Google LVL policy always report the app as licensed, which unlocks the premium features.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "dev.vodik7.tvquickactions",
+          "name": "tvQuickActions Pro",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1565C0",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.8.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.7.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}

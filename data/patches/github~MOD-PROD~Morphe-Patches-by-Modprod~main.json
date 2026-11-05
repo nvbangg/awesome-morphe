@@ -1,0 +1,211 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.5.0",
+  "patches": [
+    {
+      "name": "Change app name",
+      "description": "Changes the app name shown on the launcher and in the app list.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.gh.reisxd.tizentube.cobalt",
+          "name": "TizenTube",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "Name shown under the icon / banner. Use a single line.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "YouTube Premium",
+          "values": {
+            "YouTube Premium": "YouTube Premium",
+            "YouTube": "YouTube",
+            "YouTube MOD": "YouTube MOD",
+            "TizenTube MOD": "TizenTube MOD"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clone app",
+      "description": "Changes the package name so the patched app can be installed next to the original TizenTube. Default package name: mod.android.youtube.tv.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.gh.reisxd.tizentube.cobalt",
+          "name": "TizenTube",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name of the cloned app. Each cloned install needs a unique package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "mod.android.youtube.tv",
+          "values": {
+            "mod.android.youtube.tv": "mod.android.youtube.tv",
+            "mod.youtube.tv": "mod.youtube.tv",
+            "io.gh.reisxd.tizentube.cobalt.mod": "io.gh.reisxd.tizentube.cobalt.mod"
+          }
+        },
+        {
+          "key": "updatePermissions",
+          "title": "Update permissions",
+          "description": "Rename custom permissions declared by the app. Prevents install conflicts with the original app.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "updateProviders",
+          "title": "Update providers",
+          "description": "Rename content provider authorities. Prevents install conflicts with the original app.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Inject Adblocker Userscript",
+      "description": "Injects a JavaScript userscript into the YouTube TV web app running in Cobalt. The script removes ad placements from InnerTube responses before the app reads them.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.gh.reisxd.tizentube.cobalt",
+          "name": "TizenTube",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "userscriptFile",
+          "title": "Custom userscript file",
+          "description": "Absolute path to a .js file on the patching device. If the file does not exist, the bundled script (ad blocker, sponsored tiles, playback speed keeper) is used.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "/storage/emulated/0/Download/adblock.user.js",
+          "values": {
+            "/storage/emulated/0/Download/adblock.user.js": "/storage/emulated/0/Download/adblock.user.js",
+            "Bundled script": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "MOD Icon and Banner",
+      "description": "Replaces the app icon and the Android TV launcher banner with YouTube artwork. On Android TV the launcher shows the banner, so both are replaced.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.gh.reisxd.tizentube.cobalt",
+          "name": "TizenTube",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.0.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "replaceIcon",
+          "title": "Replace icon",
+          "description": "Replace android:icon (app list, settings, phone launchers).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "replaceBanner",
+          "title": "Replace banner",
+          "description": "Replace android:banner (Android TV / Google TV home screen).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "customIconFile",
+          "title": "Custom icon file",
+          "description": "Optional absolute path to a PNG image on the patching device. Leave empty for the bundled icon. Recommended: square PNG, at least 320x320.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "customBannerFile",
+          "title": "Custom banner file",
+          "description": "Optional absolute path to a PNG image on the patching device. Leave empty for the bundled banner. Recommended: 16:9 PNG, at least 640x360.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    }
+  ]
+}
