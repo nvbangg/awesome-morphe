@@ -1,5 +1,5 @@
 {
-    "version": "1.0.10",
+    "version": "1.0.11",
     "patches": [
         {
             "name": "Block Advanced Security telemetry",
@@ -1079,7 +1079,7 @@
                 {
                     "packageName": "com.plexapp.android",
                     "name": "Plex",
-                    "description": "The phone app.",
+                    "description": "The Plex app, for phones and Android TV.",
                     "apkFileType": "APKM",
                     "appIconColor": "#E5A00D",
                     "signatures": null,
@@ -3300,6 +3300,32 @@
             "options": []
         },
         {
+            "name": "Fix picture-in-picture",
+            "description": "Keeps the picture-in-picture window at the video's shape, so it does not flicker between sizes.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.youtube.unplugged",
+                    "name": "YouTube TV",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FF0000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "10.44.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "GmsCore support",
             "description": "Signs in with Google through GmsCore instead of Google Play services.",
             "default": true,
@@ -5131,7 +5157,7 @@
         },
         {
             "name": "Hide membership upsell",
-            "description": "Hides the \"Add to membership\" shelf on the home screen.",
+            "description": "Hides the \"Add to membership\" shelf on the home screen and in search results.",
             "default": false,
             "category": null,
             "compatiblePackages": [
@@ -5145,6 +5171,32 @@
                     "targets": [
                         {
                             "version": "10.44.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide pop-ups",
+            "description": "Removes the review requests, the daily spin-the-wheel pop-up, and the survey after opening a deal.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.dealseekorg.dealseek",
+                    "name": "DealSeek",
+                    "description": "The DealSeek shopping-deals app. Needs the Pairip license-check patch to run once re-signed.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FF6329",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.64.0",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -5412,7 +5464,7 @@
                 {
                     "packageName": "com.plexapp.android",
                     "name": "Plex",
-                    "description": "The phone app.",
+                    "description": "The Plex app, for phones and Android TV.",
                     "apkFileType": "APKM",
                     "appIconColor": "#E5A00D",
                     "signatures": null,
@@ -7243,7 +7295,7 @@
                 {
                     "packageName": "com.plexapp.android",
                     "name": "Plex",
-                    "description": "The phone app.",
+                    "description": "The Plex app, for phones and Android TV.",
                     "apkFileType": "APKM",
                     "appIconColor": "#E5A00D",
                     "signatures": null,
@@ -7562,6 +7614,32 @@
                     "targets": [
                         {
                             "version": "6.11.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Skip launch video",
+            "description": "Skips the intro clip that plays when the app opens.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "gov.whitehouse.app",
+                    "name": "White House",
+                    "description": "The official White House app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0A2240",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "47.7.8",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -8438,6 +8516,46 @@
                         "US Mobile": "US Mobile",
                         "Verizon": "Verizon",
                         "Visible": "Visible"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Start at high quality",
+            "description": "Starts recordings and on-demand videos at high quality instead of stepping up from a low one.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.youtube.unplugged",
+                    "name": "YouTube TV",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FF0000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "10.44.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "startingQuality",
+                    "title": "Starting quality",
+                    "description": "The resolution recordings and on-demand videos start at. Choose 2160p only with the 4K Plus add-on: without it, videos start low as if the patch were off.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "1080",
+                    "values": {
+                        "2160p (4K)": "2160",
+                        "1080p": "1080",
+                        "720p": "720"
                     }
                 }
             ]

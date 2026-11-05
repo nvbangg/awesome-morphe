@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.1.2",
+  "version": "2.2.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -403,6 +403,69 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block AutoMod comments",
+      "description": "Hides all comments from u/AutoModerator, including stickied bot comments. AutoModerator posts are kept. Client-side only; off by default.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.reddit.frontpage",
+          "name": "Reddit",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": [
+            "970b91143813b4c9d5f3634f672c9fcaa5621b4efaaedafd6c235cbbb869736f"
+          ],
+          "targets": [
+            {
+              "version": "2026.42.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.41.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.40.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.39.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.24.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -1279,6 +1342,136 @@
           "required": false,
           "type": "kotlin.String",
           "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Content filters",
+      "description": "Adds patch-time keyword, community, author and flair filters for feed posts (optionally comments), and locally bypasses Reddit's NSFW/spoiler/quarantine gates and over-18 account flags. Server-side filtering still applies. Off by default.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.reddit.frontpage",
+          "name": "Reddit",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": [
+            "970b91143813b4c9d5f3634f672c9fcaa5621b4efaaedafd6c235cbbb869736f"
+          ],
+          "targets": [
+            {
+              "version": "2026.42.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.41.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.40.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.39.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.24.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "redditContentFilterKeywords",
+          "title": "Keywords to hide",
+          "description": "Comma-separated words or phrases hidden from titles, bodies and flairs (case-insensitive, literal match).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "redditContentFilterCommunities",
+          "title": "Communities to hide",
+          "description": "Comma-separated subreddit names, with or without the r/ prefix.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "redditContentFilterAuthors",
+          "title": "Authors to hide",
+          "description": "Comma-separated user names, with or without the u/ prefix.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "redditContentFilterFlairs",
+          "title": "Flairs to hide",
+          "description": "Comma-separated flair texts. Use community::flair to scope a rule to one community.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "redditContentFilterMatchMode",
+          "title": "Match mode",
+          "description": "Hide a row when any rule matches, or only when every configured category matches.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "any",
+          "values": {
+            "Any rule": "any",
+            "All configured categories": "all"
+          }
+        },
+        {
+          "key": "redditContentFilterBypassGates",
+          "title": "Bypass built-in content gates",
+          "description": "Force over-18 account flags and clear local NSFW/spoiler/quarantine blur gates. Server-side filters still apply.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "redditContentFilterComments",
+          "title": "Also filter comments",
+          "description": "Apply the keyword/author filters to comment rows in threads as well as feed posts.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         }
       ]
@@ -3599,18 +3792,180 @@
     },
     {
       "name": "Remove dangerous permissions",
-      "description": "Removes privacy-invasive permissions (package visibility, phone state, accounts,\nlocation, contacts, microphone, screen-capture detection, advertising ID) from any\napp's manifest. Storage and SMS permissions are kept by default.\n\nThe removal list is configurable. Removing a permission the app actually needs can\nbreak features (login, calls, address auto-detect).",
+      "description": "Removes privacy-invasive permissions from any app's manifest using simple\ncategory switches. All categories are ON by default (aggressive): package\nvisibility, phone, accounts, location, contacts, microphone, camera,\nstorage, SMS, calendar, sensors, nearby devices, ad ID, AdServices,\nnotifications and screen-capture detection.\n\nUse \"Permissions to keep\" to exempt a single permission, or \"Advanced:\nexact removal list\" to replace the switches with your own list.\n\nRemoving a permission the app actually needs can break features (login,\ncalls, camera, file picker, notifications). Off by default.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
       "options": [
         {
-          "key": "permissionsToRemove",
-          "title": "Permissions to remove",
-          "description": "Comma-separated list of permission names to strip from the manifest.",
+          "key": "permPackageVisibility",
+          "title": "Package visibility",
+          "description": "Remove QUERY_ALL_PACKAGES (app can no longer enumerate every installed app).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permPhone",
+          "title": "Phone state & numbers",
+          "description": "Remove READ_PHONE_STATE / phone-number / CALL_PHONE permissions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permAccounts",
+          "title": "Accounts",
+          "description": "Remove GET_ACCOUNTS (account enumeration for login/ads).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permLocation",
+          "title": "Location",
+          "description": "Remove fine, coarse and background location permissions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permContacts",
+          "title": "Contacts",
+          "description": "Remove read/write contacts permissions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permMicrophone",
+          "title": "Microphone",
+          "description": "Remove RECORD_AUDIO.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permCamera",
+          "title": "Camera",
+          "description": "Remove CAMERA. Disable this if the app needs to take photos or scan QR codes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permStorage",
+          "title": "Storage & media",
+          "description": "Remove legacy storage, MANAGE_EXTERNAL_STORAGE and READ_MEDIA_* permissions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permSms",
+          "title": "SMS",
+          "description": "Remove READ_SMS / RECEIVE_SMS / SEND_SMS.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permCalendar",
+          "title": "Calendar",
+          "description": "Remove read/write calendar permissions.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permSensors",
+          "title": "Sensors & activity",
+          "description": "Remove BODY_SENSORS and ACTIVITY_RECOGNITION.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permNearbyDevices",
+          "title": "Nearby devices",
+          "description": "Remove Bluetooth scan/connect/advertise and NEARBY_WIFI.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permScreenCaptureDetection",
+          "title": "Screen-capture detection",
+          "description": "Remove DETECT_SCREEN_CAPTURE (Android 14+ screenshot detection).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permAdId",
+          "title": "Advertising ID",
+          "description": "Remove com.google.android.gms.permission.AD_ID.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permAdServices",
+          "title": "AdServices permissions",
+          "description": "Remove every android.permission.ACCESS_ADSERVICES_* entry.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permNotifications",
+          "title": "Notifications",
+          "description": "Remove POST_NOTIFICATIONS. Disable this if you still want app notifications.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "permissionsToKeep",
+          "title": "Permissions to keep",
+          "description": "Comma-separated permission names that are never removed, even if their category is on. Example: android.permission.CAMERA,android.permission.POST_NOTIFICATIONS",
           "required": false,
           "type": "kotlin.String",
-          "default": "android.permission.QUERY_ALL_PACKAGES,android.permission.READ_PHONE_STATE,android.permission.READ_BASIC_PHONE_STATE,android.permission.READ_PHONE_NUMBERS,android.permission.GET_ACCOUNTS,android.permission.ACCESS_FINE_LOCATION,android.permission.ACCESS_COARSE_LOCATION,android.permission.ACCESS_BACKGROUND_LOCATION,android.permission.READ_CONTACTS,android.permission.WRITE_CONTACTS,android.permission.RECORD_AUDIO,android.permission.DETECT_SCREEN_CAPTURE,com.google.android.gms.permission.AD_ID",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "extraPermissionsToRemove",
+          "title": "Extra permissions to remove",
+          "description": "Comma-separated permission names added on top of the enabled categories.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "permissionsToRemove",
+          "title": "Advanced: exact removal list",
+          "description": "Legacy override. If non-empty, replaces ALL category switches with this exact comma-separated list. Leave empty to use the switches above.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         }
       ]
