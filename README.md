@@ -6,6 +6,7 @@
 - [✅ Official](#official)
 - [📚 Resources](#resources)
 - [🔍 Patch Indexes](#patch-indexes)
+- [⬇️ Download Helper](#download-helper)
 - [🛠️ Other Projects](#projects)
 - [ℹ️ About](#about)
 
@@ -58,7 +59,8 @@
   - [If you have playback issues](https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/oag938k/)
   - [Shorts player has no buttons](https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/ogdw6mk/)
   - [Cannot login to Reddit](https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/oot13cq/)
-- [How To Patch More Apps With Morphe](https://www.reddit.com/r/MorpheApp/comments/1ta0bek/how_to_patch_more_apps_with_morphe/)
+  - [Download original apks using Morphe Helper](https://www.reddit.com/r/MorpheApp/s/L5rR9BUzFq)
+<!-- - [How To Patch More Apps With Morphe](https://www.reddit.com/r/MorpheApp/comments/1ta0bek/how_to_patch_more_apps_with_morphe/) -->
 - [How to request app patches](https://www.reddit.com/r/MorpheApp/comments/1vmfizy/how_to_request_app_patches/)
 - [Morphe Desktop (Currently Morphe CLI)](https://www.reddit.com/r/MorpheApp/comments/1rtr3ee/morphe_desktop_currently_morphe_cli/)
 - ~~[PotHelper Guide - YouTube playback with no spoofing required](https://www.reddit.com/r/MorpheApp/comments/1w0o641/pothelper_is_here_youtube_playback_with_no/)~~
@@ -67,6 +69,7 @@
 - [How to install and use Shizuku](https://github.com/thedjchi/Shizuku/wiki)
 - [Morphe Workspace - A collection of Android apps that complement Morphe](https://www.reddit.com/r/MorpheApp/comments/1wiowwa/morphe_workspace_a_collection_of_android_apps/)
 - [All solutions to bypass Android sideloading restrictions](https://www.reddit.com/r/MorpheApp/comments/1wuusyp/the_first_wave_of_sideloading_restrictions_has/)
+- [All About Morphe](https://github.com/gojoyadav/All-About-Morphe)
 
 ## <a id="patch-indexes"></a> 🔍 Patch Indexes
 
@@ -85,14 +88,23 @@
 - [Patch Atlas](https://patch-atlas.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/shakir2117/Patch-Atlas) -->
 <!-- - [Community Patch Space Explorer](https://dmh84.github.io/morphe-space-explorer/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/dmh84/morphe-space-explorer) -->
 
-## <a id="projects"></a> 🛠️ Other Projects
+## <a id="download-helper"></a> ⬇️ Download Helper
 
 [![rushiranpise/helper-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=rushiranpise&repo=helper-for-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/rushiranpise/helper-for-morphe)
+[![GeneralZyonix/morphe-download-helper](https://github-stats-extended.vercel.app/api/pin?username=GeneralZyonix&repo=morphe-download-helper&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GeneralZyonix/morphe-download-helper)
+[![Akash-Sriram/morphe-fetch](https://github-stats-extended.vercel.app/api/pin?username=Akash-Sriram&repo=morphe-fetch&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Akash-Sriram/morphe-fetch)
+
+## <a id="projects"></a> 🛠️ Other Projects
+
+[![holjab/AutoMorph](https://github-stats-extended.vercel.app/api/pin?username=holjab&repo=AutoMorph&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/holjab/AutoMorph)
 [![Paresh-Maheshwari/morphe-ai](https://github-stats-extended.vercel.app/api/pin?username=Paresh-Maheshwari&repo=morphe-ai&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Paresh-Maheshwari/morphe-ai)
 [![d3ffen/patchit](https://github-stats-extended.vercel.app/api/pin?username=d3ffen&repo=patchit&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/d3ffen/patchit)
 [![heval99/sideport](https://github-stats-extended.vercel.app/api/pin?username=heval99&repo=sideport&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/heval99/sideport)
 [![GROWNUPS/Patchium](https://github-stats-extended.vercel.app/api/pin?username=GROWNUPS&repo=Patchium&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GROWNUPS/Patchium)
-[![Akash-Sriram/morphe-fetch](https://github-stats-extended.vercel.app/api/pin?username=Akash-Sriram&repo=morphe-fetch&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Akash-Sriram/morphe-fetch)
+[![SatanMerde/Morphy-Patches-Creator](https://github-stats-extended.vercel.app/api/pin?username=SatanMerde&repo=Morphy-Patches-Creator&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/SatanMerde/Morphy-Patches-Creator)
+[![j0p3s/morphe-json-to-mpp](https://github-stats-extended.vercel.app/api/pin?username=j0p3s&repo=morphe-json-to-mpp&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/j0p3s/morphe-json-to-mpp)
+[![ngocthanhgl/morphe-audit-bot](https://github-stats-extended.vercel.app/api/pin?username=ngocthanhgl&repo=morphe-audit-bot&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/ngocthanhgl/morphe-audit-bot)
+[![pkok1099/morphe-iconpack](https://github-stats-extended.vercel.app/api/pin?username=pkok1099&repo=morphe-iconpack&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/pkok1099/morphe-iconpack)
 [![hoo-dles/jadx-morphe](https://github-stats-extended.vercel.app/api/pin?username=hoo-dles&repo=jadx-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/hoo-dles/jadx-morphe)
 [![crimera/morphe-bytecode](https://github-stats-extended.vercel.app/api/pin?username=crimera&repo=morphe-bytecode&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/crimera/morphe-bytecode)
 [![brosssh/morphe-mcp](https://github-stats-extended.vercel.app/api/pin?username=brosssh&repo=morphe-mcp&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/brosssh/morphe-mcp)

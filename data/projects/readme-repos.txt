@@ -35,3 +35,10 @@ https://github.com/Akash-Sriram/morphe-fetch
 https://github.com/GROWNUPS/Patchium
 https://github.com/d3ffen/patchit
 https://github.com/heval99/sideport
+https://github.com/gojoyadav/All-About-Morphe
+https://github.com/GeneralZyonix/morphe-download-helper
+https://github.com/holjab/AutoMorph
+https://github.com/SatanMerde/Morphy-Patches-Creator
+https://github.com/j0p3s/morphe-json-to-mpp
+https://github.com/ngocthanhgl/morphe-audit-bot
+https://github.com/pkok1099/morphe-iconpack

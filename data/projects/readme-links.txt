@@ -17,7 +17,6 @@ https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/oot13cq
 https://www.reddit.com/r/MorpheApp/comments/1pverk7/morphe_links_help_guides_and_troubleshooting
 https://www.reddit.com/r/MorpheApp/comments/1rtr3ee/morphe_desktop_currently_morphe_cli
 https://www.reddit.com/r/MorpheApp/comments/1s3w1er/regarding_the_morphe_dmca
-https://www.reddit.com/r/MorpheApp/comments/1ta0bek/how_to_patch_more_apps_with_morphe
 https://www.reddit.com/r/MorpheApp/comments/1vmfizy/how_to_request_app_patches
 https://x.com/MorpheApp
 https://www.reddit.com/r/MorpheApp/comments/1w0o641/pothelper_is_here_youtube_playback_with_no/
@@ -26,3 +25,4 @@ https://github.com/MorpheApp/morphe-desktop/blob/main/docs/documentation.md
 https://github.com/MorpheApp/morphe-documentation/blob/main/docs/morphe-development/README.md
 https://drnx64.github.io/fresh-morphe/
 https://www.reddit.com/r/MorpheApp/comments/1wuusyp/the_first_wave_of_sideloading_restrictions_has/
+https://www.reddit.com/r/MorpheApp/s/L5rR9BUzFq
