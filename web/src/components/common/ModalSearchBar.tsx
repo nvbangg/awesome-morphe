@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Badge } from "@/components/common/Badge";
 import { SearchInput } from "@/components/common/SearchInput";
 
@@ -10,7 +9,7 @@ interface ModalSearchBarProps {
 	placeholder?: string;
 }
 
-export const ModalSearchBar = memo(function ModalSearchBar({
+export function ModalSearchBar({
 	value,
 	onChange,
 	count,
@@ -32,4 +31,4 @@ export const ModalSearchBar = memo(function ModalSearchBar({
 			<Badge variant="count">{displayLabel}</Badge>
 		</div>
 	);
-});
+}

@@ -7,9 +7,8 @@ import {
 	Star,
 	TriangleAlert,
 } from "lucide-react";
-import { memo } from "react";
 import { MIN_DISPLAY_INSTALLS } from "@/constants";
-import { formatNumberCompact, formatStarCount } from "@/utils/formatters";
+import { formatNumberCompact, formatStarCount } from "@/lib/formatters";
 
 type BadgeVariant =
 	| "new"
@@ -33,7 +32,7 @@ interface BadgeProps {
 	children?: React.ReactNode;
 }
 
-export const Badge = memo(function Badge({
+export function Badge({
 	variant,
 	value,
 	className = "",
@@ -143,22 +142,11 @@ export const Badge = memo(function Badge({
 		);
 	}
 
-	if (variant === "count") {
+	if (variant === "count" || variant === "category") {
 		return (
 			<span
 				className={`inline-flex items-center justify-center align-middle px-2 py-1 text-xs font-semibold whitespace-nowrap text-foreground-muted border border-divider rounded-full shrink-0 ${className}`}
-				title={title}
-			>
-				{children}
-			</span>
-		);
-	}
-
-	if (variant === "category") {
-		return (
-			<span
-				className={`inline-flex items-center justify-center align-middle px-2 py-1 text-xs font-semibold whitespace-nowrap text-foreground-muted border border-divider rounded-full shrink-0 ${className}`}
-				title={title || "Category"}
+				title={variant === "category" ? title || "Category" : title}
 			>
 				{children}
 			</span>
@@ -184,4 +172,4 @@ export const Badge = memo(function Badge({
 	}
 
 	return null;
-});
+}

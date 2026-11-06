@@ -1,5 +1,4 @@
 import { Check, Copy } from "lucide-react";
-import { memo } from "react";
 import { PACKAGE_UNIVERSAL } from "@/constants";
 
 interface PackageNameCopyProps {
@@ -9,7 +8,7 @@ interface PackageNameCopyProps {
 	className?: string;
 }
 
-export const PackageNameCopy = memo(function PackageNameCopy({
+export function PackageNameCopy({
 	packageName,
 	copiedText,
 	copyToClipboard,
@@ -39,4 +38,4 @@ export const PackageNameCopy = memo(function PackageNameCopy({
 			</span>
 		</button>
 	);
-});
+}

@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { GitHubIcon } from "@/components/common/icons/GitHubIcon";
 import { GitLabIcon } from "@/components/common/icons/GitLabIcon";
 
@@ -9,7 +8,7 @@ interface RepoLinkProps {
 	className?: string;
 }
 
-export const RepoLink = memo(function RepoLink({
+export function RepoLink({
 	repo,
 	repoUrl,
 	source,
@@ -37,4 +36,4 @@ export const RepoLink = memo(function RepoLink({
 			<span className="break-all whitespace-normal min-w-0">{repo}</span>
 		</a>
 	);
-});
+}

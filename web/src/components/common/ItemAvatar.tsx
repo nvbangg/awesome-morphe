@@ -1,5 +1,5 @@
 import { type LucideIcon, Package, Smartphone } from "lucide-react";
-import { memo, useState } from "react";
+import { useState } from "react";
 
 type AvatarSize = "sm" | "md" | "lg";
 
@@ -19,7 +19,7 @@ interface BaseAvatarProps extends AvatarProps {
 	fallbackIcon: LucideIcon;
 }
 
-const BaseAvatar = memo(function BaseAvatar({
+function BaseAvatar({
 	src,
 	size = "md",
 	className = "",
@@ -57,12 +57,12 @@ const BaseAvatar = memo(function BaseAvatar({
 			<Icon className={`${icon} text-foreground-subtle`} />
 		</div>
 	);
-});
+}
 
-export const AppAvatar = memo(function AppAvatar(props: AvatarProps) {
+export function AppAvatar(props: AvatarProps) {
 	return <BaseAvatar fallbackIcon={Smartphone} {...props} />;
-});
+}
 
-export const BundleAvatar = memo(function BundleAvatar(props: AvatarProps) {
+export function BundleAvatar(props: AvatarProps) {
 	return <BaseAvatar fallbackIcon={Package} {...props} />;
-});
+}

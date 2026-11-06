@@ -1,5 +1,4 @@
 import { Play, Plus } from "lucide-react";
-import { memo } from "react";
 
 type ButtonSize = "sm" | "md";
 
@@ -9,7 +8,7 @@ interface AddToMorpheButtonProps {
 	className?: string;
 }
 
-export const AddToMorpheButton = memo(function AddToMorpheButton({
+export function AddToMorpheButton({
 	deepLink,
 	size = "md",
 	className = "",
@@ -32,7 +31,7 @@ export const AddToMorpheButton = memo(function AddToMorpheButton({
 			Add to Morphe
 		</a>
 	);
-});
+}
 
 interface GooglePlayButtonProps {
 	packageName?: string;
@@ -40,7 +39,7 @@ interface GooglePlayButtonProps {
 	className?: string;
 }
 
-export const GooglePlayButton = memo(function GooglePlayButton({
+export function GooglePlayButton({
 	packageName,
 	size = "md",
 	className = "",
@@ -69,7 +68,7 @@ export const GooglePlayButton = memo(function GooglePlayButton({
 			Google Play
 		</a>
 	);
-});
+}
 
 interface PatchButtonProps {
 	patchName: string;
@@ -77,7 +76,7 @@ interface PatchButtonProps {
 	className?: string;
 }
 
-export const PatchButton = memo(function PatchButton({
+export function PatchButton({
 	patchName,
 	onClick,
 	className = "",
@@ -94,4 +93,4 @@ export const PatchButton = memo(function PatchButton({
 			<span className="truncate">{patchName}</span>
 		</button>
 	);
-});
+}

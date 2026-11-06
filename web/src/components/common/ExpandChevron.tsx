@@ -1,12 +1,11 @@
 import { ChevronDown } from "lucide-react";
-import { memo } from "react";
 
 interface ExpandChevronProps {
 	isExpanded: boolean;
 	className?: string;
 }
 
-export const ExpandChevron = memo(function ExpandChevron({
+export function ExpandChevron({
 	isExpanded,
 	className = "",
 }: ExpandChevronProps) {
@@ -17,4 +16,4 @@ export const ExpandChevron = memo(function ExpandChevron({
 			} ${className}`}
 		/>
 	);
-});
+}
