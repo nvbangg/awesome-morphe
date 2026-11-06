@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "patches": [
     {
       "name": "Block popup ads",
@@ -19,6 +19,83 @@
           "targets": [
             {
               "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Change package name",
+      "description": "Changes the package name and app name so the patched app can be installed alongside the original Spotify app.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.spotify.music",
+          "name": "Spotify",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#1ED760",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The package name of the patched app. It must differ from the original one.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.spotify.music.morphe",
+          "values": {
+            "Default": "com.spotify.music.morphe"
+          }
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The name shown in the launcher.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Spotify Morphe",
+          "values": {
+            "Default": "Spotify Morphe"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Diagnose Spotify client",
+      "description": "Logs signing-certificate queries and integrity-request outcomes without changing them. Does not log authentication tokens or account data. Experimental diagnostic, not a playback fix.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.spotify.music",
+          "name": "Spotify",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "9.1.94.1929",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
