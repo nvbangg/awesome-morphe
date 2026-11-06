@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Suspense } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { CatalogShell } from "@/features/catalog/CatalogShell";
 import { Providers } from "./providers";
 import "@/index.css";
 
@@ -51,7 +52,9 @@ export default function RootLayout({
 				<Providers>
 					<div className="min-h-screen bg-background text-foreground transition-colors duration-300">
 						<Header />
-						<Suspense>{children}</Suspense>
+						<Suspense>
+							<CatalogShell>{children}</CatalogShell>
+						</Suspense>
 						<Footer />
 					</div>
 				</Providers>
