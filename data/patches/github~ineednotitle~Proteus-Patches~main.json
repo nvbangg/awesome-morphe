@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.2.2",
+  "version": "2.2.4",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -173,7 +173,7 @@
     },
     {
       "name": "Allow screenshots & screen recording",
-      "description": "Removes FLAG_SECURE from the app's windows so screenshots and screen\nrecordings work. Payment/banking screens may still capture black.\n\nApplies to any app. Inverse of \"Block screenshots & screen recording\".",
+      "description": "Attempts to remove recognizable FLAG_SECURE and secure SurfaceView settings\nso screenshots and screen recordings can work. Some screens or protection\nmethods may still block capture, including payment or banking screens.\n\nApplies to any app. Do not combine with \"Block screenshots & screen recording\".",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -505,6 +505,58 @@
       "options": []
     },
     {
+      "name": "Block Motion Sensors",
+      "description": "Attempts to disable Chromium's Android sensor provider; may also block ambient sensors. Requires device validation.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block Popups & Ratings",
+      "description": "Disables the identified rating and Brave Ads signup eligibility checks; other dialogs can still appear.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Block Sentry telemetry",
       "description": "Disables Sentry crash/error/performance telemetry entirely by neutralizing the configurator that writes the DSN - with no DSN set, Sentry self-disables. Fixes nothing to break: the configurator's return is void and unused. Verified against 1.261023.20.",
       "default": true,
@@ -759,7 +811,7 @@
     },
     {
       "name": "Block screenshots & screen recording",
-      "description": "Sets FLAG_SECURE on all activity windows so screenshots, screen recorders,\noverlay apps and accessibility services cannot capture the app's content\n(they see a black surface).\n\nApplies to any app. Does not remove existing protections - it adds them.",
+      "description": "Attempts to add FLAG_SECURE to activity windows and secure SurfaceViews.\nThis can make screenshots and screen recordings show a black surface.\nOnly recognizable code with available registers can be changed, so this\nis not a guarantee that all screens or capture methods are protected.\n\nApplies to any app. Do not combine with \"Allow screenshots & screen recording\".",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -2313,7 +2365,7 @@
     },
     {
       "name": "Enable media downloads",
-      "description": "Forces the pin-level download eligibility flag so the Download action is available on every Pin (images and videos).",
+      "description": "Enables the pin-level image download eligibility flag. Use the separate experimental video download patch for supported video Pins.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2377,6 +2429,40 @@
                 "ARMEABI_V7A": 29145545,
                 "X86_64": 29145545,
                 "X86": 29145545
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable video download",
+      "description": "Experimental: enables the download row on video Pins and saves an available MP4. Streaming-only or unavailable videos are reported instead of saved as images.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pinterest",
+          "name": "Pinterest",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E60023",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "14.41.0",
+              "versionCodes": {
+                "ARM64_V8A": 14418020,
+                "ARMEABI_V7A": 14418020,
+                "X86_64": 14418020,
+                "X86": 14418020
               },
               "isExperimental": false,
               "minSdk": null,
@@ -3263,6 +3349,32 @@
       "options": []
     },
     {
+      "name": "Preserve last active tab",
+      "description": "Disables the identified new-tab opening-screen override after inactivity. Does not prevent tab unloading under memory pressure.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Price history charts",
       "description": "Injects Keepa and CamelCamelCamel price history charts on Amazon product pages.",
       "default": true,
@@ -3586,6 +3698,42 @@
       ]
     },
     {
+      "name": "Remove Extra Languages",
+      "description": "Replaces larger unselected Chromium locale PAKs with the English fallback; gender variants and Android resources are not removed.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "locales",
+          "title": "Languages to keep",
+          "description": "Comma-separated language codes such as en-US, fr, hi. English is always kept; choosing a language keeps all its regions.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "en-US",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Remove ads",
       "description": "Hides sponsored and ad content in Amazon Shopping via CSS injection.",
       "default": true,
@@ -3792,7 +3940,7 @@
     },
     {
       "name": "Remove dangerous permissions",
-      "description": "Removes privacy-invasive permissions from any app's manifest using simple\ncategory switches. All categories are ON by default (aggressive): package\nvisibility, phone, accounts, location, contacts, microphone, camera,\nstorage, SMS, calendar, sensors, nearby devices, ad ID, AdServices,\nnotifications and screen-capture detection.\n\nUse \"Permissions to keep\" to exempt a single permission, or \"Advanced:\nexact removal list\" to replace the switches with your own list.\n\nRemoving a permission the app actually needs can break features (login,\ncalls, camera, file picker, notifications). Off by default.",
+      "description": "Removes selected permission declarations from an app's manifest. The patch\nis off by default. When enabled, all category switches start ON, including\ncamera, storage, SMS and notifications. Turn off categories the app needs.\n\nPermissions to keep always wins. Extra permissions are added to the selected\ncategories. A non-empty advanced list replaces the category selections,\nexcept that AdServices remains controlled by its own switch.\n\nRemoving permissions can break features or prevent an app from starting.\nThis does not block every way an app may collect data.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
@@ -3809,7 +3957,7 @@
         {
           "key": "permPhone",
           "title": "Phone state & numbers",
-          "description": "Remove READ_PHONE_STATE / phone-number / CALL_PHONE permissions.",
+          "description": "Remove phone state, phone numbers and calling permissions. Calls or sign-in may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3818,7 +3966,7 @@
         {
           "key": "permAccounts",
           "title": "Accounts",
-          "description": "Remove GET_ACCOUNTS (account enumeration for login/ads).",
+          "description": "Remove GET_ACCOUNTS. Account discovery or sign-in may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3827,7 +3975,7 @@
         {
           "key": "permLocation",
           "title": "Location",
-          "description": "Remove fine, coarse and background location permissions.",
+          "description": "Remove fine, coarse and background location. Maps or location features may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3836,7 +3984,7 @@
         {
           "key": "permContacts",
           "title": "Contacts",
-          "description": "Remove read/write contacts permissions.",
+          "description": "Remove read/write contacts. Contact sync and sharing may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3845,7 +3993,7 @@
         {
           "key": "permMicrophone",
           "title": "Microphone",
-          "description": "Remove RECORD_AUDIO.",
+          "description": "Remove RECORD_AUDIO. Voice messages, calls and recording may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3863,7 +4011,7 @@
         {
           "key": "permStorage",
           "title": "Storage & media",
-          "description": "Remove legacy storage, MANAGE_EXTERNAL_STORAGE and READ_MEDIA_* permissions.",
+          "description": "Remove storage and media permissions. File access and media features may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3872,7 +4020,7 @@
         {
           "key": "permSms",
           "title": "SMS",
-          "description": "Remove READ_SMS / RECEIVE_SMS / SEND_SMS.",
+          "description": "Remove SMS permissions. Messaging or automatic verification may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3881,7 +4029,7 @@
         {
           "key": "permCalendar",
           "title": "Calendar",
-          "description": "Remove read/write calendar permissions.",
+          "description": "Remove read/write calendar permissions. Calendar integration may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3890,7 +4038,7 @@
         {
           "key": "permSensors",
           "title": "Sensors & activity",
-          "description": "Remove BODY_SENSORS and ACTIVITY_RECOGNITION.",
+          "description": "Remove BODY_SENSORS and ACTIVITY_RECOGNITION. Fitness features may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3899,7 +4047,7 @@
         {
           "key": "permNearbyDevices",
           "title": "Nearby devices",
-          "description": "Remove Bluetooth scan/connect/advertise and NEARBY_WIFI.",
+          "description": "Remove Bluetooth and nearby Wi-Fi permissions. Device pairing may stop working.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -3944,7 +4092,7 @@
         {
           "key": "permissionsToKeep",
           "title": "Permissions to keep",
-          "description": "Comma-separated permission names that are never removed, even if their category is on. Example: android.permission.CAMERA,android.permission.POST_NOTIFICATIONS",
+          "description": "Always keep these permissions, even if a category, extra list or AdServices would remove them. Use commas, semicolons or new lines; e.g. CAMERA, POST_NOTIFICATIONS.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
@@ -3953,7 +4101,7 @@
         {
           "key": "extraPermissionsToRemove",
           "title": "Extra permissions to remove",
-          "description": "Comma-separated permission names added on top of the enabled categories.",
+          "description": "Add permissions to remove. Use commas, semicolons or new lines; e.g. CAMERA or com.example.permission.CUSTOM. The keep list takes priority.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
@@ -3962,7 +4110,7 @@
         {
           "key": "permissionsToRemove",
           "title": "Advanced: exact removal list",
-          "description": "Legacy override. If non-empty, replaces ALL category switches with this exact comma-separated list. Leave empty to use the switches above.",
+          "description": "Legacy override: when non-empty, replaces the category selections with this list. AdServices is still controlled by its switch; extra and keep lists still apply. Leave blank to use categories.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
@@ -4111,6 +4259,32 @@
                 "X86": 29145545
               },
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip Welcome Screens",
+      "description": "Reports the first-run flow complete; may skip essential consent, search or setup screens.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -4422,6 +4596,84 @@
           }
         }
       ]
+    },
+    {
+      "name": "Stop Background Wakeups",
+      "description": "Disables the identified Chromium background-sync scheduler gate; other wakeups remain and site background sync can break.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Promo Notifications",
+      "description": "Disables identified Chromium tips and retention notification entry points; other notifications may remain.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop Text Sharing with System",
+      "description": "Disables Chromium's OnscreenContentProvider content-capture gate, not every possible text-sharing mechanism.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Stop pull-notification alarms (keep push)",

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.44.0",
+  "version": "1.45.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -125,6 +125,37 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Add microG-RE support",
+      "description": "Enables Google sign-in to EasyPark NL through installed MicroG-RE, required for the third-party Android Auto patch. Phone and email sign-in do not work in the patched app.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.parkmobile",
+          "name": "EasyPark NL",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "2ca37a08cb0213a2750a09afc8a1e783e2220fc047db440f55d4171594a7b065"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.42.4",
+              "versionCodes": {
+                "ARM64_V8A": 82642040
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -299,6 +330,70 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Allow custom Android Auto hosts",
+      "description": "Enables EasyPark on third-party Android Auto systems such as DriveDeck. Only install this patch if you use a third-party system. Optionally restrict access to listed host packages. EasyPark NL sign-in requires MicroG-RE; phone and email sign-in do not work.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.easypark.android",
+          "name": "EasyPark",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF7CAC",
+          "signatures": [
+            "0639fa559a0571df5d38d716dd670757043033cdd5e719150f3cb87270fa4cfc"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.40.1",
+              "versionCodes": {
+                "ARM64_V8A": 82640010,
+                "ARMEABI_V7A": 82640010
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.parkmobile",
+          "name": "EasyPark NL",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": [
+            "2ca37a08cb0213a2750a09afc8a1e783e2220fc047db440f55d4171594a7b065"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.42.4",
+              "versionCodes": {
+                "ARM64_V8A": 82642040
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "allowedHostPackages",
+          "title": "Allowed host packages",
+          "description": "Leave empty to allow all compatible hosts. Otherwise enter comma-separated host app package names; every other host is denied, including Android Auto unless listed. Repatch to change this list.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Allow high refresh rate",
