@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.40.1",
+  "version": "1.40.2",
   "patches": [
     {
       "name": "Coffee startup support",
@@ -550,7 +550,7 @@
     },
     {
       "name": "No energy consumption",
-      "description": "Keeps the original energy prices and action progress without debiting energy, even at an empty balance.",
+      "description": "Keeps action costs without debiting energy. By default, each tap advances one point, even at an empty balance.",
       "default": false,
       "dependencies": [
         "RawResourcePatch"
@@ -577,7 +577,20 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "tapMode",
+          "title": "Interaction taps",
+          "description": "Advance one point per tap and show progress out of the original cost, or follow the game's tap setting.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "manual",
+          "values": {
+            "One point per tap": "manual",
+            "Game default": "game"
+          }
+        }
+      ]
     },
     {
       "name": "Non-blocking update notice",

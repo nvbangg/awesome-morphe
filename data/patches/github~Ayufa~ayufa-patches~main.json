@@ -1,11 +1,11 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "patches": [
     {
-      "name": "Block VIP guide screen",
-      "description": "Prevents the VIP guide screen from opening. Note: this screen is also the in-app subscription purchase screen, so subscribing from inside the app becomes impossible.",
-      "default": false,
+      "name": "AIアシスタントのアイコンを非表示",
+      "description": "キーボード右上に表示されるロボット（AIアシスタント）のアイコンと吹き出しメッセージを非表示にします。アイコンがあった一番上の帯も畳むので、空の帯は残りません。入力・変換には影響しません。有効・無効はアプリ内設定（Ayufaパッチ設定）でいつでも切り替えられます。",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -20,7 +20,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "23.7",
+              "version": "20.7",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
@@ -32,9 +32,9 @@
       "options": []
     },
     {
-      "name": "Disable analytics reporting",
-      "description": "Stops Simeji's event reporting: every AppsFlyer event entry point and the in-house statistic event dispatch become no-ops, so usage events are no longer sent. The statistic module initialization is deliberately left intact (the keyboard reads its config when the window is shown), and core keyboard, conversion and account features are not touched.",
-      "default": false,
+      "name": "VIPを偽装",
+      "description": "端末内のVIP判定を有効化します。ツールバーのカスタマイズや自作きせかえのVIPパーツなど、端末内で完結する機能が使えるようになります。クラウドきせかえ・クラウド定型文・AIチャットなど、サーバー側で判定される特典は使えません。有効・無効はアプリ内設定（Ayufaパッチ設定）で切り替えます（初期値はオフです）。",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -49,7 +49,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "23.7",
+              "version": "20.7",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
@@ -61,9 +61,9 @@
       "options": []
     },
     {
-      "name": "Disable push popups",
-      "description": "Prevents push campaign popup dialogs from appearing on screen. Normal notifications are not affected.",
-      "default": false,
+      "name": "VIP案内画面をブロック",
+      "description": "VIPの案内画面を開かないようにします。注意: この画面はアプリ内のサブスクリプション購入画面も兼ねているため、ブロック中はアプリ内から契約できなくなります。有効・無効はアプリ内設定（Ayufaパッチ設定）でいつでも切り替えられます。",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -78,7 +78,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "23.7",
+              "version": "20.7",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
@@ -90,9 +90,9 @@
       "options": []
     },
     {
-      "name": "Disable review prompts",
-      "description": "Disables the Google Play rating prompts: both Simeji's own guide dialog and the Play in-app review flow.",
-      "default": false,
+      "name": "アプリ内設定画面を追加",
+      "description": "Simeji の設定タブの一覧に「Ayufaパッチ設定」の入口を追加します。各 Simeji パッチの有効・無効や VIP偽装を、再パッチなしでアプリ内から切り替えられるようになります。他の Simeji パッチを切り替えるには、このパッチの適用が必要です（未適用の場合は各パッチの初期値どおりに動作します）。",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -107,7 +107,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "23.7",
+              "version": "20.7",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
@@ -119,9 +119,9 @@
       "options": []
     },
     {
-      "name": "Hide ads",
-      "description": "Hides ads in Simeji: suggestion bar ads, store entry interstitials and web campaign popups. The central ad gate is forced off, and ad candidates are never fetched or stored.",
-      "default": false,
+      "name": "プッシュポップアップを無効化",
+      "description": "プッシュキャンペーンのポップアップダイアログを表示しなくします。通常の通知には影響しません。有効・無効はアプリ内設定（Ayufaパッチ設定）でいつでも切り替えられます。",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -136,104 +136,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "23.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "blockRewardedAds",
-          "title": "Also block rewarded ads",
-          "description": "Also blocks rewarded ads. Some features that are unlocked by watching an ad (for example custom skin trials) stop working, so this is off by default.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Hide live chat clutter",
-      "description": "Hides the pinned message banner and poll cards in live chat, and fixes the chat input field being covered by the on-screen keyboard. Each can be toggled in Morphe settings (Ayufa patch settings) without re-patching. For YouTube 21.30.216.",
-      "default": false,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.youtube",
-          "name": "YouTube",
-          "description": null,
-          "apkFileType": "APK_REQUIRED",
-          "appIconColor": "#FF0033",
-          "signatures": [
-            "5aad2bee6db95d17e05a08d7d1e64c10a1511879154483916b6ae6c7fd9cb0c6",
-            "3d7a1223019aa39d9ea0e3436ab7c0896bfb4fb679f4de5fe7c23f326c8f994a"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "21.30.216",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "hideLiveChatPinnedBanner",
-          "title": "Hide pinned message banner",
-          "description": "Hides the pinned comment (banner) shown above the live chat.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "hideLiveChatPolls",
-          "title": "Hide live chat polls",
-          "description": "Hides poll (questionnaire) cards shown in the live chat.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "fixLiveChatKeyboard",
-          "title": "Fix live chat keyboard overlap",
-          "description": "Fixes the live chat input field being covered by the on-screen keyboard while typing.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Hide point entry",
-      "description": "Hides the Simeji Point entry point, which leads to the point store and its campaign recommendations.",
-      "default": false,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "com.adamrocker.android.input.simeji",
-          "name": "Simeji",
-          "description": null,
-          "apkFileType": "APK_REQUIRED",
-          "appIconColor": "#FF0033",
-          "signatures": [
-            "4e5a78c0450316e38afab3ecb6bac9932c095f2b34360c40129857b78657e24f"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "23.7",
+              "version": "20.7",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
@@ -245,9 +148,9 @@
       "options": []
     },
     {
-      "name": "Hide promotions",
-      "description": "Prevents the full-screen promotion activity from opening, so campaign and upsell pages never appear.",
-      "default": false,
+      "name": "プロモーションを非表示",
+      "description": "全画面のプロモーション画面（キャンペーンやアップセルのページ）を開かないようにします。有効・無効はアプリ内設定（Ayufaパッチ設定）でいつでも切り替えられます。",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -262,7 +165,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "23.7",
+              "version": "20.7",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
@@ -274,25 +177,25 @@
       "options": []
     },
     {
-      "name": "Live latency keeper",
-      "description": "At a fixed interval, momentarily pauses and resumes live stream playback so it snaps back to the live edge (the newest position), no matter how far behind it has fallen. The interval (any value from 0 to 120 minutes, typed in directly) and the on/off switch can be changed in Morphe settings (Ayufa patch settings) without re-patching. For YouTube 20.26.46 (Android 8.0) only. Requires the official Morphe patches to be applied as well.",
-      "default": false,
+      "name": "プロモーションを非表示",
+      "description": "Yahoo!乗換案内のLY連携プロモーションモーダルを表示しません。",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
-          "packageName": "com.google.android.youtube",
-          "name": "YouTube",
+          "packageName": "jp.co.yahoo.android.apps.transit",
+          "name": "Yahoo!乗換案内",
           "description": null,
           "apkFileType": "APK_REQUIRED",
           "appIconColor": "#FF0033",
           "signatures": [
-            "5aad2bee6db95d17e05a08d7d1e64c10a1511879154483916b6ae6c7fd9cb0c6",
-            "3d7a1223019aa39d9ea0e3436ab7c0896bfb4fb679f4de5fe7c23f326c8f994a"
+            "17252b7592d07940b07994c5d7b26d267930b2736753412670867a4f15983071",
+            "c0d9fe65ae0c2d761da830418cf3b68f6d23c349d912bcaba9c2b1174d99cf04"
           ],
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "20.26.46",
+              "version": "8.5.8",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 26,
@@ -301,36 +204,12 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "liveLatencySyncIntervalMinutes",
-          "title": "Default sync interval (minutes)",
-          "description": "How often live playback is snapped back to the newest position with a momentary pause and resume. Used until the interval is changed in Morphe settings (Ayufa patch settings), where any value from 0 to 120 minutes can be typed in.",
-          "required": true,
-          "type": "kotlin.Int",
-          "default": 10,
-          "values": {
-            "Off (0 minutes)": 0,
-            "1 minute": 1,
-            "2 minutes": 2,
-            "3 minutes": 3,
-            "5 minutes": 5,
-            "10 minutes": 10,
-            "15 minutes": 15,
-            "20 minutes": 20,
-            "30 minutes": 30,
-            "45 minutes": 45,
-            "60 minutes": 60,
-            "90 minutes": 90,
-            "120 minutes": 120
-          }
-        }
-      ]
+      "options": []
     },
     {
-      "name": "Skip subscription retention screen",
-      "description": "Skips the retention screen shown during VIP subscription cancellation, going straight to the cancellation flow.",
-      "default": false,
+      "name": "ポイント入口を非表示",
+      "description": "ポイントストアやキャンペーンへの入口となる Simejiポイントの入口を非表示にします。有効・無効はアプリ内設定（Ayufaパッチ設定）でいつでも切り替えられます。",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -345,7 +224,153 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "23.7",
+              "version": "20.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "レビュー依頼を無効化",
+      "description": "Google Play の評価依頼を無効化します。Simeji 独自のガイドダイアログと、Play のアプリ内レビューの両方が対象です。有効・無効はアプリ内設定（Ayufaパッチ設定）でいつでも切り替えられます。",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.adamrocker.android.input.simeji",
+          "name": "Simeji",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "4e5a78c0450316e38afab3ecb6bac9932c095f2b34360c40129857b78657e24f"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "広告を非表示",
+      "description": "Simeji の広告（候補欄の広告、ストア入口の全画面広告、Webキャンペーンのポップアップ）を非表示にします。リワード広告もブロックします。有効・無効はアプリ内設定（Ayufaパッチ設定）でいつでも切り替えられます。",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.adamrocker.android.input.simeji",
+          "name": "Simeji",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "4e5a78c0450316e38afab3ecb6bac9932c095f2b34360c40129857b78657e24f"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "広告を非表示",
+      "description": "Yahoo!乗換案内の広告（各画面のバナー・ネイティブ広告、全画面のオーバーレイ広告）を非表示にします。",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "jp.co.yahoo.android.apps.transit",
+          "name": "Yahoo!乗換案内",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "17252b7592d07940b07994c5d7b26d267930b2736753412670867a4f15983071",
+            "c0d9fe65ae0c2d761da830418cf3b68f6d23c349d912bcaba9c2b1174d99cf04"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "8.5.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "解析レポートを無効化",
+      "description": "Simeji の利用状況イベント送信を止めます。AppsFlyer 向けの入口と、自社統計の送信処理が、アプリ内設定（Ayufaパッチ設定）のトグルがオンの間だけ無効になります。統計モジュールの初期化には触りません（キーボード表示時に設定オブジェクトを参照するため、潰すとキーボードが落ちます）。",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.adamrocker.android.input.simeji",
+          "name": "Simeji",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "4e5a78c0450316e38afab3ecb6bac9932c095f2b34360c40129857b78657e24f"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "解約時の引き止め画面をスキップ",
+      "description": "VIPサブスクリプション解約時に表示される引き止め画面をスキップし、そのまま解約フローへ進みます。有効・無効はアプリ内設定（Ayufaパッチ設定）でいつでも切り替えられます。",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.adamrocker.android.input.simeji",
+          "name": "Simeji",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "4e5a78c0450316e38afab3ecb6bac9932c095f2b34360c40129857b78657e24f"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.7",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,

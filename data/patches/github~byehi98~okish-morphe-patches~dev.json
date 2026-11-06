@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.49.0-dev.3",
+  "version": "1.49.0-dev.4",
   "patches": [
     {
       "name": "AD Instant Rewards",
@@ -684,6 +684,32 @@
           "targets": [
             {
               "version": "1.0.30",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Firebase Cert Spoof",
+      "description": "Restores Firebase requests on a re-signed APK. The Firebase API key is restricted to the Play build's package + signing certificate, so Installations, Remote Config, Auth and Storage requests from a patched build are rejected with API_KEY_ANDROID_APP_BLOCKED. This patch forces the certificate hash Firebase sends in X-Android-Cert to the original signing certificate's SHA-1, so those requests are accepted again. It does not fix the Start-workout crash — that was a native asset-decryption check covered by the Signature Spoof patch. It also does not make Google Sign-In work — that is validated server-side against the developer's OAuth client and cannot be patched (use the unpatched app for cloud sync).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "dumbbellworkout.dumbbellapp.homeworkout",
+          "name": "Dumbbell Workout at Home",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#B00020",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.3.6",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2484,6 +2510,32 @@
     },
     {
       "name": "Remove Ads",
+      "description": "Unlocks the paid \"Remove ads\" product locally, so the app behaves as if it was purchased: banners, native, interstitial, app-open and splash ads stop, and the \"Remove ads\" row disappears from settings. No Play payment is involved and the entitlement survives restarts. Rewarded ads are left untouched. Requires the Signature Spoof patch in the same bundle for the patched APK to start. Google Sign-In / Backup & Restore does not work on a re-signed APK: the app's OAuth client is bound to the developer's signing certificate and Google refuses token issuance server-side, so no microG-style patch or signature spoof can bypass it. Use the unpatched app if you need cloud sync.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "dumbbellworkout.dumbbellapp.homeworkout",
+          "name": "Dumbbell Workout at Home",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#B00020",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.3.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Ads",
       "description": "Stops banners, roadside billboards and full-screen ads from appearing. Races and menus carry on as normal — the ads just never show up.",
       "default": true,
       "dependencies": [
@@ -2790,6 +2842,34 @@
           "targets": [
             {
               "version": "3.441.100103",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Signature Spoof",
+      "description": "Neutralises the app's built-in certificate verifier so the patched APK keeps running. The app re-reads its own signing certificate on every screen and compares 46 hardcoded slices of it against baked-in values; because patching always re-signs the APK, those comparisons fail and the app force-closes while the first activity is being created. With this patch every verifier reports the original, unmodified certificate instead, so all 46 checks pass. The bundled native library runs two further certificate checks: one stops the library from loading, and one silently stops workout data from being decrypted, which crashes the app the moment you tap Start. Both are bypassed as well. This patch is required — the app can neither start nor open a workout without it.",
+      "default": true,
+      "dependencies": [
+        "RawResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "dumbbellworkout.dumbbellapp.homeworkout",
+          "name": "Dumbbell Workout at Home",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#B00020",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.3.6",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

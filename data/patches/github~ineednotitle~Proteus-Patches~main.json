@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.2.4",
+  "version": "2.2.8",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -86,39 +86,6 @@
                 "X86_64": 118,
                 "X86": 118
               },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Allow screenshots & screen recording",
-      "description": "Removes FLAG_SECURE and secure-surface flags from Meesho's windows so screenshots and screen recording work. Payment screens may still capture black.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -508,7 +475,9 @@
       "name": "Block Motion Sensors",
       "description": "Attempts to disable Chromium's Android sensor provider; may also block ambient sensors. Requires device validation.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -534,7 +503,9 @@
       "name": "Block Popups & Ratings",
       "description": "Disables the identified rating and Brave Ads signup eligibility checks; other dialogs can still appear.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -588,6 +559,46 @@
       "options": []
     },
     {
+      "name": "Block Telemetry",
+      "description": "Blocks usage analytics, crash uploads and experiment downloads.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "RawResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "blockOffersHost",
+          "title": "Block offers server",
+          "description": "Also blocks the shopping offers server. Turn off to keep it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Block analytics & data collection",
       "description": "Neutralizes Firebase Analytics, AppsFlyer, CleverTap event fan-out and the in-house crash-report enqueue of District by Zomato.",
       "default": true,
@@ -608,39 +619,6 @@
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": 32,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Block analytics & tracking",
-      "description": "No-ops AppsFlyer, Mixpanel, Facebook App Events, Firebase Analytics, GMS AppMeasurement and Crashlytics logging in Meesho. Push notifications and login/payments keep working.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
               "description": null
             }
           ]
@@ -869,6 +847,35 @@
       "options": []
     },
     {
+      "name": "Brave Origin",
+      "description": "Unlocks Brave Origin feature switches across Rewards, News, Wallet, and VPN.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Bypass channel restrictions",
       "description": "Allows opening, viewing, saving and forwarding content from restricted, sensitive, and copyright-restricted channels.",
       "default": true,
@@ -1013,39 +1020,6 @@
                 "X86_64": 22510,
                 "X86": 22510
               },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass forced update",
-      "description": "Neutralizes Play Core's update-availability checks so Meesho does not block usage on a newer version. Running an outdated build may break.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -1259,58 +1233,6 @@
     },
     {
       "name": "Change package name",
-      "description": "Installs Meesho beside the official app by changing the package, permission names, provider authorities and launcher label. Payments (JusPay), Truecaller/Otpless login, Google sign-in and Shield anti-fraud may not work on the clone.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "meeshoPackageName",
-          "title": "Package name",
-          "description": "Package name for the cloned Meesho app.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "app.morphe.meesho",
-          "values": null
-        },
-        {
-          "key": "meeshoAppName",
-          "title": "App name",
-          "description": "Launcher name for the cloned Meesho app.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "Meesho Proteus",
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Change package name",
       "description": "Installs MUBI beside the official app by changing the package, permission names, provider authorities and launcher label. Play Billing, Cast and Google sign-in may not work on the clone.",
       "default": false,
       "dependencies": [],
@@ -1397,6 +1319,72 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Clean New Tab",
+      "description": "Removes sponsored wallpapers, news feed and promo cards.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideTopSites",
+          "title": "Hide shortcut tiles",
+          "description": "Removes most-visited tiles for a blank start page.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Close Tab In Group Order",
+      "description": "Selects the previous tab in the tab group when closing a tab.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Content filters",
@@ -1524,6 +1512,153 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom Brave theme",
+      "description": "Applies custom colors to Brave dark mode chrome, defaulting to pure OLED black for battery saving on OLED screens.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "backgroundColor",
+          "title": "Background color",
+          "description": "Opaque hexadecimal color for primary backgrounds and base window chrome. Defaults to pure OLED black (#000000).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "surfaceUsesBackground",
+          "title": "Surfaces use background color",
+          "description": "When enabled, cards, sheets, and dialogs share the primary background color. When disabled, elevated surfaces use the dedicated surface color below.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "surfaceColor",
+          "title": "Surface / container color",
+          "description": "Opaque hexadecimal color for elevated surfaces such as cards, sheets, and dialogs. Defaults to OLED black (#000000); use #1e2029 for visible depth between tiers.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "textColor",
+          "title": "Text ink color",
+          "description": "Opaque hexadecimal color applied to primary text labels. Defaults to Brave light slate ink (#f0f2ff).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#f0f2ff",
+          "values": null
+        },
+        {
+          "key": "accentColor",
+          "title": "Accent highlight color",
+          "description": "Opaque hexadecimal color for interactive highlights, active switches, and links. Defaults to Brave purple-blue accent (#737ade).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#737ade",
+          "values": null
+        },
+        {
+          "key": "disableDynamicColors",
+          "title": "Disable Material You dynamic colors",
+          "description": "Prevents Android 12+ wallpaper palette extraction from replacing dark surfaces. When disabled, dynamic system colors take precedence.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "windowBackgroundColor",
+          "title": "Window background color",
+          "description": "Opaque hexadecimal color for root window backgrounds in two-tier surface mode. Defaults to pure black (#000000).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "cardColor",
+          "title": "Preference card color",
+          "description": "Opaque hexadecimal color for preference item cards in Settings. Defaults to OLED black (#000000); use #1e2029 for visible depth between tiers.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "enablePreferenceCards",
+          "title": "Style preference rows as cards",
+          "description": "Wraps settings and preference rows in rounded card shapes when two-tier surfaces are enabled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "modulateTextLuminance",
+          "title": "Modulate text tiers by luminance",
+          "description": "When enabled, scales text brightness across primary, secondary, and disabled tiers using luminance ratios. When disabled, applies the text ink color uniformly.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "patchMaterialYouRoles",
+          "title": "Patch Material You system color roles",
+          "description": "Rewrites Android system neutral and surface container color roles in values-v31+ directories to theme colors.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "patchLStarSelectors",
+          "title": "Patch color state list lStar selectors",
+          "description": "Rewrites tonal luminance selectors in color resources to match custom background and container surfaces.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "patchVectorDrawables",
+          "title": "Patch vector drawable surface fills",
+          "description": "Rewrites hardcoded background and container fill colors inside vector drawables to match theme colors.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
@@ -1979,72 +2114,6 @@
                 "X86_64": 22510,
                 "X86": 22510
               },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable in-app popup upsells",
-      "description": "Disables Meesho's InAppPopupActivity so full-screen promo/upsell popups never render. May break a flow that legitimately routes through it — verify first.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable reels autoplay",
-      "description": "Stops Meesho's reels from autoplaying muted previews. Opening a reel still plays normally. Heuristic — verify ExoPlayer anchors against the real APK.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -2870,39 +2939,6 @@
       "options": []
     },
     {
-      "name": "Hide sponsored listings & ad slots",
-      "description": "Hides 'Ad'-labelled sponsored products in Meesho's search and feed by forcing app-side boolean ad gates to false. Heuristic — verify anchors against the real APK. Server still serves ads; only client rendering is affected.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Hide typing indicator",
       "description": "Hides your typing indicator from other users in all chats. On Telegram Plus also silences the controller-level sendTyping dispatcher.",
       "default": true,
@@ -3050,39 +3086,6 @@
       "options": []
     },
     {
-      "name": "Lock exported share-in / bank-link activities",
-      "description": "Makes Meesho's exported SharedTextRedirectionActivity and MyBankActivity non-exported. Internal navigation still works; external apps/links can no longer start them.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Offline-only voice typing & telemetry reduction",
       "description": "On Gboard 18.5.4.993608717 arm64, routes core voice typing only through the on-device\nrecognizers and returns no recognizer when a local provider/model is unavailable (no\nonline fallback). Disables Agentic Dictation's server/batch retry path, reduces selected\nmetrics/telemetry and disables app backup. INTERNET and unrelated network features are\nretained; this is best-effort telemetry reduction, not a guarantee of zero Google traffic.\n\nRequires the appropriate offline speech model/provider to be installed. Without one,\nvoice typing is unavailable by design. Agentic Dictation is disabled.",
       "default": false,
@@ -3182,43 +3185,6 @@
     },
     {
       "name": "Packaging toolkit (signature, install source, MicroG)",
-      "description": "Applies the shared signature, install-source and GmsCore/MicroG patches to Meesho in one step. Does not bypass Play Integrity, Shield or fix payments.",
-      "default": false,
-      "dependencies": [
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Packaging toolkit (signature, install source, MicroG)",
       "description": "Applies the shared signature, install-source and GmsCore/MicroG patches to MUBI in one step. Does not bypass Play Integrity or fix Play Billing.",
       "default": false,
       "dependencies": [
@@ -3255,39 +3221,6 @@
                 "X86_64": 29145545,
                 "X86": 29145545
               },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Prefer external browser over Custom Tabs",
-      "description": "Removes Meesho's Custom Tabs service query so browser links can fall back to the normal external browser. No effect if Meesho launches Custom Tabs directly.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -3352,7 +3285,9 @@
       "name": "Preserve last active tab",
       "description": "Disables the identified new-tab opening-screen override after inactivity. Does not prevent tab unloading under memory pressure.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -3701,7 +3636,9 @@
       "name": "Remove Extra Languages",
       "description": "Replaces larger unselected Chromium locale PAKs with the English fallback; gender variants and Android resources are not removed.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -3729,6 +3666,44 @@
           "required": false,
           "type": "kotlin.String",
           "default": "en-US",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove Unused AI & VPN",
+      "description": "Deletes unused AR and XR files to shrink the app.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.brave.browser",
+          "name": "Brave Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4500",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.98.63",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "removeVpnLibrary",
+          "title": "Remove VPN library",
+          "description": "Also deletes the WireGuard library. Brave VPN stops working.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         }
       ]
@@ -4119,39 +4094,6 @@
       ]
     },
     {
-      "name": "Remove dangerous permissions (keep storage & SMS)",
-      "description": "Removes contacts, phone-state, microphone, location, screen-capture detection and advertising-ID permissions from Meesho's manifest. Storage and SMS permissions are kept. Truecaller login, support voice calls and location-based address entry may degrade.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Remove promo cards & upsell banners",
       "description": "Disables Braze Content Cards, the Braze feed and card refreshes in MUBI. Push notifications and the app's own screens are untouched.",
       "default": true,
@@ -4225,6 +4167,69 @@
       "options": []
     },
     {
+      "name": "Show deleted comments",
+      "description": "Shows the original text of comments deleted or removed on Reddit, restored at render time from the free Arctic Shift archive (no API key; falls back to PullPush). Only the ids of deleted comments in the threads you open are sent, and restored text is prefixed with [archived]. Coverage depends on the archive; needs network. Off by default.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.reddit.frontpage",
+          "name": "Reddit",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF4500",
+          "signatures": [
+            "970b91143813b4c9d5f3634f672c9fcaa5621b4efaaedafd6c235cbbb869736f"
+          ],
+          "targets": [
+            {
+              "version": "2026.42.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.41.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.40.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.39.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.24.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "2026.10.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Skip TV confirmation dialog",
       "description": "Closes MUBI's Android TV confirmation screen before it draws. Only useful on TV devices; a flow waiting on a dialog result may stall.",
       "default": false,
@@ -4271,7 +4276,9 @@
       "name": "Skip Welcome Screens",
       "description": "Reports the first-run flow complete; may skip essential consent, search or setup screens.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -4601,7 +4608,9 @@
       "name": "Stop Background Wakeups",
       "description": "Disables the identified Chromium background-sync scheduler gate; other wakeups remain and site background sync can break.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -4627,7 +4636,9 @@
       "name": "Stop Promo Notifications",
       "description": "Disables identified Chromium tips and retention notification entry points; other notifications may remain.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -4653,7 +4664,9 @@
       "name": "Stop Text Sharing with System",
       "description": "Disables Chromium's OnscreenContentProvider content-capture gate, not every possible text-sharing mechanism.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.brave.browser",
@@ -4667,39 +4680,6 @@
               "version": "1.98.63",
               "versionCodes": null,
               "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Stop pull-notification alarms (keep push)",
-      "description": "Disables Meesho's alarm-based pull-notification receivers so the app is not periodically woken to fetch marketing notifications. FCM push keeps working.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.meesho.supply",
-          "name": "Meesho",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F43397",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "29.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "29.6",
-              "versionCodes": null,
-              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
