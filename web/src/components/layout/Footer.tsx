@@ -1,12 +1,16 @@
+"use client";
+
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
+
+const SCROLL_TOP_THRESHOLD = 400;
 
 export function Footer() {
 	const [isScrollTopVisible, setIsScrollTopVisible] = useState(false);
 
 	useEffect(() => {
 		const handleScroll = () => {
-			setIsScrollTopVisible(window.scrollY > 400);
+			setIsScrollTopVisible(window.scrollY > SCROLL_TOP_THRESHOLD);
 		};
 		window.addEventListener("scroll", handleScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleScroll);
@@ -24,7 +28,7 @@ export function Footer() {
 							<img
 								alt="Awesome Morphe home"
 								className="size-9 object-contain select-none"
-								src="assets/favicon.svg"
+								src="/assets/favicon.svg"
 								loading="lazy"
 								decoding="async"
 							/>

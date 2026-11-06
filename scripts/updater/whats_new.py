@@ -25,7 +25,7 @@ EXISTING_ITEM_LIMIT = 4
 NEW_APP_THRESHOLD = 10
 DEFAULT_BUNDLE_RANK = 9999
 BASE_WEB_URL = "https://awesome-morphe.vercel.app"
-WHATS_NEW_TAB = "#whats-new"
+WHATS_NEW_URL = f"{BASE_WEB_URL}/whats-new"
 
 
 def is_valid_package_name(package_name: str) -> bool:
@@ -74,14 +74,16 @@ def make_url(
     app: str | None = None,
     patch: str | None = None,
 ) -> str:
-    parts = []
+    params = {}
     if bundle_source and bundle_repo:
-        parts.append(f"{bundle_source}={urllib.parse.quote(bundle_repo)}")
+        params[bundle_source] = bundle_repo
     if app:
-        parts.append(f"app={urllib.parse.quote(app)}")
+        params["app"] = app
     if patch:
-        parts.append(f"patch={urllib.parse.quote(patch)}")
-    return f"{BASE_WEB_URL}/?{'&'.join(parts)}{WHATS_NEW_TAB}" if parts else ""
+        params["patch"] = patch
+    return (
+        f"{WHATS_NEW_URL}?{urllib.parse.urlencode(params, safe='/')}" if params else ""
+    )
 
 
 def bundle_sort_key(bundle: dict) -> int:
@@ -333,7 +335,7 @@ def generate_markdown(
     ):
         return ""
 
-    markdown_sections = [f"✨ [_View full changelog_]({BASE_WEB_URL}/{WHATS_NEW_TAB})"]
+    markdown_sections = [f"✨ [_View full changelog_]({WHATS_NEW_URL})"]
 
     if new_bundle_repos:
         bundle_lines = []

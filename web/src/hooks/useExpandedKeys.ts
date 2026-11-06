@@ -5,7 +5,10 @@ export function useExpandedKeys(
 	keys: string[],
 	searchQuery: string = "",
 ) {
-	const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
+	const shouldAutoExpand = keys.length === 1 || searchQuery.trim().length > 0;
+	const [expandedKeys, setExpandedKeys] = useState(
+		() => new Set(isOpen && shouldAutoExpand ? keys : []),
+	);
 	const [prevDeps, setPrevDeps] = useState<{
 		isOpen: boolean;
 		searchQuery: string;
@@ -15,8 +18,6 @@ export function useExpandedKeys(
 		searchQuery,
 		keysLength: keys.length,
 	});
-
-	const shouldAutoExpand = keys.length === 1 || searchQuery.trim().length > 0;
 
 	if (
 		prevDeps.isOpen !== isOpen ||

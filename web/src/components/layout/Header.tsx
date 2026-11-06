@@ -1,3 +1,5 @@
+"use client";
+
 import { GitHubIcon } from "@/components/common/icons/GitHubIcon";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -5,28 +7,30 @@ export function Header() {
 	return (
 		<nav className="sticky top-0 z-50 bg-background-translucent backdrop-blur-md border-b border-divider transition-shadow h-16">
 			<div className="container mx-auto px-6 max-w-300 h-full flex items-center justify-between">
-				<div className="flex items-center gap-3 shrink-0">
+				<div className="flex items-center gap-3 max-[360px]:gap-2 shrink-0">
 					<a
-						href="https://awesome-morphe.vercel.app/"
+						href="/"
 						className="no-underline shrink-0 flex items-center hover:opacity-85 transition-opacity"
 					>
 						<img
 							alt="Awesome Morphe home"
 							className="size-9 object-contain select-none"
-							src="assets/favicon.svg"
+							src="/assets/favicon.svg"
 							decoding="async"
 						/>
 					</a>
 					<div className="flex flex-col justify-center">
-						<a
-							href="https://awesome-morphe.vercel.app/"
-							className="font-bold text-lg leading-tight no-underline hover:opacity-85 transition-opacity"
-						>
-							<span className="bg-primary-gradient bg-clip-text text-transparent">
-								Awesome
-							</span>{" "}
-							<span className="text-foreground">Morphe</span>
-						</a>
+						<h1 className="text-lg max-[360px]:text-base leading-tight">
+							<a
+								href="/"
+								className="font-bold text-lg max-[360px]:text-base leading-tight no-underline hover:opacity-85 transition-opacity"
+							>
+								<span className="bg-primary-gradient bg-clip-text text-transparent">
+									Awesome
+								</span>{" "}
+								<span className="text-foreground">Morphe</span>
+							</a>
+						</h1>
 						<span className="hidden lg:block text-xs text-foreground-muted font-normal leading-tight mt-0.5">
 							Explore all patch bundles from the{" "}
 							<a

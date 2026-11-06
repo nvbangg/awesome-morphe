@@ -3,27 +3,39 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
-		"build": "tsc --noEmit && vite build",
-		"preview": "vite preview",
-		"check": "biome check . && tsc --noEmit",
-		"check:fix": "biome check --write . && tsc --noEmit"
+		"dev": "next dev",
+		"build": "next build",
+		"check": "next typegen && biome check . && tsc --noEmit",
+		"check:fix": "next typegen && biome check --write . && tsc --noEmit"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.6.4",
-		"@tailwindcss/vite": "^4.3.3",
+		"@tailwindcss/postcss": "4.3.3",
 		"@types/node": "^26.6.6",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
-		"@vitejs/plugin-react": "^6.1.1",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"tailwindcss": "^4.3.3",
-		"typescript": "^7.0.2",
-		"vite": "^8.3.5"
+		"typescript": "^7.0.2"
 	},
 	"dependencies": {
+		"@base-ui/react": "1.9.0",
+		"@tanstack/react-query": "5.104.5",
 		"lucide-react": "^1.64.0",
+		"next": "16.4.5",
 		"next-themes": "^0.4.6",
+		"nuqs": "2.10.2",
 		"react": "^19.3.1",
-		"react-dom": "^19.3.1"
+		"react-dom": "^19.3.1",
+		"zod": "4.6.7"
+	},
+	"packageManager": "pnpm@11.25.0",
+	"engines": {
+		"node": ">=26"
+	},
+	"postcss": {
+		"plugins": {
+			"@tailwindcss/postcss": {}
+		}
 	}
 }

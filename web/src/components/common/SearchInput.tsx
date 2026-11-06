@@ -1,6 +1,8 @@
 import { Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+const DEFAULT_DEBOUNCE_MS = 150;
+
 interface SearchInputProps {
 	value: string;
 	onChange: (value: string) => void;
@@ -16,7 +18,7 @@ export function SearchInput({
 	placeholder = "Search…",
 	id,
 	className = "",
-	debounceMs = 150,
+	debounceMs = DEFAULT_DEBOUNCE_MS,
 }: SearchInputProps) {
 	const [localValue, setLocalValue] = useState(value);
 	const [prevValue, setPrevValue] = useState(value);
@@ -59,7 +61,7 @@ export function SearchInput({
 						if (localValue !== value) {
 							onChange(localValue);
 						}
-						(event.target as HTMLInputElement)?.blur();
+						event.currentTarget.blur();
 					}
 				}}
 				enterKeyHint="search"
