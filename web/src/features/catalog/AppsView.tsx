@@ -11,7 +11,7 @@ export function AppsView() {
 	const [params, setParams] = useCatalogParams();
 	const search = useCatalogSearch();
 	const category = getAvailableCategories(data?.appItems ?? []).some(
-		(option) => option.key === params.category,
+		(option) => option.value === params.category,
 	)
 		? params.category
 		: "all";

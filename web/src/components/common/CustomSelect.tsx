@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 interface CustomSelectProps {
 	value: string;
 	onChange: (value: string) => void;
-	options: { key: string; label: string }[];
+	options: { value: string; label: string }[];
 	icon: React.ElementType;
 	ariaLabel: string;
 	className?: string;
@@ -18,10 +18,9 @@ export function CustomSelect({
 	ariaLabel,
 	className = "",
 }: CustomSelectProps) {
-	const selectedOption =
-		options.find((option) => option.key === value) ?? options[0];
 	return (
 		<Select.Root
+			items={options}
 			value={value}
 			modal={false}
 			onValueChange={(nextValue) => {
@@ -35,7 +34,7 @@ export function CustomSelect({
 				>
 					<div className="flex items-center gap-2 overflow-hidden min-w-0">
 						<Icon className="size-4 shrink-0 text-foreground-muted" />
-						<span className="truncate">{selectedOption?.label ?? value}</span>
+						<Select.Value className="truncate" />
 					</div>
 					<Select.Icon
 						render={<ChevronDown />}
@@ -55,9 +54,9 @@ export function CustomSelect({
 					<Select.Popup className="w-(--anchor-width) max-h-[min(60vh,var(--available-height))] overflow-y-auto bg-background border border-divider rounded-xl shadow-xl p-1 flex flex-col divide-y divide-divider outline-none">
 						{options.map((option) => (
 							<Select.Item
-								key={option.key}
-								value={option.key}
-								className={`px-3 py-2 text-sm font-medium rounded-lg text-left cursor-pointer transition-colors flex items-center justify-between whitespace-normal wrap-break-word outline-none ${option.key === value ? "bg-primary/10 text-primary font-semibold" : "text-foreground hover:bg-card data-highlighted:bg-card"}`}
+								key={option.value}
+								value={option.value}
+								className={`px-3 py-2 text-sm font-medium rounded-lg text-left cursor-pointer transition-colors flex items-center justify-between whitespace-normal wrap-break-word outline-none ${option.value === value ? "bg-primary/10 text-primary font-semibold" : "text-foreground hover:bg-card data-highlighted:bg-card"}`}
 							>
 								<Select.ItemText>{option.label}</Select.ItemText>
 								<Select.ItemIndicator className="text-xs text-primary font-bold ml-2">

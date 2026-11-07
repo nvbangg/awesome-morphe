@@ -1,5 +1,5 @@
 import { SearchX } from "lucide-react";
-import type { ReactNode, RefObject } from "react";
+import type { ReactNode, Ref } from "react";
 
 const SKELETON_COUNT = 6;
 const SKELETON_KEYS = Array.from(
@@ -10,7 +10,7 @@ const SKELETON_KEYS = Array.from(
 interface CardGridProps {
 	children: ReactNode;
 	hasMore?: boolean;
-	loadMoreRef?: RefObject<HTMLDivElement | null>;
+	loadMoreRef?: Ref<HTMLDivElement>;
 	className?: string;
 }
 

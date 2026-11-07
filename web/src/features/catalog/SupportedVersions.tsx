@@ -73,55 +73,36 @@ export function SupportedVersions({
 	const displayVersions = versions.length > 0 ? versions : ANY_VERSION_ITEMS;
 	const hasMultiple = displayVersions.length > 1;
 
-	if (!showAll) {
-		return (
-			<div className="flex items-center gap-1 flex-wrap justify-end ml-auto">
-				<VersionChip
-					versionItem={displayVersions[0]}
-					chipKey={`${patchId}-version-0`}
-					copiedText={copiedText}
-					copyToClipboard={copyToClipboard}
-				/>
-
-				{hasMultiple && (
-					<button
-						type="button"
-						onClick={(e) => {
-							e.stopPropagation();
-							setShowAll(true);
-						}}
-						className="inline-flex items-center px-1.5 py-0 rounded-full text-xs font-normal bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer shrink-0"
-						title="Show all supported versions"
-					>
-						+{displayVersions.length - 1}
-					</button>
-				)}
-			</div>
-		);
-	}
-
 	return (
-		<div className="flex flex-wrap items-center gap-1 max-w-full justify-end ml-auto">
-			{displayVersions.map((versionItem, index) => (
-				<VersionChip
-					key={versionItem.version}
-					versionItem={versionItem}
-					chipKey={`${patchId}-version-${index}`}
-					copiedText={copiedText}
-					copyToClipboard={copyToClipboard}
-				/>
-			))}
-			<button
-				type="button"
-				onClick={(e) => {
-					e.stopPropagation();
-					setShowAll(false);
-				}}
-				className="inline-flex items-center px-1.5 py-0 rounded-full text-xs font-normal bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer shrink-0"
-				title="Collapse version list"
-			>
-				Less
-			</button>
+		<div
+			className={`flex flex-wrap items-center gap-1 justify-end ml-auto ${showAll ? "max-w-full" : ""}`}
+		>
+			{displayVersions
+				.slice(0, showAll ? undefined : 1)
+				.map((versionItem, index) => (
+					<VersionChip
+						key={versionItem.version}
+						versionItem={versionItem}
+						chipKey={`${patchId}-version-${index}`}
+						copiedText={copiedText}
+						copyToClipboard={copyToClipboard}
+					/>
+				))}
+			{(showAll || hasMultiple) && (
+				<button
+					type="button"
+					onClick={(event) => {
+						event.stopPropagation();
+						setShowAll(!showAll);
+					}}
+					className="inline-flex items-center px-1.5 py-0 rounded-full text-xs font-normal bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer shrink-0"
+					title={
+						showAll ? "Collapse version list" : "Show all supported versions"
+					}
+				>
+					{showAll ? "Less" : `+${displayVersions.length - 1}`}
+				</button>
+			)}
 		</div>
 	);
 }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { UI_COPY_TIMEOUT_MS } from "@/constants";
 
-export function useCopy(resetDurationMilliseconds = UI_COPY_TIMEOUT_MS) {
+export function useCopy() {
 	const [copiedIdentifier, setCopiedIdentifier] = useState<string | null>(null);
 	const timeoutRef = useRef<number | null>(null);
 
@@ -22,12 +22,12 @@ export function useCopy(resetDurationMilliseconds = UI_COPY_TIMEOUT_MS) {
 				timeoutRef.current = window.setTimeout(() => {
 					setCopiedIdentifier(null);
 					timeoutRef.current = null;
-				}, resetDurationMilliseconds);
+				}, UI_COPY_TIMEOUT_MS);
 			} catch (copyError) {
 				console.error("Failed to copy text to clipboard:", copyError);
 			}
 		},
-		[resetDurationMilliseconds],
+		[],
 	);
 
 	useEffect(() => {

@@ -20,26 +20,26 @@ interface ControlBarProps {
 	onSortOrderChange: (sortValue: string) => void;
 	selectedCategory?: string;
 	onCategoryChange?: (categoryValue: string) => void;
-	categories?: { key: string; label: string }[];
+	categories?: { value: string; label: string }[];
 	stats: ActiveStats;
 }
 
 const BUNDLE_SORT_OPTIONS = [
-	{ key: "default", label: "Hot" },
-	{ key: "new", label: "New" },
-	{ key: "updated", label: "Recently updated" },
-	{ key: "stars", label: "Most stars" },
-	{ key: "apps", label: "Most apps" },
-	{ key: "patches", label: "Most patches" },
-	{ key: "alpha", label: "Alphabetical" },
+	{ value: "default", label: "Hot" },
+	{ value: "new", label: "New" },
+	{ value: "updated", label: "Recently updated" },
+	{ value: "stars", label: "Most stars" },
+	{ value: "apps", label: "Most apps" },
+	{ value: "patches", label: "Most patches" },
+	{ value: "alpha", label: "Alphabetical" },
 ];
 
 const APP_SORT_OPTIONS = [
-	{ key: "default", label: "Most downloads" },
-	{ key: "new", label: "New" },
-	{ key: "updated", label: "Recently updated" },
-	{ key: "patches", label: "Most patches" },
-	{ key: "alpha", label: "Alphabetical" },
+	{ value: "default", label: "Most downloads" },
+	{ value: "new", label: "New" },
+	{ value: "updated", label: "Recently updated" },
+	{ value: "patches", label: "Most patches" },
+	{ value: "alpha", label: "Alphabetical" },
 ];
 
 const TAB_ITEM_BASE =

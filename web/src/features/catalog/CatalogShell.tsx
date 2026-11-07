@@ -52,7 +52,7 @@ function CatalogContent({
 		tab === "bundles"
 			? BUNDLE_CATEGORY_OPTIONS
 			: getAvailableCategories(data?.appItems ?? []);
-	const category = categories.some((option) => option.key === params.category)
+	const category = categories.some((option) => option.value === params.category)
 		? params.category
 		: "all";
 	return (

@@ -32,6 +32,21 @@ interface BadgeProps {
 	children?: React.ReactNode;
 }
 
+const STATUS_BADGES = {
+	new: { icon: Sparkles, label: "New", title: undefined },
+	prerelease: { icon: FlaskConical, label: "Pre-release", title: undefined },
+	archived: {
+		icon: Archive,
+		label: "Archived",
+		title: "Repository is archived and read-only",
+	},
+	unofficial: {
+		icon: TriangleAlert,
+		label: "Unofficial",
+		title: "Not included in Official Morphe Community Patches",
+	},
+};
+
 export function Badge({
 	variant,
 	value,
@@ -40,50 +55,22 @@ export function Badge({
 	href,
 	children,
 }: BadgeProps) {
-	if (variant === "new") {
+	const status = STATUS_BADGES[variant as keyof typeof STATUS_BADGES];
+	if (status) {
+		const Icon = status.icon;
+		const colors =
+			variant === "unofficial"
+				? "text-success border-success/30"
+				: "text-warning border-warning/30";
 		return (
 			<span
-				className={`inline-flex items-center justify-center align-middle gap-1 px-1 py-0.5 text-xs font-semibold whitespace-nowrap text-warning border border-warning/30 rounded-md shrink-0 ${className}`}
-				title={title}
+				className={`inline-flex items-center justify-center align-middle gap-1 px-1 py-0.5 text-xs font-semibold whitespace-nowrap border rounded-md shrink-0 ${colors} ${className}`}
+				title={title || status.title}
 			>
-				<Sparkles className="size-3 fill-current text-warning shrink-0" />
-				New
-			</span>
-		);
-	}
-
-	if (variant === "prerelease") {
-		return (
-			<span
-				className={`inline-flex items-center justify-center align-middle gap-1 px-1 py-0.5 text-xs font-semibold whitespace-nowrap text-warning border border-warning/30 rounded-md shrink-0 ${className}`}
-				title={title}
-			>
-				<FlaskConical className="size-3 text-warning shrink-0" />
-				Pre-release
-			</span>
-		);
-	}
-
-	if (variant === "archived") {
-		return (
-			<span
-				className={`inline-flex items-center justify-center align-middle gap-1 px-1 py-0.5 text-xs font-semibold whitespace-nowrap text-warning border border-warning/30 rounded-md shrink-0 ${className}`}
-				title={title || "Repository is archived and read-only"}
-			>
-				<Archive className="size-3 text-warning shrink-0" />
-				Archived
-			</span>
-		);
-	}
-
-	if (variant === "unofficial") {
-		return (
-			<span
-				className={`inline-flex items-center justify-center align-middle gap-1 px-1 py-0.5 text-xs font-semibold whitespace-nowrap text-success border border-success/30 rounded-md shrink-0 ${className}`}
-				title={title || "Not included in Official Morphe Community Patches"}
-			>
-				<TriangleAlert className="size-3 text-success shrink-0" />
-				Unofficial
+				<Icon
+					className={`size-3 shrink-0 ${variant === "new" ? "fill-current" : ""} ${variant === "unofficial" ? "text-success" : "text-warning"}`}
+				/>
+				{status.label}
 			</span>
 		);
 	}

@@ -42,26 +42,19 @@ export function TestBundleViewModal({
 		onClose();
 	};
 
-	const currentRows = useMemo(
-		() => data?.branches[currentBranch] ?? [],
-		[data, currentBranch],
-	);
+	const currentRows = data?.branches[currentBranch] ?? [];
 
-	const deepLink = useMemo(() => {
-		if (!data) return "";
-		return buildBundleUrls(data.source, data.repoName, currentBranch === "dev")
-			.deepLink;
-	}, [data, currentBranch]);
+	const deepLink = data
+		? buildBundleUrls(data.source, data.repoName, currentBranch === "dev")
+				.deepLink
+		: "";
 
 	const appGroups = useMemo(() => {
 		if (!activeData) return [];
 		return groupPatchesByApp(currentRows, activeData, searchQuery);
 	}, [currentRows, activeData, searchQuery]);
 
-	const appKeys = useMemo(
-		() => appGroups.map((g) => g.packageName),
-		[appGroups],
-	);
+	const appKeys = appGroups.map((group) => group.packageName);
 
 	const { expandedKeys, toggleKey: toggleAppGroup } = useExpandedKeys(
 		isOpen,
@@ -69,10 +62,8 @@ export function TestBundleViewModal({
 		searchQuery,
 	);
 
-	const totalAppsCount = useMemo(
-		() => new Set(currentRows.map((row) => row.packageName)).size,
-		[currentRows],
-	);
+	const totalAppsCount = new Set(currentRows.map((row) => row.packageName))
+		.size;
 
 	if (!data) return null;
 

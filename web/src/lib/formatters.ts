@@ -1,4 +1,4 @@
-import { UI_NEW_BADGE_DAYS } from "@/constants";
+import { UI_NEW_BADGE_MS } from "@/constants";
 
 const compactFormatter = new Intl.NumberFormat("en-US", {
 	notation: "compact",
@@ -16,12 +16,9 @@ export function formatStarCount(count: number | undefined | null): string {
 	return standardFormatter.format(count);
 }
 
-export function isNew(
-	firstSeen: number | undefined | null,
-	daysThreshold: number = UI_NEW_BADGE_DAYS,
-): boolean {
+export function isNew(firstSeen: number | undefined | null): boolean {
 	if (!firstSeen || firstSeen <= 0) return false;
-	return (Date.now() - firstSeen) / (1000 * 60 * 60 * 24) <= daysThreshold;
+	return Date.now() - firstSeen <= UI_NEW_BADGE_MS;
 }
 
 export function formatDate(timestamp: number | undefined | null): string {

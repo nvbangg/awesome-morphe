@@ -39,7 +39,7 @@ export function CustomModal({
 						initialFocus={focusPopup ? popupRef : undefined}
 						aria-label={label}
 						aria-describedby={undefined}
-						className={`relative z-10 rounded-3xl w-full ${maxWidth} overflow-hidden flex flex-col max-h-[90vh] shadow-modal bg-background border-none ${centerMobile ? "" : "max-sm:rounded-none max-sm:max-h-dvh max-sm:h-full"} outline-none animate-in zoom-in-95 duration-200 isolate transform-gpu backface-hidden`}
+						className={`relative z-10 rounded-3xl w-full ${maxWidth} overflow-hidden flex flex-col max-h-[90vh] shadow-modal bg-background border-none ${centerMobile ? "" : "max-sm:rounded-none max-sm:max-h-dvh max-sm:h-full"} outline-none duration-200 isolate transform-gpu backface-hidden`}
 					>
 						{children}
 					</Dialog.Popup>

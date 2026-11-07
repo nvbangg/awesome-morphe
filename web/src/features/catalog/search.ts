@@ -146,7 +146,7 @@ export function getAppItems(
 
 export function getAvailableCategories(
 	appItems: AppItem[],
-): { key: string; label: string }[] {
+): { value: string; label: string }[] {
 	const categoriesMap = new Map<string, string>();
 	let hasNotOnGooglePlay = false;
 
@@ -160,12 +160,12 @@ export function getAvailableCategories(
 
 	const sortedCategories = Array.from(categoriesMap.entries())
 		.sort(([, labelA], [, labelB]) => labelA.localeCompare(labelB))
-		.map(([key, label]) => ({ key, label }));
+		.map(([value, label]) => ({ value, label }));
 
 	return [
-		{ key: "all", label: "All categories" },
+		{ value: "all", label: "All categories" },
 		...(hasNotOnGooglePlay
-			? [{ key: CATEGORY_UNIVERSAL, label: CATEGORY_LABEL_UNIVERSAL }]
+			? [{ value: CATEGORY_UNIVERSAL, label: CATEGORY_LABEL_UNIVERSAL }]
 			: []),
 		...sortedCategories,
 	];

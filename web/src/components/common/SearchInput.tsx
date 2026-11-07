@@ -1,7 +1,5 @@
 import { Search, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-
-const DEFAULT_DEBOUNCE_MS = 150;
+import { useRef } from "react";
 
 interface SearchInputProps {
 	value: string;
@@ -9,7 +7,6 @@ interface SearchInputProps {
 	placeholder?: string;
 	id?: string;
 	className?: string;
-	debounceMs?: number;
 }
 
 export function SearchInput({
@@ -18,28 +15,10 @@ export function SearchInput({
 	placeholder = "Search…",
 	id,
 	className = "",
-	debounceMs = DEFAULT_DEBOUNCE_MS,
 }: SearchInputProps) {
-	const [localValue, setLocalValue] = useState(value);
-	const [prevValue, setPrevValue] = useState(value);
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	if (value !== prevValue) {
-		setPrevValue(value);
-		setLocalValue(value);
-	}
-
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			if (localValue !== value) {
-				onChange(localValue);
-			}
-		}, debounceMs);
-		return () => clearTimeout(timer);
-	}, [localValue, value, onChange, debounceMs]);
-
 	const handleClear = () => {
-		setLocalValue("");
 		onChange("");
 		inputRef.current?.focus();
 	};
@@ -54,13 +33,10 @@ export function SearchInput({
 				ref={inputRef}
 				type="text"
 				id={id}
-				value={localValue}
-				onChange={(event) => setLocalValue(event.target.value)}
+				value={value}
+				onChange={(event) => onChange(event.target.value)}
 				onKeyDown={(event) => {
 					if (event.key === "Enter") {
-						if (localValue !== value) {
-							onChange(localValue);
-						}
 						event.currentTarget.blur();
 					}
 				}}
@@ -69,7 +45,7 @@ export function SearchInput({
 				className="w-full h-10 pl-10 pr-9 bg-background border border-divider rounded-xl text-sm font-medium text-foreground placeholder:text-foreground-subtle placeholder:select-none outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
 			/>
 
-			{localValue && (
+			{value && (
 				<button
 					type="button"
 					onClick={handleClear}

@@ -2,6 +2,13 @@ import { Play, Plus } from "lucide-react";
 
 type ButtonSize = "sm" | "md";
 
+const LINK_BUTTON_CLASS =
+	"inline-flex items-center justify-center rounded-lg font-semibold whitespace-nowrap select-none transition-all bg-primary-gradient text-background dark:text-foreground hover:opacity-90 shadow-xs";
+const LINK_BUTTON_SIZES = {
+	sm: "h-6 px-2 text-xs gap-1",
+	md: "h-7 px-2.5 text-xs gap-1.5",
+};
+
 interface AddToMorpheButtonProps {
 	deepLink?: string;
 	size?: ButtonSize;
@@ -22,9 +29,7 @@ export function AddToMorpheButton({
 			href={deepLink}
 			target="_blank"
 			onClick={(e) => e.stopPropagation()}
-			className={`inline-flex items-center justify-center rounded-lg font-semibold whitespace-nowrap select-none transition-all bg-primary-gradient text-background dark:text-foreground hover:opacity-90 shadow-xs ${
-				isSmall ? "h-6 px-2 text-xs gap-1" : "h-7 px-2.5 text-xs gap-1.5"
-			} ${className}`}
+			className={`${LINK_BUTTON_CLASS} ${LINK_BUTTON_SIZES[size]} ${className}`}
 			rel="noopener"
 		>
 			<Plus className={isSmall ? "size-3 shrink-0" : "size-3.5 shrink-0"} />
@@ -53,9 +58,7 @@ export function GooglePlayButton({
 			href={`https://play.google.com/store/apps/details?id=${packageName}`}
 			target="_blank"
 			onClick={(e) => e.stopPropagation()}
-			className={`inline-flex items-center justify-center rounded-lg font-semibold whitespace-nowrap select-none transition-all bg-primary-gradient text-background dark:text-foreground hover:opacity-90 shadow-xs ${
-				isSmall ? "h-6 px-2 text-xs gap-1" : "h-7 px-2.5 text-xs gap-1.5"
-			} ${className}`}
+			className={`${LINK_BUTTON_CLASS} ${LINK_BUTTON_SIZES[size]} ${className}`}
 			rel="noopener"
 		>
 			<Play

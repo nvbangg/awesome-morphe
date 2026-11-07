@@ -35,10 +35,7 @@ export function BundleDetail({
 		[bundleKey, activeData, searchQuery, isWhatsNew],
 	);
 
-	const appKeys = useMemo(
-		() => appGroups.map((group) => group.packageName),
-		[appGroups],
-	);
+	const appKeys = appGroups.map((group) => group.packageName);
 
 	const { expandedKeys, toggleKey: toggleAppGroup } = useExpandedKeys(
 		true,

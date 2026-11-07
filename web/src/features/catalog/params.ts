@@ -32,7 +32,7 @@ const catalogParsers = {
 	app: parseAsString.withDefault(""),
 	github: parseAsString.withDefault(""),
 	gitlab: parseAsString.withDefault(""),
-	patch: parseAsString.withDefault(""),
+	patch: parseAsString.withDefault("").withOptions({ history: "replace" }),
 	"test-bundle": parseAsString,
 };
 const serializeCatalogParams = createSerializer(catalogParsers);

@@ -34,10 +34,7 @@ export function AppDetail({
 		[packageName, activeData, searchQuery, isWhatsNew],
 	);
 
-	const bundleKeys = useMemo(
-		() => bundleGroups.map((group) => group.bundleKey),
-		[bundleGroups],
-	);
+	const bundleKeys = bundleGroups.map((group) => group.bundleKey);
 
 	const { expandedKeys, toggleKey: toggleBundleGroup } = useExpandedKeys(
 		true,
@@ -45,12 +42,11 @@ export function AppDetail({
 		searchQuery,
 	);
 
-	const totalBundlesCount = useMemo(() => {
-		const rawPatches = activeData.appPatchesMap[packageName] || [];
-		return new Set(
-			rawPatches.map((patchItem) => patchItem.bundleKey.toLowerCase()),
-		).size;
-	}, [packageName, activeData]);
+	const totalBundlesCount = new Set(
+		(activeData.appPatchesMap[packageName] ?? []).map((patch) =>
+			patch.bundleKey.toLowerCase(),
+		),
+	).size;
 
 	return (
 		<>
