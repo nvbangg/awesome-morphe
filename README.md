@@ -43,11 +43,9 @@
 
 Official Morphe resources and projects.
 
-[![Website](https://img.shields.io/badge/Website-morphe.software-gray?logo=google-chrome&logoColor=white&labelColor=4285F4)](https://morphe.software)　[![Website](https://img.shields.io/badge/Website-morphe--patches.software-gray?logo=google-chrome&logoColor=white&labelColor=4285F4)](https://morphe-patches.software)　
-[![GitHub](https://img.shields.io/badge/GitHub-MorpheApp-gray?logo=github&labelColor=24292F)](https://github.com/MorpheApp)
-　[![Reddit](https://img.shields.io/badge/Reddit-r%2FMorpheApp-gray?logo=reddit&logoColor=white&labelColor=FF4500)](https://www.reddit.com/r/MorpheApp)　[![Crowdin](https://img.shields.io/badge/Crowdin-morphe-gray?logo=crowdin&logoColor=white&labelColor=2E3340)](https://crowdin.com/project/morphe)　[![OpenCollective](https://img.shields.io/badge/OpenCollective-morpheapp-gray?logo=opencollective&logoColor=white&labelColor=4773AC)](https://opencollective.com/morpheapp)　[![X](https://img.shields.io/badge/Twitter-%40MorpheApp-gray?logo=x&logoColor=white&labelColor=24292F)](https://x.com/MorpheApp)
+[![Website](https://img.shields.io/badge/Website-morphe.software-gray?logo=google-chrome&logoColor=white&labelColor=4285F4)](https://morphe.software)　[![Website](https://img.shields.io/badge/Website-morphe--patches.software-gray?logo=google-chrome&logoColor=white&labelColor=4285F4)](https://morphe-patches.software)　[![Crowdin](https://img.shields.io/badge/Crowdin-morphe-gray?logo=crowdin&logoColor=white&labelColor=2E3340)](https://crowdin.com/project/morphe)　[![OpenCollective](https://img.shields.io/badge/OpenCollective-morpheapp-gray?logo=opencollective&logoColor=white&labelColor=4773AC)](https://opencollective.com/morpheapp)　[![X](https://img.shields.io/badge/Twitter-%40MorpheApp-gray?logo=x&logoColor=white&labelColor=24292F)](https://x.com/MorpheApp)
 
-### <a id="official-github"></a> [GitHub](https://github.com/MorpheApp):
+### <a id="official-github"></a> [![GitHub](https://img.shields.io/badge/GitHub-MorpheApp-gray?logo=github&labelColor=24292F)](https://github.com/MorpheApp)
 
 - [![Morphe Manager](https://img.shields.io/badge/%F0%9F%92%8A%20Morphe%20Manager-gray)](https://github.com/MorpheApp/morphe-manager)　[![MicroG RE](https://img.shields.io/badge/%E2%9A%99%EF%B8%8F%20MicroG%20RE-gray)](https://github.com/MorpheApp/MicroG-RE)　[![Morphe Desktop](https://img.shields.io/badge/%F0%9F%92%BB%20Morphe%20Desktop-gray)](https://github.com/MorpheApp/morphe-desktop)　[![Morphe Patches](https://img.shields.io/badge/%F0%9F%A7%A9%20Morphe%20Patches-gray)](https://github.com/MorpheApp/morphe-patches)　
 - [![Morphe Documentation](https://img.shields.io/badge/%F0%9F%97%84%20Morphe%20Documentation-gray)](https://github.com/MorpheApp/morphe-documentation)
@@ -57,19 +55,19 @@ Official Morphe resources and projects.
   - [🛠️ Morphe Development](https://github.com/MorpheApp/morphe-documentation/blob/main/docs/morphe-development/README.md): Setting up a development environment for Morphe and creating patches
 - [![PoToken Helper](https://img.shields.io/badge/%F0%9F%92%BC%20PoToken%20Helper-gray)](https://github.com/MorpheApp/PotHelper)　[![Morphe Patches Template](https://img.shields.io/badge/%F0%9F%91%8B%F0%9F%A7%A9%20Morphe%20Patches%20Template-gray)](https://github.com/MorpheApp/morphe-patches-template)　[![Morphe Patcher](https://img.shields.io/badge/%F0%9F%92%89%20Morphe%20Patcher-gray)](https://github.com/MorpheApp/morphe-patcher)　[![Morphe Library](https://img.shields.io/badge/%F0%9F%93%9A%20Morphe%20Library-gray)](https://github.com/MorpheApp/morphe-library)　[![Morphe Patches Library](https://img.shields.io/badge/%F0%9F%93%9A%20Morphe%20Patches%20Library-gray)](https://github.com/MorpheApp/morphe-patches-library)　[![Morphe Patches Gradle plugin](https://img.shields.io/badge/%F0%9F%90%98%20Morphe%20Patches%20Gradle%20plugin-gray)](https://github.com/MorpheApp/morphe-patches-gradle-plugin)　[![Morphe Website](https://img.shields.io/badge/%F0%9F%8C%90%20Morphe%20Website-gray)](https://github.com/MorpheApp/morphe-website)　[![Morphe Branding](https://img.shields.io/badge/%C2%A9%EF%B8%8F%20Branding-gray)](https://github.com/MorpheApp/morphe-branding)　[![jadb](https://img.shields.io/badge/jadb-gray)](https://github.com/MorpheApp/jadb)
 
-### <a id="official-reddit"></a> [Reddit](https://www.reddit.com/r/MorpheApp):
+### <a id="official-reddit"></a> [![Reddit](https://img.shields.io/badge/Reddit-r%2FMorpheApp-gray?logo=reddit&logoColor=white&labelColor=FF4500)](https://www.reddit.com/r/MorpheApp)
 
 - [Morphe links, help, guides, and troubleshooting](https://www.reddit.com/r/MorpheApp/comments/1pverk7/morphe_links_help_guides_and_troubleshooting/)
   - [If you have playback issues](https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/oag938k/)
   - [Shorts player has no buttons](https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/ogdw6mk/)
   - [Cannot login to Reddit](https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/oot13cq/)
   - [Download original apks using Morphe Helper](https://www.reddit.com/r/MorpheApp/s/L5rR9BUzFq)
-<!-- - [How To Patch More Apps With Morphe](https://www.reddit.com/r/MorpheApp/comments/1ta0bek/how_to_patch_more_apps_with_morphe/) -->
 - [How to request app patches](https://www.reddit.com/r/MorpheApp/comments/1vmfizy/how_to_request_app_patches/)
 - [Morphe Desktop (Currently Morphe CLI)](https://www.reddit.com/r/MorpheApp/comments/1rtr3ee/morphe_desktop_currently_morphe_cli/)
 - ~~[PotHelper Guide - YouTube playback with no spoofing required](https://www.reddit.com/r/MorpheApp/comments/1w0o641/pothelper_is_here_youtube_playback_with_no/)~~
   - [NOTE] [PotHelper is now failing for most users, use spoof streams again](https://github.com/MorpheApp/morphe-patches/issues/327#issuecomment-5793074122)
 - [Regarding the Morphe DMCA](https://www.reddit.com/r/MorpheApp/comments/1s3w1er/regarding_the_morphe_dmca/)
+<!-- - [How To Patch More Apps With Morphe](https://www.reddit.com/r/MorpheApp/comments/1ta0bek/how_to_patch_more_apps_with_morphe/) -->
 
 ## <a id="patch-indexes"></a> 🔍 Patch Indexes
 
