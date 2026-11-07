@@ -4,10 +4,12 @@
 ### 🔗 Jump to:
 
 - [✅ Official](#official)
-- [📚 Resources](#resources)
+  - [GitHub](#official-github)
+  - [Reddit](#official-reddit)
 - [🔍 Patch Indexes](#patch-indexes)
-- [⬇️ Download Helper](#download-helper)
-- [🛠️ Other Projects](#projects)
+- [⬇️ APK Download Helpers](#apk-download-helpers)
+- [📚 Other Resources](#other-resources)
+- [🛠️ Other Projects](#other-projects)
 - [ℹ️ About](#about)
 
 ### 🔥 Feature Highlights
@@ -39,22 +41,24 @@
 
 ## <a id="official"></a> ✅ Official
 
+Official Morphe resources and projects.
+
+[![Website](https://img.shields.io/badge/Website-morphe.software-gray?logo=google-chrome&logoColor=white&labelColor=4285F4)](https://morphe.software)　[![Website](https://img.shields.io/badge/Website-morphe--patches.software-gray?logo=google-chrome&logoColor=white&labelColor=4285F4)](https://morphe-patches.software)　
 [![GitHub](https://img.shields.io/badge/GitHub-MorpheApp-gray?logo=github&labelColor=24292F)](https://github.com/MorpheApp)
+　[![Reddit](https://img.shields.io/badge/Reddit-r%2FMorpheApp-gray?logo=reddit&logoColor=white&labelColor=FF4500)](https://www.reddit.com/r/MorpheApp)　[![Crowdin](https://img.shields.io/badge/Crowdin-morphe-gray?logo=crowdin&logoColor=white&labelColor=2E3340)](https://crowdin.com/project/morphe)　[![OpenCollective](https://img.shields.io/badge/OpenCollective-morpheapp-gray?logo=opencollective&logoColor=white&labelColor=4773AC)](https://opencollective.com/morpheapp)　[![X](https://img.shields.io/badge/Twitter-%40MorpheApp-gray?logo=x&logoColor=white&labelColor=24292F)](https://x.com/MorpheApp)
 
-- [![Morphe Manager](https://img.shields.io/badge/%F0%9F%92%8A%20Morphe%20Manager-gray)](https://github.com/MorpheApp/morphe-manager)　[![MicroG RE](https://img.shields.io/badge/%E2%9A%99%EF%B8%8F%20MicroG%20RE-gray)](https://github.com/MorpheApp/MicroG-RE)　[![PoToken Helper](https://img.shields.io/badge/%F0%9F%92%BC%20PoToken%20Helper-gray)](https://github.com/MorpheApp/PotHelper)　[![Morphe Desktop](https://img.shields.io/badge/%F0%9F%92%BB%20Morphe%20Desktop-gray)](https://github.com/MorpheApp/morphe-desktop)　
+### <a id="official-github"></a> [GitHub](https://github.com/MorpheApp):
 
-- [![Morphe Patches](https://img.shields.io/badge/%F0%9F%A7%A9%20Morphe%20Patches-gray)](https://github.com/MorpheApp/morphe-patches)　[![Morphe Patches Template](https://img.shields.io/badge/%F0%9F%91%8B%F0%9F%A7%A9%20Morphe%20Patches%20Template-gray)](https://github.com/MorpheApp/morphe-patches-template)　[![Morphe Patcher](https://img.shields.io/badge/%F0%9F%92%89%20Morphe%20Patcher-gray)](https://github.com/MorpheApp/morphe-patcher)
-- [![Morphe Website](https://img.shields.io/badge/%F0%9F%8C%90%20Morphe%20Website-gray)](https://github.com/MorpheApp/morphe-website)　[![Morphe Library](https://img.shields.io/badge/%F0%9F%93%9A%20Morphe%20Library-gray)](https://github.com/MorpheApp/morphe-library)　[![Morphe Patches Library](https://img.shields.io/badge/%F0%9F%93%9A%20Morphe%20Patches%20Library-gray)](https://github.com/MorpheApp/morphe-patches-library)　[![Morphe Patches Gradle plugin](https://img.shields.io/badge/%F0%9F%90%98%20Morphe%20Patches%20Gradle%20plugin-gray)](https://github.com/MorpheApp/morphe-patches-gradle-plugin)　[![Morphe Branding](https://img.shields.io/badge/%C2%A9%EF%B8%8F%20Branding-gray)](https://github.com/MorpheApp/morphe-branding)　[![jadb](https://img.shields.io/badge/jadb-gray)](https://github.com/MorpheApp/jadb)
-
-[![Website](https://img.shields.io/badge/Website-morphe.software-gray?logo=google-chrome&logoColor=white&labelColor=4285F4)](https://morphe.software)　[![Website](https://img.shields.io/badge/Website-morphe--patches.software-gray?logo=google-chrome&logoColor=white&labelColor=4285F4)](https://morphe-patches.software)　[![Reddit](https://img.shields.io/badge/Reddit-r%2FMorpheApp-gray?logo=reddit&logoColor=white&labelColor=FF4500)](https://www.reddit.com/r/MorpheApp)　[![X](https://img.shields.io/badge/Twitter-%40MorpheApp-gray?logo=x&logoColor=white&labelColor=24292F)](https://x.com/MorpheApp)　[![Crowdin](https://img.shields.io/badge/Crowdin-morphe-gray?logo=crowdin&logoColor=white&labelColor=2E3340)](https://crowdin.com/project/morphe)　[![OpenCollective](https://img.shields.io/badge/OpenCollective-morpheapp-gray?logo=opencollective&logoColor=white&labelColor=4773AC)](https://opencollective.com/morpheapp)
-
-## <a id="resources"></a> 📚 Resources
-
-- [Morphe Documentation](https://github.com/MorpheApp/morphe-documentation)
+- [![Morphe Manager](https://img.shields.io/badge/%F0%9F%92%8A%20Morphe%20Manager-gray)](https://github.com/MorpheApp/morphe-manager)　[![MicroG RE](https://img.shields.io/badge/%E2%9A%99%EF%B8%8F%20MicroG%20RE-gray)](https://github.com/MorpheApp/MicroG-RE)　[![Morphe Desktop](https://img.shields.io/badge/%F0%9F%92%BB%20Morphe%20Desktop-gray)](https://github.com/MorpheApp/morphe-desktop)　[![Morphe Patches](https://img.shields.io/badge/%F0%9F%A7%A9%20Morphe%20Patches-gray)](https://github.com/MorpheApp/morphe-patches)　
+- [![Morphe Documentation](https://img.shields.io/badge/%F0%9F%97%84%20Morphe%20Documentation-gray)](https://github.com/MorpheApp/morphe-documentation)
   - [Troubleshooting and Frequently asked questions](https://github.com/MorpheApp/morphe-documentation/blob/main/docs/morphe-resources/troubleshooting_questions.md)
   - [📱 Using Morphe Manager](https://github.com/MorpheApp/morphe-manager/blob/main/docs/README.md): Illustrated guides for patching, installing, updating, and customizing on your phone
   - [💻 Using Morphe Desktop](https://github.com/MorpheApp/morphe-desktop/blob/main/docs/documentation.md): Using Morphe Desktop with a computer
   - [🛠️ Morphe Development](https://github.com/MorpheApp/morphe-documentation/blob/main/docs/morphe-development/README.md): Setting up a development environment for Morphe and creating patches
+- [![PoToken Helper](https://img.shields.io/badge/%F0%9F%92%BC%20PoToken%20Helper-gray)](https://github.com/MorpheApp/PotHelper)　[![Morphe Patches Template](https://img.shields.io/badge/%F0%9F%91%8B%F0%9F%A7%A9%20Morphe%20Patches%20Template-gray)](https://github.com/MorpheApp/morphe-patches-template)　[![Morphe Patcher](https://img.shields.io/badge/%F0%9F%92%89%20Morphe%20Patcher-gray)](https://github.com/MorpheApp/morphe-patcher)　[![Morphe Library](https://img.shields.io/badge/%F0%9F%93%9A%20Morphe%20Library-gray)](https://github.com/MorpheApp/morphe-library)　[![Morphe Patches Library](https://img.shields.io/badge/%F0%9F%93%9A%20Morphe%20Patches%20Library-gray)](https://github.com/MorpheApp/morphe-patches-library)　[![Morphe Patches Gradle plugin](https://img.shields.io/badge/%F0%9F%90%98%20Morphe%20Patches%20Gradle%20plugin-gray)](https://github.com/MorpheApp/morphe-patches-gradle-plugin)　[![Morphe Website](https://img.shields.io/badge/%F0%9F%8C%90%20Morphe%20Website-gray)](https://github.com/MorpheApp/morphe-website)　[![Morphe Branding](https://img.shields.io/badge/%C2%A9%EF%B8%8F%20Branding-gray)](https://github.com/MorpheApp/morphe-branding)　[![jadb](https://img.shields.io/badge/jadb-gray)](https://github.com/MorpheApp/jadb)
+
+### <a id="official-reddit"></a> [Reddit](https://www.reddit.com/r/MorpheApp):
+
 - [Morphe links, help, guides, and troubleshooting](https://www.reddit.com/r/MorpheApp/comments/1pverk7/morphe_links_help_guides_and_troubleshooting/)
   - [If you have playback issues](https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/oag938k/)
   - [Shorts player has no buttons](https://www.reddit.com/r/MorpheApp/comments/1pverk7/comment/ogdw6mk/)
@@ -66,14 +70,10 @@
 - ~~[PotHelper Guide - YouTube playback with no spoofing required](https://www.reddit.com/r/MorpheApp/comments/1w0o641/pothelper_is_here_youtube_playback_with_no/)~~
   - [NOTE] [PotHelper is now failing for most users, use spoof streams again](https://github.com/MorpheApp/morphe-patches/issues/327#issuecomment-5793074122)
 - [Regarding the Morphe DMCA](https://www.reddit.com/r/MorpheApp/comments/1s3w1er/regarding_the_morphe_dmca/)
-- [How to install and use Shizuku](https://github.com/thedjchi/Shizuku/wiki)
-- [Morphe Workspace - A collection of Android apps that complement Morphe](https://www.reddit.com/r/MorpheApp/comments/1wiowwa/morphe_workspace_a_collection_of_android_apps/)
-- [All solutions to bypass Android sideloading restrictions](https://www.reddit.com/r/MorpheApp/comments/1wuusyp/the_first_wave_of_sideloading_restrictions_has/)
-- [All About Morphe](https://github.com/gojoyadav/All-About-Morphe)
 
 ## <a id="patch-indexes"></a> 🔍 Patch Indexes
 
-🔍 Browse and explore all supported Morphe apps and patches from the following sources:
+Places to discover Morphe patch sources.
 
 - [Awesome Morphe Website](https://awesome-morphe.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/nvbangg/awesome-morphe)
 - [Morphe Community Patches](https://morphe-patches.software/)
@@ -88,19 +88,26 @@
 - [Patch Atlas](https://patch-atlas.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/shakir2117/Patch-Atlas) -->
 <!-- - [Community Patch Space Explorer](https://dmh84.github.io/morphe-space-explorer/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/dmh84/morphe-space-explorer) -->
 
-## <a id="download-helper"></a> ⬇️ Download Helper
+## <a id="apk-download-helpers"></a> ⬇️ APK Download Helpers
+
+Helpers for downloading original APKs.
 
 [![rushiranpise/helper-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=rushiranpise&repo=helper-for-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/rushiranpise/helper-for-morphe)
 [![GeneralZyonix/morphe-download-helper](https://github-stats-extended.vercel.app/api/pin?username=GeneralZyonix&repo=morphe-download-helper&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GeneralZyonix/morphe-download-helper)
+[![heval99/sideport](https://github-stats-extended.vercel.app/api/pin?username=heval99&repo=sideport&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/heval99/sideport)
 [![Akash-Sriram/morphe-fetch](https://github-stats-extended.vercel.app/api/pin?username=Akash-Sriram&repo=morphe-fetch&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Akash-Sriram/morphe-fetch)
 
-## <a id="projects"></a> 🛠️ Other Projects
+## <a id="other-resources"></a> 📚 Other Resources
 
-[![holjab/AutoMorph](https://github-stats-extended.vercel.app/api/pin?username=holjab&repo=AutoMorph&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/holjab/AutoMorph)
+- [How to install and use Shizuku](https://github.com/thedjchi/Shizuku/wiki)
+- [Morphe Workspace - A collection of Android apps that complement Morphe](https://www.reddit.com/r/MorpheApp/comments/1wiowwa/morphe_workspace_a_collection_of_android_apps/)
+- [All solutions to bypass Android sideloading restrictions](https://www.reddit.com/r/MorpheApp/comments/1wuusyp/the_first_wave_of_sideloading_restrictions_has/)
+- [All About Morphe](https://github.com/gojoyadav/All-About-Morphe)
+
+## <a id="other-projects"></a> 🛠️ Other Projects
+
 [![Paresh-Maheshwari/morphe-ai](https://github-stats-extended.vercel.app/api/pin?username=Paresh-Maheshwari&repo=morphe-ai&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Paresh-Maheshwari/morphe-ai)
 [![d3ffen/patchit](https://github-stats-extended.vercel.app/api/pin?username=d3ffen&repo=patchit&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/d3ffen/patchit)
-[![heval99/sideport](https://github-stats-extended.vercel.app/api/pin?username=heval99&repo=sideport&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/heval99/sideport)
-[![GROWNUPS/Patchium](https://github-stats-extended.vercel.app/api/pin?username=GROWNUPS&repo=Patchium&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GROWNUPS/Patchium)
 [![SatanMerde/Morphy-Patches-Creator](https://github-stats-extended.vercel.app/api/pin?username=SatanMerde&repo=Morphy-Patches-Creator&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/SatanMerde/Morphy-Patches-Creator)
 [![j0p3s/morphe-json-to-mpp](https://github-stats-extended.vercel.app/api/pin?username=j0p3s&repo=morphe-json-to-mpp&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/j0p3s/morphe-json-to-mpp)
 [![ngocthanhgl/morphe-audit-bot](https://github-stats-extended.vercel.app/api/pin?username=ngocthanhgl&repo=morphe-audit-bot&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/ngocthanhgl/morphe-audit-bot)
@@ -109,20 +116,22 @@
 [![crimera/morphe-bytecode](https://github-stats-extended.vercel.app/api/pin?username=crimera&repo=morphe-bytecode&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/crimera/morphe-bytecode)
 [![brosssh/morphe-mcp](https://github-stats-extended.vercel.app/api/pin?username=brosssh&repo=morphe-mcp&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/brosssh/morphe-mcp)
 [![jpa102/more_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=more_feature_flags&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/more_feature_flags)
-[![Jman-Github/Universal-Patch-Manager](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Universal-Patch-Manager&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Universal-Patch-Manager)
 [![Jman-Github/Awesome-Android-Patching](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Awesome-Android-Patching&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Awesome-Android-Patching)
+
+<details>
+<summary>Alternative Patching Tools</summary>
+
+[![holjab/AutoMorph](https://github-stats-extended.vercel.app/api/pin?username=holjab&repo=AutoMorph&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/holjab/AutoMorph)
+[![GROWNUPS/Patchium](https://github-stats-extended.vercel.app/api/pin?username=GROWNUPS&repo=Patchium&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GROWNUPS/Patchium)
+[![Jman-Github/Universal-Patch-Manager](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Universal-Patch-Manager&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Universal-Patch-Manager)
 [![Xisrr1/Revancify-Xisr](https://github-stats-extended.vercel.app/api/pin?username=Xisrr1&repo=Revancify-Xisr&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Xisrr1/Revancify-Xisr)
 [![Graywizard888/Enhancify](https://github-stats-extended.vercel.app/api/pin?username=Graywizard888&repo=Enhancify&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Graywizard888/Enhancify)
 
-## ⬇️ Pre-patched sources
-
-> [!NOTE]
-> Pre-patched sources are not listed here for safety and liability reasons.  
-> If you still want to explore them, see [Jman’s list](https://github.com/Jman-Github/Awesome-Android-Patching#%EF%B8%8F-builder)
+</details>
 
 ---
 
-## <a id="about"></a> ℹ️ About
+## <a id="about"></a> ℹ️ About Awesome Morphe
 
 <div align="center"><i>
 
@@ -132,6 +141,10 @@ Maintained with ❤️ by **[@nvbangg](https://github.com/nvbangg)**
 
 </i></div>
 
+> [!NOTE]
+> Sources providing pre-patched APKs are not listed here for safety and liability reasons.  
+> If you still want to explore them, see [Jman’s list](https://github.com/Jman-Github/Awesome-Android-Patching#%EF%B8%8F-builder)
+
 ### ⚠️ Disclaimer
 
 - [This project](https://github.com/nvbangg/awesome-morphe) is not affiliated with [Morphe](https://morphe.software/) or any authors mentioned here.
@@ -139,6 +152,6 @@ Maintained with ❤️ by **[@nvbangg](https://github.com/nvbangg)**
 
 ### 🙏 Credits
 
-- Patch data is automatically aggregated from: [nvbangg's custom sources](data/discover/custom.json), [Morphe Community Patches](https://morphe-patches.software), [Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) and [Morphe Archive](https://github.com/rushiforai/morphe-archive).
+- Patch data is automatically aggregated from [nvbangg's custom sources](data/bundle-sources/custom.json), [Morphe Community Patches](https://morphe-patches.software), [Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) and [Morphe Archive](https://github.com/rushiforai/morphe-archive).
 - Website design is inspired by [Morphe Community Patches](https://morphe-patches.software).
 - Bundle parser is adapted from [Jman's Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) to fit this project and Morphe.
