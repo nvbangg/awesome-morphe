@@ -1,11 +1,11 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.5.0",
+  "version": "1.6.0-dev.2",
   "patches": [
     {
-      "name": "AMOLED code colours",
-      "description": "Replaces opaque dark surface colours held as constants in code with black. Pulled in by AMOLED theme; does nothing for resources.",
-      "default": false,
+      "name": "AMOLED theme",
+      "description": "Full AMOLED: every dark resource colour and code-held constant becomes black, alpha kept. Borders and controls lose their separation too; repatch to undo.",
+      "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
@@ -37,44 +37,8 @@
       "options": []
     },
     {
-      "name": "AMOLED theme",
-      "description": "Total AMOLED: every colour whose brightest channel is 0x60 or lower becomes black, alpha kept. Borders and controls lose their separation too; repatch to undo.",
-      "default": false,
-      "category": null,
-      "dependencies": [
-        "AMOLED code colours"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.zhiliaoapp.musically",
-          "name": "TikTok",
-          "description": "Handle, region and post time next to names, feed filtering, watermark-free downloads, profile backgrounds, an imported font, comment copying without the username, and CAPTCHA popups hidden.",
-          "apkFileType": "APK",
-          "appIconColor": "#FE2C55",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "47.7.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "47.7.2",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Always @handle · region · post time",
-      "description": "Shows the @handle, the region and the post time on feed videos and comments, including a video shared into a chat. Each surface and each part has a switch in Tweaks.",
+      "name": "App refresh rate",
+      "description": "Sets the app's preferred display refresh rate. In Tweaks: Default (system), 60 fps, 90 fps or 120 fps. On by default; Default leaves the rate to Android.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -243,8 +207,76 @@
       "options": []
     },
     {
+      "name": "Handle, time & region",
+      "description": "Shows the @handle, the region and the post time on feed videos and comments, including a video shared into a chat. Each surface and each part has a switch in Tweaks.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": "Handle, region and post time next to names, feed filtering, watermark-free downloads, profile backgrounds, an imported font, comment copying without the username, and CAPTCHA popups hidden.",
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.7.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "47.7.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide CAPTCHA popups",
       "description": "Skips the risk-control puzzle TikTok shows while browsing, and lets the app carry on. Account verification (login, SMS or two-factor) is never hidden. On by default; the switch is in Tweaks.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": "Handle, region and post time next to names, feed filtering, watermark-free downloads, profile backgrounds, an imported font, comment copying without the username, and CAPTCHA popups hidden.",
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.7.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "47.7.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Pause image search",
+      "description": "Adds a switch to disable the image-search entries TikTok shows while a video is paused, including the pause-panel row and the visual search pill. On by default; turn it off to show them again.",
       "default": true,
       "category": null,
       "dependencies": [],

@@ -1,0 +1,8 @@
+{
+  "created_at": "2026-11-07T15:40:00",
+  "public_key": "5oagOQB+dup8EBc+iS/cJUmi0pMbQZ8LSZQwkl0q5u8=",
+  "description": "## v1.2.0 — fixes the \"stuck on the welcome splash\" bug\n\nOpera Beta (and stable) Play builds download their Chromium engine on first run. When that setup failed on a re-signed (patched) APK, the app sat on the purple welcome splash forever and showed only a black screen afterwards. v1.2.0 fixes this in two layers:\n\n- **Spoof app signature** (new, all three apps): the app now sees Opera's original \"Opera Software\" signing certificate instead of the Morphe key (PackageInfo.CREATOR parcel proxy, ApkSignatureKillerEx lineage). This removes the certificate-gated failure of the first-run engine download. The official certificate (SHA-256 5d6afbf8…b8) is bundled.\n- **Ignore browser boot failures** (new, Opera & Opera Beta): if the first-run engine boot (MainLibraryBoot) still fails, its failure announcements are converted into success notifications so the welcome screen can never deadlock again.\n- The bundle is renamed to **Vogelkop patches** and now ships its own source icon (the Vogelkop bowerbird logo).\n\n### Also in this release\n- Google Play Protect's \"scan the app\" prompt on install is expected for every sideloaded APK and is not caused by the patches; see the README.\n- Patch sources: added `extensions/` (runtime hook, no-stdlib Kotlin) and `tools/build_extension.sh` (rebuilds `extensions/extension.mpe` without the Android SDK).\n\n### Import\nAdd as patch source: https://morphe.software/add-source?github=maniesh-NR/Vogelkop-MorphePatches",
+  "download_url": "https://github.com/maniesh-NR/Vogelkop-MorphePatches/releases/download/v1.2.0/patches-1.2.0.mpp",
+  "signature_download_url": "",
+  "version": "1.2.0"
+}
