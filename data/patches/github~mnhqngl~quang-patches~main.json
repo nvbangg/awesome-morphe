@@ -1,7 +1,51 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "patches": [
+    {
+      "name": "Allow Zalo to see Photos (Zalo)",
+      "description": "Thêm Google Photos bản Morphe vào <queries> của Zalo để Zalo nhìn thấy app này.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.zing.zalo",
+          "name": "Zalo",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0068FF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.10.02",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "photosPackage",
+          "title": "Package Photos (Morphe)",
+          "description": "Phải trùng với package đã nhập ở patch \"Change Photos picker package (Zalo)\".",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.morphe.android.apps.photos",
+          "values": null
+        }
+      ]
+    },
     {
       "name": "Change Photos picker package",
       "description": "Nút Google Photos trong trình chọn ảnh/video của Messenger sẽ mở Google Photos bản Morphe.",
@@ -39,6 +83,50 @@
           "key": "photosPackage",
           "title": "Package Photos (Morphe)",
           "description": "Package name của Google Photos đã patch bằng Morphe trên máy bạn.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.morphe.android.apps.photos",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change Photos picker package (Zalo)",
+      "description": "Nút Google Photos trong trình chọn ảnh của Zalo sẽ mở Google Photos bản Morphe.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.zing.zalo",
+          "name": "Zalo",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0068FF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.10.02",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "photosPackage",
+          "title": "Package Photos (Morphe)",
+          "description": "Package name của Google Photos đã patch bằng Morphe trên máy bạn. Authority của provider được suy ra là <package>.contentprovider.",
           "required": true,
           "type": "kotlin.String",
           "default": "app.morphe.android.apps.photos",
