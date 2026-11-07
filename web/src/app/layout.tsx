@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Suspense } from "react";
+import { SkeletonGrid } from "@/components/common/CardGrid";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { CatalogShell } from "@/features/catalog/CatalogShell";
@@ -52,7 +53,15 @@ export default function RootLayout({
 				<Providers>
 					<div className="min-h-screen bg-background text-foreground transition-colors duration-300">
 						<Header />
-						<Suspense>
+						<Suspense
+							fallback={
+								<main className="pt-1 pb-4" aria-label="Catalog">
+									<div className="container mx-auto px-6 max-w-300">
+										<SkeletonGrid />
+									</div>
+								</main>
+							}
+						>
 							<CatalogShell>{children}</CatalogShell>
 						</Suspense>
 						<Footer />

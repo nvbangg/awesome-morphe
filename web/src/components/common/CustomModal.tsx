@@ -1,5 +1,6 @@
 import { Dialog } from "@base-ui/react/dialog";
 import { X } from "lucide-react";
+import { useRef } from "react";
 
 interface CustomModalProps {
 	isOpen: boolean;
@@ -8,6 +9,7 @@ interface CustomModalProps {
 	maxWidth?: string;
 	centerMobile?: boolean;
 	label?: string;
+	focusPopup?: boolean;
 }
 
 export function CustomModal({
@@ -17,7 +19,10 @@ export function CustomModal({
 	maxWidth = "max-w-205",
 	centerMobile = false,
 	label = "Details",
+	focusPopup = false,
 }: CustomModalProps) {
+	const popupRef = useRef<HTMLDivElement>(null);
+
 	return (
 		<Dialog.Root
 			open={isOpen}
@@ -30,6 +35,8 @@ export function CustomModal({
 					className={`fixed inset-0 z-50 bg-overlay backdrop-blur-sm flex items-center justify-center ${centerMobile ? "p-4" : "p-4 max-sm:p-0"}`}
 				>
 					<Dialog.Popup
+						ref={popupRef}
+						initialFocus={focusPopup ? popupRef : undefined}
 						aria-label={label}
 						aria-describedby={undefined}
 						className={`relative z-10 rounded-3xl w-full ${maxWidth} overflow-hidden flex flex-col max-h-[90vh] shadow-modal bg-background border-none ${centerMobile ? "" : "max-sm:rounded-none max-sm:max-h-dvh max-sm:h-full"} outline-none animate-in zoom-in-95 duration-200 isolate transform-gpu backface-hidden`}

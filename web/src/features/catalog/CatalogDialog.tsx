@@ -24,6 +24,7 @@ export function CatalogDialog({ isWhatsNew }: { isWhatsNew: boolean }) {
 	if (!data || params["test-bundle"] !== null) return null;
 	return (
 		<CustomModal
+			focusPopup
 			isOpen={Boolean(app || bundle)}
 			onClose={close}
 			label={
