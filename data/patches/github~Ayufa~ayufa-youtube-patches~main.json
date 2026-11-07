@@ -1,0 +1,109 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.1.0",
+  "patches": [
+    {
+      "name": "Hide live chat clutter",
+      "description": "Hides the pinned message banner and poll cards in live chat. Each can be toggled in Morphe settings (Ayufa patch settings) without re-patching. For YouTube 21.30.216.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube",
+          "name": "YouTube",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "5aad2bee6db95d17e05a08d7d1e64c10a1511879154483916b6ae6c7fd9cb0c6",
+            "3d7a1223019aa39d9ea0e3436ab7c0896bfb4fb679f4de5fe7c23f326c8f994a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "21.30.216",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideLiveChatPinnedBanner",
+          "title": "Hide pinned message banner",
+          "description": "Hides the pinned comment (banner) shown above the live chat.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideLiveChatPolls",
+          "title": "Hide live chat polls",
+          "description": "Hides poll (questionnaire) cards shown in the live chat.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Live latency keeper",
+      "description": "At a fixed interval, momentarily pauses and resumes live stream playback so it snaps back to the live edge (the newest position), no matter how far behind it has fallen. The interval (any value from 0 to 120 minutes, typed in directly) and the on/off switch can be changed in Morphe settings (Ayufa patch settings) without re-patching. For YouTube 20.26.46 (Android 8.0) only. Requires the official Morphe patches to be applied as well.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube",
+          "name": "YouTube",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "5aad2bee6db95d17e05a08d7d1e64c10a1511879154483916b6ae6c7fd9cb0c6",
+            "3d7a1223019aa39d9ea0e3436ab7c0896bfb4fb679f4de5fe7c23f326c8f994a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "20.26.46",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "liveLatencySyncIntervalMinutes",
+          "title": "Default sync interval (minutes)",
+          "description": "How often live playback is snapped back to the newest position with a momentary pause and resume. Used until the interval is changed in Morphe settings (Ayufa patch settings), where any value from 0 to 120 minutes can be typed in.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 10,
+          "values": {
+            "Off (0 minutes)": 0,
+            "1 minute": 1,
+            "2 minutes": 2,
+            "3 minutes": 3,
+            "5 minutes": 5,
+            "10 minutes": 10,
+            "15 minutes": 15,
+            "20 minutes": 20,
+            "30 minutes": 30,
+            "45 minutes": 45,
+            "60 minutes": 60,
+            "90 minutes": 90,
+            "120 minutes": 120
+          }
+        }
+      ]
+    }
+  ]
+}
