@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "patches": [
     {
       "name": "Disable Acceptable Ads whitelist",
@@ -171,6 +171,115 @@
       "options": []
     },
     {
+      "name": "Disable analytics & tracking",
+      "description": "Stops Firebase Analytics, Google Ads/Doubleclick/IMA and Leanplum from collecting or sending usage data by rewriting their endpoint constants to a dead host. Firebase infrastructure that features depend on (push notifications, feature flags) is left intact.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser.beta",
+          "name": "Opera Browser Beta",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#C15746",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "104.0.5262.91143",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.gx",
+          "name": "Opera GX",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#F81C4C",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.3.18",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide broken installation dialog",
       "description": "Prevents the \"Your app installation appears to be broken. Try to uninstall and reinstall\" dialog from blocking startup. The dialog is Opera's crash-recovery nag (it also appears on unmodified installs after a crash or inside app-cloning tools), not a signature check, and its reinstall advice cannot fix a patched build.",
       "default": true,
@@ -256,7 +365,7 @@
     },
     {
       "name": "Ignore browser boot failures",
-      "description": "Stops a failed first-run engine boot (MainLibraryBoot) from deadlocking the welcome screen. Opera announces boot failures (engine download or Chromium start) to the welcome flow, which used to call the now-hidden \"broken installation\" dialog and then wait forever. The announcements are converted into success notifications so startup always continues. Pair with \"Spoof app signature\", which fixes the underlying certificate-gated engine download.",
+      "description": "Stops a failed engine boot (MainLibraryBoot) from deadlocking the welcome screen. The Chromium engine ships inside the APK; if its load or start still fails (device without ARM support, a start error), Opera announces the failure to the welcome flow, which used to call the now-hidden \"broken installation\" dialog and then wait forever. The announcements are converted into success notifications so startup always continues. Pair with \"Spoof app signature\", which keeps Opera's in-app signature reads on their vendor-build behavior.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -458,7 +567,7 @@
     },
     {
       "name": "Spoof app signature",
-      "description": "Makes the app see the original Opera signing certificate after Morphe re-signs it. Opera's first run downloads its Chromium engine (MainLibraryBoot) and re-signed APKs can fail that setup with a foreign certificate, which previously left the app stuck on the welcome splash. Does not bypass Play Integrity hardware attestation.",
+      "description": "Makes the app see the original Opera signing certificate after Morphe re-signs it. Opera's code reads its own signature in several places (preinstall partner checks, the MoMi SDK, metrics), and a patched build would answer those reads with the Morphe key. A PackageInfo.CREATOR parcel proxy presents the vendor certificate, so those code paths keep their vendor-build behavior. Does not bypass Play Integrity hardware attestation.",
       "default": true,
       "category": null,
       "compatiblePackages": [

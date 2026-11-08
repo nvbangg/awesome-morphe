@@ -1,0 +1,232 @@
+{
+    "version": "1.0.1",
+    "patches": [
+        {
+            "name": "Add microG-RE support",
+            "description": "Signs in to your Google account through microG-RE (MicroG-RE or ReVanced GmsCore), keeping the name from Change app name. Not for root installs; for original microG, use Add original microG support.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.maps",
+                    "name": "Google Maps",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FFFFFF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.06.1006895251",
+                            "versionCodes": {
+                                "ARM64_V8A": 1068856906,
+                                "ARMEABI_V7A": 1068856906,
+                                "X86_64": 1068856906,
+                                "X86": 1068856906
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Allow any travel mode on Android Auto",
+            "description": "26.44.06.1006895251 only. Android Auto no longer refuses navigation for its travel mode: driving routes navigate as driving and two-wheeler routes as two-wheeler, without \"switch to ... directions\".",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.maps",
+                    "name": "Google Maps",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FFFFFF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.06.1006895251",
+                            "versionCodes": {
+                                "ARM64_V8A": 1068856906,
+                                "ARMEABI_V7A": 1068856906,
+                                "X86_64": 1068856906,
+                                "X86": 1068856906
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Always two-wheeler on Android Auto",
+            "description": "26.44.06.1006895251 only. Android Auto treats two-wheeler (motorcycle) as its supported mode, so destinations searched on the head unit default to two-wheeler routes. Use with \"Allow any travel mode on Android Auto\" so driving routes are still accepted.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.maps",
+                    "name": "Google Maps",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FFFFFF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.06.1006895251",
+                            "versionCodes": {
+                                "ARM64_V8A": 1068856906,
+                                "ARMEABI_V7A": 1068856906,
+                                "X86_64": 1068856906,
+                                "X86": 1068856906
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Bypass Play Services checks",
+            "description": "Makes Maps' bundled Play services signature and availability checks always pass, so it runs re-signed and with Play services disabled or absent, and lets it load tiles, search and routing by sending Google's own package and certificate in the identity headers the Maps backend checks. Where Play services rejects the re-signed app, Maps degrades instead of crashing. Also skips Google's \"isn't Play Protect certified\" page, and with no Play services at all uses Android's own Cronet so the map still loads.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.maps",
+                    "name": "Google Maps",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FFFFFF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.06.1006895251",
+                            "versionCodes": {
+                                "ARM64_V8A": 1068856906,
+                                "ARMEABI_V7A": 1068856906,
+                                "X86_64": 1068856906,
+                                "X86": 1068856906
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Change package name",
+            "description": "Installs alongside stock Google Maps under its own package name. On by default, because stock Maps comes built into most phones and cannot be replaced by a patched copy.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.maps",
+                    "name": "Google Maps",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FFFFFF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.06.1006895251",
+                            "versionCodes": {
+                                "ARM64_V8A": 1068856906,
+                                "ARMEABI_V7A": 1068856906,
+                                "X86_64": 1068856906,
+                                "X86": 1068856906
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "packageName",
+                    "title": "Package name",
+                    "description": "The package name to install under. Must be a valid Android package name. Left at org.ungoogled.android.apps.maps, Add microG-RE support installs under org.ungoogled.android.apps.maps.microg instead and Add original microG support keeps com.google.android.apps.maps.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "org.ungoogled.android.apps.maps",
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Native navigation for Gearslip and Android Auto",
+            "description": "Shows this patched Maps app's live native map with app-owned car UI and standard navigation controls that Android Auto and compatible hosts can arrange.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.maps",
+                    "name": "Google Maps",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FFFFFF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.06.1006895251",
+                            "versionCodes": {
+                                "ARM64_V8A": 1068856906,
+                                "ARMEABI_V7A": 1068856906,
+                                "X86_64": 1068856906,
+                                "X86": 1068856906
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Skip private Android Auto car connection",
+            "description": "26.44.06.1006895251 only. Stops a re-signed Maps from crashing when Android Auto rejects its private car-service call (\"Wrong signature\"). Needed for native navigation on Android Auto.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.maps",
+                    "name": "Google Maps",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FFFFFF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.06.1006895251",
+                            "versionCodes": {
+                                "ARM64_V8A": 1068856906,
+                                "ARMEABI_V7A": 1068856906,
+                                "X86_64": 1068856906,
+                                "X86": 1068856906
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        }
+    ]
+}
