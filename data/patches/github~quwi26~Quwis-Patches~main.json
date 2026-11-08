@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. It is generated with ./gradlew generatePatchesList for every release. Manually editing this file can break third party tools that use this file.",
-  "version": "1.9.22",
+  "version": "1.9.25",
   "patches": [
     {
       "name": "AMOLED black",
@@ -224,7 +224,7 @@
     },
     {
       "name": "Clone Chess.com",
-      "description": "Renames the app to com.chess.noam so it installs next to the real Chess.com app instead of over it. Leave it off to keep updating your current install.",
+      "description": "Renames the app package so it installs next to the real Chess.com app instead of over it. The default package is com.chess.quwi; the last part can be changed in the patch options. Leave it off to keep updating your current install.",
       "default": false,
       "category": null,
       "dependencies": [],
@@ -254,7 +254,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "cloneSuffix",
+          "title": "Package name suffix",
+          "description": "The last part of the package name, after com.chess. Default: quwi.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "quwi",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Customize Home screen",

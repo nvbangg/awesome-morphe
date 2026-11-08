@@ -1,7 +1,62 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "patches": [
+    {
+      "name": "App icon",
+      "description": "Choose a classic or premium-style launcher icon.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "iconStyle",
+          "title": "Style",
+          "description": "Icon shown on your home screen.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "blue",
+          "values": {
+            "Blue": "blue",
+            "Red": "red",
+            "Gold premium": "gold"
+          }
+        }
+      ]
+    },
     {
       "name": "Bypass Login Requirements",
       "description": "Skips SofaScore login requirement by forcing isLoggedIn to true.",
@@ -207,6 +262,47 @@
       "options": []
     },
     {
+      "name": "Disable telemetry",
+      "description": "Reduces Adjust / analytics style callbacks where possible. Flutter Sentry/Amplitude may still run partially.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.finch.finch",
+          "name": "Finch",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#7CB342",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.73.235",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.73.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.72.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable premium license",
       "description": "Best-effort unlock of ESET premium UI / client-side license flags. Native libems + server checks may still limit some features.",
       "default": true,
@@ -235,7 +331,7 @@
     },
     {
       "name": "Fix video engine on re-sign",
-      "description": "Stops the bundled video engine library from terminating the process when the APK is re-signed. Covers arm64-v8a and armeabi-v7a copies of libisvideoengine.so so the editor can load after a custom signature.",
+      "description": "Stops libisvideoengine.so from terminating the process after the APK is re-signed. Supports arm64-v8a / armeabi-v7a; patterns cover 2.214.x and newer builds that still issue kill(pid, 9).",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -353,6 +449,57 @@
       "options": []
     },
     {
+      "name": "Keep deleted messages",
+      "description": "Show messages that were deleted for everyone. May need a fingerprint update after WhatsApp upgrades.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "highlight",
+          "title": "Highlight deleted messages",
+          "description": "Mark deleted messages so they are easier to spot.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Limit Copy to share menu",
       "description": "Removes CopyActivity VIEW filters (open-with) while keeping SEND filters so Copy remains in the system share menu.",
       "default": false,
@@ -399,6 +546,141 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Mods settings entry",
+      "description": "Reserves a MightyMich row in Settings. Full dialog wiring needs the settings-list fingerprint for this WhatsApp build.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Mods settings resources",
+      "description": "Adds English strings for the MightyMich section in WhatsApp Settings.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Read receipts",
+      "description": "If enabled, you won't send read receipts (blue ticks).",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "always",
+          "title": "Always off",
+          "description": "Always disable read receipts, ignoring the in-app toggle.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Remove HTTP/HTTPS intent filters",
@@ -587,9 +869,50 @@
       ]
     },
     {
+      "name": "Typing indicator",
+      "description": "If enabled, others won't see when you are typing.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlimited Energy",
-      "description": "Bypasses energy limits so lessons can be started freely (bonus QoL).",
-      "default": true,
+      "description": "Optional: tries to bypass lesson energy limits. Off by default (aggressive matching previously caused startup crashes).",
+      "default": false,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
@@ -729,6 +1052,88 @@
       "options": []
     },
     {
+      "name": "Unlock Plus",
+      "description": "Forces RevenueCat Plus entitlement checks so Finch treats the account as Finch Plus (cosmetics, full activity libraries, shop perks).",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.finch.finch",
+          "name": "Finch",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#7CB342",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.73.235",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.73.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "3.72.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premiere Premium",
+      "description": "Forces local Adobe Premiere entitlement checks (CC services / isPremium gates). Core editing is already free; cloud AI credits remain server-side.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.adobe.premiere",
+          "name": "Adobe Premiere",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#9999FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "26.4.1",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "26.3.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock Premium",
       "description": "Forces Call Filter local subscription flag isSubscribed to true (SharedPreferences reads + persist on app start).",
       "default": true,
@@ -774,9 +1179,7 @@
       "description": "Enables InShot Pro entitlements offline: export without watermark, no interstitial ads, and access to paid effects, transitions, stickers and HD. Built-in AI features that validate the store signature in native code may still refuse a re-signed package.",
       "default": true,
       "category": null,
-      "dependencies": [
-        "RawResourcePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.camerasideas.instashot",
@@ -797,6 +1200,136 @@
               "version": "2.243.1555",
               "versionCodes": null,
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Forces Adapty access levels and subscriptions to active/lifetime so My Drama treats the account as premium.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.dashdramas",
+          "name": "My Drama",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.81.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.82.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.86.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.87.0",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Forces local VIP / VIP Pro checks for DramaWave playback and benefits.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.dramawave.app",
+          "name": "DramaWave",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E91E63",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.0.70",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.0.61",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.0.51",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Forces local VIP checks so locked episodes and VIP benefits open (client-side; some titles may still need a server unlock).",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.gooddrama.idrama",
+          "name": "iDrama",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2B7BFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.36.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.36.4",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.36.3",
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -834,7 +1367,7 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Unlocks SideMe Super / Premium subscription features.",
+      "description": "Unlocks SideMe Super / Premium by forcing UserSubscription.isActive to true.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -851,6 +1384,47 @@
               "version": "1.19.5",
               "versionCodes": null,
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Forces DramaBox VIP checks (UserInfo / LoginService / isVip helpers) so premium content unlocks on the client.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.storymatrix.drama",
+          "name": "DramaBox",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E91E63",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.9.3",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.4.0",
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -1069,6 +1643,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "2.01.65.1014",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1092,6 +1673,13 @@
           "targets": [
             {
               "version": "2.07.34.0918",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.07.37.1026",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1154,7 +1742,7 @@
             {
               "version": "4.2.00",
               "versionCodes": null,
-              "isExperimental": true,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -1165,7 +1753,7 @@
     },
     {
       "name": "Unlock Premium Features",
-      "description": "Unlocks Screen Translate Premium.",
+      "description": "Unlocks Screen Translate Premium features and disables premium-only gates.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -1201,6 +1789,20 @@
             },
             {
               "version": "v7.3.10123",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.3.00961",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "v7.3.00961",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1300,6 +1902,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.04.19.1027",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1323,6 +1932,13 @@
           "targets": [
             {
               "version": "1.02.165.0923",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.02.170.1026",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1388,6 +2004,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "1.03.41.1022",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -1411,6 +2034,13 @@
           "targets": [
             {
               "version": "1.02.111.0915",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.02.112.1013",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1679,6 +2309,88 @@
               "version": "1.4.139",
               "versionCodes": null,
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Usage data",
+      "description": "Limit diagnostic and analytics data WhatsApp sends.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "View once media",
+      "description": "Allow reopening and saving view once photos and videos.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }

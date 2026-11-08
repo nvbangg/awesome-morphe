@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.2",
+  "version": "1.2.5",
   "patches": [
     {
       "name": "Disable Acceptable Ads whitelist",
@@ -448,6 +448,115 @@
       "options": []
     },
     {
+      "name": "Remove ad & tracking permissions",
+      "description": "Drops ad-profiling and tracking permissions from the manifest: Privacy Sandbox (ACCESS_ADSERVICES_*), Google Advertising ID, Play install-referrer attribution, basic phone state and Huawei store junk.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser.beta",
+          "name": "Opera Browser Beta",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#C15746",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "104.0.5262.91143",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.gx",
+          "name": "Opera GX",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#F81C4C",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.3.18",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove sponsored Speed Dial",
       "description": "Stops sponsored/partner tiles from appearing on the start page by making Opera's suggested-sites database queries return no rows. Regular Speed Dial entries and bookmarks are not affected.",
       "default": true,
@@ -567,7 +676,7 @@
     },
     {
       "name": "Spoof app signature",
-      "description": "Makes the app see the original Opera signing certificate after Morphe re-signs it. Opera's code reads its own signature in several places (preinstall partner checks, the MoMi SDK, metrics), and a patched build would answer those reads with the Morphe key. A PackageInfo.CREATOR parcel proxy presents the vendor certificate, so those code paths keep their vendor-build behavior. Does not bypass Play Integrity hardware attestation.",
+      "description": "Makes the app see the original Opera signing certificate after Morphe re-signs it. Opera's code reads its own signature in several places (preinstall partner checks, the MoMi SDK, metrics), and a patched build would answer those reads with the Morphe key. Signature-reading call sites are redirected to a helper that presents the vendor certificate, with a PackageInfo.CREATOR parcel proxy as a second, independent layer. Does not bypass Play Integrity hardware attestation.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -692,6 +801,115 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Startup diagnostics",
+      "description": "Records a startup breadcrumb trail and the full stack trace of any launch crash to Android/data/<package>/files/vogelkop-diag.log (openable with any file manager). Also logs which signing certificate the app sees for itself, proving whether the signature spoof engaged. Leave enabled while debugging a startup crash; it does not alter app behavior and never throws.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser.beta",
+          "name": "Opera Browser Beta",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#C15746",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "104.0.5262.91143",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.gx",
+          "name": "Opera GX",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#F81C4C",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.3.18",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     }
   ]
 }
