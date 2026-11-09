@@ -1,7 +1,71 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "patches": [
+    {
+      "name": "Clone install",
+      "description": "Installs the patched app as a second copy next to the first, under an app name and package name you choose. The first start after installing only sets up; names hardcoded in the app's code are fixed from the second start.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.facebook.lite",
+          "name": "Facebook Lite",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1877F2",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "536.0.0.11.107",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "530.0.0.8.106",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "Clone package name",
+          "title": "Clone package name",
+          "description": "Package name of the second copy. It must have exactly 17 characters (the same as com.facebook.lite) so names hardcoded in the app can be rewritten in place, and it should differ from com.facebook.lite only in the last character, which keeps the rewritten code valid. Lowercase letters, digits and underscores in parts split by dots, and not com.facebook.lite.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.facebook.litd",
+          "values": null
+        },
+        {
+          "key": "Clone app name",
+          "title": "Clone app name",
+          "description": "Name shown under the clone's icon and in the system settings.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Facebook Lite 2",
+          "values": null
+        }
+      ]
+    },
     {
       "name": "Disable in-app browser",
       "description": "Opens links in the phone's default browser instead of Facebook Lite's built-in browser.",
@@ -17,6 +81,13 @@
           "appIconColor": "#1877F2",
           "signatures": null,
           "targets": [
+            {
+              "version": "536.0.0.11.107",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "530.0.0.8.106",
               "versionCodes": null,
@@ -54,7 +125,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "530.0.0.8.106",
+              "version": "536.0.0.11.107",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -82,6 +153,13 @@
           "appIconColor": "#1877F2",
           "signatures": null,
           "targets": [
+            {
+              "version": "536.0.0.11.107",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "530.0.0.8.106",
               "versionCodes": null,
@@ -119,6 +197,13 @@
           "signatures": null,
           "targets": [
             {
+              "version": "536.0.0.11.107",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": "530.0.0.8.106",
               "versionCodes": null,
               "isExperimental": false,
@@ -140,7 +225,7 @@
     {
       "name": "Use system font",
       "description": "Blocks the downloaded Meta fonts (Optimistic, Instagram Sans, emoji, ...) so the app falls back to the system font.",
-      "default": true,
+      "default": false,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
@@ -152,6 +237,13 @@
           "appIconColor": "#1877F2",
           "signatures": null,
           "targets": [
+            {
+              "version": "536.0.0.11.107",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "530.0.0.8.106",
               "versionCodes": null,
@@ -174,7 +266,7 @@
     {
       "name": "Use system font in feed",
       "description": "Draws feed text with the system font instead of the font the server sends.",
-      "default": true,
+      "default": false,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
@@ -187,7 +279,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "530.0.0.8.106",
+              "version": "536.0.0.11.107",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -216,7 +308,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "530.0.0.8.106",
+              "version": "536.0.0.11.107",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

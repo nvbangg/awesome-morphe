@@ -1,6 +1,60 @@
 {
-    "version": "1.0.16",
+    "version": "1.0.19",
     "patches": [
+        {
+            "name": "Auto-skip",
+            "description": "Skips the parts you choose: Apple's promos for other titles, recaps, and intros.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "skipPromos",
+                    "title": "Skip promos",
+                    "description": "Skips Apple's promos for other titles that play before a show or movie.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "skipRecaps",
+                    "title": "Skip recaps",
+                    "description": "Skips the recap of earlier episodes.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "skipIntros",
+                    "title": "Skip intros",
+                    "description": "Skips a show's opening titles.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                }
+            ]
+        },
         {
             "name": "Auto-skip (Android TV)",
             "description": "Presses Skip for you on the parts you choose: Apple's promos for other titles, recaps, and intros.",
@@ -147,6 +201,13 @@
                             "version": "26.42.1",
                             "versionCodes": null,
                             "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
                             "minSdk": null,
                             "description": null
                         }
@@ -338,10 +399,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -710,6 +769,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 }
@@ -869,7 +940,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -881,7 +952,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -889,7 +960,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -903,8 +974,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 }
@@ -966,10 +1049,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -1477,7 +1558,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -2053,6 +2134,37 @@
             "options": []
         },
         {
+            "name": "Block analytics & tracking (Android TV)",
+            "description": "Reduces Apple's usage metrics and stops playback reports in the Android TV app. The app also stops downloading updates to its screens between app updates.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV (Android TV)",
+                    "description": "The Android TV app, not the phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "17.0.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 170202,
+                                "ARMEABI_V7A": 170202,
+                                "X86_64": 170202,
+                                "X86": 170202
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Block background location",
             "description": "Removes the app's access to your location while it is closed or in the background.",
             "default": false,
@@ -2087,6 +2199,13 @@
                             "version": "26.42.1",
                             "versionCodes": null,
                             "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
                             "minSdk": null,
                             "description": null
                         }
@@ -2631,7 +2750,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -2769,6 +2888,13 @@
                             "version": "26.42.1",
                             "versionCodes": null,
                             "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
                             "minSdk": null,
                             "description": null
                         }
@@ -3071,6 +3197,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -3142,7 +3280,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -3154,7 +3292,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -3162,7 +3300,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -3176,8 +3314,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -3207,7 +3357,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -3586,6 +3736,13 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
                         }
                     ]
                 },
@@ -3714,10 +3871,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -4237,6 +4392,32 @@
             "options": []
         },
         {
+            "name": "Disable up next",
+            "description": "Lets the credits play full screen, instead of shrinking the video into a corner to show the next episode or a recommendation.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Disable update and review prompts",
             "description": "Stops the Play Store update and rating prompts.",
             "default": true,
@@ -4499,6 +4680,68 @@
                     "default": "app.mobilestream.dailywire",
                     "values": {
                         "Default": "app.mobilestream.dailywire"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GmsCore support",
+            "description": "Signs in with Google through GmsCore instead of Google Play services.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "cloneApp",
+                    "title": "Clone app",
+                    "description": "Installs the patched app beside the stock app. When off, the patched app keeps JustWatch's package name, and the stock app has to be uninstalled first.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "packageName",
+                    "title": "Package name",
+                    "description": "Package name to install the patched app under when Clone app is on.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "app.mobilestream.justwatch",
+                    "values": {
+                        "Default": "app.mobilestream.justwatch"
                     }
                 }
             ]
@@ -4861,6 +5104,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -4932,7 +5187,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -4944,7 +5199,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -4952,7 +5207,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -4966,8 +5221,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -4997,7 +5264,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -5520,6 +5787,13 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
                         }
                     ]
                 },
@@ -5743,6 +6017,13 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
                         }
                     ]
                 },
@@ -5919,6 +6200,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -5990,7 +6283,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -6002,7 +6295,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -6010,7 +6303,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -6024,8 +6317,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -6055,7 +6360,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -6467,10 +6772,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -6660,6 +6963,13 @@
                             "version": "26.42.1",
                             "versionCodes": null,
                             "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
                             "minSdk": null,
                             "description": null
                         }
@@ -7235,6 +7545,60 @@
             "options": []
         },
         {
+            "name": "Hide player overlays",
+            "description": "Hides the overlays you choose: the rating card when a title starts, product placement notices, and photosensitivity and high-motion warnings.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hideRatingCard",
+                    "title": "Hide the rating card",
+                    "description": "Hides the age rating and content advisories shown when a title starts.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "hideProductPlacement",
+                    "title": "Hide product placement notices",
+                    "description": "Hides the notice that a title contains paid product placement.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "hideHealthWarnings",
+                    "title": "Hide photosensitivity warnings",
+                    "description": "Hides the photosensitivity and high-motion warnings.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                }
+            ]
+        },
+        {
             "name": "Hide pop-ups",
             "description": "Removes the review requests, the daily spin-the-wheel pop-up, and the survey after opening a deal.",
             "default": true,
@@ -7436,6 +7800,32 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide rating prompt",
+            "description": "Stops the \"Enjoying Apple TV?\" review prompt.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
                         }
                     ]
                 }
@@ -7840,10 +8230,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -7985,6 +8373,47 @@
             "options": []
         },
         {
+            "name": "Hide unavailable titles",
+            "description": "Hides Watchlist titles that are not on the services you picked. With All picked, hides titles that no service offers, except unreleased titles.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Hide upsell pop-ups",
             "description": "Stops the full-screen subscription takeover and the promo banner at the top.",
             "default": true,
@@ -8004,6 +8433,47 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide watched titles",
+            "description": "Hides movies you marked as seen and shows you are caught up on from the Watchlist.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
                         }
                     ]
                 }
@@ -8560,7 +9030,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         }
                     ]
@@ -8582,7 +9052,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         }
                     ]
@@ -8605,7 +9075,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -8653,6 +9123,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -8724,7 +9206,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -8736,7 +9218,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -8744,7 +9226,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -8758,8 +9240,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -8789,7 +9283,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -9476,6 +9970,90 @@
             "options": []
         },
         {
+            "name": "Show release times",
+            "description": "Shows the time in your time zone when an upcoming episode or title is released.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "timeFormat",
+                    "title": "Time format",
+                    "description": "Shows times in 12-hour or 24-hour format, or as the device is set.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "device",
+                    "values": {
+                        "Device setting": "device",
+                        "12-hour": "12",
+                        "24-hour": "24"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Show release times (Android TV)",
+            "description": "Shows the day and time in your time zone when an upcoming episode or title is released.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV (Android TV)",
+                    "description": "The Android TV app, not the phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "17.0.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 170202,
+                                "ARMEABI_V7A": 170202,
+                                "X86_64": 170202,
+                                "X86": 170202
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "timeFormat",
+                    "title": "Time format",
+                    "description": "Shows times in 12-hour or 24-hour format.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "12",
+                    "values": {
+                        "12-hour": "12",
+                        "24-hour": "24"
+                    }
+                }
+            ]
+        },
+        {
             "name": "Show sensitive media",
             "description": "Shows media in posts marked sensitive without blurring it first.",
             "default": false,
@@ -9734,6 +10312,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 }
@@ -9867,7 +10457,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -9879,7 +10469,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -9887,7 +10477,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -9901,8 +10491,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 }
@@ -10288,7 +10890,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -10608,6 +11210,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 }
@@ -10859,6 +11473,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -10930,7 +11556,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -10942,7 +11568,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -10950,7 +11576,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -10964,8 +11590,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -10995,7 +11633,7 @@
                     "signatures": null,
                     "targets": [
                         {
-                            "version": "3.0.480.457",
+                            "version": "3.0.480.647",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -11398,6 +12036,13 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
                         }
                     ]
                 },
@@ -11543,10 +12188,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -11792,6 +12435,47 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "Streaming titles only",
+            "description": "Shows only titles you can stream on a subscription or for free on the Watchlist. Titles you can only rent or buy are hidden. Picking a Types filter in the app overrides this.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
         },
         {
             "name": "Strip affiliate links",

@@ -1,6 +1,60 @@
 {
-    "version": "1.0.17-dev.1",
+    "version": "1.0.20-dev.2",
     "patches": [
+        {
+            "name": "Auto-skip",
+            "description": "Skips the parts you choose: Apple's promos for other titles, recaps, and intros.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "skipPromos",
+                    "title": "Skip promos",
+                    "description": "Skips Apple's promos for other titles that play before a show or movie.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "skipRecaps",
+                    "title": "Skip recaps",
+                    "description": "Skips the recap of earlier episodes.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "skipIntros",
+                    "title": "Skip intros",
+                    "description": "Skips a show's opening titles.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                }
+            ]
+        },
         {
             "name": "Auto-skip (Android TV)",
             "description": "Presses Skip for you on the parts you choose: Apple's promos for other titles, recaps, and intros.",
@@ -147,6 +201,13 @@
                             "version": "26.42.1",
                             "versionCodes": null,
                             "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
                             "minSdk": null,
                             "description": null
                         }
@@ -338,10 +399,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -588,6 +647,32 @@
         },
         {
             "name": "Block analytics & tracking",
+            "description": "Stops Adobe, Amplitude, AppsFlyer, CleverTap, comScore, Kochava, Nielsen, and Firebase Analytics.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.cnbc.client",
+                    "name": "CNBC",
+                    "description": "The CNBC business news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005594",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.8.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Block analytics & tracking",
             "description": "Stops the app's analytics, ad measurement, and marketing services.",
             "default": false,
             "category": null,
@@ -602,6 +687,32 @@
                     "targets": [
                         {
                             "version": "26.21.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Block analytics & tracking",
+            "description": "Stops Adobe Analytics, comScore, Kochava, and Firebase Analytics.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.costco.app.android",
+                    "name": "Costco",
+                    "description": "The Costco Wholesale shopping app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005DAB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.10.2.2",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -710,6 +821,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 }
@@ -869,7 +992,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -881,7 +1004,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -889,7 +1012,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -903,8 +1026,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 }
@@ -966,10 +1101,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -1479,7 +1612,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -1607,6 +1740,32 @@
                     "targets": [
                         {
                             "version": "10.1.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Block analytics & tracking",
+            "description": "Stops Datadog, Mux, Branch, Salesforce, AdsWizz measurement, and Firebase Analytics.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.sirius",
+                    "name": "SiriusXM",
+                    "description": "The SiriusXM app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0000EB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2610.4.0",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -2053,6 +2212,37 @@
             "options": []
         },
         {
+            "name": "Block analytics & tracking (Android TV)",
+            "description": "Reduces Apple's usage metrics and stops playback reports in the Android TV app. The app also stops downloading updates to its screens between app updates.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV (Android TV)",
+                    "description": "The Android TV app, not the phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "17.0.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 170202,
+                                "ARMEABI_V7A": 170202,
+                                "X86_64": 170202,
+                                "X86": 170202
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Block background location",
             "description": "Removes the app's access to your location while it is closed or in the background.",
             "default": false,
@@ -2087,6 +2277,13 @@
                             "version": "26.42.1",
                             "versionCodes": null,
                             "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
                             "minSdk": null,
                             "description": null
                         }
@@ -2487,6 +2684,32 @@
             ]
         },
         {
+            "name": "Dark mode",
+            "description": "Lets Android darken the app while the phone is in dark mode. Android picks the colors, so some screens may look different from a designed dark theme.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.cnbc.client",
+                    "name": "CNBC",
+                    "description": "The CNBC business news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005594",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.8.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Disable AI",
             "description": "Turns off Rufus, Amazon's AI shopping assistant, and the AI assistant in Amazon Pay.",
             "default": false,
@@ -2633,7 +2856,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -2769,6 +2992,13 @@
                             "version": "26.42.1",
                             "versionCodes": null,
                             "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
                             "minSdk": null,
                             "description": null
                         }
@@ -3071,6 +3301,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -3142,7 +3384,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -3154,7 +3396,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -3162,7 +3404,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -3176,8 +3418,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -3209,7 +3463,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -3586,6 +3840,13 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
                         }
                     ]
                 },
@@ -3714,10 +3975,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -4237,6 +4496,32 @@
             "options": []
         },
         {
+            "name": "Disable up next",
+            "description": "Lets the credits play full screen, instead of shrinking the video into a corner to show the next episode or a recommendation.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Disable update and review prompts",
             "description": "Stops the Play Store update and rating prompts.",
             "default": true,
@@ -4309,6 +4594,32 @@
                     "targets": [
                         {
                             "version": "26.21.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Fix launch with DNS blockers",
+            "description": "Opens the app when a DNS blocker stops OneTrust, the app's privacy consent service. Without it, the app stays on its splash screen.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.cnbc.client",
+                    "name": "CNBC",
+                    "description": "The CNBC business news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005594",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.8.2",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -4499,6 +4810,68 @@
                     "default": "app.mobilestream.dailywire",
                     "values": {
                         "Default": "app.mobilestream.dailywire"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GmsCore support",
+            "description": "Signs in with Google through GmsCore instead of Google Play services.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "cloneApp",
+                    "title": "Clone app",
+                    "description": "Installs the patched app beside the stock app. When off, the patched app keeps JustWatch's package name, and the stock app has to be uninstalled first.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "packageName",
+                    "title": "Package name",
+                    "description": "Package name to install the patched app under when Clone app is on.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "app.mobilestream.justwatch",
+                    "values": {
+                        "Default": "app.mobilestream.justwatch"
                     }
                 }
             ]
@@ -4716,6 +5089,32 @@
             "options": []
         },
         {
+            "name": "Hide Howard tab",
+            "description": "Removes the Howard tab from the top of Discover.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.sirius",
+                    "name": "SiriusXM",
+                    "description": "The SiriusXM app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0000EB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2610.4.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Hide My Town intro",
             "description": "Removes the \"Meet My Town\" pop-up, the My Town tooltip, and the tab's \"new\" badge.",
             "default": true,
@@ -4861,6 +5260,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -4932,7 +5343,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -4944,7 +5355,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -4952,7 +5363,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -4966,8 +5377,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -4999,7 +5422,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -5520,6 +5943,13 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
                         }
                     ]
                 },
@@ -5743,6 +6173,13 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
                         }
                     ]
                 },
@@ -5852,6 +6289,51 @@
             "options": []
         },
         {
+            "name": "Hide content",
+            "description": "Hides the channels, shows, podcasts, and episodes of the people and shows you list, and the episodes that list them as a host or guest. Long-press the app icon and choose Hidden names to edit the list.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.sirius",
+                    "name": "SiriusXM",
+                    "description": "The SiriusXM app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0000EB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2610.4.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "terms",
+                    "title": "Names to hide",
+                    "description": "The people, shows, podcasts, or channels to start with, separated by commas, for example: True Crime, Comedy Central. You can change it later in the app. Letter case and accents do not matter, and each name must match whole words.",
+                    "required": false,
+                    "type": "kotlin.String",
+                    "default": "",
+                    "values": null
+                },
+                {
+                    "key": "hideMentions",
+                    "title": "Also hide mentions",
+                    "description": "Hides everything that mentions a name, such as an episode of another show that talks about the person. Without it, a person's own channels and shows are hidden, along with the episodes that list them as a host or guest. You can change it later in the app.",
+                    "required": false,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                }
+            ]
+        },
+        {
             "name": "Hide crypto and prediction markets",
             "description": "Hides Truth Predict and Gems.",
             "default": true,
@@ -5919,6 +6401,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -5990,7 +6484,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -6002,7 +6496,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -6010,7 +6504,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -6024,8 +6518,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -6057,7 +6563,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -6467,10 +6973,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -6660,6 +7164,13 @@
                             "version": "26.42.1",
                             "versionCodes": null,
                             "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
                             "minSdk": null,
                             "description": null
                         }
@@ -7235,6 +7746,86 @@
             "options": []
         },
         {
+            "name": "Hide newsletter pop-ups",
+            "description": "Hides the newsletter sign-up bars that ask for your email address in articles.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.cnbc.client",
+                    "name": "CNBC",
+                    "description": "The CNBC business news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005594",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.8.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide player overlays",
+            "description": "Hides the overlays you choose: the rating card when a title starts, product placement notices, and photosensitivity and high-motion warnings.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hideRatingCard",
+                    "title": "Hide the rating card",
+                    "description": "Hides the age rating and content advisories shown when a title starts.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "hideProductPlacement",
+                    "title": "Hide product placement notices",
+                    "description": "Hides the notice that a title contains paid product placement.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "hideHealthWarnings",
+                    "title": "Hide photosensitivity warnings",
+                    "description": "Hides the photosensitivity and high-motion warnings.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                }
+            ]
+        },
+        {
             "name": "Hide pop-ups",
             "description": "Removes the review requests, the daily spin-the-wheel pop-up, and the survey after opening a deal.",
             "default": true,
@@ -7328,6 +7919,32 @@
                     "targets": [
                         {
                             "version": "15.12.0.42675",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide premium promotions",
+            "description": "Removes the \"Premium Content\" subscription card and its \"Latest Episodes\" heading from show pages.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.cnbc.client",
+                    "name": "CNBC",
+                    "description": "The CNBC business news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005594",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.8.2",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -7444,6 +8061,58 @@
         },
         {
             "name": "Hide rating prompt",
+            "description": "Stops the \"Enjoying Apple TV?\" review prompt.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide rating prompt",
+            "description": "Stops the Google Play rating prompt.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.cnbc.client",
+                    "name": "CNBC",
+                    "description": "The CNBC business news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005594",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.8.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide rating prompt",
             "description": "Removes the \"How are we doing?\" pop-up and the Play Store rating request.",
             "default": true,
             "category": null,
@@ -7484,6 +8153,1258 @@
                     "targets": [
                         {
                             "version": "2.2.67.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide rating prompt",
+            "description": "Stops Google Play's rate-this-app sheet.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.tubitv",
+                    "name": "Tubi",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#E9181C",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "10.44.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.disney.disneyplus",
+                    "name": "Disney+",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#113CCF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.20.0+rc2-2026.10.28",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.hulu.plus",
+                    "name": "Hulu",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APK",
+                    "appIconColor": "#1CE783",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "6.34.0+18552420-google",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "tv.pluto.android",
+                    "name": "Pluto TV",
+                    "description": "The Pluto TV app, for phones and Android TV. Both builds are version 17.3.0. On a TV, patch the Android TV build (version code 520000991), not the phone build (420000991).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#B8B004",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "17.3.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.cbs.app",
+                    "name": "Paramount+",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0064FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "17.3.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.wbd.hbomax",
+                    "name": "HBO Max",
+                    "description": "The HBO Max app, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#002BE7",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "22.0.0.321",
+                            "versionCodes": {
+                                "ARM64_V8A": 1800026515,
+                                "ARMEABI_V7A": 1800026515,
+                                "X86_64": 1800026515,
+                                "X86": 1800026515
+                            },
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.wbd.stream",
+                    "name": "HBO Max",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#002BE7",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "22.0.0.321",
+                            "versionCodes": {
+                                "ARM64_V8A": 1800026515,
+                                "ARMEABI_V7A": 1800026515,
+                                "X86_64": 1800026515,
+                                "X86": 1800026515
+                            },
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.peacocktv.peacockandroid",
+                    "name": "Peacock",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "7.10.30",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.amazon.avod.thirdpartyclient",
+                    "name": "Prime Video",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APK",
+                    "appIconColor": "#1399FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.480.647",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.epix.epix.now",
+                    "name": "MGM+",
+                    "description": "The MGM+ phone app (formerly Epix).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#C9A227",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "240.0.2026240000",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.fox.foxone",
+                    "name": "Fox One",
+                    "description": "The Fox One phone app. The TV app shares this package name but is a different build. Needs the Pairip license-check patch to run once re-signed.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#030B1A",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.25.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.amcplus.amcfullepisodes",
+                    "name": "AMC+",
+                    "description": "The AMC+ phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#081424",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.8.62.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.bydeluxe.d3.android.program.starz",
+                    "name": "Starz",
+                    "description": "The Starz phone and tablet app, not the Android TV app. Both are version 6.11.0, and the phone build is version code 4513.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "6.11.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.pbs.video",
+                    "name": "PBS",
+                    "description": "The PBS app. One build serves phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#2638C4",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.27.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.plexapp.android",
+                    "name": "Plex",
+                    "description": "The Plex app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#E5A00D",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2026.22.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.xumo.xumo",
+                    "name": "Xumo Play",
+                    "description": "The mobile app (com.xumo.xumo), not the Android TV app (com.xumo.xumo.tv).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#6C2BD9",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "4.6.21",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.dramafever.shudder",
+                    "name": "Shudder",
+                    "description": "The Shudder horror streaming app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#E21F27",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "10.1.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.dramafever.docclub",
+                    "name": "Sundance Now",
+                    "description": "The Sundance Now streaming app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#F5B400",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.0.25.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.sirius",
+                    "name": "SiriusXM",
+                    "description": "The SiriusXM app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0000EB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2610.4.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "air.com.vudu.air.DownloaderTablet",
+                    "name": "Fandango at Home",
+                    "description": "The phone app, formerly Vudu.",
+                    "apkFileType": "APK",
+                    "appIconColor": "#3D7CF4",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "10.24.r009.179279954",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.moviebase",
+                    "name": "Moviebase",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#1B1D23",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "7.7.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.google.android.apps.youtube.unplugged",
+                    "name": "YouTube TV",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FF0000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "10.45.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "10.44.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.espn.score_center",
+                    "name": "ESPN",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APK",
+                    "appIconColor": "#CC0000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.29.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.gotv.nflgamecenter.us.lite",
+                    "name": "NFL",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#013369",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "61.0.19",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.nbaimd.gametime.nba2011",
+                    "name": "NBA",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#1D428A",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.2.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.bamnetworks.mobile.android.gameday.atbat",
+                    "name": "MLB",
+                    "description": "The MLB app (one app for phones and Android TV).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#002D72",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.21.0.49",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.fivemobile.thescore",
+                    "name": "theScore",
+                    "description": "The theScore sports news and scores app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#1B1B1B",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.16.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.15.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.nytimes.android",
+                    "name": "The New York Times",
+                    "description": "The New York Times news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "11.98.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.washingtonpost.android",
+                    "name": "The Washington Post",
+                    "description": "The Washington Post news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#111111",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "7.18.3",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "7.18.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "wsj.reader_sp",
+                    "name": "The Wall Street Journal",
+                    "description": "The Wall Street Journal news app.",
+                    "apkFileType": "APK",
+                    "appIconColor": "#111111",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "15.12.0.42675",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.foxnews.android",
+                    "name": "Fox News",
+                    "description": "The Fox News phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#003366",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.49.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.nbcnews.msnbc.mobile",
+                    "name": "MS NOW",
+                    "description": "The MS NOW (formerly MSNBC) app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0A2240",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "14.6.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.cnn.mobile.android.phone",
+                    "name": "CNN",
+                    "description": "The CNN app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#CC0000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.21.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.treemolabs.apps.cbsnews",
+                    "name": "CBS News",
+                    "description": "The CBS News app.",
+                    "apkFileType": "APK",
+                    "appIconColor": "#0A0A0A",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.20",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.zumobi.msnbc",
+                    "name": "NBC News",
+                    "description": "The NBC News app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0A0A0A",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "15.0.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.fox.fts.android",
+                    "name": "Fox Local",
+                    "description": "The FOX LOCAL app for local Fox stations.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#003366",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "7.22.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.abc.abcnews",
+                    "name": "ABC News",
+                    "description": "The ABC News app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0A0A0A",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.98.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "org.npr.android.news",
+                    "name": "NPR",
+                    "description": "The NPR app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#1A1A1A",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "7.10.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "mnn.Android",
+                    "name": "AP News",
+                    "description": "The AP News app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#E11B22",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "6.31.2 PROD",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.substack.app",
+                    "name": "Substack",
+                    "description": "The Substack reader app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FF6719",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.12.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "org.cspan.app",
+                    "name": "C-SPAN Now",
+                    "description": "The C-SPAN Now app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#004B87",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.25.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.nexstar.newsnation",
+                    "name": "NewsNation",
+                    "description": "The phone app, not the Android TV app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#13284B",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "510.3.0",
+                            "versionCodes": {
+                                "ARM64_V8A": 1025,
+                                "ARMEABI_V7A": 1025,
+                                "X86_64": 1025,
+                                "X86": 1025
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.nexstar.newsnation",
+                    "name": "NewsNation (Android TV)",
+                    "description": "The Android TV app, not the phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#13284B",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "4.94",
+                            "versionCodes": {
+                                "ARM64_V8A": 8335,
+                                "ARMEABI_V7A": 8335,
+                                "X86_64": 8335,
+                                "X86": 8335
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.dailywire.thedailywire",
+                    "name": "The Daily Wire",
+                    "description": "The DailyWire+ app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#C8102E",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.5.21",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.truthsocial.android.app",
+                    "name": "Truth Social",
+                    "description": "The Truth Social phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#5448EE",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.28.3",
+                            "versionCodes": {
+                                "ARM64_V8A": 1279,
+                                "ARMEABI_V7A": 1279,
+                                "X86_64": 1279,
+                                "X86": 1279
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "gov.whitehouse.app",
+                    "name": "White House",
+                    "description": "The official White House app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0A2240",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "47.7.8",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "gov.nps.mobileapp",
+                    "name": "NPS",
+                    "description": "The National Park Service app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#2B4423",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2.15.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "gov.dhs.tsa.mytsa",
+                    "name": "MyTSA",
+                    "description": "The TSA's MyTSA app.",
+                    "apkFileType": "APK",
+                    "appIconColor": "#0F2B5B",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.1.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "gov.fema.mobile.android",
+                    "name": "FEMA",
+                    "description": "The FEMA app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#13366D",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.2.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "gov.usda.fs.nfg",
+                    "name": "National Forests & Grasslands",
+                    "description": "The U.S. Forest Service app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#2E5C3B",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.3.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.dealseekorg.dealseek",
+                    "name": "DealSeek",
+                    "description": "The DealSeek shopping-deals app. Needs the Pairip license-check patch to run once re-signed.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FF6329",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "1.64.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.walmart.android",
+                    "name": "Walmart",
+                    "description": "The Walmart shopping app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0071DC",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.42.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.bestbuy.android",
+                    "name": "Best Buy",
+                    "description": "The Best Buy shopping app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0046BE",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.10.10",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.amazon.mShop.android.shopping",
+                    "name": "Amazon Shopping",
+                    "description": "The Amazon Shopping app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#232F3E",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "32.19.0.100",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.target.ui",
+                    "name": "Target",
+                    "description": "The Target shopping app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#CC0000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2026.43.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.cvs.launchers.cvs",
+                    "name": "CVS",
+                    "description": "The CVS Pharmacy app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#CC0000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.10.50",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.thehomedepot",
+                    "name": "The Home Depot",
+                    "description": "The Home Depot shopping app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#F96302",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.2.5",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.usablenet.mobile.walgreen",
+                    "name": "Walgreens",
+                    "description": "The Walgreens app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#E31837",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "118.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.costco.app.android",
+                    "name": "Costco",
+                    "description": "The Costco Wholesale shopping app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005DAB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.10.2.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.uvnv.mintsim",
+                    "name": "Mint Mobile",
+                    "description": "The Mint Mobile app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#6FBE4A",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2.3.42",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.vzw.hss.myverizon",
+                    "name": "My Verizon",
+                    "description": "The My Verizon app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#EE0000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "22.2.5",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.att.myWireless",
+                    "name": "myAT&T",
+                    "description": "The myAT&T app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#009FDB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2026.10.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.tmobile.tuesdays",
+                    "name": "T-Life",
+                    "description": "The T-Mobile T-Life app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#E20074",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "12.3.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.tmobile.m1",
+                    "name": "T-Mobile Play",
+                    "description": "The T-Mobile Play app.",
+                    "apkFileType": "APK",
+                    "appIconColor": "#E20074",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "19.4.4",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.visiblemobile.flagship",
+                    "name": "Visible",
+                    "description": "The Visible app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#1800FF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.5",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.xfinity.digitalhome",
+                    "name": "Xfinity",
+                    "description": "The Xfinity app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#6138F5",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "6.14.0-2",
                             "versionCodes": null,
                             "isExperimental": false,
                             "minSdk": null,
@@ -7812,6 +9733,32 @@
             "options": []
         },
         {
+            "name": "Hide sponsored products",
+            "description": "Removes the sponsored products and ads from the home page, search results, and category pages.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.costco.app.android",
+                    "name": "Costco",
+                    "description": "The Costco Wholesale shopping app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005DAB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.10.2.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Hide sponsored titles",
             "description": "Removes JustWatch's own sponsored title cards and sponsored trailers before videos.",
             "default": true,
@@ -7840,10 +9787,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -7985,6 +9930,47 @@
             "options": []
         },
         {
+            "name": "Hide unavailable titles",
+            "description": "Hides Watchlist titles that are not on the services you picked. With All picked, hides titles that no service offers, except unreleased titles.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Hide upsell pop-ups",
             "description": "Stops the full-screen subscription takeover and the promo banner at the top.",
             "default": true,
@@ -8004,6 +9990,47 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Hide watched titles",
+            "description": "Hides movies you marked as seen and shows you are caught up on from the Watchlist.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
                         }
                     ]
                 }
@@ -8139,6 +10166,42 @@
                 }
             ],
             "options": []
+        },
+        {
+            "name": "Mask live ad breaks",
+            "description": "Mutes live channels while SiriusXM shows an ad, and turns the sound back on when the show returns. The player shows \"Commercial break\" instead of the advertiser's name.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.sirius",
+                    "name": "SiriusXM",
+                    "description": "The SiriusXM app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#0000EB",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "2610.4.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "mutePromos",
+                    "title": "Also mute promos and PSAs",
+                    "description": "Also mutes SiriusXM's own channel promos and public service announcements, which SiriusXM does not label as ads. A promo is recognized after the app has seen it once in the channel's schedule, so the first airing of a new one can still play.",
+                    "required": false,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                }
+            ]
         },
         {
             "name": "Mask live ad breaks",
@@ -8560,7 +10623,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         }
                     ]
@@ -8582,7 +10645,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         }
                     ]
@@ -8607,7 +10670,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -8653,6 +10716,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -8724,7 +10799,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -8736,7 +10811,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -8744,7 +10819,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -8758,8 +10833,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -8791,7 +10878,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -9476,6 +11563,90 @@
             "options": []
         },
         {
+            "name": "Show release times",
+            "description": "Shows the time in your time zone when an upcoming episode or title is released.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV",
+                    "description": "The phone app. The package name says androidtv, but this is the phone build.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "3.0.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "timeFormat",
+                    "title": "Time format",
+                    "description": "Shows times in 12-hour or 24-hour format, or as the device is set.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "device",
+                    "values": {
+                        "Device setting": "device",
+                        "12-hour": "12",
+                        "24-hour": "24"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Show release times (Android TV)",
+            "description": "Shows the day and time in your time zone when an upcoming episode or title is released.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.apple.atve.androidtv.appletv",
+                    "name": "Apple TV (Android TV)",
+                    "description": "The Android TV app, not the phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#000000",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "17.0.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 170202,
+                                "ARMEABI_V7A": 170202,
+                                "X86_64": 170202,
+                                "X86": 170202
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "timeFormat",
+                    "title": "Time format",
+                    "description": "Shows times in 12-hour or 24-hour format.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "12",
+                    "values": {
+                        "12-hour": "12",
+                        "24-hour": "24"
+                    }
+                }
+            ]
+        },
+        {
             "name": "Show sensitive media",
             "description": "Shows media in posts marked sensitive without blurring it first.",
             "default": false,
@@ -9638,6 +11809,32 @@
         },
         {
             "name": "Skip ads",
+            "description": "Removes the banner, in-feed, and article ads, and skips the ad breaks in on-demand videos.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.cnbc.client",
+                    "name": "CNBC",
+                    "description": "The CNBC business news app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#005594",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "8.8.2",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Skip ads",
             "description": "Removes the banner and sponsored-content ads, and the ads in videos and clips.",
             "default": true,
             "category": null,
@@ -9734,6 +11931,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 }
@@ -9867,7 +12076,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -9879,7 +12088,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -9887,7 +12096,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -9901,8 +12110,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 }
@@ -10290,7 +12511,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -10608,6 +12829,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 }
@@ -10859,6 +13092,18 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.20.0+rc3-2026.11.02",
+                            "versionCodes": {
+                                "ARM64_V8A": 179366219,
+                                "ARMEABI_V7A": 179366219,
+                                "X86_64": 179366219,
+                                "X86": 179366219
+                            },
+                            "isExperimental": true,
+                            "minSdk": 32,
+                            "description": "Phone build"
                         }
                     ]
                 },
@@ -10930,7 +13175,7 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
                         },
                         {
@@ -10942,7 +13187,7 @@
                                 "X86": 1842000036
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 29,
                             "description": "Android TV build"
                         }
                     ]
@@ -10950,7 +13195,7 @@
                 {
                     "packageName": "com.wbd.stream",
                     "name": "HBO Max",
-                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
                     "apkFileType": "APKM",
                     "appIconColor": "#002BE7",
                     "signatures": null,
@@ -10964,8 +13209,20 @@
                                 "X86": 1800026515
                             },
                             "isExperimental": false,
-                            "minSdk": null,
+                            "minSdk": 32,
                             "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
                         }
                     ]
                 },
@@ -10997,7 +13254,7 @@
                         {
                             "version": "3.0.480.647",
                             "versionCodes": null,
-                            "isExperimental": true,
+                            "isExperimental": false,
                             "minSdk": null,
                             "description": null
                         }
@@ -11398,6 +13655,13 @@
                             "isExperimental": false,
                             "minSdk": null,
                             "description": null
+                        },
+                        {
+                            "version": "26.42.2",
+                            "versionCodes": null,
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
                         }
                     ]
                 },
@@ -11543,10 +13807,8 @@
                         {
                             "version": "26.43.8",
                             "versionCodes": {
-                                "ARM64_V8A": 2643008,
-                                "ARMEABI_V7A": 2643008,
-                                "X86_64": 2643008,
-                                "X86": 2643008
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
                             },
                             "isExperimental": false,
                             "minSdk": null,
@@ -11794,6 +14056,47 @@
             ]
         },
         {
+            "name": "Streaming titles only",
+            "description": "Shows only titles you can stream on a subscription or for free on the Watchlist. Titles you can only rent or buy are hidden. Picking a Types filter in the app overrides this.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.justwatch.justwatch",
+                    "name": "JustWatch",
+                    "description": "The JustWatch streaming guide app, for phones and Android TV.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#FBC500",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.2",
+                            "versionCodes": {
+                                "ARM64_V8A": 2644002,
+                                "ARMEABI_V7A": 2644002,
+                                "X86_64": 2644002,
+                                "X86": 2644002
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "26.43.8",
+                            "versionCodes": {
+                                "ARMEABI_V7A": 12643008,
+                                "ARM64_V8A": 2643008
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Strip affiliate links",
             "description": "Opens each deal at the store's own page, without click tracking or affiliate tags.",
             "default": true,
@@ -11818,6 +14121,98 @@
                 }
             ],
             "options": []
+        },
+        {
+            "name": "Video quality",
+            "description": "Plays the video resolution you choose instead of letting the app pick one. Videos can buffer if your connection is too slow for it.",
+            "default": false,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.wbd.hbomax",
+                    "name": "HBO Max",
+                    "description": "The HBO Max app, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#002BE7",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "22.0.0.321",
+                            "versionCodes": {
+                                "ARM64_V8A": 1800026515,
+                                "ARMEABI_V7A": 1800026515,
+                                "X86_64": 1800026515,
+                                "X86": 1800026515
+                            },
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.wbd.stream",
+                    "name": "HBO Max",
+                    "description": "The HBO Max app as the Play Store installs it, for phones (version 22.0.0.321) and Android TV (version 22.0.0.36).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#002BE7",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "22.0.0.321",
+                            "versionCodes": {
+                                "ARM64_V8A": 1800026515,
+                                "ARMEABI_V7A": 1800026515,
+                                "X86_64": 1800026515,
+                                "X86": 1800026515
+                            },
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "22.0.0.36",
+                            "versionCodes": {
+                                "ARM64_V8A": 1842000036,
+                                "ARMEABI_V7A": 1842000036,
+                                "X86_64": 1842000036,
+                                "X86": 1842000036
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": "Android TV build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "resolution",
+                    "title": "Resolution",
+                    "description": "The resolution to play. When a title does not have it, the closest lower one plays.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "2160",
+                    "values": {
+                        "480p": "480",
+                        "720p": "720",
+                        "1080p": "1080",
+                        "2160p (4K)": "2160"
+                    }
+                }
+            ]
         }
     ]
 }

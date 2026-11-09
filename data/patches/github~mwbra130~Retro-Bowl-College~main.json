@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.66.0",
+  "version": "1.67.3",
   "patches": [
     {
       "name": "Bypass PairIP license check",
@@ -19,7 +19,7 @@
             {
               "version": "6.10",
               "versionCodes": null,
-              "isExperimental": true,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -205,7 +205,7 @@
     },
     {
       "name": "Disable PairIP protection",
-      "description": "Lets the patched app run: replaces PairIP's VM startup with harvested vault/handle data and removes the signature check and license dialog. Requires 'Disable PairIP protection (runtime files)'. DroidCam 9.0 only.",
+      "description": "Lets the patched app run: replaces PairIP's VM startup with harvested vault/handle data, removes the signature check and license dialog, installs the decrypted native libraries and runtime classes, and fixes camera streaming. DroidCam 10.0 only.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -220,33 +220,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "9.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable PairIP protection (runtime files)",
-      "description": "Swaps the VM-encrypted native libraries (libmjpg, libmdns) for decrypted builds that 'Disable PairIP protection' needs. Enable both together. DroidCam 9.0 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.dev47apps.obsdroidcam",
-          "name": "DroidCam",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#03A9F4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.0",
+              "version": "10.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -489,7 +463,7 @@
             {
               "version": "6.10",
               "versionCodes": null,
-              "isExperimental": true,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -832,9 +806,11 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Unlocks DroidCam Pro (HD/4K, no watermark, all options): the license verdict is forced to Pro and renews itself at every silent re-check. Requires 'Disable PairIP protection'. DroidCam 9.0 only.",
+      "description": "Unlocks DroidCam Pro (HD/4K, no watermark, all options): the license verdict is forced to Pro and renews itself at every silent re-check. Requires 'Disable PairIP protection'. DroidCam 10.0 only.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.dev47apps.obsdroidcam",
@@ -845,7 +821,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "9.0",
+              "version": "10.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
