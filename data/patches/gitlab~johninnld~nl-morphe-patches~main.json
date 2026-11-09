@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.56.1",
+  "version": "1.57.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -851,6 +851,105 @@
             "Off": "no",
             "On": "yes",
             "By speed": "speed"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auto-hide navigation bar on car displays",
+      "description": "On a car display, hides the bottom navigation bar after a few seconds, giving its room to the content. Swipe up from the bottom edge to show it again.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube",
+          "name": "YouTube",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "21.30.216",
+              "versionCodes": {
+                "ARM64_V8A": 1561187872,
+                "ARMEABI_V7A": 1561187872,
+                "X86_64": 1561187872,
+                "X86": 1561187872
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "detection",
+          "title": "Car display detection",
+          "description": "Car displays: Android Auto, DriveDeck and hosts that use the car UI mode. Any external display: also other car hosts, but also a TV or a monitor.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "car",
+          "values": {
+            "Car displays": "car",
+            "Any external display": "any"
+          }
+        },
+        {
+          "key": "hideDelay",
+          "title": "Hide after (seconds)",
+          "description": "How long the navigation bar stays after it is shown or touched.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 5,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Automotive layout on car displays",
+      "description": "Experimental. Uses the automotive layout on a car display, such as a parked app on Android Auto or DriveDeck, and the original layout on the phone. Disable Morphe's Change form factor patch: both set the layout of the requests.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube",
+          "name": "YouTube",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "21.30.216",
+              "versionCodes": {
+                "ARM64_V8A": 1561187872,
+                "ARMEABI_V7A": 1561187872,
+                "X86_64": 1561187872,
+                "X86": 1561187872
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "detection",
+          "title": "Car display detection",
+          "description": "Car displays: Android Auto, DriveDeck and hosts that use the car UI mode. Any external display: also other car hosts, but also a TV or a monitor.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "car",
+          "values": {
+            "Car displays": "car",
+            "Any external display": "any"
           }
         }
       ]
@@ -8318,6 +8417,33 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Parked app for Android Auto",
+      "description": "Declares YouTube a parked video app, so Android Auto and DriveDeck list it on the car screen by themselves. Android Auto still needs Unknown sources in its developer settings for a patched app.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube",
+          "name": "YouTube",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
               "description": null
             }
           ]

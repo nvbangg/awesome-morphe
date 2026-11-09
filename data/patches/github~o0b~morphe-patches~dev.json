@@ -1,7 +1,58 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0",
+  "version": "1.13.0",
   "patches": [
+    {
+      "name": "Adjust animation speed",
+      "description": "Scales or disables all XML-based animations in Ivy (Quick Panel, drawer, widget and handle animations). Set the scale to 0 to remove animations, or use the disable toggle.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stinger.ivy",
+          "name": "Ivy",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2E7D32",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.29",
+              "versionCodes": {
+                "ARM64_V8A": 29,
+                "ARMEABI_V7A": 29,
+                "X86_64": 29,
+                "X86": 29
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "animationScale",
+          "title": "Animation scale",
+          "description": "Multiplier for animation durations. 1.0 = normal, 0.5 = twice as fast, 2.0 = twice as slow, 0 = instant. Applies to all XML animations in res/anim and res/animator.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "1.0",
+          "values": null
+        },
+        {
+          "key": "disableAnimations",
+          "title": "Disable animations",
+          "description": "Instantly finish every XML animation. Equivalent to an animation scale of 0.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
     {
       "name": "Disable Amazon IAP components",
       "description": "Disables the orphan Amazon In-App Purchasing response receiver and strips the Amazon PrivacyPass attest permission. Inert without the Amazon Appstore installed.",
@@ -331,6 +382,70 @@
       "options": []
     },
     {
+      "name": "Disable telemetry",
+      "description": "Disables Fabric, Crashlytics, and Answers analytics.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stinger.ivy",
+          "name": "Ivy",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2E7D32",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.29",
+              "versionCodes": {
+                "ARM64_V8A": 29,
+                "ARMEABI_V7A": 29,
+                "X86_64": 29,
+                "X86": 29
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Force offline",
+      "description": "Disables Firebase and RSS network fetches.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stinger.ivy",
+          "name": "Ivy",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2E7D32",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.29",
+              "versionCodes": {
+                "ARM64_V8A": 29,
+                "ARMEABI_V7A": 29,
+                "X86_64": 29,
+                "X86": 29
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "IPC guard (cross-app exfil barrier)",
       "description": "A cross-app IPC barrier for suspect apps: outbound intents to other packages are dropped (own-package traffic passes through), ContentResolver access to foreign authorities is blocked, runtime receivers become not-exported, and notification PendingIntents aimed at other apps become no-ops. The manifest sweep (providers unexported, <queries> stripped, HCE removed) always applies. Breaks share sheets, link opens, pickers and cross-app logins unless the destination package is in the allowlist. All guards are on by default — open the patch options (gear) to deselect or allowlist.",
       "default": false,
@@ -586,11 +701,79 @@
     },
     {
       "name": "Remove INTERNET permission",
+      "description": "Strips the INTERNET permission and disables Ivy's ads, telemetry, Firebase and RSS network paths so the app starts fully offline instead of crashing.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stinger.ivy",
+          "name": "Ivy",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2E7D32",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.29",
+              "versionCodes": {
+                "ARM64_V8A": 29,
+                "ARMEABI_V7A": 29,
+                "X86_64": 29,
+                "X86": 29
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove INTERNET permission",
       "description": "Removes the android.permission.INTERNET permission from the manifest. Blocks every socket the app opens, so bundled ad, analytics and telemetry SDKs cannot phone home. Also disables any legitimate online features — only enable for apps you want fully offline.",
       "default": false,
       "category": null,
       "dependencies": [],
       "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Quick Panel transition animation",
+      "description": "Forces the Quick Panel frame, ribbon and edge-slide animations to finish instantly while keeping the animation listeners that set the panel visible.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stinger.ivy",
+          "name": "Ivy",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2E7D32",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.29",
+              "versionCodes": {
+                "ARM64_V8A": 29,
+                "ARMEABI_V7A": 29,
+                "X86_64": 29,
+                "X86": 29
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
       "options": []
     },
     {
@@ -684,6 +867,38 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes AdMob initialization and the quick panel ad view.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.stinger.ivy",
+          "name": "Ivy",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2E7D32",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.1.29",
+              "versionCodes": {
+                "ARM64_V8A": 29,
+                "ARMEABI_V7A": 29,
+                "X86_64": 29,
+                "X86": 29
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Remove calendar permissions",
