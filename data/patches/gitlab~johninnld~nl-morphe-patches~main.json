@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.57.0",
+  "version": "1.58.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -889,7 +889,7 @@
         {
           "key": "detection",
           "title": "Car display detection",
-          "description": "Car displays: Android Auto, DriveDeck and hosts that use the car UI mode. Any external display: also other car hosts, but also a TV or a monitor.",
+          "description": "Car displays: Android Auto, DriveDeck and hosts that use the car UI mode, and on Android 15 and later phone mirroring by DriveDeck, Gearslip, graphene-auto or MyCar. Any external display: also other car hosts, but also a TV or a monitor.",
           "required": true,
           "type": "kotlin.String",
           "default": "car",
@@ -911,8 +911,8 @@
     },
     {
       "name": "Automotive layout on car displays",
-      "description": "Experimental. Uses the automotive layout on a car display, such as a parked app on Android Auto or DriveDeck, and the original layout on the phone. Disable Morphe's Change form factor patch: both set the layout of the requests.",
-      "default": false,
+      "description": "Uses the automotive layout on a car display, such as a parked app on Android Auto or DriveDeck, and the original layout on the phone. Works with Morphe's Change form factor: on a car display this patch decides.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -932,7 +932,7 @@
                 "X86_64": 1561187872,
                 "X86": 1561187872
               },
-              "isExperimental": true,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -943,7 +943,7 @@
         {
           "key": "detection",
           "title": "Car display detection",
-          "description": "Car displays: Android Auto, DriveDeck and hosts that use the car UI mode. Any external display: also other car hosts, but also a TV or a monitor.",
+          "description": "Car displays: Android Auto, DriveDeck and hosts that use the car UI mode, and on Android 15 and later phone mirroring by DriveDeck, Gearslip, graphene-auto or MyCar. Any external display: also other car hosts, but also a TV or a monitor.",
           "required": true,
           "type": "kotlin.String",
           "default": "car",
@@ -2341,6 +2341,40 @@
     },
     {
       "name": "Disable tracking",
+      "description": "Silences the Firebase Analytics event and user-property paths and switches off Google measurement, Crashlytics and Sessions upload, and advertising and install-referrer permissions in the manifest. Gameplay and Play Games sign-in keep working.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.vectorunit.purple.googleplay",
+          "name": "Beach Buggy Racing",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "66b46a40a5647e9e514daaad03eb9467601c7329414f6a146db485a86ea4d124"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.11.02",
+              "versionCodes": {
+                "ARM64_V8A": 220,
+                "ARMEABI_V7A": 220,
+                "X86_64": 220,
+                "X86": 220
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
       "description": "Disables analytics and tracking: RudderStack, AppsFlyer, Firebase Analytics, Crashlytics, Firebase Performance, Sentry, Airship analytics, first-party GA4 sessions, experiment beacons and the advertising id. Push notifications keep working.",
       "default": true,
       "category": null,
@@ -2501,6 +2535,40 @@
               },
               "isExperimental": false,
               "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
+      "description": "Stops AppsFlyer, Braze, Firebase Analytics and the advertising identifier and install-referrer collection, and switches off Google measurement, Crashlytics and Sessions upload and Facebook advertiser-ID collection in the manifest. The game keeps working.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.330.1",
+              "versionCodes": {
+                "ARM64_V8A": 13300010,
+                "ARMEABI_V7A": 13300010,
+                "X86_64": 13300010,
+                "X86": 13300010
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -5791,6 +5859,40 @@
     },
     {
       "name": "Hide ads",
+      "description": "Turns the ad support flag off, exactly like the game does on televisions and in cars. No ad SDK is initialized, no consent screen or age check appears, and every interstitial and rewarded request follows the game's own 'unavailable' path.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.vectorunit.purple.googleplay",
+          "name": "Beach Buggy Racing",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "66b46a40a5647e9e514daaad03eb9467601c7329414f6a146db485a86ea4d124"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.11.02",
+              "versionCodes": {
+                "ARM64_V8A": 220,
+                "ARMEABI_V7A": 220,
+                "X86_64": 220,
+                "X86": 220
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
       "description": "Removes native placements, Outbrain/Start.io promotions and audited Blue Billywig video-ad paths while preserving news, playback and native completion.",
       "default": true,
       "category": null,
@@ -5917,6 +6019,40 @@
               },
               "isExperimental": false,
               "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
+      "description": "Blocks the ad SDK bridge: SDK initialization reports failure and every rewarded or interstitial request reports the game's own no-fill error, so no ad network is ever contacted.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.330.1",
+              "versionCodes": {
+                "ARM64_V8A": 13300010,
+                "ARMEABI_V7A": 13300010,
+                "X86_64": 13300010,
+                "X86": 13300010
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -8417,6 +8553,74 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Parked app for Android Auto",
+      "description": "Declares Beach Buggy Racing a parked game app, so Android Auto and car hosts like DriveDeck and Gearslip list it on the car screen by themselves. Android Auto still needs Unknown sources in its developer settings for a patched app.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.vectorunit.purple.googleplay",
+          "name": "Beach Buggy Racing",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "66b46a40a5647e9e514daaad03eb9467601c7329414f6a146db485a86ea4d124"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.11.02",
+              "versionCodes": {
+                "ARM64_V8A": 220,
+                "ARMEABI_V7A": 220,
+                "X86_64": 220,
+                "X86": 220
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Parked app for Android Auto",
+      "description": "Declares Candy Crush Soda Saga a parked game app, so Android Auto and car hosts like DriveDeck and Gearslip list it on the car screen by themselves. Android Auto still needs Unknown sources in its developer settings for a patched app.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.330.1",
+              "versionCodes": {
+                "ARM64_V8A": 13300010,
+                "ARMEABI_V7A": 13300010,
+                "X86_64": 13300010,
+                "X86": 13300010
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]

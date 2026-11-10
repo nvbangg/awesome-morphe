@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "patches": [
     {
       "name": "ADB server log",
@@ -37,8 +37,8 @@
       "options": []
     },
     {
-      "name": "Initialize ADB server Looper",
-      "description": "Neutralizes the redundant Looper.prepare() call from the ADB server main entry point.",
+      "name": "Input without the ADB server",
+      "description": "Keeps key, pointer and gamepad input working when the \"ADB speed up\" server is not running. The app only asks whether speed-up is enabled, not whether the server it starts as the shell user on localhost:15000 is up, and it drops the request without falling back when the port is closed - so numpad keys and mouse input do nothing. Each of those requests is now gated on the app's own port probe, and the injection site's ordinary path runs while no server is listening.",
       "default": true,
       "category": null,
       "compatiblePackages": [
