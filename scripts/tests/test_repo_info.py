@@ -10,10 +10,9 @@ from common import repo_info
 
 class TestRepositoryMetadata:
     @pytest.fixture(autouse=True)
-    def prepare(self, patch_context, block_network) -> None:
+    def prepare(self, patch_context) -> None:
         self.patch_context = patch_context
         self.patch_context.enter_context(patch.object(repo_info.time, "sleep"))
-        self.open_url = block_network
 
     def http_error(self, code: int) -> urllib.error.HTTPError:
         error = urllib.error.HTTPError(
@@ -22,15 +21,17 @@ class TestRepositoryMetadata:
         self.patch_context.callback(error.close)
         return error
 
-    @pytest.mark.parametrize("code", (404, 451, 403, 503))
-    def test_github_http_errors_keep_actual_status_and_audit_flags(self, code) -> None:
+    @pytest.mark.parametrize("source", ("github", "gitlab"))
+    @pytest.mark.parametrize("code", (401, 403, 404, 429, 451, 503))
+    def test_http_errors_keep_actual_status_and_audit_flags(self, source, code) -> None:
         with patch.object(repo_info, "fetch", side_effect=self.http_error(code)):
-            details = repo_info.fetch_repo_details("https://github.com/owner/alpha")
+            details = repo_info.fetch_repo_details(f"https://{source}.com/owner/alpha")
             expected = {"error": f"Request failed (HTTP {code})"}
             if code in repo_info.UNAVAILABLE_HTTP_CODES:
                 expected[f"is_{code}"] = True
             assert details == expected
 
+    @pytest.mark.parametrize("source", ("github", "gitlab"))
     @pytest.mark.parametrize(
         "error",
         (
@@ -42,90 +43,55 @@ class TestRepositoryMetadata:
     def test_request_error_reports_reason_without_fabricating_http_status(
         self,
         error: Exception,
+        source: str,
     ) -> None:
         with patch.object(repo_info, "fetch", side_effect=error):
-            details = repo_info.fetch_repo_details("https://github.com/owner/alpha")
+            details = repo_info.fetch_repo_details(f"https://{source}.com/owner/alpha")
         reason = error.reason if isinstance(error, urllib.error.URLError) else error
         assert details == {"error": f"Request failed: {reason}"}
 
     @pytest.mark.parametrize(
-        "failure_kind,expected",
-        (
-            ("http", "Request failed (HTTP 503)"),
-            ("network", "Request failed: timed out"),
-            ("protocol", "Request failed: Connection closed"),
-        ),
+        "archived,project_avatar",
+        ((False, None), (True, "https://gitlab.com/project.png")),
     )
-    def test_gitlab_request_errors_report_actual_status_or_exception_reason(
-        self, failure_kind, expected
+    def test_gitlab_metadata_uses_one_rest_request(
+        self, archived, project_avatar
     ) -> None:
-        error = {
-            "http": self.http_error(503),
-            "network": urllib.error.URLError("timed out"),
-            "protocol": HTTPException("Connection closed"),
-        }[failure_kind]
-        self.open_url.side_effect = error
-        assert repo_info.fetch_gitlab_repo_details("owner/alpha") == {"error": expected}
-
-    def test_missing_gitlab_project_does_not_claim_an_http_error(self) -> None:
-        self.open_url.side_effect = None
-        self.open_url.return_value.__enter__.return_value.read.return_value = (
-            b'{"data": {"project": null}}'
-        )
-        assert repo_info.fetch_gitlab_repo_details("owner/alpha") == {
-            "error": "Repository not found or inaccessible",
-        }
-
-    @pytest.mark.parametrize(
-        "content,expected",
-        (
-            (
-                b'{"data": null, "errors": [{"message": "Query failed"}]}',
-                "Repository query failed",
-            ),
-            (b'{"data": null}', "Invalid repository data"),
-            (b"{}", "Invalid repository data"),
-            (b"[]", "Invalid repository data"),
-            (b'{"data": {}}', "Invalid repository data"),
-            (b'{"data": {"project": []}}', "Invalid repository data"),
-            (b'{"data": {"project": {}}}', "Invalid repository data"),
-        ),
-    )
-    def test_gitlab_invalid_query_response_returns_error(
-        self, content, expected
-    ) -> None:
-        self.open_url.side_effect = None
-        self.open_url.return_value.__enter__.return_value.read.return_value = content
-        assert repo_info.fetch_gitlab_repo_details("owner/alpha") == {"error": expected}
-
-    @pytest.mark.parametrize("code", (404, 451))
-    def test_gitlab_http_errors_keep_actual_audit_flags(self, code) -> None:
-        self.open_url.side_effect = self.http_error(code)
-        assert repo_info.fetch_gitlab_repo_details("owner/alpha") == {
-            "error": f"Request failed (HTTP {code})",
-            f"is_{code}": True,
-        }
-
-    def test_gitlab_alias_lookup_uses_rest_canonical_path(self) -> None:
-        with (
-            patch.object(
-                repo_info,
-                "fetch",
-                return_value={
-                    "path_with_namespace": "group/owner/new",
-                    "star_count": 5,
-                },
-            ) as request,
-            patch.object(repo_info, "fetch_gitlab_repo_details") as graphql,
-        ):
-            details = repo_info.fetch_repo_details(
-                "https://gitlab.com/group/owner/old", resolve_alias=True
-            )
+        with patch.object(
+            repo_info,
+            "fetch",
+            return_value={
+                "path_with_namespace": "group/owner/new",
+                "star_count": 5,
+                "description": "Example bundle",
+                "archived": archived,
+                "avatar_url": project_avatar,
+                "namespace": {"avatar_url": "/uploads/group.png"},
+            },
+        ) as request:
+            details = repo_info.fetch_repo_details("https://gitlab.com/group/owner/old")
         request.assert_called_once_with(
             "https://gitlab.com/api/v4/projects/group%2Fowner%2Fold",
             timeout=10,
             as_json=True,
         )
-        graphql.assert_not_called()
-        assert details["full_name"] == "group/owner/new"
-        assert details["stars"] == 5
+        assert details == {
+            "full_name": "group/owner/new",
+            "stars": 5,
+            "description": "Example bundle",
+            "avatar_url": project_avatar or "/uploads/group.png",
+            "is_archived": archived,
+        }
+
+    @pytest.mark.parametrize(
+        "response",
+        (
+            {"path_with_namespace": "owner/alpha"},
+            {"archived": False},
+        ),
+    )
+    def test_gitlab_incomplete_metadata_is_rejected(self, response) -> None:
+        with patch.object(repo_info, "fetch", return_value=response):
+            assert repo_info.fetch_repo_details("https://gitlab.com/owner/alpha") == {
+                "error": "Invalid repository data"
+            }

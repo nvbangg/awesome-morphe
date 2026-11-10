@@ -36,6 +36,7 @@ from common.utils import (
     load_json,
     load_lines,
     normalize_image_url,
+    open_request,
     parse_repo_url,
     save_json,
 )
@@ -89,12 +90,11 @@ class BundleDownloads:
 
 class RepositoryDetails:
     def __init__(self) -> None:
-        self.futures: dict[tuple[str, bool], Future[dict]] = {}
+        self.futures: dict[str, Future[dict]] = {}
         self.lock = Lock()
 
-    def get(self, url: str, *, resolve_alias: bool = False) -> dict:
-        resolve_alias = resolve_alias and parse_repo_url(url)[0] == "gitlab"
-        key = (url.lower(), resolve_alias)
+    def get(self, url: str) -> dict:
+        key = url.lower()
         with self.lock:
             future = self.futures.get(key)
             if future is None:
@@ -105,11 +105,7 @@ class RepositoryDetails:
                 owns_request = False
         if owns_request:
             try:
-                details = (
-                    fetch_repo_details(url, resolve_alias=True)
-                    if resolve_alias
-                    else fetch_repo_details(url)
-                )
+                details = fetch_repo_details(url)
                 future.set_result(details)
             except BaseException as error:
                 future.set_exception(error)
@@ -137,9 +133,7 @@ class BranchFetchResult:
 
 def get_remote_file_hash(url: str, source: str, fallback: str | None = None) -> str:
     request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
-    with urllib.request.urlopen(
-        request, timeout=HASH_REQUEST_TIMEOUT_SECONDS
-    ) as response:
+    with open_request(request, timeout=HASH_REQUEST_TIMEOUT_SECONDS) as response:
         header_name = "ETag" if source == "github" else "x-gitlab-content-sha256"
         if remote_hash := response.getheader(header_name):
             return remote_hash.strip('"')
@@ -159,7 +153,7 @@ def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | N
         headers["If-None-Match"] = f'"{current_sha}"'
     request = urllib.request.Request(url, headers=headers)
     try:
-        with urllib.request.urlopen(
+        with open_request(
             request, timeout=METADATA_REQUEST_TIMEOUT_SECONDS
         ) as response:
             remote_hash = response.getheader("ETag")
@@ -310,7 +304,7 @@ def process_repo_branch(
             repository_details = repository_details or RepositoryDetails()
             repo_url = build_repo_url(source, repo)
             assert repo_url is not None
-            details = repository_details.get(repo_url, resolve_alias=True)
+            details = repository_details.get(repo_url)
             canonical_repo = details.get("full_name")
             if (
                 details.get("error")
@@ -324,9 +318,7 @@ def process_repo_branch(
             if canonical_repo.lower() != mpp_repo.lower():
                 download_repo_url = build_repo_url(source, mpp_repo)
                 assert download_repo_url is not None
-                download_details = repository_details.get(
-                    download_repo_url, resolve_alias=True
-                )
+                download_details = repository_details.get(download_repo_url)
                 download_canonical = download_details.get("full_name")
                 if (
                     download_details.get("error")

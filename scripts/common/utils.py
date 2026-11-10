@@ -124,7 +124,48 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[st
     ):
         result_headers["Authorization"] = f"Bearer {github_token}"
 
+    gitlab_token = os.environ.get("GITLAB_TOKEN")
+    if (
+        parsed_url.scheme == "https"
+        and hostname == "gitlab.com"
+        and parsed_url.path.startswith("/api/v4/")
+        and gitlab_token
+        and not any(
+            name.lower() in ("private-token", "authorization")
+            for name in result_headers
+        )
+    ):
+        result_headers["PRIVATE-TOKEN"] = gitlab_token
+
     return result_headers
+
+
+class _AuthRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if redirected is not None:
+            source = urllib.parse.urlsplit(req.full_url)
+            target = urllib.parse.urlsplit(redirected.full_url)
+            if (source.scheme, source.netloc) != (target.scheme, target.netloc):
+                redirected.remove_header("Authorization")
+            if (
+                target.scheme != "https"
+                or target.hostname != "gitlab.com"
+                or not target.path.startswith("/api/v4/")
+            ):
+                redirected.remove_header("Private-token")
+            elif token := get_auth_headers(
+                redirected.full_url, dict(redirected.header_items())
+            ).get("PRIVATE-TOKEN"):
+                redirected.add_header("PRIVATE-TOKEN", token)
+        return redirected
+
+
+HTTP_OPENER = urllib.request.build_opener(_AuthRedirectHandler())
+
+
+def open_request(request: urllib.request.Request, timeout: int) -> Any:
+    return HTTP_OPENER.open(request, timeout=timeout)
 
 
 def fetch(
@@ -137,7 +178,7 @@ def fetch(
     request_headers = get_auth_headers(url, headers)
 
     request = urllib.request.Request(url, headers=request_headers)
-    with urllib.request.urlopen(request, timeout=timeout) as response:
+    with open_request(request, timeout=timeout) as response:
         content = response.read()
         if binary:
             return content
@@ -277,7 +318,7 @@ def check_link_status(url: str, timeout: int = 5) -> dict:
     try:
         headers = get_auth_headers(url)
         request = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        with open_request(request, timeout=timeout) as response:
             final_url = response.geturl().rstrip("/")
             original_url = url.rstrip("/")
             if final_url.lower() != original_url.lower():

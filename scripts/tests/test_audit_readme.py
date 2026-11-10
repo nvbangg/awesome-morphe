@@ -27,15 +27,9 @@ def test_audit_still_classifies_unavailable_repositories(
         assert "#### Unavailable (1)" in summary
 
 
-def test_gitlab_query_failure_does_not_stop_other_repository_audit(
-    block_network,
-) -> None:
+def test_gitlab_invalid_metadata_does_not_stop_other_repository_audit() -> None:
     failed_url = "https://gitlab.com/owner/failed"
     working_url = "https://github.com/owner/working"
-    block_network.side_effect = None
-    block_network.return_value.__enter__.return_value.read.return_value = (
-        b'{"data":null,"errors":[{"message":"Query failed"}]}'
-    )
     with (
         patch.object(repo_info.time, "sleep"),
         patch.object(repo_info, "fetch", return_value={"full_name": "owner/working"}),
@@ -44,7 +38,7 @@ def test_gitlab_query_failure_does_not_stop_other_repository_audit(
         ),
     ):
         summary = audit_readme.audit_repos_and_links()
-    assert f"{failed_url}: Repository query failed" in summary
+    assert f"{failed_url}: Invalid repository data" in summary
     assert "Unavailable" not in summary
     assert "Audited 2 repositories" in summary
 

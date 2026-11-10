@@ -23,6 +23,7 @@ from common.utils import (
     format_summary_section,
     get_auth_headers,
     load_lines,
+    open_request,
     parse_repo_url,
 )
 
@@ -80,7 +81,7 @@ def build_user_query(user: str) -> str:
 def _file_exists(url: str) -> bool | None:
     request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
     try:
-        with urllib.request.urlopen(request, timeout=HEAD_TIMEOUT):
+        with open_request(request, timeout=HEAD_TIMEOUT):
             return True
     except urllib.error.HTTPError as error:
         if error.code in DEAD_LINK_HTTP_CODES:

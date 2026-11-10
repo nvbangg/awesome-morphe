@@ -34,7 +34,7 @@ class TestGithubBundle:
         assert url is not None
         self.url = url
         self.open_url = self.patch_context.enter_context(
-            patch.object(bundle_fetch.urllib.request, "urlopen")
+            patch.object(bundle_fetch, "open_request")
         )
         self.response = self.open_url.return_value.__enter__.return_value
         self.response.getheader.return_value = '"new-hash"'
@@ -1061,7 +1061,7 @@ class TestBundleFetch:
         assert load_json(self.repos_path) == self.initial_repos
 
     def test_missing_hash_header_is_not_a_missing_file(self) -> None:
-        with patch.object(bundle_fetch.urllib.request, "urlopen") as open_url:
+        with patch.object(bundle_fetch, "open_request") as open_url:
             open_url.return_value.__enter__.return_value.getheader.return_value = None
             with pytest.raises(ValueError, match="Missing `ETag`"):
                 bundle_fetch.get_remote_file_hash(
@@ -1072,8 +1072,8 @@ class TestBundleFetch:
     def test_hash_request_preserves_http_errors_for_the_caller(self, code) -> None:
         url = self.url("main", "patches-bundle.json")
         with patch.object(
-            bundle_fetch.urllib.request,
-            "urlopen",
+            bundle_fetch,
+            "open_request",
             side_effect=self.http_error(url, code),
         ):
             with pytest.raises(urllib.error.HTTPError) as raised:
@@ -1303,11 +1303,6 @@ class TestBundleFetch:
             f"https://{source}.com/owner/new" if direction == "forward" else None
         )
         assert request.call_count == (1 if direction == "forward" else 2)
-        if source == "gitlab":
-            assert all(
-                item.kwargs == {"resolve_alias": True}
-                for item in request.call_args_list
-            )
 
     @pytest.mark.parametrize("lookup", ("source", "asset"))
     @pytest.mark.parametrize(

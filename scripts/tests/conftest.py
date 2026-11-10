@@ -7,11 +7,15 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def block_network(monkeypatch: pytest.MonkeyPatch) -> MagicMock:
+    for name in ("GITHUB_TOKEN", "GITLAB_TOKEN"):
+        monkeypatch.delenv(name, raising=False)
+
     def reject_request(*_args: object, **_kwargs: object) -> None:
         pytest.fail("Unexpected network access")
 
     request = MagicMock(side_effect=reject_request)
     monkeypatch.setattr("urllib.request.urlopen", request)
+    monkeypatch.setattr("urllib.request.OpenerDirector.open", request)
     return request
 
 
