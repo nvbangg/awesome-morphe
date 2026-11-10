@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.58.0",
+  "version": "1.59.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -2174,15 +2174,15 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2026.10.28-release",
+              "version": "2026.11.02-release",
               "versionCodes": {
-                "ARM64_V8A": 379050,
-                "ARMEABI_V7A": 379050,
-                "X86_64": 379050,
-                "X86": 379050
+                "ARM64_V8A": 379060,
+                "ARMEABI_V7A": 379060,
+                "X86_64": 379060,
+                "X86": 379060
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -2208,15 +2208,15 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2026.10.28-release",
+              "version": "2026.11.02-release",
               "versionCodes": {
-                "ARM64_V8A": 379050,
-                "ARMEABI_V7A": 379050,
-                "X86_64": 379050,
-                "X86": 379050
+                "ARM64_V8A": 379060,
+                "ARMEABI_V7A": 379060,
+                "X86_64": 379060,
+                "X86": 379060
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -3956,7 +3956,7 @@
     },
     {
       "name": "Enable SoundCloud Go",
-      "description": "Enables local Go+ plan controls, hides Go upsells and consumer-plan transition screens, and disables client ad requests and display placements. Paid streams, downloads and audio quality still depend on the account's server access.",
+      "description": "Enables local Go+ plan controls and the offline_sync, no_audio_ads and hq_audio feature switches from the /configuration response, hides Go upsells and consumer-plan transition screens, and disables client ad requests and display placements. SoundCloud's servers still decide which streams, downloads and audio quality the account may fetch: high-bitrate audio and encrypted offline copies stay tied to a real Go+ subscription.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -3972,15 +3972,15 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2026.10.28-release",
+              "version": "2026.11.02-release",
               "versionCodes": {
-                "ARM64_V8A": 379050,
-                "ARMEABI_V7A": 379050,
-                "X86_64": 379050,
-                "X86": 379050
+                "ARM64_V8A": 379060,
+                "ARMEABI_V7A": 379060,
+                "X86_64": 379060,
+                "X86": 379060
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -7863,15 +7863,49 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2026.10.28-release",
+              "version": "2026.11.02-release",
               "versionCodes": {
-                "ARM64_V8A": 379050,
-                "ARMEABI_V7A": 379050,
-                "X86_64": 379050,
-                "X86": 379050
+                "ARM64_V8A": 379060,
+                "ARMEABI_V7A": 379060,
+                "X86_64": 379060,
+                "X86": 379060
               },
               "isExperimental": false,
-              "minSdk": 32,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Ignore device limit",
+      "description": "SoundCloud signs in on up to ten devices: the /configuration response marks the device authorized or not, and only the app itself enforces that -- a new sign-in that is marked unauthorized never finishes, the server can also refuse the registration request outright, and a configuration refresh signs an existing device out and revokes its token. This patch skips the registration call at sign-in and ignores the unauthorized state, so signing in and staying signed in no longer depend on it. The install then stays unregistered in SoundCloud's device list, and if the servers ever enforce the count beyond these handshakes, the patch cannot help.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.soundcloud.android",
+          "name": "SoundCloud",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "aff930d671fa0a57b8c41d1678cc2a8ea717075a74e346942a140afa441339d2"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.11.02-release",
+              "versionCodes": {
+                "ARM64_V8A": 379060,
+                "ARMEABI_V7A": 379060,
+                "X86_64": 379060,
+                "X86": 379060
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
