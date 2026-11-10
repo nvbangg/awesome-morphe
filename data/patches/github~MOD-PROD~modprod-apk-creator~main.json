@@ -1,0 +1,399 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.6.0",
+  "patches": [
+    {
+      "name": "ATV Launcher",
+      "description": "Crée un lanceur Android TV : ouvre un lien, une appli installée, ou l'appli sinon le lien. Nom, package, bannière TV, icône et version.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "app.modprod.atvlink.base",
+          "name": "ATV Base",
+          "description": "APK de base Android TV ModProd, à télécharger ici (ne pas chercher ailleurs) : https://github.com/MOD-PROD/modprod-apk-creator/releases/download/base-apk/atv-base.apk",
+          "apkFileType": "APK",
+          "appIconColor": "#1E90FF",
+          "signatures": null,
+          "formFactor": "TV",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Télécharger l'APK de base TV : https://github.com/MOD-PROD/modprod-apk-creator/releases/download/base-apk/atv-base.apk"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "Nom du lanceur",
+          "description": "Nom affiché sur l'écran d'accueil de la TV.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "packageName",
+          "title": "Nom de package",
+          "description": "Identifiant unique du lanceur (ex. app.modprod.atvlink.youtube). Minuscules, au moins deux segments, lettres/chiffres/_, pas de mot réservé Java.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "mode",
+          "title": "Action au lancement",
+          "description": null,
+          "required": true,
+          "type": "kotlin.String",
+          "default": "url",
+          "values": {
+            "Lien (URL ou intent)": "url",
+            "Appli installée": "apk",
+            "Appli installée, sinon lien": "apkToUrl"
+          }
+        },
+        {
+          "key": "targetUrl",
+          "title": "Lien cible",
+          "description": "Pour « Lien » et « Appli, sinon lien » : https://… ou intent://…#Intent;scheme=https;end",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "targetApk",
+          "title": "Package de l'appli cible",
+          "description": "Pour « Appli installée » : ex. com.google.android.youtube.tv",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "banner",
+          "title": "Bannière TV",
+          "description": "Image PNG 320 × 180 affichée sur l'écran d'accueil Android TV.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "icon",
+          "title": "Icône",
+          "description": "Image PNG carrée (512 × 512 conseillé).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "isGame",
+          "title": "Ranger dans « Jeux »",
+          "description": "Le lanceur apparaît dans la rangée des jeux de la TV.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "versionName",
+          "title": "Version (nom)",
+          "description": "Ex. 1.0.0. Vide = inchangé.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "versionCode",
+          "title": "Version (code)",
+          "description": "Nombre entier, à augmenter à chaque mise à jour. Vide = inchangé.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "ModProd App",
+      "description": "Transforme l'APK de base en une nouvelle appli : nom, nom de package, page HTML ou adresse web, configuration, icône et version.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "app.modprod.apkbase",
+          "name": "APK Base",
+          "description": "APK de base ModProd, à télécharger ici (ne pas chercher ailleurs) : https://github.com/MOD-PROD/modprod-apk-creator/releases/download/base-apk/apk-base.apk",
+          "apkFileType": "APK",
+          "appIconColor": "#1E90FF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Télécharger l'APK de base : https://github.com/MOD-PROD/modprod-apk-creator/releases/download/base-apk/apk-base.apk"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "Nom de l'appli",
+          "description": "Nom affiché sous l'icône (ex. QuantiX 3D).",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "packageName",
+          "title": "Nom de package",
+          "description": "Identifiant unique de l'appli (ex. app.modprod.quantix). Minuscules, au moins deux segments, lettres/chiffres/_, pas de mot réservé Java.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "htmlFolder",
+          "title": "Dossier de l'appli HTML",
+          "description": "Dossier contenant la page .html de l'appli (et ses fichiers : images, css, js…). Son contenu remplace assets/htmlapp/root/index/. Le lanceur ouvre index.html, sinon le premier .html par ordre alphabétique.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "webUrl",
+          "title": "Adresse web (au lieu du HTML)",
+          "description": "Adresse https:// d'un site à ouvrir à la place de la page HTML intégrée (ex. https://quantix.modprod.app/). Si elle est remplie, le dossier HTML est ignoré. Les liens http(s) restent dans l'appli, mailto:/tel:… ouvrent l'appli Android correspondante.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "configFile",
+          "title": "Fichier de configuration",
+          "description": "Fichier .js de configuration (window.APP_CONFIG). Remplace le fichier de assets/htmlapp/root/config/.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "webIcon",
+          "title": "Icône du site (adresse web)",
+          "description": "Avec une adresse web et sans icône choisie : récupère l'icône PNG du site (manifest web, apple-touch-icon…) pendant le patch. Sans connexion ou sans icône PNG : icône par défaut.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "iconFile",
+          "title": "Icône",
+          "description": "Image PNG carrée (512 × 512 conseillé). Remplace l'icône de lancement (normale et ronde) et assets/htmlapp/root/icon.png.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "versionName",
+          "title": "Version (nom)",
+          "description": "Ex. 1.0.0. Vide = inchangé.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "versionCode",
+          "title": "Version (code)",
+          "description": "Nombre entier, à augmenter à chaque mise à jour. Vide = inchangé.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "ModProd Réglages",
+      "description": "Réglages Android de l'appli : orientation, plein écran, captures d'écran, écran allumé, zoom, couleurs, autorisations (caméra, micro, localisation).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "app.modprod.apkbase",
+          "name": "APK Base",
+          "description": "APK de base ModProd, à télécharger ici (ne pas chercher ailleurs) : https://github.com/MOD-PROD/modprod-apk-creator/releases/download/base-apk/apk-base.apk",
+          "apkFileType": "APK",
+          "appIconColor": "#1E90FF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Télécharger l'APK de base : https://github.com/MOD-PROD/modprod-apk-creator/releases/download/base-apk/apk-base.apk"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "orientation",
+          "title": "Orientation",
+          "description": "Portrait bloqué, ou suit la rotation du téléphone.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "portrait",
+          "values": {
+            "Portrait": "portrait",
+            "Automatique (rotation)": "auto"
+          }
+        },
+        {
+          "key": "fullscreen",
+          "title": "Plein écran",
+          "description": "Masque la barre d'état.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "keepScreenOn",
+          "title": "Écran toujours allumé",
+          "description": "L'écran ne se met pas en veille tant que l'appli est ouverte.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "blockScreenshots",
+          "title": "Bloquer les captures d'écran",
+          "description": "Interdit captures et enregistrements, masque l'aperçu dans les applis récentes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "zoom",
+          "title": "Zoom à deux doigts",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "scrollBars",
+          "title": "Barres de défilement",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "debug",
+          "title": "Inspection depuis Chrome PC",
+          "description": "Permet d'inspecter la page via chrome://inspect. À désactiver pour une version publiée.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "webTheme",
+          "title": "Thème des sites web",
+          "description": "Thème appliqué aux pages au premier lancement. Natif : assombrissement Android ; CSS : fond sombre forcé ; inversion : couleurs inversées. Modifiable dans l'appli par un appui long sur une zone vide de la page.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "auto",
+          "values": {
+            "Automatique (respecter le site)": "auto",
+            "Sombre natif Android": "native",
+            "Sombre CSS (expérimental)": "css",
+            "Inversion des couleurs (expérimental)": "invert"
+          }
+        },
+        {
+          "key": "backgroundColor",
+          "title": "Couleur de fond",
+          "description": "Fond de l'appli au démarrage, de l'écran de chargement et de la page d'erreur. Vide = inchangé (#141a21).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "barsColor",
+          "title": "Couleur des barres système",
+          "description": "Barre d'état et barre de navigation. Couleur claire = icônes sombres. Vide = inchangé (#141a21).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "accentColor",
+          "title": "Couleur d'accent",
+          "description": "Boutons et curseurs des fenêtres Android (« Save As »…). Vide = inchangé (#f08a24).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "camera",
+          "title": "Autorisation : caméra",
+          "description": "Photo depuis un champ fichier, getUserMedia vidéo.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "microphone",
+          "title": "Autorisation : micro",
+          "description": "getUserMedia audio, enregistrement vocal.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "location",
+          "title": "Autorisation : localisation",
+          "description": "navigator.geolocation.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    }
+  ]
+}

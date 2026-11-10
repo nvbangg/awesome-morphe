@@ -1,0 +1,83 @@
+{
+    "version": "1.0.5",
+    "patches": [
+        {
+            "name": "Disable ad slot flags",
+            "description": "Forces every boolean in the server-driven AdsConfigModel to false, so no ad slot is created at all. Reads the fields at patch time, so it is not tied to obfuscated field names.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "works.jubilee.timetree",
+                    "name": "TimeTree",
+                    "description": "Shared calendar app. Patch targets the downloadable ads config.",
+                    "apkFileType": "APK",
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Remove in-app ads",
+            "description": "Emits AdsAdModel.Empty for every ad placement, so calendar banners, in-feed ad cards and premium-upsell ad slots are never rendered. Anchored on unobfuscated domain types and reuses the app's own method ids.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "works.jubilee.timetree",
+                    "name": "TimeTree",
+                    "description": "Shared calendar app. Patch targets the ad stream of the free build.",
+                    "apkFileType": "APK",
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Remove splash/open ads",
+            "description": "Forces the splash ad screen to take its built-in \"no ad to show\" path, so no full screen ad covers the app on cold start.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "works.jubilee.timetree",
+                    "name": "TimeTree",
+                    "description": "Shared calendar app. Patch targets the open-ad screen.",
+                    "apkFileType": "APK",
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        }
+    ]
+}

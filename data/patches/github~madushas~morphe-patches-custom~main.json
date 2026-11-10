@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -93,6 +93,79 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP",
+      "description": "Disables adidas Running's PairIP licence/VM verification, restores the real Application class and bakes the VM's runtime strings (captured from the original app's heap) so Firebase etc. initialize cleanly. NOTE: adidas runs the full PairIP VM whose startup program is the tamper check — the patched app boots past the licence gate but the VM-virtualized init methods cannot be restored without native reverse engineering, so the app may crash after launch. See docs/adidas.md.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.runtastic.android",
+          "name": "adidas Running",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#000000",
+          "signatures": [
+            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
+          ],
+          "targets": [
+            {
+              "version": "14.12.1",
+              "versionCodes": {
+                "ARM64_V8A": 2026110512
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "14.4.0",
+              "versionCodes": {
+                "ARM64_V8A": 2026011603
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
+      "description": "Disables Material Capsule's PairIP / Play licence verification so the app runs after Morphe re-signs it. Restores the real Application class (com.pryshedko.mtisland.App).",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pryshedko.mtisland",
+          "name": "Material Capsule",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#6750A4",
+          "signatures": [
+            "63e05db5ac02a4147a134b5209edca396cce8c46a9edb09b3173d3d5c821341e"
+          ],
+          "targets": [
+            {
+              "version": "17.3",
+              "versionCodes": {
+                "ARM64_V8A": 173
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -344,6 +417,41 @@
     },
     {
       "name": "Disable SSL pinning",
+      "description": "Unpins the react-native-ssl-pinning OkHttp client so HTTPS traffic can be intercepted, and trusts user-installed CAs (targetSdk 35). Normal TLS validation stays intact.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.omobio.etisalatone",
+          "name": "Hutch",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#EE1C25",
+          "signatures": [
+            "76700e2a20bf441efba368d36e1cfc186c2ef30053e1c5ecb3fec6e32233459d"
+          ],
+          "targets": [
+            {
+              "version": "4.4.1",
+              "versionCodes": {
+                "ARM64_V8A": 400426001,
+                "ARMEABI_V7A": 400426001,
+                "X86_64": 400426001,
+                "X86": 400426001
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable SSL pinning",
       "description": "Removes certificate pinning at both layers (OkHttp pin comparison and the platform network-security-config pin-set) and trusts user-installed CAs, so HTTPS traffic can be inspected with a MITM proxy. Normal TLS validation stays intact.",
       "default": true,
       "dependencies": [
@@ -376,6 +484,72 @@
       "options": []
     },
     {
+      "name": "Disable ad SDK",
+      "description": "No-ops the Google Mobile Ads initialisation so the ad SDK never starts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.enflick.android.TextNow",
+          "name": "TextNow",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00A8E1",
+          "signatures": [
+            "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
+          ],
+          "targets": [
+            {
+              "version": "6.1.0.1",
+              "versionCodes": {
+                "ARM64_V8A": 12231,
+                "ARMEABI_V7A": 12231,
+                "X86_64": 12231,
+                "X86": 12231
+              },
+              "isExperimental": false,
+              "minSdk": 14,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable security checks",
+      "description": "Stops Hutch from refusing to run on rooted, adb-enabled, developer-options or emulator devices. The device-integrity probes (jail-monkey + react-native-device-info) all answer \"clean\".",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.omobio.etisalatone",
+          "name": "Hutch",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#EE1C25",
+          "signatures": [
+            "76700e2a20bf441efba368d36e1cfc186c2ef30053e1c5ecb3fec6e32233459d"
+          ],
+          "targets": [
+            {
+              "version": "4.4.1",
+              "versionCodes": {
+                "ARM64_V8A": 400426001,
+                "ARMEABI_V7A": 400426001,
+                "X86_64": 400426001,
+                "X86": 400426001
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable security checks",
       "description": "Stops MyDialog from exiting itself on root/debug/emulator/adb detection and on Play Integrity failure. Signature verification is reported clean so patched builds pass.",
       "default": true,
@@ -399,6 +573,243 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracker components",
+      "description": "Disables the Google Analytics measurement receiver/services and the Adjust lifecycle provider, and sets the Firebase/Google Analytics collection opt-outs.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.runtastic.android",
+          "name": "adidas Running",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#000000",
+          "signatures": [
+            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
+          ],
+          "targets": [
+            {
+              "version": "14.12.1",
+              "versionCodes": {
+                "ARM64_V8A": 2026110512
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "14.4.0",
+              "versionCodes": {
+                "ARM64_V8A": 2026011603
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracker components",
+      "description": "Disables Adobe's extension-discovery service and messaging activities and sets the Firebase Analytics collection opt-outs.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nike.plusgps",
+          "name": "Nike Run Club",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#111111",
+          "signatures": [
+            "25512576dacc619bd925d1ea05a3e140311d31b0b853183abe1d9da8fd3f240f"
+          ],
+          "targets": [
+            {
+              "version": "4.80.0",
+              "versionCodes": {
+                "ARM64_V8A": 1717895889,
+                "ARMEABI_V7A": 1717895889,
+                "X86_64": 1717895889,
+                "X86": 1717895889
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracker components",
+      "description": "Disables Crashlytics, Google Analytics v3, Firebase measurement and Flurry components and sets the Firebase/GA collection opt-outs. FCM push is kept.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.enflick.android.TextNow",
+          "name": "TextNow",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00A8E1",
+          "signatures": [
+            "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
+          ],
+          "targets": [
+            {
+              "version": "6.1.0.1",
+              "versionCodes": {
+                "ARM64_V8A": 12231,
+                "ARMEABI_V7A": 12231,
+                "X86_64": 12231,
+                "X86": 12231
+              },
+              "isExperimental": false,
+              "minSdk": 14,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
+      "description": "No-ops the Adjust SDK's event/lifecycle entry points so no attribution or analytics payload is buffered or sent.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.runtastic.android",
+          "name": "adidas Running",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#000000",
+          "signatures": [
+            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
+          ],
+          "targets": [
+            {
+              "version": "14.12.1",
+              "versionCodes": {
+                "ARM64_V8A": 2026110512
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "14.4.0",
+              "versionCodes": {
+                "ARM64_V8A": 2026011603
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
+      "description": "Disables Google Analytics for Firebase measurement components, switches Crashlytics and Firebase/Google-Analytics collection off via the official opt-out flags, and removes the install-referrer permission. FCM push is kept.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.fitbit.FitbitMobile",
+          "name": "Fitbit",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#00B0B9",
+          "signatures": [
+            "2cc914da5a849426c1b591e12f0a8adb042fa2feade3a4762845ce6bfadcf313"
+          ],
+          "targets": [
+            {
+              "version": "5.11.1.health-mobile-1104134730-1009077909",
+              "versionCodes": {
+                "ARM64_V8A": 1104134730
+              },
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
+      "description": "Disables Google Analytics for Firebase collection (the app's only third-party analytics) and removes the advertising-ID permissions. Push notifications keep working.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.omobio.etisalatone",
+          "name": "Hutch",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#EE1C25",
+          "signatures": [
+            "76700e2a20bf441efba368d36e1cfc186c2ef30053e1c5ecb3fec6e32233459d"
+          ],
+          "targets": [
+            {
+              "version": "4.4.1",
+              "versionCodes": {
+                "ARM64_V8A": 400426001,
+                "ARMEABI_V7A": 400426001,
+                "X86_64": 400426001,
+                "X86": 400426001
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
+      "description": "Disables Google Analytics for Firebase measurement and switches off Firebase Analytics / Advertising-ID data collection via the official opt-out flags.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pryshedko.mtisland",
+          "name": "Material Capsule",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#6750A4",
+          "signatures": [
+            "63e05db5ac02a4147a134b5209edca396cce8c46a9edb09b3173d3d5c821341e"
+          ],
+          "targets": [
+            {
+              "version": "17.3",
+              "versionCodes": {
+                "ARM64_V8A": 173
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -439,6 +850,39 @@
     },
     {
       "name": "Disable trackers",
+      "description": "Disables Adobe (Omniture) analytics by stopping the Adobe Experience Platform extension registration, so no tracking payload is built or sent.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nike.plusgps",
+          "name": "Nike Run Club",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#111111",
+          "signatures": [
+            "25512576dacc619bd925d1ea05a3e140311d31b0b853183abe1d9da8fd3f240f"
+          ],
+          "targets": [
+            {
+              "version": "4.80.0",
+              "versionCodes": {
+                "ARM64_V8A": 1717895889,
+                "ARMEABI_V7A": 1717895889,
+                "X86_64": 1717895889,
+                "X86": 1717895889
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
       "description": "Disables Google Analytics measurement and Yandex AppMetrica telemetry, and turns off Crashlytics/Analytics data collection via their official opt-out flags.",
       "default": true,
       "dependencies": [],
@@ -461,6 +905,111 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
+      "description": "No-ops the Adjust (attribution) and Flurry (analytics) SDK initialisers so no tracking payload is collected or sent.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.enflick.android.TextNow",
+          "name": "TextNow",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00A8E1",
+          "signatures": [
+            "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
+          ],
+          "targets": [
+            {
+              "version": "6.1.0.1",
+              "versionCodes": {
+                "ARM64_V8A": 12231,
+                "ARMEABI_V7A": 12231,
+                "X86_64": 12231,
+                "X86": 12231
+              },
+              "isExperimental": false,
+              "minSdk": 14,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable dark mode",
+      "description": "Forces adidas Running into its built-in night theme (RtBaseTheme.Dark) by setting AppCompatDelegate night mode at app startup.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.runtastic.android",
+          "name": "adidas Running",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#000000",
+          "signatures": [
+            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
+          ],
+          "targets": [
+            {
+              "version": "14.12.1",
+              "versionCodes": {
+                "ARM64_V8A": 2026110512
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "14.4.0",
+              "versionCodes": {
+                "ARM64_V8A": 2026011603
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable dark mode",
+      "description": "Turns on Nike Run Club's built-in dark theme by forcing the DefaultDesignManager colour-mode gate, so the Compose UI renders dark.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nike.plusgps",
+          "name": "Nike Run Club",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#111111",
+          "signatures": [
+            "25512576dacc619bd925d1ea05a3e140311d31b0b853183abe1d9da8fd3f240f"
+          ],
+          "targets": [
+            {
+              "version": "4.80.0",
+              "versionCodes": {
+                "ARM64_V8A": 1717895889,
+                "ARMEABI_V7A": 1717895889,
+                "X86_64": 1717895889,
+                "X86": 1717895889
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -881,6 +1430,36 @@
     },
     {
       "name": "Mock Pro (client-side)",
+      "description": "Forces the client-side Pro entitlement (custom colors, card/anim controls, full-size player, app search, widgets, gestures). Material Capsule's premium is a local flag derived from a Play purchase query and stored AES-encrypted on-device — it is NOT server-re-validated, so the whole set opens. No purchase is fabricated; real purchases and restore still work.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pryshedko.mtisland",
+          "name": "Material Capsule",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#6750A4",
+          "signatures": [
+            "63e05db5ac02a4147a134b5209edca396cce8c46a9edb09b3173d3d5c821341e"
+          ],
+          "targets": [
+            {
+              "version": "17.3",
+              "versionCodes": {
+                "ARM64_V8A": 173
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Mock Pro (client-side)",
       "description": "Forces the app's client-side pro flag (isProUser → true) and the local ProStatus model: premium-badge UI, client-gated perks (unlimited rewinds, hide online, extra IRL slots) and pro-only screens open. Honestly: features the SERVER re-validates (premium Soul filters, coins, boosts, some AI limits) still refuse — that is a backend check no client patch can lift.",
       "default": true,
       "dependencies": [],
@@ -1181,6 +1760,138 @@
     },
     {
       "name": "Remove ads",
+      "description": "adidas Running ships no ad-serving SDK; this denies the advertising ID and the Privacy-Sandbox ad services and removes the install-referrer permission.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.runtastic.android",
+          "name": "adidas Running",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#000000",
+          "signatures": [
+            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
+          ],
+          "targets": [
+            {
+              "version": "14.12.1",
+              "versionCodes": {
+                "ARM64_V8A": 2026110512
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "14.4.0",
+              "versionCodes": {
+                "ARM64_V8A": 2026011603
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Fitbit ships no ad SDK or ad placement; this additionally disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services / install-referrer permissions so no advertising ID is exposed.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.fitbit.FitbitMobile",
+          "name": "Fitbit",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#00B0B9",
+          "signatures": [
+            "2cc914da5a849426c1b591e12f0a8adb042fa2feade3a4762845ce6bfadcf313"
+          ],
+          "targets": [
+            {
+              "version": "5.11.1.health-mobile-1104134730-1009077909",
+              "versionCodes": {
+                "ARM64_V8A": 1104134730
+              },
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Material Capsule ships no ad SDK or ad placement; this additionally disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services permissions so no advertising ID is exposed.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pryshedko.mtisland",
+          "name": "Material Capsule",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#6750A4",
+          "signatures": [
+            "63e05db5ac02a4147a134b5209edca396cce8c46a9edb09b3173d3d5c821341e"
+          ],
+          "targets": [
+            {
+              "version": "17.3",
+              "versionCodes": {
+                "ARM64_V8A": 173
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Nike Run Club ships no ad SDK or placement; this disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services / referrer permissions so no advertising ID is exposed.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nike.plusgps",
+          "name": "Nike Run Club",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#111111",
+          "signatures": [
+            "25512576dacc619bd925d1ea05a3e140311d31b0b853183abe1d9da8fd3f240f"
+          ],
+          "targets": [
+            {
+              "version": "4.80.0",
+              "versionCodes": {
+                "ARM64_V8A": 1717895889,
+                "ARMEABI_V7A": 1717895889,
+                "X86_64": 1717895889,
+                "X86": 1717895889
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
       "description": "Disables Pdb's ad SDKs (GMS, AppLovin, Vungle, Yandex, Pangle) and turns off in-app ad initialisation.",
       "default": true,
       "dependencies": [],
@@ -1203,6 +1914,39 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Disables every ad-network component TextNow declares (AdMarvel, Amazon, AppNext, Google Mobile Ads, MoPub) and strips the ad-ID / ad-services / install-referrer permissions.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.enflick.android.TextNow",
+          "name": "TextNow",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00A8E1",
+          "signatures": [
+            "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
+          ],
+          "targets": [
+            {
+              "version": "6.1.0.1",
+              "versionCodes": {
+                "ARM64_V8A": 12231,
+                "ARMEABI_V7A": 12231,
+                "X86_64": 12231,
+                "X86": 12231
+              },
+              "isExperimental": false,
+              "minSdk": 14,
               "description": null
             }
           ]
