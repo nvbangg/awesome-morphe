@@ -1,0 +1,267 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.4.1",
+  "patches": [
+    {
+      "name": "Clone app",
+      "description": "Changes the app package name to allow installing the same app multiple times. By default \".morphe\" is appended to the package name. Each cloned install must use a unique package name. Cloning does not work with all apps and using this patch may cause app crashes or other unexpected behavior.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name to use for the cloned app.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Default",
+          "values": {
+            "Default": "Default"
+          }
+        },
+        {
+          "key": "updatePermissions",
+          "title": "Update permissions",
+          "description": "Update custom permissions declared by the app. Fixes installation conflicts, but can break features in certain apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "updateProviders",
+          "title": "Update providers",
+          "description": "Update provider names declared by the app. Fixes installation conflicts, but can break features in certain apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom branding",
+      "description": "Changes the app name, icon, TV banner and the logo inside the app to FaroTV's (or another name).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube.tv",
+          "name": "YouTube for Android TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "21199d112cece428c82cb0df221da24ff8674c7a982a83a17a970eec43305b4a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.32.300",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The name shown in the TV launcher and at the top of the app.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "FaroTV",
+          "values": {
+            "FaroTV": "FaroTV"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Disable start on boot",
+      "description": "Keeps the app (and MicroG-RE) from starting in the background when the TV is switched on.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube.tv",
+          "name": "YouTube for Android TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "21199d112cece428c82cb0df221da24ff8674c7a982a83a17a970eec43305b4a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.32.300",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "FaroTV settings and scripts",
+      "description": "Adds a \"FaroTV\" section to YouTube's Settings with switches to hide Shorts, hide the topic tabs and block video ads.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube.tv",
+          "name": "YouTube for Android TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "21199d112cece428c82cb0df221da24ff8674c7a982a83a17a970eec43305b4a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.32.300",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Redirects the app's Google Play Services calls to GmsCore (MicroG-RE). Requires MicroG-RE to be installed. Without it, YouTube for Android TV crashes because Google Play Services rejects DroidGuard for the new package name.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube.tv",
+          "name": "YouTube for Android TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "21199d112cece428c82cb0df221da24ff8674c7a982a83a17a970eec43305b4a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.32.300",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Run without Google Play Services",
+      "description": "Changes the package name so the patched app installs next to the original one, and keeps it running when Google Play Services rejects the new package name. Sign in with an activation code (yt.be/activate).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube.tv",
+          "name": "YouTube for Android TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "21199d112cece428c82cb0df221da24ff8674c7a982a83a17a970eec43305b4a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.32.300",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof device",
+      "description": "Reports another TV model to YouTube, so it runs on TVs it calls \"not compatible\". Default: Google Chromecast.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.youtube.tv",
+          "name": "YouTube for Android TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF0033",
+          "signatures": [
+            "21199d112cece428c82cb0df221da24ff8674c7a982a83a17a970eec43305b4a"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.32.300",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "brand",
+          "title": "Brand",
+          "description": null,
+          "required": true,
+          "type": "kotlin.String",
+          "default": "google",
+          "values": null
+        },
+        {
+          "key": "model",
+          "title": "Model",
+          "description": null,
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Chromecast",
+          "values": null
+        },
+        {
+          "key": "manufacturer",
+          "title": "Manufacturer",
+          "description": null,
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Google",
+          "values": null
+        },
+        {
+          "key": "chipset",
+          "title": "Chipset",
+          "description": null,
+          "required": true,
+          "type": "kotlin.String",
+          "default": "sm1",
+          "values": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0-dev.1",
+  "version": "1.3.0-dev.3",
   "patches": [
     {
       "name": "Anonymous profile viewing",
@@ -139,6 +139,54 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Custom font",
+      "description": "Replaces Ultimea's Roboto text style with a font family you choose, so the whole app renders with Rosemary, Google Sans, Open Sans or Segoe UI. Choose System Default to keep the app's own font.",
+      "default": true,
+      "category": "UI",
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "Ultimea",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#008847",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Version 1.4.4, build 495."
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "font",
+          "title": "Custom Font",
+          "description": "Choose a font family to apply across the app.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "rosemary",
+          "values": {
+            "rosemary": "Rosemary (Samsung)",
+            "googlesans": "Google Sans",
+            "opensans": "Open Sans",
+            "segoeui": "Segoe UI",
+            "system": "System Default"
+          }
+        }
+      ]
     },
     {
       "name": "Customize navigation bar",
@@ -600,7 +648,7 @@
     },
     {
       "name": "Hide Explorer tab",
-      "description": "Removes the Explorer/Community tab by disabling the server-side community switch the app reads at startup.",
+      "description": "Removes the Explorer/Community entry from Ultimea's bottom navigation bar.",
       "default": true,
       "category": "Navigation",
       "compatiblePackages": [
@@ -859,6 +907,71 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Install next to LinkedIn",
+      "description": "Installs this build as a second LinkedIn beside your normal one, with its own data and sign-in. Pick its package name and app name in the patch's options. Works as soon as you patch it in.",
+      "default": false,
+      "category": "Misc",
+      "compatiblePackages": [
+        {
+          "packageName": "com.linkedin.android",
+          "name": "LinkedIn",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0A66C2",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.1.1267",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "4.1.1271",
+              "versionCodes": {
+                "ARM64_V8A": 217900,
+                "ARMEABI_V7A": 217900,
+                "X86_64": 217900,
+                "X86": 217900
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Version 4.1.1271, build 217900."
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": "Any version (experimental). Every patch verifies its own anchors."
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The second LinkedIn's package. Each part starts with a letter, with dots between the parts, and it can't be LinkedIn's own.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.linkedin.android.clone",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The name under the second LinkedIn's icon. It starts with a letter and holds up to 50 characters.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "LinkedIn Clone",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Keep feed on reopen",
@@ -1211,8 +1324,8 @@
     },
     {
       "name": "Pitch black",
-      "description": "Replaces Ultimea's dark palette background and elevated-surface colors with pure black.",
-      "default": false,
+      "description": "Replaces Ultimea's dark background, surface and elevated-surface colors and the night window background with pure black.",
+      "default": true,
       "category": "Theme",
       "compatiblePackages": [
         {
@@ -1624,38 +1737,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Use system font",
-      "description": "Renders text with the Android system font instead of the app's Roboto text style, so Ultimea follows the device font.",
-      "default": true,
-      "category": "UI",
-      "compatiblePackages": [
-        {
-          "packageName": "com.dynanic.ultimea",
-          "name": "Ultimea",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#008847",
-          "signatures": null,
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.4.4",
-              "versionCodes": {
-                "ARM64_V8A": 495,
-                "ARMEABI_V7A": 495,
-                "X86_64": 495,
-                "X86": 495
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": "Version 1.4.4, build 495."
             }
           ]
         }

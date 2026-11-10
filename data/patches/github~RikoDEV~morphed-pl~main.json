@@ -1,7 +1,36 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "patches": [
+    {
+      "name": "Auto claim coupons",
+      "description": "Activates every coupon that needs no article choice as soon as the coupon list loads. Each activation is the app's own \"Activate\" action, and refusals stay silent.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Block Yanosik telemetry",
       "description": "Blocks analytics, crash reporting, usage statistics, the notiOne SDK and Wi-Fi/cell tower data collection. Location reporting for POI alerts and traffic keeps working.",
@@ -91,6 +120,35 @@
                 "ARMEABI_V7A": 42301000,
                 "X86_64": 42301000,
                 "X86": 42301000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block telemetry",
+      "description": "Blocks Firebase Analytics, Crashlytics and Performance, AppsFlyer, Adjust, Marketing Cloud analytics, the app's own event tracker (including the one used by the React Native screens) and the digital leaflet activity reports.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
               },
               "isExperimental": false,
               "minSdk": null,
@@ -204,6 +262,120 @@
       "options": []
     },
     {
+      "name": "Custom Google Maps key",
+      "description": "Replaces the app's Google Maps API key. The original key is locked to the developer's signing certificate, so maps stay grey in a re-signed app. Use a key you own that allows the app's package name and the SHA-1 of the key the patched app is signed with.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "pl.inpost.inmobile",
+          "name": "InPost Mobile",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFCD00",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.23.1",
+              "versionCodes": {
+                "ARM64_V8A": 42301000,
+                "ARMEABI_V7A": 42301000,
+                "X86_64": 42301000,
+                "X86": 42301000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "pl.zabka.apb2c",
+          "name": "Żappka",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#08A848",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.50.0",
+              "versionCodes": {
+                "ARM64_V8A": 60310,
+                "ARMEABI_V7A": 60310,
+                "X86_64": 60310,
+                "X86": 60310
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "mapApiKey",
+          "title": "Google Maps API key",
+          "description": "A Maps SDK for Android key, starting with AIza.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Dark mode",
+      "description": "Makes Lidl Plus follow the system dark theme. Android's Force Dark darkens the window, native and React Native screens, and the Compose screens are recoloured through their paints. The loyalty card and code screens stay light so their QR codes keep scanning, and the launch screen turns dark.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide Von Halsky",
       "description": "Removes Von Halsky shopping: the Kupuj tab, the home search box, and the banners and promotions in parcel lists, details, the cart and the More menu.",
       "default": true,
@@ -225,6 +397,93 @@
                 "ARMEABI_V7A": 42301000,
                 "X86_64": 42301000,
                 "X86": 42301000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide home shortcuts",
+      "description": "Removes the round shortcut bubbles at the top of the home screen (WorldOfNeeds), the product catalog categories (productCatalog) and the small blue business model chips under the store header (businessModels).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide info cards",
+      "description": "Removes the dismissible info cards (tipcards) from the home screen, such as the verify data, notifications and location prompts.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide leaflets",
+      "description": "Removes the leaflet (brochures and digital leaflet) carousels from the home screen.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
               },
               "isExperimental": false,
               "minSdk": null,
@@ -300,6 +559,180 @@
       "options": []
     },
     {
+      "name": "Hide offers and promotions",
+      "description": "Removes the offers and promotions carousels from the home screen. The Coupons tab is unchanged.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide online shop cards",
+      "description": "Removes every online shop card from the home screen: the shop teaser, search, campaign and Deal of the Day variants (onlineshop1cx*).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide online shop tab",
+      "description": "Removes the link to the online shop from the bottom navigation bar.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide product carousels",
+      "description": "Removes the featured products, recommended products and product catalog starting page modules from the home screen.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide product of the day",
+      "description": "Removes the online shop Deal of the Day card from the home screen.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide promo banners and messages",
+      "description": "Removes Lidl's promo banners, video banners and the home message from the home screen.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide promotional banners",
       "description": "Removes the promotional banner carousel from the home screen.",
       "default": true,
@@ -321,6 +754,93 @@
                 "ARMEABI_V7A": 42301000,
                 "X86_64": 42301000,
                 "X86": 42301000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide recipes and inspirations",
+      "description": "Removes the recipes carousel and the product showcase (inspiration) carousels from the home screen.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide sponsored ads",
+      "description": "Removes the sponsored brand deal slots (brandDeals_slot_a and brandDeals_slot_b) from the home screen. Their ad requests and view tracking are never made.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide store header",
+      "description": "Removes the usual store header (store name, opening hours and store picker) from the home screen.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lidl.eci.lidlplus",
+          "name": "Lidl Plus",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0050AA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "17.13.6",
+              "versionCodes": {
+                "ARM64_V8A": 1470410212
               },
               "isExperimental": false,
               "minSdk": null,

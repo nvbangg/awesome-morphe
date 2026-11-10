@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.10.0-dev.1",
+  "version": "1.10.0-dev.3",
   "patches": [
     {
       "name": "Block Quetta bundled extension installation",
@@ -691,6 +691,87 @@
           "required": false,
           "type": "kotlin.String",
           "default": "Reduces likelihood of extension runtime reclaim",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Titanium AMOLED theme",
+      "description": "Patch-time AMOLED dark theme (issue #47): rewrites Titanium dark chrome surfaces to pure black (or custom opaque hexes) in three tiers — window backgrounds #000000, Settings background #121212, raised surfaces #1A1A1A — matching the Ungoogled Chromium pure-black reference. Pins Material You dark roles to the AMOLED hexes by default; leaving that off keeps the wallpaper palette. Resource-only, no bytecode. Apply Dark theme in Titanium to see it. Does not change web content force-dark, does not reach ColorProvider / native .pak chrome, and adds no runtime color picker. Default off.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "io.github.jqssun.helium",
+          "name": "Titanium Browser for Android",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "backgroundColor",
+          "title": "AMOLED background",
+          "description": "Opaque hex for window backgrounds and the rest of dark chrome. Use #000000 for pure black OLED. Example elevated near-black: #0a0a0a.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#000000",
+          "values": null
+        },
+        {
+          "key": "settingsBackgroundColor",
+          "title": "Settings background",
+          "description": "Opaque hex for the Settings page background (Ungoogled containerHigh). #121212 matches the reference; use #000000 for flat black.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#121212",
+          "values": null
+        },
+        {
+          "key": "surfaceColor",
+          "title": "Surface / button color",
+          "description": "Opaque hex for raised surfaces — buttons, cards, sheets, menu panels and the Material You container ladder. #1A1A1A matches the Ungoogled reference (containerBright / containerHighest).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#1A1A1A",
+          "values": null
+        },
+        {
+          "key": "textColor",
+          "title": "Text color",
+          "description": "Opaque hex for text and icon ink (primary/secondary/muted). Chromium dark default: #e3e3e3.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#e3e3e3",
+          "values": null
+        },
+        {
+          "key": "accentColor",
+          "title": "Accent color",
+          "description": "Opaque hex for Chromium accent (toggles, links, highlights). Default: #8ab4f8. Status coral/orange is left alone.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#8ab4f8",
+          "values": null
+        },
+        {
+          "key": "pinMaterialYou",
+          "title": "Pin Material You dark roles to black",
+          "description": "Rewrite the Material You system-role files (values-v31/v34/v35) and the low-lStar selectors to the AMOLED hexes, so the wallpaper palette stops affecting the browser. Turning this off leaves those files untouched — closer to Ungoogled, which leaves dynamic accents alive — but role-driven surfaces will stay grey.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]
