@@ -1,5 +1,5 @@
 {
-  "version": "1.52.1",
+  "version": "1.53.0",
   "appNames": {
     "com.disney.disneyplus": "Disney+ Android TV",
     "com.espn.score_center": "ESPN Android TV",
@@ -1221,6 +1221,42 @@
       "description": "Bundles the in-process ad-kill script (killads.js) and its loader into the app. This is the ad remover: at launch the app runs the script itself (script mode — no PC, no root, no frida server) and empties Netflix's ad breaks (pre-roll, mid-roll) and the pause-screen ad overlay. Pairs with the loader patch. Default ON.",
       "use": true,
       "dependencies": [],
+      "compatiblePackages": {
+        "com.netflix.ninja": [
+          "13.0.1 build 25028"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Netflix Android TV",
+          "packageName": "com.netflix.ninja",
+          "description": null,
+          "appIconColor": 15010068,
+          "targets": [
+            {
+              "version": "13.0.1 build 25028",
+              "experimental": false
+            },
+            {
+              "version": "13.2.1 build 27207",
+              "experimental": true
+            },
+            {
+              "version": "13.2.2 build 27250",
+              "experimental": true
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Netflix ads (legacy engine)",
+      "description": "Only for TVs where the patched Netflix clone crashes right at launch with the default ad remover (seen on some Android 12 devices, e.g. TiVo Stream 4K and some Philips TVs). Swaps the in-process ad-kill engine for an older build (frida-gadget 16.2.1) that those devices tolerate; the ad-kill script itself is unchanged. Select it IN ADDITION to the two default \"Remove Netflix ads\" patches. Leave it off if the default patch works for you. Opt-in / experimental.",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": {
         "com.netflix.ninja": [
           "13.0.1 build 25028"
