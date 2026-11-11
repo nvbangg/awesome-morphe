@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "patches": [
     {
       "name": "Pixiv AI Work Flagger",
@@ -192,9 +192,36 @@
       "options": []
     },
     {
-      "name": "Pixiv Popular Search Unlock",
-      "description": "Unlocks sorting search results by popularity (popular_desc) without a premium subscription or trial countdown.",
+      "name": "Pixiv Popular Search Trial",
+      "description": "Pins the 7-day popular-search trial countdown so a trial account keeps getting the trial version of the popular tab instead of falling back to the preview/paywall. Does not change what Pixiv returns for accounts without the trial.",
       "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "jp.pxv.android",
+          "name": "Pixiv",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0096FA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Pixiv Popular Search Unlock",
+      "description": "Fakes the premium flag in the search pager so the app asks for popular_desc. Pixiv still answers a free account with date order, so use Pixiv Popular Search Trial instead.",
+      "default": false,
       "category": null,
       "compatiblePackages": [
         {
@@ -222,6 +249,33 @@
       "name": "Pixiv Premium Features",
       "description": "Emulates client-side Pixiv Premium membership status and removes the mute list limits.",
       "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "jp.pxv.android",
+          "name": "Pixiv",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0096FA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Pixiv Search Ranking",
+      "description": "Fills the Popular search tab on a free account: either with Pixiv's free popularity preview (about 30 works) or by re-sorting the page by bookmark count. Selected in the Pixiv-Patched page.",
+      "default": false,
       "category": null,
       "compatiblePackages": [
         {
