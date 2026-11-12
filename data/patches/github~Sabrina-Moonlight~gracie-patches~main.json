@@ -1,7 +1,15 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.72",
+  "version": "1.0.79",
   "patches": [
+    {
+      "name": "Add battery optimization permission (internal)",
+      "description": "Adds REQUEST_IGNORE_BATTERY_OPTIMIZATIONS to the manifest.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
     {
       "name": "Clone app",
       "description": "Changes the app package name and label so you can install several clones. Pick a clone number (1–50). Each number is a different package (app.clone1, app.clone2…). On update, re-apply the same number on each clone.",
@@ -475,8 +483,16 @@
       "options": []
     },
     {
+      "name": "Randomize device identity",
+      "description": "Generates random Android ID, Wi-Fi MAC, Bluetooth MAC and serial each time the patch is applied. Useful so every clone has a different identity.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Remove Pairip Protection",
-      "description": "Skips the local license check entry point.",
+      "description": "Skips PairIP license checks and the delayed process exit.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -507,6 +523,14 @@
       "options": []
     },
     {
+      "name": "Request unrestricted battery",
+      "description": "On app start, shows the system dialog to allow unrestricted battery (ignore battery optimizations) if it is not already allowed.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Unlock Local",
       "description": "Marks icons, wallpapers and widgets as unlocked so only Add/Apply shows, never Unlock.",
       "default": true,
@@ -531,6 +555,38 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock subscription",
+      "description": "Unlocks BB Pass shared subscription and marks Play purchases as owned. Activates local SharedSub state when the game starts.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.bimiboo.kids.doctor.games",
+          "name": "Kids doctor games",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.12",
+              "versionCodes": {
+                "ARM64_V8A": 466,
+                "ARMEABI_V7A": 466,
+                "X86_64": 466,
+                "X86": 466
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
