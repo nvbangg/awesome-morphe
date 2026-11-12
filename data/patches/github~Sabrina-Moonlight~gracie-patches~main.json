@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.79",
+  "version": "1.0.81",
   "patches": [
     {
       "name": "Add battery optimization permission (internal)",
@@ -563,8 +563,40 @@
       "options": []
     },
     {
-      "name": "Unlock subscription",
-      "description": "Unlocks BB Pass shared subscription and marks Play purchases as owned. Activates local SharedSub state when the game starts.",
+      "name": "Unlock subscription (IL2CPP native)",
+      "description": "Forces Unity IL2CPP access getters (HasThisAppPurchase, IsOwnedSharedActive, offline grants, IsFullAccess, IsActive) to true in lib/arm64-v8a/libil2cpp.so. Required together with Unlock subscription (Java / SharedSub).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.bimiboo.kids.doctor.games",
+          "name": "Kids doctor games",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.12",
+              "versionCodes": {
+                "ARM64_V8A": 466,
+                "ARMEABI_V7A": 466,
+                "X86_64": 466,
+                "X86": 466
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock subscription (Java / SharedSub)",
+      "description": "Unlocks BB Pass shared subscription on the Java/JNI side and marks Play purchases as owned. Activates local SharedSub state when the game starts. Must be used together with Unlock subscription (IL2CPP native).",
       "default": true,
       "category": null,
       "compatiblePackages": [

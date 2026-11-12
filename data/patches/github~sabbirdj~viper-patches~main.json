@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "patches": [
     {
       "name": "MicroG RE Google Sign-In",
@@ -89,6 +89,35 @@
     },
     {
       "name": "Spoof installer source (Play Store)",
+      "description": "Makes Bangladesh VPN appear installed from Google Play (com.android.vending) so a manually installed build does not hit 'not installed from Play Store' paths. Same logic as the Morphe universal 'Change installer source' patch. Verified on 67.26.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.banglatech.bangladeshvpn",
+          "name": "Bangladesh VPN",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "67.26",
+              "versionCodes": {
+                "ARM64_V8A": 67
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof installer source (Play Store)",
       "description": "Makes Shohay appear installed from Google Play (com.android.vending) so a manually installed build does not hit 'not installed from Play Store' paths. Same logic as the Morphe universal 'Change installer source' patch. Verified on Shohay 2.1.1.",
       "default": true,
       "category": null,
@@ -164,6 +193,35 @@
               "version": "2.4.3",
               "versionCodes": {
                 "ARM64_V8A": 49
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock VIP",
+      "description": "Unlocks Bangladesh VPN VIP by forcing the local subscription tier to FULL in every place that reads it: the tier predicates (H/I), the Play Billing purchase callback, the tier deriver, and the persisted tier default. VIP servers connect and the premium section activates. No server change needed. Verified on 67.26.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.banglatech.bangladeshvpn",
+          "name": "Bangladesh VPN",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "67.26",
+              "versionCodes": {
+                "ARM64_V8A": 67
               },
               "isExperimental": false,
               "minSdk": null,
