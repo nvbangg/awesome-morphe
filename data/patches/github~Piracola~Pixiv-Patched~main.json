@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0",
+  "version": "1.7.2",
   "patches": [
     {
       "name": "Pixiv AI Work Flagger",
-      "description": "Identifies AI-generated works, dims thumbnails with an [AI] badge (or hides them completely), displays a full-width warning banner below the top toolbar on artwork detail, adds title [AI] pill, auto-blocks AI artists, and provides in-app settings with tag editor.",
+      "description": "Identifies AI-generated works from Pixiv's illustAiType field, dims their thumbnails with an [AI] badge or hides them, adds a warning banner and an [AI] title pill on the detail screen, and can auto-block AI artists or drop works whose tags match a blacklist. Adjustable in the Pixiv-Patched page.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -19,6 +19,13 @@
           "targets": [
             {
               "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.203.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -31,7 +38,7 @@
     },
     {
       "name": "Pixiv Adblocker",
-      "description": "Eliminates bottom advertising banners and interstitials across all screens without layout padding, suppresses rate-this-app dialogs, and hides sponsored works in feeds.",
+      "description": "Removes the bottom banner frame on every screen, blocks AppLovin interstitials, suppresses rate-this-app dialogs, and hides sponsored works in feeds and on the illustration detail screen.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -46,6 +53,47 @@
           "targets": [
             {
               "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.203.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Pixiv Bookmark Threshold",
+      "description": "Drops works below the chosen bookmark count from search results on the device, for illusts and novels alike, and tops a short page up from the following pages so it does not turn blank. The request itself is left alone, so the floor works with search words in any language. Adjustable in the Pixiv-Patched page.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "jp.pxv.android",
+          "name": "Pixiv",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0096FA",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.203.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -58,7 +106,7 @@
     },
     {
       "name": "Pixiv Browsing History",
-      "description": "Records the illustrations, manga and novels opened in the app into an on-device browsing history, and shows it in the app's own history screen (manga and novels apart) instead of Pixiv's server-side list.",
+      "description": "Records the illustrations, manga and novels opened in the app into a history kept on the device, and takes over Pixiv's history screen with it (manga and novels on separate tabs).",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -73,6 +121,13 @@
           "targets": [
             {
               "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.203.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -85,7 +140,7 @@
     },
     {
       "name": "Pixiv Downloader",
-      "description": "Adds a button to the illustration and manga detail view to download original full-quality artwork directly to your Photos library with clean metadata filenames.",
+      "description": "Adds a save button to the illustration and manga detail screen that writes the original artwork to Pictures/Pixiv, named after the work id, title and author. Android 9 and older save into the app's private folder.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -104,6 +159,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "6.203.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -112,7 +174,7 @@
     },
     {
       "name": "Pixiv Enhanced Viewer & Instant Zoom",
-      "description": "Displays the standard-resolution artwork as an instant placeholder while the full-resolution image loads, allows immediate pinch-to-zoom/pan preserving zoom coordinates upon high-res load, and shows a discreet loading indicator.",
+      "description": "Shows the standard-resolution artwork as an instant placeholder while the full-resolution image loads, so pinch-to-zoom and panning work right away and keep their position when the full image replaces the placeholder.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -127,6 +189,13 @@
           "targets": [
             {
               "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.203.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -158,6 +227,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "6.203.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -166,7 +242,7 @@
     },
     {
       "name": "Pixiv OLED Dark Theme",
-      "description": "Overrides dark gray surface and background colors with pure pitch black (#ff000000) for OLED battery savings and true high-contrast dark mode.",
+      "description": "Overrides the dark theme's surface and background colours with pure black (#ff000000).",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -181,6 +257,13 @@
           "targets": [
             {
               "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.203.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -212,6 +295,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "6.203.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -220,7 +310,7 @@
     },
     {
       "name": "Pixiv Popular Search Unlock",
-      "description": "Fakes the premium flag in the search pager so the app asks for popular_desc. Pixiv still answers a free account with date order, so use Pixiv Popular Search Trial instead.",
+      "description": "Fakes the premium flag in the search pager so the app asks for popular_desc. Pixiv still answers a free account with date order.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -235,6 +325,13 @@
           "targets": [
             {
               "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.203.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -266,6 +363,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "6.203.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -274,8 +378,8 @@
     },
     {
       "name": "Pixiv Search Ranking",
-      "description": "Fills the Popular search tab on a free account: either with Pixiv's free popularity preview (about 30 works) or by re-sorting the page by bookmark count. Selected in the Pixiv-Patched page.",
-      "default": false,
+      "description": "Fills the Popular search tab on a free account with Pixiv's free popularity preview (about 30 illusts or novels), for both illust and novel search. Adjustable in the Pixiv-Patched page.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -293,6 +397,13 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "6.203.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -301,7 +412,7 @@
     },
     {
       "name": "Pixiv-Patched Drawer Entry",
-      "description": "Adds a Pixiv-Patched item to Pixiv's home drawer that opens a page with the state of every patch, the AI work settings and the browsing history kept on this device.",
+      "description": "Adds a Pixiv-Patched item to Pixiv's home drawer. The page it opens holds the AI work display settings, the popular-search ranking and the bookmark threshold, shows the state of the other patches, and lists the browsing history kept on this device.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -316,6 +427,13 @@
           "targets": [
             {
               "version": "6.202.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "6.203.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

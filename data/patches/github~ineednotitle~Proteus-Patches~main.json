@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.2.10",
+  "version": "2.3.0",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -85,6 +85,59 @@
                 "ARMEABI_V7A": 118,
                 "X86_64": 118,
                 "X86": 118
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Allow screenshots",
+      "description": "Removes FLAG_SECURE from Proton Pass activities, allowing screenshots and screen recording.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "proton.android.pass",
+          "name": "Proton Pass",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103401,
+                "ARMEABI_V7A": 14103401,
+                "X86_64": 14103401,
+                "X86": 14103401
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "proton.android.pass.fdroid",
+          "name": "Proton Pass (F-Droid)",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103000,
+                "ARMEABI_V7A": 14103000,
+                "X86_64": 14103000,
+                "X86": 14103000
               },
               "isExperimental": false,
               "minSdk": null,
@@ -567,6 +620,24 @@
       "options": []
     },
     {
+      "name": "Block Play Billing purchase prompts",
+      "description": "Removes Google Play Billing purchase-flow calls whose return value is unused,\nso the purchase sheet does not open.\n\nApplies to any app using Play Billing. This does not unlock paid features or\nfake purchases. Best effort: flows that consume the returned BillingResult\nare skipped.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockPurchaseFlows",
+          "title": "Block purchase flows",
+          "description": "Remove Play Billing purchase-flow calls when their result is unused.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Block Popups & Ratings",
       "description": "Disables the identified rating and Brave Ads signup eligibility checks; other dialogs can still appear.",
       "default": false,
@@ -658,6 +729,33 @@
           "key": "blockOffersHost",
           "title": "Block offers server",
           "description": "Also blocks the shopping offers server. Turn off to keep it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Block advertising & device IDs",
+      "description": "Makes the Google advertising ID empty, marks ad tracking as limited, and\nblanks Android ID reads.\n\nApplies to any app. Features that rely on a stable device identifier may\ndegrade or reset.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockAdvertisingId",
+          "title": "Block advertising ID",
+          "description": "Return an empty advertising ID and report limited ad tracking.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockAndroidId",
+          "title": "Block Android ID",
+          "description": "Return an empty string for Settings.Secure android_id reads.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -825,6 +923,51 @@
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
+    },
+    {
+      "name": "Block crash-reporting SDKs",
+      "description": "Removes reporting calls to Sentry, Firebase Crashlytics, Bugsnag, Datadog,\nNew Relic and AppCenter.\n\nApplies to any app. Best effort: obfuscated SDKs and calls whose return value\nis consumed are skipped. Crash reports will no longer reach the developer.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockCrashReporting",
+          "title": "Block crash reporting",
+          "description": "Remove crash and exception reporting calls from known SDKs.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Block in-app update & review prompts",
+      "description": "Stops the app from offering Play Core in-app updates and review prompts.\nUpdate availability is reported as unavailable, update flows and completion\ncalls are removed when safe, and review flows are removed when their return\nvalue is unused.\n\nApplies to any app using Google Play Core. Best effort: obfuscated Play Core\nintegrations or review flows that consume the returned Task are not covered.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockUpdatePrompts",
+          "title": "Block in-app update prompts",
+          "description": "Report no available update and remove Play Core update flows.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockReviewPrompts",
+          "title": "Block in-app review prompts",
+          "description": "Remove Play Core review flows when their return value is unused.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Block location tracking",
@@ -1361,33 +1504,6 @@
       ]
     },
     {
-      "name": "Change package name (clone app)",
-      "description": "Installs a clone of any app beside the original by changing the package,\npermission names, provider authorities and launcher label.\n\nThe clone is re-signed: payments, SDK logins, Google sign-in and anti-fraud\nchecks bound to the original signature may not work on the clone.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "clonePackageName",
-          "title": "Package name",
-          "description": "Package name for the cloned app. Leave empty for the default (app.morphe.<app name>).",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "",
-          "values": null
-        },
-        {
-          "key": "cloneAppName",
-          "title": "App name",
-          "description": "Launcher name for the cloned app. Leave empty to append \"(Proteus)\" to the current label.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "",
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Clean New Tab",
       "description": "Removes sponsored wallpapers, news feed and promo cards.",
       "default": false,
@@ -1884,6 +2000,49 @@
       "options": []
     },
     {
+      "name": "Disable Bluetooth voice routing",
+      "description": "Treats every Bluetooth audio device as an unusable car device so Gboard voice typing keeps using the built-in microphone.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.5.4.993608717-release-arm64-v8a",
+              "versionCodes": {
+                "ARM64_V8A": 176049702,
+                "ARMEABI_V7A": 176049702,
+                "X86_64": 176049702,
+                "X86": 176049702
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.5.4.993608717-release-armeabi-v7a",
+              "versionCodes": {
+                "ARM64_V8A": 176049701,
+                "ARMEABI_V7A": 176049701,
+                "X86_64": 176049701,
+                "X86": 176049701
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable Click Tracking",
       "description": "Forces the outbound click-tracking account preference off at the Account deserialization choke point (local; server-side click analytics may still be recorded). Enabled by default.",
       "default": true,
@@ -2054,6 +2213,59 @@
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable app lock",
+      "description": "Forces Proton Pass app lock and biometric authentication into the disabled/authenticated state and prevents auto-lock timeouts.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "proton.android.pass",
+          "name": "Proton Pass",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103401,
+                "ARMEABI_V7A": 14103401,
+                "X86_64": 14103401,
+                "X86": 14103401
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "proton.android.pass.fdroid",
+          "name": "Proton Pass (F-Droid)",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103000,
+                "ARMEABI_V7A": 14103000,
+                "X86_64": 14103000,
+                "X86": 14103000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
       "options": []
     },
     {
@@ -2243,6 +2455,59 @@
                 "ARMEABI_V7A": 22510,
                 "X86_64": 22510,
                 "X86": 22510
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable clipboard auto-clear",
+      "description": "Forces the clipboard clear delay to Never so copied passwords and aliases are not removed automatically.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "proton.android.pass",
+          "name": "Proton Pass",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103401,
+                "ARMEABI_V7A": 14103401,
+                "X86_64": 14103401,
+                "X86": 14103401
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "proton.android.pass.fdroid",
+          "name": "Proton Pass (F-Droid)",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103000,
+                "ARMEABI_V7A": 14103000,
+                "X86_64": 14103000,
+                "X86": 14103000
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2873,12 +3138,22 @@
       "options": []
     },
     {
-      "name": "Force not debuggable",
-      "description": "Sets android:debuggable=\"false\" in the manifest so the patched app cannot be\ninspected or modified over ADB/USB debugging.\n\nApplies to any app. Safe for release builds.",
+      "name": "Force offline mode (simulate no network)",
+      "description": "Makes connectivity APIs report no active network, no network capabilities and\ndisconnected network info, so apps that check connectivity behave as if the\ndevice is offline.\n\nApplies to any app. This is a best-effort simulation, not a firewall: sockets,\nHTTP clients and code that ignores connectivity state can still reach the\nnetwork.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
-      "options": []
+      "options": [
+        {
+          "key": "simulateOffline",
+          "title": "Simulate offline device",
+          "description": "Report no active network and no network capabilities.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Force password login (OTP bypass)",
@@ -3489,14 +3764,6 @@
       "options": []
     },
     {
-      "name": "Lock down exported components",
-      "description": "Sets android:exported=\"false\" on activities, services and receivers that have no\nintent filter, so other apps cannot start them directly. Deep links, share-in\ntargets and the launcher activity (all of them have intent filters) are never\ntouched.\n\nApplies to any app. May break apps that rely on explicitly exported entry points.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": []
-    },
-    {
       "name": "Meesho: Block analytics & tracking SDKs",
       "description": "Blocks Meesho's analytics & tracking SDKs (Firebase Analytics, AppsFlyer,\nAdjust, Facebook AppEvents, WebEngage, CleverTap and similar) using the\nsame universal heuristic as 'Block analytics & tracking SDKs'.\n\nApplies to com.meesho.shopping only. Heuristic; obfuscated or\nreflection-based reporting is not covered. Unverified on device.",
       "default": false,
@@ -3816,7 +4083,7 @@
     },
     {
       "name": "Offline-only voice typing & telemetry reduction",
-      "description": "On Gboard 18.5.4.993608717 arm64, routes core voice typing only through the on-device\nrecognizers and returns no recognizer when a local provider/model is unavailable (no\nonline fallback). Disables Agentic Dictation's server/batch retry path, reduces selected\nmetrics/telemetry and disables app backup. INTERNET and unrelated network features are\nretained; this is best-effort telemetry reduction, not a guarantee of zero Google traffic.\n\nRequires the appropriate offline speech model/provider to be installed. Without one,\nvoice typing is unavailable by design. Agentic Dictation is disabled.",
+      "description": "On Gboard 18.5.4.993608717 arm/arm64, routes core voice typing only through the on-device\nrecognizers and returns no recognizer when a local provider/model is unavailable (no\nonline fallback). Disables Agentic Dictation's server/batch retry path, reduces selected\nmetrics/telemetry and disables app backup. INTERNET and unrelated network features are\nretained; this is best-effort telemetry reduction, not a guarantee of zero Google traffic.\n\nRequires the appropriate offline speech model/provider to be installed. Without one,\nvoice typing is unavailable by design. Agentic Dictation is disabled.",
       "default": false,
       "dependencies": [
         "ResourcePatch"
@@ -3837,6 +4104,18 @@
                 "ARMEABI_V7A": 176049702,
                 "X86_64": 176049702,
                 "X86": 176049702
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "18.5.4.993608717-release-armeabi-v7a",
+              "versionCodes": {
+                "ARM64_V8A": 176049701,
+                "ARMEABI_V7A": 176049701,
+                "X86_64": 176049701,
+                "X86": 176049701
               },
               "isExperimental": false,
               "minSdk": null,
@@ -5308,37 +5587,6 @@
       "options": []
     },
     {
-      "name": "Spoof app signature",
-      "description": "Makes the app think its signing certificate is unchanged after Morphe re-signs it.\n\nUseful when an app crashes or shows a tamper warning because it checks its own certificate.\n\nDoes not bypass Play Integrity / SafetyNet hardware attestation.\n\nApply with Original app certificate patch.",
-      "default": false,
-      "dependencies": [
-        "ResourcePatch",
-        "RawResourcePatch",
-        "ResourcePatch"
-      ],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "packageName",
-          "title": "Package name override (optional)",
-          "description": "Leave blank — read automatically from the app. Only set this if you changed the app's package name and the patch is using the wrong one.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": null,
-          "values": null
-        },
-        {
-          "key": "signature",
-          "title": "Certificate Base64 override (optional)",
-          "description": "Leave blank to read the original certificate from the APK automatically. Only paste a Base64-encoded DER certificate here if auto-detection fails (for example because the APK was already re-signed).",
-          "required": false,
-          "type": "kotlin.String",
-          "default": null,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Spoof features",
       "description": "Spoofs selectable Pixel Photos build and feature flags.",
       "default": true,
@@ -5431,31 +5679,6 @@
           "type": "kotlin.Boolean",
           "default": true,
           "values": null
-        }
-      ]
-    },
-    {
-      "name": "Spoof install source",
-      "description": "Makes the app think it was installed from a specific store (default: Google Play).\n\nUseful when an app blocks features or shows errors because it detects it was not installed from the Play Store.\n\nOnly affects what the app itself sees - does not change the real system install record.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": [
-        {
-          "key": "installerPackageName",
-          "title": "Store to impersonate",
-          "description": "Most apps only check for the Google Play Store, so the default is usually correct. Pick from the list, or type any package name directly if your app checks for a different store.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "com.android.vending",
-          "values": {
-            "Google Play Store": "com.android.vending",
-            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
-            "Huawei AppGallery": "com.huawei.appmarket",
-            "Amazon Appstore": "com.amazon.venezia",
-            "Xiaomi GetApps": "com.xiaomi.mipicks",
-            "F-Droid": "org.fdroid.fdroid"
-          }
         }
       ]
     },
@@ -5584,6 +5807,59 @@
                 "ARMEABI_V7A": 29145545,
                 "X86_64": 29145545,
                 "X86": 29145545
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Suppress telemetry",
+      "description": "Disables Proton Pass telemetry event dispatch, listeners and repository upload entry points.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "proton.android.pass",
+          "name": "Proton Pass",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103401,
+                "ARMEABI_V7A": 14103401,
+                "X86_64": 14103401,
+                "X86": 14103401
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "proton.android.pass.fdroid",
+          "name": "Proton Pass (F-Droid)",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103000,
+                "ARMEABI_V7A": 14103000,
+                "X86_64": 14103000,
+                "X86": 14103000
               },
               "isExperimental": false,
               "minSdk": null,
@@ -6061,6 +6337,28 @@
               "description": null
             }
           ]
+        },
+        {
+          "packageName": "proton.android.pass.fdroid",
+          "name": "Proton Pass (F-Droid)",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6D4AFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.41.3",
+              "versionCodes": {
+                "ARM64_V8A": 14103000,
+                "ARMEABI_V7A": 14103000,
+                "X86_64": 14103000,
+                "X86": 14103000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
         }
       ],
       "options": []
@@ -6349,28 +6647,76 @@
       "options": []
     },
     {
-      "name": "WebView: block mixed content (HTTPS pages load HTTP subresources)",
-      "description": "Forces WebSettings.setMixedContentMode to NEVER_ALLOW, so HTTPS pages in the\napp's WebViews cannot load plaintext HTTP subresources.\n\nApplies to any app. May break legacy web content inside the app.",
+      "name": "WebView hardening",
+      "description": "Hardens every WebView in the app with selectable protections: block mixed\ncontent, disable local file access, remove JavaScript bridges, block media\nautoplay, disable geolocation, block third-party cookies and stop JavaScript\npopups.\n\nApplies to any app. Web logins or legacy web content may break when bridges,\npopups or third-party cookies are disabled. Turn off individual switches if\na web flow stops working.",
       "default": false,
       "dependencies": [],
       "compatiblePackages": null,
-      "options": []
-    },
-    {
-      "name": "WebView: disable local file access",
-      "description": "Disables WebView local file access (file://, content://, universal/file-URL\naccess) in every app, so web content cannot read the app's private files.\n\nApplies to any app. Safe.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": []
-    },
-    {
-      "name": "WebView: remove JavaScript interface objects",
-      "description": "Removes addJavascriptInterface bridges from the app's WebViews so loaded web\ncontent cannot invoke injected Java objects.\n\nApplies to any app. Web flows that depend on the bridge (some logins) may break.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": null,
-      "options": []
+      "options": [
+        {
+          "key": "blockMixedContent",
+          "title": "Block mixed content",
+          "description": "Force WebSettings.setMixedContentMode to NEVER_ALLOW so HTTPS pages cannot load HTTP subresources.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableFileAccess",
+          "title": "Disable local file access",
+          "description": "Turn off file://, content:// and universal file-URL access in WebViews.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeJsInterfaces",
+          "title": "Remove JavaScript bridges",
+          "description": "Remove addJavascriptInterface bridges so web content cannot call injected Java objects.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockAutoplay",
+          "title": "Block media autoplay",
+          "description": "Require a user gesture before WebView media starts playing.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableGeolocation",
+          "title": "Disable WebView geolocation",
+          "description": "Turn off WebSettings geolocation so web content cannot request location.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockThirdPartyCookies",
+          "title": "Block third-party cookies",
+          "description": "Stop WebViews from accepting third-party cookies.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockJsPopups",
+          "title": "Block JavaScript popups",
+          "description": "Stop web content from opening windows without a user gesture.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     }
   ]
 }

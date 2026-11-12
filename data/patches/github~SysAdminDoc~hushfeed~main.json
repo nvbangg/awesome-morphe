@@ -1,21 +1,20 @@
 {
-  "version": "v0.81.0",
+  "version": "v0.82.0",
   "appNames": {
     "com.zhiliaoapp.musically": "TikTok"
   },
   "patches": [
     {
       "name": "AMOLED dark theme",
-      "description": "Makes TikTok's dark mode backgrounds pure black, or a dark color you pick in this patch's options. Black lets OLED screens switch those pixels off. Light mode doesn't change. It's built in while patching, so only patching again without it undoes it.",
+      "description": "Makes TikTok's dark mode backgrounds pure black, or a dark color you pick in this patch's options. Black lets OLED screens switch those pixels off. Light mode doesn't change. The AMOLED dark mode switch in Hushfeed settings > App starts on, and turning it off brings TikTok's own dark grays back.",
       "category": "Interface",
       "use": false,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -29,13 +28,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -54,21 +53,29 @@
             "Mocha": "#181825",
             "Dark gray": "#121212"
           }
+        },
+        {
+          "key": "amoled_dark_mode",
+          "title": "Default: amoled dark mode",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
         }
       ]
     },
     {
       "name": "Accent color",
-      "description": "Swaps the red of TikTok's main buttons and red text for blue, green, purple, orange, teal or a color code you type in this patch's options, or for the color of the phone's wallpaper theme on Android 12 and up. Unread dots and counts change with it. Warnings stay red, and so can icons with the red drawn in. It's built in while patching, so only patching again without it undoes it.",
+      "description": "Swaps the red of TikTok's main buttons and red text for blue, green, purple, orange, teal or a color code you type in this patch's options, or for the color of the phone's wallpaper theme on Android 12 and up. Unread dots and counts change with it. Warnings stay red, and so can icons with the red drawn in. The feed's like heart and save bookmark can take colors of their own. It's built in while patching, so only patching again without it undoes it.",
       "category": "Interface",
       "use": false,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -82,13 +89,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -112,6 +119,39 @@
           }
         },
         {
+          "key": "likeColor",
+          "title": "Like color",
+          "description": "The heart on a video you liked, in the feed and in its tap animation. TikTok original leaves it red. It works in light, dark and AMOLED alike, with or without a new accent.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#FE2C55",
+          "values": {
+            "TikTok original": "#FE2C55",
+            "Blue": "#2D7FF9",
+            "Green": "#1DA153",
+            "Purple": "#8B5CF6",
+            "Orange": "#F26411",
+            "Teal": "#0F9E8E"
+          }
+        },
+        {
+          "key": "saveColor",
+          "title": "Save color",
+          "description": "The bookmark on a video you saved to Favorites, in the feed and in its animation. TikTok original leaves it yellow.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#FACE15",
+          "values": {
+            "TikTok original": "#FACE15",
+            "Blue": "#2D7FF9",
+            "Green": "#1DA153",
+            "Purple": "#8B5CF6",
+            "Orange": "#F26411",
+            "Teal": "#0F9E8E",
+            "Red": "#FE2C55"
+          }
+        },
+        {
           "key": "followWallpaper",
           "title": "Follow the wallpaper",
           "description": "On Android 12 and up, buttons and red text take the color of the phone's wallpaper theme and change when the wallpaper does, and the color above is not used. Android 11 and older keep TikTok's red. The soft see-through reds stay as they are.",
@@ -128,12 +168,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -147,13 +187,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -168,13 +208,12 @@
       "use": true,
       "dependencies": [
         "Block author button",
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -188,13 +227,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -515,13 +554,12 @@
       "category": "Downloads",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -535,13 +573,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -574,13 +612,12 @@
       "category": "Downloads",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -594,13 +631,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -620,17 +657,16 @@
     },
     {
       "name": "Always show publish date",
-      "description": "Shows the date a video was posted next to the creator's name, so you can tell how old it is. It can also show the exact time, dates and lengths on profile grids, or sort the videos a grid has loaded. On by default. Turn it off in Hushfeed settings > Feed screen.",
+      "description": "Shows the date a video was posted next to the creator's name, so you can tell how old it is. It can also show the exact time, dates and lengths on profile grids, sort the videos a grid has loaded, start your Liked grid at a year or month you pick, or add a drag handle and jump buttons to long grids. On by default. Turn it off in Hushfeed settings > Feed screen.",
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -644,13 +680,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -737,6 +773,33 @@
           "type": "kotlin.String",
           "default": "off",
           "values": null
+        },
+        {
+          "key": "liked_jump_to_date",
+          "title": "Default: liked jump to date",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "grid_search",
+          "title": "Default: grid search",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "grid_position_controls",
+          "title": "Default: grid position controls",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
         }
       ]
     },
@@ -746,13 +809,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -766,13 +828,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -796,13 +858,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -816,13 +877,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -855,13 +916,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -875,13 +935,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -928,15 +988,15 @@
     },
     {
       "name": "Block P2P video relay",
-      "description": "Removes the files TikTok uses to pass videos on to other viewers through your phone's internet connection. The app gets about 3.5 MB smaller. It's built in while patching, so only patching again without it brings them back.",
+      "description": "Removes the files TikTok uses to pass videos on to other viewers through your phone's internet connection. The app gets about 4.5 MB smaller. It's built in while patching, so only patching again without it brings them back.",
       "category": "Performance",
       "use": false,
       "dependencies": [
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -950,13 +1010,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -970,13 +1030,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -990,13 +1049,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1019,6 +1078,15 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "pause_before_feed_seconds",
+          "title": "Default: pause before feed seconds",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
           "values": null
         },
         {
@@ -1236,13 +1304,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1256,13 +1323,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1286,13 +1353,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1306,13 +1372,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1336,13 +1402,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1356,13 +1421,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1404,13 +1469,12 @@
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1424,13 +1488,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1454,13 +1518,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1474,13 +1537,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1504,11 +1567,11 @@
       "category": "Interface",
       "use": false,
       "dependencies": [
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1522,13 +1585,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1552,11 +1615,11 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1570,13 +1633,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1590,12 +1653,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "Comment publish diagnostics"
+        "Comment publish diagnostics",
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1609,13 +1672,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1629,13 +1692,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1649,13 +1711,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1679,14 +1741,13 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
         "Double-tap controls",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1700,13 +1761,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -1786,6 +1847,15 @@
           "values": null
         },
         {
+          "key": "hide_comment_avatars",
+          "title": "Default: hide comment avatars",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "comment_search",
           "title": "Default: comment search",
           "description": null,
@@ -1822,8 +1892,35 @@
           "values": null
         },
         {
+          "key": "fold_long_comments",
+          "title": "Default: fold long comments",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "fold_long_comments_lines",
+          "title": "Default: fold long comments lines",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 4,
+          "values": null
+        },
+        {
           "key": "hide_comment_media",
           "title": "Default: hide comment media",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_voice_comments",
+          "title": "Default: hide voice comments",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -1921,6 +2018,24 @@
           "values": null
         },
         {
+          "key": "hide_comment_close_button",
+          "title": "Default: hide comment close button",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_comment_expand_button",
+          "title": "Default: hide comment expand button",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "larger_comment_like_target",
           "title": "Default: larger comment like target",
           "description": null,
@@ -1938,13 +2053,12 @@
       "use": true,
       "dependencies": [
         "Block author button",
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -1958,13 +2072,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2024,13 +2138,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2044,13 +2157,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2092,13 +2205,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2112,13 +2224,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2138,15 +2250,15 @@
     },
     {
       "name": "Create stickers",
-      "description": "Adds a Create button to the Saved page of the comment sticker panel. Pick a photo and it turns into one of your saved stickers. Make sticker in a video's share sheet does the same with its cover. Works as soon as you patch it in, with no switch.",
+      "description": "Adds a Create button to the Saved page of the comment sticker panel. Pick a photo and it turns into one of your saved stickers. Make sticker in a video's share sheet opens TikTok's sticker editor for any video, or uses its cover when the editor can't open. Profiles that have stickers keep their Stickers tab, and it opens their sticker sets. Works as soon as you patch it in, with no switch.",
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2160,13 +2272,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2180,11 +2292,11 @@
       "category": "Interface",
       "use": false,
       "dependencies": [
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2198,13 +2310,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2238,7 +2350,7 @@
         {
           "key": "iconPicture",
           "title": "Icon picture",
-          "description": "Where to find a square PNG picture of your own, 432 to 1024 pixels on each side, to use instead of TikTok's note. Home screens trim icons to their own shape, so keep what matters in the middle two thirds. With a picture, the style only sets the color behind it and there's no themed icon. Leave it empty to keep the note.",
+          "description": "Where to find a square PNG picture of your own, 432 to 1024 pixels on each side, to use instead of TikTok's note. Home screens trim icons to their own shape, so keep what matters in the middle two thirds. With a picture, the style only sets the color behind it and there's no themed icon. A folder works too when the picture is the only PNG in it or is named icon.png. Leave it empty to keep the note.",
           "required": false,
           "type": "kotlin.String",
           "default": null,
@@ -2264,13 +2376,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2284,13 +2395,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2332,13 +2443,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2352,13 +2462,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2409,13 +2519,12 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2429,13 +2538,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2495,11 +2604,11 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2513,13 +2622,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2533,11 +2642,11 @@
       "category": "Downloads",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2551,13 +2660,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2571,13 +2680,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2591,13 +2699,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2621,13 +2729,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2641,13 +2748,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2671,13 +2778,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2691,13 +2797,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2722,13 +2828,12 @@
       "use": true,
       "dependencies": [
         "Block author button",
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2742,13 +2847,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2817,13 +2922,12 @@
       "category": "Downloads",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2837,13 +2941,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -2975,13 +3079,12 @@
       "category": "Performance",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -2995,13 +3098,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -3025,13 +3128,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -3045,13 +3147,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -3075,13 +3177,12 @@
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -3095,13 +3196,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -3129,7 +3230,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -3143,13 +3244,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -3168,7 +3269,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -3182,13 +3283,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -3202,13 +3303,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -3222,13 +3322,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -3440,6 +3540,15 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "search_tab_picks",
+          "title": "Default: search tab picks",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         },
         {
@@ -3770,17 +3879,16 @@
     },
     {
       "name": "Feed tab navigation",
-      "description": "Lets you hide feed and bottom tabs you don't use, rename the bottom tabs, choose the tab TikTok opens on, stop For You reloading when you tap Home and hold Profile to open your Watch history. Starts off, except holding Home to open Hushfeed settings. Find it in Hushfeed settings > Feed tabs.",
+      "description": "Lets you hide feed and bottom tabs you don't use, put Discover in the bottom bar and Friends in the top tabs, rename the bottom tabs, pick the bottom bar's icons, choose the tab TikTok opens on, stop For You reloading when you tap Home and hold Profile to open your Watch history. Starts off, except holding Home to open Hushfeed settings. Find it in Hushfeed settings > Feed tabs.",
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -3794,13 +3902,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -3859,6 +3967,33 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "discover_bottom_tab",
+          "title": "Default: discover bottom tab",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "friends_top_tab",
+          "title": "Default: friends top tab",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "bottom_tab_icon_style",
+          "title": "Default: bottom tab icon style",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "tiktok",
           "values": null
         },
         {
@@ -3961,6 +4096,15 @@
           "values": null
         },
         {
+          "key": "profile_tab_switches_accounts",
+          "title": "Default: profile tab switches accounts",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "inbox_tab_flips_read_receipts",
           "title": "Default: inbox tab flips read receipts",
           "description": null,
@@ -4031,13 +4175,12 @@
       "category": "Interface",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4051,13 +4194,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4108,13 +4251,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4128,13 +4270,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4167,11 +4309,11 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4185,13 +4327,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4205,13 +4347,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4225,13 +4366,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4264,11 +4405,11 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4282,13 +4423,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4302,13 +4443,12 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4322,13 +4462,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4352,13 +4492,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4372,13 +4511,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4438,13 +4577,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4458,13 +4596,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4488,11 +4626,11 @@
       "category": "Performance",
       "use": false,
       "dependencies": [
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4506,13 +4644,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4526,14 +4664,13 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
         "Feed filter",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4547,13 +4684,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4604,6 +4741,15 @@
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
+        },
+        {
+          "key": "profile_hold_opens_local_watch_history",
+          "title": "Default: profile hold opens local watch history",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
         }
       ]
     },
@@ -4613,13 +4759,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4633,13 +4778,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4663,13 +4808,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4683,13 +4827,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4713,13 +4857,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4733,13 +4876,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4781,13 +4924,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4801,13 +4943,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4831,13 +4973,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4851,13 +4992,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4877,17 +5018,16 @@
     },
     {
       "name": "Hide feed search button",
-      "description": "Removes the search button from the top right of the feed, for a cleaner screen. Starts off. Turn it on in Hushfeed settings > Feed screen.",
+      "description": "Removes the search button from the top right of the feed and the one over the video while comments are open. Starts off. Turn it on in Hushfeed settings > Feed screen.",
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4901,13 +5041,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4931,13 +5071,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -4951,13 +5090,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -4986,17 +5125,16 @@
     },
     {
       "name": "Hide inbox items",
-      "description": "Lets you hide Inbox rows you don't use, like message requests, TikTok Shop and the stories row, plus call buttons and suggested replies in chats. Each has its own switch. Also offers search in loaded Activity notifications and TikTok's Main, Requests, Unread and Starred tabs on any account, and a way to rebuild message search. Starts off. Turn it on in Hushfeed settings > Inbox.",
+      "description": "Lets you hide Inbox rows you don't use, like message requests, TikTok Shop, the stories row and the On this day memory in it, plus call buttons and suggested replies in chats. Each has its own switch. Also offers search in loaded Activity notifications and TikTok's Main, Requests, Unread and Starred tabs on any account, a way to rebuild message search and room to pin more than 5 chats. Starts off. Turn it on in Hushfeed settings > Inbox.",
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5010,13 +5148,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5026,6 +5164,15 @@
         {
           "key": "hide_inbox_stories",
           "title": "Default: hide inbox stories",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_inbox_on_this_day",
+          "title": "Default: hide inbox on this day",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -5220,6 +5367,15 @@
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
+        },
+        {
+          "key": "pin_more_chats",
+          "title": "Default: pin more chats",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
         }
       ]
     },
@@ -5229,13 +5385,12 @@
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5249,13 +5404,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5279,13 +5434,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5299,13 +5453,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5374,13 +5528,12 @@
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5394,13 +5547,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5424,13 +5577,12 @@
       "category": "Search",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5444,13 +5596,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5492,13 +5644,12 @@
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5512,13 +5663,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5542,13 +5693,12 @@
       "category": "Interface",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5562,13 +5712,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5592,12 +5742,12 @@
       "category": "Feed",
       "use": false,
       "dependencies": [
-        "BytecodePatch",
-        "Hide CAPTCHA popups"
+        "Hide CAPTCHA popups",
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5611,13 +5761,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5631,13 +5781,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -5651,13 +5800,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -5827,8 +5976,44 @@
           "values": null
         },
         {
+          "key": "invisible_controls_button",
+          "title": "Default: invisible controls button",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "invisible_controls_on",
+          "title": "Default: invisible controls on",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "invisible_controls_keep_caption",
+          "title": "Default: invisible controls keep caption",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "see_through_bottom_bar",
           "title": "Default: see through bottom bar",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "see_through_video_in_window",
+          "title": "Default: see through video in window",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -5865,6 +6050,15 @@
         {
           "key": "glass_video_blur",
           "title": "Default: glass video blur",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "glass_refraction",
+          "title": "Default: glass refraction",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -6176,13 +6370,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6196,13 +6389,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6226,13 +6419,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6246,13 +6438,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6276,14 +6468,12 @@
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
-        "ResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6297,13 +6487,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6354,13 +6544,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6374,13 +6563,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6422,13 +6611,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6442,13 +6630,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6472,11 +6660,11 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6490,13 +6678,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6510,13 +6698,12 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6530,13 +6717,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6569,13 +6756,12 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6589,13 +6775,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6619,13 +6805,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6639,13 +6824,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6669,13 +6854,12 @@
       "category": "Interface",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6689,13 +6873,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6719,13 +6903,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6739,13 +6922,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6769,13 +6952,12 @@
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6789,13 +6971,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6828,14 +7010,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
-        "ResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -6849,13 +7029,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -6904,12 +7084,21 @@
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
-          "default": false,
+          "default": true,
           "values": null
         },
         {
           "key": "offer_live_clear_screen",
           "title": "Default: offer live clear screen",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "keep_live_clear_screen",
+          "title": "Default: keep live clear screen",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -6928,6 +7117,15 @@
         {
           "key": "record_live",
           "title": "Default: record live",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "auto_record_live",
+          "title": "Default: auto record live",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -6996,13 +7194,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7016,13 +7213,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7046,13 +7243,12 @@
       "category": "Performance",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7066,13 +7262,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7105,11 +7301,11 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7123,13 +7319,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7143,13 +7339,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7163,13 +7358,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7195,12 +7390,12 @@
       "dependencies": [
         "Block author button",
         "Double-tap controls",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7214,13 +7409,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7325,13 +7520,12 @@
       "category": "Privacy",
       "use": false,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7345,13 +7539,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7385,13 +7579,12 @@
       "use": true,
       "dependencies": [
         "Block author button",
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7405,13 +7598,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7462,13 +7655,12 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7482,13 +7674,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7557,11 +7749,11 @@
       "category": "Privacy",
       "use": false,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7575,13 +7767,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7596,13 +7788,12 @@
       "use": true,
       "dependencies": [
         "Block author button",
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7616,13 +7807,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7632,6 +7823,15 @@
         {
           "key": "not_interested_button",
           "title": "Default: not interested button",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "not_interested_also_filter",
+          "title": "Default: not interested also filter",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -7655,13 +7855,12 @@
       "category": "Inbox",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7675,13 +7874,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7732,13 +7931,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7752,13 +7950,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7782,13 +7980,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7802,13 +7999,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7832,14 +8029,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
-        "ResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7853,13 +8048,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7883,13 +8078,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7903,13 +8097,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7933,13 +8127,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -7953,13 +8146,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -7992,13 +8185,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8012,13 +8204,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8068,6 +8260,15 @@
           "required": false,
           "type": "kotlin.String",
           "default": "2",
+          "values": null
+        },
+        {
+          "key": "hold_speed_custom",
+          "title": "Default: hold speed custom",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         },
         {
@@ -8123,13 +8324,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8143,13 +8343,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8173,13 +8373,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8193,13 +8392,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8223,13 +8422,13 @@
       "category": "Settings",
       "use": false,
       "dependencies": [
-        "RawResourcePatch",
+        "Patch",
         "SIM spoof",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8243,13 +8442,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8336,6 +8535,15 @@
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
+        },
+        {
+          "key": "live_feed_countries",
+          "title": "Default: live feed countries",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
         }
       ]
     },
@@ -8345,13 +8553,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8365,13 +8572,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8418,16 +8625,15 @@
     },
     {
       "name": "Remove LIVE extras",
-      "description": "Removes the files for LIVE co-hosting, joining a LIVE as a guest, matches, games and gift effects, so the app gets about 3 MB smaller. The catch: in LIVEs, battle scores and guest names can go missing, and joining someone's LIVE by voice or video, co-hosting, games or animated gifts may stop working.",
+      "description": "Removes the script for games inside LIVEs and turns off animated gift effects. It saves very little space. The catch: LIVE games and animated gifts may stop working. Co-hosting, joining a LIVE as a guest, invitations and battle scores aren't touched.",
       "category": "Performance",
       "use": false,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8441,13 +8647,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8461,13 +8667,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8481,13 +8686,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8513,6 +8718,33 @@
           "values": null
         },
         {
+          "key": "hide_rings_feed",
+          "title": "Default: hide rings feed",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hide_rings_comments",
+          "title": "Default: hide rings comments",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hide_rings_profiles",
+          "title": "Default: hide rings profiles",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
           "key": "open_story_over_live",
           "title": "Default: open story over live",
           "description": null,
@@ -8529,12 +8761,11 @@
       "category": "Performance",
       "use": false,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8548,13 +8779,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8564,15 +8795,15 @@
     },
     {
       "name": "Remove creation tools",
-      "description": "Removes TikTok's camera, editing and effects files, saving about 38 MB of storage. The catch: the Create tab and every recording, editing and effects tool stop working, and opening one, like effect search, can close TikTok. Leave it out if you make videos.",
+      "description": "Removes two effects engine libraries TikTok doesn't load for the camera, effects, Retouch or the video editor, saving about 45 MB. Those all keep working. If a creation tool ever closes TikTok, repatch without this one.",
       "category": "Performance",
       "use": false,
       "dependencies": [
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8586,13 +8817,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8606,11 +8837,11 @@
       "category": "Performance",
       "use": false,
       "dependencies": [
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8624,13 +8855,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8654,12 +8885,11 @@
       "category": "Performance",
       "use": false,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8673,13 +8903,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8693,13 +8923,12 @@
       "category": "Interface",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8713,13 +8942,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8734,6 +8963,15 @@
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
+        },
+        {
+          "key": "effect_phone_model",
+          "title": "Default: effect phone model",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
         }
       ]
     },
@@ -8743,12 +8981,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "Follow diagnostics"
+        "Follow diagnostics",
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8762,13 +9000,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8782,13 +9020,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8802,13 +9039,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8841,13 +9078,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8861,13 +9097,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8891,11 +9127,11 @@
       "category": "Settings",
       "use": false,
       "dependencies": [
-        "BytecodePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8909,13 +9145,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -8929,13 +9165,12 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -8949,13 +9184,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9015,13 +9250,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9035,13 +9269,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9083,12 +9317,11 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9102,13 +9335,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9227,6 +9460,51 @@
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
+        },
+        {
+          "key": "startup_message",
+          "title": "Default: startup message",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "startup_message_title",
+          "title": "Default: startup message title",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "startup_message_text",
+          "title": "Default: startup message text",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "startup_message_dismissible",
+          "title": "Default: startup message dismissible",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "check_for_updates",
+          "title": "Default: check for updates",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
         }
       ]
     },
@@ -9236,13 +9514,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9256,13 +9533,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9315,6 +9592,15 @@
           "values": null
         },
         {
+          "key": "hide_share_new_group",
+          "title": "Default: hide share new group",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "share_hidden_items",
           "title": "Default: share hidden items",
           "description": null,
@@ -9358,12 +9644,11 @@
       "category": "Search",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9377,13 +9662,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9407,13 +9692,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9427,13 +9711,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9475,13 +9759,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9495,13 +9778,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9552,13 +9835,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9572,13 +9854,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9602,13 +9884,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9622,13 +9903,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9652,13 +9933,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9672,13 +9952,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9747,13 +10027,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9767,13 +10046,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9851,12 +10130,11 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9870,13 +10148,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9900,13 +10178,12 @@
       "category": "Feed",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9920,13 +10197,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -9968,13 +10245,12 @@
       "category": "Settings",
       "use": false,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -9988,13 +10264,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10018,13 +10294,12 @@
       "category": "Settings",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10038,13 +10313,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10068,13 +10343,12 @@
       "category": "Performance",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10088,13 +10362,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10118,13 +10392,12 @@
       "category": "Performance",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10138,13 +10411,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10168,13 +10441,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10188,13 +10460,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10218,13 +10490,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10238,13 +10509,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10268,13 +10539,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10288,13 +10558,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10318,13 +10588,12 @@
       "category": "Privacy",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10338,13 +10607,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10368,13 +10637,12 @@
       "category": "Search",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10388,13 +10656,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10418,13 +10686,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10438,13 +10705,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10468,13 +10735,12 @@
       "category": "Playback",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10488,13 +10754,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10529,13 +10795,12 @@
       "dependencies": [
         "Advanced downloads",
         "Block author button",
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10549,13 +10814,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10661,14 +10926,13 @@
       "use": true,
       "dependencies": [
         "Block author button",
-        "BytecodePatch",
         "Double-tap controls",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10682,13 +10946,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10712,13 +10976,12 @@
       "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10732,13 +10995,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10825,11 +11088,11 @@
       "category": "Privacy",
       "use": false,
       "dependencies": [
-        "RawResourcePatch"
+        "Patch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10843,13 +11106,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10863,13 +11126,12 @@
       "category": "Interaction",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10883,13 +11145,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10913,13 +11175,12 @@
       "category": "Interface",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10933,13 +11194,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -10963,13 +11224,12 @@
       "category": "Search",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -10983,13 +11243,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
@@ -11013,13 +11273,12 @@
       "category": "Interface",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
+        "Patch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.7.2"
+          "47.7.3"
         ]
       },
       "compatibility": [
@@ -11033,13 +11292,13 @@
           ],
           "targets": [
             {
-              "version": "47.7.2",
+              "version": "47.7.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024707020,
-                "ARMEABI_V7A": 2024707020,
-                "X86": 2024707020,
-                "X86_64": 2024707020
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
               }
             }
           ]
