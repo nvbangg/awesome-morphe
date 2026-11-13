@@ -113,7 +113,7 @@ Helpers for downloading original APKs.
 [![hoo-dles/jadx-morphe](https://github-stats-extended.vercel.app/api/pin?username=hoo-dles&repo=jadx-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/hoo-dles/jadx-morphe)
 [![crimera/morphe-bytecode](https://github-stats-extended.vercel.app/api/pin?username=crimera&repo=morphe-bytecode&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/crimera/morphe-bytecode)
 [![brosssh/morphe-mcp](https://github-stats-extended.vercel.app/api/pin?username=brosssh&repo=morphe-mcp&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/brosssh/morphe-mcp)
-[![jpa102/more_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=more_feature_flags&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/more_feature_flags)
+[![jpa102/morphe_feature_flags](https://github-stats-extended.vercel.app/api/pin?username=jpa102&repo=morphe_feature_flags&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/jpa102/morphe_feature_flags)
 [![Jman-Github/Awesome-Android-Patching](https://github-stats-extended.vercel.app/api/pin?username=Jman-Github&repo=Awesome-Android-Patching&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Jman-Github/Awesome-Android-Patching)
 
 <details>
