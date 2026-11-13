@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.1",
+  "version": "0.1.0",
   "patches": [
     {
       "name": "Bypass PairIP checks",
@@ -60,6 +60,52 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Clone package",
+      "description": "Installs the patched build under its own application id (app.xiondigital.atoz by default), so it can sit next to the official Amazon A to Z instead of replacing it. Renames the provider authorities, the app's runtime permission and the launcher label, and drops the Amazon SDK permission declarations a re-signed build cannot own. Off by default: a clone starts empty, and Play services, FCM targeting, attestation and verified App Links stay bound to the original package.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.amazon.atozm",
+          "name": "Amazon A to Z",
+          "description": "Amazon's associate app. Any version is accepted; the dark-mode patch only needs the app's AppTheme styles and MainApplication.onCreate().",
+          "apkFileType": "APK",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Application id the patched build installs as. Must not be com.amazon.atozm.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.xiondigital.atoz",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "Launcher label of the clone.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "A to Z (clone)",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Clone package",
@@ -182,6 +228,33 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 31,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Force dark mode",
+      "description": "Turns on Amazon A to Z's night mode before the first screen is created and opts the app into Android's automatic dark transform, so the interface is dark even when the phone is set to light mode.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.amazon.atozm",
+          "name": "Amazon A to Z",
+          "description": "Amazon's associate app. Any version is accepted; the dark-mode patch only needs the app's AppTheme styles and MainApplication.onCreate().",
+          "apkFileType": "APK",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
               "description": null
             }
           ]
