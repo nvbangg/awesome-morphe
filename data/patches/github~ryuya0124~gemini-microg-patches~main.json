@@ -1,9 +1,9 @@
 {
-    "version": "0.3.0",
+    "version": "0.3.5",
     "patches": [
         {
             "name": "Account ID Fallback for Clone",
-            "description": "AGSA アカウント名から Account ID への変換失敗例外（flgu）を防止し、デフォルト AccountId でフォールバックします。",
+            "description": "UNSUPPORTED historical experiment. Do not select: breaks account synchronization/login. Patching will stop if enabled.",
             "default": false,
             "category": null,
             "compatiblePackages": [
@@ -29,7 +29,7 @@
         },
         {
             "name": "Account Switch Lock Bypass",
-            "description": "アカウント切り替えロックのタイムアウトをスキップし、スプラッシュ画面からの即時初期化を可能にします。",
+            "description": "UNSUPPORTED historical experiment. Do not select: breaks account synchronization/login. Patching will stop if enabled.",
             "default": false,
             "category": null,
             "compatiblePackages": [
@@ -55,7 +55,7 @@
         },
         {
             "name": "Account Sync Binder Loop Fix",
-            "description": "AccountSyncService へのバインド失敗による無限リトライと Binder リミットクラッシュを防止します。",
+            "description": "UNSUPPORTED historical experiment. Do not select: breaks account synchronization/login. Patching will stop if enabled.",
             "default": false,
             "category": null,
             "compatiblePackages": [
@@ -106,6 +106,49 @@
             "options": []
         },
         {
+            "name": "Automatic Clone Setup",
+            "description": "Automatically creates the fixed .morphe clone and isolates its permissions and providers. No official Clone app or Expert mode configuration is required.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.google.android.apps.bard",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Bypass Work Profile Gemini Restriction",
             "description": "セキュアフォルダ（Work Profile）環境下でGeminiネイティブUIの起動を拒否しWeb版へリダイレクトする制限をバイパスします。",
             "default": true,
@@ -113,6 +156,49 @@
             "compatiblePackages": [
                 {
                     "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Compatible Play Store Update Blocking",
+            "description": "Keeps Google and Gemini version checks working when Disable Play Store updates is also selected.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.googlequicksearchbox",
+                    "name": null,
+                    "description": null,
+                    "apkFileType": null,
+                    "appIconColor": null,
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": null,
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.google.android.apps.bard",
                     "name": null,
                     "description": null,
                     "apkFileType": null,
@@ -184,8 +270,8 @@
             "options": []
         },
         {
-            "name": "GmsCore Bytecode Redirect (MicroG RE 7.0.0)",
-            "description": "Google アプリ内部の GMS パッケージ名・権限・Provider authority を MicroG RE へリダイレクトします。",
+            "name": "GmsCore Bytecode Redirect (MicroG RE)",
+            "description": "Redirects GMS package/permissions/provider references to app.revanced.android.gms. Tested with microG RE 7.3.0; the previous 7.0.0 title was not a version requirement.",
             "default": true,
             "category": null,
             "compatiblePackages": [
@@ -263,7 +349,7 @@
         },
         {
             "name": "Google App Package Clone Support",
-            "description": "クローン版 Google アプリ内の完全一致パッケージ名を .morphe へリダイレクトします。",
+            "description": "Redirects Google package and owned permission references to .morphe. Automatic Clone Setup handles package, permission and provider isolation with the default selection.",
             "default": true,
             "category": null,
             "compatiblePackages": [
@@ -289,7 +375,7 @@
         },
         {
             "name": "MicroG Account Permissions",
-            "description": "Requests account access and microG extended access on Gemini startup.",
+            "description": "Explains microG account permissions before requesting them and respects Not now.",
             "default": true,
             "category": null,
             "compatiblePackages": [

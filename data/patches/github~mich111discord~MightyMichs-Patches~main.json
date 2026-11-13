@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "patches": [
     {
       "name": "App icon",
@@ -1135,7 +1135,7 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Forces Call Filter local subscription flag isSubscribed to true (SharedPreferences reads + persist on app start).",
+      "description": "Forces Call Filter isSubscribed SharedPreferences reads to true (no Application.onCreate rewrite — avoids VerifyError).",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -1719,7 +1719,7 @@
     },
     {
       "name": "Unlock Premium Features",
-      "description": "Forces local VIP membership (status, type, expire) and unlocks ad/paywall episode flags. Server-side purchases are not forged.",
+      "description": "Forces local VIP membership (status, type, expire far in the future) and unlocks ad/paywall episode flags. Does not forge server purchases.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -1733,6 +1733,13 @@
           "signatures": null,
           "targets": [
             {
+              "version": "4.2.60",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": "4.2.20",
               "versionCodes": null,
               "isExperimental": false,
@@ -1742,7 +1749,7 @@
             {
               "version": "4.2.00",
               "versionCodes": null,
-              "isExperimental": false,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }

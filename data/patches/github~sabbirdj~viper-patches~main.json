@@ -1,7 +1,65 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.5",
+  "version": "1.5.1",
   "patches": [
+    {
+      "name": "MicroG RE Google Sign-In",
+      "description": "Redirects Google Sign-In to MicroG RE (app.revanced.android.gms): forces normal sign-in mode, rewrites the sign-in action/package, and drops the unused ID-token request. Pair with the 'MicroG signature spoof' manifest patch or login fails with error 8. Verified on Shohay 2.1.1.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "health.shohay.pregnancy",
+          "name": "Shohay Pregnancy Health",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E91E63",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.1.1",
+              "versionCodes": {
+                "ARM64_V8A": 179
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "MicroG signature spoof",
+      "description": "Adds the original Play signature (SHA-1) as the app.revanced.android.gms.SPOOFED_PACKAGE_SIGNATURE manifest meta-data, so MicroG RE sends the original signature to Google during sign-in and the re-signed app is accepted. Required for the 'MicroG RE Google Sign-In' patch. Verified on Shohay 2.1.1.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "health.shohay.pregnancy",
+          "name": "Shohay Pregnancy Health",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E91E63",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.1.1",
+              "versionCodes": {
+                "ARM64_V8A": 179
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Remove ads (APKS Installer)",
       "description": "Disables all ads by forcing the master ads flag MyApplication.m to false and making the ad initializer a no-op. Verified on APKS Installer 2.8-Google.",
@@ -30,6 +88,93 @@
       "options": []
     },
     {
+      "name": "Spoof installer source (Play Store)",
+      "description": "Makes Bangladesh VPN appear installed from Google Play (com.android.vending) so a manually installed build does not hit 'not installed from Play Store' paths. Same logic as the Morphe universal 'Change installer source' patch. Verified on 67.26.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.banglatech.bangladeshvpn",
+          "name": "Bangladesh VPN",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "67.26",
+              "versionCodes": {
+                "ARM64_V8A": 67
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof installer source (Play Store)",
+      "description": "Makes Shohay appear installed from Google Play (com.android.vending) so a manually installed build does not hit 'not installed from Play Store' paths. Same logic as the Morphe universal 'Change installer source' patch. Verified on Shohay 2.1.1.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "health.shohay.pregnancy",
+          "name": "Shohay Pregnancy Health",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E91E63",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.1.1",
+              "versionCodes": {
+                "ARM64_V8A": 179
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks all weekly premium videos by making SubscribedWeeksDeriver return every week (1-42) as subscribed with 1000 days remaining. The premium gate is evaluated locally from this result, so no server change is needed. Verified on Shohay 2.1.1.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "health.shohay.pregnancy",
+          "name": "Shohay Pregnancy Health",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E91E63",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.1.1",
+              "versionCodes": {
+                "ARM64_V8A": 179
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock SAI Premium",
       "description": "Activates SAI Premium by forcing the local entitlement check to true in all three places that read it (ck0, fk0, dk0). Verified on SAI 2.4.3.",
       "default": true,
@@ -48,6 +193,35 @@
               "version": "2.4.3",
               "versionCodes": {
                 "ARM64_V8A": 49
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock VIP",
+      "description": "Unlocks Bangladesh VPN VIP by forcing the local subscription tier to FULL in every place that reads it: the tier predicates (H/I), the Play Billing purchase callback, the tier deriver, and the persisted tier default. VIP servers connect and the premium section activates. No server change needed. Verified on 67.26.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.banglatech.bangladeshvpn",
+          "name": "Bangladesh VPN",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "67.26",
+              "versionCodes": {
+                "ARM64_V8A": 67
               },
               "isExperimental": false,
               "minSdk": null,
