@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.10.1",
+  "version": "2.11.0-dev.1",
   "patches": [
     {
       "name": "AdBlocker turbo & userscript bundle",
@@ -267,6 +267,86 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Google sign-in via MicroG RE",
+      "description": "Makes Google sign-in work on a re-signed WPS by signing in as the original app. Needs MicroG RE installed with a Google account added. WPS account login is unaffected.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "cn.wps.moffice_eng",
+          "name": "WPS Office",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E64A19",
+          "signatures": [
+            "643990878d3ca83952a5be5f3e58d9f8bb6cdc57bf0f228700212071c68db3d7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.11.0",
+              "versionCodes": {
+                "ARM64_V8A": 1650,
+                "ARMEABI_V7A": 1650,
+                "X86_64": 1650,
+                "X86": 1650
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": "XAPK bundle (base + config splits, arm64-v8a, Android 10+), build 1650"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "spoofOriginalIdentity",
+          "title": "Sign in as the original app",
+          "description": "Tells MicroG the app's original name and signature, which is what makes Google accept the sign-in.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "routeGoogleServices",
+          "title": "Send Google calls to MicroG",
+          "description": "Points WPS's Play services calls at MicroG instead of Google.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "forceGmsAvailability",
+          "title": "Report Play services as available",
+          "description": "MicroG fails Google's signature check, so this answers the availability check with yes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "routePush",
+          "title": "Route notifications through MicroG",
+          "description": "Sends push notifications through MicroG so they keep arriving.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "addMicrogQueries",
+          "title": "Let the app find Google and MicroG",
+          "description": "Makes both Play services packages visible on Android 11+, so sign-in can reach MicroG. Stock WPS declares neither, so leaving this on changes nothing else.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Hide playback controls at stream open",
@@ -1335,6 +1415,131 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Unlock premium features",
+      "description": "Opens the Pro PDF, export and editing tools and removes ads. Every change has its own switch, so you choose what is unlocked. Sign in first: signed out, WPS reports no membership at all.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "cn.wps.moffice_eng",
+          "name": "WPS Office",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E64A19",
+          "signatures": [
+            "643990878d3ca83952a5be5f3e58d9f8bb6cdc57bf0f228700212071c68db3d7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.11.0",
+              "versionCodes": {
+                "ARM64_V8A": 1650,
+                "ARMEABI_V7A": 1650,
+                "X86_64": 1650,
+                "X86": 1650
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": "XAPK bundle (base + config splits, arm64-v8a, Android 10+), build 1650"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "unlockPremiumIdentity",
+          "title": "Show a Pro account",
+          "description": "Shows your account as Premium, so upgrade banners and price cards go away.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockMemberLevel",
+          "title": "Open Pro menus",
+          "description": "Tells the app you have a Pro membership, which opens the menu entries locked behind it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockPrivilegeChecks",
+          "title": "Pass ownership checks",
+          "description": "Answers \"do I own this?\" with yes, so premium fonts, templates and PDF tools open.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "denyAiPrivileges",
+          "title": "Turn AI features off",
+          "description": "Answers every AI request as not owned. Use it only if an AI tool keeps loading forever.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "removeAds",
+          "title": "Remove ads",
+          "description": "Tells the app you are ad-free, so banner and full-screen ads are never requested.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bypassAsyncPrivilegeChecks",
+          "title": "Pass background checks",
+          "description": "Also answers the checks that run in the background. Stronger, but it can invent usage counters.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "passSignatureCheck",
+          "title": "Report the stock signature",
+          "description": "Only analytics reads this. It does not affect premium, ads or sign-in.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "bypassPrivilegeInterceptor",
+          "title": "Unlock PDF and export tools",
+          "description": "Answers the app's payment check with success. This is what opens image-to-PDF, PDF export and printing.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideOwnedPrivilegeDialog",
+          "title": "Hide the \"already a member\" popup",
+          "description": "Stops the popup that says you are already a WPS Premium user.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "reportAdGateOffline",
+          "title": "Skip the ad pre-check",
+          "description": "Tells the app ads are off before it contacts the server, so those requests never start.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.14.1",
+  "version": "1.16.0",
   "patches": [
     {
       "name": "App icon",
-      "description": "Choose a classic or premium-style launcher icon.",
+      "description": "Choose a classic / premium launcher icon, or pick a PNG from your phone.",
       "default": false,
       "category": null,
       "dependencies": [],
@@ -17,6 +17,13 @@
           "appIconColor": "#25D366",
           "signatures": null,
           "targets": [
+            {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "2.26.43.75",
               "versionCodes": null,
@@ -45,15 +52,25 @@
         {
           "key": "iconStyle",
           "title": "Style",
-          "description": "Icon shown on your home screen.",
+          "description": "Preset icon, or Custom file to use the PNG option below.",
           "required": false,
           "type": "kotlin.String",
           "default": "blue",
           "values": {
             "Blue": "blue",
             "Red": "red",
-            "Gold premium": "gold"
+            "Gold premium": "gold",
+            "Custom file": "custom"
           }
+        },
+        {
+          "key": "customIconFile",
+          "title": "Custom icon PNG",
+          "description": "Pick a square PNG from your phone (transparent background recommended). Used when Style is Custom file, or whenever a path is set. Ideal size ~432×432 px (xxxhdpi); the same file is copied to all densities.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
         }
       ]
     },
@@ -81,6 +98,68 @@
             },
             {
               "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass Play install gate",
+      "description": "Skips PairIP / Play installer checks that block sideloaded Screen Translate builds with the \"Get this app from Play\" dialog.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.spaceship.screen.textcopy",
+          "name": "Screen Translate",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF5722",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.5.00112",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "v7.5.00112",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.3.10123",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "v7.3.10123",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.3.00961",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "v7.3.00961",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -185,6 +264,42 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Disable PairIP license check",
+      "description": "Bypasses PairIP LicenseClient installer/license checks that block sideloaded or re-signed apps with a Play Store paywall dialog.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Telemetry",
+      "description": "Disables analytics and telemetry event tracking.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.piriform.ccleaner",
+          "name": "CCleaner",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1A73E8",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.08.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Disable ads (basic)",
@@ -320,7 +435,7 @@
             {
               "version": "12.0.17.0",
               "versionCodes": null,
-              "isExperimental": true,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -450,7 +565,7 @@
     },
     {
       "name": "Keep deleted messages",
-      "description": "Show messages that were deleted for everyone. May need a fingerprint update after WhatsApp upgrades.",
+      "description": "Show messages that were deleted for everyone. Client-side only; already-wiped history cannot be restored.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -463,6 +578,13 @@
           "appIconColor": "#25D366",
           "signatures": null,
           "targets": [
+            {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "2.26.43.75",
               "versionCodes": null,
@@ -491,7 +613,7 @@
         {
           "key": "highlight",
           "title": "Highlight deleted messages",
-          "description": "Mark deleted messages so they are easier to spot.",
+          "description": "Reserved for future UI tinting of kept-deleted rows.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -565,6 +687,13 @@
           "signatures": null,
           "targets": [
             {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": "2.26.43.75",
               "versionCodes": null,
               "isExperimental": false,
@@ -606,6 +735,13 @@
           "signatures": null,
           "targets": [
             {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": "2.26.43.75",
               "versionCodes": null,
               "isExperimental": false,
@@ -646,6 +782,13 @@
           "appIconColor": "#25D366",
           "signatures": null,
           "targets": [
+            {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "2.26.43.75",
               "versionCodes": null,
@@ -781,6 +924,64 @@
       "options": []
     },
     {
+      "name": "Remove Meta AI",
+      "description": "Hides Meta AI on the chats home screen (FAB / pill), related hub entry points, and common feature gates. Does not delete existing Meta AI chats.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.whatsapp",
+          "name": "WhatsApp",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#25D366",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.74",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.43.72",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "aggressive",
+          "title": "Aggressive hide",
+          "description": "Also force extra ()Z methods in Meta-AI-anchored classes. May hide unrelated AI experiments; leave off unless the FAB still shows.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Remove ads",
       "description": "Disables common TikTok ad load/show methods (best-effort).",
       "default": true,
@@ -806,6 +1007,57 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Skip MT account login (Experimental)",
+      "description": "Tries to skip the MT account login wall so local features work offline. Server-synced cloud features will still need a real account.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "bin.mt.plus",
+          "name": "MT Manager",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.8",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "treatAsLoggedIn",
+          "title": "Treat as logged in",
+          "description": "Force login-state getters to true (logged in). If the app misbehaves, try turning this off and only blocking the login prompt.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Spoof device & network",
@@ -884,6 +1136,13 @@
           "signatures": null,
           "targets": [
             {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": "2.26.43.75",
               "versionCodes": null,
               "isExperimental": false,
@@ -910,6 +1169,33 @@
       "options": []
     },
     {
+      "name": "Unlimited Coins",
+      "description": "Gives unlimited coins in Pou.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "me.pou.app",
+          "name": "Pou",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#8BC34A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.4.139",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlimited Energy",
       "description": "Optional: tries to bypass lesson energy limits. Off by default (aggressive matching previously caused startup crashes).",
       "default": false,
@@ -926,33 +1212,6 @@
           "targets": [
             {
               "version": "1.19.5",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlimited coins",
-      "description": "Forces Pou's coin balance getter to a very large value so shop and unlock checks always pass (local save).",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "me.pou.app",
-          "name": "Pou",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#8BC34A",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.4.139",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1258,7 +1517,7 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Forces local VIP / VIP Pro checks for DramaWave playback and benefits.",
+      "description": "Forces DramaWave VIP / VIP Pro local checks (UserInfo and related flags).",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -1299,7 +1558,7 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Forces local VIP checks so locked episodes and VIP benefits open (client-side; some titles may still need a server unlock).",
+      "description": "Forces local VIP checks (isVip / isVipVideo / benefits) so locked episodes and VIP UI open on the client.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -1330,6 +1589,33 @@
               "version": "1.36.3",
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks CCleaner Premium / Pro features (Ultimate Multi + Lifetime style).",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.piriform.ccleaner",
+          "name": "CCleaner",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1A73E8",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.08.0",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -1394,7 +1680,7 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Forces DramaBox VIP checks (UserInfo / LoginService / isVip helpers) so premium content unlocks on the client.",
+      "description": "Forces DramaBox VIP checks (UserInfo, LoginResult, SubInfo) so premium UI and local gates unlock. Server-locked episodes may still apply.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -1513,6 +1799,57 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Unlock Premium (Experimental)",
+      "description": "Best-effort local VIP unlock (activation flags + VIP protocol UI). MTProtector may still gate some features in native code.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "bin.mt.plus",
+          "name": "MT Manager",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.26.10",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.9",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "2.26.8",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "aggressive",
+          "title": "Aggressive boolean force",
+          "description": "Also force extra small ()Z methods in VIP-anchored classes. May break unrelated checks; leave off unless needed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Unlock Premium (Experimental)",
@@ -2340,6 +2677,13 @@
           "signatures": null,
           "targets": [
             {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": "2.26.43.75",
               "versionCodes": null,
               "isExperimental": false,
@@ -2380,6 +2724,13 @@
           "appIconColor": "#25D366",
           "signatures": null,
           "targets": [
+            {
+              "version": "2.26.43.76",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "2.26.43.75",
               "versionCodes": null,

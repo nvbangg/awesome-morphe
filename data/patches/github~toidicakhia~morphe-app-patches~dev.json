@@ -1,7 +1,41 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "patches": [
+    {
+      "name": "Block Product Ad Banners",
+      "description": "Points the product-ad API endpoint at a non-existent path so in-app ad banners are not loaded. Best effort: ads embedded in content responses are not affected.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "vn.vtv.vtvgo",
+          "name": "VTVGo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#DC0000",
+          "signatures": [
+            "651a068b47d26e1a79ba6fcdae64eab8b512bde27d1ca60e20686cf06c94f227"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "12.11.05",
+              "versionCodes": {
+                "ARM64_V8A": 260933,
+                "ARMEABI_V7A": 260933,
+                "X86_64": 260933,
+                "X86": 260933
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Bypass SSL pinning",
       "description": "Bypasses EZVIZ certificate pinning and hostname checks so a debugging proxy can read its HTTPS traffic. Also trusts user-installed certificates. Not selected by default.",
@@ -13,7 +47,7 @@
           "name": "EZVIZ",
           "description": null,
           "apkFileType": "XAPK",
-          "appIconColor": "#00A0E9",
+          "appIconColor": "#FFFFFF",
           "signatures": null,
           "formFactor": "MOBILE",
           "targets": [
@@ -45,7 +79,7 @@
           "name": "EZVIZ",
           "description": null,
           "apkFileType": "XAPK",
-          "appIconColor": "#00A0E9",
+          "appIconColor": "#FFFFFF",
           "signatures": null,
           "formFactor": "MOBILE",
           "targets": [
@@ -77,7 +111,105 @@
           "name": "1.1.1.1",
           "description": null,
           "apkFileType": "APKM",
-          "appIconColor": "#F48120",
+          "appIconColor": "#F16F69",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.38.11",
+              "versionCodes": {
+                "ARM64_V8A": 5703,
+                "ARMEABI_V7A": 5703,
+                "X86_64": 5703,
+                "X86": 5703
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Analytics / Telemetry",
+      "description": "Disables Firebase Analytics, Crashlytics and Performance, including advertising-ID and app-set-ID collection. The Devolutions product telemetry is sent by the .NET code inside the AOT assemblies, use the app's \"Disable sending analytics\" option to turn it off.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.devolutions.remotedesktopmanager",
+          "name": "Remote Desktop Manager",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E8523F",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.3.1.5",
+              "versionCodes": {
+                "ARM64_V8A": 500987,
+                "ARMEABI_V7A": 500987,
+                "X86_64": 500987,
+                "X86": 500987
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Analytics / Telemetry",
+      "description": "Disables Firebase Analytics, Crashlytics and Performance, stops Sentry uploads and turns off Facebook app events. The firebase_data_collection_default_enabled flag also prevents the SDKs from re-enabling collection.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "vn.vtv.vtvgo",
+          "name": "VTVGo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#DC0000",
+          "signatures": [
+            "651a068b47d26e1a79ba6fcdae64eab8b512bde27d1ca60e20686cf06c94f227"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "12.11.05",
+              "versionCodes": {
+                "ARM64_V8A": 260933,
+                "ARMEABI_V7A": 260933,
+                "X86_64": 260933,
+                "X86": 260933
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable SSL Pinning",
+      "description": "Bypasses OkHttp certificate pinning on Cloudflare API calls to allow TLS traffic inspection.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.cloudflare.onedotonedotonedotone",
+          "name": "1.1.1.1",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#F16F69",
           "signatures": null,
           "formFactor": "MOBILE",
           "targets": [
@@ -100,29 +232,29 @@
     },
     {
       "name": "Disable SSL Pinning",
-      "description": "Bypasses OkHttp certificate pinning on Cloudflare API calls to allow TLS traffic inspection.",
+      "description": "Bypasses the certificate validation of the .NET/Mono TLS stack so a debugging proxy can read the app's HTTPS traffic. Certificate pinning implemented in managed code lives in the ahead-of-time compiled .NET assemblies and is not affected. Not selected by default.",
       "default": false,
       "category": null,
       "compatiblePackages": [
         {
-          "packageName": "com.cloudflare.onedotonedotonedotone",
-          "name": "1.1.1.1",
+          "packageName": "com.devolutions.remotedesktopmanager",
+          "name": "Remote Desktop Manager",
           "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F48120",
+          "apkFileType": "XAPK",
+          "appIconColor": "#E8523F",
           "signatures": null,
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "6.38.11",
+              "version": "2026.3.1.5",
               "versionCodes": {
-                "ARM64_V8A": 5703,
-                "ARMEABI_V7A": 5703,
-                "X86_64": 5703,
-                "X86": 5703
+                "ARM64_V8A": 500987,
+                "ARMEABI_V7A": 500987,
+                "X86_64": 500987,
+                "X86": 500987
               },
               "isExperimental": false,
-              "minSdk": null,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -165,6 +297,72 @@
       "options": []
     },
     {
+      "name": "Remove Ad ID Permissions",
+      "description": "Removes the advertising ID, Privacy Sandbox ad-services and Play install-referrer permissions.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.devolutions.remotedesktopmanager",
+          "name": "Remote Desktop Manager",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#E8523F",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.3.1.5",
+              "versionCodes": {
+                "ARM64_V8A": 500987,
+                "ARMEABI_V7A": 500987,
+                "X86_64": 500987,
+                "X86": 500987
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Ad ID Permissions",
+      "description": "Removes the advertising ID, Privacy Sandbox ad-services and Play install-referrer permissions. Device identification used for device management is left untouched.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "vn.vtv.vtvgo",
+          "name": "VTVGo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#DC0000",
+          "signatures": [
+            "651a068b47d26e1a79ba6fcdae64eab8b512bde27d1ca60e20686cf06c94f227"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "12.11.05",
+              "versionCodes": {
+                "ARM64_V8A": 260933,
+                "ARMEABI_V7A": 260933,
+                "X86_64": 260933,
+                "X86": 260933
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove Ads",
       "description": "Removes banner, splash and hot open-screen ads.",
       "default": true,
@@ -175,7 +373,7 @@
           "name": "EZVIZ",
           "description": null,
           "apkFileType": "XAPK",
-          "appIconColor": "#00A0E9",
+          "appIconColor": "#FFFFFF",
           "signatures": null,
           "formFactor": "MOBILE",
           "targets": [
@@ -197,6 +395,74 @@
       "options": []
     },
     {
+      "name": "Remove Calendar Permissions",
+      "description": "Removes calendar read/write permissions. Programme reminders will no longer work.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "vn.vtv.vtvgo",
+          "name": "VTVGo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#DC0000",
+          "signatures": [
+            "651a068b47d26e1a79ba6fcdae64eab8b512bde27d1ca60e20686cf06c94f227"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "12.11.05",
+              "versionCodes": {
+                "ARM64_V8A": 260933,
+                "ARMEABI_V7A": 260933,
+                "X86_64": 260933,
+                "X86": 260933
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Video Ads",
+      "description": "Removes VTVGo pre-roll, mid-roll, welcome TVC and other VAST/IMA ads by rejecting ad requests before playback starts.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "vn.vtv.vtvgo",
+          "name": "VTVGo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#DC0000",
+          "signatures": [
+            "651a068b47d26e1a79ba6fcdae64eab8b512bde27d1ca60e20686cf06c94f227"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "12.11.05",
+              "versionCodes": {
+                "ARM64_V8A": 260933,
+                "ARMEABI_V7A": 260933,
+                "X86_64": 260933,
+                "X86": 260933
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Spoof WARP+ Unlimited UI",
       "description": "Forces WarpPlusState to UNLIMITED on every AccountData instance by intercepting the primary constructor before the account type field is written.",
       "default": true,
@@ -207,7 +473,7 @@
           "name": "1.1.1.1",
           "description": null,
           "apkFileType": "APKM",
-          "appIconColor": "#F48120",
+          "appIconColor": "#F16F69",
           "signatures": null,
           "formFactor": "MOBILE",
           "targets": [
@@ -221,6 +487,40 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Trust User Certificates",
+      "description": "Adds user-installed CA certificates to the network security config so native traffic can be inspected with a debugging proxy. Flutter's Dart HTTP stack keeps its own trust store.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "vn.vtv.vtvgo",
+          "name": "VTVGo",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#DC0000",
+          "signatures": [
+            "651a068b47d26e1a79ba6fcdae64eab8b512bde27d1ca60e20686cf06c94f227"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "12.11.05",
+              "versionCodes": {
+                "ARM64_V8A": 260933,
+                "ARMEABI_V7A": 260933,
+                "X86_64": 260933,
+                "X86": 260933
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -273,7 +573,7 @@
           "name": "NetMonster",
           "description": null,
           "apkFileType": "APKM",
-          "appIconColor": "#1565C0",
+          "appIconColor": "#0A995B",
           "signatures": null,
           "formFactor": "MOBILE",
           "targets": [
@@ -305,7 +605,7 @@
           "name": "HTTP Sniffer",
           "description": null,
           "apkFileType": "XAPK",
-          "appIconColor": "#2196F3",
+          "appIconColor": "#673AB7",
           "signatures": null,
           "formFactor": "MOBILE",
           "targets": [
