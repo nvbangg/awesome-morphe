@@ -1,12 +1,12 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "patches": [
     {
       "name": "AMOLED dark theme",
       "description": "Makes Strava dark mode true-black for OLED screens: the dark surface colors (#141413 / #21211f / #43423f) are remapped to a black ladder. Light mode is untouched.",
       "default": true,
-      "category": "Theme",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -74,7 +74,7 @@
       "name": "Allow standalone install (split-less APK)",
       "description": "Removes Pdb's base-APK split requirement (requiredSplitTypes=base__abi,base__density) so the single patched APK installs. Required when patching the App Bundle's base APK.",
       "default": true,
-      "category": "Misc",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -106,7 +106,7 @@
       "name": "Bypass PairIP",
       "description": "Disables adidas Running's PairIP licence/VM verification, restores the real Application class and bakes the VM's runtime strings (captured from the original app's heap) so Firebase etc. initialize cleanly. NOTE: adidas runs the full PairIP VM whose startup program is the tamper check — the patched app boots past the licence gate but the VM-virtualized init methods cannot be restored without native reverse engineering, so the app may crash after launch. See docs/adidas.md.",
       "default": true,
-      "category": "PairIP",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -148,7 +148,7 @@
       "name": "Bypass PairIP",
       "description": "Disables Glassdoor's PairIP integrity/licence verification (full VM + native check), restores the real Application class, removes the licence activity, and restores the runtime strings the VM would have provided.",
       "default": true,
-      "category": "PairIP",
+      "category": null,
       "dependencies": [
         "ResourcePatch",
         "ResourcePatch"
@@ -185,7 +185,7 @@
       "name": "Bypass PairIP",
       "description": "Disables Shima+'s PairIP licence/trial verification, restores the real Application class and removes the licence activity.",
       "default": true,
-      "category": "PairIP",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -221,7 +221,7 @@
       "name": "Bypass PairIP license check",
       "description": "Disables Material Capsule's PairIP / Play licence verification so the app runs after Morphe re-signs it. Restores the real Application class (com.pryshedko.mtisland.App).",
       "default": true,
-      "category": "PairIP",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -254,7 +254,7 @@
       "name": "Bypass PairIP license check",
       "description": "Disables Pdb's PairIP / Play licence verification so the app runs after Morphe re-signs it. Restores the real Application class (pdb.app.App).",
       "default": true,
-      "category": "PairIP",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -288,7 +288,7 @@
       "name": "Chat button on profiles",
       "description": "Adds a 'Chat' entry to the profile screen's ⋯ menu: opens your conversation with that user when one exists, otherwise their profile (channels are server-created — no fake channel making).",
       "default": false,
-      "category": "Interface",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -320,7 +320,7 @@
       "name": "Custom app name",
       "description": "Renames the launcher label (Settings > Apps, home screen) to the value of the stravaAppName option. Leave the option empty to keep the original name.",
       "default": false,
-      "category": "Theme",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -398,7 +398,7 @@
       "name": "Disable AppCenter telemetry",
       "description": "No-ops Microsoft AppCenter's SDK bootstrap (configureAndStartServices / startServices) so the bundled telemetry/crash SDK never initialises.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -432,7 +432,7 @@
       "name": "Disable AppsFlyer",
       "description": "No-ops AppsFlyer's start() and logEvent() entry points, so no install attribution or analytics events are sent.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -466,7 +466,7 @@
       "name": "Disable AppsFlyer",
       "description": "No-ops AppsFlyer's start() and logEvent() entry points, so no install attribution or analytics events are sent.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -500,7 +500,7 @@
       "name": "Disable AppsFlyer",
       "description": "Neutralizes AppsFlyer attribution/telemetry: the SDK is never initialized or started, and the JS bridge reports success as usual.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -532,7 +532,7 @@
       "name": "Disable CleverTap",
       "description": "Stops CleverTap session/activity tracking and push-click attribution. Push notifications themselves keep working.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -564,7 +564,7 @@
       "name": "Disable Firebase Performance + installer check",
       "description": "Makes Firebase Performance's connection wrapper a pass-through (no perf telemetry) and reports installs as Play-installed regardless of the actual installer.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -596,7 +596,7 @@
       "name": "Disable PairIP license check",
       "description": "Disables PairIP license verification, VM checks, and repeated background checks.",
       "default": false,
-      "category": "PairIP",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -605,7 +605,7 @@
       "name": "Disable SSL pinning",
       "description": "Unpins the react-native-ssl-pinning OkHttp client so HTTPS traffic can be intercepted, and trusts user-installed CAs (targetSdk 35). Normal TLS validation stays intact.",
       "default": true,
-      "category": "Security",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -641,7 +641,7 @@
       "name": "Disable SSL pinning",
       "description": "Removes certificate pinning at both layers (OkHttp pin comparison and the platform network-security-config pin-set) and trusts user-installed CAs, so HTTPS traffic can be inspected with a MITM proxy. Normal TLS validation stays intact.",
       "default": true,
-      "category": "Security",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -673,31 +673,31 @@
     },
     {
       "name": "Disable ad SDK",
-      "description": "No-ops the Google Mobile Ads initialisation so the ad SDK never starts.",
+      "description": "Disables every partner ad-SDK initializer TextNow runs (Facebook Audience Network, Amazon, Fyber/DT Exchange, InMobi, Nimbus, LiveRamp, The Trade Desk) at its own isEnabled() gate, so no ad SDK ever initialises.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.enflick.android.TextNow",
           "name": "TextNow",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKS",
           "appIconColor": "#00A8E1",
           "signatures": [
             "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
           ],
           "targets": [
             {
-              "version": "6.1.0.1",
+              "version": "26.45.0.0",
               "versionCodes": {
-                "ARM64_V8A": 12231,
-                "ARMEABI_V7A": 12231,
-                "X86_64": 12231,
-                "X86": 12231
+                "ARM64_V8A": 15780,
+                "ARMEABI_V7A": 15780,
+                "X86_64": 15780,
+                "X86": 15780
               },
               "isExperimental": false,
-              "minSdk": 14,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -709,7 +709,7 @@
       "name": "Disable security checks",
       "description": "Stops Hutch from refusing to run on rooted, adb-enabled, developer-options or emulator devices. The device-integrity probes (jail-monkey + react-native-device-info) all answer \"clean\".",
       "default": true,
-      "category": "Security",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -743,7 +743,7 @@
       "name": "Disable security checks",
       "description": "Stops MyDialog from exiting itself on root/debug/emulator/adb detection and on Play Integrity failure. Signature verification is reported clean so patched builds pass.",
       "default": true,
-      "category": "Security",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -772,54 +772,10 @@
       "options": []
     },
     {
-      "name": "Disable telemetry (Sentry)",
-      "description": "Stops Proton VPN's Sentry crash/telemetry reporting and disables the large-metrics sampling multiplier. Accounts and VPN stay unaffected.",
-      "default": true,
-      "category": "Privacy",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "ch.protonvpn.android",
-          "name": "Proton VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#6D4AFF",
-          "signatures": [
-            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853"
-          ],
-          "targets": [
-            {
-              "version": "5.20.98.0",
-              "versionCodes": {
-                "ARM64_V8A": 605209800,
-                "ARMEABI_V7A": 605209800,
-                "X86_64": 605209800,
-                "X86": 605209800
-              },
-              "isExperimental": false,
-              "minSdk": 26,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "protonDisableTelemetry",
-          "title": "Disable telemetry",
-          "description": "Disable Sentry reporting and Proton's large-metrics sampling.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Disable tracker components",
       "description": "Disables the Google Analytics measurement receiver/services and the Adjust lifecycle provider, and sets the Firebase/Google Analytics collection opt-outs.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -859,7 +815,7 @@
       "name": "Disable tracker components",
       "description": "Disables the AppsFlyer install-referrer receiver/provider and any Google measurement component, turns Crashlytics and Firebase/Google-Analytics collection off, and removes the install-referrer permission. FCM push is kept.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -893,7 +849,7 @@
       "name": "Disable tracker components",
       "description": "Disables Adobe's extension-discovery service and messaging activities and sets the Firebase Analytics collection opt-outs.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -937,31 +893,31 @@
     },
     {
       "name": "Disable tracker components",
-      "description": "Disables Crashlytics, Google Analytics v3, Firebase measurement and Flurry components and sets the Firebase/GA collection opt-outs. FCM push is kept.",
+      "description": "Disables Firebase measurement, the AppsFlyer install-referrer provider and Facebook auto-init components, and sets the Firebase/GA/Facebook collection opt-outs. FCM push is kept.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.enflick.android.TextNow",
           "name": "TextNow",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKS",
           "appIconColor": "#00A8E1",
           "signatures": [
             "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
           ],
           "targets": [
             {
-              "version": "6.1.0.1",
+              "version": "26.45.0.0",
               "versionCodes": {
-                "ARM64_V8A": 12231,
-                "ARMEABI_V7A": 12231,
-                "X86_64": 12231,
-                "X86": 12231
+                "ARM64_V8A": 15780,
+                "ARMEABI_V7A": 15780,
+                "X86_64": 15780,
+                "X86": 15780
               },
               "isExperimental": false,
-              "minSdk": 14,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -973,7 +929,7 @@
       "name": "Disable trackers",
       "description": "No-ops the Adjust SDK's event/lifecycle entry points so no attribution or analytics payload is buffered or sent.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1013,7 +969,7 @@
       "name": "Disable trackers",
       "description": "Disables Google Analytics for Firebase measurement components, switches Crashlytics and Firebase/Google-Analytics collection off via the official opt-out flags, and removes the install-referrer permission. FCM push is kept.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1044,7 +1000,7 @@
       "name": "Disable trackers",
       "description": "Disables Google Analytics for Firebase collection (the app's only third-party analytics) and removes the advertising-ID permissions. Push notifications keep working.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1078,7 +1034,7 @@
       "name": "Disable trackers",
       "description": "Disables AppsFlyer/Facebook/Google measurement components, switches Facebook app events and Firebase/Crashlytics/Google-Analytics collection off, and removes the install-referrer permission. Push notifications are kept.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1112,7 +1068,7 @@
       "name": "Disable trackers",
       "description": "Disables Google Analytics for Firebase measurement and switches off Firebase Analytics / Advertising-ID data collection via the official opt-out flags.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1143,7 +1099,7 @@
       "name": "Disable trackers",
       "description": "Disables Google Analytics measurement and Facebook SDK auto-init, and turns off Firebase Analytics/AdID data collection via their official opt-out flags.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1175,7 +1131,7 @@
       "name": "Disable trackers",
       "description": "Disables Adobe (Omniture) analytics by stopping the Adobe Experience Platform extension registration, so no tracking payload is built or sent.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1221,7 +1177,7 @@
       "name": "Disable trackers",
       "description": "Disables Google Analytics measurement and Yandex AppMetrica telemetry, and turns off Crashlytics/Analytics data collection via their official opt-out flags.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1253,7 +1209,7 @@
       "name": "Disable trackers",
       "description": "Adds the official analytics/Crashlytics collection opt-out flags, disables any Google measurement component and removes the install-referrer permission. Shima+ itself ships no telemetry SDK.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1285,31 +1241,31 @@
     },
     {
       "name": "Disable trackers",
-      "description": "No-ops the Adjust (attribution) and Flurry (analytics) SDK initialisers so no tracking payload is collected or sent.",
+      "description": "No-ops AppsFlyer's implementation entry points (start, logEvent) so the attribution SDK never starts and no attribution or analytics event is sent.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.enflick.android.TextNow",
           "name": "TextNow",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKS",
           "appIconColor": "#00A8E1",
           "signatures": [
             "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
           ],
           "targets": [
             {
-              "version": "6.1.0.1",
+              "version": "26.45.0.0",
               "versionCodes": {
-                "ARM64_V8A": 12231,
-                "ARMEABI_V7A": 12231,
-                "X86_64": 12231,
-                "X86": 12231
+                "ARM64_V8A": 15780,
+                "ARMEABI_V7A": 15780,
+                "X86_64": 15780,
+                "X86": 15780
               },
               "isExperimental": false,
-              "minSdk": 14,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -1321,7 +1277,7 @@
       "name": "Enable dark mode",
       "description": "Forces adidas Running into its built-in night theme (RtBaseTheme.Dark) by setting AppCompatDelegate night mode at app startup.",
       "default": true,
-      "category": "Theme",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1361,7 +1317,7 @@
       "name": "Enable dark mode",
       "description": "Turns on Nike Run Club's built-in dark theme by forcing the DefaultDesignManager colour-mode gate, so the Compose UI renders dark.",
       "default": true,
-      "category": "Theme",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1407,7 +1363,7 @@
       "name": "Extra settings resources",
       "description": "Registers the Extra Settings activity and applies the accent color.",
       "default": true,
-      "category": "Settings",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1519,7 +1475,7 @@
       "name": "Extra settings screen",
       "description": "Adds an 'Extra Settings' entry at the top of Settings with theme mode switching and patch info. Accent color is a build-time option.",
       "default": true,
-      "category": "Settings",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -1589,7 +1545,7 @@
       "name": "Fix Firebase after re-signing",
       "description": "Fixes Firebase services (push notifications, Remote Config, Firebase Auth) that break after Morphe re-signs the app with a different certificate.\n\nApply with Original app certificate patch — no other config needed.",
       "default": false,
-      "category": "Signature",
+      "category": null,
       "dependencies": [
         "RawResourcePatch"
       ],
@@ -1600,7 +1556,7 @@
       "name": "Fix SIM identifier access",
       "description": "Replaces the IMSI lookup with the public getSimOperator() call so the pre-login flow passes on Android 11+ where re-signed builds lost carrier privileges ('App Error: NO IMSI'). Falls back to Dialog's 41305 on SIM-less devices.",
       "default": true,
-      "category": "Security",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1632,7 +1588,7 @@
       "name": "Fix app icon",
       "description": "Gives the default launcher icon a real foreground. The base APK ships an adaptive icon with a null foreground (the visible icon normally comes from a theme alias enabled at runtime).",
       "default": true,
-      "category": "Branding",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1664,7 +1620,7 @@
       "name": "Fix launcher theme (PairIP VM)",
       "description": "Points the launcher activity at the AppCompat @style/AppTheme instead of the splash theme, whose runtime theme-swap lives in the removed PairIP VM.",
       "default": false,
-      "category": "PairIP",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1698,7 +1654,7 @@
       "name": "Floating power button",
       "description": "Adds a draggable quick-actions bubble to the main screen (profile IDs / receipts / pause toggles, copy your profile id, open Pdb Extras). Toggle: Pdb Extras → Quick → 'Show floating power button'.",
       "default": true,
-      "category": "Interface",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1730,7 +1686,7 @@
       "name": "GmsCore support (MicroG)",
       "description": "Routes Google Play Services calls through MicroG instead of real GPS.\n\nWorks for: Google apps (YouTube, Maps, News, Photos) and third-party apps using classic Google Sign-In (Android 13 and below).\n\nDoes not work for: Android 14+ Credential Manager sign-in (most modern third-party apps), Play Integrity / SafetyNet checks, or apps with custom auth.\n\nRequires MicroG RE installed. Apply with Original app certificate patch.",
       "default": false,
-      "category": "GmsCore",
+      "category": null,
       "dependencies": [
         "RawResourcePatch",
         "ResourcePatch"
@@ -1778,7 +1734,7 @@
       "name": "Inspect HTTPS traffic (adb reverse proxy)",
       "description": "Routes RN network traffic through 127.0.0.1:8080 on the device (adb reverse tunnel to mitmproxy). Off by default; needs the tunnel and a trusted CA.",
       "default": false,
-      "category": "Security",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1829,7 +1785,7 @@
       "name": "Kill residual beacon traffic",
       "description": "Silences the Facebook SDK's remaining phone-home: app-event uploads (/activities, /app) and the SDK config fetch (mobile_sdk_gk). The SDK class init stays alive (required by RN); only transmission dies.",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1861,7 +1817,7 @@
       "name": "Mock Pro (client-side)",
       "description": "Forces the client-side Pro entitlement (custom colors, card/anim controls, full-size player, app search, widgets, gestures). Material Capsule's premium is a local flag derived from a Play purchase query and stored AES-encrypted on-device — it is NOT server-re-validated, so the whole set opens. No purchase is fabricated; real purchases and restore still work.",
       "default": true,
-      "category": "Premium",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1892,7 +1848,7 @@
       "name": "Mock Pro (client-side)",
       "description": "Forces the app's client-side pro flag (isProUser → true) and the local ProStatus model: premium-badge UI, client-gated perks (unlimited rewinds, hide online, extra IRL slots) and pro-only screens open. Honestly: features the SERVER re-validates (premium Soul filters, coins, boosts, some AI limits) still refuse — that is a backend check no client patch can lift.",
       "default": true,
-      "category": "Premium",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1924,7 +1880,7 @@
       "name": "No profile-visitor limit",
       "description": "Lifts Pdb's client-side cap of 3 profile-visitor views per hour (the 'slow down' sheet). Toggle: Pdb Extras → Limits → 'No profile-visitor limit'. The bytecode ships always-on and is inert until the switch is on.",
       "default": true,
-      "category": "Limits",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -1956,7 +1912,7 @@
       "name": "Pdb Extras feature menu",
       "description": "Adds a single Pdb Extras entry to the top of Pdb's Settings screen.",
       "default": true,
-      "category": "Interface",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -1990,7 +1946,7 @@
       "name": "Pdb Extras — resources",
       "description": "Adds the Pdb Extras entry to the Settings screen and registers the extension components.",
       "default": true,
-      "category": "Interface",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2022,7 +1978,7 @@
       "name": "Provide Original app certificate",
       "description": "Automatically reads the signing certificate from the APK you are patching — no original app installed or file provided needed. Only fill the options below if you are patching an APK that was already re-signed (e.g. a previously patched build): in that case point to the original APK file, or enter the certificate manually.",
       "default": false,
-      "category": "Signature",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": null,
       "options": [
@@ -2068,7 +2024,7 @@
       "name": "Relocate runtime MMKV copy",
       "description": "Copies the bundled MMKV library to a fresh file name so a stale copy from another ABI can never be loaded (fixes emulator crashes; no effect on a clean device).",
       "default": false,
-      "category": "Interface",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2100,7 +2056,7 @@
       "name": "Remove AI assistant FAB (+ footer patch id)",
       "description": "Removes the server-driven AI overlay FAB from every screen and surfaces the Morphe patch version on the side-menu footer (\"ID ⚡<version>\" next to the device id).",
       "default": true,
-      "category": "Interface",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2132,7 +2088,7 @@
       "name": "Remove ads",
       "description": "adidas Running ships no ad-serving SDK; this denies the advertising ID and the Privacy-Sandbox ad services and removes the install-referrer permission.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2172,7 +2128,7 @@
       "name": "Remove ads",
       "description": "Fitbit ships no ad SDK or ad placement; this additionally disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services / install-referrer permissions so no advertising ID is exposed.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2203,7 +2159,7 @@
       "name": "Remove ads",
       "description": "Removes the advertising-ID, ad-services and install-referrer permissions (and disables any ad-SDK init provider). Glassdoor ships no third-party ad SDK.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2237,7 +2193,7 @@
       "name": "Remove ads",
       "description": "Stops Google Mobile Ads from initialising (removes the AdMob app id) and strips the advertising-ID, ad-services and install-referrer permissions. Ad slots in the Flutter UI cannot be removed, but they no longer fill.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2271,7 +2227,7 @@
       "name": "Remove ads",
       "description": "Material Capsule ships no ad SDK or ad placement; this additionally disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services permissions so no advertising ID is exposed.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2302,7 +2258,7 @@
       "name": "Remove ads",
       "description": "Nike Run Club ships no ad SDK or placement; this disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services / referrer permissions so no advertising ID is exposed.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2348,7 +2304,7 @@
       "name": "Remove ads",
       "description": "Disables Pdb's ad SDKs (GMS, AppLovin, Vungle, Yandex, Pangle) and turns off in-app ad initialisation.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2380,7 +2336,7 @@
       "name": "Remove ads",
       "description": "Shima+ ships no ad SDK or ad placement; this additionally disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services / install-referrer permissions so no advertising ID is exposed.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2414,7 +2370,7 @@
       "name": "Remove ads",
       "description": "Microsoft Teams ships no ad SDK; this strips the advertising-ID, ad-services and install-referrer permissions and disables any ad-SDK init provider.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2446,31 +2402,31 @@
     },
     {
       "name": "Remove ads",
-      "description": "Disables every ad-network component TextNow declares (AdMarvel, Amazon, AppNext, Google Mobile Ads, MoPub) and strips the ad-ID / ad-services / install-referrer permissions.",
+      "description": "Disables every ad-network component TextNow declares (Facebook Audience Network, Amazon APS/DTB) and strips the ad-ID / ad-services / install-referrer permissions.",
       "default": true,
-      "category": "Ads",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.enflick.android.TextNow",
           "name": "TextNow",
           "description": null,
-          "apkFileType": "APK",
+          "apkFileType": "APKS",
           "appIconColor": "#00A8E1",
           "signatures": [
             "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
           ],
           "targets": [
             {
-              "version": "6.1.0.1",
+              "version": "26.45.0.0",
               "versionCodes": {
-                "ARM64_V8A": 12231,
-                "ARMEABI_V7A": 12231,
-                "X86_64": 12231,
-                "X86": 12231
+                "ARM64_V8A": 15780,
+                "ARMEABI_V7A": 15780,
+                "X86_64": 15780,
+                "X86": 15780
               },
               "isExperimental": false,
-              "minSdk": 14,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -2479,54 +2435,10 @@
       "options": []
     },
     {
-      "name": "Remove server-change delay",
-      "description": "Sets the \"change server\" wait to zero and raises the attempt limit, so you can switch VPN servers freely.",
-      "default": true,
-      "category": "Misc",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "ch.protonvpn.android",
-          "name": "Proton VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#6D4AFF",
-          "signatures": [
-            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853"
-          ],
-          "targets": [
-            {
-              "version": "5.20.98.0",
-              "versionCodes": {
-                "ARM64_V8A": 605209800,
-                "ARMEABI_V7A": 605209800,
-                "X86_64": 605209800,
-                "X86": 605209800
-              },
-              "isExperimental": false,
-              "minSdk": 26,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "protonRemoveServerChangeDelay",
-          "title": "Remove server-change delay",
-          "description": "No wait and no attempt cap when changing VPN servers.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Remove telemetry",
       "description": "Strips Sentry, Embrace and Facebook analytics, disables Firebase analytics, and empties the advertising ID (push notifications keep working).",
       "default": true,
-      "category": "Privacy",
+      "category": null,
       "dependencies": [
         "ResourcePatch"
       ],
@@ -2596,7 +2508,7 @@
       "name": "Remove upsells & promos",
       "description": "Removes Strava's subscription upsells and promos: server-driven modular upsells (matched by an upsell-shape predicate so new server types stay covered), subscription bottom-sheet upsells, and the dedicated upsell screens (Year in Sport 2026, Best Efforts Data Peek, Device Connect). Runtime toggles in Extra Settings; the Settings Subscriptions section is stripped.",
       "default": true,
-      "category": "Upsells",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2664,7 +2576,7 @@
       "name": "Show profile IDs on names",
       "description": "Appends the numeric profile id (#1234567) after every profile name — Soul cards, chat headers, lists. Toggle: Pdb Extras → 'Show profile IDs on names'. The bytecode ships always-on and is inert until the switch is enabled, so the toggle works without rebuilding.",
       "default": true,
-      "category": "Interface",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2696,7 +2608,7 @@
       "name": "Soul history",
       "description": "Records every Soul profile you see or like into a local, on-device history (Pdb Extras / power button → 'Soul history'), so swipes survive the server's short feed window.",
       "default": true,
-      "category": "Interface",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2728,7 +2640,7 @@
       "name": "Spoof Widevine / DRM level",
       "description": "Reports Widevine L1 (hardware DRM) to apps that check DRM level locally.\n\nUseful for apps that refuse to play HD/4K content on L3 devices or after re-signing.\n\nDoes not bypass server-side DRM - Netflix, Disney+ and similar are not affected.",
       "default": false,
-      "category": "DRM",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": null,
       "options": [
@@ -2765,7 +2677,7 @@
       "name": "Spoof app signature",
       "description": "Makes the app think its signing certificate is unchanged after Morphe re-signs it.\n\nUseful when an app crashes or shows a tamper warning because it checks its own certificate.\n\nDoes not bypass Play Integrity / SafetyNet hardware attestation.\n\nApply with Original app certificate patch.",
       "default": false,
-      "category": "Signature",
+      "category": null,
       "dependencies": [
         "ResourcePatch",
         "RawResourcePatch",
@@ -2788,7 +2700,7 @@
       "name": "Spoof install source",
       "description": "Makes the app think it was installed from a specific store (default: Google Play).\n\nUseful when an app blocks features or shows errors because it detects it was not installed from the Play Store.\n\nOnly affects what the app itself sees - does not change the real system install record.",
       "default": false,
-      "category": "Signature",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": null,
       "options": [
@@ -2814,7 +2726,7 @@
       "name": "Spoof stock signing cert hash",
       "description": "Makes NativeUtils.setAppToken() return the stock app's certificate hash instead of the patched build's, so the server-side device/app integrity verdict ('App Error: NO IMSI') is not tripped by the re-signed APK.",
       "default": true,
-      "category": "Security",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2846,7 +2758,7 @@
       "name": "Unbloat (trim manifest)",
       "description": "Removes the third-party launcher-badge permission zoo Teams declares (Samsung/HTC/Sony/Huawei/OPPO/badger), which only add manifest bulk.",
       "default": true,
-      "category": "Unbloat",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2880,7 +2792,7 @@
       "name": "Unlock Premium",
       "description": "Unlocks Strava Premium features (spoofs PAID state + far-future expiry). Also re-enables password login after OTP.",
       "default": true,
-      "category": "Premium",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2948,7 +2860,7 @@
       "name": "Unlock Pro",
       "description": "Forces every \"pro_unlock\" entitlement check to true, unlocking the client-side Pro features without touching the signed purchase store.",
       "default": true,
-      "category": "Premium",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -2989,54 +2901,10 @@
       ]
     },
     {
-      "name": "Unlock Proton Plus features",
-      "description": "Makes the client treat the account as Proton Plus: unlocks the settings features, NetShield levels and the connection limit. Server-side plan enforcement (Plus-only servers) cannot be changed by a client patch.",
-      "default": true,
-      "category": "Premium",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "ch.protonvpn.android",
-          "name": "Proton VPN",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#6D4AFF",
-          "signatures": [
-            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853"
-          ],
-          "targets": [
-            {
-              "version": "5.20.98.0",
-              "versionCodes": {
-                "ARM64_V8A": 605209800,
-                "ARMEABI_V7A": 605209800,
-                "X86_64": 605209800,
-                "X86": 605209800
-              },
-              "isExperimental": false,
-              "minSdk": 26,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "protonUnlockPlusFeatures",
-          "title": "Unlock Proton Plus features",
-          "description": "Treat the account as Proton Plus in the client (features, NetShield levels and the device/connection limit).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Unlock hidden feature flags",
       "description": "Flips the server-sent feature flags showO2A/showO2AShop/showO2ABuy/showUber/showDeleteAccount to true in every API response before the JS sees it, revealing app screens the server hides.",
       "default": true,
-      "category": "Interface",
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.1-dev.1",
+  "version": "1.5.0-dev.1",
   "patches": [
     {
       "name": "Always show navigation bar",
@@ -1023,6 +1023,64 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Install next to ChatGPT",
+      "description": "Installs this build as a second ChatGPT beside your normal one, with its own data and sign-in. Pick its package name and app name in the patch's options. Sign-in uses the original OAuth callback; if Android asks which app to open, choose the copy.",
+      "default": false,
+      "category": "Misc",
+      "compatiblePackages": [
+        {
+          "packageName": "com.openai.chatgpt",
+          "name": "ChatGPT",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#10A37F",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.2026.307",
+              "versionCodes": {
+                "ARM64_V8A": 2630718,
+                "ARMEABI_V7A": 2630718,
+                "X86_64": 2630718,
+                "X86": 2630718
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Version 1.2026.307, build 2630718."
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": "Any version (experimental). Every patch verifies its own anchors."
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The second ChatGPT's package. Each part starts with a letter, with dots between the parts, and it can't be ChatGPT's own.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.openai.chatgpt.clone",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The name under the second ChatGPT's icon. It starts with a letter and holds up to 50 characters.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "ChatGPT Clone",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Install next to LinkedIn",
