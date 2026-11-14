@@ -5,7 +5,7 @@ https://github.com/hoo-dles/jadx-morphe
 https://github.com/Jman-Github/Awesome-Android-Patching
 https://github.com/Jman-Github/Patch-Bundle-Registry
 https://github.com/Jman-Github/Universal-Patch-Manager
-https://github.com/jpa102/more_feature_flags
+https://github.com/jpa102/morphe_feature_flags
 https://github.com/MorpheApp/jadb
 https://github.com/MorpheApp/MicroG-RE
 https://github.com/MorpheApp/morphe-branding
