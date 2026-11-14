@@ -1,9 +1,11 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
 import html
+import json
 import os
 import re
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import UTC, datetime, timedelta
@@ -89,6 +91,21 @@ def main() -> None:
     try:
         with urllib.request.urlopen(api_request):
             print("Telegram notification sent successfully.")
+    except urllib.error.HTTPError as error:
+        error_message = str(error)
+        try:
+            response = json.loads(error.read().decode("utf-8", errors="replace"))
+        except json.JSONDecodeError:
+            response = {}
+        if (
+            isinstance(response, dict)
+            and isinstance(description := response.get("description"), str)
+            and description
+        ):
+            error_message = f"HTTP {error.code}: {description}"
+        raise SystemExit(
+            f"Failed to send Telegram notification: {error_message}"
+        ) from error
     except Exception as error:
         raise SystemExit(f"Failed to send Telegram notification: {error}") from error
 

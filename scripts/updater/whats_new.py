@@ -241,27 +241,6 @@ def render_patches(
     return lines
 
 
-def render_apps(
-    package_names: list[str],
-    app_metadata: dict,
-    limit: int = DISPLAY_ITEM_LIMIT,
-) -> list[str]:
-    lines = []
-    total_apps = len(package_names)
-    display_count = total_apps if total_apps <= limit + 1 else limit
-
-    for package_name in package_names[:display_count]:
-        app_name = format_app_name(package_name, app_metadata)
-        app_url = make_url(app=package_name)
-        lines.append(f"    + 📱 [{app_name}]({app_url})")
-
-    if total_apps > display_count:
-        remaining_count = total_apps - display_count
-        lines.append(f"    + _...and {remaining_count} more apps_")
-
-    return lines
-
-
 def generate_markdown(
     json_diff: dict,
     old_history: dict,
@@ -290,9 +269,8 @@ def generate_markdown(
 
     new_apps_map: dict[str, dict[str, str]] = {}
     existing_apps_new_patches_map: dict[str, dict[str, str]] = {}
-    bundle_added_apps_map: dict[str, list[str]] = {}
 
-    for repo_url, bundle_data in json_diff.items():
+    for bundle_data in json_diff.values():
         is_new_bundle = bundle_data.get("isNew", False)
         apps_data = bundle_data.get("apps", {})
         for package_name, app_data in apps_data.items():
@@ -306,7 +284,6 @@ def generate_markdown(
                 and package_name != PACKAGE_UNIVERSAL
                 and package_name != PACKAGE_EXAMPLE
             ):
-                bundle_added_apps_map.setdefault(repo_url, []).append(package_name)
                 continue
 
             if not patches:
@@ -327,12 +304,7 @@ def generate_markdown(
                             normalize_patch_name(patch_name), patch_name
                         )
 
-    if (
-        not new_bundle_repos
-        and not new_apps_map
-        and not existing_apps_new_patches_map
-        and not bundle_added_apps_map
-    ):
+    if not new_bundle_repos and not new_apps_map and not existing_apps_new_patches_map:
         return ""
 
     markdown_sections = [f"✨ [_View full changelog_]({WHATS_NEW_URL})"]
@@ -421,70 +393,6 @@ def generate_markdown(
             app_lines.append(f"- _...and {remaining_count} more apps_")
 
         markdown_sections.append("\n".join(app_lines))
-
-    if bundle_added_apps_map:
-        bundle_addition_lines = []
-        sorted_repos = sorted(
-            bundle_added_apps_map.keys(),
-            key=lambda item_repo: bundle_order.get(item_repo, DEFAULT_BUNDLE_RANK),
-        )
-        total_bundles = len(sorted_repos)
-        display_count = (
-            total_bundles
-            if total_bundles <= EXISTING_ENTRY_LIMIT + 1
-            else EXISTING_ENTRY_LIMIT
-        )
-
-        for repo_url in sorted_repos[:display_count]:
-            package_names = sorted(
-                bundle_added_apps_map[repo_url],
-                key=lambda package_name: get_app_sort_key(
-                    package_name,
-                    app_metadata,
-                    app_patch_counts.get(
-                        package_name,
-                        len(
-                            json_diff.get(repo_url, {})
-                            .get("apps", {})
-                            .get(package_name, {})
-                            .get("patches", [])
-                        ),
-                    ),
-                ),
-            )
-
-            if not package_names:
-                continue
-
-            source, repo_path = parse_repo_url(repo_url)
-            if not source or not repo_path:
-                continue
-            display_name = bundle_names.get(repo_url) or repo_path.split("/")[-1]
-            owner = repo_path.split("/")[0]
-            owner_suffix = (
-                f" (by {owner})"
-                if should_show_bundle_owner(display_name, owner)
-                else ""
-            )
-            bundle_url = make_url(bundle_source=source, bundle_repo=repo_path)
-            current_bundle_lines = [
-                f"- 📦 [{display_name}]({bundle_url}){owner_suffix}"
-            ]
-            current_bundle_lines.extend(
-                render_apps(
-                    package_names,
-                    app_metadata,
-                    limit=EXISTING_ITEM_LIMIT,
-                )
-            )
-            bundle_addition_lines.append("\n".join(current_bundle_lines))
-
-        if total_bundles > display_count:
-            remaining_count = total_bundles - display_count
-            bundle_addition_lines.append(f"- _...and {remaining_count} more bundles_")
-
-        if bundle_addition_lines:
-            markdown_sections.append("\n\n".join(bundle_addition_lines))
 
     return "\n\n".join(markdown_sections)
 

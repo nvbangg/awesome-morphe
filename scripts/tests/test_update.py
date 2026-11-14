@@ -691,7 +691,7 @@ class TestBundleUpdate:
         assert "📦 (✨New)" in markdown
         assert "📱 (✨New)" not in markdown
 
-    def test_known_app_added_to_existing_bundle_is_only_a_bundle_addition(self) -> None:
+    def test_known_app_added_to_existing_bundle_is_not_announced(self) -> None:
         repo_url = "https://github.com/owner/alpha"
         save_json(
             self.history_path,
@@ -712,10 +712,7 @@ class TestBundleUpdate:
         assert changes["apps"] == {
             "com.test.app": {"patches": ["Patch"], "isNew": True}
         }
-        markdown = self.markdown_path.read_text(encoding="utf-8")
-        assert "📱 (✨New)" not in markdown
-        assert "📦 (✨New)" not in markdown
-        assert "com.test.app" in markdown
+        assert not self.markdown_path.exists()
 
     def test_unchanged_daily_removes_the_previous_notification(self) -> None:
         self.add_target()
