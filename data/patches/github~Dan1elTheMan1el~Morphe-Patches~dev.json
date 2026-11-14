@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.0-dev.2",
+  "version": "1.7.0-dev.3",
   "patches": [
     {
       "name": "Apple emojis everywhere",
@@ -263,40 +263,6 @@
                 "ARMEABI_V7A": 160,
                 "X86_64": 160,
                 "X86": 160
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable Ads",
-      "description": "Removes the in-app and overlay banner ads without unlocking paid features.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch",
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.cjin.pokegenie.standard",
-          "name": "Poke Genie -Remote Raid IV PvP",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#2878B4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.19.3",
-              "versionCodes": {
-                "ARM64_V8A": 419,
-                "ARMEABI_V7A": 419,
-                "X86_64": 419,
-                "X86": 419
               },
               "isExperimental": false,
               "minSdk": null,
@@ -670,6 +636,37 @@
       "options": []
     },
     {
+      "name": "Strip PairIP",
+      "description": "Neutralizes PairIP's startup program (integrity check + Play-Store paywall) and restores its obfuscation tables, while leaving the native VM intact so virtualized methods still run. Also nukes the Java license/signature checks. Required by every other Poke Genie patch -- keep it enabled.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.cjin.pokegenie.standard",
+          "name": "Poke Genie -Remote Raid IV PvP",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2878B4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.19.3",
+              "versionCodes": {
+                "ARM64_V8A": 419,
+                "ARMEABI_V7A": 419,
+                "X86_64": 419,
+                "X86": 419
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlimited Time Bypass",
       "description": "Removes the ad requirement and grants the target DeFit version's maximum active time when the button is pressed.",
       "default": true,
@@ -704,6 +701,37 @@
                 "X86": 930
               },
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock All IAPs",
+      "description": "Forces premium flags and server getters to true/max by short-circuiting their methods.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.cjin.pokegenie.standard",
+          "name": "Poke Genie -Remote Raid IV PvP",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2878B4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.19.3",
+              "versionCodes": {
+                "ARM64_V8A": 419,
+                "ARMEABI_V7A": 419,
+                "X86_64": 419,
+                "X86": 419
+              },
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -777,7 +805,7 @@
     {
       "name": "microG-RE support (Google sign-in)",
       "description": "Routes Google Play Services to MicroG-RE (app.revanced.android.gms) and pins Poke Genie's legacy sign-in path so Google sign-in works on the re-signed app. Install MicroG-RE, add your account there. Minimal: no push/FCM.",
-      "default": false,
+      "default": true,
       "dependencies": [
         "ResourcePatch"
       ],

@@ -1,0 +1,355 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.14.0",
+  "patches": [
+    {
+      "name": "Allow screen recording",
+      "description": "Clears FLAG_SECURE and disables secure surfaces so the app can be screen-recorded.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Allow screenshots",
+      "description": "Clears FLAG_SECURE from window flags so the app can be captured in screenshots.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Change package name",
+      "description": "Renames the app package (appends \".lustx\" by default) and updates custom permissions and content-provider authorities. Changing the package name can break apps that hardcode their package or authorities in code.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "New package name. \"Default\" appends \".lustx\" to the original.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Default",
+          "values": {
+            "Default": "Default"
+          }
+        },
+        {
+          "key": "updatePermissions",
+          "title": "Update permissions",
+          "description": "Rename custom permissions (incl. the dynamic-receiver permission) that use the old package.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "updateProviders",
+          "title": "Update provider authorities",
+          "description": "Rename content-provider authorities that use the old package.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Custom font",
+      "description": "Overrides the app's typeface with a built-in font family. Affects explicit Typeface usage; views that never set a typeface keep the system default.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "fontFamily",
+          "title": "Font family",
+          "description": "The built-in font family to apply.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "monospace",
+          "values": {
+            "Monospace": "monospace",
+            "Serif": "serif",
+            "Sans-serif": "sans-serif"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Disable boot start-up",
+      "description": "Prevents the app from auto-starting on device boot by removing boot intent-filter actions and the RECEIVE_BOOT_COMPLETED permission.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockPackageReplaced",
+          "title": "Also block update start-up",
+          "description": "Also remove MY_PACKAGE_REPLACED (auto-start after the app is updated).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Hide app icon",
+      "description": "Hides the app from the launcher by replacing the LAUNCHER category with DEFAULT. The app stays installed; launch it via another app or a shortcut.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove PairIP",
+      "description": "Removes the PairIP Play licensing gate (startup license check, response validation, repeated checks and paywall/kill path). Does not bypass PairIP native virtualization or Play Integrity attestation.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Spoof device information",
+      "description": "Replaces android.os.Build device identity fields with a chosen device preset.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "device",
+          "title": "Device preset",
+          "description": "The device to impersonate.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Pixel 8 Pro",
+          "values": {
+            "Pixel 8 Pro": "Pixel 8 Pro",
+            "Pixel 7": "Pixel 7",
+            "Galaxy S24 Ultra": "Galaxy S24 Ultra",
+            "Galaxy S23": "Galaxy S23",
+            "OnePlus 12": "OnePlus 12",
+            "Xiaomi 14": "Xiaomi 14",
+            "Nothing Phone (2)": "Nothing Phone (2)",
+            "Motorola Edge 40": "Motorola Edge 40"
+          }
+        },
+        {
+          "key": "spoofVersion",
+          "title": "Also spoof OS version",
+          "description": "Also spoof Build.VERSION (RELEASE, SDK_INT, ...). Can break apps; off by default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof install source",
+      "description": "Makes the app believe it was installed from a chosen store (Play Store by default).",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "installer",
+          "title": "Install source",
+          "description": "The installer package to report.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.android.vending",
+          "values": {
+            "Google Play Store": "com.android.vending",
+            "Aurora Store": "com.aurora.store",
+            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
+            "F-Droid": "org.fdroid.fdroid",
+            "Amazon Appstore": "com.amazon.venezia",
+            "Huawei AppGallery": "com.huawei.appmarket",
+            "Xiaomi GetApps": "com.xiaomi.market",
+            "ADB / sideload": "com.android.shell"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Strip VPN checks",
+      "description": "Hides an active VPN from the app by neutralizing NetworkCapabilities transport/capability checks and (optionally) network-interface name checks.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripInterfaceChecks",
+          "title": "Also strip interface-name checks",
+          "description": "Defeat tun/ppp/tap interface-name comparisons in NetworkInterface-using methods.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Strip sensitive permissions",
+      "description": "Removes selected sensitive permissions from the manifest. Can break features that rely on them; enable only the groups you want stripped.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "location",
+          "title": "Location",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "contacts",
+          "title": "Contacts & accounts",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "smsCallLog",
+          "title": "SMS & call log",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "phone",
+          "title": "Phone",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "cameraMic",
+          "title": "Camera & microphone",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "storage",
+          "title": "Storage / media",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "sensors",
+          "title": "Sensors & activity",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "calendar",
+          "title": "Calendar",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "nearby",
+          "title": "Nearby devices",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "notifications",
+          "title": "Notifications",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Universal cleanup",
+      "description": "Removes junk metadata files and (optionally) strips debug logging calls.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripLogging",
+          "title": "Strip debug logging",
+          "description": "Remove android.util.Log and Throwable.printStackTrace calls.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stripKotlinMetadata",
+          "title": "Remove Kotlin module metadata",
+          "description": "Delete META-INF/*.kotlin_module (safe unless the app uses kotlin-reflect).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks Pawxy premium features (VPN servers, removes paywall and upsell badges).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.pawxy.browser",
+          "name": "Pawxy - Fast VPN & Web Browser",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#00E4FF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.15.1",
+              "versionCodes": {
+                "ARM64_V8A": 104,
+                "ARMEABI_V7A": 104,
+                "X86_64": 104,
+                "X86": 104
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}

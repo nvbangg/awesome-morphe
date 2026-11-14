@@ -1,5 +1,5 @@
 {
-    "version": "1.0.1",
+    "version": "1.0.3",
     "patches": [
         {
             "name": "Add microG-RE support",
@@ -66,6 +66,37 @@
         {
             "name": "Always two-wheeler on Android Auto",
             "description": "26.44.06.1006895251 only. Android Auto treats two-wheeler (motorcycle) as its supported mode, so destinations searched on the head unit default to two-wheeler routes. Use with \"Allow any travel mode on Android Auto\" so driving routes are still accepted.",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "com.google.android.apps.maps",
+                    "name": "Google Maps",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#FFFFFF",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.44.06.1006895251",
+                            "versionCodes": {
+                                "ARM64_V8A": 1068856906,
+                                "ARMEABI_V7A": 1068856906,
+                                "X86_64": 1068856906,
+                                "X86": 1068856906
+                            },
+                            "isExperimental": false,
+                            "minSdk": 29,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "Android Auto template-only app",
+            "description": "26.44.06.1006895251 only. Declares the patched Maps as a navigation (template) app only and removes legacy projection entry points that caused the real head unit to fall back to messaging. This does not bypass the observed package validator denial.",
             "default": true,
             "category": null,
             "compatiblePackages": [

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.80.0",
+  "version": "1.85.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -771,6 +771,40 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Allow custom Android Auto hosts",
+      "description": "Removes Magic Earth's service binding permission so compatible custom HUD hosts can reach its existing allow-all host validator. Keeps navigation discovery and caller-UID validation.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.generalmagic.magicearth",
+          "name": "Magic Earth",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "fa91bd3a8bfa2b03bda48422b238d584f23921154a5279e721f2f90a74d38806"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.1.26.38.B4684D03.6207A61BA",
+              "versionCodes": {
+                "ARM64_V8A": 2026141716,
+                "ARMEABI_V7A": 2026141716,
+                "X86_64": 2026141716,
+                "X86": 2026141716
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Allow custom Android Auto hosts",
@@ -2201,6 +2235,55 @@
     },
     {
       "name": "Custom branding",
+      "description": "Renames Fennec to Firefox and gives it the Firefox launcher icon. Choose another name or Fennec's original icon.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.mozilla.fennec_fdroid",
+          "name": "Fennec",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customName",
+          "title": "App name",
+          "description": "Name shown in the launcher and Android app information. Leave empty to keep Fennec.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Firefox",
+          "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "Launcher icon applied when patching.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "firefox",
+          "values": {
+            "Original Fennec": "original",
+            "Firefox (default)": "firefox"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom branding",
       "description": "Changes Gboard's app name and launcher icon. Choose the Parakeet icon (default), Gboard's original icon or one of five other designs. The name also appears in Android's keyboard list.",
       "default": false,
       "category": null,
@@ -2263,6 +2346,104 @@
             "Colourful G": "colourful",
             "Cartoon outline": "cartoon",
             "Soft light": "soft_light"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom branding",
+      "description": "Renames GridCraft to Microsoft Excel and gives it the Microsoft Excel launcher icon. Choose another name or GridCraft's original icon.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.github.artcraftandroid.gridcraft",
+          "name": "GridCraft",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customName",
+          "title": "App name",
+          "description": "Name shown in the launcher and Android app information. Leave empty to keep GridCraft.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Microsoft Excel",
+          "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "Launcher icon applied when patching.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "excel",
+          "values": {
+            "Original GridCraft": "original",
+            "Microsoft Excel (default)": "excel"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom branding",
+      "description": "Renames LightCraft to Adobe Lightroom and gives it the Adobe Lightroom launcher icon. Choose another name or LightCraft's original icon.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.github.artcraftandroid.lightcraft",
+          "name": "LightCraft",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customName",
+          "title": "App name",
+          "description": "Name shown in the launcher and Android app information. Leave empty to keep LightCraft.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Adobe Lightroom",
+          "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "Launcher icon applied when patching.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "lightroom",
+          "values": {
+            "Original LightCraft": "original",
+            "Adobe Lightroom (default)": "lightroom"
           }
         }
       ]
@@ -2341,6 +2522,56 @@
     },
     {
       "name": "Custom branding",
+      "description": "Renames PdfCraft to Adobe Acrobat and gives it the Adobe Acrobat launcher icon. Choose another name, the classic Acrobat icon or PdfCraft's original icon.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.github.artcraftandroid.pdfcraft",
+          "name": "PdfCraft",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customName",
+          "title": "App name",
+          "description": "Name shown in the launcher and Android app information. Leave empty to keep PdfCraft.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Adobe Acrobat",
+          "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "Launcher icon applied when patching.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "acrobat",
+          "values": {
+            "Original PdfCraft": "original",
+            "Adobe Acrobat (default)": "acrobat",
+            "Adobe Acrobat classic": "acrobat_classic"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom branding",
       "description": "Changes Reolink's app name and launcher icon. Defaults to \"Reolink AA\" with the Reolink AA icon; Reolink's original icon is also available.",
       "default": true,
       "category": null,
@@ -2391,6 +2622,104 @@
           "values": {
             "Reolink AA (default)": "aa",
             "Original Reolink": "original"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom branding",
+      "description": "Renames Titanium Browser to Chrome and gives it the Chrome launcher icon. Choose another name or Titanium's original icon.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.github.jqssun.helium",
+          "name": "Titanium Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customName",
+          "title": "App name",
+          "description": "Name shown in the launcher and Android app information. Leave empty to keep Titanium Browser.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Chrome",
+          "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "Launcher icon applied when patching.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "chrome",
+          "values": {
+            "Original Titanium": "original",
+            "Chrome (default)": "chrome"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom branding",
+      "description": "Renames WordCraft to Microsoft Word and gives it the Microsoft Word launcher icon. Choose another name or WordCraft's original icon.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "io.github.artcraftandroid.wordcraft",
+          "name": "WordCraft",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "customName",
+          "title": "App name",
+          "description": "Name shown in the launcher and Android app information. Leave empty to keep WordCraft.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Microsoft Word",
+          "values": null
+        },
+        {
+          "key": "appIcon",
+          "title": "App icon",
+          "description": "Launcher icon applied when patching.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "word",
+          "values": {
+            "Original WordCraft": "original",
+            "Microsoft Word (default)": "word"
           }
         }
       ]
@@ -2454,6 +2783,74 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable GEM telemetry dispatch",
+      "description": "ARM64 only: prevents the traced GEM storage and usage telemetry jobs from being queued. Keeps SDK initialization intact. Local statistics storage may remain; runtime validation pending.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.generalmagic.magicearth",
+          "name": "Magic Earth",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "fa91bd3a8bfa2b03bda48422b238d584f23921154a5279e721f2f90a74d38806"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.1.26.38.B4684D03.6207A61BA",
+              "versionCodes": {
+                "ARM64_V8A": 2026141716,
+                "ARMEABI_V7A": 2026141716,
+                "X86_64": 2026141716,
+                "X86": 2026141716
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Google telemetry transport",
+      "description": "Drops new Google DataTransport events and completes queued CCT uploads locally. Does not disable GEM engine telemetry. Runtime validation pending.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.generalmagic.magicearth",
+          "name": "Magic Earth",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "fa91bd3a8bfa2b03bda48422b238d584f23921154a5279e721f2f90a74d38806"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.1.26.38.B4684D03.6207A61BA",
+              "versionCodes": {
+                "ARM64_V8A": 2026141716,
+                "ARMEABI_V7A": 2026141716,
+                "X86_64": 2026141716,
+                "X86": 2026141716
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -4244,12 +4641,12 @@
           "formFactor": "TV",
           "targets": [
             {
-              "version": "1.117.0",
+              "version": "1.118.0",
               "versionCodes": {
-                "ARM64_V8A": 1622,
-                "ARMEABI_V7A": 1622,
-                "X86_64": 1622,
-                "X86": 1622
+                "ARM64_V8A": 1630,
+                "ARMEABI_V7A": 1630,
+                "X86_64": 1630,
+                "X86": 1630
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -4553,6 +4950,40 @@
       "options": []
     },
     {
+      "name": "Enable TV launcher",
+      "description": "Lists Magic Earth in Android TV launchers and makes touch input optional. Remote navigation and rendering depend on the device.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.generalmagic.magicearth",
+          "name": "Magic Earth",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "fa91bd3a8bfa2b03bda48422b238d584f23921154a5279e721f2f90a74d38806"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.1.26.38.B4684D03.6207A61BA",
+              "versionCodes": {
+                "ARM64_V8A": 2026141716,
+                "ARMEABI_V7A": 2026141716,
+                "X86_64": 2026141716,
+                "X86": 2026141716
+              },
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable WebView debugging",
       "description": "Diagnostic only: permits local inspection of KIJK's hosted frontend. Disabled by default; use for test builds.",
       "default": false,
@@ -4690,6 +5121,40 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable local feature controls",
+      "description": "ARM64 only: skips local premium prompts for recording, map downloads and map styles, preserves traffic/elevation selections, and hides four premium promotion widgets. Online services still require server authorization. Runtime validation pending.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.generalmagic.magicearth",
+          "name": "Magic Earth",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": null,
+          "signatures": [
+            "fa91bd3a8bfa2b03bda48422b238d584f23921154a5279e721f2f90a74d38806"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.1.26.38.B4684D03.6207A61BA",
+              "versionCodes": {
+                "ARM64_V8A": 2026141716,
+                "ARMEABI_V7A": 2026141716,
+                "X86_64": 2026141716,
+                "X86": 2026141716
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -7681,12 +8146,12 @@
           "formFactor": "TV",
           "targets": [
             {
-              "version": "1.117.0",
+              "version": "1.118.0",
               "versionCodes": {
-                "ARM64_V8A": 1622,
-                "ARMEABI_V7A": 1622,
-                "X86_64": 1622,
-                "X86": 1622
+                "ARM64_V8A": 1630,
+                "ARMEABI_V7A": 1630,
+                "X86_64": 1630,
+                "X86": 1630
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -8370,12 +8835,12 @@
           "formFactor": "TV",
           "targets": [
             {
-              "version": "1.117.0",
+              "version": "1.118.0",
               "versionCodes": {
-                "ARM64_V8A": 1622,
-                "ARMEABI_V7A": 1622,
-                "X86_64": 1622,
-                "X86": 1622
+                "ARM64_V8A": 1630,
+                "ARMEABI_V7A": 1630,
+                "X86_64": 1630,
+                "X86": 1630
               },
               "isExperimental": false,
               "minSdk": 24,
