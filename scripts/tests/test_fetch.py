@@ -11,13 +11,9 @@ from unittest.mock import Mock, call, patch
 import pytest
 
 import fetch as bundle_fetch
-from common.utils import (
-    DEFAULT_BRANCHES,
-    build_raw_url,
-    load_json,
-    parse_repo_url,
-    save_json,
-)
+from common.config import DEFAULT_BRANCHES
+from common.files import load_json, save_json
+from common.repositories import build_raw_url, parse_repo_url
 
 PATCH_LIST_BARRIER_TIMEOUT_SECONDS = 5
 DOWNLOAD_WAIT_TIMEOUT_SECONDS = 5

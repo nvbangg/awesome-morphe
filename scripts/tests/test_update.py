@@ -9,8 +9,9 @@ import pytest
 from google_play_scraper.exceptions import ExtraHTTPError
 
 import update as bundle_update
-from common import repo_info
-from common.utils import PACKAGE_UNIVERSAL, load_json, save_json
+from common import repositories
+from common.config import PACKAGE_UNIVERSAL
+from common.files import load_json, save_json
 from updater import gplay_scrape, local_data, whats_new
 
 CURRENT_TIME_SECONDS = 1_800_000_000
@@ -81,7 +82,7 @@ class TestBundleUpdate:
         )
         self.fetch_repo = self.patch_context.enter_context(
             patch.object(
-                repo_info,
+                repositories,
                 "fetch_repo_details",
                 side_effect=AssertionError(
                     "Update must not request repository metadata"

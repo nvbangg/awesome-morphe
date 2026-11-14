@@ -1,48 +1,57 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
 import argparse
+import contextlib
+import io
 import json
 import subprocess
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from http import HTTPStatus
 from http.client import HTTPException
 from threading import Lock
 
-from common.repo_info import fetch_repo_details
-from common.utils import (
-    BUNDLE_PARSER_DIR,
+from common.config import (
     BUNDLES_DIR,
     CONCURRENCY,
     DEFAULT_BRANCHES,
-    MPP_DIR,
-    PARSED_FILES_PATH,
     PATCHES_DIR,
     REPOS_JSON_PATH,
+    SCRIPTS_DIR,
     UNAVAILABLE_HTTP_CODES,
-    UPDATED_FILES_PATH,
+)
+from common.files import (
     append_step_summary,
-    build_raw_url,
-    build_repo_url,
-    extract_mpp_name,
-    fetch,
-    format_request_error,
     format_summary_section,
-    get_auth_headers,
     load_json,
     load_lines,
+    save_json,
+)
+from common.http import (
+    fetch,
+    format_request_error,
+    get_auth_headers,
     normalize_image_url,
     open_request,
+)
+from common.repositories import (
+    build_raw_url,
+    build_repo_url,
+    fetch_repo_details,
     parse_repo_url,
-    save_json,
 )
 
 HASH_REQUEST_TIMEOUT_SECONDS = 10
 METADATA_REQUEST_TIMEOUT_SECONDS = 15
+BUNDLE_PARSER_DIR = SCRIPTS_DIR / "bundle-parser"
+MPP_DIR = BUNDLE_PARSER_DIR / "mpp"
+UPDATED_FILES_PATH = BUNDLE_PARSER_DIR / "updated_files.txt"
+PARSED_FILES_PATH = BUNDLE_PARSER_DIR / "parsed_files.txt"
 GRADLE_EXECUTABLE_NAME = "gradlew.bat" if sys.platform == "win32" else "gradlew"
 GRADLE_EXECUTABLE_PATH = BUNDLE_PARSER_DIR / GRADLE_EXECUTABLE_NAME
 REPOSITORY_FIELDS = (
@@ -63,6 +72,18 @@ FETCH_ERROR_SECTIONS = {
     "image": "Bundle image",
     "repo_metadata": "Repository metadata",
 }
+
+
+def extract_mpp_name(mpp_file: bytes) -> str | None:
+    with (
+        contextlib.suppress(Exception),
+        zipfile.ZipFile(io.BytesIO(mpp_file), "r") as zip_file,
+    ):
+        manifest_text = zip_file.read("META-INF/MANIFEST.MF").decode("utf-8")
+        for line in manifest_text.splitlines():
+            if line.startswith("Name:"):
+                return line.split(":", 1)[1].strip()
+    return None
 
 
 class BundleDownloads:

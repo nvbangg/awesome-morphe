@@ -7,7 +7,7 @@ from urllib.error import HTTPError, URLError
 import pytest
 
 import discover
-from common.utils import load_json, save_json
+from common.files import load_json, save_json
 from discovery import audit_readme, find_projects, jman, morphe_archive, official
 
 

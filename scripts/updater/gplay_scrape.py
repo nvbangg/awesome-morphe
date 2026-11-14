@@ -6,13 +6,9 @@ from http.client import HTTPException
 from google_play_scraper import app as gplay_app
 from google_play_scraper.exceptions import GooglePlayScraperException, NotFoundError
 
-from common.utils import (
-    CONCURRENCY,
-    OFFICIAL_BUNDLES_PATH,
-    PACKAGE_UNIVERSAL,
-    load_json,
-    normalize_image_url,
-)
+from common.config import CONCURRENCY, OFFICIAL_BUNDLES_PATH, PACKAGE_UNIVERSAL
+from common.files import load_json
+from common.http import normalize_image_url
 
 
 def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:

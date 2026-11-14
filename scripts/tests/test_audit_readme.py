@@ -4,11 +4,11 @@ from urllib.error import HTTPError
 
 import pytest
 
-from common import repo_info
+from common import repositories
 from discovery import audit_readme
 
 
-@pytest.mark.parametrize("code", repo_info.UNAVAILABLE_HTTP_CODES)
+@pytest.mark.parametrize("code", repositories.UNAVAILABLE_HTTP_CODES)
 @pytest.mark.parametrize("source", ("github", "gitlab"))
 def test_audit_still_classifies_unavailable_repositories(
     code, source, block_network
@@ -16,8 +16,8 @@ def test_audit_still_classifies_unavailable_repositories(
     repo_url = f"https://{source}.com/owner/alpha"
     with (
         HTTPError("https://example.com", code, "Failed", Message(), None) as error,
-        patch.object(repo_info.time, "sleep"),
-        patch.object(repo_info, "fetch", side_effect=error),
+        patch.object(repositories.time, "sleep"),
+        patch.object(repositories, "fetch", side_effect=error),
         patch.object(audit_readme, "load_lines", side_effect=[[repo_url], []]),
     ):
         block_network.side_effect = error
@@ -31,8 +31,10 @@ def test_gitlab_invalid_metadata_does_not_stop_other_repository_audit() -> None:
     failed_url = "https://gitlab.com/owner/failed"
     working_url = "https://github.com/owner/working"
     with (
-        patch.object(repo_info.time, "sleep"),
-        patch.object(repo_info, "fetch", return_value={"full_name": "owner/working"}),
+        patch.object(repositories.time, "sleep"),
+        patch.object(
+            repositories, "fetch", return_value={"full_name": "owner/working"}
+        ),
         patch.object(
             audit_readme, "load_lines", side_effect=[[failed_url, working_url], []]
         ),

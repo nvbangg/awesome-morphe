@@ -3,7 +3,9 @@
 import re
 from http.client import HTTPException
 
-from common.utils import BUNDLE_SOURCES_DIR, build_repo_url, fetch
+from common.config import BUNDLE_SOURCES_DIR
+from common.http import fetch
+from common.repositories import build_repo_url
 from discovery import export_provider, report_provider_warning
 
 README_URL = (

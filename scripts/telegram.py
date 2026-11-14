@@ -11,7 +11,7 @@ import urllib.request
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from common.utils import WHATS_NEW_PATH
+from common.config import WHATS_NEW_PATH
 
 
 def format_inline_markdown(text: str) -> str:

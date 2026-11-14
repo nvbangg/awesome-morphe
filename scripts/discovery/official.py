@@ -2,20 +2,17 @@
 
 from http.client import HTTPException
 
-from common.utils import (
-    BUNDLE_SOURCES_DIR,
-    OFFICIAL_BUNDLES_PATH,
-    build_repo_url,
-    fetch,
-    save_json,
-)
+from common.config import BUNDLE_SOURCES_DIR, OFFICIAL_BUNDLES_PATH, PROJECT_USER_AGENT
+from common.files import save_json
+from common.http import fetch
+from common.repositories import build_repo_url
 from discovery import export_provider, report_provider_warning
 
 BUNDLES_URL = "https://morphe-patches.software/data/bundles.json"
 OUTPUT_PATH = BUNDLE_SOURCES_DIR / "official.json"
 HEADERS = {
     "Referer": "https://morphe-patches.software/",
-    "User-Agent": "AwesomeMorphe/1.0 (+https://github.com/nvbangg/awesome-morphe)",
+    "User-Agent": PROJECT_USER_AGENT,
 }
 
 

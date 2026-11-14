@@ -5,14 +5,14 @@ from unittest.mock import patch
 
 import pytest
 
-from common import repo_info
+from common import repositories
 
 
 class TestRepositoryMetadata:
     @pytest.fixture(autouse=True)
     def prepare(self, patch_context) -> None:
         self.patch_context = patch_context
-        self.patch_context.enter_context(patch.object(repo_info.time, "sleep"))
+        self.patch_context.enter_context(patch.object(repositories.time, "sleep"))
 
     def http_error(self, code: int) -> urllib.error.HTTPError:
         error = urllib.error.HTTPError(
@@ -24,10 +24,12 @@ class TestRepositoryMetadata:
     @pytest.mark.parametrize("source", ("github", "gitlab"))
     @pytest.mark.parametrize("code", (401, 403, 404, 429, 451, 503))
     def test_http_errors_keep_actual_status_and_audit_flags(self, source, code) -> None:
-        with patch.object(repo_info, "fetch", side_effect=self.http_error(code)):
-            details = repo_info.fetch_repo_details(f"https://{source}.com/owner/alpha")
+        with patch.object(repositories, "fetch", side_effect=self.http_error(code)):
+            details = repositories.fetch_repo_details(
+                f"https://{source}.com/owner/alpha"
+            )
             expected = {"error": f"Request failed (HTTP {code})"}
-            if code in repo_info.UNAVAILABLE_HTTP_CODES:
+            if code in repositories.UNAVAILABLE_HTTP_CODES:
                 expected[f"is_{code}"] = True
             assert details == expected
 
@@ -45,8 +47,10 @@ class TestRepositoryMetadata:
         error: Exception,
         source: str,
     ) -> None:
-        with patch.object(repo_info, "fetch", side_effect=error):
-            details = repo_info.fetch_repo_details(f"https://{source}.com/owner/alpha")
+        with patch.object(repositories, "fetch", side_effect=error):
+            details = repositories.fetch_repo_details(
+                f"https://{source}.com/owner/alpha"
+            )
         reason = error.reason if isinstance(error, urllib.error.URLError) else error
         assert details == {"error": f"Request failed: {reason}"}
 
@@ -58,7 +62,7 @@ class TestRepositoryMetadata:
         self, archived, project_avatar
     ) -> None:
         with patch.object(
-            repo_info,
+            repositories,
             "fetch",
             return_value={
                 "path_with_namespace": "group/owner/new",
@@ -69,7 +73,9 @@ class TestRepositoryMetadata:
                 "namespace": {"avatar_url": "/uploads/group.png"},
             },
         ) as request:
-            details = repo_info.fetch_repo_details("https://gitlab.com/group/owner/old")
+            details = repositories.fetch_repo_details(
+                "https://gitlab.com/group/owner/old"
+            )
         request.assert_called_once_with(
             "https://gitlab.com/api/v4/projects/group%2Fowner%2Fold",
             timeout=10,
@@ -91,7 +97,7 @@ class TestRepositoryMetadata:
         ),
     )
     def test_gitlab_incomplete_metadata_is_rejected(self, response) -> None:
-        with patch.object(repo_info, "fetch", return_value=response):
-            assert repo_info.fetch_repo_details("https://gitlab.com/owner/alpha") == {
-                "error": "Invalid repository data"
-            }
+        with patch.object(repositories, "fetch", return_value=response):
+            assert repositories.fetch_repo_details(
+                "https://gitlab.com/owner/alpha"
+            ) == {"error": "Invalid repository data"}

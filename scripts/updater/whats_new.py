@@ -5,17 +5,16 @@ import unicodedata
 import urllib.parse
 from datetime import UTC, datetime, timedelta
 
-from common.utils import (
+from common.config import (
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
-    WHATS_NEW_JSON_PATH,
+    PUBLIC_DIR,
     WHATS_NEW_PATH,
-    append_step_summary,
-    build_repo_url,
-    load_json,
-    parse_repo_url,
-    save_json,
 )
+from common.files import append_step_summary, load_json, save_json
+from common.repositories import build_repo_url, parse_repo_url
+
+WHATS_NEW_JSON_PATH = PUBLIC_DIR / "whats-new.json"
 
 WHATS_NEW_MAX_ENTRIES = 14
 DISPLAY_ITEM_LIMIT = 2
@@ -24,8 +23,7 @@ EXISTING_ENTRY_LIMIT = 9
 EXISTING_ITEM_LIMIT = 4
 NEW_APP_THRESHOLD = 10
 DEFAULT_BUNDLE_RANK = 9999
-BASE_WEB_URL = "https://awesome-morphe.vercel.app"
-WHATS_NEW_URL = f"{BASE_WEB_URL}/whats-new"
+WHATS_NEW_URL = "https://awesome-morphe.vercel.app/whats-new"
 
 
 def is_valid_package_name(package_name: str) -> bool:

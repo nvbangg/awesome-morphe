@@ -2,7 +2,9 @@
 
 from http.client import HTTPException
 
-from common.utils import BUNDLE_SOURCES_DIR, build_repo_url, fetch, parse_repo_url
+from common.config import BUNDLE_SOURCES_DIR
+from common.http import fetch
+from common.repositories import build_repo_url, parse_repo_url
 from discovery import export_provider, report_provider_warning
 
 SOURCES_URL = "https://raw.githubusercontent.com/Jman-Github/Patch-Bundle-Registry/bundles/config/sources.json"

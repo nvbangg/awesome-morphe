@@ -1,25 +1,44 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
+import contextlib
 import hashlib
 import json
 import re
 import time
+from datetime import UTC, datetime
 from typing import Any
 
-from common.utils import (
+from common.config import (
     BUNDLES_DIR,
     DEFAULT_BRANCHES,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
     PATCHES_DIR,
-    load_json,
-    parse_repo_url,
-    parse_timestamp,
 )
+from common.files import load_json
+from common.repositories import parse_repo_url
 
 _BUNDLE_NAME_SUFFIX_RE = re.compile(
     r"(?i)(?: for use with morphe| for morphe|['\u2019]s morphe patches|['\u2019]s patches| morphe| patches| patch)+$"
 )
+
+
+def parse_timestamp(timestamp: Any) -> int:
+    if not timestamp:
+        return 0
+    if isinstance(timestamp, (int, float)):
+        return int(timestamp)
+    if isinstance(timestamp, str) and timestamp.isdigit():
+        return int(timestamp)
+    with contextlib.suppress(Exception):
+        parsed_datetime = datetime.fromisoformat(str(timestamp))
+        tz_aware = (
+            parsed_datetime
+            if parsed_datetime.tzinfo
+            else parsed_datetime.replace(tzinfo=UTC)
+        )
+        return int(tz_aware.timestamp() * 1000)
+    return 0
 
 
 def compute_app_hash(raw_patches: list[dict]) -> str:

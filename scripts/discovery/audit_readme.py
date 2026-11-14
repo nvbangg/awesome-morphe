@@ -2,22 +2,15 @@
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from common.repo_info import fetch_repo_details
-from common.utils import (
-    CONCURRENCY,
-    README_LINKS_PATH,
-    README_REPOS_PATH,
-    build_repo_url,
-    check_link_status,
-    format_summary_section,
-    load_lines,
-    parse_repo_url,
-)
+from common.config import CONCURRENCY, PROJECTS_DIR, README_REPOS_PATH
+from common.files import format_summary_section, load_lines
+from common.http import check_link_status
+from common.repositories import build_repo_url, fetch_repo_details, parse_repo_url
 
 
 def audit_repos_and_links() -> str:
     repo_urls = load_lines(README_REPOS_PATH)
-    link_urls = load_lines(README_LINKS_PATH)
+    link_urls = load_lines(PROJECTS_DIR / "readme-links.txt")
     print(
         f"Auditing {len(repo_urls)} repositories and {len(link_urls)} links from README..."
     )

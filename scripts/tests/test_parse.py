@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 import fetch as bundle_fetch
-from common.utils import load_lines, save_json
+from common.files import load_lines, save_json
 
 
 class TestBundleParser:

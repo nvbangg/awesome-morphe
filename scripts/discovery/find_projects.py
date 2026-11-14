@@ -9,23 +9,19 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime, timedelta
 from http.client import HTTPException
 
-from common.utils import (
+from common.config import (
     CONCURRENCY,
     DEAD_LINK_HTTP_CODES,
-    EXCLUDED_REPOS_PATH,
-    NEW_PROJECTS_PATH,
     PROJECTS_DIR,
     README_REPOS_PATH,
     ROOT_DIR,
-    build_raw_url,
-    fetch,
-    format_request_error,
-    format_summary_section,
-    get_auth_headers,
-    load_lines,
-    open_request,
-    parse_repo_url,
 )
+from common.files import format_summary_section, load_lines
+from common.http import fetch, format_request_error, get_auth_headers, open_request
+from common.repositories import build_raw_url, parse_repo_url
+
+EXCLUDED_REPOS_PATH = PROJECTS_DIR / "excluded-repos.txt"
+NEW_PROJECTS_PATH = PROJECTS_DIR / "new-projects.txt"
 
 SEARCH_KEYWORDS = ["morphe"]
 EXCLUDED_USERS = []
@@ -42,7 +38,6 @@ PUSHED_WITHIN_DAYS = 30
 PAGE_SIZE = 100
 MAX_PAGES = 10
 PAGE_DELAY_SECONDS = 1
-SEARCH_TIMEOUT = 15
 HEAD_TIMEOUT = 5
 
 
@@ -143,7 +138,7 @@ def search_repos() -> list[dict]:
             encoded_query = urllib.parse.quote(query)
             url = f"https://api.github.com/search/repositories?q={encoded_query}&sort=updated&per_page={PAGE_SIZE}&page={page}"
             try:
-                page_data = fetch(url, timeout=SEARCH_TIMEOUT, as_json=True)
+                page_data = fetch(url, as_json=True)
             except (OSError, HTTPException, ValueError) as error:
                 print(f"Failed to fetch page {page}: {error}")
                 break

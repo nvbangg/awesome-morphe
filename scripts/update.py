@@ -7,29 +7,35 @@ import sys
 import time
 from typing import Any
 
-from common.utils import (
+from common.config import (
+    BUNDLE_SOURCES_DIR,
     BUNDLES_DIR,
-    BUNDLES_JSON_PATH,
-    CUSTOM_JSON_PATH,
+    DATA_DIR,
     DEFAULT_BRANCHES,
-    HASHES_PATH,
-    HISTORY_PATH,
-    HOT_RANK_ACTIVE_MS,
     OFFICIAL_BUNDLES_PATH,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
     PATCHES_DIR,
+    PUBLIC_DIR,
     REPOS_JSON_PATH,
+)
+from common.files import (
     append_step_summary,
-    build_raw_url,
-    build_repo_url,
     format_summary_section,
     load_json,
-    parse_repo_url,
     save_json,
     set_step_output,
 )
+from common.repositories import build_raw_url, build_repo_url, parse_repo_url
 from updater import gplay_scrape, local_data, whats_new
+
+CUSTOM_JSON_PATH = BUNDLE_SOURCES_DIR / "custom.json"
+HISTORY_PATH = DATA_DIR / "history.json"
+HASHES_PATH = DATA_DIR / "hashes.json"
+BUNDLES_JSON_PATH = PUBLIC_DIR / "bundles.json"
+
+HOT_RANK_ACTIVE_DAYS = 30
+HOT_RANK_ACTIVE_MS = HOT_RANK_ACTIVE_DAYS * 24 * 60 * 60 * 1000
 
 
 def apply_renames(
