@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from dotenv import load_dotenv
-
 ROOT_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT_DIR / "data"
 SCRIPTS_DIR = ROOT_DIR / "scripts"
@@ -26,5 +24,3 @@ PROJECT_USER_AGENT = "AwesomeMorphe/1.0 (+https://github.com/nvbangg/awesome-mor
 
 UNAVAILABLE_HTTP_CODES = (404, 451)
 DEAD_LINK_HTTP_CODES = (404, 410)
-
-load_dotenv(SCRIPTS_DIR / ".env")

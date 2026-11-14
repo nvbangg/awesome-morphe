@@ -7,6 +7,8 @@ import sys
 import time
 from typing import Any
 
+from dotenv import load_dotenv
+
 from common.config import (
     BUNDLE_SOURCES_DIR,
     BUNDLES_DIR,
@@ -18,6 +20,7 @@ from common.config import (
     PATCHES_DIR,
     PUBLIC_DIR,
     REPOS_JSON_PATH,
+    SCRIPTS_DIR,
 )
 from common.files import (
     append_step_summary,
@@ -106,6 +109,7 @@ def move_renamed_files(renames: dict[str, str]) -> None:
 
 
 def main() -> int:
+    load_dotenv(SCRIPTS_DIR / ".env")
     parser = argparse.ArgumentParser(description="Update Morphe patches and bundles")
     parser.add_argument("--daily", action="store_true", help="Daily update")
     parser.add_argument("--weekly", action="store_true", help="Weekly update")

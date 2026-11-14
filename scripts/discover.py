@@ -4,7 +4,9 @@ import argparse
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from common.config import BUNDLE_SOURCES_DIR, REPOS_JSON_PATH, ROOT_DIR
+from dotenv import load_dotenv
+
+from common.config import BUNDLE_SOURCES_DIR, REPOS_JSON_PATH, ROOT_DIR, SCRIPTS_DIR
 from common.files import (
     append_step_summary,
     format_summary_section,
@@ -85,6 +87,7 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
+    load_dotenv(SCRIPTS_DIR / ".env")
     parser = argparse.ArgumentParser(description="Discover Morphe bundles and projects")
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument(

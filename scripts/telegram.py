@@ -11,7 +11,9 @@ import urllib.request
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from common.config import WHATS_NEW_PATH
+from dotenv import load_dotenv
+
+from common.config import SCRIPTS_DIR, WHATS_NEW_PATH
 
 
 def format_inline_markdown(text: str) -> str:
@@ -49,6 +51,7 @@ def convert_to_html(text: str) -> str:
 
 
 def main() -> None:
+    load_dotenv(SCRIPTS_DIR / ".env")
     current_time = datetime.now(UTC) + timedelta(hours=1)
     formatted_date = f"{current_time.strftime('%B')} {current_time.day}"
     title = sys.argv[1] if len(sys.argv) >= 2 else f"🔔 What's New ({formatted_date})"

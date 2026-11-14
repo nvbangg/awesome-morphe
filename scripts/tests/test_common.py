@@ -1,7 +1,4 @@
 import os
-import shutil
-import subprocess
-import sys
 import urllib.error
 import urllib.request
 from email.message import Message
@@ -12,61 +9,12 @@ import pytest
 
 from common import config, files, http, repositories
 
-DOTENV_TEST_VARIABLE = "MORPHE_DOTENV_TEST_VALUE"
 
-
-class TestDotenvLoading:
-    @pytest.fixture(autouse=True)
-    def prepare(self, tmp_path: Path) -> None:
-        self.root = tmp_path
-        self.scripts_dir = self.root / "scripts"
-        self.scripts_dir.mkdir()
-        common_dir = self.scripts_dir / "common"
-        common_dir.mkdir()
-        self.config_path = common_dir / "config.py"
-        shutil.copyfile(config.__file__, self.config_path)
-
-    def import_config(self, existing_value: str | None = None) -> str:
-        environment = dict(os.environ)
-        environment.pop(DOTENV_TEST_VARIABLE, None)
-        environment.pop("PYTHON_DOTENV_DISABLED", None)
-        if existing_value is not None:
-            environment[DOTENV_TEST_VARIABLE] = existing_value
-        return subprocess.check_output(
-            [
-                sys.executable,
-                "-B",
-                "-c",
-                "import os, runpy, sys; runpy.run_path(sys.argv[1]); print(os.environ.get(sys.argv[2], ''))",
-                str(self.config_path),
-                DOTENV_TEST_VARIABLE,
-            ],
-            cwd=self.root,
-            env=environment,
-            text=True,
-        ).strip()
-
-    def test_loads_scripts_dotenv_from_another_working_directory(self) -> None:
-        (self.scripts_dir / ".env").write_text(
-            f"{DOTENV_TEST_VARIABLE}=from-file\n", encoding="utf-8"
-        )
-        assert self.import_config() == "from-file"
-
-    def test_existing_environment_variable_takes_priority(self) -> None:
-        (self.scripts_dir / ".env").write_text(
-            f"{DOTENV_TEST_VARIABLE}=from-file\n", encoding="utf-8"
-        )
-        assert self.import_config("from-environment") == "from-environment"
-
-    def test_missing_dotenv_keeps_existing_environment(self) -> None:
-        assert self.import_config("from-environment") == "from-environment"
-        assert self.import_config() == ""
-
-    def test_shared_paths_still_resolve_from_the_repository_root(self) -> None:
-        repository_root = Path(__file__).resolve().parents[2]
-        assert repository_root == config.ROOT_DIR
-        assert repository_root / "scripts" == config.SCRIPTS_DIR
-        assert repository_root / "data/repos.json" == config.REPOS_JSON_PATH
+def test_shared_paths_still_resolve_from_the_repository_root() -> None:
+    repository_root = Path(__file__).resolve().parents[2]
+    assert repository_root == config.ROOT_DIR
+    assert repository_root / "scripts" == config.SCRIPTS_DIR
+    assert repository_root / "data/repos.json" == config.REPOS_JSON_PATH
 
 
 def test_connection_error_is_not_retried() -> None:

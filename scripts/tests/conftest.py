@@ -7,6 +7,7 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def block_network(monkeypatch: pytest.MonkeyPatch) -> MagicMock:
+    monkeypatch.setenv("PYTHON_DOTENV_DISABLED", "1")
     for name in ("GITHUB_TOKEN", "GITLAB_TOKEN"):
         monkeypatch.delenv(name, raising=False)
 

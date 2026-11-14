@@ -16,6 +16,8 @@ from http import HTTPStatus
 from http.client import HTTPException
 from threading import Lock
 
+from dotenv import load_dotenv
+
 from common.config import (
     BUNDLES_DIR,
     CONCURRENCY,
@@ -694,6 +696,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
 
 
 def main() -> None:
+    load_dotenv(SCRIPTS_DIR / ".env")
     parser = argparse.ArgumentParser(description="Fetch Morphe patches bundles")
     parser.add_argument("--daily", action="store_true", help="Daily sync")
     parser.add_argument(
