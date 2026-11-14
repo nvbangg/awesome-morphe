@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.11.0",
+  "version": "3.12.0-dev.2",
   "patches": [
     {
       "name": "[Ad] Block ad telemetry",
@@ -714,6 +714,48 @@
       "options": []
     },
     {
+      "name": "[Fix] Restore Google login via MicroG-RE",
+      "description": "Makes \"Continue with Google\" work on a re-signed build, through MicroG-RE. Root Mount does not need it.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            },
+            {
+              "version": "26.15.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "[Fix] Restore biometric login",
       "description": "Biometric login can be linked again on a re-signed build. A Root Mount install does not need this patch.",
       "default": true,
@@ -1095,10 +1137,53 @@
     },
     {
       "name": "[General] Hide Agent i buttons",
-      "description": "Removes the Agent i button from the Home header and from the search bar, and hides Agent i in chats permanently.",
+      "description": "Removes Agent i from the Home header, the search bar, the Wallet tab header and Settings, and hides Agent i in chats permanently, with its \"Show Agent i in chat\" switch in the + menu.",
       "default": true,
       "dependencies": [
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            },
+            {
+              "version": "26.15.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[General] Hide LINE AI image editing",
+      "description": "Removes the LINE AI image editing buttons: \"AI Edit\" in the message long-press menu, the button next to an image message, and the button in the chat, album, Note and profile photo viewers. The normal photo editor stays.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
