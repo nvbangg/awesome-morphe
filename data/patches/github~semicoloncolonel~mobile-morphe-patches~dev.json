@@ -1,5 +1,5 @@
 {
-    "version": "1.1.0-dev.3",
+    "version": "1.1.0-dev.5",
     "patches": [
         {
             "name": "Auto-skip",
@@ -3912,7 +3912,7 @@
         },
         {
             "name": "Browse hidden categories",
-            "description": "Adds a searchable list of Netflix's hidden genre categories (the netflix.com/browse/genre codes) and opens any of them inside the app. Reachable from its own \"Hidden Categories\" icon and from a long-press shortcut on the Netflix icon.",
+            "description": "Adds a searchable list of Netflix's hidden genre categories (the netflix.com/browse/genre codes) and opens any of them inside the app, plus an optional \"Surprise me\" that opens a random one. Choose the entry points: a \"Hidden Categories\" launcher icon, a categories shortcut, and/or a Surprise me shortcut on the Netflix icon.",
             "default": false,
             "category": "Interface",
             "compatiblePackages": [
@@ -3939,7 +3939,35 @@
                     ]
                 }
             ],
-            "options": []
+            "options": [
+                {
+                    "key": "launcherIcon",
+                    "title": "Add launcher icon",
+                    "description": "Adds a separate \"Hidden Categories\" icon to your app drawer.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "appShortcut",
+                    "title": "Add categories shortcut",
+                    "description": "Adds a \"Browse hidden categories\" shortcut to the Netflix icon's long-press menu.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "surpriseShortcut",
+                    "title": "Add Surprise me shortcut",
+                    "description": "Adds a \"Surprise me\" shortcut to the Netflix icon's long-press menu that opens a random category.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                }
+            ]
         },
         {
             "name": "Bypass tamper protection",
@@ -15226,6 +15254,37 @@
             "options": []
         },
         {
+            "name": "Keep screen brightness",
+            "description": "Stops Netflix from taking over your screen brightness during playback, so the phone keeps the brightness you set.",
+            "default": false,
+            "category": "Playback",
+            "compatiblePackages": [
+                {
+                    "packageName": "com.netflix.mediaclient",
+                    "name": "Netflix",
+                    "description": "The Netflix app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#E50914",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "9.93.0 build 7 74878",
+                            "versionCodes": {
+                                "ARM64_V8A": 74878,
+                                "ARMEABI_V7A": 74878,
+                                "X86_64": 74878,
+                                "X86": 74878
+                            },
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "Mask ads",
             "description": "Covers the ads in free titles with a \"We'll be right back!\" screen and mutes them.",
             "default": true,
@@ -15648,6 +15707,56 @@
                 }
             ],
             "options": []
+        },
+        {
+            "name": "Remove bottom tabs",
+            "description": "Removes the Clips (short videos) and/or Games tabs from the bottom navigation bar. Each can be removed on its own.",
+            "default": false,
+            "category": "Interface",
+            "compatiblePackages": [
+                {
+                    "packageName": "com.netflix.mediaclient",
+                    "name": "Netflix",
+                    "description": "The Netflix app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#E50914",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "9.93.0 build 7 74878",
+                            "versionCodes": {
+                                "ARM64_V8A": 74878,
+                                "ARMEABI_V7A": 74878,
+                                "X86_64": 74878,
+                                "X86": 74878
+                            },
+                            "isExperimental": true,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "removeClips",
+                    "title": "Remove Clips tab",
+                    "description": "Removes the Clips (short videos) tab from the bottom bar.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "removeGames",
+                    "title": "Remove Games tab",
+                    "description": "Removes the Games tab from the bottom bar.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                }
+            ]
         },
         {
             "name": "Remove location access",
