@@ -32,7 +32,6 @@ from common.http import (
     fetch,
     format_request_error,
     get_auth_headers,
-    open_request,
 )
 from common.images import normalize_image_url
 from common.repositories import (
@@ -151,7 +150,9 @@ class BranchFetchResult:
 
 def get_remote_file_hash(url: str, source: str, fallback: str | None = None) -> str:
     request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
-    with open_request(request, timeout=HASH_REQUEST_TIMEOUT_SECONDS) as response:
+    with urllib.request.urlopen(
+        request, timeout=HASH_REQUEST_TIMEOUT_SECONDS
+    ) as response:
         header_name = "ETag" if source == "github" else "x-gitlab-content-sha256"
         if remote_hash := response.getheader(header_name):
             return remote_hash.strip('"')
@@ -171,7 +172,7 @@ def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | N
         headers["If-None-Match"] = f'"{current_sha}"'
     request = urllib.request.Request(url, headers=headers)
     try:
-        with open_request(
+        with urllib.request.urlopen(
             request, timeout=METADATA_REQUEST_TIMEOUT_SECONDS
         ) as response:
             remote_hash = response.getheader("ETag")

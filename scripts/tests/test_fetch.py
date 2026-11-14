@@ -30,7 +30,7 @@ class TestGithubBundle:
         assert url is not None
         self.url = url
         self.open_url = self.patch_context.enter_context(
-            patch.object(bundle_fetch, "open_request")
+            patch("urllib.request.urlopen")
         )
         self.response = self.open_url.return_value.__enter__.return_value
         self.response.getheader.return_value = '"new-hash"'
@@ -1063,7 +1063,7 @@ class TestBundleFetch:
         response = MagicMock()
         response.__enter__.return_value.getheader.return_value = None
         with (
-            patch.object(bundle_fetch, "open_request", return_value=response),
+            patch("urllib.request.urlopen", return_value=response),
             pytest.raises(ValueError, match="Missing `ETag`"),
         ):
             bundle_fetch.get_remote_file_hash(
@@ -1074,11 +1074,7 @@ class TestBundleFetch:
     def test_hash_request_preserves_http_errors_for_the_caller(self, code) -> None:
         url = self.url("main", "patches-bundle.json")
         with (
-            patch.object(
-                bundle_fetch,
-                "open_request",
-                side_effect=self.http_error(url, code),
-            ),
+            patch("urllib.request.urlopen", side_effect=self.http_error(url, code)),
             pytest.raises(urllib.error.HTTPError) as raised,
         ):
             bundle_fetch.get_remote_file_hash(url, "github")

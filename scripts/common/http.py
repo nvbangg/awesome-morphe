@@ -10,76 +10,42 @@ from common.config import DEAD_LINK_HTTP_CODES, PROJECT_USER_AGENT
 
 
 def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[str, str]:
-    result_headers = dict(headers) if headers else {}
+    result_headers = dict(headers or {})
     parsed_url = urllib.parse.urlparse(url)
     hostname = parsed_url.hostname or ""
     is_github = any(
         hostname == domain or hostname.endswith(f".{domain}")
         for domain in ("github.com", "githubusercontent.com")
     )
+    is_gitlab = hostname == "gitlab.com"
 
-    if "User-Agent" not in result_headers:
-        if is_github:
-            result_headers["User-Agent"] = PROJECT_USER_AGENT
-        else:
-            result_headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    header_names = {name.lower() for name in result_headers}
+    if "user-agent" not in header_names:
+        result_headers["User-Agent"] = (
+            PROJECT_USER_AGENT
+            if is_github or is_gitlab
+            else "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        )
 
-    github_token = os.environ.get("GITHUB_TOKEN")
-    is_release_download = (
-        "/releases/download/" in parsed_url.path
-        or hostname == "objects.githubusercontent.com"
-    )
+    if parsed_url.scheme != "https" or "authorization" in header_names:
+        return result_headers
+
     if (
         is_github
-        and parsed_url.scheme == "https"
-        and github_token
-        and not is_release_download
-        and "Authorization" not in result_headers
+        and "/releases/download/" not in parsed_url.path
+        and hostname != "objects.githubusercontent.com"
+        and (github_token := os.environ.get("GITHUB_TOKEN"))
     ):
         result_headers["Authorization"] = f"Bearer {github_token}"
-
-    gitlab_token = os.environ.get("GITLAB_TOKEN")
-    if (
-        parsed_url.scheme == "https"
-        and hostname == "gitlab.com"
+    elif (
+        is_gitlab
         and parsed_url.path.startswith("/api/v4/")
-        and gitlab_token
-        and not any(
-            name.lower() in ("private-token", "authorization")
-            for name in result_headers
-        )
+        and "private-token" not in header_names
+        and (gitlab_token := os.environ.get("GITLAB_TOKEN"))
     ):
         result_headers["PRIVATE-TOKEN"] = gitlab_token
 
     return result_headers
-
-
-class _AuthRedirectHandler(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
-        if redirected is not None:
-            source = urllib.parse.urlsplit(req.full_url)
-            target = urllib.parse.urlsplit(redirected.full_url)
-            if (source.scheme, source.netloc) != (target.scheme, target.netloc):
-                redirected.remove_header("Authorization")
-            if (
-                target.scheme != "https"
-                or target.hostname != "gitlab.com"
-                or not target.path.startswith("/api/v4/")
-            ):
-                redirected.remove_header("Private-token")
-            elif token := get_auth_headers(
-                redirected.full_url, dict(redirected.header_items())
-            ).get("PRIVATE-TOKEN"):
-                redirected.add_header("PRIVATE-TOKEN", token)
-        return redirected
-
-
-HTTP_OPENER = urllib.request.build_opener(_AuthRedirectHandler())
-
-
-def open_request(request: urllib.request.Request, timeout: int) -> Any:
-    return HTTP_OPENER.open(request, timeout=timeout)
 
 
 def fetch(
@@ -92,7 +58,7 @@ def fetch(
     request_headers = get_auth_headers(url, headers)
 
     request = urllib.request.Request(url, headers=request_headers)
-    with open_request(request, timeout=timeout) as response:
+    with urllib.request.urlopen(request, timeout=timeout) as response:
         content = response.read()
         if binary:
             return content
@@ -111,7 +77,7 @@ def check_link_status(url: str, timeout: int = 5) -> dict:
     try:
         headers = get_auth_headers(url)
         request = urllib.request.Request(url, headers=headers)
-        with open_request(request, timeout=timeout) as response:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             final_url = response.geturl().rstrip("/")
             original_url = url.rstrip("/")
             if final_url.lower() != original_url.lower():

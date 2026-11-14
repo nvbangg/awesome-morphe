@@ -20,8 +20,8 @@ def test_shared_paths_still_resolve_from_the_repository_root() -> None:
 def test_connection_error_is_not_retried() -> None:
     with (
         patch.object(
-            http,
-            "open_request",
+            urllib.request,
+            "urlopen",
             side_effect=urllib.error.URLError("DNS failed"),
         ) as open_url,
         pytest.raises(urllib.error.URLError),
@@ -110,60 +110,6 @@ def test_gitlab_token_is_only_attached_to_gitlab_api(url, authenticated) -> None
 
 
 @pytest.mark.parametrize(
-    "origin,url,header,authenticated",
-    (
-        (
-            "https://gitlab.com/api/v4/projects/123",
-            "https://gitlab.com/api/v4/projects/456",
-            "PRIVATE-TOKEN",
-            True,
-        ),
-        (
-            "https://gitlab.com/api/v4/projects/123",
-            "https://storage.example.com/file.mpp",
-            "PRIVATE-TOKEN",
-            False,
-        ),
-        (
-            "https://gitlab.com/api/v4/projects/123",
-            "https://gitlab.com/owner/repo/-/releases/v1/downloads/file.mpp",
-            "PRIVATE-TOKEN",
-            False,
-        ),
-        (
-            "https://gitlab.com/api/v4/projects/123",
-            "http://gitlab.com/api/v4/projects/123",
-            "PRIVATE-TOKEN",
-            False,
-        ),
-        (
-            "https://api.github.com/repos/owner/repo",
-            "https://api.github.com/repos/owner/new",
-            "Authorization",
-            True,
-        ),
-        (
-            "https://api.github.com/repos/owner/repo",
-            "https://storage.example.com/file",
-            "Authorization",
-            False,
-        ),
-    ),
-)
-def test_redirect_scopes_credentials(origin, url, header, authenticated) -> None:
-    request = urllib.request.Request(
-        origin, headers={header: "test-token"}, method="HEAD"
-    )
-    redirected = http._AuthRedirectHandler().redirect_request(
-        request, None, 302, "Found", Message(), url
-    )
-    assert redirected is not None
-    assert redirected.get_header(header.capitalize()) == (
-        "test-token" if authenticated else None
-    )
-
-
-@pytest.mark.parametrize(
     "url,token_name,header",
     (
         ("https://api.github.com/repos/owner/repo", "GITHUB_TOKEN", "Authorization"),
@@ -171,7 +117,7 @@ def test_redirect_scopes_credentials(origin, url, header, authenticated) -> None
     ),
 )
 @pytest.mark.parametrize("token", (None, "test-token"))
-def test_requests_use_shared_opener_with_or_without_token(
+def test_requests_use_urlopen_with_or_without_token(
     block_network, url, token_name, header, token
 ) -> None:
     block_network.side_effect = None
@@ -184,27 +130,13 @@ def test_requests_use_shared_opener_with_or_without_token(
     assert request.get_header(header) == expected
 
 
-def test_gitlab_release_redirect_authenticates_api_download() -> None:
-    release_url = "https://gitlab.com/owner/repo/-/releases/v1/downloads/bundle.mpp"
-    package_url = (
-        "https://gitlab.com/api/v4/projects/123/packages/generic/bundle/1/bundle.mpp"
-    )
-    request = urllib.request.Request(release_url)
-    with patch.dict(os.environ, {"GITLAB_TOKEN": "test-token"}):
-        redirected = http._AuthRedirectHandler().redirect_request(
-            request, None, 302, "Found", Message(), package_url
-        )
-    assert redirected is not None
-    assert redirected.get_header("Private-token") == "test-token"
-
-
 def test_http_error_is_not_retried(patch_context) -> None:
     error = urllib.error.HTTPError(
         "https://example.com/data", 503, "Unavailable", Message(), None
     )
     patch_context.callback(error.close)
     with (
-        patch.object(http, "open_request", side_effect=error) as open_url,
+        patch.object(urllib.request, "urlopen", side_effect=error) as open_url,
         pytest.raises(urllib.error.HTTPError),
     ):
         http.fetch("https://example.com/data")
@@ -215,7 +147,7 @@ def test_invalid_json_is_not_retried_or_reported_as_network_error() -> None:
     response = MagicMock()
     response.__enter__.return_value.read.return_value = b"{broken"
     with (
-        patch.object(http, "open_request", return_value=response) as open_url,
+        patch.object(urllib.request, "urlopen", return_value=response) as open_url,
         pytest.raises(ValueError),
     ):
         http.fetch("https://example.com/data", as_json=True)

@@ -17,7 +17,7 @@ from common.config import (
     ROOT_DIR,
 )
 from common.files import load_lines
-from common.http import fetch, format_request_error, get_auth_headers, open_request
+from common.http import fetch, format_request_error, get_auth_headers
 from common.repositories import build_raw_url, parse_repo_url
 from common.summary import format_summary_section
 
@@ -77,7 +77,7 @@ def build_user_query(user: str) -> str:
 def _file_exists(url: str) -> bool | None:
     request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
     try:
-        with open_request(request, timeout=HEAD_TIMEOUT):
+        with urllib.request.urlopen(request, timeout=HEAD_TIMEOUT):
             return True
     except urllib.error.HTTPError as error:
         if error.code in DEAD_LINK_HTTP_CODES:
