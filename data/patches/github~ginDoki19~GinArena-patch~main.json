@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.11.0",
+  "version": "2.11.1",
   "patches": [
     {
       "name": "AdBlocker turbo & userscript bundle",
@@ -1452,7 +1452,7 @@
     },
     {
       "name": "Unlock premium features",
-      "description": "Opens the Pro PDF, export and editing tools and removes ads. Every change has its own switch, so you choose what is unlocked. Sign in first: signed out, WPS reports no membership at all.",
+      "description": "Opens the paid tools - PDF, export, editing, fonts and templates - by answering the app's payment checks. Every part has its own switch, so you choose what is unlocked. Sign in first: signed out, WPS reports no membership at all.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1484,6 +1484,15 @@
       ],
       "options": [
         {
+          "key": "bypassPrivilegeInterceptor",
+          "title": "Unlock premium tools (main switch)",
+          "description": "Answers every premium check with \"yes\". This is the switch that actually unlocks the app - the options below it only tidy up what it produces.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
           "key": "unlockPremiumIdentity",
           "title": "Show a Pro account",
           "description": "Shows your account as Premium, so upgrade banners and price cards go away.",
@@ -1511,45 +1520,9 @@
           "values": null
         },
         {
-          "key": "denyAiPrivileges",
-          "title": "Turn AI features off",
-          "description": "Answers every AI request as not owned. Use it only if an AI tool keeps loading forever.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
           "key": "removeAds",
           "title": "Remove ads",
           "description": "Tells the app you are ad-free, so banner and full-screen ads are never requested.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "bypassAsyncPrivilegeChecks",
-          "title": "Pass background checks",
-          "description": "Also answers the checks that run in the background. Stronger, but it can invent usage counters.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "passSignatureCheck",
-          "title": "Report the stock signature",
-          "description": "Only analytics reads this. It does not affect premium, ads or sign-in.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "bypassPrivilegeInterceptor",
-          "title": "Unlock PDF and export tools",
-          "description": "Answers the app's payment check with success. This is what opens image-to-PDF, PDF export and printing.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1565,9 +1538,36 @@
           "values": null
         },
         {
+          "key": "bypassAsyncPrivilegeChecks",
+          "title": "Hide the upgrade banner on tool pages",
+          "description": "Removes the \"Upgrade to WPS Membership\" banner shown above the tool pages. It can invent usage counters, so it stays off until you want it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "denyAiPrivileges",
+          "title": "Turn AI features off",
+          "description": "Answers every AI request as not owned. Use it only if an AI tool keeps loading forever.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "reportAdGateOffline",
           "title": "Skip the ad pre-check",
           "description": "Tells the app ads are off before it contacts the server, so those requests never start.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "passSignatureCheck",
+          "title": "Report the stock signature",
+          "description": "Only analytics reads this. It does not affect premium, ads or sign-in.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,

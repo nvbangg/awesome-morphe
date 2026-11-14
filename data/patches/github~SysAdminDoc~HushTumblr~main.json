@@ -1,5 +1,5 @@
 {
-  "version": "v0.0.10",
+  "version": "v0.0.11",
   "appNames": {
     "com.tumblr": "Tumblr"
   },
@@ -291,7 +291,7 @@
     },
     {
       "name": "Hide Blaze prompts",
-      "description": "Hides the prompts to pay for Blaze, Tumblr's way to promote a post. That covers the Blaze buttons on your blog and dashboard, the nudge after you post, and the Blaze banners. Starts off. Turn it on in Tumblr settings > HushTumblr > Interface.",
+      "description": "Hides the prompts to pay for Blaze, Tumblr's way to promote a post. That covers the Blaze buttons on your blog and dashboard, the nudge after you post, the Blaze banners, and the Blaze buttons on posts: the flame under your own posts, Blaze in a post's menu and the share sheet, and Promote in community posts. Starts off. Turn it on in Tumblr settings > HushTumblr > Interface.",
       "category": "Interface",
       "use": true,
       "dependencies": [
@@ -447,7 +447,7 @@
     },
     {
       "name": "Hide ads",
-      "description": "Takes ad cards and paid Blaze posts out of your dashboard and other feeds. Sponsored banners go too, and a sponsored header at the top of Explore stays empty. Tumblr stops asking its ad networks for more and stops showing a full-screen ad when you open a blog, and the ad networks don't start when Tumblr launches. Its Keep Blaze posts option leaves the Blaze posts in. On by default. Turn it off in Tumblr settings > HushTumblr > Feed.",
+      "description": "Takes ad cards and paid Blaze posts out of your dashboard and other feeds. Sponsored banners go too, along with the one-line app promos (Made with WordPress and its Install button) on tag pages and in search. A sponsored header at the top of Explore stays empty. Tumblr stops asking its ad networks for more and stops showing a full-screen ad when you open a blog, and the ad networks don't start when Tumblr launches. Its Keep Blaze posts option leaves the Blaze posts in. On by default. Turn it off in Tumblr settings > HushTumblr > Feed.",
       "category": "Ads",
       "use": true,
       "dependencies": [
@@ -838,6 +838,45 @@
     {
       "name": "Hide reblogs",
       "description": "Takes reblogs out of your dashboard and other feeds as each page loads, and keeps the posts people made themselves. Starts off. Turn it on in Tumblr settings > HushTumblr > Feed.",
+      "category": "Feed",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushTumblr settings"
+      ],
+      "compatiblePackages": {
+        "com.tumblr": [
+          "47.0.0.108"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Tumblr",
+          "packageName": "com.tumblr",
+          "description": null,
+          "appIconColor": 6453,
+          "signatures": [
+            "39ac9c821ad2d605e4849f066e8aad3cca27d5e13eb03ad8755be234a2985dfd"
+          ],
+          "targets": [
+            {
+              "version": "47.0.0.108",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 1470000108,
+                "ARMEABI_V7A": 1470000108,
+                "X86": 1470000108,
+                "X86_64": 1470000108
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide reblogs of your posts",
+      "description": "Takes other people's reblogs of your posts out of your dashboard as each page loads. Your blog and the rest of Tumblr still show them. Starts off. Turn it on in Tumblr settings > HushTumblr > Feed.",
       "category": "Feed",
       "use": true,
       "dependencies": [
@@ -2054,6 +2093,45 @@
         "BytecodePatch",
         "HushTumblr settings",
         "ResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.tumblr": [
+          "47.0.0.108"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Tumblr",
+          "packageName": "com.tumblr",
+          "description": null,
+          "appIconColor": 6453,
+          "signatures": [
+            "39ac9c821ad2d605e4849f066e8aad3cca27d5e13eb03ad8755be234a2985dfd"
+          ],
+          "targets": [
+            {
+              "version": "47.0.0.108",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 1470000108,
+                "ARMEABI_V7A": 1470000108,
+                "X86": 1470000108,
+                "X86_64": 1470000108
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Tags open the blog's tag search",
+      "description": "Tapping a tag under a post opens that blog's own search for the tag, like blog.tumblr.com/tagged, in place of a search of all of Tumblr. Works on posts in the dashboard, other feeds and a post opened by itself. Starts off. Turn it on in Tumblr settings > HushTumblr > Posts.",
+      "category": "Navigation",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushTumblr settings"
       ],
       "compatiblePackages": {
         "com.tumblr": [

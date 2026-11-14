@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -223,6 +223,47 @@
                 "X86_64": 1243240206,
                 "X86": 1243240206
               },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -1362,9 +1403,11 @@
     },
     {
       "name": "Bypass native integrity checks",
-      "description": "libunnamed_raw.so JNI-throws 'app integrity check failed' on re-signed builds, killing camera session start (preview) - observed via diagnostic crash log. This patch calls the session-opening wrapper inside a real JVM try/catch (extension) and substitutes a well-formed session result on failure. Required together with 'Allow re-signed/sideloaded installs'.",
+      "description": "Neutralizes libunnamed_raw.so's five ARM64 self-integrity gates (BTI/PAC-safe) and wraps the session-opening plus every other native-calling bridge wrapper in a real JVM try/catch that fails open on integrity errors. Required together with 'Allow re-signed/sideloaded installs'.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "RawResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "app.unnamed.rawrecording",
@@ -1381,6 +1424,66 @@
                 "ARMEABI_V7A": 118,
                 "X86_64": 118,
                 "X86": 118
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass signature check",
+      "description": "Bypasses Instagram's internal provider signature verification after patching.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Change like animation",
+      "description": "Lets you choose one of Instagram's built-in double-tap like animations, or pick a random one per session, from the Proteus settings dialog. Experimental on builds where Instagram renamed the animation classes.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1540,6 +1643,96 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Clone",
+      "description": "Changes the package name and the app name so you can install the patched app alongside the official Instagram app. Caution: Do not combine with the universal \"Change package name\" patch.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "A new package name for the patched app.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.instagram.android.proteus",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "A new app name (label). Entering \"Instagram\" will skip changing the app name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Instagram Distraction Free",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Clone Netflix",
+      "description": "Installs the patched Netflix as a separate app alongside the stock one (package suffix .clone), instead of replacing it. Required on devices where Netflix is a preinstalled system app that can't be uninstalled (most Android TV boxes, Google TV, Fire TV). Keep the stock Netflix installed + enabled — the clone borrows its signature to pass Netflix's native tamper check (stock auto-updating is fine). You just launch the clone instead. Recommended: leave ON.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.netflix.ninja",
+          "name": "Netflix (Android TV)",
+          "description": "Netflix Android TV (com.netflix.ninja). The same APK and ad pipeline are used in India and worldwide; region only changes catalogue and ad fill.",
+          "apkFileType": "APKM",
+          "appIconColor": "#E50914",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.1 build 25028",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.1 build 27207",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.2 build 27250",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Close Tab In Group Order",
@@ -1914,6 +2107,47 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         },
@@ -2106,6 +2340,46 @@
       "options": []
     },
     {
+      "name": "Disable Netflix CertCheck",
+      "description": "Neutralises Netflix's DexGuard signing-certificate anti-tamper check so a re-signed build doesn't self-crash on launch. Required for every Netflix patch.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.netflix.ninja",
+          "name": "Netflix (Android TV)",
+          "description": "Netflix Android TV (com.netflix.ninja). The same APK and ad pipeline are used in India and worldwide; region only changes catalogue and ad fill.",
+          "apkFileType": "APKM",
+          "appIconColor": "#E50914",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.1 build 25028",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.1 build 27207",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.2 build 27250",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable PairIP license check",
       "description": "Disables PairIP license verification: integrity/VM checks, the licensing\nclient and repeated background checks.\n\nApplies to any app. No effect if the app does not use PairIP.",
       "default": false,
@@ -2169,6 +2443,37 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Reels scrolling",
+      "description": "Disables the endless scrolling behavior in Instagram Reels, preventing swiping to the next Reel. Note: On a clean install, the 'Tip' animation may appear but will stop on its own after a few seconds.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -2519,6 +2824,112 @@
       "options": []
     },
     {
+      "name": "Disable screenshot detection",
+      "description": "Prevents the app from detecting screenshots and displaying the share popup on Android 14+.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.amazon.mShop.android.shopping",
+          "name": "Amazon Shopping",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.18.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243240206,
+                "ARMEABI_V7A": 1243240206,
+                "X86_64": 1243240206,
+                "X86": 1243240206
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "in.amazon.mShop.android.shopping",
+          "name": "Amazon India",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.18.0.300",
+              "versionCodes": {
+                "ARM64_V8A": 1243240206,
+                "ARMEABI_V7A": 1243240206,
+                "X86_64": 1243240206,
+                "X86": 1243240206
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.300",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable search suggestions tracking",
       "description": "Prevents search keypress and focus events from being sent with suggestion requests.",
       "default": true,
@@ -2540,6 +2951,182 @@
                 "X86_64": 1243240206,
                 "X86": 1243240206
               },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "in.amazon.mShop.android.shopping",
+          "name": "Amazon India",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.18.0.300",
+              "versionCodes": {
+                "ARM64_V8A": 1243240206,
+                "ARMEABI_V7A": 1243240206,
+                "X86_64": 1243240206,
+                "X86": 1243240206
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.300",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable story auto flipping",
+      "description": "Disable stories automatically flipping/skipping after some seconds.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable video autoplay",
+      "description": "Prevents videos from autoplaying in Amazon's in-app WebView pages.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.amazon.mShop.android.shopping",
+          "name": "Amazon Shopping",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.18.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243240206,
+                "ARMEABI_V7A": 1243240206,
+                "X86_64": 1243240206,
+                "X86": 1243240206
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -2585,59 +3172,23 @@
     },
     {
       "name": "Disable video autoplay",
-      "description": "Prevents videos from autoplaying in Amazon's in-app WebView pages.",
-      "default": true,
+      "description": "Disable video autoplay from feed.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.amazon.mShop.android.shopping",
-          "name": "Amazon Shopping",
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
           "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF9900",
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
           "signatures": null,
           "targets": [
             {
-              "version": "32.18.0.100",
+              "version": "439.0.0.37.89",
               "versionCodes": {
-                "ARM64_V8A": 1243240206,
-                "ARMEABI_V7A": 1243240206,
-                "X86_64": 1243240206,
-                "X86": 1243240206
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        },
-        {
-          "packageName": "in.amazon.mShop.android.shopping",
-          "name": "Amazon India",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FF9900",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "32.18.0.300",
-              "versionCodes": {
-                "ARM64_V8A": 1243240206,
-                "ARMEABI_V7A": 1243240206,
-                "X86_64": 1243240206,
-                "X86": 1243240206
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "32.19.0.300",
-              "versionCodes": {
-                "ARM64_V8A": 1243250306,
-                "ARMEABI_V7A": 1243250306,
-                "X86_64": 1243250306,
-                "X86": 1243250306
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2970,6 +3521,47 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         },
@@ -3199,6 +3791,43 @@
       "options": []
     },
     {
+      "name": "Ghost mode",
+      "description": "Hides typing indicators, prevents DM read receipts, and best-effort blocks story view receipts. Controlled at runtime from the Proteus settings button.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "GmsCore support",
       "description": "Adds MicroG/GmsCore support metadata for Google Photos.",
       "default": true,
@@ -3279,6 +3908,69 @@
       ]
     },
     {
+      "name": "Hide Instants",
+      "description": "Hides Instants from DMs page.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Reels save button",
+      "description": "Hides the save button from Reels.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide Rufus tab",
       "description": "Removes the Rufus AI assistant tab from Amazon's bottom navigation bar.",
       "default": true,
@@ -3300,6 +3992,47 @@
                 "X86_64": 1243240206,
                 "X86": 1243240206
               },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -3333,6 +4066,99 @@
                 "ARMEABI_V7A": 1243250306,
                 "X86_64": 1243250306,
                 "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Threads profile button",
+      "description": "Hides the Threads button from the profile page action bar (top right of the profile page).",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads",
+      "description": "Removes ads from the Instagram feed and stories.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide all stories",
+      "description": "Hides all stories from the tray in the feed page. You may need to clean app data after the initial use of this patch to see its effects.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
               },
               "isExperimental": false,
               "minSdk": null,
@@ -3415,6 +4241,64 @@
       "options": []
     },
     {
+      "name": "Hide explore feed",
+      "description": "Hides posts and reels from the explore/search page.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide feed content",
+      "description": "Hide the feed content, leaving only stories in the home page.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide live streams",
       "description": "Hides live streams and broadcasts in feeds and listings. Client-side only; off by default.",
       "default": false,
@@ -3470,6 +4354,119 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide navigation buttons",
+      "description": "Hides navigation bar buttons, such as the Reels and Create button. Choose what button to hide using the patch options.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideHome",
+          "title": "Hide Home",
+          "description": "Permanently hides the Home button. App starts at next available tab.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideReels",
+          "title": "Hide Reels",
+          "description": "Permanently hides the Reels button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideDirect",
+          "title": "Hide Direct",
+          "description": "Permanently hides the Direct button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideSearch",
+          "title": "Hide Search",
+          "description": "Permanently hides the Search button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideProfile",
+          "title": "Hide Profile",
+          "description": "Permanently hides the Profile button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideCreate",
+          "title": "Hide Create",
+          "description": "Permanently hides the Create button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Hide notes tray",
+      "description": "Hides the notes tray from the direct tab.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -3539,6 +4536,105 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Hide reshare button",
+      "description": "Hides the reshare button from both posts and reels.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide suggested content",
+      "description": "Choose the suggested content to hide using the patch options.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideSuggestedReels",
+          "title": "Hide suggested reels",
+          "description": "Hides suggested reels from feed and reels tab.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideSuggestedStories",
+          "title": "Hide suggested stories",
+          "description": "Hides suggested stories/users from story tray.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideHighlightStories",
+          "title": "Hide highlights in stories",
+          "description": "Hides highlighted stories from story tray, sponsored stories which have no set expiration.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideSuggestedAccount",
+          "title": "Hide suggested accounts",
+          "description": "Hides suggested accounts from the list of followers and from other profiles.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Hide typing indicator",
@@ -3764,15 +4860,46 @@
       "options": []
     },
     {
+      "name": "Limit feed to following profiles",
+      "description": "Filters the home feed to display only chronological content from profiles you follow.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Meesho: Block analytics & tracking SDKs",
-      "description": "Blocks Meesho's analytics & tracking SDKs (Firebase Analytics, AppsFlyer,\nAdjust, Facebook AppEvents, WebEngage, CleverTap and similar) using the\nsame universal heuristic as 'Block analytics & tracking SDKs'.\n\nApplies to com.meesho.shopping only. Heuristic; obfuscated or\nreflection-based reporting is not covered. Unverified on device.",
+      "description": "Blocks Meesho's analytics & tracking SDKs (Firebase Analytics, AppsFlyer,\nAdjust, Facebook AppEvents, WebEngage, CleverTap and similar) using the\nsame universal heuristic as 'Block analytics & tracking SDKs'.\n\nApplies to com.meesho.supply only. Heuristic; obfuscated or\nreflection-based reporting is not covered. Unverified on device.",
       "default": false,
       "dependencies": [
         "BytecodePatch"
       ],
       "compatiblePackages": [
         {
-          "packageName": "com.meesho.shopping",
+          "packageName": "com.meesho.supply",
           "name": "Meesho",
           "description": null,
           "apkFileType": "XAPK",
@@ -3836,14 +4963,14 @@
     },
     {
       "name": "Meesho: Disable video autoplay (ExoPlayer)",
-      "description": "Stops video autoplay in the Meesho feed and product videos (ExoPlayer/Media3)\nusing the same heuristic as 'Disable video autoplay (ExoPlayer/Media3)'.\n\nApplies to com.meesho.shopping only. Heuristic; see the universal entry\nfor limitations. Unverified on device.",
+      "description": "Stops video autoplay in the Meesho feed and product videos (ExoPlayer/Media3)\nusing the same heuristic as 'Disable video autoplay (ExoPlayer/Media3)'.\n\nApplies to com.meesho.supply only. Heuristic; see the universal entry\nfor limitations. Unverified on device.",
       "default": false,
       "dependencies": [
         "BytecodePatch"
       ],
       "compatiblePackages": [
         {
-          "packageName": "com.meesho.shopping",
+          "packageName": "com.meesho.supply",
           "name": "Meesho",
           "description": null,
           "apkFileType": "XAPK",
@@ -3907,14 +5034,14 @@
     },
     {
       "name": "Meesho: Prefer external browser over Custom Tabs",
-      "description": "Opens links in the default external browser instead of an in-app Custom\nTab, using the same rewrite as the universal 'Prefer external browser\nover Custom Tabs' patch.\n\nApplies to com.meesho.shopping only. Covers Custom Tabs /\nCustomTabsIntent call sites only. Unverified on device.",
+      "description": "Opens links in the default external browser instead of an in-app Custom\nTab, using the same rewrite as the universal 'Prefer external browser\nover Custom Tabs' patch.\n\nApplies to com.meesho.supply only. Covers Custom Tabs /\nCustomTabsIntent call sites only. Unverified on device.",
       "default": false,
       "dependencies": [
         "BytecodePatch"
       ],
       "compatiblePackages": [
         {
-          "packageName": "com.meesho.shopping",
+          "packageName": "com.meesho.supply",
           "name": "Meesho",
           "description": null,
           "apkFileType": "XAPK",
@@ -3968,6 +5095,48 @@
                 "X86": 868
               },
               "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Minimize Network Fingerprint",
+      "description": "Blanks the local IP / MAC / Wi-Fi SSID the Netflix app reports about your network (keeps interface name/type) and stops the app from reporting your advertising ID (GAID) in its ad-collection telemetry. Reduces network + ad fingerprinting. Does NOT stop the server-side \"I'm traveling\"/household check (that's driven by your public IP — use a VPN for that). Opt-in / experimental; test on-device.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.netflix.ninja",
+          "name": "Netflix (Android TV)",
+          "description": "Netflix Android TV (com.netflix.ninja). The same APK and ad pipeline are used in India and worldwide; region only changes catalogue and ad fill.",
+          "apkFileType": "APKM",
+          "appIconColor": "#E50914",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.1 build 25028",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.1 build 27207",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.2 build 27250",
+              "versionCodes": null,
+              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -4214,6 +5383,47 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         },
@@ -4402,6 +5612,47 @@
                 "X86_64": 1243240206,
                 "X86": 1243240206
               },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -4659,6 +5910,35 @@
       "options": []
     },
     {
+      "name": "Proteus settings",
+      "description": "Adds settings and Ghost Mode buttons to the Instagram feed action bar. The dialog controls the runtime options of the other Instagram patches.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Provide Original app certificate",
       "description": "Automatically reads the signing certificate from the APK you are patching — no original app installed or file provided needed. Only fill the options below if you are patching an APK that was already re-signed (e.g. a previously patched build): in that case point to the original APK file, or enter the certificate manually.",
       "default": false,
@@ -4767,6 +6047,71 @@
       "options": []
     },
     {
+      "name": "Reels double-tap seek",
+      "description": "Enables double-tap skip/rewind controls in Reels. The controls can be disabled at runtime from the Proteus settings button.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Reels playback speed menu",
+      "description": "Adds Instagram's playback-speed menu to the Reels overflow menu. The speed can be changed at runtime from the Proteus settings button.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove Extra Languages",
       "description": "Replaces larger unselected Chromium locale PAKs with the English fallback; gender variants and Android resources are not removed.",
       "default": false,
@@ -4803,6 +6148,88 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Remove Netflix ads (bundle engine)",
+      "description": "Bundles the in-process ad-kill script (killads.js) and its loader into the app. This is the ad remover: at launch the app runs the script itself (script mode — no PC, no root, no frida server) and empties Netflix's ad breaks (pre-roll, mid-roll) and the pause-screen ad overlay. Pairs with the loader patch. Default ON.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.netflix.ninja",
+          "name": "Netflix (Android TV)",
+          "description": "Netflix Android TV (com.netflix.ninja). The same APK and ad pipeline are used in India and worldwide; region only changes catalogue and ad fill.",
+          "apkFileType": "APKM",
+          "appIconColor": "#E50914",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.1 build 25028",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.1 build 27207",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.2 build 27250",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Netflix ads (loader)",
+      "description": "Arms the ad remover: injects the startup call that loads the in-process ad-kill engine (bundled by the companion patch) as early as possible, so ads are emptied before playback. Requires the bundle-engine patch. Default ON.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.netflix.ninja",
+          "name": "Netflix (Android TV)",
+          "description": "Netflix Android TV (com.netflix.ninja). The same APK and ad pipeline are used in India and worldwide; region only changes catalogue and ad fill.",
+          "apkFileType": "APKM",
+          "appIconColor": "#E50914",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.1 build 25028",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.1 build 27207",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.2 build 27250",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Remove Unused AI & VPN",
@@ -4864,6 +6291,47 @@
                 "X86_64": 1243240206,
                 "X86": 1243240206
               },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.19.0.100",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.amazon.mShop.android.business.shopping",
+          "name": "Amazon Business",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF9900",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "32.19.0.451",
+              "versionCodes": {
+                "ARM64_V8A": 1243250306,
+                "ARMEABI_V7A": 1243250306,
+                "X86_64": 1243250306,
+                "X86": 1243250306
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "32.20.0.451",
+              "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -5037,6 +6505,35 @@
                 "ARMEABI_V7A": 22510,
                 "X86_64": 22510,
                 "X86": 22510
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove build expired popup",
+      "description": "Removes the popup that appears after a while when the app version ages.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "439.0.0.37.89",
+              "versionCodes": {
+                "ARM64_V8A": 384510827,
+                "ARMEABI_V7A": 384510838
               },
               "isExperimental": false,
               "minSdk": null,
@@ -5775,6 +7272,48 @@
       "options": []
     },
     {
+      "name": "Suppress Household Prompt",
+      "description": "Hides the Netflix \"you're traveling\" / update-your-household prompt by keeping the client from activating the misdetection challenge session. Does NOT change what Netflix's servers detect (that's driven by your public IP — use a VPN for that); it only suppresses the on-screen prompt. Opt-in / experimental; only takes visible effect when the account would otherwise be prompted.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.netflix.ninja",
+          "name": "Netflix (Android TV)",
+          "description": "Netflix Android TV (com.netflix.ninja). The same APK and ad pipeline are used in India and worldwide; region only changes catalogue and ad fill.",
+          "apkFileType": "APKM",
+          "appIconColor": "#E50914",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "13.0.1 build 25028",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.1 build 27207",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "13.2.2 build 27250",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Suppress subscription paywall",
       "description": "Closes MUBI's upgrade screen immediately instead of showing it. Does not unlock playback or grant a subscription; only hides the upsell screen.",
       "default": false,
@@ -5860,6 +7399,37 @@
                 "ARMEABI_V7A": 14103000,
                 "X86_64": 14103000,
                 "X86": 14103000
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Table Notes: Unlock premium",
+      "description": "Unlocks Table Notes premium: PDF / Word / Excel export, publishing and\nthe paid feature set, and removes the premium-tier ad slots (banner and\ninterstitial). Also suppresses the paywall.\n\nVerified against 20261111. Does not touch Firebase sync of your own\ntables; the app simply believes every entitlement is owned.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "vivekagarwal.playwithdb",
+          "name": "Table Notes",
+          "description": "Table Notes - Mobile Excel. Verified against the 20261111 build; the entitlement field names are R8 output and are checked at patch time.",
+          "apkFileType": "APKM",
+          "appIconColor": "#3F51B5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "20261111",
+              "versionCodes": {
+                "ARM64_V8A": 20261111,
+                "ARMEABI_V7A": 20261111,
+                "X86_64": 20261111,
+                "X86": 20261111
               },
               "isExperimental": false,
               "minSdk": null,
@@ -6246,9 +7816,11 @@
     },
     {
       "name": "Unlock Pro features",
-      "description": "Returns every registered feature from the entitlement accessor (Qu.k) so all Pro gates resolve unlocked. LOCAL client-side effect only. WARNING (kept off by default): on at least one device (realme/Android 16) enabling the single registered Pro feature crashes capture - the Pro pipeline path is gated by this flag and we cannot verify its safety side. Enable only if you specifically want the Pro toolset; the app works fully (RAW capture incl.) with just 'Allow re-signed installs'.",
+      "description": "Unlocks all Mereframe Pro features locally across both the Kotlin entitlement resolver (Qu.k/m) and the native license/session verifier (Bf1c089 + libunnamed_raw.so), eliminating paywall popups and capture/editor SecurityException crashes. Pair with 'Allow re-signed/sideloaded installs' and 'Bypass native integrity checks'.",
       "default": false,
-      "dependencies": [],
+      "dependencies": [
+        "RawResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "app.unnamed.rawrecording",
