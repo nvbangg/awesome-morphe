@@ -70,22 +70,23 @@ def audit_repos_and_links() -> str:
     )
     print(completed_message)
 
-    summary_sections = [f"### README audit\n\n{completed_message}"]
-    for category_name, category_errors in (
-        ("Unavailable", errors["unavailable"]),
-        ("Warnings", errors["warnings"]),
-        ("Other Errors", errors["other"]),
+    summary_sections = []
+    for category_name, category_errors, collapsed in (
+        ("Unavailable", errors["unavailable"], False),
+        ("Warnings", errors["warnings"], False),
+        ("Other Errors", errors["other"], True),
     ):
         if category_errors:
             summary_sections.append(
                 format_summary_section(
                     category_name,
                     "\n".join(f"- {error}" for error in sorted(category_errors)),
-                    len(category_errors),
+                    result_count=len(category_errors),
                     heading_level=4,
+                    collapsed=collapsed,
                 )
             )
     if not any(errors.values()):
-        summary_sections.append("- All repositories and links are active.")
+        summary_sections.append("All repositories and links are active.")
 
-    return "\n\n".join(summary_sections)
+    return format_summary_section("README audit", "\n\n".join(summary_sections))

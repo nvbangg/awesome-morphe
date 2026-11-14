@@ -114,7 +114,7 @@ def main(argv: list[str] | None = None) -> int:
             format_summary_section(
                 "Bundle sources",
                 "\n".join(f"- {warning}" for warning in sorted(warnings)),
-                len(warnings),
+                result_count=len(warnings),
             )
         )
 

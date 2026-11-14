@@ -219,23 +219,31 @@ def test_invalid_json_is_not_retried_or_reported_as_network_error() -> None:
     open_url.assert_called_once()
 
 
-@pytest.mark.parametrize("result_count", (0, 1, 9, 10, 11))
-def test_result_count_controls_details_at_the_threshold(result_count) -> None:
+@pytest.mark.parametrize("result_count,collapsed", ((1, True), (10, False)))
+def test_section_collapse_is_explicit_instead_of_count_based(
+    result_count, collapsed
+) -> None:
     content = "\n".join(f"- Result {index}" for index in range(result_count))
-    section = files.format_summary_section("Results", content, result_count)
-    assert section.startswith(f"### Results ({result_count})\n\n")
+    section = files.format_summary_section(
+        "Results", content, result_count=result_count, collapsed=collapsed
+    )
     assert content in section
-    if result_count >= 10:
+    if collapsed:
         assert section.count("<details>") == 1
-        assert "<summary>Show details</summary>\n\n" in section
+        assert section.startswith(
+            f"<details>\n<summary><h3>Results ({result_count})</h3></summary>\n\n"
+        )
         assert section.endswith("\n\n</details>")
     else:
+        assert section.startswith(f"### Results ({result_count})\n\n")
         assert "<details>" not in section
 
 
-def test_details_use_result_count_instead_of_content_line_count() -> None:
+def test_expanded_section_keeps_its_heading_and_content() -> None:
     content = "\n".join(f"- Detail {index}" for index in range(20))
-    section = files.format_summary_section("Warnings", content, 1, heading_level=4)
+    section = files.format_summary_section(
+        "Warnings", content, result_count=1, heading_level=4
+    )
     assert section == f"#### Warnings (1)\n\n{content}"
 
 

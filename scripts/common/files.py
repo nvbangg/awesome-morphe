@@ -4,17 +4,23 @@ import os
 from pathlib import Path
 from typing import Any
 
-SUMMARY_DETAILS_THRESHOLD = 10
-
 
 def format_summary_section(
-    title: str, content: str, result_count: int, *, heading_level: int = 3
+    title: str,
+    content: str,
+    *,
+    result_count: int | None = None,
+    heading_level: int | None = 3,
+    collapsed: bool = False,
 ) -> str:
-    if result_count >= SUMMARY_DETAILS_THRESHOLD:
-        content = (
-            f"<details>\n<summary>Show details</summary>\n\n{content}\n\n</details>"
+    label = title if result_count is None else f"{title} ({result_count})"
+    if collapsed:
+        heading = (
+            f"<h{heading_level}>{label}</h{heading_level}>" if heading_level else label
         )
-    return f"{'#' * heading_level} {title} ({result_count})\n\n{content}"
+        return f"<details>\n<summary>{heading}</summary>\n\n{content}\n\n</details>"
+    heading = f"{'#' * heading_level} {label}" if heading_level else label
+    return f"{heading}\n\n{content}"
 
 
 def append_step_summary(markdown_content: str) -> None:

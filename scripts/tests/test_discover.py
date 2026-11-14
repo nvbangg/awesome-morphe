@@ -393,10 +393,10 @@ class TestDiscover:
             assert "### Bundle sources" in summary
             assert "### README audit" in summary
             assert "Repository is archived" in summary
-            assert "### New projects" in summary
-            assert "### New projects (1)" in summary
+            assert "<summary><h3>New projects (1)</h3></summary>" in summary
+            assert "<summary>Search queries</summary>" in summary
             assert "New Repositories Found" not in summary
-            assert "<details>" not in summary
+            assert summary.count("<details>") == 2
             assert "## 📋" not in summary
             assert "## 🔍" not in summary
             assert (

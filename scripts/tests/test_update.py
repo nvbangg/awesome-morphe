@@ -143,17 +143,15 @@ class TestBundleUpdate:
             assert bundle_update.main() == 0
         return load_json(self.public_path)
 
-    @pytest.mark.parametrize("result_count", (9, 10))
-    def test_patch_list_summary_collapses_at_ten_repositories(
-        self, result_count, capsys
-    ) -> None:
+    @pytest.mark.parametrize("result_count", (1, 10))
+    def test_patch_list_summary_is_always_collapsed(self, result_count, capsys) -> None:
         save_json(self.repos_path, {})
         for index in range(result_count):
             self.add_target(repo=f"owner/repo-{index}", patches=[])
         self.run_update()
         summary = self.summary.call_args.args[0]
-        assert f"### Patch list ({result_count})" in summary
-        assert ("<details>" in summary) == (result_count >= 10)
+        assert f"<h3>Patch list ({result_count})" in summary
+        assert summary.count("<details>") == 1
         assert summary.count("- https://") == result_count
         console = capsys.readouterr().out
         assert f"Patch list: {result_count} repositories" in console
@@ -267,7 +265,7 @@ class TestBundleUpdate:
         )
         assert path.exists()
         summary = self.summary.call_args.args[0]
-        assert "### Patch list (1)" in summary
+        assert "<h3>Patch list (1)" in summary
         assert "https://github.com/owner/alpha: (main)" in summary
         assert "patches-bundle.json" not in summary
         assert "invalid or excluded" not in summary
@@ -312,7 +310,7 @@ class TestBundleUpdate:
         )
         assert self.run_update()["bundles"] == []
         summary = self.summary.call_args.args[0]
-        assert "### Patch list (2)" in summary
+        assert "<h3>Patch list (2)" in summary
         assert "https://github.com/owner/alpha: (main) No patches found" in summary
         assert "https://gitlab.com/owner/alpha: (dev) Invalid data" in summary
         assert "https://github.com/owner/alpha: (dev)" not in summary
@@ -349,7 +347,7 @@ class TestBundleUpdate:
         assert catalog["bundles"][0]["isPreRelease"]
         assert catalog["store"]["com.test.app"]["isPreRelease"]
         summary = self.summary.call_args.args[0]
-        assert "### Patch list" not in summary
+        assert "<h3>Patch list" not in summary
         assert "Incomplete Apps" in summary
 
     def test_invalid_dev_is_suppressed_when_main_is_valid(self, capsys) -> None:
@@ -359,7 +357,7 @@ class TestBundleUpdate:
         assert "https://github.com/owner/alpha" not in capsys.readouterr().out
         assert catalog["bundles"][0]["patches"][0]["name"] == "Main patch"
         assert "isPreRelease" not in catalog["bundles"][0]
-        assert "### Patch list" not in self.summary.call_args.args[0]
+        assert "<h3>Patch list" not in self.summary.call_args.args[0]
 
     def test_identical_invalid_branches_have_one_summary_entry(self) -> None:
         self.add_target().write_text("{broken", encoding="utf-8")
@@ -367,7 +365,7 @@ class TestBundleUpdate:
         repos_snapshot = self.repos_path.read_bytes()
         assert self.run_update()["bundles"] == []
         summary = self.summary.call_args.args[0]
-        assert "### Patch list (1)" in summary
+        assert "<h3>Patch list (1)" in summary
         assert "https://github.com/owner/alpha: Invalid data" in summary
         assert "(main)" not in summary
         assert "(dev)" not in summary
@@ -379,7 +377,7 @@ class TestBundleUpdate:
         self.add_target(branch="dev").write_text("{broken", encoding="utf-8")
         assert self.run_update()["bundles"] == []
         summary = self.summary.call_args.args[0]
-        assert "### Patch list (1)" in summary
+        assert "<h3>Patch list (1)" in summary
         assert (
             "https://github.com/owner/alpha: (main) No patches found; (dev) Invalid data"
             in summary
@@ -403,7 +401,7 @@ class TestBundleUpdate:
         assert skipped_patch_path not in read_paths
         assert skipped_bundle_path not in read_paths
         summary = self.summary.call_args.args[0]
-        assert "### Patch list (1)" in summary
+        assert "<h3>Patch list (1)" in summary
         assert (
             f"https://github.com/owner/alpha: ({invalid_branch}) No patches found"
             in summary
@@ -478,9 +476,9 @@ class TestBundleUpdate:
         self.summary.assert_called_once()
         summary = self.summary.call_args.args[0]
         assert summary.startswith("## 🔄 Update (1/1):\n\n")
-        assert "### Incomplete Apps (1)\n\n" in summary
-        assert "### Patch list" not in summary
-        assert "### Repository metadata" not in summary
+        assert "<summary><h3>Incomplete Apps (1)</h3></summary>\n\n" in summary
+        assert "<h3>Patch list" not in summary
+        assert "<h3>Repository metadata" not in summary
         console = capsys.readouterr().out
         assert "Incomplete apps: 1" in console
         assert "com.test.app" not in console

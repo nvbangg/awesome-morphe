@@ -541,7 +541,7 @@ class TestBundleFetch:
         self.summary.assert_called_once()
         summary = self.summary.call_args.args[0]
         console = capsys.readouterr().out
-        assert "### Bundle metadata (1)" in summary
+        assert "<h3>Bundle metadata (1)" in summary
         assert summary.count("- https://") == 1
         assert "Bundle metadata: 1 repositories" in console
         assert "https://github.com/owner/alpha" not in console
@@ -711,10 +711,8 @@ class TestBundleFetch:
                 not in self.fetch_request.call_args_list
             )
 
-    @pytest.mark.parametrize("result_count", (9, 10))
-    def test_error_groups_collapse_independently_at_ten_repositories(
-        self, result_count
-    ) -> None:
+    @pytest.mark.parametrize("result_count", (1, 10))
+    def test_fetch_error_groups_are_always_collapsed(self, result_count) -> None:
         repos = {
             f"https://github.com/owner/repo-{index}": {"main": None}
             for index in range(result_count + 1)
@@ -743,11 +741,14 @@ class TestBundleFetch:
         ):
             bundle_fetch.fetch_all_repos()
         summary = self.summary.call_args.args[0]
-        metadata, download = summary.split("### Bundle download")
-        assert "### Bundle metadata (1)" in metadata
-        assert "<details>" not in metadata
+        metadata, download = summary.split(
+            "\n\n<details>\n<summary><h3>Bundle download"
+        )
+        assert "<h3>Bundle metadata (1)" in metadata
+        assert metadata.count("<details>") == 1
         assert f"({result_count})" in download
-        assert ("<details>" in download) == (result_count >= 10)
+        assert "</h3></summary>" in download
+        assert summary.count("<details>") == 2
 
     def test_same_http_status_at_different_steps_keeps_both_branch_entries(
         self, capsys
@@ -765,8 +766,10 @@ class TestBundleFetch:
         assert "(main) Request failed (HTTP 403)" in summary
         assert "(dev) Request failed (HTTP 403)" in summary
         assert summary.count("- https://") == len(DEFAULT_BRANCHES)
-        assert "<details>" not in summary
-        metadata_content, download_content = summary.split("### Bundle download")
+        assert summary.count("<details>") == 2
+        metadata_content, download_content = summary.split(
+            "\n\n<details>\n<summary><h3>Bundle download"
+        )
         assert "(main) Request failed (HTTP 403)" in metadata_content
         assert "(dev) Request failed (HTTP 403)" not in metadata_content
         assert "(dev) Request failed (HTTP 403)" in download_content

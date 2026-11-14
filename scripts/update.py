@@ -367,7 +367,8 @@ def main() -> int:
             format_summary_section(
                 "Patch list",
                 "\n".join(f"- {error}" for error in sorted_errors),
-                len(sorted_errors),
+                result_count=len(sorted_errors),
+                collapsed=True,
             )
         )
 
@@ -380,7 +381,8 @@ def main() -> int:
             format_summary_section(
                 "Incomplete Apps",
                 "\n".join(sorted_incomplete_apps),
-                len(sorted_incomplete_apps),
+                result_count=len(sorted_incomplete_apps),
+                collapsed=True,
             )
         )
 

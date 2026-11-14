@@ -190,23 +190,20 @@ def filter_repos(repos: list[dict]) -> list[dict]:
 
 
 def verify_and_export_repos(candidates: list[dict]) -> str:
-    if not candidates:
-        print("Candidate list is empty. Skipping verification.")
-        return format_summary_section(
-            "New projects", "No new standalone repositories found.", 0
-        )
-
-    print(
-        f"Checking {len(candidates)} candidates for patches-bundle.json and README...\n"
-    )
     valid_repos = []
-    with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-        future_to_repo = {
-            executor.submit(is_valid_candidate, repo): repo for repo in candidates
-        }
-        for future in as_completed(future_to_repo):
-            if future.result():
-                valid_repos.append(future_to_repo[future])
+    if candidates:
+        print(
+            f"Checking {len(candidates)} candidates for patches-bundle.json and README...\n"
+        )
+        with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
+            future_to_repo = {
+                executor.submit(is_valid_candidate, repo): repo for repo in candidates
+            }
+            for future in as_completed(future_to_repo):
+                if future.result():
+                    valid_repos.append(future_to_repo[future])
+    else:
+        print("Candidate list is empty. Skipping verification.")
 
     repos = [
         {
@@ -233,33 +230,43 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
     queries = [build_search_query(kw) for kw in SEARCH_KEYWORDS] + [
         build_user_query(user) for user in TARGET_USERS
     ]
-    query_lines = "\n".join(f"  - `{query}`" for query in queries)
+    query_lines = "\n".join(f"- `{query}`" for query in queries)
     excluded_keywords = ", ".join(EXCLUDED_KEYWORDS)
-    summary_sections = [f"- **Queries:**\n{query_lines}"]
     if excluded_keywords:
-        summary_sections.append(f"- **Excluded keywords:** {excluded_keywords}")
+        query_lines += f"\n\nExcluded keywords: {excluded_keywords}"
+    summary_sections = []
     if not repos:
-        summary_sections.append("- No new standalone repositories found.")
+        summary_sections.append("No new standalone repositories found.")
     else:
         for repo in repos:
             desc = (
-                f"\n- **Description:** {repo['description']}"
+                f"\n  - Description: {repo['description']}"
                 if repo["description"]
                 else ""
             )
             summary_sections.append(
-                f"#### [{repo['full_name']}]({repo['url']}) ({repo['stars']} stars)\n\n- **Created:** `{repo['created_at']}` | **Updated:** `{repo['pushed_at']}`{desc}"
+                f"- [{repo['full_name']}]({repo['url']}) | ⭐ {repo['stars']}\n"
+                f"  - Created: `{repo['created_at']}` | Updated: `{repo['pushed_at']}`{desc}"
             )
 
-    PROJECTS_DIR.mkdir(parents=True, exist_ok=True)
-    NEW_PROJECTS_PATH.write_text(
-        "\n".join(repo["url"] for repo in repos) + "\n", encoding="utf-8"
+    summary_sections.append(
+        format_summary_section(
+            "Search queries", query_lines, heading_level=None, collapsed=True
+        )
     )
-    print(
-        f"Saved {len(repos)} URLs to {NEW_PROJECTS_PATH.relative_to(ROOT_DIR)} (excluded {len(candidates) - len(repos)} patch bundles or without README)"
-    )
+    if candidates:
+        PROJECTS_DIR.mkdir(parents=True, exist_ok=True)
+        NEW_PROJECTS_PATH.write_text(
+            "\n".join(repo["url"] for repo in repos) + "\n", encoding="utf-8"
+        )
+        print(
+            f"Saved {len(repos)} URLs to {NEW_PROJECTS_PATH.relative_to(ROOT_DIR)} (excluded {len(candidates) - len(repos)} patch bundles or without README)"
+        )
     return format_summary_section(
-        "New projects", "\n\n".join(summary_sections), len(repos)
+        "New projects",
+        "\n\n".join(summary_sections),
+        result_count=len(repos),
+        collapsed=True,
     )
 
 

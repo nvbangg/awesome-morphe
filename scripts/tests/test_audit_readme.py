@@ -42,11 +42,14 @@ def test_gitlab_invalid_metadata_does_not_stop_other_repository_audit() -> None:
         summary = audit_readme.audit_repos_and_links()
     assert f"{failed_url}: Invalid repository data" in summary
     assert "Unavailable" not in summary
-    assert "Audited 2 repositories" in summary
+    assert "### README audit" in summary
+    assert "Audited " not in summary
 
 
-@pytest.mark.parametrize("result_count", (9, 10))
-def test_audit_groups_collapse_independently_at_ten_results(result_count) -> None:
+@pytest.mark.parametrize("result_count", (1, 10))
+def test_only_other_audit_errors_are_collapsed_regardless_of_count(
+    result_count,
+) -> None:
     with (
         patch.object(
             audit_readme,
@@ -65,7 +68,10 @@ def test_audit_groups_collapse_independently_at_ten_results(result_count) -> Non
         ),
     ):
         summary = audit_readme.audit_repos_and_links()
-    unavailable, other = summary.split("#### Other Errors (1)")
+    unavailable, other = summary.split(
+        "<details>\n<summary><h4>Other Errors (1)</h4></summary>"
+    )
     assert f"#### Unavailable ({result_count})" in unavailable
-    assert ("<details>" in unavailable) == (result_count >= 10)
-    assert "<details>" not in other
+    assert "<details>" not in unavailable
+    assert "Timeout" in other
+    assert summary.count("<details>") == 1
