@@ -91,11 +91,15 @@ def fetch_repo_details(repo_url: str) -> dict:
                 or not isinstance(response.get("archived"), bool)
             ):
                 return {"error": "Invalid repository data"}
+            avatar = response.get("avatar_url") or (
+                response.get("namespace") or {}
+            ).get("avatar_url")
+            if isinstance(avatar, str) and avatar.startswith("/"):
+                avatar = urllib.parse.urljoin("https://gitlab.com/", avatar)
             return {
                 "stars": response.get("star_count", 0),
                 "description": response.get("description"),
-                "avatar_url": response.get("avatar_url")
-                or (response.get("namespace") or {}).get("avatar_url"),
+                "avatar_url": avatar,
                 "full_name": response.get("path_with_namespace"),
                 "is_archived": response["archived"],
             }

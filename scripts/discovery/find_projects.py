@@ -16,9 +16,10 @@ from common.config import (
     README_REPOS_PATH,
     ROOT_DIR,
 )
-from common.files import format_summary_section, load_lines
+from common.files import load_lines
 from common.http import fetch, format_request_error, get_auth_headers, open_request
 from common.repositories import build_raw_url, parse_repo_url
+from common.summary import format_summary_section
 
 EXCLUDED_REPOS_PATH = PROJECTS_DIR / "excluded-repos.txt"
 NEW_PROJECTS_PATH = PROJECTS_DIR / "new-projects.txt"

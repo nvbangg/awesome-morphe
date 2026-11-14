@@ -11,8 +11,9 @@ from common.config import (
     PUBLIC_DIR,
     WHATS_NEW_PATH,
 )
-from common.files import append_step_summary, load_json, save_json
+from common.files import load_json, save_json
 from common.repositories import build_repo_url, parse_repo_url
+from common.summary import append_step_summary
 
 WHATS_NEW_JSON_PATH = PUBLIC_DIR / "whats-new.json"
 

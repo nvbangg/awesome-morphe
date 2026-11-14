@@ -27,26 +27,21 @@ from common.config import (
     SCRIPTS_DIR,
     UNAVAILABLE_HTTP_CODES,
 )
-from common.files import (
-    append_step_summary,
-    format_summary_section,
-    load_json,
-    load_lines,
-    save_json,
-)
+from common.files import load_json, load_lines, save_json
 from common.http import (
     fetch,
     format_request_error,
     get_auth_headers,
-    normalize_image_url,
     open_request,
 )
+from common.images import normalize_image_url
 from common.repositories import (
     build_raw_url,
     build_repo_url,
     fetch_repo_details,
     parse_repo_url,
 )
+from common.summary import append_step_summary, format_summary_section
 
 HASH_REQUEST_TIMEOUT_SECONDS = 10
 METADATA_REQUEST_TIMEOUT_SECONDS = 15

@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from common import config, files, http, repositories
+from common import config, http, repositories, summary
 
 
 def test_shared_paths_still_resolve_from_the_repository_root() -> None:
@@ -227,7 +227,7 @@ def test_section_collapse_is_explicit_instead_of_count_based(
     result_count, collapsed
 ) -> None:
     content = "\n".join(f"- Result {index}" for index in range(result_count))
-    section = files.format_summary_section(
+    section = summary.format_summary_section(
         "Results", content, result_count=result_count, collapsed=collapsed
     )
     assert content in section
@@ -244,7 +244,7 @@ def test_section_collapse_is_explicit_instead_of_count_based(
 
 def test_expanded_section_keeps_its_heading_and_content() -> None:
     content = "\n".join(f"- Detail {index}" for index in range(20))
-    section = files.format_summary_section(
+    section = summary.format_summary_section(
         "Warnings", content, result_count=1, heading_level=4
     )
     assert section == f"#### Warnings (1)\n\n{content}"
@@ -258,15 +258,15 @@ def test_sections_in_separate_step_files_have_one_separator_each(
     for section_name in ("Discover", "Fetch", "Update"):
         path = root / f"{section_name}.md"
         with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(path)}):
-            files.append_step_summary(f"## {section_name}:\n\n- Warning")
+            summary.append_step_summary(f"## {section_name}:\n\n- Warning")
         paths.append(path)
         assert path.read_text(encoding="utf-8").endswith("\n\n---\n\n")
-    summary = "\n".join(path.read_text(encoding="utf-8") for path in paths)
-    assert summary.count("\n---\n") == len(paths)
+    combined_summary = "\n".join(path.read_text(encoding="utf-8") for path in paths)
+    assert combined_summary.count("\n---\n") == len(paths)
 
 
 def test_empty_content_does_not_create_summary_or_separator(tmp_path: Path) -> None:
     path = tmp_path / "summary.md"
     with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(path)}):
-        files.append_step_summary(" \n ")
+        summary.append_step_summary(" \n ")
     assert not path.exists()

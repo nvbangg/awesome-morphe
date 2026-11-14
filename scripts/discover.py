@@ -7,13 +7,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dotenv import load_dotenv
 
 from common.config import BUNDLE_SOURCES_DIR, REPOS_JSON_PATH, ROOT_DIR, SCRIPTS_DIR
-from common.files import (
-    append_step_summary,
-    format_summary_section,
-    load_json,
-    save_json,
-)
+from common.files import load_json, save_json
 from common.repositories import build_repo_url, parse_repo_url
+from common.summary import append_step_summary, format_summary_section
 from discovery import (
     audit_readme,
     find_projects,

@@ -22,13 +22,9 @@ from common.config import (
     REPOS_JSON_PATH,
     SCRIPTS_DIR,
 )
-from common.files import (
-    append_step_summary,
-    format_summary_section,
-    load_json,
-    save_json,
-)
+from common.files import load_json, save_json
 from common.repositories import build_raw_url, build_repo_url, parse_repo_url
+from common.summary import append_step_summary, format_summary_section
 from updater import gplay_scrape, local_data, whats_new
 
 CUSTOM_JSON_PATH = BUNDLE_SOURCES_DIR / "custom.json"

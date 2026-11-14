@@ -3,9 +3,10 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from common.config import CONCURRENCY, PROJECTS_DIR, README_REPOS_PATH
-from common.files import format_summary_section, load_lines
+from common.files import load_lines
 from common.http import check_link_status
 from common.repositories import build_repo_url, fetch_repo_details, parse_repo_url
+from common.summary import format_summary_section
 
 
 def audit_repos_and_links() -> str:

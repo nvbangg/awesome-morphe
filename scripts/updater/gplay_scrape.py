@@ -8,7 +8,7 @@ from google_play_scraper.exceptions import GooglePlayScraperException, NotFoundE
 
 from common.config import CONCURRENCY, OFFICIAL_BUNDLES_PATH, PACKAGE_UNIVERSAL
 from common.files import load_json
-from common.http import normalize_image_url
+from common.images import normalize_image_url
 
 
 def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:

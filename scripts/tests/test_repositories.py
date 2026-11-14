@@ -85,7 +85,7 @@ class TestRepositoryMetadata:
             "full_name": "group/owner/new",
             "stars": 5,
             "description": "Example bundle",
-            "avatar_url": project_avatar or "/uploads/group.png",
+            "avatar_url": project_avatar or "https://gitlab.com/uploads/group.png",
             "is_archived": archived,
         }
 
