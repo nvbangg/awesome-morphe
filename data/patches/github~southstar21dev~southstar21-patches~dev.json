@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0-dev.8",
+  "version": "1.3.0-dev.2",
   "patches": [
     {
       "name": "Bypass signature check",
@@ -236,6 +236,77 @@
           "key": "extendContentBehindBar",
           "title": "Extend content behind bar",
           "description": "Lets feeds scroll underneath the bar so there is something to see through the glass. Turn off if the last item of a list ends up hidden.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Liquid Glass navigation bar",
+      "description": "Turns the bottom tab bar and the mini player above it into floating iOS 26 style Liquid Glass with live background blur and edge refraction, and colors the selected tab Spotify green. Refraction needs Android 13+, blur needs Android 12+, older versions get a tinted pill.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.spotify.music",
+          "name": "Spotify",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1ED760",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "9.2.0.2053",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "blurRadius",
+          "title": "Blur radius",
+          "description": "Blur applied to content behind the bar, in dp.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 4,
+          "values": {
+            "Clear": 2,
+            "Default": 4,
+            "Frosted": 12
+          }
+        },
+        {
+          "key": "refractionStrength",
+          "title": "Refraction strength",
+          "description": "How strongly the glass edge bends the content behind it, from 0 to 100.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 100,
+          "values": {
+            "Off": 0,
+            "Subtle": 30,
+            "Medium": 60,
+            "Default": 100
+          }
+        },
+        {
+          "key": "southstar21Style",
+          "title": "southstar21 style",
+          "description": "Thicker glass, and a press swells the selection into a magnifying drop of glass that wobbles and stretches as you drag it.",
           "required": true,
           "type": "kotlin.Boolean",
           "default": true,

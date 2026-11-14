@@ -1,7 +1,44 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.1.2",
+  "version": "3.0.1",
   "patches": [
+    {
+      "name": "AMOLED black (Splitwise)",
+      "description": "Real black instead of dark grey in Splitwise's dark mode: backgrounds, screens, bottom sheets, the status and navigation bars and the group charts. Cards stay a shade lighter so they stand out. AMOLED screens switch black pixels off, which saves battery. Light mode is unchanged. Can be switched off in Loki Patches > Appearance.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.Splitwise.SplitwiseMobile",
+          "name": "Splitwise",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2F7D5B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.11.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "AMOLED black bars",
       "description": "Turns the dark top bar, bottom bar, side menu and the other screens the app draws pure black, matching the feed that the AMOLED black setting already covers. Needs Material You.",
@@ -35,6 +72,43 @@
             },
             {
               "version": "4.1.1270",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Allow clone",
+      "description": "Lets the app run under a package name made by the Change package name patch: the app compares its own package name with the original at start-up and shuts itself down when they differ.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.cv.docscanner",
+          "name": "Doc Scanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.9.9",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -153,6 +227,28 @@
       "options": []
     },
     {
+      "name": "Change package name",
+      "description": "Changes the package name by adding a suffix (\".loki\" by default), so the patched app installs next to the original app instead of replacing it. Some apps check their own package name and need a small extra patch to run under the new one.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "suffix",
+          "title": "Package suffix",
+          "description": "Appended to the original package name. Must start with a dot.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": ".loki",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Copy text",
       "description": "Long press a post, comment or any other text to select and copy it in place, like on Reddit.",
       "default": true,
@@ -233,6 +329,44 @@
             },
             {
               "version": "4.1.1270",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Declutter",
+      "description": "Removes the promo banner on the home screen and the cross-promotion and cloud-login cards on the save-success screen.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.cv.docscanner",
+          "name": "Doc Scanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.9.9",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -351,6 +485,119 @@
       "options": []
     },
     {
+      "name": "Enable premium features",
+      "description": "Turns on the app's paid features (unlimited scans, cloud upload, OCR, PDF passwords, compression, signatures, themes). The app skips its ad slots for paid users, so the ads go away with them.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.cv.docscanner",
+          "name": "Doc Scanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.9.9",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable premium features (Splitwise)",
+      "description": "Treats the account as Pro and switches on the paid features: unlimited expense entries, search, charts, spreadsheet export, currency conversion, group totals history and stats, default splits, reminders, balance alerts, trip dates, larger receipt images and itemization.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.Splitwise.SplitwiseMobile",
+          "name": "Splitwise",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2F7D5B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.11.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable premium features (Truecaller)",
+      "description": "Makes every premium feature the app decides on the device available, and the plan read as active instead of Free, and hides the after-call screen (switch in Loki Patches > Calls). Features whose content comes from Truecaller's servers (who viewed me, caller ID for unknown numbers, fraud insurance) open but stay empty - their data is not in the app.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0B6EFD",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.43.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Feed filters",
       "description": "Adds a set of filters that are off until turned on in Loki Patches: focus mode, celebrations, job cards, reposts, posts from other people's activity, \"Recommended for you\", video posts, games, the \"New posts\" pill and \"See translation\".",
       "default": true,
@@ -402,11 +649,10 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Routes \"Continue with Google\" through microG RE (GmsCore) instead of Google Play services, so signing in works in patched LinkedIn. microG RE has to be installed and signed in to a Google account.",
+      "description": "Routes \"Continue with Google\" and Firebase push through MicroG-RE (GmsCore) instead of Google Play services. Signs the FCM registration with LinkedIn's original certificate, so notifications still arrive on a re-signed build. MicroG-RE has to be installed and signed in to a Google account.",
       "default": false,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -434,6 +680,118 @@
             },
             {
               "version": "4.1.1270",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support (Doc Scanner)",
+      "description": "MicroG-RE integration for Doc Scanner: routes Google sign-in and Google Drive through MicroG-RE instead of Google Play services, and keeps ML Kit's module loader on real Play services so text recognition (OCR) keeps working on phones with Play services. MicroG-RE has to be installed and signed in to a Google account.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.cv.docscanner",
+          "name": "Doc Scanner",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.9.9",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support (Splitwise)",
+      "description": "MicroG-RE integration for Splitwise: routes Google sign-in and Google Drive through MicroG-RE instead of Google Play services, and keeps ML Kit's module loader on real Play services so receipt OCR keeps working. MicroG-RE has to be installed and signed in to a Google account.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.Splitwise.SplitwiseMobile",
+          "name": "Splitwise",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2F7D5B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.11.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support (Truecaller)",
+      "description": "Routes Google sign-in, the Google Drive backup of contacts and call logs, and Firebase push through MicroG-RE (GmsCore) instead of Google Play services. Signs the FCM registration with Truecaller's original certificate, so notifications still arrive on a re-signed build. MicroG-RE has to be installed and signed in to a Google account.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.truecaller",
+          "name": "Truecaller",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0B6EFD",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.43.5",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -484,6 +842,43 @@
             },
             {
               "version": "4.1.1270",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Pro ads and upsells",
+      "description": "Removes the full-screen ad after adding an expense, the ad in Activity, the Pro diamond, the Pro account and Pro Duo cards, the Pro Pass prompts, the Pro tour screen, the hiring promo and the rate-the-app prompt.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.Splitwise.SplitwiseMobile",
+          "name": "Splitwise",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2F7D5B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.11.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -937,6 +1332,83 @@
             },
             {
               "version": "4.1.1270",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads and trackers",
+      "description": "Removes ads, analytics and crash reporting, and the advertising ID.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "ads",
+          "title": "Ads",
+          "description": "Stops the ad SDKs from starting and from loading ads: Google AdMob, AppLovin MAX, Unity Ads, Pangle, Meta Audience Network, InMobi, ironSource, Vungle, Mintegral, myTarget and BIGO.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "analytics",
+          "title": "Analytics and crash reporting",
+          "description": "Turns off Firebase Analytics and Crashlytics, the Facebook SDK, AppMetrica, AppsFlyer and the Play install referrer, when the app has them.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "advertisingId",
+          "title": "Advertising ID",
+          "description": "Removes the advertising ID permissions so no SDK can read the device's advertising ID.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove analytics and crash reporting",
+      "description": "Turns off Firebase Analytics, Crashlytics and the advertising-ID collection the app declares in its manifest.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.Splitwise.SplitwiseMobile",
+          "name": "Splitwise",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2F7D5B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.11.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

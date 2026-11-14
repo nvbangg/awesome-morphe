@@ -1,12 +1,12 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.12.0",
+  "version": "1.14.0",
   "patches": [
     {
       "name": "Add archive links to menus",
       "description": "Adds Wayback Machine and archive.today options to the menus behind a post and behind a link.",
       "default": true,
-      "category": null,
+      "category": "3. Archives",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -33,7 +33,7 @@
       "name": "Automatically undelete Imgur media",
       "description": "Loads Imgur images and videos that no longer exist from the Wayback Machine.",
       "default": true,
-      "category": null,
+      "category": "3. Archives",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -60,7 +60,7 @@
       "name": "Automatically undelete Reddit content",
       "description": "Restores the text of removed posts and comments, and the names of deleted authors, from Project Arctic Shift.",
       "default": true,
-      "category": null,
+      "category": "3. Archives",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -87,7 +87,7 @@
       "name": "Choose what the bottom bar shows",
       "description": "Lets each item on the bottom navigation bar — Posts, Actions, Explore and Inbox — be left alone, taken off, or replaced with one of the actions from Sync's own actions sheet, and adds one further button beside them. Covers the navigation rail used in tablet mode as well.",
       "default": true,
-      "category": null,
+      "category": "5. Interface",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -111,10 +111,76 @@
       "options": []
     },
     {
+      "name": "Clone Sync app",
+      "description": "Changes the app package name so that the app can be installed more than once, with \".morphe\" appended to it unless another name is given. Each cloned install needs a package name of its own. Use this rather than the universal \"Clone app\" patch, which leaves the app unable to read or write anything once its providers are renamed, and select only one of the two.",
+      "default": false,
+      "category": "8. Advanced",
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": "Sync for Reddit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name to use for the cloned app.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Default",
+          "values": {
+            "Default": "Default"
+          }
+        },
+        {
+          "key": "updatePermissions",
+          "title": "Update permissions",
+          "description": "Update custom permissions declared by the app. Fixes installation conflicts, but can break features in certain apps.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "updateProviders",
+          "title": "Update providers",
+          "description": "Update provider names declared by the app. Needed to install a clone beside the copy it was cloned from, since two installed apps may not declare the same provider. The addresses in the app's own code are rewritten to match.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "What the cloned app is called on the home screen, so that it can be told apart from the copy it was cloned from. Left empty, it keeps the name it had.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Disable Sync for Lemmy bottom sheet",
       "description": "Disables the bottom sheet at the startup that asks you to signup to \"Sync for Lemmy\".",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -141,7 +207,7 @@
       "name": "Disable ads",
       "description": "Removes the ads shown between posts.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -168,7 +234,7 @@
       "name": "Enable Android debugging",
       "description": "Enables Android developer debugging capabilities. Including this patch can slow down the app.",
       "default": false,
-      "category": null,
+      "category": "8. Advanced",
       "compatiblePackages": null,
       "options": []
     },
@@ -176,7 +242,7 @@
       "name": "Fix /s/ links",
       "description": "Opens Reddit's shortened /s/ share links in the app.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -203,7 +269,7 @@
       "name": "Fix Imgur links",
       "description": "Resolves Imgur links in the app instead of through Sync's proxy, which no longer exists.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -230,7 +296,7 @@
       "name": "Fix Redgifs API",
       "description": "Fixes loading RedGifs media, which RedGifs otherwise refuses.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -257,7 +323,7 @@
       "name": "Fix loading more comments",
       "description": "Loads the comments behind a \"view more\" from the thread instead of the endpoint Reddit stopped answering.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -284,7 +350,7 @@
       "name": "Fix opening albums",
       "description": "Looks a post up through Reddit's thread endpoint instead of the one Reddit stopped answering, which is what an album is opened by.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -311,7 +377,7 @@
       "name": "Fix post thumbnails",
       "description": "Fixes loading post thumbnails by correcting their URLs.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -338,7 +404,7 @@
       "name": "Fix revealing spoilers",
       "description": "Opens a spoiler where it sits when it is tapped, which Sync otherwise answers with \"Missing post information\".",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -365,7 +431,7 @@
       "name": "Fix video downloads",
       "description": "Fixes a bug in Sync's MPD parser resulting in only the audio-track being saved.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -392,7 +458,7 @@
       "name": "Gestures for the video player",
       "description": "Double tap a video or GIF to play or pause it rather than zoom, drag sideways to seek, and drag up or down after a double tap for volume.",
       "default": true,
-      "category": null,
+      "category": "5. Interface",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -419,7 +485,7 @@
       "name": "Keep the links in the text of a post",
       "description": "Keeps the formatting and links in the body shown under a post, which Sync otherwise discards.",
       "default": true,
-      "category": null,
+      "category": "6. Text",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -446,7 +512,7 @@
       "name": "Keep transparency in a picture",
       "description": "Draws the transparent parts of a picture opened in the viewer as the background behind it rather than as white.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -473,7 +539,7 @@
       "name": "Keep your place in a feed",
       "description": "Returns a feed to the post you were on rather than to the top, where posts have been cleared out of the cache while you were reading.",
       "default": true,
-      "category": null,
+      "category": "4. Feed",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -500,7 +566,7 @@
       "name": "Load threads whose text contains a dollar sign",
       "description": "Stops a thread failing to load when the text in it contains a dollar sign.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -527,7 +593,7 @@
       "name": "Lock an account with a PIN",
       "description": "Adds a PIN to the Security settings that is asked for when an account is opened and, if you like, when the app is opened, beside or instead of Sync's fingerprint lock.",
       "default": true,
-      "category": null,
+      "category": "7. Privacy",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -554,7 +620,7 @@
       "name": "Make an address in a post tappable",
       "description": "Draws a bare address in a post's body as a link.",
       "default": true,
-      "category": null,
+      "category": "6. Text",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -581,7 +647,7 @@
       "name": "Modify login WebView",
       "description": "Modify the WebView used for logging into reddit to prevent login issues",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -608,7 +674,34 @@
       "name": "More actions on the floating button",
       "description": "Puts up to four of Sync's own actions beside the feed's floating button.",
       "default": true,
-      "category": null,
+      "category": "5. Interface",
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": "Sync for Reddit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Play a YouTube video where Sync's player cannot",
+      "description": "Plays the video in a web view when Sync's YouTube player fails to start, which it now always does: the player asks the official YouTube app for a service Google has removed. Covers the player in a link's sheet and the full screen one.",
+      "default": true,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -635,7 +728,7 @@
       "name": "Recover post thumbnails from the archive",
       "description": "Loads a post's thumbnail from the Wayback Machine when its Reddit preview has been purged.",
       "default": true,
-      "category": null,
+      "category": "3. Archives",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -662,7 +755,34 @@
       "name": "Redirect Gfycat links to RedGifs",
       "description": "Loads Gfycat links from RedGifs, including the autoplaying video Sync asks its own proxy for.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": "Sync for Reddit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Repair a gallery Reddit says has failed",
+      "description": "Finds the pictures of a gallery that opens empty because Reddit marked them as failed, by asking i.redd.it for them, and leaves a gallery with nothing wrong untouched.",
+      "default": true,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -689,7 +809,7 @@
       "name": "Show a hidden profile from the archive",
       "description": "Fills in a profile from Project Arctic Shift when Reddit answers with nothing.",
       "default": true,
-      "category": null,
+      "category": "3. Archives",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -716,7 +836,7 @@
       "name": "Show a subreddit's banner on its feed",
       "description": "Draws the banner a subreddit sets at the top of its posts, rather than only on its About page.",
       "default": true,
-      "category": null,
+      "category": "4. Feed",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -743,7 +863,7 @@
       "name": "Show media in a comment where it sits",
       "description": "Draws a link in a comment as the picture or video it points at rather than as a chip naming where it goes.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -770,7 +890,7 @@
       "name": "Show the feed while a post is swiped away",
       "description": "Draws the screen behind a post as it is dragged aside, which is otherwise left black.",
       "default": true,
-      "category": null,
+      "category": "4. Feed",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -797,7 +917,7 @@
       "name": "Show videos posted in comments",
       "description": "Draws a video posted in a comment in the comment, and plays it when tapped.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -824,7 +944,7 @@
       "name": "Spoof client",
       "description": "Restores functionality of the app by using custom client ID.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -885,10 +1005,37 @@
       ]
     },
     {
+      "name": "Stack a link post's picture over its title in columns",
+      "description": "Draws a link post's picture across the top of its card with the title underneath where the feed is in more than one column, instead of beside the title in the width that is left over.",
+      "default": true,
+      "category": "4. Feed",
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": "Sync for Reddit",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Stop the toolbar menus closing the app",
       "description": "Keeps Sync open when the sort or overflow button in the toolbar is tapped, which closes it on some devices.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -915,7 +1062,7 @@
       "name": "Translate posts and comments",
       "description": "Translates a post or comment where it sits, on this device, through DeepL, or Google Cloud.",
       "default": true,
-      "category": null,
+      "category": "6. Text",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -942,7 +1089,7 @@
       "name": "Unblock Imgur",
       "description": "Loads Imgur pictures, videos, and albums another way where Imgur refuses the region, through DuckDuckGo's image proxy, a Rimgo instance, or a proxy of your own. Off until it is turned on under Settings > Redirects.",
       "default": true,
-      "category": null,
+      "category": "2. Media",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -969,7 +1116,7 @@
       "name": "Unlock Sync Ultra",
       "description": "Turns on the Sync Ultra features that work on the device alone, and removes the offers to buy it.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",
@@ -996,7 +1143,7 @@
       "name": "Use /user/ endpoint",
       "description": "Replaces the deprecated /u profile endpoint with /user.",
       "default": true,
-      "category": null,
+      "category": "1. Essentials",
       "compatiblePackages": [
         {
           "packageName": "com.laurencedawson.reddit_sync",

@@ -1,13 +1,13 @@
 {
-  "version": "v0.0.13",
+  "version": "v0.0.14",
   "appNames": {
     "com.pinterest": "Pinterest"
   },
   "patches": [
     {
       "name": "AMOLED black",
-      "description": "Paints the bottom bar pure black in dark mode, so it matches Pinterest's black pages on OLED screens. The comments sheet and a pin's menu can go black too, each with its own switch. Light mode stays as it is. Starts off. Turn them on in HushPinterest settings > Interface.",
-      "category": "Interface",
+      "description": "Paints the bottom bar pure black in dark mode, so it matches Pinterest's black pages on OLED screens. The comments sheet, a pin's menu and the Save to sheet that lists your boards can go black too, each with its own switch. Light mode stays as it is. Starts off. Turn them on in HushPinterest settings > Interface.",
+      "category": "Theme",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -15,7 +15,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -29,16 +29,72 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
         }
       ],
       "options": []
+    },
+    {
+      "name": "Change package name",
+      "description": "Gives the patched Pinterest its own package name and app name (HushPinterest unless you pick another), so it installs beside the Pinterest you already have instead of over it. It's a separate app with its own sign-in. It isn't selected by default. Works as soon as you patch it in, with no switch.",
+      "category": "Settings",
+      "use": false,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.44.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.44.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14448030
+              }
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The copy's package name. Each copy needs its own.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.pinterest.hushpinterest",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The name under the copy's icon, up to 30 characters.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "HushPinterest",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Disable analytics",
@@ -52,7 +108,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -66,10 +122,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -88,7 +144,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -102,10 +158,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -124,7 +180,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -138,10 +194,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -161,7 +217,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -175,10 +231,46 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Expand board list",
+      "description": "Opens the Save to sheet all the way up when you save a pin, so more of your boards show without dragging it. Starts off. Turn it on in HushPinterest settings > Interface.",
+      "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.44.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.44.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -188,7 +280,7 @@
     },
     {
       "name": "Filter feed",
-      "description": "Lets you take video pins (photos and GIFs stay) and pins that mention words you mute out of your home feed, search, related pins and boards, and pins you've already saved out of your home feed. Starts off. Set it up in HushPinterest settings > Feed.",
+      "description": "Lets you take video pins (photos and GIFs stay) and pins that mention words you mute out of your home feed, search, related pins and boards, and pins you've already saved and Pinterest's suggestion rows out of your home feed. Starts off. Set it up in HushPinterest settings > Feed.",
       "category": "Feed",
       "use": true,
       "dependencies": [
@@ -197,7 +289,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -211,10 +303,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -233,7 +325,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -247,10 +339,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -269,7 +361,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -283,10 +375,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -306,7 +398,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -320,10 +412,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -342,7 +434,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -356,10 +448,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -378,7 +470,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -392,10 +484,46 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Inbox updates",
+      "description": "Leaves the Updates section out of your Inbox, so it doesn't load. The pin ideas Pinterest puts there go, and so do the activity updates in that section. Your messages stay. Starts off. Turn it on in HushPinterest settings > Notifications.",
+      "category": "Notifications",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.44.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.44.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -414,7 +542,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -428,10 +556,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -450,7 +578,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -464,10 +592,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -486,7 +614,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -500,10 +628,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -513,7 +641,7 @@
     },
     {
       "name": "Hide comments",
-      "description": "Collapses the comments and comment previews under pins. It doesn't change who can comment on your pins. Good for a quieter pin page. A separate switch hides the suggested replies next to the comment box. Both start off. Turn them on in HushPinterest settings > Interface.",
+      "description": "Collapses the comments and comment previews under pins. It doesn't change who can comment on your pins. Good for a quieter pin page. Hide comment previews, a separate switch, hides only the previews and comment photos, so the comment box and the way into all comments stay. Another switch hides the suggested replies next to the comment box. All three start off. Turn them on in HushPinterest settings > Interface.",
       "category": "Interface",
       "use": true,
       "dependencies": [
@@ -522,7 +650,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -536,10 +664,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -558,7 +686,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -572,10 +700,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -585,7 +713,7 @@
     },
     {
       "name": "Hide navigation buttons",
-      "description": "Lets you hide the Create, Notifications and Search buttons in the bottom bar, each with its own switch. Home and Profile stay. Starts off. Turn them on in HushPinterest settings > Interface.",
+      "description": "Lets you hide the Create, Notifications and Search buttons in the bottom bar, each with its own switch. The Create and Notifications switches also cover those buttons at the top of Home. Home and Profile stay. Starts off. Turn them on in HushPinterest settings > Interface.",
       "category": "Navigation",
       "use": true,
       "dependencies": [
@@ -594,7 +722,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -608,10 +736,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -630,7 +758,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -644,10 +772,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -666,7 +794,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -680,10 +808,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -702,7 +830,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -716,10 +844,46 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide suggested boards",
+      "description": "Hides the board Pinterest suggests under your own boards when you save a pin, such as one it offers to make for you. Your boards and Profile stay. Starts off. Turn it on in HushPinterest settings > Interface.",
+      "category": "Interface",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "HushPinterest settings"
+      ],
+      "compatiblePackages": {
+        "com.pinterest": [
+          "14.44.0"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Pinterest",
+          "packageName": "com.pinterest",
+          "description": null,
+          "appIconColor": 15073315,
+          "signatures": [
+            "341d6881b1ecf38361fbf8c8fbae0aa516b45375c39ef5e78b161869acc1bcfa"
+          ],
+          "targets": [
+            {
+              "version": "14.44.0",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -738,7 +902,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -752,10 +916,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -774,7 +938,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -788,10 +952,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -810,7 +974,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -824,10 +988,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -846,7 +1010,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -860,10 +1024,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -883,7 +1047,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -897,10 +1061,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -919,7 +1083,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -933,10 +1097,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -947,7 +1111,7 @@
     {
       "name": "Open links in your browser",
       "description": "Opens a pin's Visit link and profile websites in your web browser. Pinterest links and sign-in work as before. Good if you prefer your own browser. Starts off. Turn it on in HushPinterest settings > Links.",
-      "category": "Interface",
+      "category": "Links",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -956,7 +1120,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -970,10 +1134,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -992,7 +1156,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -1006,10 +1170,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -1028,7 +1192,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -1042,10 +1206,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -1065,7 +1229,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -1079,10 +1243,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -1101,7 +1265,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -1115,10 +1279,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -1138,7 +1302,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -1152,10 +1316,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -1174,7 +1338,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -1188,10 +1352,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
@@ -1210,7 +1374,7 @@
       ],
       "compatiblePackages": {
         "com.pinterest": [
-          "14.42.0"
+          "14.44.0"
         ]
       },
       "compatibility": [
@@ -1224,10 +1388,10 @@
           ],
           "targets": [
             {
-              "version": "14.42.0",
+              "version": "14.44.0",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 14428010
+                "ARM64_V8A": 14448030
               }
             }
           ]
