@@ -26,21 +26,8 @@ def format_summary_section(
 def append_step_summary(markdown_content: str) -> None:
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary_path and markdown_content.strip():
-        with (
-            contextlib.suppress(Exception),
-            Path(summary_path).open("a", encoding="utf-8") as file,
-        ):
+        with Path(summary_path).open("a", encoding="utf-8") as file:
             file.write(markdown_content.strip() + "\n\n---\n\n")
-
-
-def set_step_output(name: str, value: str) -> None:
-    output_path = os.environ.get("GITHUB_OUTPUT")
-    if output_path and name:
-        with (
-            contextlib.suppress(Exception),
-            Path(output_path).open("a", encoding="utf-8") as file,
-        ):
-            file.write(f"{name}={value}\n")
 
 
 def load_json(path: str | Path, default: Any = None) -> Any:
@@ -69,5 +56,5 @@ def load_lines(path: str | Path) -> list[str]:
     return [
         line.strip()
         for line in path.read_text(encoding="utf-8").splitlines()
-        if line.strip() and not line.startswith("#")
+        if line.strip() and not line.lstrip().startswith("#")
     ]

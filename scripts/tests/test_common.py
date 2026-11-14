@@ -3,7 +3,7 @@ import urllib.error
 import urllib.request
 from email.message import Message
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -212,10 +212,13 @@ def test_http_error_is_not_retried(patch_context) -> None:
 
 
 def test_invalid_json_is_not_retried_or_reported_as_network_error() -> None:
-    with patch.object(http, "open_request") as open_url:
-        open_url.return_value.__enter__.return_value.read.return_value = b"{broken"
-        with pytest.raises(ValueError):
-            http.fetch("https://example.com/data", as_json=True)
+    response = MagicMock()
+    response.__enter__.return_value.read.return_value = b"{broken"
+    with (
+        patch.object(http, "open_request", return_value=response) as open_url,
+        pytest.raises(ValueError),
+    ):
+        http.fetch("https://example.com/data", as_json=True)
     open_url.assert_called_once()
 
 

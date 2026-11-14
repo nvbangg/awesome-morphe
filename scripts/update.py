@@ -27,7 +27,6 @@ from common.files import (
     format_summary_section,
     load_json,
     save_json,
-    set_step_output,
 )
 from common.repositories import build_raw_url, build_repo_url, parse_repo_url
 from updater import gplay_scrape, local_data, whats_new
@@ -403,8 +402,6 @@ def main() -> int:
             HISTORY_PATH,
             dict(sorted(history_data.items(), key=lambda item: item[0].lower())),
         )
-    if mode != "default":
-        set_step_output("success", "true")
     return 0
 
 

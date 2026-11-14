@@ -94,7 +94,7 @@ jobs:
         run: uv run --project scripts --no-sync scripts/update.py ${{ steps.mode.outputs.args }}
 
       - name: Commit and push changes
-        if: steps.changes.outputs.changed == 'true' || steps.update.outputs.success == 'true'
+        if: steps.update.outcome == 'success'
         id: commit
         env:
           MODE: ${{ steps.mode.outputs.mode }}

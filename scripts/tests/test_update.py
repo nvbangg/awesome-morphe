@@ -56,9 +56,6 @@ class TestBundleUpdate:
         )
         self.clock.now.return_value = datetime.fromtimestamp(CURRENT_TIME_SECONDS, UTC)
         self.patch_context.enter_context(patch.object(whats_new, "append_step_summary"))
-        self.output = self.patch_context.enter_context(
-            patch.object(bundle_update, "set_step_output")
-        )
         self.patch_context.enter_context(
             patch.multiple(
                 bundle_update,
@@ -624,7 +621,6 @@ class TestBundleUpdate:
         self.run_update()
         assert load_json(self.history_path) == {}
         assert load_json(self.changelog_path) == []
-        self.output.assert_not_called()
         with patch.object(
             whats_new,
             "load_json",
@@ -639,7 +635,6 @@ class TestBundleUpdate:
         assert load_json(self.history_path) == {repo_url: {"com.test.app": ["Patch"]}}
         assert load_json(self.changelog_path)[0]["bundles"][repo_url]["isNew"]
         assert self.markdown_path.is_file()
-        self.output.assert_called_once_with("success", "true")
 
     @pytest.mark.parametrize("mode", ("default", "daily", "weekly"))
     def test_unavailable_and_invalid_bundles_keep_history_without_being_published(
@@ -744,9 +739,7 @@ class TestBundleUpdate:
             "com.test.app": {"patches": ["Next patch"]}
         }
 
-    def test_changelog_failure_does_not_mark_update_successful_or_advance_history(
-        self,
-    ) -> None:
+    def test_changelog_failure_propagates_without_advancing_history(self) -> None:
         self.add_target()
         with (
             patch.object(
@@ -755,7 +748,6 @@ class TestBundleUpdate:
             pytest.raises(OSError),
         ):
             self.run_update("daily")
-        self.output.assert_not_called()
         assert load_json(self.history_path) == {}
 
     @pytest.mark.parametrize("failure_stage", ("process", "fetch_app_details"))
