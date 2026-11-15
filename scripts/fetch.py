@@ -666,7 +666,10 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         content = "\n".join(f"- {error}" for error in sorted_errors)
         summary_sections.append(
             format_summary_section(
-                title, content, len(errors[category]), collapsed=True
+                title,
+                content,
+                len(errors[category]),
+                collapsed=category not in ("repo_metadata", "patch_list"),
             )
         )
     append_step_summary("\n\n".join(summary_sections))

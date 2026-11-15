@@ -389,8 +389,8 @@ class TestDiscover:
             self.summary.assert_called_once()
             summary = self.summary.call_args.args[0]
             assert summary.count("## 🔎 Discovery:") == 1
-            assert "### Bundle sources" in summary
-            assert "### README audit" in summary
+            assert "<details open>\n<summary><h3>Bundle sources" in summary
+            assert "<details open>\n<summary><h3>README audit" in summary
             assert "Repository is archived" in summary
             assert "<summary><h3>New projects (1)</h3></summary>" in summary
             assert "<summary>Search queries</summary>" in summary

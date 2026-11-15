@@ -79,6 +79,6 @@ def check_link_status(url: str, timeout: int = HTTP_TIMEOUT_SECONDS) -> dict:
     except urllib.error.HTTPError as error:
         if error.code in DEAD_LINK_HTTP_CODES:
             return {"is_dead": True, "error": str(error)}
-        return {"error": str(error)}
+        return {"error": str(error), "status_code": error.code}
     except (OSError, HTTPException, ValueError) as error:
         return {"error": str(error)}

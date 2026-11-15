@@ -22,8 +22,8 @@ def test_audit_still_classifies_unavailable_repositories(
         block_network.side_effect = error
         summary = audit_readme.audit_repos_and_links()
         assert f"{repo_url}: {code}" in summary
-        assert "Other Errors" not in summary
-        assert "#### Unavailable (1)" in summary
+        assert "Other errors" not in summary
+        assert "####" not in summary
 
 
 def test_gitlab_invalid_metadata_does_not_stop_other_repository_audit() -> None:
@@ -40,7 +40,7 @@ def test_gitlab_invalid_metadata_does_not_stop_other_repository_audit() -> None:
         summary = audit_readme.audit_repos_and_links()
     assert f"{failed_url}: Invalid repository data" in summary
     assert "Unavailable" not in summary
-    assert "### README audit" in summary
+    assert "<details open>\n<summary><h3>README audit (1)</h3></summary>" in summary
     assert "Audited " not in summary
 
 
@@ -66,10 +66,13 @@ def test_only_other_audit_errors_are_collapsed_regardless_of_count(
         ),
     ):
         summary = audit_readme.audit_repos_and_links()
-    unavailable, other = summary.split(
-        "<details>\n<summary><h4>Other Errors (1)</h4></summary>"
+    unavailable, other = summary.split("- <details>\n  <summary>Other errors</summary>")
+    assert (
+        f"<details open>\n<summary><h3>README audit ({result_count + 1})</h3></summary>"
+        in unavailable
     )
-    assert f"#### Unavailable ({result_count})" in unavailable
+    assert unavailable.count("- https://github.com/owner/repo-") == result_count
+    assert "####" not in summary
     assert "<details>" not in unavailable
     assert "Timeout" in other
     assert summary.count("<details>") == 1

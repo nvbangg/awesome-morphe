@@ -802,7 +802,7 @@ class TestBundleFetch:
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
         summary = self.summary.call_args.args[0]
-        assert "Patch list (1)" in summary
+        assert "<details open>\n<summary><h3>Patch list (1)</h3></summary>" in summary
         assert f"HTTP Error {code}: Request failed" in summary
         assert "Bundle metadata" not in summary
         assert "Bundle download" not in summary
@@ -823,7 +823,7 @@ class TestBundleFetch:
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
         summary = self.summary.call_args.args[0]
-        assert "Patch list (1)" in summary
+        assert "<details open>\n<summary><h3>Patch list (1)</h3></summary>" in summary
         assert (
             "https://github.com/owner/alpha: Failed to generate `patches-list.json`"
             in summary
@@ -1503,7 +1503,10 @@ class TestRepositoryMetadataRefresh:
             bundle_fetch.fetch_all_repos()
             request.assert_called_once_with(self.url)
             save.assert_called_once()
-            assert "Repository metadata (1)" in summary.call_args.args[0]
+            assert (
+                "<details open>\n<summary><h3>Repository metadata (1)</h3></summary>"
+                in summary.call_args.args[0]
+            )
         metadata = load_json(repos_path)[self.url]
         assert metadata["renamedTo"] == "https://github.com/owner/new"
         assert metadata["main"] == "sha"

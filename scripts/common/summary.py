@@ -10,11 +10,12 @@ def format_summary_section(
     collapsed: bool = False,
 ) -> str:
     label = title if result_count is None else f"{title} ({result_count})"
-    if collapsed:
+    if heading_level is None or heading_level >= 3:
         heading = (
             f"<h{heading_level}>{label}</h{heading_level}>" if heading_level else label
         )
-        return f"<details>\n<summary>{heading}</summary>\n\n{content}\n\n</details>"
+        open_attribute = "" if collapsed else " open"
+        return f"<details{open_attribute}>\n<summary>{heading}</summary>\n\n{content}\n\n</details>"
     heading = f"{'#' * heading_level} {label}" if heading_level else label
     return f"{heading}\n\n{content}"
 

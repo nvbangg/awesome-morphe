@@ -2,7 +2,12 @@
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from common.config import CONCURRENCY, PROJECTS_DIR, README_REPOS_PATH
+from common.config import (
+    CONCURRENCY,
+    PROJECTS_DIR,
+    README_REPOS_PATH,
+    UNAVAILABLE_HTTP_CODES,
+)
 from common.files import load_lines
 from common.http import check_link_status
 from common.repositories import build_repo_url, fetch_repo_details, parse_repo_url
@@ -16,7 +21,8 @@ def audit_repos_and_links() -> str:
         f"Auditing {len(repo_urls)} repositories and {len(link_urls)} links from README..."
     )
 
-    errors: dict[str, list[str]] = {"unavailable": [], "warnings": [], "other": []}
+    issues: list[str] = []
+    other_errors: list[str] = []
 
     if repo_urls:
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
@@ -28,13 +34,11 @@ def audit_repos_and_links() -> str:
                 details = future.result()
 
                 if details.get("is_404"):
-                    errors["unavailable"].append(f"{url}: 404 Not Found")
+                    issues.append(f"{url}: 404 Not Found")
                 elif details.get("is_451"):
-                    errors["unavailable"].append(
-                        f"{url}: 451 Unavailable For Legal Reasons"
-                    )
+                    issues.append(f"{url}: 451 Unavailable For Legal Reasons")
                 elif details.get("is_archived"):
-                    errors["warnings"].append(f"{url}: Repository is archived")
+                    issues.append(f"{url}: Repository is archived")
                 elif full_name := details.get("full_name"):
                     source, original_repo = parse_repo_url(url)
                     if (
@@ -42,11 +46,9 @@ def audit_repos_and_links() -> str:
                         and original_repo
                         and full_name.lower() != original_repo.lower()
                     ):
-                        errors["warnings"].append(
-                            f"{url} -> {build_repo_url(source, full_name)}"
-                        )
+                        issues.append(f"{url} -> {build_repo_url(source, full_name)}")
                 elif details.get("error"):
-                    errors["other"].append(f"{url}: {details['error']}")
+                    other_errors.append(f"{url}: {details['error']}")
 
     if link_urls:
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
@@ -57,34 +59,32 @@ def audit_repos_and_links() -> str:
                 url = future_to_link[future]
                 status = future.result()
 
-                if status.get("is_dead"):
-                    errors["unavailable"].append(
-                        f"{url}: {status.get('error', 'Dead')}"
-                    )
+                if (
+                    status.get("is_dead")
+                    or status.get("status_code") in UNAVAILABLE_HTTP_CODES
+                ):
+                    issues.append(f"{url}: {status.get('error', 'Dead')}")
                 elif status.get("is_redirect"):
-                    errors["warnings"].append(f"{url} -> {status.get('final_url', '')}")
+                    issues.append(f"{url} -> {status.get('final_url', '')}")
                 elif status.get("error"):
-                    errors["other"].append(f"{url}: {status['error']}")
+                    other_errors.append(f"{url}: {status['error']}")
 
     print(f"Audited {len(repo_urls)} repositories and {len(link_urls)} links.")
 
-    summary_sections = []
-    for category_name, category_errors, collapsed in (
-        ("Unavailable", errors["unavailable"], False),
-        ("Warnings", errors["warnings"], False),
-        ("Other Errors", errors["other"], True),
-    ):
-        if category_errors:
-            summary_sections.append(
-                format_summary_section(
-                    category_name,
-                    "\n".join(f"- {error}" for error in sorted(category_errors)),
-                    len(category_errors),
-                    4,
-                    collapsed,
-                )
-            )
-    if not any(errors.values()):
+    summary_sections = (
+        ["\n".join(f"- {issue}" for issue in sorted(issues))] if issues else []
+    )
+    if other_errors:
+        details = format_summary_section(
+            "Other errors",
+            "\n".join(f"- {error}" for error in sorted(other_errors)),
+            heading_level=None,
+            collapsed=True,
+        )
+        summary_sections.append("- " + details.replace("\n", "\n  "))
+    if not issues and not other_errors:
         summary_sections.append("All repositories and links are active.")
 
-    return format_summary_section("README audit", "\n\n".join(summary_sections))
+    return format_summary_section(
+        "README audit", "\n\n".join(summary_sections), len(issues) + len(other_errors)
+    )

@@ -170,8 +170,10 @@ def test_section_collapse_is_explicit_instead_of_count_based(
         )
         assert section.endswith("\n\n</details>")
     else:
-        assert section.startswith(f"### Results ({result_count})\n\n")
-        assert "<details>" not in section
+        assert section.startswith(
+            f"<details open>\n<summary><h3>Results ({result_count})</h3></summary>\n\n"
+        )
+        assert section.endswith("\n\n</details>")
 
 
 def test_expanded_section_keeps_its_heading_and_content() -> None:
@@ -179,7 +181,9 @@ def test_expanded_section_keeps_its_heading_and_content() -> None:
     section = summary.format_summary_section(
         "Warnings", content, result_count=1, heading_level=4
     )
-    assert section == f"#### Warnings (1)\n\n{content}"
+    assert section == (
+        f"<details open>\n<summary><h4>Warnings (1)</h4></summary>\n\n{content}\n\n</details>"
+    )
 
 
 def test_sections_in_separate_step_files_have_one_separator_each(
