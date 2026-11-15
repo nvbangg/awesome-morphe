@@ -4,6 +4,7 @@ import argparse
 import contextlib
 import io
 import json
+import re
 import subprocess
 import sys
 import urllib.error
@@ -288,22 +289,20 @@ def process_repo_branch(
         parsed_url = urllib.parse.urlsplit(mpp_url)
         if parsed_url.scheme != "https":
             return failed("Invalid `download_url`", "metadata", True)
-        if source == "gitlab" and parsed_url.hostname == "gitlab.com":
-            path_parts = parsed_url.path.split("/")
-            if (
-                len(path_parts) > 5
-                and path_parts[1:4] == ["api", "v4", "projects"]
-                and path_parts[4].isdigit()
-            ):
-                path_parts[4] = urllib.parse.quote(repo, safe="")
-                mpp_url = urllib.parse.urlunsplit(
-                    parsed_url._replace(path="/".join(path_parts))
-                )
-                bundle_data["download_url"] = mpp_url
-        mpp_source, mpp_repo = parse_repo_url(mpp_url)
+        project_match = (
+            re.match(r"/(?:api/v4/projects|-/project)/(\d+)/", parsed_url.path)
+            if source == "gitlab" and parsed_url.hostname == "gitlab.com"
+            else None
+        )
+        mpp_source, mpp_repo = (
+            (source, project_match[1]) if project_match else parse_repo_url(mpp_url)
+        )
         if mpp_source != source or not mpp_repo:
             return failed("Invalid `download_url`", "metadata", True)
-        if mpp_repo.lower() not in {repo.lower(), (renamed_repo or repo).lower()}:
+        if project_match or mpp_repo.lower() not in {
+            repo.lower(),
+            (renamed_repo or repo).lower(),
+        }:
             repository_details = repository_details or RepositoryDetails()
             repo_url = build_repo_url(source, repo)
             assert repo_url is not None
@@ -313,12 +312,16 @@ def process_repo_branch(
                 details.get("error")
                 or not isinstance(canonical_repo, str)
                 or not canonical_repo
+                or (project_match and details.get("project_id") is None)
             ):
                 return failed(
                     details.get("error") or "Could not verify repository identity",
                     "metadata",
                 )
-            if canonical_repo.lower() != mpp_repo.lower():
+            if project_match:
+                if str(details["project_id"]) != project_match[1]:
+                    return failed("Invalid `download_url`", "metadata", True)
+            elif canonical_repo.lower() != mpp_repo.lower():
                 download_repo_url = build_repo_url(source, mpp_repo)
                 assert download_repo_url is not None
                 download_details = repository_details.get(download_repo_url)

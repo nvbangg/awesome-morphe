@@ -980,25 +980,49 @@ class TestBundleFetch:
         assert self.summary.call_args.args[0] == "## 📥 Fetch (1/1):"
         self.run_process.assert_not_called()
 
-    def test_gitlab_worker_rewrites_numeric_download_url(self) -> None:
+    @pytest.mark.parametrize(
+        "download_url",
+        (
+            "https://gitlab.com/api/v4/projects/123/packages/generic/bundle/latest/bundle.mpp",
+            "https://gitlab.com/-/project/123/uploads/abc/bundle.mpp",
+        ),
+    )
+    @pytest.mark.parametrize(
+        "project_id,expected_sha",
+        ((123, "main-new"), (456, None), (None, "main-old")),
+    )
+    def test_gitlab_numeric_download_url_verifies_project_and_preserves_url(
+        self, download_url, project_id, expected_sha
+    ) -> None:
         bundle_url = build_raw_url(
             "gitlab", "owner/alpha", "main", "patches-bundle.json"
         )
         patch_url = build_raw_url("gitlab", "owner/alpha", "main", "patches-list.json")
         assert bundle_url is not None and patch_url is not None
-        numeric_url = "https://gitlab.com/api/v4/projects/123/packages/generic/bundle/latest/bundle.mpp"
-        rewritten_url = numeric_url.replace("/123/", "/owner%2Falpha/")
-        self.responses[bundle_url] = json.dumps({"download_url": numeric_url}).encode()
-        self.responses[rewritten_url] = self.mpp_bytes
+        self.responses[bundle_url] = json.dumps({"download_url": download_url}).encode()
+        self.responses[download_url] = self.mpp_bytes
         self.responses[patch_url] = json.dumps(self.patches_data).encode()
-        result = bundle_fetch.process_repo_branch(
-            "gitlab", "owner/alpha", "main", "main-old"
-        )
-        assert load_json(self.bundles_dir / f"{result.target_name}.json") == {
-            "download_url": rewritten_url
-        }
-        assert result.bundle_name == "Alpha new"
-        assert not result.needs_parse
+        with patch.object(
+            bundle_fetch,
+            "fetch_repo_details",
+            return_value={"project_id": project_id, "full_name": "owner/alpha"},
+        ) as lookup:
+            result = bundle_fetch.process_repo_branch(
+                "gitlab", "owner/alpha", "main", "main-old"
+            )
+        lookup.assert_called_once_with("https://gitlab.com/owner/alpha")
+        assert result.new_sha == expected_sha
+        assert (
+            call(download_url, binary=True) in self.fetch_request.call_args_list
+        ) == (expected_sha == "main-new")
+        if expected_sha == "main-new":
+            assert load_json(self.bundles_dir / f"{result.target_name}.json") == {
+                "download_url": download_url
+            }
+            assert result.bundle_name == "Alpha new"
+            assert not result.needs_parse
+        else:
+            assert result.error_category == "metadata"
 
     def test_weekly_unavailable_mpp_clears_sha_and_retains_files(self) -> None:
         save_json(self.bundles_dir / "github~owner~alpha~main.json", self.bundle_data)

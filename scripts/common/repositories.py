@@ -96,6 +96,7 @@ def fetch_repo_details(repo_url: str) -> dict:
         if isinstance(avatar, str) and avatar.startswith("/"):
             avatar = urllib.parse.urljoin("https://gitlab.com/", avatar)
         return {
+            "project_id": response.get("id"),
             "stars": response.get("star_count", 0),
             "description": response.get("description"),
             "avatar_url": avatar,

@@ -64,6 +64,7 @@ class TestRepositoryMetadata:
             repositories,
             "fetch",
             return_value={
+                "id": 123,
                 "path_with_namespace": "group/owner/new",
                 "star_count": 5,
                 "description": "Example bundle",
@@ -80,6 +81,7 @@ class TestRepositoryMetadata:
             as_json=True,
         )
         assert details == {
+            "project_id": 123,
             "full_name": "group/owner/new",
             "stars": 5,
             "description": "Example bundle",
