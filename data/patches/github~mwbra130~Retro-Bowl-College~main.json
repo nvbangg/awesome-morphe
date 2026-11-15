@@ -1,35 +1,7 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.75.0",
+  "version": "1.77.1",
   "patches": [
-    {
-      "name": "Add settings",
-      "description": "Long-press the Home tab in Strava's bottom bar to open 'Morphe patch settings'. Lets you toggle feed cleanup, route trim, bottom bar tabs and the launcher name/icon at runtime, without re-patching.",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.strava",
-          "name": "Strava",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FC5200",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "486.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
     {
       "name": "Bypass PairIP application checks",
       "description": "Required for re-signed builds: PairIP's Application class runs the signature and license checks at startup. This rewrites that one method so it only registers the app context and never calls either check, instead of relying on the checks themselves being stubbed.",
@@ -603,115 +575,6 @@
             "Amazon Appstore": "com.amazon.venezia",
             "Huawei AppGallery": "com.huawei.appmarket",
             "Xiaomi GetApps": "com.xiaomi.mipicks"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Custom app name and icon",
-      "description": "Changes the app's displayed name and launcher icon. The icon choices are Strava's own built-in alternate icons, plus an accent-colored one. Name and icon can later be switched at runtime from the patch settings screen.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.strava",
-          "name": "Strava",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FC5200",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "486.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "appName",
-          "title": "App name",
-          "description": "The custom name the launcher can show. The original name stays available in the patch settings screen.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "Strava Custom",
-          "values": null
-        },
-        {
-          "key": "appIcon",
-          "title": "App icon",
-          "description": "The launcher icon. Uses Strava's own built-in alternate icons, plus an accent-colored one.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "default",
-          "values": {
-            "Default": "default",
-            "Accent": "Accent",
-            "Local Legend": "LocalLegend",
-            "XOM": "Xom",
-            "Trophy": "Trophy",
-            "Medal": "Medal",
-            "Hiking": "Hiking",
-            "Cycling": "Cycling",
-            "Running": "Running",
-            "Kudos": "Kudos",
-            "Sticker": "Sticker",
-            "Pride": "Pride",
-            "Road": "Road",
-            "Gravel": "Gravel",
-            "Teal": "Teal",
-            "Red": "Red",
-            "Black": "Black"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Custom theme colors",
-      "description": "Replaces Strava's brand orange (#FC5200) accent color in the app's native screens with a color of your choice.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.strava",
-          "name": "Strava",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FC5200",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "486.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "accentColor",
-          "title": "Accent color",
-          "description": "The accent color that replaces Strava orange.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#FC5200",
-          "values": {
-            "Strava orange": "#FC5200",
-            "Sunset orange": "#FF6B00",
-            "Blue": "#0066FF",
-            "Violet": "#7C4DFF",
-            "Teal": "#00BFA5",
-            "Green": "#00C853",
-            "Pink": "#FF4081",
-            "Red": "#E53935",
-            "Slate": "#546E7A"
           }
         }
       ]
@@ -1420,32 +1283,6 @@
       "options": []
     },
     {
-      "name": "Enable password login",
-      "description": "Shows the email and password login option instead of forcing the one-time email code flow. Your password is still checked by Strava's servers exactly as in the official app.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.strava",
-          "name": "Strava",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FC5200",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "486.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Free store",
       "description": "The in-game store is free. Just tap \"Buy\" and the item is yours — no payment needed. For an ad-free game, just buy the ad-block item from the store.",
       "default": true,
@@ -1502,91 +1339,8 @@
       "options": []
     },
     {
-      "name": "Hide feed elements",
-      "description": "Hides who-to-follow suggestions, suggested challenges and other clutter cards from the activity feed. Requires the 'Hide subscription promotions' patch, which provides the shared feed filtering.",
-      "default": false,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.strava",
-          "name": "Strava",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FC5200",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "486.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "followSuggestions",
-          "title": "Who to Follow",
-          "description": "Popular athletes, followers, people near you etc.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "challengeSuggestions",
-          "title": "Suggested Challenges",
-          "description": "Random challenges Strava wants you to join.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "joinChallenge",
-          "title": "Join Challenge",
-          "description": "Challenges your follows have joined.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "joinClub",
-          "title": "Joined a club",
-          "description": "Clubs your follows have joined.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "activityLookback",
-          "title": "Activity lookback",
-          "description": "Your activity from X years ago",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "localEvents",
-          "title": "Local events",
-          "description": "The 'See what events are happening' local events carousel.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Hide subscription promotions",
-      "description": "Hides subscription upsell modules and promotional cards from the feed and other modular screens. UI cleanup only: does not unlock any paid features.",
+      "name": "Liquid Glass navigation",
+      "description": "Turns Strava's bottom bar into a floating Liquid Glass pill: detached from the screen edges, live blurred backdrop with a translucent tint, content scrolling underneath it, like the current YouTube and Proton VPN bars. Tweak it under Extra Settings at the top of Strava's Settings screen (on/off, floating vs docked, blur, tint opacity). Uses Strava's classic bottom bar to make the effect possible.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1608,62 +1362,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "upselling",
-          "title": "Upselling",
-          "description": "Elements that suggest you subscribe.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "promo",
-          "title": "Promotions",
-          "description": "Elements that promote features, challenges, clubs, etc.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Local route privacy trim",
-      "description": "Trims extra route distance from both ends of the activity map on this device only, on top of Strava's own privacy filtering. Display-only: recorded and uploaded data are unchanged, and other people still see the activity exactly as your Strava privacy settings dictate.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.strava",
-          "name": "Strava",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FC5200",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "486.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "trimMeters",
-          "title": "Meters to trim",
-          "description": "Extra meters of route hidden from each end of the activity map on this device.",
-          "required": true,
-          "type": "kotlin.Int",
-          "default": 200,
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
       "name": "OLED black mode",
