@@ -562,7 +562,13 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
             for task in tasks
         ]
         results = [future.result() for future in as_completed(futures)]
-    results.sort(key=lambda result: (result.repo.lower(), result.source, result.branch))
+    results.sort(
+        key=lambda result: (
+            result.repo.lower(),
+            result.source,
+            DEFAULT_BRANCHES.index(result.branch),
+        )
+    )
     run_bundle_parser([result for result in results if result.needs_parse])
     errors = collect_fetch_errors(results)
     updated_count = 0

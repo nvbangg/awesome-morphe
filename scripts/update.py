@@ -209,9 +209,7 @@ def main() -> int:
     sorted_keys = sorted(
         bundle_sources,
         key=lambda sort_key: (
-            existing_bundles.get(sort_key, {}).get(
-                "firstSeen", bundle_sources[sort_key].get("updatedAt", 0)
-            ),
+            existing_bundles.get(sort_key, {}).get("firstSeen", now_ms),
             sort_key.lower(),
         ),
     )
