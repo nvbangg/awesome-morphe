@@ -137,7 +137,7 @@ def parse_patches_list(
     raw_list = raw_patches_data.get("patches")
     if not isinstance(raw_list, list):
         return None, "Invalid data"
-    if len(raw_list) == 0:
+    if not raw_list:
         return None, "No patches found"
 
     valid_patches = []
@@ -194,8 +194,8 @@ def load_branch_data(
         patches, reason = parse_patches_list(
             raw,
             discovered_names,
-            is_dev_branch=is_dev_branch,
-            main_patch_names=main_patch_names,
+            is_dev_branch,
+            main_patch_names,
         )
     except (AttributeError, TypeError, ValueError):
         return None, None, None, "Invalid data"
@@ -251,8 +251,8 @@ def process(
             "dev",
             bool(dev_sha),
             dev_names,
-            is_dev_branch=True,
-            main_patch_names=main_patch_names,
+            True,
+            main_patch_names,
         )
         branch_errors = [
             (branch, reason)
@@ -425,7 +425,6 @@ def cleanup_orphan_files(repos_data: dict) -> None:
         for branch in DEFAULT_BRANCHES
     }
     for directory in (BUNDLES_DIR, PATCHES_DIR):
-        if directory.exists():
-            for filepath in directory.glob("*.json"):
-                if filepath.name not in target_files:
-                    filepath.unlink()
+        for filepath in directory.glob("*.json"):
+            if filepath.name not in target_files:
+                filepath.unlink()

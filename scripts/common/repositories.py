@@ -6,7 +6,7 @@ import urllib.parse
 from http.client import HTTPException
 
 from common.config import UNAVAILABLE_HTTP_CODES
-from common.http import fetch, format_request_error
+from common.http import fetch
 
 REPOSITORY_REQUEST_DELAY_SECONDS = 0.1
 REPOSITORY_REQUEST_TIMEOUT_SECONDS = 10
@@ -56,7 +56,7 @@ def build_raw_url(source: str, repo: str, branch: str, file_path: str) -> str | 
 
 
 def _request_error(error: Exception) -> dict:
-    details: dict[str, str | bool] = {"error": format_request_error(error)}
+    details: dict[str, str | bool] = {"error": str(error)}
     if (
         isinstance(error, urllib.error.HTTPError)
         and error.code in UNAVAILABLE_HTTP_CODES

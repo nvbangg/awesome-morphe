@@ -28,11 +28,7 @@ from common.config import (
     UNAVAILABLE_HTTP_CODES,
 )
 from common.files import load_json, load_lines, save_json
-from common.http import (
-    fetch,
-    format_request_error,
-    get_auth_headers,
-)
+from common.http import fetch, get_auth_headers
 from common.images import normalize_image_url
 from common.repositories import (
     build_raw_url,
@@ -186,13 +182,9 @@ def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | N
         raise
 
 
-def get_patches_list_url(source: str, repo: str, branch: str) -> str | None:
-    return build_raw_url(source, repo, branch, "patches-list.json")
-
-
 def get_image_sha(source: str, repo: str) -> str | None:
     url = build_raw_url(source, repo, "main", "patches-bundle.png")
-    return get_remote_file_hash(url, source, fallback="exists") if url else None
+    return get_remote_file_hash(url, source, "exists") if url else None
 
 
 def process_repo_branch(
@@ -227,7 +219,7 @@ def process_repo_branch(
     has_local_data = bundle_file.is_file() and patches_file.is_file()
     bundle_url = build_raw_url(source, repo, branch, "patches-bundle.json")
     if not bundle_url:
-        return failed("Metadata hash is unavailable", "metadata", unavailable=True)
+        return failed("Metadata hash is unavailable", "metadata", True)
     bundle_content = None
     try:
         if source == "github":
@@ -238,20 +230,18 @@ def process_repo_branch(
             remote_sha = get_file_sha(source, repo, branch)
     except urllib.error.HTTPError as error:
         return failed(
-            format_request_error(error),
+            str(error),
             "metadata",
             error.code in UNAVAILABLE_HTTP_CODES,
         )
-    except (OSError, HTTPException) as error:
-        return failed(format_request_error(error), "metadata")
-    except ValueError as error:
+    except (OSError, HTTPException, ValueError) as error:
         return failed(str(error), "metadata")
 
     if not remote_sha:
         return failed(
             "Metadata hash is unavailable",
             "metadata",
-            unavailable=True,
+            True,
         )
     if (
         current_sha
@@ -269,15 +259,15 @@ def process_repo_branch(
             if not isinstance(mpp_url, str) or not mpp_url:
                 return failed("Invalid `download_url`", "metadata", True)
             try:
-                get_remote_file_hash(mpp_url, source, fallback="exists")
+                get_remote_file_hash(mpp_url, source, "exists")
             except urllib.error.HTTPError as error:
                 return failed(
-                    format_request_error(error),
+                    str(error),
                     "bundle",
                     error.code in UNAVAILABLE_HTTP_CODES,
                 )
             except (OSError, HTTPException, ValueError) as error:
-                return failed(format_request_error(error), "bundle")
+                return failed(str(error), "bundle")
         return BranchFetchResult(source, repo, branch, current_sha)
 
     try:
@@ -285,12 +275,12 @@ def process_repo_branch(
             bundle_content = fetch(bundle_url, binary=True)
     except urllib.error.HTTPError as error:
         return failed(
-            format_request_error(error),
+            str(error),
             "metadata",
-            unavailable=error.code in UNAVAILABLE_HTTP_CODES,
+            error.code in UNAVAILABLE_HTTP_CODES,
         )
     except (OSError, HTTPException) as error:
-        return failed(format_request_error(error), "metadata")
+        return failed(str(error), "metadata")
     try:
         bundle_data = json.loads(bundle_content)
     except ValueError:
@@ -365,24 +355,24 @@ def process_repo_branch(
         )
     except urllib.error.HTTPError as error:
         return failed(
-            format_request_error(error),
+            str(error),
             "bundle",
             error.code in UNAVAILABLE_HTTP_CODES,
         )
     except (OSError, HTTPException) as error:
-        return failed(format_request_error(error), "bundle")
+        return failed(str(error), "bundle")
     bundle_name = extract_mpp_name(mpp_content)
 
-    patches_url = get_patches_list_url(source, repo, branch)
+    patches_url = build_raw_url(source, repo, branch, "patches-list.json")
     assert patches_url is not None
     try:
         patches_content = fetch(patches_url, binary=True)
     except urllib.error.HTTPError as error:
         if error.code != HTTPStatus.NOT_FOUND:
-            return failed(format_request_error(error), "patch_list")
+            return failed(str(error), "patch_list")
         patches_content = None
     except (OSError, HTTPException) as error:
-        return failed(format_request_error(error), "patch_list")
+        return failed(str(error), "patch_list")
 
     save_json(bundle_file, bundle_data)
     MPP_DIR.mkdir(parents=True, exist_ok=True)
@@ -443,8 +433,7 @@ def process_image(
             and error.code in UNAVAILABLE_HTTP_CODES
         ):
             return source, repo, None, current_image is not None, None
-        reason = format_request_error(error)
-        error_message = f"{repo_url}: {reason}"
+        error_message = f"{repo_url}: {error}"
         return source, repo, current_image, False, error_message
     return source, repo, remote_sha, remote_sha != current_image, None
 
@@ -531,7 +520,7 @@ def refresh_repo_metadata(
 
 
 def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
-    repos_data = load_json(REPOS_JSON_PATH, {})
+    repos_data = load_json(REPOS_JSON_PATH)
     initial_repos = {url: dict(metadata) for url, metadata in repos_data.items()}
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
@@ -640,9 +629,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                     extract_mpp_name(content) or metadata.get("name") or ""
                 )
             except (OSError, HTTPException) as error:
-                print(
-                    f"[-] {repo_url}: Failed to read bundle name: {format_request_error(error)}"
-                )
+                print(f"[-] {repo_url}: Failed to read bundle name: {error}")
         updated_count += int(
             metadata.get("name") != initial_repos[repo_url].get("name")
         )
@@ -686,7 +673,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         content = "\n".join(f"- {error}" for error in sorted_errors)
         summary_sections.append(
             format_summary_section(
-                title, content, result_count=len(errors[category]), collapsed=True
+                title, content, len(errors[category]), collapsed=True
             )
         )
     append_step_summary("\n\n".join(summary_sections))
@@ -703,7 +690,7 @@ def main() -> None:
         help="Weekly sync to check bundles availability",
     )
     args = parser.parse_args()
-    fetch_all_repos(daily=args.daily, weekly=args.weekly)
+    fetch_all_repos(args.daily, args.weekly)
 
 
 if __name__ == "__main__":

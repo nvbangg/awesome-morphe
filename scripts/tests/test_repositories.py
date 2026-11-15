@@ -24,11 +24,12 @@ class TestRepositoryMetadata:
     @pytest.mark.parametrize("source", ("github", "gitlab"))
     @pytest.mark.parametrize("code", (401, 403, 404, 429, 451, 503))
     def test_http_errors_keep_actual_status_and_audit_flags(self, source, code) -> None:
-        with patch.object(repositories, "fetch", side_effect=self.http_error(code)):
+        error = self.http_error(code)
+        with patch.object(repositories, "fetch", side_effect=error):
             details = repositories.fetch_repo_details(
                 f"https://{source}.com/owner/alpha"
             )
-            expected = {"error": f"Request failed (HTTP {code})"}
+            expected = {"error": str(error)}
             if code in repositories.UNAVAILABLE_HTTP_CODES:
                 expected[f"is_{code}"] = True
             assert details == expected
@@ -42,7 +43,7 @@ class TestRepositoryMetadata:
             ValueError("Invalid JSON"),
         ),
     )
-    def test_request_error_reports_reason_without_fabricating_http_status(
+    def test_request_error_preserves_default_message_without_fabricating_http_status(
         self,
         error: Exception,
         source: str,
@@ -51,8 +52,7 @@ class TestRepositoryMetadata:
             details = repositories.fetch_repo_details(
                 f"https://{source}.com/owner/alpha"
             )
-        reason = error.reason if isinstance(error, urllib.error.URLError) else error
-        assert details == {"error": f"Request failed: {reason}"}
+        assert details == {"error": str(error)}
 
     @pytest.mark.parametrize(
         "archived,project_avatar",

@@ -62,7 +62,7 @@ class TestDiscover:
         self.open_url.side_effect = error
         assert (
             module.discover()
-            == f"[{module.OUTPUT_PATH.stem}]: Request failed (HTTP {status}); kept saved sources"
+            == f"[{module.OUTPUT_PATH.stem}]: {error}; kept saved sources"
         )
         assert module.OUTPUT_PATH.read_bytes() == saved_file
         assert self.official_path.read_bytes() == snapshot
@@ -76,12 +76,11 @@ class TestDiscover:
             HTTPException("connection closed"),
         ),
     )
-    def test_request_errors_use_exception_reason(self, module, error) -> None:
+    def test_request_errors_use_default_message(self, module, error) -> None:
         self.open_url.side_effect = error
-        reason = error.reason if isinstance(error, URLError) else str(error)
         assert (
             module.discover()
-            == f"[{module.OUTPUT_PATH.stem}]: Request failed: {reason}; kept saved sources"
+            == f"[{module.OUTPUT_PATH.stem}]: {error}; kept saved sources"
         )
         assert load_json(module.OUTPUT_PATH) == self.saved_sources
 

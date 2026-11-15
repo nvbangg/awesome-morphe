@@ -27,8 +27,5 @@ def load_lines(path: str | Path) -> list[str]:
     path = Path(path)
     if not path.exists():
         return []
-    return [
-        line.strip()
-        for line in path.read_text(encoding="utf-8").splitlines()
-        if line.strip() and not line.lstrip().startswith("#")
-    ]
+    lines = map(str.strip, path.read_text(encoding="utf-8").splitlines())
+    return [line for line in lines if line and not line.startswith("#")]

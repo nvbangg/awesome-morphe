@@ -82,9 +82,9 @@ def audit_repos_and_links() -> str:
                 format_summary_section(
                     category_name,
                     "\n".join(f"- {error}" for error in sorted(category_errors)),
-                    result_count=len(category_errors),
-                    heading_level=4,
-                    collapsed=collapsed,
+                    len(category_errors),
+                    4,
+                    collapsed,
                 )
             )
     if not any(errors.values()):

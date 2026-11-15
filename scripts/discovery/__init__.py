@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from common.files import load_json, save_json
-from common.http import format_request_error
 
 
 def load_provider_sources(path: Path) -> dict:
@@ -19,13 +18,12 @@ def load_provider_sources(path: Path) -> dict:
 def report_provider_warning(
     provider_name: str, reason: str | Exception, output_path: Path
 ) -> str:
-    message = format_request_error(reason) if isinstance(reason, Exception) else reason
     saved_sources = (
         "kept saved sources"
         if load_provider_sources(output_path)
         else "no saved sources available"
     )
-    warning_message = f"[{provider_name}]: {message}; {saved_sources}"
+    warning_message = f"[{provider_name}]: {reason}; {saved_sources}"
     print(f"[-] {warning_message}")
     return warning_message
 

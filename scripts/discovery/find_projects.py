@@ -17,7 +17,7 @@ from common.config import (
     ROOT_DIR,
 )
 from common.files import load_lines
-from common.http import fetch, format_request_error, get_auth_headers
+from common.http import fetch, get_auth_headers
 from common.repositories import build_raw_url, parse_repo_url
 from common.summary import format_summary_section
 
@@ -82,9 +82,9 @@ def _file_exists(url: str) -> bool | None:
     except urllib.error.HTTPError as error:
         if error.code in DEAD_LINK_HTTP_CODES:
             return False
-        print(f"[-] Failed to check {url}: {format_request_error(error)}")
+        print(f"[-] Failed to check {url}: {error}")
     except (OSError, HTTPException, ValueError) as error:
-        print(f"[-] Failed to check {url}: {format_request_error(error)}")
+        print(f"[-] Failed to check {url}: {error}")
     return None
 
 
@@ -266,7 +266,7 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
     return format_summary_section(
         "New projects",
         "\n\n".join(summary_sections),
-        result_count=len(repos),
+        len(repos),
         collapsed=True,
     )
 

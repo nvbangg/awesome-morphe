@@ -5,7 +5,6 @@ from pathlib import Path
 def format_summary_section(
     title: str,
     content: str,
-    *,
     result_count: int | None = None,
     heading_level: int | None = 3,
     collapsed: bool = False,

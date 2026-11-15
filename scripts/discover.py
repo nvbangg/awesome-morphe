@@ -110,7 +110,7 @@ def main(argv: list[str] | None = None) -> int:
             format_summary_section(
                 "Bundle sources",
                 "\n".join(f"- {warning}" for warning in sorted(warnings)),
-                result_count=len(warnings),
+                len(warnings),
             )
         )
 
@@ -121,7 +121,7 @@ def main(argv: list[str] | None = None) -> int:
     merged = _merge(provider_files)
     print(f"Merged {len(merged)} unique sources")
 
-    existing_repos = load_json(REPOS_JSON_PATH, {})
+    existing_repos = load_json(REPOS_JSON_PATH)
     synced_repos = _sync_repos(merged, existing_repos)
     print(f"Synced {len(synced_repos)} repos")
     save_json(REPOS_JSON_PATH, synced_repos)

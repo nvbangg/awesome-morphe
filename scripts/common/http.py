@@ -66,13 +66,6 @@ def fetch(
         return json.loads(decoded) if as_json else decoded
 
 
-def format_request_error(error: Exception) -> str:
-    if isinstance(error, urllib.error.HTTPError):
-        return f"Request failed (HTTP {error.code})"
-    reason = error.reason if isinstance(error, urllib.error.URLError) else error
-    return f"Request failed: {reason}"
-
-
 def check_link_status(url: str, timeout: int = 5) -> dict:
     try:
         headers = get_auth_headers(url)
@@ -80,12 +73,12 @@ def check_link_status(url: str, timeout: int = 5) -> dict:
         with urllib.request.urlopen(request, timeout=timeout) as response:
             final_url = response.geturl().rstrip("/")
             original_url = url.rstrip("/")
-            if final_url.lower() != original_url.lower():
+            if final_url != original_url:
                 return {"is_redirect": True, "final_url": final_url}
             return {"is_active": True}
     except urllib.error.HTTPError as error:
         if error.code in DEAD_LINK_HTTP_CODES:
-            return {"is_dead": True, "error": f"HTTP {error.code}"}
-        return {"error": f"HTTP {error.code}"}
+            return {"is_dead": True, "error": str(error)}
+        return {"error": str(error)}
     except (OSError, HTTPException, ValueError) as error:
         return {"error": str(error)}

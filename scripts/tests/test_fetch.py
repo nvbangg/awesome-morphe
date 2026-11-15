@@ -101,7 +101,7 @@ def test_concurrent_targets_share_download_without_blocking_other_urls(
     release_download = threading.Event()
     downloads = bundle_fetch.BundleDownloads()
 
-    def download(url: str, *, binary: bool) -> bytes:
+    def download(url: str, binary: bool) -> bytes:
         assert binary
         if url == shared_url:
             download_started.set()
@@ -139,7 +139,7 @@ def test_concurrent_targets_share_download_without_blocking_other_urls(
 
 
 @pytest.mark.parametrize(
-    "details", ({"full_name": "owner/new"}, {"error": "Request failed (HTTP 503)"})
+    "details", ({"full_name": "owner/new"}, {"error": "HTTP Error 503: Request failed"})
 )
 def test_repository_lookup_shares_success_and_failure_without_blocking_other_urls(
     details,
@@ -198,7 +198,7 @@ class TestBundleFetch:
             patch.object(
                 bundle_fetch,
                 "fetch_repo_details",
-                return_value={"error": "Request failed (HTTP 503)"},
+                return_value={"error": "HTTP Error 503: Request failed"},
             )
         )
         self.patch_context.enter_context(
@@ -511,12 +511,7 @@ class TestBundleFetch:
         summary = self.summary.call_args.args[0]
         assert "https://github.com/owner/alpha:" in summary
         assert "(main)" not in summary
-        expected_reason = (
-            f"Request failed (HTTP {failure.code})"
-            if isinstance(failure, urllib.error.HTTPError)
-            else "Request failed: "
-        )
-        assert expected_reason in summary
+        assert str(failure) in summary
 
     @pytest.mark.parametrize("stage", ("hash", "metadata"))
     @pytest.mark.parametrize("main_code", HTTP_UNAVAILABLE_CODES)
@@ -548,10 +543,10 @@ class TestBundleFetch:
         if main_code == dev_code:
             assert "(main)" not in summary
             assert "(dev)" not in summary
-            assert f"Request failed (HTTP {main_code})" in summary
+            assert f"HTTP Error {main_code}: Request failed" in summary
         else:
             assert (
-                f"https://github.com/owner/alpha: (main) Request failed (HTTP {main_code}); (dev) Request failed (HTTP {dev_code})"
+                f"https://github.com/owner/alpha: (main) HTTP Error {main_code}: Request failed; (dev) HTTP Error {dev_code}: Request failed"
                 in summary
             )
         assert "HTTP 404/451" not in summary
@@ -588,7 +583,7 @@ class TestBundleFetch:
             self.summary.assert_called_once()
             summary = self.summary.call_args.args[0]
             assert (
-                "owner/alpha: (main) Request failed (HTTP 404); (dev) Request failed: Timed out"
+                "owner/alpha: (main) HTTP Error 404: Request failed; (dev) Timed out"
                 in summary
             )
             assert "Timed out" in summary
@@ -609,7 +604,7 @@ class TestBundleFetch:
                 branch,
                 None,
                 error_category="metadata",
-                error_message="Request failed (HTTP 404)",
+                error_message="HTTP Error 404: Request failed",
             )
             for source, repo, branch in (
                 ("github", "owner/alpha", "main"),
@@ -626,12 +621,12 @@ class TestBundleFetch:
                     "main",
                     None,
                     error_category="metadata",
-                    error_message="Request failed (HTTP 404)",
+                    error_message="HTTP Error 404: Request failed",
                 )
             )
             errors = bundle_fetch.collect_fetch_errors(results)
         assert errors["metadata"] == [
-            "https://gitlab.com/owner/alpha: Request failed (HTTP 404)"
+            "https://gitlab.com/owner/alpha: HTTP Error 404: Request failed"
         ]
         assert sum(len(messages) for messages in errors.values()) == 1
 
@@ -658,8 +653,8 @@ class TestBundleFetch:
         assert "owner/alpha: (main)" in summary
         assert "Bundle metadata (1)" in summary
         assert "Bundle download (1)" in summary
-        assert f"(main) Request failed (HTTP {failure.code})" in summary
-        assert "(dev) Request failed (HTTP 404)" in summary
+        assert f"(main) HTTP Error {failure.code}: Request failed" in summary
+        assert "(dev) HTTP Error 404: Request failed" in summary
         assert "on main and dev" not in summary
 
     def test_image_failure_is_reported_without_repeating_missing_metadata(
@@ -678,7 +673,7 @@ class TestBundleFetch:
         summary = self.summary.call_args.args[0]
         assert summary.count("- https://") == 2
         assert "Bundle image (1)" in summary
-        assert "Request failed: Image timeout" in summary
+        assert "Image timeout" in summary
         console = capsys.readouterr().out
         assert "Bundle metadata: 1 repositories" in console
         assert "Bundle image: 1 repositories" in console
@@ -692,7 +687,9 @@ class TestBundleFetch:
             bundle_fetch.fetch_all_repos()
         summary = self.summary.call_args.args[0]
         assert "Bundle download (1)" in summary
-        assert "https://github.com/owner/alpha: Request failed (HTTP 503)" in summary
+        assert (
+            "https://github.com/owner/alpha: HTTP Error 503: Request failed" in summary
+        )
         assert summary.count("- https://") == 1
         assert "(main)" not in summary
         assert "(dev)" not in summary
@@ -733,7 +730,7 @@ class TestBundleFetch:
                 branch,
                 current_sha,
                 error_category="metadata" if repo == metadata_repo else "bundle",
-                error_message="Request failed (HTTP 404)",
+                error_message="HTTP Error 404: Request failed",
             )
 
         with patch.object(
@@ -763,16 +760,16 @@ class TestBundleFetch:
         summary = self.summary.call_args.args[0]
         assert "Bundle metadata (1)" in summary
         assert "Bundle download (1)" in summary
-        assert "(main) Request failed (HTTP 403)" in summary
-        assert "(dev) Request failed (HTTP 403)" in summary
+        assert "(main) HTTP Error 403: Request failed" in summary
+        assert "(dev) HTTP Error 403: Request failed" in summary
         assert summary.count("- https://") == len(DEFAULT_BRANCHES)
         assert summary.count("<details>") == 2
         metadata_content, download_content = summary.split(
             "\n\n<details>\n<summary><h3>Bundle download"
         )
-        assert "(main) Request failed (HTTP 403)" in metadata_content
-        assert "(dev) Request failed (HTTP 403)" not in metadata_content
-        assert "(dev) Request failed (HTTP 403)" in download_content
+        assert "(main) HTTP Error 403: Request failed" in metadata_content
+        assert "(dev) HTTP Error 403: Request failed" not in metadata_content
+        assert "(dev) HTTP Error 403: Request failed" in download_content
         console = capsys.readouterr().out
         assert "Bundle metadata: 1 repositories" in console
         assert "Bundle download: 1 repositories" in console
@@ -789,7 +786,7 @@ class TestBundleFetch:
                 "main",
                 "main-old",
                 error_category=category,
-                error_message="Request failed (HTTP 503)",
+                error_message="HTTP Error 503: Request failed",
             ),
             bundle_fetch.BranchFetchResult("github", "owner/alpha", "dev", "dev-new"),
         ]
@@ -806,7 +803,7 @@ class TestBundleFetch:
             bundle_fetch.fetch_all_repos()
         summary = self.summary.call_args.args[0]
         assert "Patch list (1)" in summary
-        assert f"Request failed (HTTP {code})" in summary
+        assert f"HTTP Error {code}: Request failed" in summary
         assert "Bundle metadata" not in summary
         assert "Bundle download" not in summary
         self.run_process.assert_not_called()
@@ -1154,7 +1151,7 @@ class TestBundleFetch:
                 current_sha,
                 error_message=None
                 if source == "gitlab"
-                else "Request failed (HTTP 503)",
+                else "HTTP Error 503: Request failed",
                 error_category=None if source == "gitlab" else "metadata",
             )
 
@@ -1309,10 +1306,10 @@ class TestBundleFetch:
         "details",
         (
             {},
-            {"error": "Request failed (HTTP 403)"},
-            {"error": "Request failed (HTTP 429)"},
-            {"error": "Request failed (HTTP 503)"},
-            {"error": "Request failed: timed out"},
+            {"error": "HTTP Error 403: Request failed"},
+            {"error": "HTTP Error 429: Request failed"},
+            {"error": "HTTP Error 503: Request failed"},
+            {"error": "<urlopen error timed out>"},
         ),
     )
     def test_identity_lookup_failure_preserves_sha_and_local_files(
@@ -1413,9 +1410,9 @@ class TestRepositoryMetadataRefresh:
     @pytest.mark.parametrize(
         "reason",
         (
-            "Request failed (HTTP 404)",
-            "Request failed (HTTP 451)",
-            "Request failed: timed out",
+            "HTTP Error 404: Request failed",
+            "HTTP Error 451: Request failed",
+            "<urlopen error timed out>",
         ),
     )
     def test_request_errors_preserve_all_metadata_and_pending_rename(

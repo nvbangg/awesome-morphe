@@ -40,7 +40,7 @@ def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:
 
 
 def process(apps_dict: dict, mode: str) -> None:
-    official_data = load_json(OFFICIAL_BUNDLES_PATH, {})
+    official_data = load_json(OFFICIAL_BUNDLES_PATH)
     official_store = (
         official_data.get("store", {}) if isinstance(official_data, dict) else {}
     )
@@ -77,18 +77,19 @@ def process(apps_dict: dict, mode: str) -> None:
                 details, is_404 = future.result()
                 current_app = apps_dict[package_name]
                 if not is_404 and details:
-                    for key, value in details.items():
-                        if value is not None:
-                            current_app[key] = value
-                    for field in ("name", "iconUrl", "description"):
-                        if current_app.get(field) is None:
-                            current_app[field] = ""
+                    current_app.update(
+                        (key, value)
+                        for key, value in details.items()
+                        if value is not None
+                    )
                 elif is_404:
                     current_app["minInstalls"] = 0
                     current_app["category"] = ""
-                    for field in ("name", "iconUrl", "description"):
-                        if current_app.get(field) is None:
-                            current_app[field] = ""
+                else:
+                    continue
+                for field in ("name", "iconUrl", "description"):
+                    if current_app.get(field) is None:
+                        current_app[field] = ""
     print(
         f"\nSyncing with official store data ({len(official_store)} apps in store)..."
     )

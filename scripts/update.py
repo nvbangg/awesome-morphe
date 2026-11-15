@@ -111,11 +111,11 @@ def main() -> int:
     args = parser.parse_args()
     mode = "weekly" if args.weekly else "daily" if args.daily else "default"
 
-    repos_data = load_json(REPOS_JSON_PATH, {})
-    existing_hashes = load_json(HASHES_PATH, {})
-    existing_history = load_json(HISTORY_PATH, {})
-    custom_data = load_json(CUSTOM_JSON_PATH, {})
-    existing_bundles_data = load_json(BUNDLES_JSON_PATH, {})
+    repos_data = load_json(REPOS_JSON_PATH)
+    existing_hashes = load_json(HASHES_PATH)
+    existing_history = load_json(HISTORY_PATH)
+    custom_data = load_json(CUSTOM_JSON_PATH)
+    existing_bundles_data = load_json(BUNDLES_JSON_PATH)
     existing_bundles = {
         build_repo_url(bundle.get("source"), bundle.get("repo")): bundle
         for bundle in existing_bundles_data.get("bundles", [])
@@ -172,7 +172,7 @@ def main() -> int:
     gplay_scrape.process(apps_dict, mode)
     official_ranks = {
         repo_url.lower(): bundle.get("hotRank")
-        for bundle in load_json(OFFICIAL_BUNDLES_PATH, {}).get("bundles", [])
+        for bundle in load_json(OFFICIAL_BUNDLES_PATH).get("bundles", [])
         if (repo := bundle.get("repo"))
         and (repo_url := build_repo_url(bundle.get("source"), repo))
     }
@@ -362,7 +362,7 @@ def main() -> int:
             format_summary_section(
                 "Patch list",
                 "\n".join(f"- {error}" for error in sorted_errors),
-                result_count=len(sorted_errors),
+                len(sorted_errors),
                 collapsed=True,
             )
         )
@@ -376,7 +376,7 @@ def main() -> int:
             format_summary_section(
                 "Incomplete Apps",
                 "\n".join(sorted_incomplete_apps),
-                result_count=len(sorted_incomplete_apps),
+                len(sorted_incomplete_apps),
                 collapsed=True,
             )
         )

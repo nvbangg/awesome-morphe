@@ -85,10 +85,6 @@ def make_url(
     )
 
 
-def bundle_sort_key(bundle: dict) -> int:
-    return bundle.get("hotRank", DEFAULT_BUNDLE_RANK)
-
-
 def get_app_sort_key(
     package_name: str,
     app_metadata: dict,
@@ -113,7 +109,9 @@ def extract_bundle_metadata(
     bundle_names = {}
     bundle_order = {}
 
-    sorted_bundles = sorted(bundles, key=bundle_sort_key)
+    sorted_bundles = sorted(
+        bundles, key=lambda bundle: bundle.get("hotRank", DEFAULT_BUNDLE_RANK)
+    )
     for rank, bundle in enumerate(sorted_bundles):
         source = bundle["source"]
         repo = bundle.get("repo", "")
@@ -162,60 +160,36 @@ def build_json_diff(
     app_patch_counts: dict[str, int] | None = None,
 ) -> dict:
     app_patch_counts = app_patch_counts or {}
-    json_diff = {}
+    json_diff: dict = {}
 
     for repo_url, patches_dict in sorted(
         new_bundles.items(),
         key=lambda item: bundle_order.get(item[0], DEFAULT_BUNDLE_RANK),
     ):
-        if repo_url not in old_bundles:
-            apps = {
-                package_name: {
+        old_patches_dict = old_bundles.get(repo_url, {})
+        apps_dict = {}
+        for package_name in sorted(
+            patches_dict,
+            key=lambda package_name: get_app_sort_key(
+                package_name,
+                app_metadata,
+                app_patch_counts.get(package_name, len(patches_dict[package_name])),
+            ),
+        ):
+            if package_name not in old_patches_dict:
+                apps_dict[package_name] = {
                     "patches": sorted(patches_dict[package_name]),
                     "isNew": True,
                 }
-                for package_name in sorted(
-                    patches_dict,
-                    key=lambda package_name: get_app_sort_key(
-                        package_name,
-                        app_metadata,
-                        app_patch_counts.get(
-                            package_name, len(patches_dict[package_name])
-                        ),
-                    ),
-                )
-            }
-            if apps:
-                json_diff[repo_url] = {
-                    "apps": apps,
-                    "isNew": True,
-                }
-        else:
-            old_patches_dict = old_bundles[repo_url]
-            apps_dict = {}
-
-            for package_name in sorted(
-                patches_dict,
-                key=lambda package_name: get_app_sort_key(
-                    package_name,
-                    app_metadata,
-                    app_patch_counts.get(package_name, len(patches_dict[package_name])),
-                ),
+            elif added_patches := set(patches_dict[package_name]) - set(
+                old_patches_dict.get(package_name, [])
             ):
-                if package_name not in old_patches_dict:
-                    apps_dict[package_name] = {
-                        "patches": sorted(patches_dict[package_name]),
-                        "isNew": True,
-                    }
-                elif added_patches := set(patches_dict[package_name]) - set(
-                    old_patches_dict.get(package_name, [])
-                ):
-                    apps_dict[package_name] = {"patches": sorted(added_patches)}
+                apps_dict[package_name] = {"patches": sorted(added_patches)}
 
-            if apps_dict:
-                json_diff[repo_url] = {
-                    "apps": apps_dict,
-                }
+        if apps_dict:
+            json_diff[repo_url] = {"apps": apps_dict}
+            if repo_url not in old_bundles:
+                json_diff[repo_url]["isNew"] = True
     return json_diff
 
 
@@ -321,7 +295,7 @@ def generate_markdown(
                 if should_show_bundle_owner(display_name, owner)
                 else ""
             )
-            bundle_url = make_url(bundle_source=source, bundle_repo=repo_path)
+            bundle_url = make_url(source, repo_path)
             bundle_lines.append(
                 f"+ 📦 (✨New) [{display_name}]({bundle_url}){owner_suffix}"
             )
@@ -383,7 +357,7 @@ def generate_markdown(
                 render_patches(
                     package_name,
                     patch_list,
-                    limit=EXISTING_ITEM_LIMIT,
+                    EXISTING_ITEM_LIMIT,
                 )
             )
 
