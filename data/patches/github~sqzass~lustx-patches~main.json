@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.17.3",
+  "version": "1.17.4",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -243,7 +243,7 @@
     },
     {
       "name": "Spoof device identity",
-      "description": "Unified device spoofing with per-category toggles: Android ID, MAC address, SIM/carrier, and Build device fields. Includes emulator presets. Replaces the former individual SpoofAndroidId, SpoofSim, and SpoofDevice patches.",
+      "description": "Unified device spoofing with per-category toggles: Android ID, MAC address, SIM/carrier, and Build device fields. Includes emulator presets. Library packages keep the real device so their internal behavior is unaffected.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -386,7 +386,7 @@
         {
           "key": "spoofVersion",
           "title": "Also spoof OS version",
-          "description": "Also spoof Build.VERSION RELEASE, SDK_INT, SECURITY_PATCH, INCREMENTAL. Can break apps; off by default.",
+          "description": "Also spoof Build.VERSION RELEASE, SDK_INT, SECURITY_PATCH, INCREMENTAL in app code. Can break apps; off by default.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -423,15 +423,15 @@
     },
     {
       "name": "Spoof rooted environment",
-      "description": "Makes Java-level root checks report rooted: forces detection methods to return true and overrides Build.TAGS/USER/HOST. For testing bypass patches (e.g. PortDroid). Native detection is not affected.",
+      "description": "Makes Java-level root checks report rooted: forces named detection methods true, spoofs Build.TAGS/USER/HOST at read sites, and forces su-path file checks to succeed. String/field-based targeting survives obfuscation. Native checks and Runtime.exec(\"su\") are not faked.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
       "options": [
         {
           "key": "spoofBuild",
-          "title": "Override Build fields",
-          "description": "Sets TAGS=test-keys, USER=root, HOST=buildbot in Build.<clinit>.",
+          "title": "Spoof Build fields",
+          "description": "Replaces Build.TAGS/USER/HOST reads with test-keys/root/buildbot.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
