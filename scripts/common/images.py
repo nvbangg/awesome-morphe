@@ -10,7 +10,7 @@ def _set_query_param(url: str, pattern: str, param: str) -> str:
 
 
 def normalize_image_url(url: object) -> str:
-    if not url or not isinstance(url, str):
+    if not isinstance(url, str):
         return ""
     if "googleusercontent.com" in url or "ggpht.com" in url:
         return re.sub(r"=(?:s|w)\d+.*$", "", url) + f"=s{IMAGE_SIZE_PIXELS}-rw"

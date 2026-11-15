@@ -16,7 +16,6 @@ def test_audit_still_classifies_unavailable_repositories(
     repo_url = f"https://{source}.com/owner/alpha"
     with (
         HTTPError("https://example.com", code, "Failed", Message(), None) as error,
-        patch.object(repositories.time, "sleep"),
         patch.object(repositories, "fetch", side_effect=error),
         patch.object(audit_readme, "load_lines", side_effect=[[repo_url], []]),
     ):
@@ -31,7 +30,6 @@ def test_gitlab_invalid_metadata_does_not_stop_other_repository_audit() -> None:
     failed_url = "https://gitlab.com/owner/failed"
     working_url = "https://github.com/owner/working"
     with (
-        patch.object(repositories.time, "sleep"),
         patch.object(
             repositories, "fetch", return_value={"full_name": "owner/working"}
         ),

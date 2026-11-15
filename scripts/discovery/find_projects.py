@@ -12,6 +12,7 @@ from http.client import HTTPException
 from common.config import (
     CONCURRENCY,
     DEAD_LINK_HTTP_CODES,
+    HTTP_TIMEOUT_SECONDS,
     PROJECTS_DIR,
     README_REPOS_PATH,
     ROOT_DIR,
@@ -39,7 +40,6 @@ PUSHED_WITHIN_DAYS = 30
 PAGE_SIZE = 100
 MAX_PAGES = 10
 PAGE_DELAY_SECONDS = 1
-HEAD_TIMEOUT = 5
 
 
 def build_date_filters() -> list[str]:
@@ -77,7 +77,7 @@ def build_user_query(user: str) -> str:
 def _file_exists(url: str) -> bool | None:
     request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
     try:
-        with urllib.request.urlopen(request, timeout=HEAD_TIMEOUT):
+        with urllib.request.urlopen(request, timeout=HTTP_TIMEOUT_SECONDS):
             return True
     except urllib.error.HTTPError as error:
         if error.code in DEAD_LINK_HTTP_CODES:
@@ -101,8 +101,7 @@ def is_valid_candidate(repo: dict) -> bool:
 
 def matches_filter_criteria(repo: dict) -> bool:
     owner = repo.get("full_name", "").split("/")[0].lower()
-    is_target_user = owner in {user.lower() for user in TARGET_USERS}
-    if is_target_user:
+    if owner in {user.lower() for user in TARGET_USERS}:
         return True
 
     repo_name = repo.get("name", "")

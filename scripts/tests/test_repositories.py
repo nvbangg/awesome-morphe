@@ -12,7 +12,6 @@ class TestRepositoryMetadata:
     @pytest.fixture(autouse=True)
     def prepare(self, patch_context) -> None:
         self.patch_context = patch_context
-        self.patch_context.enter_context(patch.object(repositories.time, "sleep"))
 
     def http_error(self, code: int) -> urllib.error.HTTPError:
         error = urllib.error.HTTPError(
@@ -78,7 +77,6 @@ class TestRepositoryMetadata:
             )
         request.assert_called_once_with(
             "https://gitlab.com/api/v4/projects/group%2Fowner%2Fold",
-            timeout=10,
             as_json=True,
         )
         assert details == {

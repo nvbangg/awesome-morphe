@@ -22,6 +22,7 @@ from common.config import (
     BUNDLES_DIR,
     CONCURRENCY,
     DEFAULT_BRANCHES,
+    HTTP_TIMEOUT_SECONDS,
     PATCHES_DIR,
     REPOS_JSON_PATH,
     SCRIPTS_DIR,
@@ -38,8 +39,6 @@ from common.repositories import (
 )
 from common.summary import append_step_summary, format_summary_section
 
-HASH_REQUEST_TIMEOUT_SECONDS = 10
-METADATA_REQUEST_TIMEOUT_SECONDS = 15
 BUNDLE_PARSER_DIR = SCRIPTS_DIR / "bundle-parser"
 MPP_DIR = BUNDLE_PARSER_DIR / "mpp"
 UPDATED_FILES_PATH = BUNDLE_PARSER_DIR / "updated_files.txt"
@@ -118,8 +117,7 @@ class RepositoryDetails:
                 owns_request = False
         if owns_request:
             try:
-                details = fetch_repo_details(url)
-                future.set_result(details)
+                future.set_result(fetch_repo_details(url))
             except BaseException as error:
                 future.set_exception(error)
                 raise
@@ -146,9 +144,7 @@ class BranchFetchResult:
 
 def get_remote_file_hash(url: str, source: str, fallback: str | None = None) -> str:
     request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
-    with urllib.request.urlopen(
-        request, timeout=HASH_REQUEST_TIMEOUT_SECONDS
-    ) as response:
+    with urllib.request.urlopen(request, timeout=HTTP_TIMEOUT_SECONDS) as response:
         header_name = "ETag" if source == "github" else "x-gitlab-content-sha256"
         if remote_hash := response.getheader(header_name):
             return remote_hash.strip('"')
@@ -168,9 +164,7 @@ def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | N
         headers["If-None-Match"] = f'"{current_sha}"'
     request = urllib.request.Request(url, headers=headers)
     try:
-        with urllib.request.urlopen(
-            request, timeout=METADATA_REQUEST_TIMEOUT_SECONDS
-        ) as response:
+        with urllib.request.urlopen(request, timeout=HTTP_TIMEOUT_SECONDS) as response:
             remote_hash = response.getheader("ETag")
             if not remote_hash:
                 raise ValueError("Missing `ETag` header")
@@ -433,8 +427,7 @@ def process_image(
             and error.code in UNAVAILABLE_HTTP_CODES
         ):
             return source, repo, None, current_image is not None, None
-        error_message = f"{repo_url}: {error}"
-        return source, repo, current_image, False, error_message
+        return source, repo, current_image, False, f"{repo_url}: {error}"
     return source, repo, remote_sha, remote_sha != current_image, None
 
 

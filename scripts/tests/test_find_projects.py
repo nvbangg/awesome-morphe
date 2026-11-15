@@ -5,6 +5,7 @@ from urllib.error import HTTPError, URLError
 
 import pytest
 
+from common.config import HTTP_TIMEOUT_SECONDS
 from discovery import find_projects
 
 
@@ -27,7 +28,7 @@ def test_candidate_checks_main_metadata_and_default_branch_readme(
 
     def open_url(request, timeout):
         assert request.get_method() == "HEAD"
-        assert timeout == find_projects.HEAD_TIMEOUT
+        assert timeout == HTTP_TIMEOUT_SECONDS
         calls.append(request.full_url)
         status = (
             metadata_status

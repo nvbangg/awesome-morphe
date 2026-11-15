@@ -18,7 +18,7 @@ HEADERS = {
 
 def discover() -> str | None:
     try:
-        data = fetch(BUNDLES_URL, HEADERS, 30, True)
+        data = fetch(BUNDLES_URL, HEADERS, as_json=True)
     except (OSError, HTTPException) as error:
         return report_provider_warning("official", error, OUTPUT_PATH)
     except ValueError:

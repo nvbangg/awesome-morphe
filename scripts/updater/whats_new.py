@@ -310,7 +310,7 @@ def generate_markdown(
         app_lines = []
         is_compact = len(new_apps_map) > NEW_APP_THRESHOLD
         sorted_new_packages = sorted(
-            new_apps_map.keys(),
+            new_apps_map,
             key=lambda package_name: get_app_sort_key(
                 package_name,
                 app_metadata,
@@ -333,7 +333,7 @@ def generate_markdown(
     if existing_apps_new_patches_map:
         app_lines = []
         sorted_packages = sorted(
-            existing_apps_new_patches_map.keys(),
+            existing_apps_new_patches_map,
             key=lambda package_name: get_app_sort_key(
                 package_name,
                 app_metadata,

@@ -13,7 +13,7 @@ OUTPUT_PATH = BUNDLE_SOURCES_DIR / "jman.json"
 
 def discover() -> str | None:
     try:
-        sources_data = fetch(SOURCES_URL, timeout=30, as_json=True)
+        sources_data = fetch(SOURCES_URL, as_json=True)
     except (OSError, HTTPException) as error:
         return report_provider_warning("jman", error, OUTPUT_PATH)
     except ValueError:

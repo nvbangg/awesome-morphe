@@ -21,6 +21,6 @@ def format_summary_section(
 
 def append_step_summary(markdown_content: str) -> None:
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
-    if summary_path and markdown_content.strip():
+    if summary_path and (content := markdown_content.strip()):
         with Path(summary_path).open("a", encoding="utf-8") as file:
-            file.write(markdown_content.strip() + "\n\n---\n\n")
+            file.write(content + "\n\n---\n\n")

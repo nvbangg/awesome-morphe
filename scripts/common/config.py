@@ -20,6 +20,7 @@ PACKAGE_UNIVERSAL = "__universal__"
 PACKAGE_EXAMPLE = "com.example.app"
 
 CONCURRENCY = 8
+HTTP_TIMEOUT_SECONDS = 15
 PROJECT_USER_AGENT = "AwesomeMorphe/1.0 (+https://github.com/nvbangg/awesome-morphe)"
 
 UNAVAILABLE_HTTP_CODES = (404, 451)

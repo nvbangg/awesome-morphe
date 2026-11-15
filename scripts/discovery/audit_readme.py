@@ -66,10 +66,7 @@ def audit_repos_and_links() -> str:
                 elif status.get("error"):
                     errors["other"].append(f"{url}: {status['error']}")
 
-    completed_message = (
-        f"Audited {len(repo_urls)} repositories and {len(link_urls)} links."
-    )
-    print(completed_message)
+    print(f"Audited {len(repo_urls)} repositories and {len(link_urls)} links.")
 
     summary_sections = []
     for category_name, category_errors, collapsed in (

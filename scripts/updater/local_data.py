@@ -69,8 +69,7 @@ def strip_patch(patch: dict, discovered_names: dict[str, str]) -> dict | None:
         output["description"] = desc
     if patch.get("isPreRelease"):
         output["isPreRelease"] = True
-    default_val = patch.get("default", patch.get("use", True))
-    if default_val is False:
+    if patch.get("default", patch.get("use", True)) is False:
         output["default"] = False
 
     if options := patch.get("options"):
@@ -181,8 +180,6 @@ def load_branch_data(
         return None, None, None, None
     bundle_file = BUNDLES_DIR / f"{file_prefix}~{branch}.json"
     list_file = PATCHES_DIR / f"{file_prefix}~{branch}.json"
-    if not bundle_file.exists():
-        return None, None, None, None
     bundle = load_json(bundle_file)
     download_url = bundle.get("download_url") if isinstance(bundle, dict) else None
     if not isinstance(download_url, str) or not download_url:
@@ -375,11 +372,10 @@ def process(
         ):
             app_first_seen_map[PACKAGE_UNIVERSAL] = now_ms
 
-        sorted_apps = sorted(current_apps_in_bundle)
         source_entry["patches"] = final_patches
         source_entry["appFirstSeen"] = {
             package_name: app_first_seen_map[package_name]
-            for package_name in sorted_apps
+            for package_name in sorted(current_apps_in_bundle)
             if package_name in app_first_seen_map
         }
 

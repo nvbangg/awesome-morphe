@@ -16,22 +16,19 @@ def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:
         result = gplay_app(package_name, lang="en", country="us")
         if not result:
             return None, False
-        icon_url = normalize_image_url(result.get("icon"))
-        desc = result.get("summary") or ""
         categories = result.get("categories") or []
         category = (
             result.get("genre")
             or (categories[0].get("name") if categories else "")
             or ""
         )
-        details = {
+        return {
             "name": result.get("title"),
-            "iconUrl": icon_url,
-            "description": desc,
+            "iconUrl": normalize_image_url(result.get("icon")),
+            "description": result.get("summary") or "",
             "minInstalls": result.get("minInstalls") or 0,
             "category": category,
-        }
-        return details, False
+        }, False
     except NotFoundError:
         return None, True
     except (OSError, HTTPException, ValueError, GooglePlayScraperException) as error:

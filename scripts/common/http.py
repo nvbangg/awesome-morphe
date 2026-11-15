@@ -6,7 +6,7 @@ import urllib.request
 from http.client import HTTPException
 from typing import Any
 
-from common.config import DEAD_LINK_HTTP_CODES, PROJECT_USER_AGENT
+from common.config import DEAD_LINK_HTTP_CODES, HTTP_TIMEOUT_SECONDS, PROJECT_USER_AGENT
 
 
 def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[str, str]:
@@ -51,7 +51,7 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[st
 def fetch(
     url: str,
     headers: dict[str, str] | None = None,
-    timeout: int = 15,
+    timeout: int = HTTP_TIMEOUT_SECONDS,
     as_json: bool = False,
     binary: bool = False,
 ) -> Any:
@@ -66,7 +66,7 @@ def fetch(
         return json.loads(decoded) if as_json else decoded
 
 
-def check_link_status(url: str, timeout: int = 5) -> dict:
+def check_link_status(url: str, timeout: int = HTTP_TIMEOUT_SECONDS) -> dict:
     try:
         headers = get_auth_headers(url)
         request = urllib.request.Request(url, headers=headers)

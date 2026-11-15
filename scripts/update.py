@@ -201,13 +201,13 @@ def main() -> int:
             return (1, 0, -stars, -updated_at, name, repo_lower)
         return (2, 0, -updated_at, -stars, name, repo_lower)
 
-    hot_ranked_keys = sorted(bundle_sources.keys(), key=get_bundle_sort_key)
+    hot_ranked_keys = sorted(bundle_sources, key=get_bundle_sort_key)
     bundle_hot_ranks = {
         key: rank_index for rank_index, key in enumerate(hot_ranked_keys)
     }
 
     sorted_keys = sorted(
-        bundle_sources.keys(),
+        bundle_sources,
         key=lambda sort_key: (
             existing_bundles.get(sort_key, {}).get(
                 "firstSeen", bundle_sources[sort_key].get("updatedAt", 0)

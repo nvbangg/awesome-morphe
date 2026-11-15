@@ -13,7 +13,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from common.config import SCRIPTS_DIR, WHATS_NEW_PATH
+from common.config import HTTP_TIMEOUT_SECONDS, SCRIPTS_DIR, WHATS_NEW_PATH
 
 
 def format_inline_markdown(text: str) -> str:
@@ -92,7 +92,7 @@ def main() -> None:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(api_request):
+        with urllib.request.urlopen(api_request, timeout=HTTP_TIMEOUT_SECONDS):
             print("Telegram notification sent successfully.")
     except urllib.error.HTTPError as error:
         error_message = str(error)
