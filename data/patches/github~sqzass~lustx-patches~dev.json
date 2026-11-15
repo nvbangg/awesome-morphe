@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.16.0",
+  "version": "1.17.1",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -21,6 +21,14 @@
     {
       "name": "Allow text selection",
       "description": "Flips setTextIsSelectable(false)/setLongClickable(false) to true so text can be selected and copied.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Bypass root / emulator detection",
+      "description": "Forces common root and emulator detection methods to report clean. Covers Java/Kotlin-level checks; native (.so) detection is not affected.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -234,41 +242,69 @@
       ]
     },
     {
-      "name": "Spoof Android ID",
-      "description": "Returns a fake value for Settings.Secure 'android_id' reads.",
+      "name": "Spoof device identity",
+      "description": "Unified device spoofing with per-category toggles: Android ID, MAC address, SIM/carrier, and Build device fields. Includes emulator presets. Replaces the former individual SpoofAndroidId, SpoofSim, and SpoofDevice patches.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
       "options": [
         {
-          "key": "androidId",
-          "title": "Android ID",
+          "key": "enableAndroidId",
+          "title": "Spoof Android ID",
+          "description": "Overrides Settings.Secure 'android_id' reads.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "androidIdValue",
+          "title": "Android ID value",
           "description": "16 hex chars, or 'Random' to generate one per build.",
-          "required": true,
+          "required": false,
           "type": "kotlin.String",
           "default": "Random",
           "values": {
             "Random": "Random"
           }
-        }
-      ]
-    },
-    {
-      "name": "Spoof SIM country / operator",
-      "description": "Fakes TelephonyManager / SubscriptionInfo country + operator values.",
-      "default": false,
-      "category": null,
-      "compatiblePackages": null,
-      "options": [
+        },
         {
-          "key": "preset",
+          "key": "enableMac",
+          "title": "Spoof MAC address",
+          "description": "Overrides WifiInfo.getMacAddress() and BluetoothAdapter.getAddress().",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "macValue",
+          "title": "MAC address value",
+          "description": "Format AA:BB:CC:DD:EE:FF, or 'Random'.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Random",
+          "values": {
+            "Random": "Random"
+          }
+        },
+        {
+          "key": "enableSim",
+          "title": "Spoof SIM / carrier",
+          "description": "Overrides TelephonyManager and SubscriptionInfo country/operator getters.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "simPreset",
           "title": "SIM preset",
           "description": "The simulated SIM/network identity.",
-          "required": true,
+          "required": false,
           "type": "kotlin.String",
           "default": "US - T-Mobile",
           "values": {
-            "Keep current (no spoof)": "Keep current (no spoof)",
             "US - T-Mobile": "US - T-Mobile",
             "US - AT&T": "US - AT&T",
             "US - Verizon": "US - Verizon",
@@ -294,21 +330,21 @@
             "AE - etisalat": "AE - etisalat",
             "TR - Turkcell": "TR - Turkcell"
           }
-        }
-      ]
-    },
-    {
-      "name": "Spoof device information",
-      "description": "Replaces android.os.Build device identity fields with a chosen device preset.",
-      "default": false,
-      "category": null,
-      "compatiblePackages": null,
-      "options": [
+        },
         {
-          "key": "device",
+          "key": "enableDevice",
+          "title": "Spoof device / Build fields",
+          "description": "Overrides Build device identity fields using read-site patching. Includes emulator presets.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "devicePreset",
           "title": "Device preset",
-          "description": "The device to impersonate.",
-          "required": true,
+          "description": "Target device identity.",
+          "required": false,
           "type": "kotlin.String",
           "default": "Pixel 9 Pro XL",
           "values": {
@@ -340,13 +376,17 @@
             "Xperia 1 V": "Xperia 1 V",
             "Zenfone 10": "Zenfone 10",
             "ROG Phone 8": "ROG Phone 8",
-            "Fairphone 5": "Fairphone 5"
+            "Fairphone 5": "Fairphone 5",
+            "Generic emulator (ranchu)": "Generic emulator (ranchu)",
+            "Genymotion": "Genymotion",
+            "BlueStacks": "BlueStacks",
+            "Nox Player": "Nox Player"
           }
         },
         {
           "key": "spoofVersion",
           "title": "Also spoof OS version",
-          "description": "Also spoof Build.VERSION (RELEASE, SDK_INT, ...). Can break apps; off by default.",
+          "description": "Also spoof Build.VERSION RELEASE, SDK_INT, SECURITY_PATCH, INCREMENTAL. Can break apps; off by default.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -378,6 +418,24 @@
             "Xiaomi GetApps": "com.xiaomi.market",
             "ADB / sideload": "com.android.shell"
           }
+        }
+      ]
+    },
+    {
+      "name": "Spoof rooted environment",
+      "description": "Makes Java-level root checks report rooted: forces detection methods to return true and overrides Build.TAGS/USER/HOST. For testing bypass patches (e.g. PortDroid). Native detection is not affected.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuild",
+          "title": "Override Build fields",
+          "description": "Sets TAGS=test-keys, USER=root, HOST=buildbot in Build.<clinit>.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
         }
       ]
     },
