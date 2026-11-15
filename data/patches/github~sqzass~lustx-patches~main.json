@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -13,6 +13,14 @@
     {
       "name": "Allow screenshots",
       "description": "Clears FLAG_SECURE from window flags so the app can be captured in screenshots.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Allow text selection",
+      "description": "Flips setTextIsSelectable(false)/setLongClickable(false) to true so text can be selected and copied.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -57,6 +65,37 @@
       ]
     },
     {
+      "name": "Change version name / code",
+      "description": "Rewrites the manifest versionName/versionCode and the baked-in BuildConfig values. 'Current' keeps the existing value.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "versionName",
+          "title": "Version name",
+          "description": "New android:versionName (e.g. 9.9.9), or 'Current'.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Current",
+          "values": {
+            "Current": "Current"
+          }
+        },
+        {
+          "key": "versionCode",
+          "title": "Version code",
+          "description": "New android:versionCode (digits), or 'Current'.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Current",
+          "values": {
+            "Current": "Current"
+          }
+        }
+      ]
+    },
+    {
       "name": "Custom font",
       "description": "Overrides the app's typeface with a built-in font family. Affects explicit Typeface usage; views that never set a typeface keep the system default.",
       "default": false,
@@ -97,6 +136,32 @@
       ]
     },
     {
+      "name": "Force dark / AMOLED theme",
+      "description": "Forces AppCompat night mode to YES and (optionally) flips AMOLED/pure-black flags. Covers AppCompat/Material apps; Jetpack Compose themes are not affected.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "amoled",
+          "title": "Enable AMOLED / pure-black",
+          "description": "Also force isPureBlack/isAmoled-style flags to true (best-effort).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Forced-update bypass",
+      "description": "Neuters in-app forced-update gates (dialogs, blocking checks, version prompts). Works on apps that keep readable method names; fully-obfuscated apps need per-app fingerprints.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Hide app icon",
       "description": "Hides the app from the launcher by replacing the LAUNCHER category with DEFAULT. The app stays installed; launch it via another app or a shortcut.",
       "default": false,
@@ -111,6 +176,126 @@
       "category": null,
       "compatiblePackages": null,
       "options": []
+    },
+    {
+      "name": "Remove rate-us / review prompts",
+      "description": "Suppresses in-app rating/review dialogs and gates. Optionally blocks the Play Core system review dialog (may crash apps that don't null-check the returned Task).",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockSystemReview",
+          "title": "Block Play Core review dialog",
+          "description": "No-ops ReviewManager.requestReviewFlow/launchReviewFlow. Off by default: some apps NPE on the null Task. Enable only if you see the system dialog.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Rename app label",
+      "description": "Sets a literal launcher name on <application>, launcher activities and aliases. 'Current' keeps the existing label.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "appLabel",
+          "title": "App label",
+          "description": "New display name shown in the launcher, or 'Current'.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Current",
+          "values": {
+            "Current": "Current"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Skip splash",
+      "description": "Skips splash/intro screens by running their deferred navigation immediately and removing artificial sleeps. Scoped to splash-named Activity/Fragment classes.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "convertDelays",
+          "title": "Convert splash delays to immediate",
+          "description": "Replaces postDelayed/sleep inside splash classes with immediate execution. If a splash blanks or hangs, disable this.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof Android ID",
+      "description": "Returns a fake value for Settings.Secure 'android_id' reads.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "androidId",
+          "title": "Android ID",
+          "description": "16 hex chars, or 'Random' to generate one per build.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Random",
+          "values": {
+            "Random": "Random"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Spoof SIM country / operator",
+      "description": "Fakes TelephonyManager / SubscriptionInfo country + operator values.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "preset",
+          "title": "SIM preset",
+          "description": "The simulated SIM/network identity.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "US - T-Mobile",
+          "values": {
+            "Keep current (no spoof)": "Keep current (no spoof)",
+            "US - T-Mobile": "US - T-Mobile",
+            "US - AT&T": "US - AT&T",
+            "US - Verizon": "US - Verizon",
+            "UK - EE": "UK - EE",
+            "UK - Vodafone": "UK - Vodafone",
+            "UK - O2": "UK - O2",
+            "DE - Telekom": "DE - Telekom",
+            "DE - Vodafone": "DE - Vodafone",
+            "FR - Orange": "FR - Orange",
+            "FR - SFR": "FR - SFR",
+            "ES - Movistar": "ES - Movistar",
+            "IT - TIM": "IT - TIM",
+            "NL - KPN": "NL - KPN",
+            "PL - Orange": "PL - Orange",
+            "BR - Vivo": "BR - Vivo",
+            "IN - Jio": "IN - Jio",
+            "IN - Airtel": "IN - Airtel",
+            "JP - docomo": "JP - docomo",
+            "KR - SK Telecom": "KR - SK Telecom",
+            "AU - Telstra": "AU - Telstra",
+            "CA - Rogers": "CA - Rogers",
+            "SG - StarHub": "SG - StarHub",
+            "AE - etisalat": "AE - etisalat",
+            "TR - Turkcell": "TR - Turkcell"
+          }
+        }
+      ]
     },
     {
       "name": "Spoof device information",
@@ -306,6 +491,24 @@
           "key": "notifications",
           "title": "Notifications",
           "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Telemetry / crash-reporter kill",
+      "description": "Silences analytics, crash-reporting and telemetry SDKs (Firebase, Sentry, Adjust, Mixpanel, Amplitude, Segment, AppMetrica, Bugly, ACRA, etc.).",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "killInit",
+          "title": "Also kill SDK initialization",
+          "description": "Aggressive: no-ops init/activate/start in SDK classes. May break apps that require SDK init to run. Off by default.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,

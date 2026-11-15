@@ -1,7 +1,38 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "patches": [
+    {
+      "name": "Bypass PairIP checks",
+      "description": "Disables PairIP's native VM, signature check and Play licence verdicts so a re-signed build does not open the Play Store listing or crash, and restores the VM-relocated string literals captured from the genuine build. Experimental: three VM-virtualized receiver/background methods fall back to default return values.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.alphaprogression.alphaprogression",
+          "name": "Alpha Progression",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": "#0065B3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.7.1",
+              "versionCodes": {
+                "ARM64_V8A": 705,
+                "ARMEABI_V7A": 705,
+                "X86_64": 705,
+                "X86": 705
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Bypass Root Detection",
       "description": "Removes the root-detection block so the app can be used on rooted devices.",
@@ -59,6 +90,109 @@
             {
               "version": "7.4",
               "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Custom seek step",
+      "description": "Lets the seek distance of the player's left/right keys be set inside the app. Applies to the D-pad and to the media rewind/fast-forward keys, and adds \"Seek 30s/1m/5m/10m/30m\" choices to the SPEED tab of the player settings panel.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.community.mbox.tv",
+          "name": "MovieBox TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#30E66D",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.2.3.1113.03",
+              "versionCodes": {
+                "ARM64_V8A": 50040022,
+                "ARMEABI_V7A": 50040022,
+                "X86_64": 50040022,
+                "X86": 50040022
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "seekStepSeconds",
+          "title": "Default seek step (seconds)",
+          "description": "Used until a step is chosen in the player settings panel. Default 300 (5 minutes), allowed 1-3600.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 300,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Disable forced update",
+      "description": "Hides the blocking update dialog and the update prompt.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.community.mbox.tv",
+          "name": "MovieBox TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#30E66D",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.2.3.1113.03",
+              "versionCodes": {
+                "ARM64_V8A": 50040022,
+                "ARMEABI_V7A": 50040022,
+                "X86_64": 50040022,
+                "X86": 50040022
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Prefer highest resolution",
+      "description": "Starts playback at the best available resolution instead of the built-in 480p default. An explicit choice in the settings panel still takes precedence.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.community.mbox.tv",
+          "name": "MovieBox TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#30E66D",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.2.3.1113.03",
+              "versionCodes": {
+                "ARM64_V8A": 50040022,
+                "ARMEABI_V7A": 50040022,
+                "X86_64": 50040022,
+                "X86": 50040022
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -191,6 +325,37 @@
             {
               "version": "7.4",
               "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Serve requested resolution",
+      "description": "Uses the signed DASH streams of the mobile play-info endpoint, so 480p/720p/1080p/4K actually select a real video track instead of reloading the same low-res MP4. Falls back to the TV streams when the mobile ladder is unavailable or lower.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.community.mbox.tv",
+          "name": "MovieBox TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#30E66D",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.2.3.1113.03",
+              "versionCodes": {
+                "ARM64_V8A": 50040022,
+                "ARMEABI_V7A": 50040022,
+                "X86_64": 50040022,
+                "X86": 50040022
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -469,32 +634,6 @@
     },
     {
       "name": "Unlock Premium",
-      "description": "Reports an active Zen Unlimited Pass: unlocks the Fitness Plans, the Zen music player and the Settings Unsubscribe entry, and removes the home banner ad and promo item. Billing is untouched.",
-      "default": true,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "com.zenlabs.challenge.pushups",
-          "name": "0-100 Pushups",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#000000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.3.3",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock Premium",
       "description": "Reports an active `premium` entitlement to Runna's JavaScript layer, clears the backend's client-side plan lock flags and subscription status, unlocking premium screens, all plan weeks and the plan footer without a Play purchase.",
       "default": true,
       "category": null,
@@ -572,6 +711,37 @@
       "options": []
     },
     {
+      "name": "Unlock Pro",
+      "description": "Unlocks all Pro features by forcing the web app's own client-side subscription gate (`proVersion.isActive` and the `pro-version` body class) to active. RevenueCat, Play Billing and the account's real server-side entitlement are left untouched.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.alphaprogression.alphaprogression",
+          "name": "Alpha Progression",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": "#0065B3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.7.1",
+              "versionCodes": {
+                "ARM64_V8A": 705,
+                "ARMEABI_V7A": 705,
+                "X86_64": 705,
+                "X86": 705
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock Pro (Root)",
       "description": "Unlocks all Pro and PowerPack features. Requires root: the patched build must be mounted over the genuine Play-signed install — a normal sideload will not run.",
       "default": true,
@@ -588,6 +758,37 @@
             {
               "version": "4.4.1",
               "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock VIP",
+      "description": "Reports the account as VIP, clears the per-title VIP locks and removes the visitor region block.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.community.mbox.tv",
+          "name": "MovieBox TV",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#30E66D",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.2.3.1113.03",
+              "versionCodes": {
+                "ARM64_V8A": 50040022,
+                "ARMEABI_V7A": 50040022,
+                "X86_64": 50040022,
+                "X86": 50040022
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null

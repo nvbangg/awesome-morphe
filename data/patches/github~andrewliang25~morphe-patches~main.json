@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.11.0",
+  "version": "3.12.0",
   "patches": [
     {
       "name": "[Ad] Block ad telemetry",
@@ -156,6 +156,120 @@
               "minSdk": 32,
               "description": null
             },
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[Call] Auto-record calls",
+      "description": "Starts recording a 1-to-1 LINE call as soon as it connects. LINE saves the recording. Recording a call without the other person's consent is illegal in some places. You are responsible for following the law where you are.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[Call] Record calls without notifying",
+      "description": "Records a 1-to-1 LINE call without telling the other party: no on-screen banner and no spoken recording announcement. Recording a call without the other person's consent is illegal in some places. You are responsible for following the law where you are.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[Call] Remove recording time limit",
+      "description": "Records a call until it ends. LINE stops voice recordings after 60 minutes and video recordings after 20 or 50 minutes.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[Call] Save recordings to device",
+      "description": "Saves each call recording to the Movies/LINE folder on your phone instead of sharing it to Keep Memo, which refuses files over 1 GB.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
             {
               "version": "26.16.0",
               "versionCodes": null,
@@ -714,6 +828,48 @@
       "options": []
     },
     {
+      "name": "[Fix] Restore Google login via MicroG-RE",
+      "description": "Makes \"Continue with Google\" work on a re-signed build, through MicroG-RE. Root Mount does not need it.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            },
+            {
+              "version": "26.15.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "[Fix] Restore biometric login",
       "description": "Biometric login can be linked again on a re-signed build. A Root Mount install does not need this patch.",
       "default": true,
@@ -1094,11 +1250,96 @@
       "options": []
     },
     {
-      "name": "[General] Hide Agent i buttons",
-      "description": "Removes the Agent i button from the Home header and from the search bar, and hides Agent i in chats permanently.",
+      "name": "[General] Enable themes on sub devices",
+      "description": "Lets a sub device (a tablet or second phone logged in to the same account) use themes and the Black theme in dark mode. Hides the Theme Shop button there, because LINE does not open the shop on a sub device.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            },
+            {
+              "version": "26.15.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[General] Hide Agent i buttons",
+      "description": "Removes Agent i from the Home header, the search bar, the Wallet tab header and Settings, and hides Agent i in chats permanently, with its \"Show Agent i in chat\" switch in the + menu.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.14.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            },
+            {
+              "version": "26.15.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            },
+            {
+              "version": "26.16.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[General] Hide LINE AI image editing",
+      "description": "Removes the LINE AI image editing buttons: \"AI Edit\" in the message long-press menu, the button next to an image message, and the button in the chat, album, Note and profile photo viewers. The normal photo editor stays.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
