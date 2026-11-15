@@ -8,7 +8,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -52,7 +52,7 @@ def convert_to_html(text: str) -> str:
 
 def main() -> None:
     load_dotenv(SCRIPTS_DIR / ".env")
-    current_time = datetime.now(UTC) + timedelta(hours=1)
+    current_time = datetime.now(UTC)
     formatted_date = f"{current_time.strftime('%B')} {current_time.day}"
     title = sys.argv[1] if len(sys.argv) >= 2 else f"🔔 What's New ({formatted_date})"
     filepath = Path(sys.argv[2]) if len(sys.argv) >= 3 else WHATS_NEW_PATH

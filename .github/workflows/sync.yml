@@ -39,7 +39,7 @@ jobs:
       - name: Prepare sync
         id: mode
         run: |
-          read -r TODAY WEEK <<< "$(date -u -d '+1 hour' +'%Y-%m-%d %G-W%V')"
+          read -r TODAY WEEK <<< "$(date -u +'%Y-%m-%d %G-W%V')"
           echo "today=$TODAY" >> "$GITHUB_OUTPUT"
           echo "week=$WEEK" >> "$GITHUB_OUTPUT"
           if [ "$MODE" != "normal" ]; then

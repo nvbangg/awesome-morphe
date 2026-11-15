@@ -3,7 +3,7 @@
 import re
 import unicodedata
 import urllib.parse
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 
 from common.config import (
     PACKAGE_EXAMPLE,
@@ -380,7 +380,7 @@ def generate(
     whats_new_data = load_json(WHATS_NEW_JSON_PATH, [])
     bundle_names, bundle_order = extract_bundle_metadata(bundles)
 
-    current_time = datetime.now(UTC) + timedelta(hours=1)
+    current_time = datetime.now(UTC)
     today_str = current_time.strftime(f"%B {current_time.day}, %Y")
 
     new_bundles = {
