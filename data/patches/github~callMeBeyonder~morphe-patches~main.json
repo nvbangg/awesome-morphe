@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.18.0",
+  "version": "1.19.0",
   "patches": [
     {
       "name": "Bypass PairIP checks",
@@ -139,6 +139,32 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Disable Expo OTA updates",
+      "description": "Stops the app from downloading a production JavaScript bundle over the embedded one. Required by bundle patches so a later Expo update cannot replace the patched JavaScript.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.jtsstrength.juggernautai",
+          "name": "JuggernautAI",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#111316",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.1.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Disable forced update",
@@ -596,6 +622,32 @@
           "targets": [
             {
               "version": "1.9.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Premium",
+      "description": "Unlocks all premium programs by initialising the app's own `SUBSCRIPTION_ENABLED` config flag to false at module init. That is the flag the paywall, the Subscription screen guard, the IAPHUB sync and the walkthrough check all read, so the app runs in its \"subscriptions not live\" mode: no paywall, premium programs selectable. Expo OTA updates are disabled so a downloaded JS bundle cannot overwrite the patched one. Store and server-side data are not affected.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.jtsstrength.juggernautai",
+          "name": "JuggernautAI",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#111316",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.1.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
