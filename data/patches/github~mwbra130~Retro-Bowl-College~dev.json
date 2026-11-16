@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.79.9",
+  "version": "1.79.13",
   "patches": [
     {
       "name": "Bypass PairIP application checks",
@@ -860,6 +860,32 @@
       "options": []
     },
     {
+      "name": "Enable Business",
+      "description": "Turns on the app's Business plan state locally (everything in Enable Plus, plus the business-plan flag the team-space and paywall gates read). Team storage, team billing, admin control and other server-side business features cannot be created by a local patch.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oceangalaxy.camera.new",
+          "name": "Timemark",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v10.0.316",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable Full",
       "description": "Unlocks Unified Remote Full for free, as if the one-time Full purchase were bought: 70+ remotes, no ads, screen mirroring, floating remotes, extended keyboard, widgets and quick actions, voice commands, custom remotes, IR and NFC actions.",
       "default": true,
@@ -887,7 +913,7 @@
     },
     {
       "name": "Enable Lifetime",
-      "description": "Pins the license state to the permanent verified state (the $49.99 Lifetime tier) at its single writer, so the app always runs as a lifetime license. Experimental: the license verdict is computed in the app's native library, so whether the recording engine honors the Java-side state can only be settled on a device. Call Recorder 3.7.8 only.",
+      "description": "Pins the license state to the permanent verified state (the $49.99 Lifetime tier) at its single writer, so the app always runs as a lifetime license. Experimental: the license verdict is computed in the app's native library, so whether every feature honors the Java-side state can only be settled on a device. Call Recorder 3.6.9 only — 3.7.x wraps its native code in an anti-tamper payload that cannot run re-signed. Get the exact 3.6.9 APK from the developer's own release archive: https://github.com/skvalex/callrecorder/releases/tag/3.6.9",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -900,7 +926,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.7.8",
+              "version": "3.6.9",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,
@@ -1830,7 +1856,7 @@
     },
     {
       "name": "Remove telemetry",
-      "description": "Disables the Bugsnag crash-reporting startup provider so no crash, ANR or session reports are sent. Call Recorder ships no other telemetry SDK. Recording and all other features are unaffected. Call Recorder 3.7.8 only.",
+      "description": "Disables the Bugsnag crash-reporting startup provider so no crash, ANR or session reports are sent. Call Recorder ships no other telemetry SDK. Recording and all other features are unaffected. Call Recorder 3.6.9 only.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1843,7 +1869,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.7.8",
+              "version": "3.6.9",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,
@@ -2012,9 +2038,11 @@
     },
     {
       "name": "Spoof watermark location",
-      "description": "Stamps photos as if taken at the latitude/longitude set in the patch options: the app resolves the place name and address for those coordinates, so the watermark shows that location. With both options empty (the default) nothing changes and the real GPS location is used.",
+      "description": "Stamps photos with a location you pick on an OpenStreetMap pin-drop map (Timemark settings → Timemark patches) instead of your real GPS location. Off or unpicked means real GPS; change it any time without re-patching.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.oceangalaxy.camera.new",
@@ -2034,26 +2062,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "latitude",
-          "title": "Spoofed latitude",
-          "description": "Decimal latitude, e.g. 33.4484. Must be set together with the longitude; leave both empty to keep the real GPS location.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "",
-          "values": null
-        },
-        {
-          "key": "longitude",
-          "title": "Spoofed longitude",
-          "description": "Decimal longitude, e.g. -112.0740. Must be set together with the latitude; leave both empty to keep the real GPS location.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "",
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
       "name": "Unlimited coins & unlocks",
