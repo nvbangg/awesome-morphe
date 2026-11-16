@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.20.0",
+  "version": "1.21.0",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -158,6 +158,14 @@
       ]
     },
     {
+      "name": "Disable ads",
+      "description": "Neutralizes common ad SDKs (AdMob, Unity, Meta, AppLovin) by forcing their void load/show sinks to no-op and their boolean readiness predicates to false. Object-returning APIs are left intact to avoid null returns. Missing SDKs are skipped, so this is safe as a universal patch. Tradeoff: rewarded-ad gates never complete, so 'watch an ad to unlock' flows dead-end.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable boot start-up",
       "description": "Prevents the app from auto-starting on device boot by removing boot intent-filter actions and the RECEIVE_BOOT_COMPLETED permission.",
       "default": false,
@@ -218,6 +226,37 @@
           "key": "amoled",
           "title": "Enable AMOLED / pure-black",
           "description": "Also force isPureBlack/isAmoled-style flags to true (best-effort).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Force refresh rate",
+      "description": "Rewrites the float argument at Surface.setFrameRate() call sites to the selected refresh rate. This only affects apps that already request a frame rate; it does not globally force a display mode. Missing call sites are skipped safely.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "targetHz",
+          "title": "Target refresh rate",
+          "description": "Hz value to inject into Surface.setFrameRate() calls.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "120",
+          "values": {
+            "120": "120",
+            "90": "90",
+            "60": "60"
+          }
+        },
+        {
+          "key": "patchSurface",
+          "title": "Patch Surface.setFrameRate()",
+          "description": "Rewrites float args at Surface.setFrameRate() call sites.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -697,7 +736,7 @@
     },
     {
       "name": "Telemetry / crash-reporter kill",
-      "description": "Silences analytics, crash-reporting and telemetry SDKs (Firebase, Sentry, Adjust, Mixpanel, Amplitude, Segment, AppMetrica, Bugly, ACRA, etc.).",
+      "description": "Silences common analytics, crash-reporting, attribution, session-replay and telemetry SDKs by forcing void logging/tracking sinks and boolean readiness predicates to no-op. Object-returning SDK methods are left intact to avoid null return crashes. Missing SDKs are skipped, so this is safe as a universal patch.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -705,7 +744,36 @@
         {
           "key": "killInit",
           "title": "Also kill SDK initialization",
-          "description": "Aggressive: no-ops init/activate/start in SDK classes. May break apps that require SDK init to run. Off by default.",
+          "description": "Aggressive: no-ops init/activate/start/configure methods in SDK classes. May break apps that require SDK init to run. Off by default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Toast on launch",
+      "description": "Shows a Toast when the app starts by injecting framework Toast calls into the Application subclass's onCreate(). Pure inline smali — adds no classes or methods. No-op, never crashes, if the app has no custom Application, does not override onCreate, or its onCreate has too few free registers.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "message",
+          "title": "Toast message",
+          "description": "Text shown at launch.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Patched build",
+          "values": {
+            "Patched build": "Patched build"
+          }
+        },
+        {
+          "key": "longDuration",
+          "title": "Long duration",
+          "description": "Use Toast.LENGTH_LONG instead of SHORT.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,

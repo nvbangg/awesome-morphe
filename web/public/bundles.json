@@ -16343,7 +16343,7 @@
       "avatarUrl": "https://avatars.githubusercontent.com/u/203759836?v=4&s=128",
       "hotRank": 25,
       "stars": 64,
-      "updatedAt": 1794719025000,
+      "updatedAt": 1794800751000,
       "firstSeen": 1783221698000,
       "appFirstSeen": {
         "com.Flanne.MinutesTillDawn.roguelike.shooting.fr.gp": 1792682462524,
@@ -16411,7 +16411,7 @@
         "com.Flanne.MinutesTillDawn.roguelike.shooting.fr.gp": 1794149158000,
         "com.adda247.app": 1793438051000,
         "com.ansangha.drdriving": 1788955296000,
-        "com.artingames.opheliasparadise": 1794719025000,
+        "com.artingames.opheliasparadise": 1794800751000,
         "com.blingame.haaktestb": 1788955296000,
         "com.cv.docscanner": 1790590844000,
         "com.direlight.grimvalor": 1791508210000,
@@ -16429,7 +16429,7 @@
         "com.halfbrick.fruitninjafree": 1793274583000,
         "com.halfbrick.jetpackjoyride": 1793858966000,
         "com.hutchgames.smashbandits": 1794653040000,
-        "com.hyperdotstudios.swampattack2": 1793438051000,
+        "com.hyperdotstudios.swampattack2": 1794800751000,
         "com.kakarod.bighunter": 1790670515000,
         "com.kongregate.mobile.burritobison3.google": 1788739200000,
         "com.lima.doodlejump": 1787961600000,
@@ -35499,7 +35499,7 @@
       "avatarUrl": "https://avatars.githubusercontent.com/u/56123591?v=4&s=128",
       "hotRank": 76,
       "stars": 24,
-      "updatedAt": 1794727295000,
+      "updatedAt": 1794799192000,
       "firstSeen": 1787620439710,
       "appFirstSeen": {
         "__universal__": 1790019009439,
@@ -72777,7 +72777,7 @@
       "avatarUrl": "https://raw.githubusercontent.com/sqzass/lustx-patches/main/patches-bundle.png",
       "hotRank": 148,
       "stars": 3,
-      "updatedAt": 1794792208000,
+      "updatedAt": 1794799001000,
       "firstSeen": 1791708940585,
       "appFirstSeen": {
         "__universal__": 1791708938464,
@@ -72785,7 +72785,7 @@
         "com.stealthcopter.portdroid": 1794776463506
       },
       "appUpdates": {
-        "__universal__": 1794790280000,
+        "__universal__": 1794799001000,
         "com.pawxy.browser": 1794792208000,
         "com.stealthcopter.portdroid": 1794775925000
       },
@@ -72875,6 +72875,12 @@
           ]
         },
         {
+          "name": "Disable ads",
+          "description": "Neutralizes common ad SDKs (AdMob, Unity, Meta, AppLovin) by forcing their void load/show sinks to no-op and their boolean readiness predicates to false. Object-returning APIs are left intact to avoid null returns. Missing SDKs are skipped, so this is safe as a universal patch. Tradeoff: rewarded-ad gates never complete, so 'watch an ad to unlock' flows dead-end.",
+          "firstSeen": 1794801727170,
+          "default": false
+        },
+        {
           "name": "Disable boot start-up",
           "description": "Prevents the app from auto-starting on device boot by removing boot intent-filter actions and the RECEIVE_BOOT_COMPLETED permission.",
           "firstSeen": 1791708938464,
@@ -72903,6 +72909,24 @@
               "key": "amoled",
               "title": "Enable AMOLED / pure-black",
               "description": "Also force isPureBlack/isAmoled-style flags to true (best-effort)."
+            }
+          ]
+        },
+        {
+          "name": "Force refresh rate",
+          "description": "Rewrites the float argument at Surface.setFrameRate() call sites to the selected refresh rate. This only affects apps that already request a frame rate; it does not globally force a display mode. Missing call sites are skipped safely.",
+          "firstSeen": 1794801727170,
+          "default": false,
+          "options": [
+            {
+              "key": "targetHz",
+              "title": "Target refresh rate",
+              "description": "Hz value to inject into Surface.setFrameRate() calls."
+            },
+            {
+              "key": "patchSurface",
+              "title": "Patch Surface.setFrameRate()",
+              "description": "Rewrites float args at Surface.setFrameRate() call sites."
             }
           ]
         },
@@ -73133,14 +73157,32 @@
         },
         {
           "name": "Telemetry / crash-reporter kill",
-          "description": "Silences analytics, crash-reporting and telemetry SDKs (Firebase, Sentry, Adjust, Mixpanel, Amplitude, Segment, AppMetrica, Bugly, ACRA, etc.).",
+          "description": "Silences common analytics, crash-reporting, attribution, session-replay and telemetry SDKs by forcing void logging/tracking sinks and boolean readiness predicates to no-op. Object-returning SDK methods are left intact to avoid null return crashes. Missing SDKs are skipped, so this is safe as a universal patch.",
           "firstSeen": 1794761399080,
           "default": false,
           "options": [
             {
               "key": "killInit",
               "title": "Also kill SDK initialization",
-              "description": "Aggressive: no-ops init/activate/start in SDK classes. May break apps that require SDK init to run. Off by default."
+              "description": "Aggressive: no-ops init/activate/start/configure methods in SDK classes. May break apps that require SDK init to run. Off by default."
+            }
+          ]
+        },
+        {
+          "name": "Toast on launch",
+          "description": "Shows a Toast when the app starts by injecting framework Toast calls into the Application subclass's onCreate(). Pure inline smali — adds no classes or methods. No-op, never crashes, if the app has no custom Application, does not override onCreate, or its onCreate has too few free registers.",
+          "firstSeen": 1794801727170,
+          "default": false,
+          "options": [
+            {
+              "key": "message",
+              "title": "Toast message",
+              "description": "Text shown at launch."
+            },
+            {
+              "key": "longDuration",
+              "title": "Long duration",
+              "description": "Use Toast.LENGTH_LONG instead of SHORT."
             }
           ]
         },
@@ -82952,7 +82994,7 @@
       "avatarUrl": "https://avatars.githubusercontent.com/u/179108235?v=4&s=128",
       "hotRank": 41,
       "stars": 42,
-      "updatedAt": 1794796114000,
+      "updatedAt": 1794801519000,
       "firstSeen": 1792334233931,
       "appFirstSeen": {
         "com.hevy": 1792334232999,
@@ -89605,13 +89647,13 @@
       "avatarUrl": "https://avatars.githubusercontent.com/u/83833359?v=4&s=128",
       "hotRank": 381,
       "stars": 2,
-      "updatedAt": 1792771975000,
+      "updatedAt": 1794800391000,
       "firstSeen": 1792783056681,
       "appFirstSeen": {
         "com.fivemobile.thescore": 1792783056054
       },
       "appUpdates": {
-        "com.fivemobile.thescore": 1792771975000
+        "com.fivemobile.thescore": 1794800391000
       },
       "patches": [
         {
@@ -92199,13 +92241,13 @@
       "avatarUrl": "https://avatars.githubusercontent.com/u/6415970?v=4&s=128",
       "hotRank": 192,
       "stars": 4,
-      "updatedAt": 1794792662000,
+      "updatedAt": 1794798763000,
       "firstSeen": 1793154036221,
       "appFirstSeen": {
         "com.ea.gp.bej3": 1793154035602
       },
       "appUpdates": {
-        "com.ea.gp.bej3": 1794790811000
+        "com.ea.gp.bej3": 1794798763000
       },
       "patches": [
         {
@@ -92222,7 +92264,7 @@
         },
         {
           "name": "[Experimental] Cross-promo-button-text",
-          "description": "Replaces the in-game \"GET STARS!\" cross-promo button label (a Nimble OBB string) with \"  GitHub  \" (same length, no size change).",
+          "description": "Replaces the in-game \"GET STARS!\" cross-promo button label (a Nimble OBB string, all locales) with \"GitHub\" (same length per locale, no size change).",
           "firstSeen": 1794790877288,
           "compatiblePackagesKey": 1965
         },
@@ -102805,7 +102847,7 @@
       "avatarUrl": "https://avatars.githubusercontent.com/u/18729473?v=4&s=128",
       "hotRank": 57,
       "stars": 14,
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689,
       "appFirstSeen": {
         "air.com.vudu.air.DownloaderTablet": 1793812980528,
@@ -102893,89 +102935,89 @@
         "wsj.reader_sp": 1793812980528
       },
       "appUpdates": {
-        "air.com.vudu.air.DownloaderTablet": 1794793365000,
-        "com.abc.abcnews": 1794793365000,
-        "com.amazon.avod.thirdpartyclient": 1794793365000,
-        "com.amazon.mShop.android.shopping": 1794793365000,
-        "com.amcplus.amcfullepisodes": 1794793365000,
-        "com.apple.atve.androidtv.appletv": 1794793365000,
-        "com.att.myWireless": 1794793365000,
-        "com.bah.r1smobile": 1794793365000,
-        "com.bamnetworks.mobile.android.gameday.atbat": 1794793365000,
-        "com.bestbuy.android": 1794793365000,
-        "com.bydeluxe.d3.android.program.starz": 1794793365000,
-        "com.c51": 1794793365000,
-        "com.cbs.app": 1794793365000,
+        "air.com.vudu.air.DownloaderTablet": 1794800954000,
+        "com.abc.abcnews": 1794800954000,
+        "com.amazon.avod.thirdpartyclient": 1794800954000,
+        "com.amazon.mShop.android.shopping": 1794800954000,
+        "com.amcplus.amcfullepisodes": 1794800954000,
+        "com.apple.atve.androidtv.appletv": 1794800954000,
+        "com.att.myWireless": 1794800954000,
+        "com.bah.r1smobile": 1794800954000,
+        "com.bamnetworks.mobile.android.gameday.atbat": 1794800954000,
+        "com.bestbuy.android": 1794800954000,
+        "com.bydeluxe.d3.android.program.starz": 1794800954000,
+        "com.c51": 1794800954000,
+        "com.cbs.app": 1794800954000,
         "com.cnbc.client": 1794477285000,
-        "com.cnn.mobile.android.phone": 1794793365000,
-        "com.costco.app.android": 1794793365000,
-        "com.cvs.launchers.cvs": 1794793365000,
-        "com.dailywire.thedailywire": 1794793365000,
-        "com.dealnews.android.ui": 1794793365000,
-        "com.dealseekorg.dealseek": 1794793365000,
-        "com.disney.disneyplus": 1794793365000,
-        "com.dramafever.docclub": 1794793365000,
-        "com.dramafever.shudder": 1794793365000,
-        "com.eet.settings.launcher": 1794793365000,
-        "com.epix.epix.now": 1794793365000,
-        "com.espn.score_center": 1794793365000,
-        "com.fivemobile.thescore": 1794793365000,
-        "com.fox.foxone": 1794793365000,
-        "com.fox.fts.android": 1794793365000,
-        "com.foxnews.android": 1794793365000,
-        "com.google.android.apps.youtube.unplugged": 1794793365000,
-        "com.gotv.nflgamecenter.us.lite": 1794793365000,
-        "com.hulu.plus": 1794793365000,
-        "com.justwatch.justwatch": 1794793365000,
+        "com.cnn.mobile.android.phone": 1794800954000,
+        "com.costco.app.android": 1794800954000,
+        "com.cvs.launchers.cvs": 1794800954000,
+        "com.dailywire.thedailywire": 1794800954000,
+        "com.dealnews.android.ui": 1794800954000,
+        "com.dealseekorg.dealseek": 1794800954000,
+        "com.disney.disneyplus": 1794800954000,
+        "com.dramafever.docclub": 1794800954000,
+        "com.dramafever.shudder": 1794800954000,
+        "com.eet.settings.launcher": 1794800954000,
+        "com.epix.epix.now": 1794800954000,
+        "com.espn.score_center": 1794800954000,
+        "com.fivemobile.thescore": 1794800954000,
+        "com.fox.foxone": 1794800954000,
+        "com.fox.fts.android": 1794800954000,
+        "com.foxnews.android": 1794800954000,
+        "com.google.android.apps.youtube.unplugged": 1794800954000,
+        "com.gotv.nflgamecenter.us.lite": 1794800954000,
+        "com.hulu.plus": 1794800954000,
+        "com.justwatch.justwatch": 1794800954000,
         "com.kanopy": 1794300881000,
-        "com.lowes.android": 1794793365000,
-        "com.moviebase": 1794793365000,
-        "com.nbaimd.gametime.nba2011": 1794793365000,
-        "com.nbcnews.msnbc.mobile": 1794793365000,
-        "com.netflix.mediaclient": 1794793365000,
-        "com.nexstar.newsnation": 1794793365000,
-        "com.nytimes.android": 1794793365000,
-        "com.particlenews.newsbreak": 1794793365000,
-        "com.pbs.video": 1794793365000,
-        "com.peacocktv.peacockandroid": 1794793365000,
-        "com.plexapp.android": 1794793365000,
-        "com.sirius": 1794793365000,
-        "com.substack.app": 1794793365000,
-        "com.target.ui": 1794793365000,
-        "com.thehomedepot": 1794793365000,
-        "com.thomsonreuters.reuters": 1794793365000,
-        "com.tmobile.m1": 1794793365000,
-        "com.tmobile.tuesdays": 1794793365000,
-        "com.treemolabs.apps.cbsnews": 1794793365000,
-        "com.truthsocial.android.app": 1794793365000,
-        "com.tubitv": 1794793365000,
-        "com.usablenet.mobile.walgreen": 1794793365000,
-        "com.usatoday.android.news": 1794793365000,
-        "com.uvnv.mintsim": 1794793365000,
-        "com.visiblemobile.flagship": 1794793365000,
-        "com.vzw.hss.myverizon": 1794793365000,
-        "com.walmart.android": 1794793365000,
-        "com.washingtonpost.android": 1794793365000,
-        "com.wbd.hbomax": 1794793365000,
-        "com.wbd.stream": 1794793365000,
-        "com.whaleshark.retailmenot": 1794793365000,
-        "com.wishabi.flipp": 1794793365000,
-        "com.xfinity.digitalhome": 1794793365000,
-        "com.xumo.xumo": 1794793365000,
+        "com.lowes.android": 1794800954000,
+        "com.moviebase": 1794800954000,
+        "com.nbaimd.gametime.nba2011": 1794800954000,
+        "com.nbcnews.msnbc.mobile": 1794800954000,
+        "com.netflix.mediaclient": 1794800954000,
+        "com.nexstar.newsnation": 1794800954000,
+        "com.nytimes.android": 1794800954000,
+        "com.particlenews.newsbreak": 1794800954000,
+        "com.pbs.video": 1794800954000,
+        "com.peacocktv.peacockandroid": 1794800954000,
+        "com.plexapp.android": 1794800954000,
+        "com.sirius": 1794800954000,
+        "com.substack.app": 1794800954000,
+        "com.target.ui": 1794800954000,
+        "com.thehomedepot": 1794800954000,
+        "com.thomsonreuters.reuters": 1794800954000,
+        "com.tmobile.m1": 1794800954000,
+        "com.tmobile.tuesdays": 1794800954000,
+        "com.treemolabs.apps.cbsnews": 1794800954000,
+        "com.truthsocial.android.app": 1794800954000,
+        "com.tubitv": 1794800954000,
+        "com.usablenet.mobile.walgreen": 1794800954000,
+        "com.usatoday.android.news": 1794800954000,
+        "com.uvnv.mintsim": 1794800954000,
+        "com.visiblemobile.flagship": 1794800954000,
+        "com.vzw.hss.myverizon": 1794800954000,
+        "com.walmart.android": 1794800954000,
+        "com.washingtonpost.android": 1794800954000,
+        "com.wbd.hbomax": 1794800954000,
+        "com.wbd.stream": 1794800954000,
+        "com.whaleshark.retailmenot": 1794800954000,
+        "com.wishabi.flipp": 1794800954000,
+        "com.xfinity.digitalhome": 1794800954000,
+        "com.xumo.xumo": 1794800954000,
         "com.yahoo.mobile.client.android.finance": 1794631268000,
         "com.yahoo.mobile.client.android.yahoo": 1794631268000,
-        "com.zumobi.msnbc": 1794793365000,
-        "gov.dhs.tsa.mytsa": 1794793365000,
-        "gov.fema.mobile.android": 1794793365000,
-        "gov.nps.mobileapp": 1794793365000,
-        "gov.usda.fs.nfg": 1794793365000,
-        "gov.whitehouse.app": 1794793365000,
-        "mnn.Android": 1794793365000,
-        "net.slickdeals.android": 1794793365000,
-        "org.cspan.app": 1794793365000,
-        "org.npr.android.news": 1794793365000,
-        "tv.pluto.android": 1794793365000,
-        "wsj.reader_sp": 1794793365000
+        "com.zumobi.msnbc": 1794800954000,
+        "gov.dhs.tsa.mytsa": 1794800954000,
+        "gov.fema.mobile.android": 1794800954000,
+        "gov.nps.mobileapp": 1794800954000,
+        "gov.usda.fs.nfg": 1794800954000,
+        "gov.whitehouse.app": 1794800954000,
+        "mnn.Android": 1794800954000,
+        "net.slickdeals.android": 1794800954000,
+        "org.cspan.app": 1794800954000,
+        "org.npr.android.news": 1794800954000,
+        "tv.pluto.android": 1794800954000,
+        "wsj.reader_sp": 1794800954000
       },
       "patches": [
         {
@@ -137229,7 +137271,7 @@
         "packageName": "com.artingames.opheliasparadise",
         "targets": [
           {
-            "version": "26.11.12"
+            "version": "26.11.15"
           }
         ]
       }
@@ -137685,7 +137727,7 @@
         "packageName": "com.hyperdotstudios.swampattack2",
         "targets": [
           {
-            "version": "1.4.1"
+            "version": "1.5.0"
           }
         ]
       }
@@ -153629,6 +153671,9 @@
         "packageName": "com.fivemobile.thescore",
         "targets": [
           {
+            "version": "26.16.1"
+          },
+          {
             "version": "26.15.0"
           },
           {
@@ -165768,7 +165813,7 @@
       "description": "Universal patches applicable to any app.",
       "minInstalls": 0,
       "category": "",
-      "updatedAt": 1794790280000,
+      "updatedAt": 1794799001000,
       "firstSeen": 1783382400000
     },
     "com.google.android.youtube": {
@@ -165903,7 +165948,7 @@
       "description": "Watch movies, TV shows, live programming, and sports",
       "minInstalls": 500000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382415000
     },
     "com.amazon.mShop.android.shopping": {
@@ -165912,7 +165957,7 @@
       "description": "Browse, search & buy millions of products right from your Android device.",
       "minInstalls": 1000000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382416000
     },
     "com.amazon.mp3": {
@@ -165930,7 +165975,7 @@
       "description": "Stream and download your favorite movies, TV shows & Originals on Disney+",
       "minInstalls": 500000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382418000
     },
     "com.peacocktv.peacockandroid": {
@@ -165939,7 +165984,7 @@
       "description": "Get Peacock and stream live sports, blockbuster movies, current TV, and more.",
       "minInstalls": 50000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382419000
     },
     "tv.twitch.android.app": {
@@ -167217,7 +167262,7 @@
       "description": "Everything FOX in one place. Watch NFL, CFB and more.",
       "minInstalls": 1000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382569000
     },
     "com.tubitv": {
@@ -167226,7 +167271,7 @@
       "description": "On Tubi, Movies, Shows, (and  Love) Don't Cost a Thing!",
       "minInstalls": 100000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382571000
     },
     "com.wbd.hbomax": {
@@ -167235,7 +167280,7 @@
       "description": "Watch hit original series, films, reality, and more on HBO Max.",
       "minInstalls": 1000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382572000
     },
     "com.newsbreak.crimeradar": {
@@ -167892,7 +167937,7 @@
       "description": "The official app of Major League Baseball. Get Gameday, scores, news, and more.",
       "minInstalls": 10000000,
       "category": "Sports",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382650000
     },
     "com.jcdecaux.vls.lyon": {
@@ -168567,7 +168612,7 @@
       "description": "Reconnect with your neighborhood! Daily news alerts for local news headlines!",
       "minInstalls": 50000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382740000
     },
     "com.snow_forecast.snowforecast": {
@@ -168639,7 +168684,7 @@
       "description": "Watch free movies, shows & sports on the best entertainment streaming app",
       "minInstalls": 100000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1783382750000
     },
     "com.generalcomp.truecloud": {
@@ -172133,7 +172178,7 @@
       "description": "Fast, Live Scores and News",
       "minInstalls": 10000000,
       "category": "Sports",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1787424114510
     },
     "com.robskie.tether": {
@@ -172205,7 +172250,7 @@
       "description": "Watch hit original series, films, reality, and more on HBO Max.",
       "minInstalls": 100000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1787540142280
     },
     "com.fdgentertainment.tentaclewars.gp.free": {
@@ -172808,7 +172853,7 @@
       "description": "Get scores, news, alerts & watch live sports",
       "minInstalls": 100000000,
       "category": "Sports",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1788627027496
     },
     "jp.co.sony.mc.cameraapp": {
@@ -174728,7 +174773,7 @@
       "description": "Groceries, essentials & more, delivered fast.",
       "minInstalls": 100000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1791306816610
     },
     "nl.nlziet": {
@@ -174935,7 +174980,7 @@
       "description": "Action-packed offline shooting! Defend your swamp in this tower defense royale!",
       "minInstalls": 5000000,
       "category": "Action",
-      "updatedAt": 1793438051000,
+      "updatedAt": 1794800751000,
       "firstSeen": 1791512007386
     },
     "com.imangi.templerun2": {
@@ -175349,7 +175394,7 @@
       "description": "Watch tons of movies & TV shows at no cost and see what's trending in streaming.",
       "minInstalls": 100000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1791789862072
     },
     "com.wowsoftware.hidemyandroid": {
@@ -175601,7 +175646,7 @@
       "description": "Global headlines, breaking news, business, politics & financial markets",
       "minInstalls": 5000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1791998065687
     },
     "me.piebridge.brevent": {
@@ -177377,7 +177422,7 @@
       "description": "Includes in-game purchases.",
       "minInstalls": 10000000,
       "category": "Casual",
-      "updatedAt": 1794790811000,
+      "updatedAt": 1794798763000,
       "firstSeen": 1793154036221
     },
     "com.playdigious.slimerancher": {
@@ -178872,7 +178917,7 @@
       "description": "More control, all in one place.",
       "minInstalls": 10000000,
       "category": "Productivity",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "gov.nps.mobileapp": {
@@ -178881,7 +178926,7 @@
       "description": "The official app for all 420+ parks",
       "minInstalls": 1000000,
       "category": "Travel & Local",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.dealseekorg.dealseek": {
@@ -178890,7 +178935,7 @@
       "description": "Daily Promo Codes & Savings",
       "minInstalls": 1000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.bestbuy.android": {
@@ -178899,7 +178944,7 @@
       "description": "Tech deals that deliver greatness. Gifts and gadgets that inspire memories.",
       "minInstalls": 10000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.target.ui": {
@@ -178908,7 +178953,7 @@
       "description": "Find great deals on fashion, beauty, essentials, accessories & home decor",
       "minInstalls": 10000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.cvs.launchers.cvs": {
@@ -178917,7 +178962,7 @@
       "description": "Get Rx fast at the pharmacy, schedule health care, and shop ExtraCare savings.",
       "minInstalls": 10000000,
       "category": "Medical",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.thehomedepot": {
@@ -178926,7 +178971,7 @@
       "description": "Search, browse and shop over a million products directly from The Home Depot.",
       "minInstalls": 10000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.usablenet.mobile.walgreen": {
@@ -178935,7 +178980,7 @@
       "description": "Prescriptions, coupons, photos and shopping - it's all in the Walgreens app.",
       "minInstalls": 10000000,
       "category": "Medical",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.tmobile.tuesdays": {
@@ -178944,7 +178989,7 @@
       "description": "Your all-in-one T-Mobile app.",
       "minInstalls": 10000000,
       "category": "Lifestyle",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.tmobile.m1": {
@@ -178953,7 +178998,7 @@
       "description": "T-Mobile Play is a premium entertainment and content experience.",
       "minInstalls": 10000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.justwatch.justwatch": {
@@ -178962,7 +179007,7 @@
       "description": "Find out where to watch your favorite movies & TV shows streaming online",
       "minInstalls": 10000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.moviebase": {
@@ -178971,7 +179016,7 @@
       "description": "Movie & TV show tracker: watchlists, episodes, series, progress, ratings, Trakt.",
       "minInstalls": 5000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.visiblemobile.flagship": {
@@ -178980,7 +179025,7 @@
       "description": "Welcome to the future of phone service.",
       "minInstalls": 1000000,
       "category": "Communication",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.abc.abcnews": {
@@ -178989,7 +179034,7 @@
       "description": "Get daily news, the latest breaking news, vertical video, alerts & live TV",
       "minInstalls": 5000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.amcplus.amcfullepisodes": {
@@ -178998,7 +179043,7 @@
       "description": "AMC+ features The Walking Dead Universe & more",
       "minInstalls": 1000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.apple.atve.androidtv.appletv": {
@@ -179007,7 +179052,7 @@
       "description": "Stream Apple Originals, Formula 1®, and more.",
       "minInstalls": 100000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.att.myWireless": {
@@ -179016,7 +179061,7 @@
       "description": "Connect to all of AT&T. Pay your bill, check data usage, get deals and support.",
       "minInstalls": 100000000,
       "category": "Productivity",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.treemolabs.apps.cbsnews": {
@@ -179025,7 +179070,7 @@
       "description": "Breaking news, local stories and weather. Watch live news and CBS News shows",
       "minInstalls": 1000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.cnn.mobile.android.phone": {
@@ -179034,7 +179079,7 @@
       "description": "Stay informed on the day’s breaking news, live updates, and headlines with CNN.",
       "minInstalls": 50000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "air.com.vudu.air.DownloaderTablet": {
@@ -179043,7 +179088,7 @@
       "description": "Stream movies & TV series",
       "minInstalls": 10000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.fox.fts.android": {
@@ -179052,7 +179097,7 @@
       "description": "Local News and Weather Alerts",
       "minInstalls": 1000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.foxnews.android": {
@@ -179061,7 +179106,7 @@
       "description": "Watch the latest daily US & world reports live, with national & global updates",
       "minInstalls": 10000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.hulu.plus": {
@@ -179070,7 +179115,7 @@
       "description": "Watch TV series, stream the latest live sports & download movies you love",
       "minInstalls": 100000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.epix.epix.now": {
@@ -179079,7 +179124,7 @@
       "description": "Watch 1000s of movies, series, and more - cancel anytime.",
       "minInstalls": 1000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.uvnv.mintsim": {
@@ -179088,7 +179133,7 @@
       "description": "Mint Mobile took what’s wrong with wireless and made it right.",
       "minInstalls": 1000000,
       "category": "Tools",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.nbcnews.msnbc.mobile": {
@@ -179097,7 +179142,7 @@
       "description": "Stay informed with live news, video, political analysis & the MS NOW community",
       "minInstalls": 500000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.nbaimd.gametime.nba2011": {
@@ -179106,7 +179151,7 @@
       "description": "Basketball highlights, stats, and studio coverage on the official NBA App",
       "minInstalls": 50000000,
       "category": "Sports",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.zumobi.msnbc": {
@@ -179115,7 +179160,7 @@
       "description": "Breaking news alerts, election results, politics news, live video from NBC News.",
       "minInstalls": 5000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.gotv.nflgamecenter.us.lite": {
@@ -179124,7 +179169,7 @@
       "description": "Keep up with the season with the official app of the NFL!",
       "minInstalls": 100000000,
       "category": "Sports",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.nytimes.android": {
@@ -179133,7 +179178,7 @@
       "description": "Read articles, watch videos and listen to podcasts on top stories and more.",
       "minInstalls": 10000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.cbs.app": {
@@ -179142,7 +179187,7 @@
       "description": "Stream exclusive originals, blockbuster movies, live sports and so much more.",
       "minInstalls": 10000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.pbs.video": {
@@ -179151,7 +179196,7 @@
       "description": "Stream Live TV, News & Documentaries. Watch Full Seasons with PBS Passport.",
       "minInstalls": 5000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.bah.r1smobile": {
@@ -179160,7 +179205,7 @@
       "description": "Camp, RV, and Explore Outdoors",
       "minInstalls": 1000000,
       "category": "Travel & Local",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "gov.dhs.tsa.mytsa": {
@@ -179169,7 +179214,7 @@
       "description": "MyTSA gives you 24/7 access to info that passengers frequently request from TSA.",
       "minInstalls": 1000000,
       "category": "Travel & Local",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "gov.fema.mobile.android": {
@@ -179178,7 +179223,7 @@
       "description": "Take charge of disasters.",
       "minInstalls": 1000000,
       "category": "Weather",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "gov.usda.fs.nfg": {
@@ -179187,7 +179232,7 @@
       "description": "The official USFS application for all your recreation needs.",
       "minInstalls": 10000,
       "category": "Travel & Local",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.bydeluxe.d3.android.program.starz": {
@@ -179196,7 +179241,7 @@
       "description": "Bold original series & hit movies that don't hold back.",
       "minInstalls": 10000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.vzw.hss.myverizon": {
@@ -179205,7 +179250,7 @@
       "description": "Everything Verizon all in one place.",
       "minInstalls": 100000000,
       "category": "Lifestyle",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.washingtonpost.android": {
@@ -179214,7 +179259,7 @@
       "description": "Breaking News, Politics & Award-Winning Journalism",
       "minInstalls": 1000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "gov.whitehouse.app": {
@@ -179223,7 +179268,7 @@
       "description": "Official White House app: breaking news, policies, live streams & more",
       "minInstalls": 100000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "com.google.android.apps.youtube.unplugged": {
@@ -179232,7 +179277,7 @@
       "description": "Try it FREE! Watch live TV from 100+ channels including news, sports, and shows.",
       "minInstalls": 10000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793812982689
     },
     "dev.vodik7.tvquickactions": {
@@ -179718,7 +179763,7 @@
       "description": "Stream 350+ channels and movies, news, sports, comedy & much more.",
       "minInstalls": 1000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793846795711
     },
     "com.google.android.apps.books": {
@@ -180033,7 +180078,7 @@
       "description": "Breaking news, live updates and trusted local, U.S. and world coverage.",
       "minInstalls": 1000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "org.cspan.app": {
@@ -180042,7 +180087,7 @@
       "description": "Your front row seat at the day's biggest political events & policy discussions.",
       "minInstalls": 100000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "com.dailywire.thedailywire": {
@@ -180051,7 +180096,7 @@
       "description": "Noisy. Opinionated. Right.",
       "minInstalls": 1000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "com.nexstar.newsnation": {
@@ -180060,7 +180105,7 @@
       "description": "Get fact-based, unbiased news coverage 24/7 with the NewsNation app.",
       "minInstalls": 100000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "org.npr.android.news": {
@@ -180069,7 +180114,7 @@
       "description": "Podcasts. Live Radio. Music.",
       "minInstalls": 5000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "com.dramafever.shudder": {
@@ -180078,7 +180123,7 @@
       "description": "Home of the best horror films from around the world and beyond the grave.",
       "minInstalls": 1000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "com.substack.app": {
@@ -180087,7 +180132,7 @@
       "description": "Videos, writing, podcasts & more",
       "minInstalls": 10000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "com.dramafever.docclub": {
@@ -180096,7 +180141,7 @@
       "description": "Stream premium dramas, international thrillers & true crime series ad-free",
       "minInstalls": 100000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "com.usatoday.android.news": {
@@ -180105,7 +180150,7 @@
       "description": "See the latest headlines, breaking, world and local news from USA TODAY.",
       "minInstalls": 5000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1793962674141
     },
     "com.piyush.pie": {
@@ -180350,7 +180395,7 @@
       "description": "Follow the Truth! Join America's leading free-speech social platform.",
       "minInstalls": 5000000,
       "category": "Social",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794046552110
     },
     "vn.vtv.vtvgo": {
@@ -181160,7 +181205,7 @@
       "description": "The Costco Mobile App is the easiest way to save time and money on the go.",
       "minInstalls": 10000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794206219375
     },
     "com.sirius": {
@@ -181169,7 +181214,7 @@
       "description": "Tune in to sports radio, podcasts, and music curated by your favorite stars.",
       "minInstalls": 10000000,
       "category": "Music & Audio",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794206219375
     },
     "com.paragon.tcplugins_ntfs_ro": {
@@ -181520,7 +181565,7 @@
       "description": "Lowe’s Knows Home Improvement",
       "minInstalls": 10000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794378478709
     },
     "com.naturalmotion.csrracing": {
@@ -181547,7 +181592,7 @@
       "description": "Cheap Online Shopping Deals | Cash Back | Coupons | Student Discount Promo Codes",
       "minInstalls": 100000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794410213648
     },
     "net.slickdeals.android": {
@@ -181556,7 +181601,7 @@
       "description": "Shop & Save Money With Slick Deals, Get Coupons & Discounts, Online Shopping App",
       "minInstalls": 1000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794410213648
     },
     "com.whaleshark.retailmenot": {
@@ -181565,7 +181610,7 @@
       "description": "Our new rewards program lets you shop twice, get $5–it's that easy.",
       "minInstalls": 10000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794410213648
     },
     "com.wishabi.flipp": {
@@ -181574,7 +181619,7 @@
       "description": "Browse thousands of weekly ads, deals & discounts at your favorite stores.",
       "minInstalls": 10000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794410213648
     },
     "com.samsung.android.app.galaxyraw": {
@@ -181664,7 +181709,7 @@
       "description": "Join over 18.5 million users who have earned more than 88 million in cash back!",
       "minInstalls": 10000000,
       "category": "Shopping",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794452669946
     },
     "apps.ijp.coverscreenos": {
@@ -182762,7 +182807,7 @@
       "description": "Your phone's settings, one swipe from home — toggles, sliders, quick shortcuts",
       "minInstalls": 1000000,
       "category": "Productivity",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794587338659
     },
     "com.devolutions.remotedesktopmanager": {
@@ -182870,7 +182915,7 @@
       "description": "Netflix is the leading subscription service for watching TV episodes and movies.",
       "minInstalls": 1000000000,
       "category": "Entertainment",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794632518802
     },
     "com.pawxy.browser": {
@@ -183096,7 +183141,7 @@
       "description": "Fantasy 2D roguelike where you defend paradise against invading shadows",
       "minInstalls": 5000,
       "category": "Action",
-      "updatedAt": 1794719025000,
+      "updatedAt": 1794800751000,
       "firstSeen": 1794724652150,
       "isPreRelease": true
     },
@@ -183188,7 +183233,7 @@
       "description": "Award-winning global coverage",
       "minInstalls": 1000000,
       "category": "News & Magazines",
-      "updatedAt": 1794793365000,
+      "updatedAt": 1794800954000,
       "firstSeen": 1794787487299
     }
   }
