@@ -1,5 +1,5 @@
 {
-    "version": "1.5.2",
+    "version": "1.5.3",
     "patches": [
         {
             "name": "Add Packet Handler",
@@ -5658,6 +5658,110 @@
             "options": []
         },
         {
+            "name": "[Call] Auto-record calls",
+            "description": "1対1のLINE通話がつながるとすぐに録音を開始します。録音はLINEが保存します。相手の同意なしに通話を録音することは、地域によっては違法です。お住まいの地域の法律に従う責任は利用者にあります。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.naver.line.android",
+                    "name": "LINE",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#06C755",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.16.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "[Call] Record calls without notifying",
+            "description": "相手に知らせずに1対1のLINE通話を録音します。画面のバナーも、録音を知らせる音声も出ません。相手の同意なしに通話を録音することは、地域によっては違法です。お住まいの地域の法律に従う責任は利用者にあります。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.naver.line.android",
+                    "name": "LINE",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#06C755",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.16.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "[Call] Remove recording time limit",
+            "description": "通話が終わるまで録音します。LINEは音声録音を60分、ビデオ録音を20分または50分で止めます。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.naver.line.android",
+                    "name": "LINE",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#06C755",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.16.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "[Call] Save recordings to device",
+            "description": "通話の録音を、Keepメモへ共有する代わりに端末のMovies/LINEフォルダへ保存します。Keepメモは1GBを超えるファイルを受け付けません。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.naver.line.android",
+                    "name": "LINE",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#06C755",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.16.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "[Chat] Hide AI Friends button",
             "description": "トークタブのヘッダーからAI Friendsボタンを取り除きます。代わりにアルバムボタンが表示されます。",
             "default": true,
@@ -6058,6 +6162,46 @@
             "options": []
         },
         {
+            "name": "[Fix] Restore Google login via MicroG-RE",
+            "description": "再署名ビルドでもMicroG-RE経由で「Continue with Google」が使えるようになります。Root Mountには不要です。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.naver.line.android",
+                    "name": "LINE",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#06C755",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.14.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        },
+                        {
+                            "version": "26.15.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": null
+                        },
+                        {
+                            "version": "26.16.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "[Fix] Restore biometric login",
             "description": "再署名ビルドでも生体認証ログインを再び連携できます。Root Mountインストールにはこのパッチは不要です。",
             "default": true,
@@ -6338,8 +6482,88 @@
             "options": []
         },
         {
+            "name": "[General] Enable themes on sub devices",
+            "description": "サブ端末（同じアカウントでログインしたタブレットや2台目のスマートフォン）でもテーマと、ダークモードのブラックテーマを使えるようにします。LINEはサブ端末でテーマショップを開かないため、テーマショップボタンは非表示にします。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.naver.line.android",
+                    "name": "LINE",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#06C755",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.14.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        },
+                        {
+                            "version": "26.15.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": null
+                        },
+                        {
+                            "version": "26.16.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
             "name": "[General] Hide Agent i buttons",
-            "description": "ホームのヘッダーと検索バーからAgent iボタンを取り除き、トーク内のAgent iも恒久的に非表示にします。",
+            "description": "ホームのヘッダー、検索バー、ウォレットタブのヘッダーと設定からAgent iを取り除き、トーク内のAgent iも恒久的に非表示にします。「+」メニューには「Show Agent i in chat」スイッチが付きます。",
+            "default": true,
+            "category": null,
+            "compatiblePackages": [
+                {
+                    "packageName": "jp.naver.line.android",
+                    "name": "LINE",
+                    "description": null,
+                    "apkFileType": "APKM",
+                    "appIconColor": "#06C755",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "26.14.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        },
+                        {
+                            "version": "26.15.1",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": null
+                        },
+                        {
+                            "version": "26.16.0",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": 30,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": []
+        },
+        {
+            "name": "[General] Hide LINE AI image editing",
+            "description": "LINE AIの画像編集ボタンを取り除きます。メッセージの長押しメニューにある「AI Edit」、画像メッセージの横のボタン、トーク・アルバム・ノート・プロフィール写真のビューアにあるボタンが対象です。通常の写真編集はそのまま使えます。",
             "default": true,
             "category": null,
             "compatiblePackages": [
