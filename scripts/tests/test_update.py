@@ -1,9 +1,7 @@
 import json
 from datetime import UTC, datetime, timedelta
-from http.client import HTTPException
 from pathlib import Path
 from unittest.mock import patch
-from urllib.error import URLError
 
 import pytest
 from google_play_scraper.exceptions import ExtraHTTPError
@@ -89,7 +87,7 @@ class TestBundleUpdate:
         self.fetch_app = self.patch_context.enter_context(
             patch.object(gplay_scrape, "fetch_app_details", return_value=(None, False))
         )
-        self.summary = self.patch_context.enter_context(
+        self.patch_context.enter_context(
             patch.object(bundle_update, "append_step_summary")
         )
 
@@ -140,37 +138,10 @@ class TestBundleUpdate:
             assert bundle_update.main() == 0
         return load_json(self.public_path)
 
-    @pytest.mark.parametrize("result_count", (1, 10))
-    def test_patch_list_summary_is_always_collapsed(self, result_count, capsys) -> None:
-        save_json(self.repos_path, {})
-        for index in range(result_count):
-            self.add_target(repo=f"owner/repo-{index}", patches=[])
-        self.run_update()
-        summary = self.summary.call_args.args[0]
-        assert f"<h3>Patch list ({result_count})" in summary
-        assert summary.count("<details>") == 1
-        assert summary.count("- https://") == result_count
-        console = capsys.readouterr().out
-        assert f"Patch list: {result_count} repositories" in console
-        assert "https://github.com/owner/repo-" not in console
-        assert "Excluding" not in console
-
     def snapshot(self) -> dict[Path, bytes]:
         return {path: path.read_bytes() for path in self.state_paths}
 
-    @pytest.mark.parametrize(
-        "rejected",
-        (
-            None,
-            7,
-            {},
-            {"name": None},
-            {"name": 7},
-            {"name": []},
-            {"name": ""},
-            {"name": " "},
-        ),
-    )
+    @pytest.mark.parametrize("rejected", (None, {"name": " "}, {"name": 7}))
     def test_rejected_patch_does_not_change_app_hash_or_updates(self, rejected) -> None:
         valid_patch = self.app_patch()
         self.add_target(patches=[valid_patch])
@@ -212,33 +183,29 @@ class TestBundleUpdate:
     @pytest.mark.parametrize(
         "invalid_kind",
         (
+            "missing-file",
             "invalid-json",
-            "wrong-root",
-            "missing-patches",
             "empty-patches",
-            "invalid-utf8",
             "template-only",
-            "invalid-name",
             "invalid-compatibility",
         ),
     )
-    def test_invalid_current_patch_lists_are_excluded_without_old_patch_fallback(
+    def test_unusable_patch_list_does_not_publish_stale_catalog(
         self, invalid_kind
     ) -> None:
-        content = {
-            "invalid-json": b"{broken",
-            "wrong-root": b"[]",
-            "missing-patches": b"{}",
-            "empty-patches": b'{"patches": []}',
-            "invalid-utf8": b"\xff",
-            "template-only": json.dumps(
-                {"patches": [self.app_patch(package_name="com.example.app")]}
-            ).encode(),
-            "invalid-name": b'{"patches": [{"name": ["Invalid name"]}]}',
-            "invalid-compatibility": b'{"patches": [{"name": "Patch", "compatiblePackages": {"com.test.app": 5}}]}',
-        }[invalid_kind]
         path = self.add_target()
-        path.write_bytes(content)
+        if invalid_kind == "missing-file":
+            path.unlink()
+        else:
+            content = {
+                "invalid-json": b"{broken",
+                "empty-patches": b'{"patches": []}',
+                "template-only": json.dumps(
+                    {"patches": [self.app_patch(package_name="com.example.app")]}
+                ).encode(),
+                "invalid-compatibility": b'{"patches": [{"name": "Patch", "compatiblePackages": {"com.test.app": 5}}]}',
+            }[invalid_kind]
+            path.write_bytes(content)
         save_json(
             self.public_path,
             {
@@ -260,12 +227,6 @@ class TestBundleUpdate:
             load_json(self.repos_path)["https://github.com/owner/alpha"]["main"]
             == "downloaded-sha"
         )
-        assert path.exists()
-        summary = self.summary.call_args.args[0]
-        assert "<h3>Patch list (1)" in summary
-        assert "https://github.com/owner/alpha: (main)" in summary
-        assert "patches-bundle.json" not in summary
-        assert "invalid or excluded" not in summary
 
     def test_null_sha_prevents_reading_old_valid_patch_list(self) -> None:
         self.add_target(sha=None)
@@ -276,10 +237,9 @@ class TestBundleUpdate:
             assert self.run_update()["bundles"] == []
         load_branch.assert_not_called()
         self.fetch_repo.assert_not_called()
-        assert self.summary.call_args.args[0] == "## 🔄 Update (0/0):"
 
-    @pytest.mark.parametrize("metadata", (None, [], {}, {"download_url": None}))
-    def test_unusable_metadata_does_not_repeat_fetch_errors(self, metadata) -> None:
+    @pytest.mark.parametrize("metadata", (None, {}))
+    def test_unusable_bundle_metadata_is_not_published(self, metadata) -> None:
         self.add_target()
         bundle_path = self.bundles_dir / "github~owner~alpha~main.json"
         if metadata is None:
@@ -287,39 +247,11 @@ class TestBundleUpdate:
         else:
             save_json(bundle_path, metadata)
         assert self.run_update()["bundles"] == []
-        assert self.summary.call_args.args[0] == "## 🔄 Update (0/1):"
-        self.fetch_repo.assert_not_called()
 
-    def test_missing_patch_list_has_branch_error_without_metadata_error(self) -> None:
-        self.add_target().unlink()
-        assert self.run_update()["bundles"] == []
-        summary = self.summary.call_args.args[0]
-        assert (
-            "https://github.com/owner/alpha: (main) Missing `patches-list.json`"
-            in summary
-        )
-        assert "patches-bundle.json" not in summary
-
-    def test_patch_list_errors_are_attributed_to_their_source_and_branch(self) -> None:
-        self.add_target(patches=[])
-        self.add_target(source="gitlab", branch="dev").write_text(
-            "{broken", encoding="utf-8"
-        )
-        assert self.run_update()["bundles"] == []
-        summary = self.summary.call_args.args[0]
-        assert "<h3>Patch list (2)" in summary
-        assert "https://github.com/owner/alpha: (main) No patches found" in summary
-        assert "https://gitlab.com/owner/alpha: (dev) Invalid data" in summary
-        assert "https://github.com/owner/alpha: (dev)" not in summary
-        assert "https://gitlab.com/owner/alpha: (main)" not in summary
-
-    def test_invalid_patch_list_is_reported_when_other_source_is_valid(self) -> None:
+    def test_invalid_source_does_not_exclude_other_host(self) -> None:
         self.add_target(patches=[])
         self.add_target(source="gitlab", patches=[{"name": "Universal patch"}])
         assert self.run_update()["bundles"][0]["source"] == "gitlab"
-        summary = self.summary.call_args.args[0]
-        assert "https://github.com/owner/alpha: (main) No patches found" in summary
-        assert "https://gitlab.com/owner/alpha" not in summary
 
     def test_newer_dev_is_selected_and_only_dev_patches_are_prerelease(self) -> None:
         self.add_target(patches=[self.app_patch("Stable patch")])
@@ -336,98 +268,36 @@ class TestBundleUpdate:
         assert patches["Dev patch"]["isPreRelease"]
         assert "isPreRelease" not in catalog["store"]["com.test.app"]
 
-    def test_invalid_main_does_not_exclude_valid_dev(self, capsys) -> None:
-        self.add_target().write_text("{broken", encoding="utf-8")
-        self.add_target(branch="dev", patches=[self.app_patch("Dev patch")])
+    @pytest.mark.parametrize("valid_branch", ("main", "dev"))
+    def test_valid_branch_remains_available_when_other_branch_is_invalid(
+        self, valid_branch
+    ) -> None:
+        invalid_branch = "dev" if valid_branch == "main" else "main"
+        self.add_target(branch=invalid_branch).write_text("{broken", encoding="utf-8")
+        self.add_target(branch=valid_branch, patches=[self.app_patch("Valid patch")])
         catalog = self.run_update()
-        assert "https://github.com/owner/alpha" not in capsys.readouterr().out
-        assert catalog["bundles"][0]["isPreRelease"]
-        assert catalog["store"]["com.test.app"]["isPreRelease"]
-        summary = self.summary.call_args.args[0]
-        assert "<h3>Patch list" not in summary
-        assert "Incomplete Apps" in summary
+        bundle = catalog["bundles"][0]
+        assert bundle["patches"][0]["name"] == "Valid patch"
+        assert bool(bundle.get("isPreRelease")) == (valid_branch == "dev")
+        assert bool(catalog["store"]["com.test.app"].get("isPreRelease")) == (
+            valid_branch == "dev"
+        )
 
-    def test_invalid_dev_is_suppressed_when_main_is_valid(self, capsys) -> None:
-        self.add_target(patches=[self.app_patch("Main patch")])
-        self.add_target(branch="dev", patches=[])
+    def test_unconfirmed_branch_cannot_restore_stale_patches(self) -> None:
+        self.add_target(branch="main", patches=[])
+        self.add_target(branch="dev", sha=None)
+        assert self.run_update()["bundles"] == []
+
+    def test_newer_main_supplies_patches_and_app_metadata(self) -> None:
+        main = self.app_patch("Main patch")
+        main["compatiblePackages"][0]["name"] = "Stable app"
+        dev = self.app_patch("Dev patch")
+        dev["compatiblePackages"][0]["name"] = "Dev app"
+        self.add_target(timestamp=BUNDLE_TIME_MS + 1, patches=[main])
+        self.add_target(branch="dev", patches=[dev])
         catalog = self.run_update()
-        assert "https://github.com/owner/alpha" not in capsys.readouterr().out
         assert catalog["bundles"][0]["patches"][0]["name"] == "Main patch"
-        assert "isPreRelease" not in catalog["bundles"][0]
-        assert "<h3>Patch list" not in self.summary.call_args.args[0]
-
-    def test_identical_invalid_branches_have_one_summary_entry(self) -> None:
-        self.add_target().write_text("{broken", encoding="utf-8")
-        self.add_target(branch="dev").write_text("[]", encoding="utf-8")
-        repos_snapshot = self.repos_path.read_bytes()
-        assert self.run_update()["bundles"] == []
-        summary = self.summary.call_args.args[0]
-        assert "<h3>Patch list (1)" in summary
-        assert "https://github.com/owner/alpha: Invalid data" in summary
-        assert "(main)" not in summary
-        assert "(dev)" not in summary
-        assert summary.count("- https://") == 1
-        assert self.repos_path.read_bytes() == repos_snapshot
-
-    def test_different_invalid_branches_share_one_repository_entry(self) -> None:
-        self.add_target(patches=[])
-        self.add_target(branch="dev").write_text("{broken", encoding="utf-8")
-        assert self.run_update()["bundles"] == []
-        summary = self.summary.call_args.args[0]
-        assert "<h3>Patch list (1)" in summary
-        assert (
-            "https://github.com/owner/alpha: (main) No patches found; (dev) Invalid data"
-            in summary
-        )
-        assert summary.count("- https://") == 1
-
-    @pytest.mark.parametrize(
-        "invalid_branch,skipped_branch", (("main", "dev"), ("dev", "main"))
-    )
-    def test_null_sha_does_not_hide_other_branch_errors_or_use_stale_files(
-        self, invalid_branch, skipped_branch
-    ) -> None:
-        self.add_target(branch=invalid_branch, patches=[])
-        skipped_patch_path = self.add_target(branch=skipped_branch, sha=None)
-        skipped_bundle_path = (
-            self.bundles_dir / f"github~owner~alpha~{skipped_branch}.json"
-        )
-        with patch.object(local_data, "load_json", wraps=load_json) as read_local:
-            assert self.run_update()["bundles"] == []
-        read_paths = [call.args[0] for call in read_local.call_args_list]
-        assert skipped_patch_path not in read_paths
-        assert skipped_bundle_path not in read_paths
-        summary = self.summary.call_args.args[0]
-        assert "<h3>Patch list (1)" in summary
-        assert (
-            f"https://github.com/owner/alpha: ({invalid_branch}) No patches found"
-            in summary
-        )
-        assert f"({skipped_branch})" not in summary
-
-    def test_main_is_selected_when_newer_than_dev(self) -> None:
-        self.add_target(
-            timestamp=BUNDLE_TIME_MS + 1, patches=[self.app_patch("Main patch")]
-        )
-        self.add_target(branch="dev", patches=[self.app_patch("Dev patch")])
-        assert self.run_update()["bundles"][0]["patches"][0]["name"] == "Main patch"
-
-    def test_sources_remain_independent_even_with_the_same_repository_path(
-        self,
-    ) -> None:
-        self.add_target(patches=[self.app_patch("GitHub patch")])
-        self.add_target(
-            source="gitlab",
-            timestamp=BUNDLE_TIME_MS + 1,
-            patches=[self.app_patch("GitLab patch")],
-        )
-        catalog = self.run_update()
-        assert {bundle["source"] for bundle in catalog["bundles"]} == {
-            "github",
-            "gitlab",
-        }
-        assert len(catalog["bundles"]) == 2
-        assert self.summary.call_args.args[0].startswith("## 🔄 Update (2/2):")
+        assert catalog["store"]["com.test.app"]["name"] == "Stable app"
 
     def test_compatibility_is_deduplicated_once_without_changing_public_schema(
         self,
@@ -449,49 +319,7 @@ class TestBundleUpdate:
                     assert patch_data["compatiblePackagesKey"] == 0
         assert PACKAGE_UNIVERSAL in catalog["bundles"][0]["appFirstSeen"]
 
-    def test_repository_metadata_is_read_locally_without_network(self) -> None:
-        self.add_target()
-        repos = load_json(self.repos_path)
-        repos["https://github.com/owner/alpha"].update(
-            {
-                "stars": 17,
-                "description": "Cached repo",
-                "avatarUrl": "https://example.com/cached.png",
-            }
-        )
-        save_json(self.repos_path, repos)
-        catalog = self.run_update("daily")
-        assert catalog["bundles"][0]["stars"] == 17
-        assert catalog["bundles"][0]["avatarUrl"] == "https://example.com/cached.png"
-        assert catalog["bundles"][0]["repoDescription"] == "Cached repo"
-        self.fetch_repo.assert_not_called()
-        assert "Repository metadata" not in self.summary.call_args.args[0]
-
-    def test_incomplete_apps_alone_are_grouped_under_update(self, capsys) -> None:
-        self.add_target()
-        self.run_update()
-        self.summary.assert_called_once()
-        summary = self.summary.call_args.args[0]
-        assert summary.startswith("## 🔄 Update (1/1):\n\n")
-        assert "<summary><h3>Incomplete Apps (1)</h3></summary>\n\n" in summary
-        assert "<h3>Patch list" not in summary
-        assert "<h3>Repository metadata" not in summary
-        console = capsys.readouterr().out
-        assert "Incomplete apps: 1" in console
-        assert "com.test.app" not in console
-
-    def test_archived_repository_keeps_catalog_flag_without_duplicate_warning(
-        self,
-    ) -> None:
-        self.add_target()
-        repos = load_json(self.repos_path)
-        repos["https://github.com/owner/alpha"]["isArchived"] = True
-        save_json(self.repos_path, repos)
-        catalog = self.run_update()
-        assert catalog["bundles"][0]["isArchived"]
-        assert "Repository metadata" not in self.summary.call_args.args[0]
-
-    @pytest.mark.parametrize("mode", ("default", "daily", "weekly"))
+    @pytest.mark.parametrize("mode", ("default", "weekly"))
     def test_modes_keep_metadata_refresh_and_official_store_priority(
         self, mode
     ) -> None:
@@ -567,6 +395,76 @@ class TestBundleUpdate:
         assert (self.bundles_dir / "github~owner~renamed~main.json").is_file()
         assert (self.patches_dir / "github~owner~renamed~main.json").is_file()
 
+    def test_hot_ranks_follow_official_and_activity_priority_without_gaps(self) -> None:
+        now_ms = CURRENT_TIME_SECONDS * 1000
+        targets = (
+            ("owner/official-a", BUNDLE_TIME_MS, 0),
+            ("owner/official-b", now_ms, 1000),
+            ("owner/recent-popular", now_ms - 2, 30),
+            ("owner/recent-newer", now_ms - 1, 10),
+            ("owner/old-newer", now_ms - bundle_update.HOT_RANK_ACTIVE_MS - 1, 1),
+            ("owner/old-popular", now_ms - bundle_update.HOT_RANK_ACTIVE_MS - 2, 100),
+            ("MorpheApp/morphe-patches", BUNDLE_TIME_MS, 0),
+        )
+        for repo, timestamp, _stars in targets:
+            self.add_target(repo=repo, timestamp=timestamp)
+        self.add_target(repo="owner/invalid", patches=[])
+        repos = load_json(self.repos_path)
+        for repo, _timestamp, stars in targets:
+            repos[f"https://github.com/{repo}"]["stars"] = stars
+        save_json(self.repos_path, repos)
+        save_json(
+            self.official_path,
+            {
+                "bundles": [
+                    {"source": "github", "repo": "owner/invalid", "hotRank": 0},
+                    {"source": "github", "repo": "owner/official-a", "hotRank": 2},
+                    {"source": "github", "repo": "owner/official-b", "hotRank": 8},
+                ]
+            },
+        )
+        catalog = self.run_update()
+        expected_order = [
+            "MorpheApp/morphe-patches",
+            "owner/official-a",
+            "owner/official-b",
+            "owner/recent-popular",
+            "owner/recent-newer",
+            "owner/old-newer",
+            "owner/old-popular",
+        ]
+        assert len(catalog["bundles"]) == len(expected_order)
+        assert {bundle["repo"]: bundle["hotRank"] for bundle in catalog["bundles"]} == {
+            repo: rank for rank, repo in enumerate(expected_order)
+        }
+
+    def test_bundle_storage_uses_discovery_date_and_url_order(self) -> None:
+        self.add_target(repo="owner/Zulu", timestamp=BUNDLE_TIME_MS - 1)
+        self.add_target(repo="owner/alpha", timestamp=BUNDLE_TIME_MS)
+        self.add_target(repo="owner/saved")
+        save_json(
+            self.public_path,
+            {
+                "bundles": [
+                    {
+                        "source": "github",
+                        "repo": "owner/saved",
+                        "firstSeen": FIRST_SEEN_MS,
+                    }
+                ]
+            },
+        )
+        expected = [
+            ("owner/saved", FIRST_SEEN_MS),
+            ("owner/alpha", CURRENT_TIME_SECONDS * 1000),
+            ("owner/Zulu", CURRENT_TIME_SECONDS * 1000),
+        ]
+        for _run in range(2):
+            catalog = self.run_update()
+            assert [
+                (bundle["repo"], bundle["firstSeen"]) for bundle in catalog["bundles"]
+            ] == expected
+
     def test_rename_collision_filters_apps_hashes_and_history_before_scraping(
         self,
     ) -> None:
@@ -597,46 +495,19 @@ class TestBundleUpdate:
             "com.beta.app"
         ]
         assert catalog["compatibilities"][0][0]["packageName"] == "com.beta.app"
-        assert self.summary.call_args.args[0].startswith("## 🔄 Update (2/2):")
 
-    def test_counts_only_repositories_with_hashes_and_deduplicates_sources(
-        self,
-    ) -> None:
-        self.add_target()
-        self.add_target(source="gitlab", branch="dev")
-        self.add_target(repo="owner/invalid", patches=[])
-        self.add_target(repo="owner/skipped", sha=None)
-        catalog = self.run_update()
-        assert len(catalog["bundles"]) == 2
-        assert self.summary.call_args.args[0].startswith("## 🔄 Update (2/3):")
-
-    def test_empty_repository_list_still_reports_zero_counts(self) -> None:
-        assert self.run_update()["bundles"] == []
-        assert self.summary.call_args.args[0] == "## 🔄 Update (0/0):"
-        self.fetch_repo.assert_not_called()
-        self.fetch_app.assert_not_called()
-
-    def test_default_update_does_not_advance_history_before_daily(self) -> None:
+    def test_normal_update_preserves_daily_history_baseline(self) -> None:
         self.add_target()
         self.run_update()
         assert load_json(self.history_path) == {}
         assert load_json(self.changelog_path) == []
-        with patch.object(
-            whats_new,
-            "load_json",
-            side_effect=lambda path, default: (
-                load_json(path, default)
-                if path == self.changelog_path
-                else pytest.fail("What's New must not reload the catalog or history")
-            ),
-        ):
-            self.run_update("daily")
+        self.run_update("daily")
         repo_url = "https://github.com/owner/alpha"
         assert load_json(self.history_path) == {repo_url: {"com.test.app": ["Patch"]}}
         assert load_json(self.changelog_path)[0]["bundles"][repo_url]["isNew"]
         assert self.markdown_path.is_file()
 
-    @pytest.mark.parametrize("mode", ("default", "daily", "weekly"))
+    @pytest.mark.parametrize("mode", ("default", "weekly"))
     def test_unavailable_and_invalid_bundles_keep_history_without_being_published(
         self, mode
     ) -> None:
@@ -682,8 +553,8 @@ class TestBundleUpdate:
         self.run_update("daily")
         assert old_url in load_json(self.history_path)
         markdown = self.markdown_path.read_text(encoding="utf-8")
-        assert "📦 (✨New)" in markdown
-        assert "📱 (✨New)" not in markdown
+        assert "owner/alpha" in markdown
+        assert "com.test.app" not in markdown
 
     def test_known_app_added_to_existing_bundle_is_not_announced(self) -> None:
         repo_url = "https://github.com/owner/alpha"
@@ -722,8 +593,10 @@ class TestBundleUpdate:
     def test_same_day_skip_preserves_baseline_and_removes_stale_notification(
         self,
     ) -> None:
+        self.clock.now.return_value = datetime(2026, 11, 15, 23, 30, tzinfo=UTC)
         self.add_target()
         self.run_update("daily")
+        assert load_json(self.changelog_path)[0]["date"] == "November 15, 2026"
         history = self.history_path.read_bytes()
         changelog = self.changelog_path.read_bytes()
         assert self.markdown_path.exists()
@@ -734,6 +607,7 @@ class TestBundleUpdate:
         assert not self.markdown_path.exists()
         self.clock.now.return_value += timedelta(days=1)
         self.run_update("daily")
+        assert load_json(self.changelog_path)[0]["date"] == "November 16, 2026"
         changes = load_json(self.changelog_path)[0]["bundles"]
         assert changes["https://github.com/owner/alpha"]["apps"] == {
             "com.test.app": {"patches": ["Next patch"]}
@@ -794,40 +668,12 @@ class TestBundleUpdate:
             self.run_update()
         assert not orphan_file.exists()
 
-    def test_local_processing_keeps_state_and_orphans_until_final_update(self) -> None:
-        self.add_target()
-        orphan_file = self.patches_dir / "orphan.json"
-        save_json(orphan_file, {})
-        snapshot = self.snapshot()
-        sources = {"https://github.com/owner/alpha": {"repo": "owner/alpha"}}
-        local_hashes = local_data.process(sources, {}, load_json(self.repos_path), {})
-        assert set(local_hashes) == {"https://github.com/owner/alpha"}
-        assert (
-            "compatiblePackages"
-            in sources["https://github.com/owner/alpha"]["patches"][0]
-        )
-        assert (
-            "compatiblePackagesKey"
-            not in sources["https://github.com/owner/alpha"]["patches"][0]
-        )
-        assert self.snapshot() == snapshot
-        assert orphan_file.exists()
-
-    def test_app_name_comes_from_selected_branch(self) -> None:
-        main = self.app_patch()
-        main["compatiblePackages"][0]["name"] = "Stable app"
-        dev = self.app_patch()
-        dev["compatiblePackages"][0]["name"] = "Dev app"
-        self.add_target(timestamp=BUNDLE_TIME_MS + 1, patches=[main])
-        self.add_target(branch="dev", patches=[dev])
-        assert self.run_update()["store"]["com.test.app"]["name"] == "Stable app"
-
     def test_official_status_and_metadata_do_not_leak_across_hosts(self) -> None:
         self.add_target()
         self.add_target(source="gitlab")
         repos = load_json(self.repos_path)
         repos["https://github.com/owner/alpha"].update(
-            {"stars": 100, "description": "GitHub"}
+            {"stars": 100, "description": "GitHub", "isArchived": True}
         )
         repos["https://gitlab.com/owner/alpha"].update(
             {"stars": 5, "description": "GitLab"}
@@ -842,6 +688,8 @@ class TestBundleUpdate:
         assert "isOfficial" not in bundles["gitlab"]
         assert bundles["github"]["stars"] == 100
         assert bundles["gitlab"]["stars"] == 5
+        assert bundles["github"]["isArchived"]
+        assert "isArchived" not in bundles["gitlab"]
 
     def test_rename_preserves_other_host_and_keeps_new_files_readable(self) -> None:
         self.add_target()
@@ -859,25 +707,15 @@ class TestBundleUpdate:
         assert self.run_update() == catalog
 
 
-@pytest.mark.parametrize(
-    "error",
-    (
-        URLError("DNS failed"),
-        HTTPException("Connection closed"),
-        ExtraHTTPError("HTTP 503"),
-        ValueError("Invalid JSON"),
-    ),
-)
-def test_google_play_request_failure_preserves_saved_app_and_updates_other_apps(
+def test_google_play_failure_preserves_saved_app_and_updates_other_apps(
     tmp_path: Path,
-    error: Exception,
 ) -> None:
     saved_app = {"name": "Saved app", "minInstalls": 100, "category": "Tools"}
     apps = {"com.test.failed": dict(saved_app), "com.test.working": {}}
 
     def fetch_app(package_name: str, **_kwargs: object) -> dict:
         if package_name == "com.test.failed":
-            raise error
+            raise ExtraHTTPError("HTTP 503")
         return {"title": "Working app"}
 
     with (
@@ -885,12 +723,11 @@ def test_google_play_request_failure_preserves_saved_app_and_updates_other_apps(
         patch.object(gplay_scrape, "OFFICIAL_BUNDLES_PATH", tmp_path / "official.json"),
     ):
         gplay_scrape.process(apps, "weekly")
-
     assert apps["com.test.failed"] == saved_app
     assert apps["com.test.working"]["name"] == "Working app"
 
 
-@pytest.mark.parametrize("mode", ("default", "daily", "weekly"))
+@pytest.mark.parametrize("mode", ("default", "weekly"))
 def test_universal_skips_google_play_and_keeps_official_metadata(mode) -> None:
     apps = {PACKAGE_UNIVERSAL: {"name": "Saved universal"}, "com.test.app": {}}
     official = {

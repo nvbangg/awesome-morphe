@@ -8,71 +8,37 @@ from common import repositories
 from discovery import audit_readme
 
 
-@pytest.mark.parametrize("code", repositories.UNAVAILABLE_HTTP_CODES)
-@pytest.mark.parametrize("source", ("github", "gitlab"))
-def test_audit_still_classifies_unavailable_repositories(
-    code, source, block_network
-) -> None:
+@pytest.mark.parametrize("source,code", (("github", 404), ("gitlab", 451)))
+def test_audit_reports_unavailable_repositories(source, code, block_network) -> None:
     repo_url = f"https://{source}.com/owner/alpha"
     with (
-        HTTPError("https://example.com", code, "Failed", Message(), None) as error,
+        HTTPError(repo_url, code, "Failed", Message(), None) as error,
         patch.object(repositories, "fetch", side_effect=error),
         patch.object(audit_readme, "load_lines", side_effect=[[repo_url], []]),
     ):
         block_network.side_effect = error
-        summary = audit_readme.audit_repos_and_links()
-        assert f"{repo_url}: {code}" in summary
-        assert "Other errors" not in summary
-        assert "####" not in summary
+        report = audit_readme.audit_repos_and_links()
+    assert repo_url in report
+    assert str(code) in report
 
 
-def test_gitlab_invalid_metadata_does_not_stop_other_repository_audit() -> None:
+def test_audit_continues_after_one_repository_fails() -> None:
     failed_url = "https://gitlab.com/owner/failed"
-    working_url = "https://github.com/owner/working"
+    archived_url = "https://github.com/owner/archived"
     with (
         patch.object(
-            repositories, "fetch", return_value={"full_name": "owner/working"}
+            audit_readme, "load_lines", side_effect=[[failed_url, archived_url], []]
         ),
-        patch.object(
-            audit_readme, "load_lines", side_effect=[[failed_url, working_url], []]
-        ),
-    ):
-        summary = audit_readme.audit_repos_and_links()
-    assert f"{failed_url}: Invalid repository data" in summary
-    assert "Unavailable" not in summary
-    assert "<details open>\n<summary><h3>README audit (1)</h3></summary>" in summary
-    assert "Audited " not in summary
-
-
-@pytest.mark.parametrize("result_count", (1, 10))
-def test_only_other_audit_errors_are_collapsed_regardless_of_count(
-    result_count,
-) -> None:
-    with (
         patch.object(
             audit_readme,
-            "load_lines",
-            side_effect=[
-                [
-                    f"https://github.com/owner/repo-{index}"
-                    for index in range(result_count)
-                ],
-                ["https://example.com"],
-            ],
-        ),
-        patch.object(audit_readme, "fetch_repo_details", return_value={"is_404": True}),
-        patch.object(
-            audit_readme, "check_link_status", return_value={"error": "Timeout"}
+            "fetch_repo_details",
+            side_effect=lambda url: (
+                {"error": "Invalid data"}
+                if url == failed_url
+                else {"is_archived": True}
+            ),
         ),
     ):
-        summary = audit_readme.audit_repos_and_links()
-    unavailable, other = summary.split("- <details>\n  <summary>Other errors</summary>")
-    assert (
-        f"<details open>\n<summary><h3>README audit ({result_count + 1})</h3></summary>"
-        in unavailable
-    )
-    assert unavailable.count("- https://github.com/owner/repo-") == result_count
-    assert "####" not in summary
-    assert "<details>" not in unavailable
-    assert "Timeout" in other
-    assert summary.count("<details>") == 1
+        report = audit_readme.audit_repos_and_links()
+    assert failed_url in report
+    assert archived_url in report

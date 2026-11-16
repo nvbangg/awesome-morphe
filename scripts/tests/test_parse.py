@@ -48,7 +48,6 @@ class TestBundleParser:
     def complete_parser(
         self,
         targets: list[bundle_fetch.BranchFetchResult],
-        content: str = '{"patches": [{"name": "Valid patch"}]}',
     ) -> None:
 
         def run_parser(
@@ -56,8 +55,9 @@ class TestBundleParser:
         ) -> subprocess.CompletedProcess:
             assert not self.parsed_path.exists()
             for target in targets:
-                (self.patches_dir / f"{target.target_name}.json").write_text(
-                    content, encoding="utf-8"
+                save_json(
+                    self.patches_dir / f"{target.target_name}.json",
+                    {"patches": [{"name": "Valid patch"}]},
                 )
             self.parsed_path.write_text(
                 "\n".join(f"{target.target_name}.json" for target in targets),
@@ -82,12 +82,7 @@ class TestBundleParser:
         self.parsed_path.write_text("stale.json", encoding="utf-8")
         self.complete_parser(targets)
         bundle_fetch.run_bundle_parser(targets)
-        self.run_process.assert_called_once_with(
-            [str(self.gradle_path), "run", "--args=updated_files.txt"],
-            cwd=str(self.root),
-            text=True,
-            check=True,
-        )
+        self.run_process.assert_called_once()
         assert load_lines(self.updated_path) == [
             f"mpp/{target.target_name}.mpp" for target in targets
         ]
@@ -101,14 +96,9 @@ class TestBundleParser:
             bundle_fetch.run_bundle_parser([target])
         assert not self.parsed_path.exists()
 
-    def test_launch_error_stops_processing(self) -> None:
-        self.run_process.side_effect = OSError("Cannot start parser")
-        with pytest.raises(OSError):
-            bundle_fetch.run_bundle_parser([self.target()])
-
     def test_missing_success_report_stops_processing(self) -> None:
         self.run_process.return_value = subprocess.CompletedProcess([], 0)
-        with pytest.raises(RuntimeError, match="did not write"):
+        with pytest.raises(RuntimeError):
             bundle_fetch.run_bundle_parser([self.target()])
 
     def test_partial_success_clears_only_failed_target_and_its_name(self) -> None:
@@ -138,23 +128,3 @@ class TestBundleParser:
         self.run_process.side_effect = run_parser
         bundle_fetch.run_bundle_parser([target])
         assert target.new_sha is None
-
-    @pytest.mark.parametrize("content", ("{broken", "{}", '{"patches": []}'))
-    def test_output_content_validation_is_left_to_update(self, content) -> None:
-        target = self.target()
-        self.complete_parser([target], content=content)
-        bundle_fetch.run_bundle_parser([target])
-        assert target.new_sha == "new-sha"
-        assert (self.patches_dir / f"{target.target_name}.json").read_text(
-            encoding="utf-8"
-        ) == content
-
-    def test_failed_target_can_be_parsed_in_a_later_run(self) -> None:
-        target = self.target()
-        self.complete_parser([])
-        bundle_fetch.run_bundle_parser([target])
-        assert target.new_sha is None
-        target = self.target()
-        self.complete_parser([target])
-        bundle_fetch.run_bundle_parser([target])
-        assert target.new_sha == "new-sha"

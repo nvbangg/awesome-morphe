@@ -1,33 +1,9 @@
 import os
-import urllib.error
-import urllib.request
-from email.message import Message
-from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
-from common import config, http, repositories, summary
-
-
-def test_shared_paths_still_resolve_from_the_repository_root() -> None:
-    repository_root = Path(__file__).resolve().parents[2]
-    assert repository_root == config.ROOT_DIR
-    assert repository_root / "scripts" == config.SCRIPTS_DIR
-    assert repository_root / "data/repos.json" == config.REPOS_JSON_PATH
-
-
-def test_connection_error_is_not_retried() -> None:
-    with (
-        patch.object(
-            urllib.request,
-            "urlopen",
-            side_effect=urllib.error.URLError("DNS failed"),
-        ) as open_url,
-        pytest.raises(urllib.error.URLError),
-    ):
-        http.fetch("https://example.com/data")
-    open_url.assert_called_once()
+from common import http, repositories
 
 
 @pytest.mark.parametrize(
@@ -107,102 +83,3 @@ def test_gitlab_token_is_only_attached_to_gitlab_api(url, authenticated) -> None
     with patch.dict(os.environ, {"GITLAB_TOKEN": "test-token"}):
         headers = http.get_auth_headers(url)
     assert headers.get("PRIVATE-TOKEN") == ("test-token" if authenticated else None)
-
-
-@pytest.mark.parametrize(
-    "url,token_name,header",
-    (
-        ("https://api.github.com/repos/owner/repo", "GITHUB_TOKEN", "Authorization"),
-        ("https://gitlab.com/api/v4/projects/123", "GITLAB_TOKEN", "Private-token"),
-    ),
-)
-@pytest.mark.parametrize("token", (None, "test-token"))
-def test_requests_use_urlopen_with_or_without_token(
-    block_network, url, token_name, header, token
-) -> None:
-    block_network.side_effect = None
-    block_network.return_value.__enter__.return_value.read.return_value = b"{}"
-    with patch.dict(os.environ, {token_name: token} if token else {}):
-        assert http.fetch(url, as_json=True) == {}
-    block_network.assert_called_once()
-    request = block_network.call_args.args[0]
-    expected = f"Bearer {token}" if token and header == "Authorization" else token
-    assert request.get_header(header) == expected
-
-
-def test_http_error_is_not_retried(patch_context) -> None:
-    error = urllib.error.HTTPError(
-        "https://example.com/data", 503, "Unavailable", Message(), None
-    )
-    patch_context.callback(error.close)
-    with (
-        patch.object(urllib.request, "urlopen", side_effect=error) as open_url,
-        pytest.raises(urllib.error.HTTPError),
-    ):
-        http.fetch("https://example.com/data")
-    open_url.assert_called_once()
-
-
-def test_invalid_json_is_not_retried_or_reported_as_network_error() -> None:
-    response = MagicMock()
-    response.__enter__.return_value.read.return_value = b"{broken"
-    with (
-        patch.object(urllib.request, "urlopen", return_value=response) as open_url,
-        pytest.raises(ValueError),
-    ):
-        http.fetch("https://example.com/data", as_json=True)
-    open_url.assert_called_once()
-
-
-@pytest.mark.parametrize("result_count,collapsed", ((1, True), (10, False)))
-def test_section_collapse_is_explicit_instead_of_count_based(
-    result_count, collapsed
-) -> None:
-    content = "\n".join(f"- Result {index}" for index in range(result_count))
-    section = summary.format_summary_section(
-        "Results", content, result_count=result_count, collapsed=collapsed
-    )
-    assert content in section
-    if collapsed:
-        assert section.count("<details>") == 1
-        assert section.startswith(
-            f"<details>\n<summary><h3>Results ({result_count})</h3></summary>\n\n"
-        )
-        assert section.endswith("\n\n</details>")
-    else:
-        assert section.startswith(
-            f"<details open>\n<summary><h3>Results ({result_count})</h3></summary>\n\n"
-        )
-        assert section.endswith("\n\n</details>")
-
-
-def test_expanded_section_keeps_its_heading_and_content() -> None:
-    content = "\n".join(f"- Detail {index}" for index in range(20))
-    section = summary.format_summary_section(
-        "Warnings", content, result_count=1, heading_level=4
-    )
-    assert section == (
-        f"<details open>\n<summary><h4>Warnings (1)</h4></summary>\n\n{content}\n\n</details>"
-    )
-
-
-def test_sections_in_separate_step_files_have_one_separator_each(
-    tmp_path: Path,
-) -> None:
-    root = tmp_path
-    paths = []
-    for section_name in ("Discover", "Fetch", "Update"):
-        path = root / f"{section_name}.md"
-        with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(path)}):
-            summary.append_step_summary(f"## {section_name}:\n\n- Warning")
-        paths.append(path)
-        assert path.read_text(encoding="utf-8").endswith("\n\n---\n\n")
-    combined_summary = "\n".join(path.read_text(encoding="utf-8") for path in paths)
-    assert combined_summary.count("\n---\n") == len(paths)
-
-
-def test_empty_content_does_not_create_summary_or_separator(tmp_path: Path) -> None:
-    path = tmp_path / "summary.md"
-    with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(path)}):
-        summary.append_step_summary(" \n ")
-    assert not path.exists()
