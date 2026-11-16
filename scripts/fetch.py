@@ -11,6 +11,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import zipfile
+import zlib
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from http import HTTPStatus
@@ -68,7 +69,15 @@ FETCH_ERROR_SECTIONS = {
 
 def extract_mpp_name(mpp_file: bytes) -> str | None:
     with (
-        contextlib.suppress(Exception),
+        contextlib.suppress(
+            zipfile.BadZipFile,
+            KeyError,
+            UnicodeDecodeError,
+            EOFError,
+            OSError,
+            RuntimeError,
+            zlib.error,
+        ),
         zipfile.ZipFile(io.BytesIO(mpp_file), "r") as zip_file,
     ):
         manifest_text = zip_file.read("META-INF/MANIFEST.MF").decode("utf-8")
@@ -486,10 +495,9 @@ def refresh_repo_metadata(
     ]
     warnings = []
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-        futures = {executor.submit(repository_details.get, url): url for url in tasks}
-        for future in as_completed(futures):
-            repo_url = futures[future]
-            details = future.result()
+        for repo_url, details in zip(
+            tasks, executor.map(repository_details.get, tasks), strict=True
+        ):
             if not details or details.get("error"):
                 reason = details.get("error", "Invalid repository data")
                 warnings.append(f"{repo_url}: {reason}")

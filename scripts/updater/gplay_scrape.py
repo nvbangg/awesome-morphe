@@ -1,6 +1,6 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 from http.client import HTTPException
 
 from google_play_scraper import app as gplay_app
@@ -65,13 +65,11 @@ def process(apps_dict: dict, mode: str) -> None:
             f"\nScraping Google Play for {len(apps_to_scrape)} apps (mode: {mode})..."
         )
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            future_to_package = {
-                executor.submit(fetch_app_details, package_name): package_name
-                for package_name in apps_to_scrape
-            }
-            for future in as_completed(future_to_package):
-                package_name = future_to_package[future]
-                details, is_404 = future.result()
+            for package_name, (details, is_404) in zip(
+                apps_to_scrape,
+                executor.map(fetch_app_details, apps_to_scrape),
+                strict=True,
+            ):
                 current_app = apps_dict[package_name]
                 if not is_404 and details:
                     current_app.update(

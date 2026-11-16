@@ -1,6 +1,6 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 
 from common.config import (
     CONCURRENCY,
@@ -26,13 +26,9 @@ def audit_repos_and_links() -> str:
 
     if repo_urls:
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            future_to_url = {
-                executor.submit(fetch_repo_details, url): url for url in repo_urls
-            }
-            for future in as_completed(future_to_url):
-                url = future_to_url[future]
-                details = future.result()
-
+            for url, details in zip(
+                repo_urls, executor.map(fetch_repo_details, repo_urls), strict=True
+            ):
                 if details.get("is_404"):
                     issues.append(f"{url}: 404 Not Found")
                 elif details.get("is_451"):
@@ -52,13 +48,9 @@ def audit_repos_and_links() -> str:
 
     if link_urls:
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            future_to_link = {
-                executor.submit(check_link_status, url): url for url in link_urls
-            }
-            for future in as_completed(future_to_link):
-                url = future_to_link[future]
-                status = future.result()
-
+            for url, status in zip(
+                link_urls, executor.map(check_link_status, link_urls), strict=True
+            ):
                 if (
                     status.get("is_dead")
                     or status.get("status_code") in UNAVAILABLE_HTTP_CODES

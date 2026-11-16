@@ -30,7 +30,7 @@ def parse_timestamp(timestamp: Any) -> int:
         return int(timestamp)
     if isinstance(timestamp, str) and timestamp.isdigit():
         return int(timestamp)
-    with contextlib.suppress(Exception):
+    with contextlib.suppress(ValueError, OverflowError, OSError):
         parsed_datetime = datetime.fromisoformat(str(timestamp))
         tz_aware = (
             parsed_datetime

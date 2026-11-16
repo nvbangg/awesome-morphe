@@ -5,9 +5,10 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 from http.client import HTTPException
+from itertools import compress
 
 from common.config import (
     CONCURRENCY,
@@ -196,12 +197,9 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
             f"Checking {len(candidates)} candidates for patches-bundle.json and README...\n"
         )
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            future_to_repo = {
-                executor.submit(is_valid_candidate, repo): repo for repo in candidates
-            }
-            for future in as_completed(future_to_repo):
-                if future.result():
-                    valid_repos.append(future_to_repo[future])
+            valid_repos = list(
+                compress(candidates, executor.map(is_valid_candidate, candidates))
+            )
     else:
         print("Candidate list is empty. Skipping verification.")
 
