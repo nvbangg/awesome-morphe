@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.11.0-experimental.12",
+  "version": "2.11.0-experimental.13",
   "patches": [
     {
       "name": "Allow Screenshots",
@@ -2577,8 +2577,53 @@
       "options": []
     },
     {
-      "name": "Feed Ads & Content Filter",
-      "description": "Filters ads, shopping tags, live cards, and clutter from your feed.",
+      "name": "Feed Ad Blocker",
+      "description": "Removes commercial advertisements, brand promotions, and promotional audio from the For You, Following, and Search feeds.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.7.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download com.zhiliaoapp.musically v47.7.3 (APK) arm64-v8a nodpi versionCode 2024707030 (APK) from APKMirror"
+            }
+          ]
+        },
+        {
+          "packageName": "com.tiktok.lite.go",
+          "name": "TikTok Lite",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.6.51",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download com.tiktok.lite.go v47.6.51 (APKM) arm64-v8a versionCode 470651 (APKM) from APKMirror"
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Feed Content & Bloat Filter",
+      "description": "Filters bloat, shopping tags, live cards, and clutter from your feed.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -2621,15 +2666,6 @@
       ],
       "options": [
         {
-          "key": "filterAds",
-          "title": "Filter Feed Ads",
-          "description": "Removes sponsored advertisements, brand promotions, and promotional audio from the For You, Following, and Search feeds.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
           "key": "filterBloat",
           "title": "Filter Feed Bloat",
           "description": "Removes non-video clutter and floating ad widgets from the For You and Following feeds, including Touchpoint Rewards pendants, floating ad stickers, mini-games, CapCut/template creation prompts, memories ('On This Day'), community/topic cards, post-video surveys and evaluation questionnaires, mini-drama paywalls, and in-feed search recommendations.",
@@ -2651,15 +2687,6 @@
           "key": "blockLiveStreams",
           "title": "Block Live Streams",
           "description": "Removes live stream broadcast cards and live recommendations from the For You and Following feeds.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "hideAiContent",
-          "title": "Hide AI-Generated Content",
-          "description": "Filters and skips videos tagged with native AI-generated metadata, C2PA content credentials, or creator AI disclosure tags across the For You, Following, and Friends feeds.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -2938,6 +2965,51 @@
       ]
     },
     {
+      "name": "Hide AI-Generated Content",
+      "description": "Filters and skips videos tagged with native AI-generated metadata, C2PA content credentials, or creator AI disclosure tags across the For You, Following, and Friends feeds.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.7.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download com.zhiliaoapp.musically v47.7.3 (APK) arm64-v8a nodpi versionCode 2024707030 (APK) from APKMirror"
+            }
+          ]
+        },
+        {
+          "packageName": "com.tiktok.lite.go",
+          "name": "TikTok Lite",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.6.51",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download com.tiktok.lite.go v47.6.51 (APKM) arm64-v8a versionCode 470651 (APKM) from APKMirror"
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide Inbox Promos & Alerts",
       "description": "Hides promo banners, streak cards and suggestions in your inbox.",
       "default": true,
@@ -3028,6 +3100,51 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Hide Sponsored & Paid Partnership",
+      "description": "Removes creator commercial disclosures, branded content, and posts labeled 'Sponsored' or 'Paid partnership' from the feed.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.zhiliaoapp.musically",
+          "name": "TikTok",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.7.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download com.zhiliaoapp.musically v47.7.3 (APK) arm64-v8a nodpi versionCode 2024707030 (APK) from APKMirror"
+            }
+          ]
+        },
+        {
+          "packageName": "com.tiktok.lite.go",
+          "name": "TikTok Lite",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FE2C55",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "47.6.51",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Download com.tiktok.lite.go v47.6.51 (APKM) arm64-v8a versionCode 470651 (APKM) from APKMirror"
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "In-App Browser Privacy Guard",
