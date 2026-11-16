@@ -34,3 +34,4 @@ jobs:
             elif .lastDaily != $today then "daily"
             else "normal" end' data/ci.json)
           gh workflow run sync.yml --ref "$GITHUB_REF_NAME" -f mode="$MODE"
+          echo "::notice::Dispatched sync.yml (mode: $MODE)"
