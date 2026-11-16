@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.79.2",
+  "version": "1.79.9",
   "patches": [
     {
       "name": "Bypass PairIP application checks",
@@ -886,6 +886,32 @@
       "options": []
     },
     {
+      "name": "Enable Lifetime",
+      "description": "Pins the license state to the permanent verified state (the $49.99 Lifetime tier) at its single writer, so the app always runs as a lifetime license. Experimental: the license verdict is computed in the app's native library, so whether the recording engine honors the Java-side state can only be settled on a device. Call Recorder 3.7.8 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.skvalex.cr",
+          "name": "Call Recorder",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#689F38",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.7.8",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable Lifetime Pro",
       "description": "Turns on the app's Pro state (no ads, unlimited functions) as if the one-time \"Super Pro Forever\" purchase were owned — the lifetime state, with nothing to expire.",
       "default": true,
@@ -929,6 +955,32 @@
               "version": "1.4.5",
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Plus",
+      "description": "Turns on the app's Plus premium state: edit and remove watermarks, ultra quality, custom file names, unlimited annotations and saves, exports and the other personal Plus features, as if the Plus plan were bought.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oceangalaxy.camera.new",
+          "name": "Timemark",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v10.0.316",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -1777,6 +1829,110 @@
       "options": []
     },
     {
+      "name": "Remove telemetry",
+      "description": "Disables the Bugsnag crash-reporting startup provider so no crash, ANR or session reports are sent. Call Recorder ships no other telemetry SDK. Recording and all other features are unaffected. Call Recorder 3.7.8 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "org.skvalex.cr",
+          "name": "Call Recorder",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#689F38",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.7.8",
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Disables the unused Google datatransport upload services in the manifest. ContentCam ships no analytics or crash-reporting SDKs; this removes the one piece of inert upload plumbing it carries. All features are unaffected. ContentCam 2.8.0 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "app.contentcam.android",
+          "name": "ContentCam",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#00BCD4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.8.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Disables Firebase Analytics and Crashlytics collection, stops the AppMeasurement upload services, and removes the advertising ID permissions. Sign-in, favorites sync and all other features are unaffected. Drapes 3.9.3 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.codeswitch.drapes",
+          "name": "Drapes",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FFB300",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops the app reporting usage to SensorsData: both analytics event funnels (the SensorAnalyzeUtil sinks and the framework logger's LogService sinks) are cut, so no clicks, watermark edits, purchase steps or location-page events leave the device. Camera, backup, weather and all other features are unaffected.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oceangalaxy.camera.new",
+          "name": "Timemark",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v10.0.316",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Skip silence",
       "description": "Automatically skips silent pauses in audio playback.",
       "default": true,
@@ -1853,6 +2009,51 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Spoof watermark location",
+      "description": "Stamps photos as if taken at the latitude/longitude set in the patch options: the app resolves the place name and address for those coordinates, so the watermark shows that location. With both options empty (the default) nothing changes and the real GPS location is used.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oceangalaxy.camera.new",
+          "name": "Timemark",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#2196F3",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v10.0.316",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "latitude",
+          "title": "Spoofed latitude",
+          "description": "Decimal latitude, e.g. 33.4484. Must be set together with the longitude; leave both empty to keep the real GPS location.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "longitude",
+          "title": "Spoofed longitude",
+          "description": "Decimal longitude, e.g. -112.0740. Must be set together with the latitude; leave both empty to keep the real GPS location.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Unlimited coins & unlocks",

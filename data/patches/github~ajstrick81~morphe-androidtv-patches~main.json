@@ -1,5 +1,5 @@
 {
-  "version": "1.54.0",
+  "version": "1.55.0",
   "appNames": {
     "com.disney.disneyplus": "Disney+ Android TV",
     "com.espn.score_center": "ESPN Android TV",
@@ -18,7 +18,8 @@
     "com.tubitv": "Tubi Android TV",
     "tv.twitch.android.app": "Twitch",
     "com.univision.prendetv": "ViX Android TV",
-    "com.xumo.xumo.tv": "Xumo Play Android TV"
+    "com.xumo.xumo.tv": "Xumo Play Android TV",
+    "com.google.android.youtube.tv": "YouTube (Android TV)"
   },
   "patches": [
     {
@@ -103,6 +104,37 @@
             {
               "version": "6.24.13+v16.0.1.93-allAbis",
               "experimental": true
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Client context hook",
+      "description": "Spoofs the OS name to Android Automotive to suppress video ads.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.google.android.youtube.tv": [
+          "7.31.300",
+          "7.05.301"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "YouTube (Android TV)",
+          "packageName": "com.google.android.youtube.tv",
+          "description": null,
+          "appIconColor": 16711680,
+          "targets": [
+            {
+              "version": "7.31.300",
+              "experimental": false
+            },
+            {
+              "version": "7.05.301",
+              "experimental": false
             }
           ]
         }
@@ -264,6 +296,37 @@
             {
               "version": "6.24.13+v16.0.1.93-allAbis",
               "experimental": true
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Clone YouTube (Android TV)",
+      "description": "Installs the patched YouTube Android TV as a separate app alongside the stock one, instead of replacing it. Enable this when YouTube is a preinstalled system app that can't be uninstalled — most Android TV boxes ship it in /product, and a patched build cannot be installed over it (signature mismatch). The clone gets its own package (suffix .morphe) and its own settings. Leave OFF if the original was uninstalled first, or if the app is not a system app. Makes no changes when \"GmsCore support\" is applied, because that patch already renames the app. Opt-in.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.google.android.youtube.tv": [
+          "7.31.300",
+          "7.05.301"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "YouTube (Android TV)",
+          "packageName": "com.google.android.youtube.tv",
+          "description": null,
+          "appIconColor": 16711680,
+          "targets": [
+            {
+              "version": "7.31.300",
+              "experimental": false
+            },
+            {
+              "version": "7.05.301",
+              "experimental": false
             }
           ]
         }
@@ -606,6 +669,39 @@
             },
             {
               "version": "5.0.0",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Signs in to Google through MicroG-RE (GmsCore) instead of Google Play services. Points every Play services package name, permission, intent action and content provider at app.revanced.android.gms, telling MicroG-RE to present the stock package name and signing certificate. Required for resigned builds: Google Play services rejects them with \"PackageVerificationRslt: not allowed\". MicroG-RE must be installed; without it the app cannot sign in.",
+      "use": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.google.android.youtube.tv": [
+          "7.31.300",
+          "7.05.301"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "YouTube (Android TV)",
+          "packageName": "com.google.android.youtube.tv",
+          "description": null,
+          "appIconColor": 16711680,
+          "targets": [
+            {
+              "version": "7.31.300",
+              "experimental": false
+            },
+            {
+              "version": "7.05.301",
               "experimental": false
             }
           ]
@@ -1629,6 +1725,40 @@
           "targets": [
             {
               "version": "4.9.147",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip ads",
+      "description": "Removes the ad schedule (adPlacements, adSlots, playerAds, adBreakHeartbeatParams) from every InnerTube response before the YouTube leanback web app (youtube.com/tv) reads it, and removes sponsored tiles (adSlotRenderer and the promoted* renderers) from feeds. Also keeps the existing Android Automotive OS-name spoof that suppresses video ads client-side.",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": {
+        "com.google.android.youtube.tv": [
+          "7.31.300",
+          "7.05.301"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "YouTube (Android TV)",
+          "packageName": "com.google.android.youtube.tv",
+          "description": null,
+          "appIconColor": 16711680,
+          "targets": [
+            {
+              "version": "7.31.300",
+              "experimental": false
+            },
+            {
+              "version": "7.05.301",
               "experimental": false
             }
           ]
