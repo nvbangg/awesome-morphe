@@ -1,5 +1,5 @@
 {
-    "version": "1.1.0-dev.32",
+    "version": "1.1.0-dev.33",
     "patches": [
         {
             "name": "Auto-skip",
@@ -6931,6 +6931,81 @@
                 }
             ],
             "options": []
+        },
+        {
+            "name": "Force decode capability (experimental)",
+            "description": "Reports video as decodable at every size and frame rate, so the app can request the highest rendition. Experimental: can stutter or fail on a device that cannot decode it. Pair with Video quality set to 2160p.",
+            "default": false,
+            "category": "Video",
+            "compatiblePackages": [
+                {
+                    "packageName": "com.wbd.hbomax",
+                    "name": "HBO Max",
+                    "description": "The HBO Max phone app.",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#002BE7",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "22.0.0.321",
+                            "versionCodes": {
+                                "ARM64_V8A": 1800026515,
+                                "ARMEABI_V7A": 1800026515,
+                                "X86_64": 1800026515,
+                                "X86": 1800026515
+                            },
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": "Phone build"
+                        },
+                        {
+                            "version": "7.14.0.530",
+                            "versionCodes": {
+                                "ARM64_V8A": 1800025444,
+                                "ARMEABI_V7A": 1800025444,
+                                "X86_64": 1800025444,
+                                "X86": 1800025444
+                            },
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": "Phone build"
+                        }
+                    ]
+                },
+                {
+                    "packageName": "com.wbd.stream",
+                    "name": "HBO Max",
+                    "description": "The HBO Max phone app as the Play Store installs it (version 22.0.0.321).",
+                    "apkFileType": "APKM",
+                    "appIconColor": "#002BE7",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "22.0.0.321",
+                            "versionCodes": {
+                                "ARM64_V8A": 1800026515,
+                                "ARMEABI_V7A": 1800026515,
+                                "X86_64": 1800026515,
+                                "X86": 1800026515
+                            },
+                            "isExperimental": false,
+                            "minSdk": 32,
+                            "description": "Phone build"
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "aggressive",
+                    "title": "Aggressive",
+                    "description": "Also report every format as fully supported, not just its size and frame rate. Only for a device that under-reports codec support; more likely to break playback.",
+                    "required": false,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                }
+            ]
         },
         {
             "name": "Force highest quality",
