@@ -4,10 +4,7 @@ from common.files import load_json, save_json
 
 
 def load_provider_sources(path: Path) -> dict:
-    try:
-        data = load_json(path)
-    except UnicodeError:
-        return {}
+    data = load_json(path)
     if not isinstance(data, dict) or not all(
         isinstance(entry, dict) for entry in data.values()
     ):

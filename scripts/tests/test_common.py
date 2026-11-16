@@ -1,9 +1,52 @@
+import json
 import os
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 
-from common import http, repositories
+from common import files, http, repositories
+from discovery import load_provider_sources
+
+
+@pytest.mark.parametrize(
+    "content,error_type",
+    ((b"{broken", json.JSONDecodeError), (b"\xff", UnicodeDecodeError)),
+)
+def test_json_read_defaults_only_when_missing(
+    tmp_path: Path, content, error_type
+) -> None:
+    path = tmp_path / "history.json"
+    assert files.load_json(path) == {}
+    assert files.load_json(path, []) == []
+    path.write_bytes(content)
+    with pytest.raises(error_type):
+        files.load_json(path)
+    with pytest.raises(error_type):
+        load_provider_sources(path)
+
+
+@pytest.mark.parametrize("failure_stage", ("serialization", "replace"))
+def test_json_write_failure_preserves_original_and_removes_temporary_file(
+    tmp_path: Path, failure_stage: str
+) -> None:
+    path = tmp_path / "history.json"
+    files.save_json(path, {"saved": "Dữ liệu cũ"})
+    original = path.read_bytes()
+    if failure_stage == "serialization":
+        with pytest.raises(TypeError):
+            files.save_json(path, {"new": [1, object()]})
+    else:
+        with (
+            patch.object(Path, "replace", side_effect=PermissionError("Denied")),
+            pytest.raises(PermissionError),
+        ):
+            files.save_json(path, {"new": [1, 2]})
+    assert path.read_bytes() == original
+    assert list(tmp_path.iterdir()) == [path]
+    files.save_json(path, {"new": "Dữ liệu mới"})
+    assert files.load_json(path) == {"new": "Dữ liệu mới"}
+    assert path.read_bytes().endswith(b"\n")
 
 
 @pytest.mark.parametrize(
