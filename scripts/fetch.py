@@ -19,6 +19,7 @@ from http.client import HTTPException
 from threading import Lock
 
 from dotenv import load_dotenv
+from pydantic import ValidationError
 
 from common.config import (
     BUNDLES_DIR,
@@ -33,6 +34,7 @@ from common.config import (
 from common.files import load_json, load_lines, save_json
 from common.http import fetch, get_auth_headers
 from common.images import normalize_image_url
+from common.models import BUNDLE_MANIFEST, REPOSITORIES
 from common.repositories import (
     build_raw_url,
     build_repo_url,
@@ -254,13 +256,11 @@ def process_repo_branch(
         and bundle_content is None
     ):
         if weekly:
-            bundle_data = load_json(bundle_file)
-            mpp_url = (
-                bundle_data.get("download_url")
-                if isinstance(bundle_data, dict)
-                else None
-            )
-            if not isinstance(mpp_url, str) or not mpp_url:
+            try:
+                mpp_url = BUNDLE_MANIFEST.validate_python(load_json(bundle_file))[
+                    "download_url"
+                ]
+            except ValidationError:
                 return failed("Invalid `download_url`", "metadata", True)
             try:
                 get_remote_file_hash(mpp_url, source, "exists")
@@ -287,13 +287,12 @@ def process_repo_branch(
         return failed(str(error), "metadata")
     try:
         bundle_data = json.loads(bundle_content)
+        manifest = BUNDLE_MANIFEST.validate_python(bundle_data)
     except ValueError:
         return failed("Invalid data", "metadata", True)
-    if not isinstance(bundle_data, dict):
-        return failed("Invalid data", "metadata", True)
     try:
-        mpp_url = bundle_data.get("download_url")
-        if not isinstance(mpp_url, str) or not mpp_url.lower().endswith(".mpp"):
+        mpp_url = manifest["download_url"]
+        if not mpp_url.lower().endswith(".mpp"):
             return failed("Invalid `download_url`", "metadata", True)
         parsed_url = urllib.parse.urlsplit(mpp_url)
         if parsed_url.scheme != "https":
@@ -524,7 +523,7 @@ def refresh_repo_metadata(
 
 
 def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
-    repos_data = load_json(REPOS_JSON_PATH)
+    repos_data = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
     initial_repos = {url: dict(metadata) for url, metadata in repos_data.items()}
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
@@ -541,13 +540,17 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         repos_data, daily or weekly, repository_details
     )
     previous_preferred = {}
+    renamed_repos = {}
     for repo_url, repo_metadata in repos_data.items():
         source, repo = parse_repo_url(repo_url)
-        if not source or not repo or not isinstance(repo_metadata, dict):
+        if not source or not repo:
             continue
         previous_preferred[repo_url] = next(
             (branch for branch in DEFAULT_BRANCHES if repo_metadata.get(branch)), None
         )
+        renamed_repos[source, repo] = parse_repo_url(
+            repo_metadata.get("renamedTo") or ""
+        )[1]
         for branch in DEFAULT_BRANCHES:
             tasks.append((source, repo, branch, repo_metadata.get(branch)))
         if daily or weekly:
@@ -562,9 +565,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 *task,
                 weekly=weekly,
                 bundle_downloads=bundle_downloads,
-                renamed_repo=parse_repo_url(
-                    repos_data[build_repo_url(task[0], task[1])].get("renamedTo")
-                )[1],
+                renamed_repo=renamed_repos[task[0], task[1]],
                 repository_details=repository_details,
             )
             for task in tasks
@@ -582,6 +583,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     updated_count = 0
     for result in results:
         repo_url = build_repo_url(result.source, result.repo)
+        assert repo_url is not None
         repo_metadata = repos_data[repo_url]
         if result.renamed_to and repo_metadata.get("renamedTo") != result.renamed_to:
             repo_metadata["renamedTo"] = result.renamed_to
@@ -589,7 +591,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         if not result.status_changed:
             continue
         updated_count += 1
-        repo_metadata[result.branch] = result.new_sha
+        repo_metadata.update({result.branch: result.new_sha})
     if image_tasks:
         print(f"Processing {len(image_tasks)} image targets...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
@@ -604,7 +606,9 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                     errors["image"].append(error_message)
                 if status_changed:
                     updated_count += 1
-                    repos_data[build_repo_url(source, repo)]["image"] = new_image_sha
+                    repo_url = build_repo_url(source, repo)
+                    assert repo_url is not None
+                    repos_data[repo_url]["image"] = new_image_sha
     grouped_results = {}
     for result in results:
         grouped_results.setdefault(

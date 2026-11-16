@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 from common.config import BUNDLE_SOURCES_DIR, REPOS_JSON_PATH, ROOT_DIR, SCRIPTS_DIR
 from common.files import load_json, save_json
+from common.models import REPOSITORIES
 from common.repositories import build_repo_url, parse_repo_url
 from common.summary import append_step_summary, format_summary_section
 from discovery import (
@@ -63,7 +64,6 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
     existing_lower = {
         existing_repo.lower(): (existing_repo, existing_metadata)
         for existing_repo, existing_metadata in existing_repos.items()
-        if isinstance(existing_metadata, dict)
     }
     synced = {}
     for repo_url, entry in merged.items():
@@ -121,7 +121,7 @@ def main(argv: list[str] | None = None) -> int:
     merged = _merge(provider_files)
     print(f"Merged {len(merged)} unique sources")
 
-    existing_repos = load_json(REPOS_JSON_PATH)
+    existing_repos = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
     synced_repos = _sync_repos(merged, existing_repos)
     print(f"Synced {len(synced_repos)} repos")
     save_json(REPOS_JSON_PATH, synced_repos)

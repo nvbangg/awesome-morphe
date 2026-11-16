@@ -4,8 +4,11 @@ import urllib.error
 import urllib.parse
 from http.client import HTTPException
 
+from pydantic import ValidationError
+
 from common.config import UNAVAILABLE_HTTP_CODES
 from common.http import fetch
+from common.models import GITHUB_REPOSITORY, GITLAB_REPOSITORY
 
 
 def parse_repo_url(repo_url: str) -> tuple[str, str] | tuple[None, None]:
@@ -72,10 +75,8 @@ def fetch_repo_details(repo_url: str) -> dict:
 
     try:
         response = fetch(api_url, as_json=True)
-        if not response or not isinstance(response, dict):
-            return {}
-
         if source == "github":
+            response = GITHUB_REPOSITORY.validate_python(response)
             return {
                 "stars": response.get("stargazers_count", 0),
                 "description": response.get("description"),
@@ -84,12 +85,7 @@ def fetch_repo_details(repo_url: str) -> dict:
                 "is_archived": bool(response.get("archived")),
             }
 
-        if (
-            not isinstance(response.get("path_with_namespace"), str)
-            or not response["path_with_namespace"]
-            or not isinstance(response.get("archived"), bool)
-        ):
-            return {"error": "Invalid repository data"}
+        response = GITLAB_REPOSITORY.validate_python(response)
         avatar = response.get("avatar_url") or (response.get("namespace") or {}).get(
             "avatar_url"
         )
@@ -103,5 +99,7 @@ def fetch_repo_details(repo_url: str) -> dict:
             "full_name": response.get("path_with_namespace"),
             "is_archived": response["archived"],
         }
+    except ValidationError:
+        return {"error": "Invalid repository data"}
     except (OSError, HTTPException, ValueError) as error:
         return _request_error(error)

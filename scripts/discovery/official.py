@@ -5,6 +5,7 @@ from http.client import HTTPException
 from common.config import BUNDLE_SOURCES_DIR, OFFICIAL_BUNDLES_PATH, PROJECT_USER_AGENT
 from common.files import save_json
 from common.http import fetch
+from common.models import OFFICIAL_CATALOG
 from common.repositories import build_repo_url
 from discovery import export_provider, report_provider_warning
 
@@ -19,21 +20,16 @@ HEADERS = {
 def discover() -> str | None:
     try:
         data = fetch(BUNDLES_URL, HEADERS, as_json=True)
+        catalog = OFFICIAL_CATALOG.validate_python(data)
     except (OSError, HTTPException) as error:
         return report_provider_warning("official", error, OUTPUT_PATH)
     except ValueError:
         return report_provider_warning("official", "Invalid provider data", OUTPUT_PATH)
 
-    if not isinstance(data, dict) or not isinstance(data.get("bundles"), list):
-        return report_provider_warning("official", "Invalid provider data", OUTPUT_PATH)
-
     discovered = {
         url: {}
-        for bundle in data["bundles"]
-        if isinstance(bundle, dict)
-        and isinstance(bundle.get("source"), str)
-        and isinstance(bundle.get("repo"), str)
-        and (url := build_repo_url(bundle["source"], bundle["repo"]))
+        for bundle in catalog["bundles"]
+        if (url := build_repo_url(bundle["source"], bundle["repo"]))
     }
     if discovered:
         save_json(OFFICIAL_BUNDLES_PATH, data)

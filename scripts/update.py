@@ -23,6 +23,7 @@ from common.config import (
     SCRIPTS_DIR,
 )
 from common.files import load_json, save_json
+from common.models import APP_HASHES, HISTORY, REPOSITORIES, SOURCES
 from common.repositories import build_raw_url, build_repo_url, parse_repo_url
 from common.summary import append_step_summary, format_summary_section
 from updater import gplay_scrape, local_data, whats_new
@@ -111,10 +112,10 @@ def main() -> int:
     args = parser.parse_args()
     mode = "weekly" if args.weekly else "daily" if args.daily else "default"
 
-    repos_data = load_json(REPOS_JSON_PATH)
-    existing_hashes = load_json(HASHES_PATH)
-    existing_history = load_json(HISTORY_PATH)
-    custom_data = load_json(CUSTOM_JSON_PATH)
+    repos_data = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
+    existing_hashes = APP_HASHES.validate_python(load_json(HASHES_PATH))
+    existing_history = HISTORY.validate_python(load_json(HISTORY_PATH))
+    custom_data = SOURCES.validate_python(load_json(CUSTOM_JSON_PATH))
     existing_bundles_data = load_json(BUNDLES_JSON_PATH)
     existing_bundles = {
         build_repo_url(bundle.get("source"), bundle.get("repo")): bundle
@@ -126,7 +127,7 @@ def main() -> int:
     total_repo_count = 0
     for repo_url, repo_metadata in repos_data.items():
         source, repo = parse_repo_url(repo_url)
-        if not source or not repo or not isinstance(repo_metadata, dict):
+        if not source or not repo:
             continue
         if any(repo_metadata.get(branch) for branch in DEFAULT_BRANCHES):
             total_repo_count += 1

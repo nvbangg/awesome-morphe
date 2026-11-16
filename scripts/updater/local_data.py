@@ -8,6 +8,8 @@ import time
 from datetime import UTC, datetime
 from typing import Any
 
+from pydantic import ValidationError
+
 from common.config import (
     BUNDLES_DIR,
     DEFAULT_BRANCHES,
@@ -16,6 +18,7 @@ from common.config import (
     PATCHES_DIR,
 )
 from common.files import load_json
+from common.models import BUNDLE_MANIFEST, PATCH, PATCH_LIST, Patch
 from common.repositories import parse_repo_url
 
 _BUNDLE_NAME_SUFFIX_RE = re.compile(
@@ -60,11 +63,8 @@ def parse_version_item(item: Any) -> dict | None:
     return None
 
 
-def strip_patch(patch: dict, discovered_names: dict[str, str]) -> dict | None:
-    if not isinstance(patch, dict) or not (name := patch.get("name")):
-        return None
-
-    output: dict = {"name": name}
+def strip_patch(patch: Patch, discovered_names: dict[str, str]) -> dict:
+    output: dict = {"name": patch["name"]}
     if desc := patch.get("description"):
         output["description"] = desc
     if patch.get("isPreRelease"):
@@ -130,27 +130,25 @@ def parse_patches_list(
     is_dev_branch: bool = False,
     main_patch_names: set[str] | None = None,
 ) -> tuple[list[dict] | None, str | None]:
-    if not isinstance(raw_patches_data, dict):
+    try:
+        PATCH_LIST.validate_python(raw_patches_data)
+    except ValidationError:
         return None, "Invalid data"
-
-    raw_list = raw_patches_data.get("patches")
-    if not isinstance(raw_list, list):
-        return None, "Invalid data"
+    raw_list = raw_patches_data["patches"]
     if not raw_list:
         return None, "No patches found"
 
     valid_patches = []
     bundle_apps = set()
-    for patch in raw_list:
-        if not isinstance(patch, dict):
+    for index, raw_patch in enumerate(raw_list):
+        try:
+            patch = PATCH.validate_python(raw_patch)
+        except ValidationError:
             continue
-        name = patch.get("name")
-        if not isinstance(name, str) or not name.strip():
-            continue
-        if is_dev_branch and main_patch_names and name not in main_patch_names:
+        raw_list[index] = patch
+        if is_dev_branch and main_patch_names and patch["name"] not in main_patch_names:
             patch["isPreRelease"] = True
-        if not (patch_dict := strip_patch(patch, discovered_names)):
-            continue
+        patch_dict = strip_patch(patch, discovered_names)
         compat_packages = patch_dict.get("compatiblePackages")
         if compat_packages:
             for item in compat_packages:
@@ -181,8 +179,9 @@ def load_branch_data(
     bundle_file = BUNDLES_DIR / f"{file_prefix}~{branch}.json"
     list_file = PATCHES_DIR / f"{file_prefix}~{branch}.json"
     bundle = load_json(bundle_file)
-    download_url = bundle.get("download_url") if isinstance(bundle, dict) else None
-    if not isinstance(download_url, str) or not download_url:
+    try:
+        BUNDLE_MANIFEST.validate_python(bundle)
+    except ValidationError:
         return None, None, None, None
     if not list_file.exists():
         return None, None, None, "Missing `patches-list.json`"

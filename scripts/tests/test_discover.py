@@ -4,6 +4,7 @@ from unittest.mock import patch
 from urllib.error import HTTPError, URLError
 
 import pytest
+from pydantic import ValidationError
 
 import discover
 from common.files import load_json, save_json
@@ -168,18 +169,23 @@ class TestDiscover:
         assert load_json(self.repos_path) == self.saved_repos
 
     @pytest.mark.parametrize("arguments", ([], ["--daily"]))
+    @pytest.mark.parametrize("content", ("{}", "[]"))
     def test_no_usable_sources_stops_without_changing_repositories(
-        self, arguments
+        self, arguments, content
     ) -> None:
         for module in discover.PROVIDER_MODULES:
-            module.OUTPUT_PATH.write_text("[]", encoding="utf-8")
+            module.OUTPUT_PATH.write_text(content, encoding="utf-8")
         snapshot = self.repos_path.read_bytes()
         self.open_url.side_effect = URLError("offline")
         with (
             patch.object(audit_readme, "audit_repos_and_links") as audit,
             patch.object(find_projects, "run") as search,
         ):
-            assert discover.main(arguments) == 1
+            if content == "[]":
+                with pytest.raises(ValidationError):
+                    discover.main(arguments)
+            else:
+                assert discover.main(arguments) == 1
         assert self.repos_path.read_bytes() == snapshot
         audit.assert_not_called()
         search.assert_not_called()

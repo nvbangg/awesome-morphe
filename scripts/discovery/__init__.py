@@ -1,15 +1,11 @@
 from pathlib import Path
 
 from common.files import load_json, save_json
+from common.models import SOURCES
 
 
 def load_provider_sources(path: Path) -> dict:
-    data = load_json(path)
-    if not isinstance(data, dict) or not all(
-        isinstance(entry, dict) for entry in data.values()
-    ):
-        return {}
-    return data
+    return SOURCES.validate_python(load_json(path))
 
 
 def report_provider_warning(
