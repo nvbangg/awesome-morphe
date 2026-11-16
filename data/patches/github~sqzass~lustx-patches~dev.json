@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.18.1",
+  "version": "1.19.0",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -208,6 +208,57 @@
       "category": null,
       "compatiblePackages": null,
       "options": []
+    },
+    {
+      "name": "Rate-us popup",
+      "description": "Either removes the rate-us popup entirely, or rewrites its text. Rewrite mode changes the dialog title/body/buttons. Remove mode kills the trigger so the popup never appears.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "removePopup",
+          "title": "Remove popup entirely",
+          "description": "Prevents the rate-us dialog from ever appearing. Off = rewrite mode (change text instead of removing).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "customTitle",
+          "title": "Dialog title",
+          "description": "Replaces rate_app_title and rate_head. Only used if remove is off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Lustx was here",
+          "values": {
+            "Lustx was here": "Lustx was here"
+          }
+        },
+        {
+          "key": "customBody",
+          "title": "Dialog body",
+          "description": "Replaces rate_request and rate_app_propose. Only used if remove is off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "This build was patched. The original rating prompt was replaced.",
+          "values": {
+            "This build was patched. The original rating prompt was replaced.": "This build was patched. The original rating prompt was replaced."
+          }
+        },
+        {
+          "key": "customConfirm",
+          "title": "Confirm button",
+          "description": "Replaces rate_rate_now. Only used if remove is off.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Nice",
+          "values": {
+            "Nice": "Nice"
+          }
+        }
+      ]
     },
     {
       "name": "Remove PairIP",
