@@ -105909,13 +105909,13 @@
       "avatarUrl": "https://avatars.githubusercontent.com/u/264537056?v=4&s=128",
       "hotRank": 253,
       "stars": 2,
-      "updatedAt": 1794807383000,
+      "updatedAt": 1794812251000,
       "firstSeen": 1793846795711,
       "appFirstSeen": {
         "dev.vodik7.tvquickactions": 1793846792016
       },
       "appUpdates": {
-        "dev.vodik7.tvquickactions": 1794301062000
+        "dev.vodik7.tvquickactions": 1794812251000
       },
       "patches": [
         {
@@ -105923,6 +105923,12 @@
           "description": "Writes the native ADB server's own log to /data/local/tmp/tvqa-server.log and lets its debug messages through. The server is started again every few seconds and nothing of what it says is reachable otherwise: its logger is built at a level that drops every message, and its output is sent to /dev/null. Use this to find out why it ends, not as a fix.",
           "firstSeen": 1793846792016,
           "compatiblePackagesKey": 2195
+        },
+        {
+          "name": "Dialpad without the engine",
+          "description": "Injects dialpad key codes through the app's own InputManager path instead of the native engine. The engine's nativeActions entry point silently does nothing on a re-signed APK, so a remote's dialpad was dead while pointer input kept working. The key code is now sent with KeyEvent + injectInputEvent, which the app already uses itself and which needs neither the engine nor the ADB speed-up server.",
+          "firstSeen": 1794812485289,
+          "compatiblePackagesKey": 2196
         },
         {
           "name": "Input without the ADB server",
@@ -179334,7 +179340,7 @@
       "description": "Button mapper, mouse toggle, sleep timer and a lot of another features",
       "minInstalls": 50000,
       "category": "Tools",
-      "updatedAt": 1794301062000,
+      "updatedAt": 1794812251000,
       "firstSeen": 1793846795711
     },
     "com.paradoxplaza.kopp2": {
