@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.50.0",
+  "version": "1.51.0",
   "patches": [
     {
       "name": "AD Instant Rewards",
@@ -226,6 +226,32 @@
           "targets": [
             {
               "version": "3.1.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
+      "description": "Disables the PairIP licence check (Play licensing service, signed-response validation, paywall/error dialog and the delayed System.exit) so the re-signed app launches instead of closing itself. Required for every other Ophelia's Paradise patch.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.artingames.opheliasparadise",
+          "name": "Ophelia's Paradise",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#2B1B3A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.11.15",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1301,7 +1327,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "7.14.3",
+              "version": "7.15.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1730,7 +1756,7 @@
     },
     {
       "name": "Instant rewards",
-      "description": "Reward buttons (free revive, double coins) pay out instantly without playing any ad video (native libil2cpp.so patch).",
+      "description": "Reward buttons (free revive, double coins) pay out instantly without playing any ad video (native libil2cpp.so patch for both arm64-v8a and armeabi-v7a).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1743,7 +1769,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.2.10",
+              "version": "3.2.11",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2860,7 +2886,7 @@
     },
     {
       "name": "Remove ads",
-      "description": "Stops all interstitial/commercial-break ads between games (native libil2cpp.so patch, rewarded videos handled by the instant-rewards patch).",
+      "description": "Stops all interstitial/commercial-break ads between games (native libil2cpp.so patch for both arm64-v8a and armeabi-v7a; rewarded videos are handled by the instant-rewards patch).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2873,7 +2899,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.2.10",
+              "version": "3.2.11",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3033,6 +3059,13 @@
           "signatures": null,
           "targets": [
             {
+              "version": "3.441.100105",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": "3.441.100104",
               "versionCodes": null,
               "isExperimental": false,
@@ -3058,6 +3091,13 @@
           "appIconColor": "#F0E000",
           "signatures": null,
           "targets": [
+            {
+              "version": "3.441.100105",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
             {
               "version": "3.441.100104",
               "versionCodes": null,
@@ -3165,7 +3205,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.4.1",
+              "version": "1.5.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3191,7 +3231,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.4.1",
+              "version": "1.5.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3217,7 +3257,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.4.1",
+              "version": "1.5.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3735,7 +3775,7 @@
     },
     {
       "name": "Unlimited coins",
-      "description": "Coin save reads always return ~1.34 billion coins (native libil2cpp.so patch on Org.TotalCoins).",
+      "description": "Coin save reads always return ~1.34 billion coins (native libil2cpp.so patch on Org.TotalCoins for both arm64-v8a and armeabi-v7a).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -3748,7 +3788,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.2.10",
+              "version": "3.2.11",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3879,6 +3919,35 @@
           "targets": [
             {
               "version": "1.104.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock full version",
+      "description": "Makes PremiumUpgrade.HasPremiumUpgrade() always return true, unlocking the full version: no lives/energy system, unlocked character and gem selection, and no out-of-lives ad popup. The check is a local PlayerPrefs flag with no server-side validation, so the entitlement persists.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "RawResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.artingames.opheliasparadise",
+          "name": "Ophelia's Paradise",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#2B1B3A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.11.15",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
