@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.18.0-dev.8",
+  "version": "1.18.0-dev.9",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -82,7 +82,7 @@
     },
     {
       "name": "DCIM & backup control",
-      "description": "Disables always on backup for the Camera and other DCIM folders, allowing individual folder control, and exports memory collages and creations to DCIM/Google Photos for quota-free backup.",
+      "description": "Disables always on backup for the Camera and other DCIM folders, allowing individual folder control, adds an 'Upload photos only' toggle to Morphe Settings to skip videos in automatic backup, and exports memory collages and creations to DCIM/Google Photos for quota-free backup.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -151,40 +151,6 @@
     {
       "name": "GmsCore support",
       "description": "Enables GmsCore / MicroG support and renames package for non-root installs. Leave enabled for standard non-root installs; disable only for rooted system installs using genuine Google Play Services.",
-      "default": false,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.photos",
-          "name": "Google Photos",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#FC3F3C",
-          "signatures": null,
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "8.0.0.1011730683",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "7.99.0.1007655401",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Media engine & AI fixes",
-      "description": "Bypasses the 0MB Mobile Data Download check for AI models and fixes font loading across Stories and UI to prevent blank text and fallback fonts.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -214,13 +180,23 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "keepOfficialPackageName",
+          "title": "Keep official package name",
+          "description": "Retains the official package name (com.google.android.apps.photos) instead of renaming to app.morphe.android.apps.photos. Use this on non-root devices where the app is not preinstalled by the OEM.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
-      "name": "Official package name",
-      "description": "Retains the official package name (com.google.android.apps.photos) instead of renaming to app.morphe.android.apps.photos and disables Play Store updates by setting the version code to maximum to prevent automatic overwriting. Required for root mount installs, and selectable for non-root users whose devices do not have Google Photos preinstalled by the OEM.",
-      "default": false,
-      "category": "Official package name",
+      "name": "Media engine & AI fixes",
+      "description": "Bypasses the 0MB Mobile Data Download check for AI models and fixes font loading across Stories and UI to prevent blank text and fallback fonts.",
+      "default": true,
+      "category": null,
       "compatiblePackages": [
         {
           "packageName": "com.google.android.apps.photos",
