@@ -161,11 +161,6 @@ def get_remote_file_hash(url: str, source: str, fallback: str | None = None) -> 
     raise ValueError(f"Missing `{header_name}` header")
 
 
-def get_file_sha(source: str, repo: str, branch: str) -> str | None:
-    url = build_raw_url(source, repo, branch, "patches-bundle.json")
-    return get_remote_file_hash(url, source) if url else None
-
-
 def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | None]:
     headers = dict(HASH_REQUEST_HEADERS)
     if current_sha:
@@ -227,7 +222,7 @@ def process_repo_branch(
                 bundle_url, current_sha if has_local_data else None
             )
         else:
-            remote_sha = get_file_sha(source, repo, branch)
+            remote_sha = get_remote_file_hash(bundle_url, source)
     except httpx2.HTTPStatusError as error:
         return failed(
             str(error),
@@ -488,7 +483,7 @@ def refresh_repo_metadata(
     warnings = []
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
         for repo_url, details in zip(
-            tasks, executor.map(repository_details.get, tasks), strict=True
+            tasks, executor.map(repository_details.get, tasks)
         ):
             if not details or details.get("error"):
                 reason = details.get("error", "Invalid repository data")

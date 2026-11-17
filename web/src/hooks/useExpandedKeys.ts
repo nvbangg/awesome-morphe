@@ -9,22 +9,19 @@ export function useExpandedKeys(
 	const [expandedKeys, setExpandedKeys] = useState(
 		() => new Set(isOpen && shouldAutoExpand ? keys : []),
 	);
-	const [prevDeps, setPrevDeps] = useState<{
-		isOpen: boolean;
-		searchQuery: string;
-		keysLength: number;
-	}>({
+	const [prevDeps, setPrevDeps] = useState({
 		isOpen,
 		searchQuery,
-		keysLength: keys.length,
+		keys,
 	});
 
 	if (
 		prevDeps.isOpen !== isOpen ||
 		prevDeps.searchQuery !== searchQuery ||
-		prevDeps.keysLength !== keys.length
+		prevDeps.keys.length !== keys.length ||
+		keys.some((key, index) => key !== prevDeps.keys[index])
 	) {
-		setPrevDeps({ isOpen, searchQuery, keysLength: keys.length });
+		setPrevDeps({ isOpen, searchQuery, keys });
 		setExpandedKeys(isOpen && shouldAutoExpand ? new Set(keys) : new Set());
 	}
 

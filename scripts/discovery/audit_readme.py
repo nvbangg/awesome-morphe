@@ -25,9 +25,7 @@ def audit_repos_and_links() -> str:
     other_errors: list[str] = []
 
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-        for url, details in zip(
-            repo_urls, executor.map(fetch_repo_details, repo_urls), strict=True
-        ):
+        for url, details in zip(repo_urls, executor.map(fetch_repo_details, repo_urls)):
             if details.get("is_404"):
                 issues.append(f"{url}: 404 Not Found")
             elif details.get("is_451"):
@@ -45,9 +43,7 @@ def audit_repos_and_links() -> str:
             elif details.get("error"):
                 other_errors.append(f"{url}: {details['error']}")
 
-        for url, status in zip(
-            link_urls, executor.map(check_link_status, link_urls), strict=True
-        ):
+        for url, status in zip(link_urls, executor.map(check_link_status, link_urls)):
             if (
                 status.get("is_dead")
                 or status.get("status_code") in UNAVAILABLE_HTTP_CODES

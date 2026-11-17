@@ -41,14 +41,6 @@ def _run_providers() -> list[str]:
     return warnings
 
 
-def _load_provider_files() -> list[dict]:
-    return [
-        data
-        for provider in PROVIDERS
-        if (data := load_provider_sources(BUNDLE_SOURCES_DIR / f"{provider}.json"))
-    ]
-
-
 def _merge(provider_files: list[dict]) -> dict:
     canonical_keys = {}
     merged = {}
@@ -99,7 +91,11 @@ def main(argv: list[str] | None = None) -> int:
 
     warnings = _run_providers()
     print()
-    provider_files = _load_provider_files()
+    provider_files = [
+        data
+        for provider in PROVIDERS
+        if (data := load_provider_sources(BUNDLE_SOURCES_DIR / f"{provider}.json"))
+    ]
     if not provider_files:
         message = "No usable provider files found; discovery stopped"
         print(message)

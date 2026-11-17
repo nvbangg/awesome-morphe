@@ -4,8 +4,9 @@ IMAGE_SIZE_PIXELS = 128
 
 
 def _set_query_param(url: str, pattern: str, param: str) -> str:
-    if re.search(pattern, url):
-        return re.sub(pattern, rf"\1{param}", url)
+    updated_url, replacement_count = re.subn(pattern, rf"\1{param}", url)
+    if replacement_count:
+        return updated_url
     return f"{url}&{param}" if "?" in url else f"{url}?{param}"
 
 

@@ -32,30 +32,16 @@ export function buildCatalog(sourcesData: CatalogArtifact): ActiveData {
 		);
 
 		const isOfficial = !!jsonBundle.isOfficial;
-		const hotRank = jsonBundle.hotRank;
-
 		const bundleItem: Bundle = {
-			source: jsonBundle.source,
-			repo: jsonBundle.repo,
-			name: jsonBundle.name,
-			repoDescription: jsonBundle.repoDescription,
-			avatarUrl: jsonBundle.avatarUrl,
-			stars: jsonBundle.stars,
-			updatedAt: jsonBundle.updatedAt,
-			firstSeen: jsonBundle.firstSeen,
-			hotRank,
+			...jsonBundle,
+			...calculatedUrls,
 			isOfficial,
 			isPreRelease: !!jsonBundle.isPreRelease,
-			appFirstSeen: jsonBundle.appFirstSeen,
 			appUpdates: jsonBundle.appUpdates,
-			patches: jsonBundle.patches,
 
 			key: bundleKey,
 			patchCount: jsonBundle.patches.length,
 			appCount: Object.keys(jsonBundle.appFirstSeen).length,
-			repoUrl: calculatedUrls.repoUrl,
-			deepLink: calculatedUrls.deepLink,
-			changelogUrl: calculatedUrls.changelogUrl,
 			searchableText: simplifyString(
 				`${jsonBundle.name} ${jsonBundle.source} ${jsonBundle.repo}`,
 			),
@@ -141,18 +127,10 @@ export function buildCatalog(sourcesData: CatalogArtifact): ActiveData {
 				`${appMeta.appName} ${packageName} ${appMeta.description}`,
 			);
 			appMap.set(packageName, {
-				packageName,
-				appName: appMeta.appName,
-				appIcon: appMeta.appIcon,
-				description: appMeta.description,
-				minInstalls: appMeta.minInstalls,
-				category: appMeta.category,
-				firstSeen: appMeta.firstSeen,
+				...appMeta,
 				updatedAt: Math.max(appMeta.updatedAt, bundleAppUpdate),
 				patchCount: 1,
-				categorySlug: appMeta.categorySlug,
 				searchableText,
-				isPreRelease: appMeta.isPreRelease,
 			});
 		} else {
 			existingApp.patchCount += 1;

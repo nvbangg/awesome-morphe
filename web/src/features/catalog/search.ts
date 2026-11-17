@@ -15,10 +15,7 @@ import { isNew } from "@/lib/formatters";
 import { simplifyString } from "@/lib/stringUtils";
 
 function parseSearchQuery(query: string): string[] {
-	if (!query) return [];
-	const trimmed = query.trim();
-	if (!trimmed) return [];
-	return trimmed.split(/\s+/).map(simplifyString).filter(Boolean);
+	return query.trim().split(/\s+/).map(simplifyString).filter(Boolean);
 }
 
 function compareUniversalApp(
@@ -103,19 +100,12 @@ export function getAppItems(
 
 	const queryWords = parseSearchQuery(searchQuery);
 	const hasCategoryFilter = categoryFilter !== "all";
-	const hasSearch = queryWords.length > 0;
-
-	if (hasCategoryFilter || hasSearch) {
+	if (hasCategoryFilter || queryWords.length > 0) {
 		appList = appItems.filter((appItem) => {
 			if (hasCategoryFilter && appItem.categorySlug !== categoryFilter) {
 				return false;
 			}
-			if (hasSearch) {
-				for (let i = 0; i < queryWords.length; i++) {
-					if (!appItem.searchableText.includes(queryWords[i])) return false;
-				}
-			}
-			return true;
+			return queryWords.every((word) => appItem.searchableText.includes(word));
 		});
 	} else {
 		appList = [...appItems];
@@ -183,19 +173,14 @@ export function getBundleItems(
 	const isOfficialFilter = categoryFilter === "official";
 	const isUnofficialFilter = categoryFilter === "unofficial";
 	const hasCategoryFilter = isOfficialFilter || isUnofficialFilter;
-	const hasSearch = queryWords.length > 0;
-
-	if (hasCategoryFilter || hasSearch) {
+	if (hasCategoryFilter || queryWords.length > 0) {
 		bundleList = bundles.filter((bundleItem) => {
 			if (isOfficialFilter && bundleItem.isUnofficial) return false;
 			if (isUnofficialFilter && !bundleItem.isUnofficial) return false;
 
-			if (hasSearch) {
-				for (let i = 0; i < queryWords.length; i++) {
-					if (!bundleItem.searchableText.includes(queryWords[i])) return false;
-				}
-			}
-			return true;
+			return queryWords.every((word) =>
+				bundleItem.searchableText.includes(word),
+			);
 		});
 	} else {
 		bundleList = [...bundles];
@@ -327,7 +312,7 @@ export function groupPatchesByApp(
 	searchQuery: string = "",
 	parentBundle?: Bundle,
 ): AppGroupData[] {
-	if (!patches || patches.length === 0) return [];
+	if (patches.length === 0) return [];
 
 	const rawAppsMap = new Map<
 		string,

@@ -80,7 +80,7 @@ def fetch_repo_details(repo_url: str) -> dict:
                 "stars": response.get("stargazers_count", 0),
                 "description": response.get("description"),
                 "avatar_url": response.get("owner", {}).get("avatar_url"),
-                "full_name": response.get("full_name"),
+                "full_name": response["full_name"],
                 "is_archived": bool(response.get("archived")),
             }
 
@@ -95,7 +95,7 @@ def fetch_repo_details(repo_url: str) -> dict:
             "stars": response.get("star_count", 0),
             "description": response.get("description"),
             "avatar_url": avatar,
-            "full_name": response.get("path_with_namespace"),
+            "full_name": response["path_with_namespace"],
             "is_archived": response["archived"],
         }
     except ValidationError:

@@ -4,7 +4,7 @@ import threading
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from unittest.mock import Mock, call, patch
+from unittest.mock import call, patch
 
 import httpx2
 import pytest
@@ -210,9 +210,8 @@ class TestBundleFetch:
         self.fetch_request = self.patch_context.enter_context(
             patch.object(bundle_fetch, "fetch", side_effect=self.download)
         )
-        self.fetch_hash = Mock(return_value="main-new")
-        self.patch_context.enter_context(
-            patch.object(bundle_fetch, "get_file_sha", side_effect=self.fetch_hash)
+        self.fetch_hash = self.patch_context.enter_context(
+            patch.object(bundle_fetch, "get_remote_file_hash", return_value="main-new")
         )
         self.github_metadata_request = self.patch_context.enter_context(
             patch.object(
@@ -243,12 +242,7 @@ class TestBundleFetch:
     def github_metadata(
         self, url: str, current_sha: str | None
     ) -> tuple[str, bytes | None]:
-        branch = next(
-            branch
-            for branch in DEFAULT_BRANCHES
-            if url == self.url(branch, "patches-bundle.json")
-        )
-        remote_sha = self.fetch_hash("github", "owner/alpha", branch)
+        remote_sha = self.fetch_hash(url, "github")
         if current_sha and remote_sha == current_sha:
             return (current_sha, None)
         return (remote_sha, self.fetch_request(url, binary=True))
@@ -278,7 +272,9 @@ class TestBundleFetch:
             return self.download(url, binary=binary)
 
         self.fetch_request.side_effect = download
-        self.fetch_hash.side_effect = lambda _source, _repo, branch: f"{branch}-new"
+        self.fetch_hash.side_effect = lambda url, _source: (
+            "dev-new" if "/dev/" in url else "main-new"
+        )
         self.updated_path.write_text("mpp/stale.mpp", encoding="utf-8")
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
@@ -415,7 +411,10 @@ class TestBundleFetch:
         )
         assert result.new_sha == "main-old"
         assert not result.status_changed
-        self.fetch_hash.assert_called_once_with("gitlab", "owner/alpha", "main")
+        self.fetch_hash.assert_called_once_with(
+            build_raw_url("gitlab", "owner/alpha", "main", "patches-bundle.json"),
+            "gitlab",
+        )
         self.github_metadata_request.assert_not_called()
         self.fetch_request.assert_not_called()
 
@@ -749,7 +748,9 @@ class TestBundleFetch:
         for branch in DEFAULT_BRANCHES:
             patch_url = self.url(branch, "patches-list.json")
             self.responses[patch_url] = self.http_error(patch_url, HTTP_NOT_FOUND)
-        self.fetch_hash.side_effect = lambda _source, _repo, branch: f"{branch}-new"
+        self.fetch_hash.side_effect = lambda url, _source: (
+            "dev-new" if "/dev/" in url else "main-new"
+        )
         save_json(self.patches_dir / "github~owner~alpha~dev.json", self.patches_data)
 
         def run_parser(
@@ -802,8 +803,8 @@ class TestBundleFetch:
     def test_dev_update_downloads_bundle_but_keeps_existing_main_name(self) -> None:
         self.seed_target()
         save_json(self.bundles_dir / "github~owner~alpha~main.json", self.bundle_data)
-        self.fetch_hash.side_effect = lambda _source, _repo, branch: (
-            "main-old" if branch == "main" else "dev-new"
+        self.fetch_hash.side_effect = lambda url, _source: (
+            "main-old" if "/main/" in url else "dev-new"
         )
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()

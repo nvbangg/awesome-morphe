@@ -68,7 +68,6 @@ def process(apps_dict: dict, mode: str) -> None:
             for package_name, (details, is_404) in zip(
                 apps_to_scrape,
                 executor.map(fetch_app_details, apps_to_scrape),
-                strict=True,
             ):
                 current_app = apps_dict[package_name]
                 if not is_404 and details:

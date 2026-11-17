@@ -202,7 +202,6 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
 
     repos = [
         {
-            "name": repo.get("name", ""),
             "full_name": repo.get("full_name", ""),
             "stars": repo.get("stargazers_count", 0),
             "description": repo.get("description") or "",

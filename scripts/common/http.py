@@ -60,19 +60,18 @@ def request(
 def fetch(
     url: str,
     headers: dict[str, str] | None = None,
-    timeout: int = HTTP_TIMEOUT_SECONDS,
     as_json: bool = False,
     binary: bool = False,
 ) -> Any:
-    response = request("GET", url, headers, timeout=timeout)
+    response = request("GET", url, headers)
     if binary:
         return response.content
     return response.json() if as_json else response.text
 
 
-def check_link_status(url: str, timeout: int = HTTP_TIMEOUT_SECONDS) -> dict:
+def check_link_status(url: str) -> dict:
     try:
-        response = request("GET", url, timeout=timeout)
+        response = request("GET", url)
         final_url = str(response.url).rstrip("/")
         original_url = str(httpx2.URL(url)).rstrip("/")
         if final_url != original_url:

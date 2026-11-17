@@ -131,10 +131,9 @@ def parse_patches_list(
     main_patch_names: set[str] | None = None,
 ) -> tuple[list[dict] | None, str | None]:
     try:
-        PATCH_LIST.validate_python(raw_patches_data)
+        raw_list = PATCH_LIST.validate_python(raw_patches_data)["patches"]
     except ValidationError:
         return None, "Invalid data"
-    raw_list = raw_patches_data["patches"]
     if not raw_list:
         return None, "No patches found"
 
@@ -347,12 +346,7 @@ def process(
             if desc := patch.get("description"):
                 ordered_patch["description"] = desc
             ordered_patch["firstSeen"] = patch_first_seen
-            if patch.get("isPreRelease"):
-                ordered_patch["isPreRelease"] = True
-            if patch.get("default") is False:
-                ordered_patch["default"] = False
-            if options := patch.get("options"):
-                ordered_patch["options"] = options
+            ordered_patch.update(patch)
             if compatible_packages:
                 ordered_patch["compatiblePackages"] = compatible_packages
             final_patches.append(ordered_patch)
