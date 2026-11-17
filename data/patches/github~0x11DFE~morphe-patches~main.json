@@ -1,0 +1,179 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.9.1",
+  "patches": [
+    {
+      "name": "Disable PairIP license check",
+      "description": "Empties com.pairip.licensecheck.LicenseClient.checkLicense so the re-signed patched APK is not killed by Google Play PairIP license enforcement. Generic: works on any PairIP-protected app with this class.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.greycastel.waypoint",
+          "name": "Waypoint",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4C8BF5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Random device ID",
+      "description": "Replaces the device SN (serial_id/serial_no/cpu_id/gid read by the root scene-daemon) with a random one everywhere the app itself uses it: the user page display and the SN-keyed cloud sync / API calls to omarea. The SN is baked per patch run. The daemon's own server report during real code activation is native and not affected.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.omarea.vtools",
+          "name": "Scene",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00BCD4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "N1 2026.10 Alpha13",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "N1 2026.11 PreRelease 1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "N1 2026.11 PreRelease 2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip Waypoint onboarding paywall",
+      "description": "The paywall screen shown after the Waypoint tutorial immediately invokes the app's own free-choice handler (completeOnboarding + navigate home) and renders nothing. Matches the PaywallScreen bytecode pattern and fails cleanly when the app is rebuilt.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.greycastel.waypoint",
+          "name": "Waypoint",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4C8BF5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Scene N1",
+      "description": "Unlocks Scene N1: the license state parser and the activation request are forced to a perpetual success (configurable expiry), the activation code type is reported as perpetual, and the APK signature MD5 the app reports to omarea's activation binding is spoofed to the original signing key so re-signed builds still match.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.omarea.vtools",
+          "name": "Scene",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00BCD4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "N1 2026.10 Alpha13",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "N1 2026.11 PreRelease 1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "N1 2026.11 PreRelease 2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "expiry-date",
+          "title": "License expiry date",
+          "description": "Date the spoofed Scene N1 license expires, as yyyy-MM-dd. The app shows it on the user page; anything in the future keeps Pro active.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "2077-01-01",
+          "values": {
+            "2077-01-01": "2077 (default)",
+            "3089-12-31": "Far future",
+            "2100-01-01": "Year 2100",
+            "2030-01-01": "Year 2030"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unlock Waypoint Pro",
+      "description": "Resolves the RN bridge getCustomerInfo promise with a fabricated CustomerInfo carrying an active lifetime 'Waypoint Pro' entitlement (product waypoint_lifetime), and injects the same entitlement into the hybridcommon mapper. Works even when api.revenuecat.com is unreachable.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.greycastel.waypoint",
+          "name": "Waypoint",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4C8BF5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}
