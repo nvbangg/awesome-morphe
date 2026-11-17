@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.0-dev.4",
+  "version": "1.1.0-dev.5",
   "patches": [
     {
       "name": "Clone app",
@@ -52,6 +52,15 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "26.11.02",
+              "versionCodes": {
+                "ARM64_V8A": 261102901
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -70,7 +79,7 @@
     },
     {
       "name": "Integrate ZaloXposed",
-      "description": "Integrates ZaloXposed using NPatch. Must be enabled for other patches to work.",
+      "description": "Integrates ZaloXposed using a rootless Xposed framework (NPatch or LSPatch). Must be enabled for other Zalo patches from EHVN patches to work.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -118,11 +127,32 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "26.11.02",
+              "versionCodes": {
+                "ARM64_V8A": 261102901
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
       ],
       "options": [
+        {
+          "key": "loader",
+          "title": "Xposed framework",
+          "description": "Select the rootless Xposed framework to integrate into the APK.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "NPatch",
+          "values": {
+            "NPatch (x64 only)": "NPatch",
+            "LSPatch (all ABIs)": "LSPatch"
+          }
+        },
         {
           "key": "provider",
           "title": "Inject file provider",
@@ -136,15 +166,6 @@
           "key": "cleartext",
           "title": "Allow cleartext traffic",
           "description": "Forces android:usesCleartextTraffic=\"true\" in manifest to allow plain HTTP traffic.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "useMicroG",
-          "title": "Use MicroG",
-          "description": "Redirects GMS calls to MicroG.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
