@@ -1,16 +1,16 @@
-import json
 import os
-import urllib.error
 import urllib.parse
-import urllib.request
-from http.client import HTTPException
 from typing import Any
+
+import httpx2
 
 from common.config import DEAD_LINK_HTTP_CODES, HTTP_TIMEOUT_SECONDS, PROJECT_USER_AGENT
 
+HTTP_CLIENT = httpx2.Client(timeout=HTTP_TIMEOUT_SECONDS, follow_redirects=True)
 
-def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[str, str]:
-    result_headers = dict(headers or {})
+
+def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> httpx2.Headers:
+    result_headers = httpx2.Headers(headers)
     parsed_url = urllib.parse.urlparse(url)
     hostname = parsed_url.hostname or ""
     is_github = any(
@@ -19,15 +19,14 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[st
     )
     is_gitlab = hostname == "gitlab.com"
 
-    header_names = {name.lower() for name in result_headers}
-    if "user-agent" not in header_names:
+    if "user-agent" not in result_headers:
         result_headers["User-Agent"] = (
             PROJECT_USER_AGENT
             if is_github or is_gitlab
             else "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
         )
 
-    if parsed_url.scheme != "https" or "authorization" in header_names:
+    if parsed_url.scheme != "https" or "authorization" in result_headers:
         return result_headers
 
     if (
@@ -40,12 +39,22 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> dict[st
     elif (
         is_gitlab
         and parsed_url.path.startswith("/api/v4/")
-        and "private-token" not in header_names
+        and "private-token" not in result_headers
         and (gitlab_token := os.environ.get("GITLAB_TOKEN"))
     ):
         result_headers["PRIVATE-TOKEN"] = gitlab_token
 
     return result_headers
+
+
+def request(
+    method: str, url: str, headers: dict[str, str] | None = None, **kwargs: Any
+) -> httpx2.Response:
+    response = HTTP_CLIENT.request(
+        method, url, headers=get_auth_headers(url, headers), **kwargs
+    )
+    response.raise_for_status()
+    return response
 
 
 def fetch(
@@ -55,30 +64,23 @@ def fetch(
     as_json: bool = False,
     binary: bool = False,
 ) -> Any:
-    request_headers = get_auth_headers(url, headers)
-
-    request = urllib.request.Request(url, headers=request_headers)
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        content = response.read()
-        if binary:
-            return content
-        decoded = content.decode("utf-8")
-        return json.loads(decoded) if as_json else decoded
+    response = request("GET", url, headers, timeout=timeout)
+    if binary:
+        return response.content
+    return response.json() if as_json else response.text
 
 
 def check_link_status(url: str, timeout: int = HTTP_TIMEOUT_SECONDS) -> dict:
     try:
-        headers = get_auth_headers(url)
-        request = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            final_url = response.geturl().rstrip("/")
-            original_url = url.rstrip("/")
-            if final_url != original_url:
-                return {"is_redirect": True, "final_url": final_url}
-            return {"is_active": True}
-    except urllib.error.HTTPError as error:
-        if error.code in DEAD_LINK_HTTP_CODES:
+        response = request("GET", url, timeout=timeout)
+        final_url = str(response.url).rstrip("/")
+        original_url = str(httpx2.URL(url)).rstrip("/")
+        if final_url != original_url:
+            return {"is_redirect": True, "final_url": final_url}
+        return {"is_active": True}
+    except httpx2.HTTPStatusError as error:
+        if error.response.status_code in DEAD_LINK_HTTP_CODES:
             return {"is_dead": True, "error": str(error)}
-        return {"error": str(error), "status_code": error.code}
-    except (OSError, HTTPException, ValueError) as error:
+        return {"error": str(error), "status_code": error.response.status_code}
+    except (httpx2.RequestError, httpx2.InvalidURL, ValueError) as error:
         return {"error": str(error)}

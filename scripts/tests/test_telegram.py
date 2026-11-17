@@ -1,10 +1,7 @@
-import io
-import json
-from email.message import Message
 from pathlib import Path
-from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs
 
+import httpx2
 import pytest
 
 import telegram
@@ -31,8 +28,8 @@ def test_notification_payload_preserves_links_and_escapes_html(block_network) ->
     telegram.main()
     block_network.assert_called_once()
     request = block_network.call_args.args[0]
-    payload = parse_qs(request.data.decode("utf-8"))
-    assert request.get_method() == "POST"
+    payload = parse_qs(request.content.decode("utf-8"))
+    assert request.method == "POST"
     assert payload["chat_id"] == ["test-chat"]
     assert payload["parse_mode"] == ["HTML"]
     text = payload["text"][0]
@@ -42,24 +39,18 @@ def test_notification_payload_preserves_links_and_escapes_html(block_network) ->
 
 
 @pytest.mark.parametrize("failure_kind", ("api", "network"))
-def test_notification_failure_stops_with_error(
-    failure_kind, block_network, patch_context
-) -> None:
+def test_notification_failure_stops_with_error(failure_kind, block_network) -> None:
     if failure_kind == "api":
-        error = HTTPError(
-            "https://api.telegram.org",
-            400,
-            "Bad Request",
-            Message(),
-            io.BytesIO(json.dumps({"description": "Invalid HTML"}).encode()),
+        block_network.side_effect = None
+        block_network.return_value = httpx2.Response(
+            400, json={"description": "Invalid HTML"}
         )
-        patch_context.callback(error.close)
     else:
-        error = URLError("DNS lookup failed")
-    block_network.side_effect = error
+        block_network.side_effect = httpx2.ConnectError("DNS lookup failed")
     with pytest.raises(SystemExit) as raised:
         telegram.main()
     block_network.assert_called_once()
     assert raised.value.code not in (None, 0)
+    assert "test-token" not in str(raised.value)
     if failure_kind == "api":
         assert "Invalid HTML" in str(raised.value)

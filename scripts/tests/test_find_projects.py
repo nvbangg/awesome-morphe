@@ -1,8 +1,7 @@
-from email.message import Message
 from pathlib import Path
 from unittest.mock import patch
-from urllib.error import HTTPError, URLError
 
+import httpx2
 import pytest
 
 from discovery import find_projects
@@ -20,22 +19,18 @@ from discovery import find_projects
     ),
 )
 def test_project_requires_confirmed_missing_bundle_and_available_readme(
-    metadata_status, readme_status, expected, block_network, patch_context
+    metadata_status, readme_status, expected, block_network
 ) -> None:
     statuses = {
         "https://raw.githubusercontent.com/owner/project/main/patches-bundle.json": metadata_status,
         "https://raw.githubusercontent.com/owner/project/develop/README.md": readme_status,
     }
 
-    def open_url(request, **_kwargs):
-        status = statuses[request.full_url]
+    def open_url(request):
+        status = statuses[str(request.url)]
         if status == "network":
-            raise URLError("DNS lookup failed")
-        if status != 200:
-            error = HTTPError(request.full_url, status, "Failed", Message(), None)
-            patch_context.callback(error.close)
-            raise error
-        return block_network.return_value
+            raise httpx2.ConnectError("DNS lookup failed", request=request)
+        return httpx2.Response(status)
 
     block_network.side_effect = open_url
     assert (

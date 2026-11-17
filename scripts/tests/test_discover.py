@@ -1,8 +1,7 @@
-from email.message import Message
 from pathlib import Path
 from unittest.mock import patch
-from urllib.error import HTTPError, URLError
 
+import httpx2
 import pytest
 from pydantic import ValidationError
 
@@ -13,8 +12,9 @@ from discovery import audit_readme, find_projects, jman, morphe_archive, officia
 
 class TestDiscover:
     @pytest.fixture(autouse=True)
-    def prepare(self, tmp_path: Path, patch_context, block_network) -> None:
+    def prepare(self, tmp_path: Path, patch_context, block_network, http_error) -> None:
         self.patch_context = patch_context
+        self.http_error = http_error
         self.root = tmp_path
         self.discover_dir = self.root / "discover"
         self.repos_path = self.root / "repos.json"
@@ -60,14 +60,11 @@ class TestDiscover:
         snapshot = self.official_path.read_bytes()
         saved_file = module.OUTPUT_PATH.read_bytes()
         if failure_kind == "http":
-            error = HTTPError(
-                "https://example.com", 503, "Unavailable", Message(), None
-            )
-            self.patch_context.callback(error.close)
+            error = self.http_error("https://example.com", 503)
         elif failure_kind == "network":
-            error = URLError("DNS lookup failed")
+            error = httpx2.ConnectError("DNS lookup failed")
         else:
-            error = TimeoutError("timed out")
+            error = httpx2.ReadTimeout("timed out")
         self.open_url.side_effect = error
         assert module.discover()
         assert module.OUTPUT_PATH.read_bytes() == saved_file
@@ -77,7 +74,7 @@ class TestDiscover:
     def test_unreadable_json_preserves_saved_sources(self, module) -> None:
         snapshot = self.official_path.read_bytes()
         self.open_url.side_effect = None
-        self.open_url.return_value.__enter__.return_value.read.return_value = b"{broken"
+        self.open_url.return_value = httpx2.Response(200, content=b"{broken")
         assert module.discover()
         assert load_json(module.OUTPUT_PATH) == self.saved_sources
         assert self.official_path.read_bytes() == snapshot
@@ -164,7 +161,7 @@ class TestDiscover:
     def test_provider_outage_keeps_saved_repositories(
         self,
     ) -> None:
-        self.open_url.side_effect = URLError("offline")
+        self.open_url.side_effect = httpx2.ConnectError("offline")
         assert discover.main([]) == 0
         assert load_json(self.repos_path) == self.saved_repos
 
@@ -176,7 +173,7 @@ class TestDiscover:
         for module in discover.PROVIDER_MODULES:
             module.OUTPUT_PATH.write_text(content, encoding="utf-8")
         snapshot = self.repos_path.read_bytes()
-        self.open_url.side_effect = URLError("offline")
+        self.open_url.side_effect = httpx2.ConnectError("offline")
         with (
             patch.object(audit_readme, "audit_repos_and_links") as audit,
             patch.object(find_projects, "run") as search,
@@ -263,7 +260,7 @@ class TestDiscover:
         assert self.repos_path.read_bytes() == snapshot
 
     def test_default_does_not_audit_or_search_projects(self) -> None:
-        self.open_url.side_effect = URLError("offline")
+        self.open_url.side_effect = httpx2.ConnectError("offline")
         with (
             patch.object(audit_readme, "audit_repos_and_links") as audit,
             patch.object(find_projects, "run") as search,
@@ -341,7 +338,7 @@ class TestDiscover:
             ),
             patch.object(find_projects, "_file_exists", side_effect=file_exists),
         ):
-            self.open_url.side_effect = URLError("offline")
+            self.open_url.side_effect = httpx2.ConnectError("offline")
             assert discover.main(["--daily"]) == 0
             search.assert_called_once()
             summary = self.summary.call_args.args[0]

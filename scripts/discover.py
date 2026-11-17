@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 from common.config import BUNDLE_SOURCES_DIR, REPOS_JSON_PATH, ROOT_DIR, SCRIPTS_DIR
 from common.files import load_json, save_json
+from common.http import HTTP_CLIENT
 from common.models import REPOSITORIES
 from common.repositories import build_repo_url, parse_repo_url
 from common.summary import append_step_summary, format_summary_section
@@ -135,4 +136,5 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    with HTTP_CLIENT:
+        sys.exit(main())

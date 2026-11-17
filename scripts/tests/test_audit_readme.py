@@ -1,6 +1,4 @@
-from email.message import Message
 from unittest.mock import patch
-from urllib.error import HTTPError
 
 import pytest
 
@@ -9,10 +7,12 @@ from discovery import audit_readme
 
 
 @pytest.mark.parametrize("source,code", (("github", 404), ("gitlab", 451)))
-def test_audit_reports_unavailable_repositories(source, code, block_network) -> None:
+def test_audit_reports_unavailable_repositories(
+    source, code, block_network, http_error
+) -> None:
     repo_url = f"https://{source}.com/owner/alpha"
+    error = http_error(repo_url, code)
     with (
-        HTTPError(repo_url, code, "Failed", Message(), None) as error,
         patch.object(repositories, "fetch", side_effect=error),
         patch.object(audit_readme, "load_lines", side_effect=[[repo_url], []]),
     ):

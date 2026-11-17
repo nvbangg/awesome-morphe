@@ -1,6 +1,6 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-from http.client import HTTPException
+import httpx2
 
 from common.config import BUNDLE_SOURCES_DIR, OFFICIAL_BUNDLES_PATH, PROJECT_USER_AGENT
 from common.files import save_json
@@ -21,7 +21,7 @@ def discover() -> str | None:
     try:
         data = fetch(BUNDLES_URL, HEADERS, as_json=True)
         catalog = OFFICIAL_CATALOG.validate_python(data)
-    except (OSError, HTTPException) as error:
+    except httpx2.HTTPError as error:
         return report_provider_warning("official", error, OUTPUT_PATH)
     except ValueError:
         return report_provider_warning("official", "Invalid provider data", OUTPUT_PATH)

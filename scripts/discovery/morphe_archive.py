@@ -1,7 +1,8 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
 import re
-from http.client import HTTPException
+
+import httpx2
 
 from common.config import BUNDLE_SOURCES_DIR
 from common.http import fetch
@@ -18,7 +19,7 @@ _REPO_RE = re.compile(r"morphe\.software/add-source\?(github|gitlab)=([^)\s]+)")
 def discover() -> str | None:
     try:
         content = fetch(README_URL)
-    except (OSError, HTTPException, UnicodeError) as error:
+    except (httpx2.HTTPError, UnicodeError) as error:
         return report_provider_warning("morphe-archive", error, OUTPUT_PATH)
 
     discovered = {

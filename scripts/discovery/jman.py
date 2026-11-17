@@ -1,6 +1,6 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-from http.client import HTTPException
+import httpx2
 
 from common.config import BUNDLE_SOURCES_DIR
 from common.http import fetch
@@ -15,7 +15,7 @@ OUTPUT_PATH = BUNDLE_SOURCES_DIR / "jman.json"
 def discover() -> str | None:
     try:
         sources_data = JMAN_SOURCES.validate_python(fetch(SOURCES_URL, as_json=True))
-    except (OSError, HTTPException) as error:
+    except httpx2.HTTPError as error:
         return report_provider_warning("jman", error, OUTPUT_PATH)
     except ValueError:
         return report_provider_warning("jman", "Invalid provider data", OUTPUT_PATH)

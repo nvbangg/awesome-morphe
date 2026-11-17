@@ -1,13 +1,12 @@
 import io
 import json
 import threading
-import urllib.error
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
-from email.message import Message
 from pathlib import Path
 from unittest.mock import Mock, call, patch
 
+import httpx2
 import pytest
 
 import fetch as bundle_fetch
@@ -22,53 +21,51 @@ HTTP_NOT_FOUND = 404
 
 class TestGithubBundle:
     @pytest.fixture(autouse=True)
-    def prepare(self, patch_context) -> None:
-        self.patch_context = patch_context
+    def prepare(self, block_network) -> None:
         url = build_raw_url("github", "owner/alpha", "main", "patches-bundle.json")
         assert url is not None
         self.url = url
-        self.open_url = self.patch_context.enter_context(
-            patch("urllib.request.urlopen")
+        self.open_url = block_network
+        self.open_url.side_effect = None
+        self.response = httpx2.Response(
+            200,
+            headers={"ETag": '"new-hash"'},
+            content=b'{"download_url": "bundle.mpp"}',
         )
-        self.response = self.open_url.return_value.__enter__.return_value
-        self.response.getheader.return_value = '"new-hash"'
-        self.response.read.return_value = b'{"download_url": "bundle.mpp"}'
+        self.open_url.return_value = self.response
 
-    def test_changed_metadata_uses_one_conditional_get_with_response_etag(self) -> None:
+    @pytest.mark.parametrize("etag", ('"new-hash"', 'W/"new-hash"'))
+    def test_changed_metadata_uses_one_conditional_get_with_response_etag(
+        self, etag
+    ) -> None:
+        self.response.headers["ETag"] = etag
         result = bundle_fetch.get_github_bundle(self.url, "old-hash")
-        assert result == ("new-hash", self.response.read.return_value)
+        assert result == ("new-hash", self.response.content)
         self.open_url.assert_called_once()
         request = self.open_url.call_args.args[0]
-        assert request.get_method() == "GET"
-        assert request.get_header("If-none-match") == '"old-hash"'
-        self.response.read.assert_called_once()
+        assert request.method == "GET"
+        assert request.headers["Accept-Encoding"] == "identity"
+        assert request.headers["If-None-Match"] == '"old-hash"'
 
     def test_unconfirmed_metadata_uses_unconditional_get(self) -> None:
         bundle_fetch.get_github_bundle(self.url, None)
-        assert self.open_url.call_args.args[0].get_header("If-none-match") is None
-        self.response.read.assert_called_once()
+        assert self.open_url.call_args.args[0].headers.get("If-None-Match") is None
 
-    def test_not_modified_preserves_hash_without_reading_body(self) -> None:
-        body = io.BytesIO()
-        self.open_url.side_effect = urllib.error.HTTPError(
-            self.url, 304, "Not Modified", Message(), body
-        )
+    def test_not_modified_preserves_hash_without_returning_body(self) -> None:
+        self.open_url.return_value = httpx2.Response(304)
         assert bundle_fetch.get_github_bundle(self.url, "old-hash") == (
             "old-hash",
             None,
         )
         self.open_url.assert_called_once()
-        self.response.read.assert_not_called()
-        assert body.closed
 
-    def test_missing_etag_is_reported_before_reading_body(self) -> None:
-        self.response.getheader.return_value = None
+    def test_missing_etag_is_reported(self) -> None:
+        self.response.headers.clear()
         with pytest.raises(ValueError, match="Missing `ETag`"):
             bundle_fetch.get_github_bundle(self.url, None)
-        self.response.read.assert_not_called()
 
 
-@pytest.mark.parametrize("failure", (None, urllib.error.URLError("Download failed")))
+@pytest.mark.parametrize("failure", (None, httpx2.ConnectError("Download failed")))
 def test_concurrent_targets_share_download_without_blocking_other_urls(
     failure: BaseException | None,
 ) -> None:
@@ -148,8 +145,9 @@ def test_repository_lookup_is_shared_without_blocking_other_urls() -> None:
 
 class TestBundleFetch:
     @pytest.fixture(autouse=True)
-    def prepare(self, tmp_path: Path, patch_context) -> None:
+    def prepare(self, tmp_path: Path, patch_context, http_error) -> None:
         self.patch_context = patch_context
+        self.http_error = http_error
         self.root = tmp_path
         self.parser_dir = self.root / "bundle-parser"
         self.parser_dir.mkdir()
@@ -241,11 +239,6 @@ class TestBundleFetch:
         if isinstance(response, Exception):
             raise response
         return response if binary else response.decode()
-
-    def http_error(self, url: str, code: int) -> urllib.error.HTTPError:
-        error = urllib.error.HTTPError(url, code, "Request failed", Message(), None)
-        self.patch_context.callback(error.close)
-        return error
 
     def github_metadata(
         self, url: str, current_sha: str | None
@@ -439,7 +432,7 @@ class TestBundleFetch:
         if failure_kind == "timeout":
             failure = TimeoutError("Timed out")
         elif failure_kind == "network":
-            failure = urllib.error.URLError("DNS failure")
+            failure = httpx2.ConnectError("DNS failure")
         else:
             failure = self.http_error(urls[stage], failure_kind)
         if stage == "hash":

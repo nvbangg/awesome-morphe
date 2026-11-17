@@ -7,17 +7,15 @@ import json
 import re
 import subprocess
 import sys
-import urllib.error
 import urllib.parse
-import urllib.request
 import zipfile
 import zlib
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from http import HTTPStatus
-from http.client import HTTPException
 from threading import Lock
 
+import httpx2
 from dotenv import load_dotenv
 from pydantic import ValidationError
 
@@ -25,14 +23,13 @@ from common.config import (
     BUNDLES_DIR,
     CONCURRENCY,
     DEFAULT_BRANCHES,
-    HTTP_TIMEOUT_SECONDS,
     PATCHES_DIR,
     REPOS_JSON_PATH,
     SCRIPTS_DIR,
     UNAVAILABLE_HTTP_CODES,
 )
 from common.files import load_json, load_lines, save_json
-from common.http import fetch, get_auth_headers
+from common.http import HTTP_CLIENT, fetch, request
 from common.images import normalize_image_url
 from common.models import BUNDLE_MANIFEST, REPOSITORIES
 from common.repositories import (
@@ -67,6 +64,7 @@ FETCH_ERROR_SECTIONS = {
     "image": "Bundle image",
     "repo_metadata": "Repository metadata",
 }
+HASH_REQUEST_HEADERS = {"Accept-Encoding": "identity"}
 
 
 def extract_mpp_name(mpp_file: bytes) -> str | None:
@@ -155,14 +153,13 @@ class BranchFetchResult:
 
 
 def get_remote_file_hash(url: str, source: str, fallback: str | None = None) -> str:
-    request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
-    with urllib.request.urlopen(request, timeout=HTTP_TIMEOUT_SECONDS) as response:
-        header_name = "ETag" if source == "github" else "x-gitlab-content-sha256"
-        if remote_hash := response.getheader(header_name):
-            return remote_hash.strip('"')
-        if fallback is not None:
-            return fallback
-        raise ValueError(f"Missing `{header_name}` header")
+    response = request("HEAD", url, HASH_REQUEST_HEADERS)
+    header_name = "ETag" if source == "github" else "x-gitlab-content-sha256"
+    if remote_hash := response.headers.get(header_name):
+        return remote_hash.removeprefix("W/").strip('"')
+    if fallback is not None:
+        return fallback
+    raise ValueError(f"Missing `{header_name}` header")
 
 
 def get_file_sha(source: str, repo: str, branch: str) -> str | None:
@@ -171,19 +168,17 @@ def get_file_sha(source: str, repo: str, branch: str) -> str | None:
 
 
 def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | None]:
-    headers = get_auth_headers(url)
+    headers = dict(HASH_REQUEST_HEADERS)
     if current_sha:
         headers["If-None-Match"] = f'"{current_sha}"'
-    request = urllib.request.Request(url, headers=headers)
     try:
-        with urllib.request.urlopen(request, timeout=HTTP_TIMEOUT_SECONDS) as response:
-            remote_hash = response.getheader("ETag")
-            if not remote_hash:
-                raise ValueError("Missing `ETag` header")
-            return remote_hash.strip('"'), response.read()
-    except urllib.error.HTTPError as error:
-        if error.code == HTTPStatus.NOT_MODIFIED and current_sha:
-            error.close()
+        response = request("GET", url, headers)
+        remote_hash = response.headers.get("ETag")
+        if not remote_hash:
+            raise ValueError("Missing `ETag` header")
+        return remote_hash.removeprefix("W/").strip('"'), response.content
+    except httpx2.HTTPStatusError as error:
+        if error.response.status_code == HTTPStatus.NOT_MODIFIED and current_sha:
             return current_sha, None
         raise
 
@@ -234,13 +229,13 @@ def process_repo_branch(
             )
         else:
             remote_sha = get_file_sha(source, repo, branch)
-    except urllib.error.HTTPError as error:
+    except httpx2.HTTPStatusError as error:
         return failed(
             str(error),
             "metadata",
-            error.code in UNAVAILABLE_HTTP_CODES,
+            error.response.status_code in UNAVAILABLE_HTTP_CODES,
         )
-    except (OSError, HTTPException, ValueError) as error:
+    except (OSError, httpx2.HTTPError, ValueError) as error:
         return failed(str(error), "metadata")
 
     if not remote_sha:
@@ -264,26 +259,26 @@ def process_repo_branch(
                 return failed("Invalid `download_url`", "metadata", True)
             try:
                 get_remote_file_hash(mpp_url, source, "exists")
-            except urllib.error.HTTPError as error:
+            except httpx2.HTTPStatusError as error:
                 return failed(
                     str(error),
                     "bundle",
-                    error.code in UNAVAILABLE_HTTP_CODES,
+                    error.response.status_code in UNAVAILABLE_HTTP_CODES,
                 )
-            except (OSError, HTTPException, ValueError) as error:
+            except (OSError, httpx2.HTTPError, ValueError) as error:
                 return failed(str(error), "bundle")
         return BranchFetchResult(source, repo, branch, current_sha)
 
     try:
         if bundle_content is None:
             bundle_content = fetch(bundle_url, binary=True)
-    except urllib.error.HTTPError as error:
+    except httpx2.HTTPStatusError as error:
         return failed(
             str(error),
             "metadata",
-            error.code in UNAVAILABLE_HTTP_CODES,
+            error.response.status_code in UNAVAILABLE_HTTP_CODES,
         )
-    except (OSError, HTTPException) as error:
+    except (OSError, httpx2.HTTPError) as error:
         return failed(str(error), "metadata")
     try:
         bundle_data = json.loads(bundle_content)
@@ -358,13 +353,13 @@ def process_repo_branch(
             if bundle_downloads is not None
             else fetch(mpp_url, binary=True)
         )
-    except urllib.error.HTTPError as error:
+    except httpx2.HTTPStatusError as error:
         return failed(
             str(error),
             "bundle",
-            error.code in UNAVAILABLE_HTTP_CODES,
+            error.response.status_code in UNAVAILABLE_HTTP_CODES,
         )
-    except (OSError, HTTPException) as error:
+    except (OSError, httpx2.HTTPError) as error:
         return failed(str(error), "bundle")
     bundle_name = extract_mpp_name(mpp_content)
 
@@ -372,11 +367,11 @@ def process_repo_branch(
     assert patches_url is not None
     try:
         patches_content = fetch(patches_url, binary=True)
-    except urllib.error.HTTPError as error:
-        if error.code != HTTPStatus.NOT_FOUND:
+    except httpx2.HTTPStatusError as error:
+        if error.response.status_code != HTTPStatus.NOT_FOUND:
             return failed(str(error), "patch_list")
         patches_content = None
-    except (OSError, HTTPException) as error:
+    except (OSError, httpx2.HTTPError) as error:
         return failed(str(error), "patch_list")
 
     save_json(bundle_file, bundle_data)
@@ -432,10 +427,10 @@ def process_image(
     repo_url = build_repo_url(source, repo)
     try:
         remote_sha = get_image_sha(source, repo)
-    except (OSError, HTTPException, ValueError) as error:
+    except (OSError, httpx2.HTTPError, ValueError) as error:
         if (
-            isinstance(error, urllib.error.HTTPError)
-            and error.code in UNAVAILABLE_HTTP_CODES
+            isinstance(error, httpx2.HTTPStatusError)
+            and error.response.status_code in UNAVAILABLE_HTTP_CODES
         ):
             return source, repo, None, current_image is not None, None
         return source, repo, current_image, False, f"{repo_url}: {error}"
@@ -642,7 +637,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 metadata["name"] = (
                     extract_mpp_name(content) or metadata.get("name") or ""
                 )
-            except (OSError, HTTPException) as error:
+            except (OSError, httpx2.HTTPError) as error:
                 print(f"[-] {repo_url}: Failed to read bundle name: {error}")
         updated_count += int(
             metadata.get("name") != initial_repos[repo_url].get("name")
@@ -711,4 +706,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    with HTTP_CLIENT:
+        sys.exit(main())

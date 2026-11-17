@@ -1,7 +1,6 @@
-import urllib.error
-from email.message import Message
 from unittest.mock import patch
 
+import httpx2
 import pytest
 
 from common import repositories
@@ -9,15 +8,8 @@ from common import repositories
 
 class TestRepositoryMetadata:
     @pytest.fixture(autouse=True)
-    def prepare(self, patch_context) -> None:
-        self.patch_context = patch_context
-
-    def http_error(self, code: int) -> urllib.error.HTTPError:
-        error = urllib.error.HTTPError(
-            "https://example.com", code, "Failed", Message(), None
-        )
-        self.patch_context.callback(error.close)
-        return error
+    def prepare(self, http_error) -> None:
+        self.http_error = http_error
 
     @pytest.mark.parametrize(
         "source,code", (("github", 404), ("gitlab", 451), ("github", 503))
@@ -25,7 +17,7 @@ class TestRepositoryMetadata:
     def test_repository_errors_distinguish_unavailable_from_temporary_failure(
         self, source, code
     ) -> None:
-        error = self.http_error(code)
+        error = self.http_error("https://example.com", code)
         with patch.object(repositories, "fetch", side_effect=error):
             details = repositories.fetch_repo_details(
                 f"https://{source}.com/owner/alpha"
@@ -36,7 +28,7 @@ class TestRepositoryMetadata:
 
     @pytest.mark.parametrize(
         "error",
-        (urllib.error.URLError("DNS lookup failed"), ValueError("Invalid JSON")),
+        (httpx2.ConnectError("DNS lookup failed"), ValueError("Invalid JSON")),
     )
     def test_request_failure_does_not_mark_repository_unavailable(self, error) -> None:
         with patch.object(repositories, "fetch", side_effect=error):

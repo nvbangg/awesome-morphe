@@ -23,6 +23,7 @@ from common.config import (
     SCRIPTS_DIR,
 )
 from common.files import load_json, save_json
+from common.http import HTTP_CLIENT
 from common.models import APP_HASHES, HISTORY, REPOSITORIES, SOURCES
 from common.repositories import build_raw_url, build_repo_url, parse_repo_url
 from common.summary import append_step_summary, format_summary_section
@@ -401,4 +402,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    with HTTP_CLIENT:
+        sys.exit(main())

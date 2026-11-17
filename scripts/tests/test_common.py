@@ -99,9 +99,14 @@ def test_repository_identity_uses_host_and_path(url, expected) -> None:
         ("https://notgithubusercontent.com/file", False),
     ),
 )
-def test_token_is_only_attached_to_supported_https_hosts(url, authenticated) -> None:
+def test_token_is_only_attached_to_supported_https_hosts(
+    url, authenticated, block_network
+) -> None:
     with patch.dict(os.environ, {"GITHUB_TOKEN": "test-token"}):
-        assert ("Authorization" in http.get_auth_headers(url)) == authenticated
+        block_network.side_effect = None
+        http.request("GET", url)
+    headers = block_network.call_args.args[0].headers
+    assert ("Authorization" in headers) == authenticated
 
 
 @pytest.mark.parametrize(
@@ -122,7 +127,11 @@ def test_token_is_only_attached_to_supported_https_hosts(url, authenticated) -> 
         ("https://api.github.com/repos/owner/repo", False),
     ),
 )
-def test_gitlab_token_is_only_attached_to_gitlab_api(url, authenticated) -> None:
+def test_gitlab_token_is_only_attached_to_gitlab_api(
+    url, authenticated, block_network
+) -> None:
     with patch.dict(os.environ, {"GITLAB_TOKEN": "test-token"}):
-        headers = http.get_auth_headers(url)
+        block_network.side_effect = None
+        http.request("GET", url)
+    headers = block_network.call_args.args[0].headers
     assert headers.get("PRIVATE-TOKEN") == ("test-token" if authenticated else None)

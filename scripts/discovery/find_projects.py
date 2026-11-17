@@ -2,24 +2,22 @@
 
 import re
 import time
-import urllib.error
 import urllib.parse
-import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
-from http.client import HTTPException
 from itertools import compress
+
+import httpx2
 
 from common.config import (
     CONCURRENCY,
     DEAD_LINK_HTTP_CODES,
-    HTTP_TIMEOUT_SECONDS,
     PROJECTS_DIR,
     README_REPOS_PATH,
     ROOT_DIR,
 )
 from common.files import load_lines
-from common.http import fetch, get_auth_headers
+from common.http import fetch, request
 from common.repositories import build_raw_url, parse_repo_url
 from common.summary import format_summary_section
 
@@ -76,15 +74,14 @@ def build_user_query(user: str) -> str:
 
 
 def _file_exists(url: str) -> bool | None:
-    request = urllib.request.Request(url, headers=get_auth_headers(url), method="HEAD")
     try:
-        with urllib.request.urlopen(request, timeout=HTTP_TIMEOUT_SECONDS):
-            return True
-    except urllib.error.HTTPError as error:
-        if error.code in DEAD_LINK_HTTP_CODES:
+        request("HEAD", url)
+        return True
+    except httpx2.HTTPStatusError as error:
+        if error.response.status_code in DEAD_LINK_HTTP_CODES:
             return False
         print(f"[-] Failed to check {url}: {error}")
-    except (OSError, HTTPException, ValueError) as error:
+    except (httpx2.RequestError, httpx2.InvalidURL, ValueError) as error:
         print(f"[-] Failed to check {url}: {error}")
     return None
 
@@ -140,7 +137,7 @@ def search_repos() -> list[dict]:
             url = f"https://api.github.com/search/repositories?q={encoded_query}&sort=updated&per_page={PAGE_SIZE}&page={page}"
             try:
                 page_data = fetch(url, as_json=True)
-            except (OSError, HTTPException, ValueError) as error:
+            except (httpx2.HTTPError, ValueError) as error:
                 print(f"Failed to fetch page {page}: {error}")
                 break
 

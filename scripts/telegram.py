@@ -1,19 +1,18 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
 import html
-import json
 import os
 import re
 import sys
-import urllib.error
 import urllib.parse
-import urllib.request
 from datetime import UTC, datetime
 from pathlib import Path
 
+import httpx2
 from dotenv import load_dotenv
 
-from common.config import HTTP_TIMEOUT_SECONDS, SCRIPTS_DIR, WHATS_NEW_PATH
+from common.config import SCRIPTS_DIR, WHATS_NEW_PATH
+from common.http import HTTP_CLIENT, request
 
 
 def format_inline_markdown(text: str) -> str:
@@ -77,41 +76,40 @@ def main() -> None:
             "Error: TG_TOKEN or TG_CHAT environment variables are not set."
         )
 
-    request_data = urllib.parse.urlencode(
-        {
-            "chat_id": chat_id,
-            "text": f"{formatted_title}\n\n{formatted_content}",
-            "parse_mode": "HTML",
-            "disable_web_page_preview": "true",
-        }
-    ).encode("utf-8")
-
-    api_request = urllib.request.Request(
-        f"https://api.telegram.org/bot{token}/sendMessage",
-        data=request_data,
-        method="POST",
-    )
     try:
-        with urllib.request.urlopen(api_request, timeout=HTTP_TIMEOUT_SECONDS):
-            print("Telegram notification sent successfully.")
-    except urllib.error.HTTPError as error:
-        error_message = str(error)
+        request(
+            "POST",
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data={
+                "chat_id": chat_id,
+                "text": f"{formatted_title}\n\n{formatted_content}",
+                "parse_mode": "HTML",
+                "disable_web_page_preview": "true",
+            },
+        )
+        print("Telegram notification sent successfully.")
+    except httpx2.HTTPStatusError as error:
+        error_message = (
+            f"HTTP {error.response.status_code}: {error.response.reason_phrase}"
+        )
         try:
-            response = json.loads(error.read().decode("utf-8", errors="replace"))
-        except json.JSONDecodeError:
+            response = error.response.json()
+        except ValueError:
             response = {}
         if (
             isinstance(response, dict)
             and isinstance(description := response.get("description"), str)
             and description
         ):
-            error_message = f"HTTP {error.code}: {description}"
+            error_message = f"HTTP {error.response.status_code}: {description}"
         raise SystemExit(
-            f"Failed to send Telegram notification: {error_message}"
-        ) from error
-    except Exception as error:
-        raise SystemExit(f"Failed to send Telegram notification: {error}") from error
+            f"Failed to send Telegram notification: {error_message.replace(token, '[redacted]')}"
+        ) from None
+    except httpx2.RequestError as error:
+        message = str(error).replace(token, "[redacted]")
+        raise SystemExit(f"Failed to send Telegram notification: {message}") from None
 
 
 if __name__ == "__main__":
-    main()
+    with HTTP_CLIENT:
+        main()
