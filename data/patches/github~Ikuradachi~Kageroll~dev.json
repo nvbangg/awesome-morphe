@@ -1,12 +1,39 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.5.0-dev.2",
+  "version": "1.5.0",
   "patches": [
+    {
+      "name": "1080p download quality",
+      "description": "Upgrades the High offline download quality tier to 1080p and selects the single best matching video track.",
+      "default": true,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Allow screenshots",
       "description": "Removes FLAG_SECURE from membership card and Compose dialogs to permit screenshots and disables Android 14+ screen capture detection in the Arc reader.",
       "default": true,
-      "category": null,
+      "category": "UI",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -33,7 +60,7 @@
       "name": "Auto-skip segments",
       "description": "Automatically skips intros, recaps, credits, previews, or promos in the video player.",
       "default": true,
-      "category": null,
+      "category": "Player",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -104,9 +131,9 @@
     },
     {
       "name": "Disable background services",
-      "description": "Disables background broadcast receivers, schedulers, widget polling, Firebase session service binding, and DataTransport JobScheduler tasks to eliminate background wakeups and idle battery drain.",
+      "description": "Disables background broadcast receivers, schedulers, widget polling, Firebase sessions initialization and service binding, and DataTransport JobScheduler tasks to eliminate background wakeups and idle battery drain.",
       "default": true,
-      "category": null,
+      "category": "Performance",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -131,9 +158,9 @@
     },
     {
       "name": "Disable telemetry",
-      "description": "Blocks Segment and Mux events, disables periodic telemetry loops and flush timers (Mux 1000ms playback poll, Segment 30s flush, Braze push flush alarms, Datadog upload thread), disables Firebase Analytics after consent updates, denies automatic Crashlytics uploads and selects disabled Datadog setup.",
+      "description": "Blocks Segment initialization, Mux events, advertising ID lookup, Firebase Analytics pre-init, Crashlytics NDK native loading, Braze session and push flush alarms, and Datadog uploads; disables Firebase Analytics after consent updates, denies automatic Crashlytics uploads, and selects disabled Datadog setup.",
       "default": true,
-      "category": null,
+      "category": "Privacy",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -160,7 +187,7 @@
       "name": "Manual video quality",
       "description": "Replaces the preset quality tiers with manual per-resolution selection and Auto.",
       "default": true,
-      "category": null,
+      "category": "Player",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -187,7 +214,7 @@
       "name": "Picture-in-Picture",
       "description": "Enables native Picture-in-Picture playback support.",
       "default": true,
-      "category": null,
+      "category": "Player",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -214,7 +241,7 @@
       "name": "Playback speed",
       "description": "Unhides the player's speed menu and fills it out to 0.5x-2.0x.",
       "default": true,
-      "category": null,
+      "category": "Player",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -241,7 +268,7 @@
       "name": "Proxy token requests",
       "description": "Routes token acquisition and refresh through your SOCKS proxy, with optional proxy authentication.",
       "default": false,
-      "category": null,
+      "category": "Privacy",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -314,7 +341,7 @@
       "name": "Suppress bloat workers",
       "description": "Forces Google Engage, Continue Watching, Datadog, and OneTrust CMP background workers to return success immediately without performing network requests, disk I/O, or image prefetching.",
       "default": true,
-      "category": null,
+      "category": "Performance",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",

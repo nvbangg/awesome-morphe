@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "patches": [
     {
       "name": "Backup to folder",
-      "description": "Adds a Backup row to the bottom of the side menu: backs up changed notes as .sdocx files to a folder you choose (any folder, including SD card or a synced folder).",
+      "description": "Adds a Local backup row to the bottom of the side menu: backs up changed notes as .sdocx files to a folder you choose (any folder, including SD card or a synced folder).",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -95,7 +95,7 @@
     },
     {
       "name": "Crash fixes",
-      "description": "Reports no iris scanner, and finds the pen settings layouts and colour palettes after a package rename (otherwise the colour picker crashes).",
+      "description": "Reports no iris scanner, makes Share (PDF, image, Word...) open the app chooser, and finds the pen settings layouts, colour palettes and share provider after a package rename.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -149,8 +149,8 @@
     },
     {
       "name": "Folder sync",
-      "description": "Experimental. Syncs notes with other devices through a shared folder (for example one kept in sync by Syncthing): \"Sync now\" in the Backup menu, and automatically each time the app opens.",
-      "default": false,
+      "description": "Experimental. Syncs notes with other devices through a shared folder (for example one kept in sync by Syncthing): \"Sync now\" in the Local backup menu, and automatically each time the app opens.",
+      "default": true,
       "category": null,
       "compatiblePackages": [
         {
@@ -176,8 +176,8 @@
     },
     {
       "name": "Hide Samsung account features",
-      "description": "Hides Samsung Cloud sync, sign-in prompts, sharing, Galaxy AI and note locking. They need a Samsung-signed app; this matters mostly on Samsung phones, where the account exists.",
-      "default": true,
+      "description": "Hides Samsung Cloud sync, sign-in, sharing, Galaxy AI and note locking.",
+      "default": false,
       "category": null,
       "compatiblePackages": [
         {
@@ -321,6 +321,33 @@
       ]
     },
     {
+      "name": "Samsung account sign-in",
+      "description": "Signs in to your Samsung account on Samsung's web page to sync with Samsung Cloud. Needs the Samsung Account app to be absent.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.notes",
+          "name": "Samsung Notes",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F5A623",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.4.48.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Samsung framework compatibility",
       "description": "Adds stand-ins for One UI framework classes and redirects calls to One UI-only methods and fields, so the app runs on non-Samsung Android.",
       "default": true,
@@ -376,7 +403,34 @@
     },
     {
       "name": "Turn off Samsung cloud components",
-      "description": "Turns off the Samsung account, cloud sync, push and co-editing services and receivers. They can't work in a patched app and would only run in the background.",
+      "description": "Turns off the Samsung account, cloud sync, push and co-editing services. Samsung Cloud sync stops working.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.notes",
+          "name": "Samsung Notes",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F5A623",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.4.48.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Turn off telemetry",
+      "description": "Turns off Samsung Analytics, crash reports, usage surveys and marketing uploads, the Play review prompt, Google Meet sharing and Google Sign-In, and starts Firebase only if Samsung sync uses it.",
       "default": true,
       "category": null,
       "compatiblePackages": [
