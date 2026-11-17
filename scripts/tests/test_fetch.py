@@ -421,7 +421,13 @@ class TestBundleFetch:
 
     @pytest.mark.parametrize(
         "stage,failure_kind",
-        (("hash", "timeout"), ("metadata", 503), ("mpp", "network"), ("patches", 451)),
+        (
+            ("hash", "timeout"),
+            ("metadata", 503),
+            ("mpp", "network"),
+            ("mpp", "invalid-url"),
+            ("patches", 451),
+        ),
     )
     def test_request_failure_preserves_saved_target(self, stage, failure_kind) -> None:
         urls = {
@@ -433,6 +439,8 @@ class TestBundleFetch:
             failure = TimeoutError("Timed out")
         elif failure_kind == "network":
             failure = httpx2.ConnectError("DNS failure")
+        elif failure_kind == "invalid-url":
+            failure = httpx2.InvalidURL("Invalid download URL")
         else:
             failure = self.http_error(urls[stage], failure_kind)
         if stage == "hash":

@@ -100,5 +100,5 @@ def fetch_repo_details(repo_url: str) -> dict:
         }
     except ValidationError:
         return {"error": "Invalid repository data"}
-    except (httpx2.HTTPError, ValueError) as error:
+    except (httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
         return _request_error(error)

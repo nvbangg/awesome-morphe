@@ -137,7 +137,7 @@ def search_repos() -> list[dict]:
             url = f"https://api.github.com/search/repositories?q={encoded_query}&sort=updated&per_page={PAGE_SIZE}&page={page}"
             try:
                 page_data = fetch(url, as_json=True)
-            except (httpx2.HTTPError, ValueError) as error:
+            except (httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
                 print(f"Failed to fetch page {page}: {error}")
                 break
 

@@ -235,7 +235,7 @@ def process_repo_branch(
             "metadata",
             error.response.status_code in UNAVAILABLE_HTTP_CODES,
         )
-    except (OSError, httpx2.HTTPError, ValueError) as error:
+    except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
         return failed(str(error), "metadata")
 
     if not remote_sha:
@@ -265,7 +265,7 @@ def process_repo_branch(
                     "bundle",
                     error.response.status_code in UNAVAILABLE_HTTP_CODES,
                 )
-            except (OSError, httpx2.HTTPError, ValueError) as error:
+            except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
                 return failed(str(error), "bundle")
         return BranchFetchResult(source, repo, branch, current_sha)
 
@@ -278,7 +278,7 @@ def process_repo_branch(
             "metadata",
             error.response.status_code in UNAVAILABLE_HTTP_CODES,
         )
-    except (OSError, httpx2.HTTPError) as error:
+    except (OSError, httpx2.HTTPError, httpx2.InvalidURL) as error:
         return failed(str(error), "metadata")
     try:
         bundle_data = json.loads(bundle_content)
@@ -359,7 +359,7 @@ def process_repo_branch(
             "bundle",
             error.response.status_code in UNAVAILABLE_HTTP_CODES,
         )
-    except (OSError, httpx2.HTTPError) as error:
+    except (OSError, httpx2.HTTPError, httpx2.InvalidURL) as error:
         return failed(str(error), "bundle")
     bundle_name = extract_mpp_name(mpp_content)
 
@@ -371,7 +371,7 @@ def process_repo_branch(
         if error.response.status_code != HTTPStatus.NOT_FOUND:
             return failed(str(error), "patch_list")
         patches_content = None
-    except (OSError, httpx2.HTTPError) as error:
+    except (OSError, httpx2.HTTPError, httpx2.InvalidURL) as error:
         return failed(str(error), "patch_list")
 
     save_json(bundle_file, bundle_data)
@@ -427,7 +427,7 @@ def process_image(
     repo_url = build_repo_url(source, repo)
     try:
         remote_sha = get_image_sha(source, repo)
-    except (OSError, httpx2.HTTPError, ValueError) as error:
+    except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
         if (
             isinstance(error, httpx2.HTTPStatusError)
             and error.response.status_code in UNAVAILABLE_HTTP_CODES
@@ -637,7 +637,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 metadata["name"] = (
                     extract_mpp_name(content) or metadata.get("name") or ""
                 )
-            except (OSError, httpx2.HTTPError) as error:
+            except (OSError, httpx2.HTTPError, httpx2.InvalidURL) as error:
                 print(f"[-] {repo_url}: Failed to read bundle name: {error}")
         updated_count += int(
             metadata.get("name") != initial_repos[repo_url].get("name")

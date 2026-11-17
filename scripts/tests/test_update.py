@@ -141,7 +141,10 @@ class TestBundleUpdate:
     def snapshot(self) -> dict[Path, bytes]:
         return {path: path.read_bytes() for path in self.state_paths}
 
-    @pytest.mark.parametrize("rejected", (None, {"name": " "}, {"name": 7}))
+    @pytest.mark.parametrize(
+        "rejected",
+        (None, {"name": " "}, {"name": 7}, {"name": "Patch", "description": 123}),
+    )
     def test_rejected_patch_does_not_change_app_hash_or_updates(self, rejected) -> None:
         valid_patch = self.app_patch()
         self.add_target(patches=[valid_patch])

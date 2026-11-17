@@ -105,7 +105,7 @@ def main() -> None:
         raise SystemExit(
             f"Failed to send Telegram notification: {error_message.replace(token, '[redacted]')}"
         ) from None
-    except httpx2.RequestError as error:
+    except (httpx2.RequestError, httpx2.InvalidURL) as error:
         message = str(error).replace(token, "[redacted]")
         raise SystemExit(f"Failed to send Telegram notification: {message}") from None
 

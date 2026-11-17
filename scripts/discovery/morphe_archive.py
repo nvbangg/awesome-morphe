@@ -19,7 +19,7 @@ _REPO_RE = re.compile(r"morphe\.software/add-source\?(github|gitlab)=([^)\s]+)")
 def discover() -> str | None:
     try:
         content = fetch(README_URL)
-    except (httpx2.HTTPError, UnicodeError) as error:
+    except (httpx2.HTTPError, httpx2.InvalidURL, UnicodeError) as error:
         return report_provider_warning("morphe-archive", error, OUTPUT_PATH)
 
     discovered = {

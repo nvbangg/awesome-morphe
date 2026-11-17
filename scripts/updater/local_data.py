@@ -139,13 +139,14 @@ def parse_patches_list(
         return None, "No patches found"
 
     valid_patches = []
+    validated_patches = []
     bundle_apps = set()
-    for index, raw_patch in enumerate(raw_list):
+    for raw_patch in raw_list:
         try:
             patch = PATCH.validate_python(raw_patch)
         except ValidationError:
             continue
-        raw_list[index] = patch
+        validated_patches.append(patch)
         if is_dev_branch and main_patch_names and patch["name"] not in main_patch_names:
             patch["isPreRelease"] = True
         patch_dict = strip_patch(patch, discovered_names)
@@ -163,6 +164,7 @@ def parse_patches_list(
     if bundle_apps == {PACKAGE_EXAMPLE}:
         return None, "Only contains `com.example.app`"
 
+    raw_patches_data["patches"] = validated_patches
     return valid_patches, None
 
 
@@ -197,15 +199,7 @@ def load_branch_data(
         return None, None, None, "Invalid data"
     if not patches:
         return None, None, None, reason
-    accepted_names = {patch["name"] for patch in patches}
-    accepted_raw = [
-        patch
-        for patch in raw["patches"]
-        if isinstance(patch, dict)
-        and isinstance(patch.get("name"), str)
-        and patch["name"] in accepted_names
-    ]
-    return bundle, patches, accepted_raw, None
+    return bundle, patches, raw["patches"], None
 
 
 def process(
@@ -294,8 +288,6 @@ def process(
 
         raw_app_patches_map: dict[str, list[dict]] = {}
         for raw_patch in chosen_raw_patches or []:
-            if not isinstance(raw_patch, dict):
-                continue
             compat = raw_patch.get("compatiblePackages")
             packages = (
                 list(compat.keys())

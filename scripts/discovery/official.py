@@ -21,7 +21,7 @@ def discover() -> str | None:
     try:
         data = fetch(BUNDLES_URL, HEADERS, as_json=True)
         catalog = OFFICIAL_CATALOG.validate_python(data)
-    except httpx2.HTTPError as error:
+    except (httpx2.HTTPError, httpx2.InvalidURL) as error:
         return report_provider_warning("official", error, OUTPUT_PATH)
     except ValueError:
         return report_provider_warning("official", "Invalid provider data", OUTPUT_PATH)

@@ -15,7 +15,7 @@ OUTPUT_PATH = BUNDLE_SOURCES_DIR / "jman.json"
 def discover() -> str | None:
     try:
         sources_data = JMAN_SOURCES.validate_python(fetch(SOURCES_URL, as_json=True))
-    except httpx2.HTTPError as error:
+    except (httpx2.HTTPError, httpx2.InvalidURL) as error:
         return report_provider_warning("jman", error, OUTPUT_PATH)
     except ValueError:
         return report_provider_warning("jman", "Invalid provider data", OUTPUT_PATH)
