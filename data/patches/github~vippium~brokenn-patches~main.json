@@ -1,7 +1,75 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.0",
+  "version": "1.4.0-dev.3",
   "patches": [
+    {
+      "name": "AMOLED theme",
+      "description": "Makes dark mode pure black for AMOLED screens. Light mode stays normal.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.sjava.officereader",
+          "name": "Office Reader",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.0.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "amoledColor",
+          "title": "AMOLED color",
+          "description": "Hex color to use for AMOLED (e.g. #FF000000 pure black, #FF0A0A0A near-black).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#FF000000",
+          "values": {
+            "Pure Black": "#FF000000",
+            "Near Black": "#FF0A0A0A",
+            "Dark Charcoal": "#FF121212"
+          }
+        },
+        {
+          "key": "amoledBlackenStatusBar",
+          "title": "Blacken Status Bar",
+          "description": "Also force the status bar background to AMOLED on dark themes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "amoledBlackenNavigationBar",
+          "title": "Blacken Navigation Bar",
+          "description": "Also force the navigation bar background to AMOLED on dark themes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "amoledBlackenSurfaces",
+          "title": "Blacken Surfaces",
+          "description": "Also blacken Material3 surface container colors (recommended for full AMOLED).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
     {
       "name": "Anti-delete messages",
       "description": "Prevents server-deleted messages from being removed locally.",
@@ -201,7 +269,7 @@
     },
     {
       "name": "Enable screenshots",
-      "description": "Allows screenshots and screen recording.",
+      "description": "Allows screenshots and screen recording, including during playback. Will not work on DRM-protected content (Widevine L1).",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -254,6 +322,88 @@
       "options": []
     },
     {
+      "name": "Hide player buttons",
+      "description": "Hides selected buttons (Watch Next, Episodes, Shop, Speed, Rate, Next Episode) from the player settings sheet and the fullscreen bottom-row tab bar.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "in.startv.hotstar",
+          "name": "JioHotstar",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1A237E",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.10.26.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hide_watch_next",
+          "title": "Hide Watch Next",
+          "description": "Hides the Watch Next button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_episodes",
+          "title": "Hide Episodes",
+          "description": "Hides the Episodes button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_shop",
+          "title": "Hide Shop",
+          "description": "Hides the Shop / Order Food button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_speed",
+          "title": "Hide Speed",
+          "description": "Hides the Speed button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_rate",
+          "title": "Hide Rate",
+          "description": "Hides the Rate button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_next_episode",
+          "title": "Hide Next Episode",
+          "description": "Hides the Next Episode button.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Hide typing indicator",
       "description": "Prevents typing status from being sent to other users.",
       "default": true,
@@ -279,6 +429,88 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Hide watch page elements",
+      "description": "Hides elements on the watch page: tabs (For You, Jeeto, Memes, Live Chat, brand tabs) and the sponsored pill row. Episodes stays.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "in.startv.hotstar",
+          "name": "JioHotstar",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1A237E",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.10.26.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hide_for_you",
+          "title": "Hide For You tab",
+          "description": "Removes the For You tab from the watch-page tab strip.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_jeeto",
+          "title": "Hide Jeeto tab",
+          "description": "Removes the Jeeto tab from the watch-page tab strip.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_memes",
+          "title": "Hide Memes tab",
+          "description": "Removes the Memes tab from the watch-page tab strip.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_live_chat",
+          "title": "Hide Live Chat tab",
+          "description": "Removes the Live Chat tab from the watch-page tab strip.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_brand_tabs",
+          "title": "Hide brand tabs",
+          "description": "Removes sponsored brand tabs (Shop, Order Food) from the watch-page tab strip.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_sponsored_pills",
+          "title": "Hide sponsored pills",
+          "description": "Removes the sponsored pills (Shop, Order Food) from the watch-page pill row.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Monochrome icon support",
@@ -432,6 +664,33 @@
           "targets": [
             {
               "version": "26.10.26.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks premium and removes Family-apps promos from the About screens.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.sjava.officereader",
+          "name": "Office Reader",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.0.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
