@@ -84,7 +84,7 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
-    load_dotenv(SCRIPTS_DIR / ".env")
+    load_dotenv(SCRIPTS_DIR / ".env", override=True)
     parser = argparse.ArgumentParser(description="Discover Morphe bundles and projects")
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument(

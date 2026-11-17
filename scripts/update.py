@@ -106,7 +106,7 @@ def move_renamed_files(renames: dict[str, str]) -> None:
 
 
 def main() -> int:
-    load_dotenv(SCRIPTS_DIR / ".env")
+    load_dotenv(SCRIPTS_DIR / ".env", override=True)
     parser = argparse.ArgumentParser(description="Update Morphe patches and bundles")
     parser.add_argument("--daily", action="store_true", help="Daily update")
     parser.add_argument("--weekly", action="store_true", help="Weekly update")

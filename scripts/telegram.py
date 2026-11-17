@@ -50,7 +50,7 @@ def convert_to_html(text: str) -> str:
 
 
 def main() -> None:
-    load_dotenv(SCRIPTS_DIR / ".env")
+    load_dotenv(SCRIPTS_DIR / ".env", override=True)
     current_time = datetime.now(UTC)
     formatted_date = f"{current_time.strftime('%B')} {current_time.day}"
     title = sys.argv[1] if len(sys.argv) >= 2 else f"🔔 What's New ({formatted_date})"

@@ -693,7 +693,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
 
 
 def main() -> None:
-    load_dotenv(SCRIPTS_DIR / ".env")
+    load_dotenv(SCRIPTS_DIR / ".env", override=True)
     parser = argparse.ArgumentParser(description="Fetch Morphe patches bundles")
     parser.add_argument("--daily", action="store_true", help="Daily sync")
     parser.add_argument(

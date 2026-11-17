@@ -192,7 +192,7 @@ Open the local URL shown in the terminal.
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and run Python commands from `scripts/`.
 
-Local configuration can be placed in the Git-ignored `scripts/.env` file. Existing environment variables take priority; GitHub Actions does not require this file.
+Local configuration can be placed in the Git-ignored `scripts/.env` file. Values declared in this file override inherited environment variables for the script and its child processes; GitHub Actions does not require this file.
 
 ```sh
 cd scripts
