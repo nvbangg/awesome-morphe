@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "patches": [
     {
       "name": "AMOLED black (Splitwise)",
@@ -88,6 +88,48 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "All codecs",
+      "description": "Replaces MX Player's stripped decoder with the custom codec 1.87.0, so AC3, E-AC3, DTS, DTS-HD, TrueHD and MLP audio play. The codec is downloaded while patching from USBhost's public MX_FFmpeg release and checked against its SHA-256, then written into the app: nothing to set up afterwards.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "RawResourcePatch",
+        "RawResourcePatch",
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mxtech.videoplayer.pro",
+          "name": "MX Player Pro",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.93.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "codecFilePath",
+          "title": "Codec file",
+          "description": "Optional. Leave empty and the codec is downloaded while patching from USBhost's MX_FFmpeg release and checked against its SHA-256. Pick mx_aio.zip or a libffmpeg.mx.so only to patch offline or to use a different pack.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Allow clone",
@@ -1520,6 +1562,38 @@
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip license check",
+      "description": "MX Player Pro asks Google Play to confirm the purchase and locks itself when the answer is missing, which is always the case for a patched copy. The check is skipped and the app counts as licensed.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "RawResourcePatch",
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.mxtech.videoplayer.pro",
+          "name": "MX Player Pro",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.93.4",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.22.1",
+  "version": "1.22.2",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -365,7 +365,7 @@
     },
     {
       "name": "Remove clip bumper",
-      "description": "Removes the ~5s Postparty logo bumper from exported clips. The bumper is concatenated client-side by FFmpegKit; this nulls the bumper path parameter in the export command builder so the trim/scale/concat block is never emitted, regardless of whether a bumper file is already cached.",
+      "description": "Removes the ~5s Postparty logo bumper from all exports. Forces client-side transcoding so unedited clips re-encode instead of direct-saving the server-baked file, then nulls the bumper path in both ffmpeg command builders so the re-encode never appends it.",
       "default": true,
       "category": null,
       "compatiblePackages": [
