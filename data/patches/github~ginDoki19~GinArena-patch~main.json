@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.11.1",
+  "version": "2.12.0",
   "patches": [
     {
       "name": "AdBlocker turbo & userscript bundle",
@@ -202,7 +202,7 @@
     },
     {
       "name": "Enable premium",
-      "description": "Enables local premium status in Daylio 1.71.1. Account- or server-dependent features may not work; this is not a purchase.",
+      "description": "Unlocks Daylio's local premium state. Account- or server-dependent features (restore purchase, cloud entitlements) still behave as they do on a free account; this is not a purchase.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -218,16 +218,16 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.71.1",
+              "version": "1.72.0",
               "versionCodes": {
-                "ARM64_V8A": 289,
-                "ARMEABI_V7A": 289,
-                "X86_64": 289,
-                "X86": 289
+                "ARM64_V8A": 291,
+                "ARMEABI_V7A": 291,
+                "X86_64": 291,
+                "X86": 291
               },
               "isExperimental": false,
               "minSdk": 26,
-              "description": "APKM (arm64-v8a / armeabi-v7a / x86 / x86_64, 480-640 dpi, Android 8.0+), build 289"
+              "description": "APKM (arm64-v8a / armeabi-v7a / x86 / x86_64, 480-640 dpi, Android 8.0+), build 291"
             }
           ]
         }
@@ -252,21 +252,83 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "7.4",
+              "version": "7.5",
               "versionCodes": {
-                "ARM64_V8A": 54,
-                "ARMEABI_V7A": 54,
-                "X86_64": 54,
-                "X86": 54
+                "ARM64_V8A": 55,
+                "ARMEABI_V7A": 55,
+                "X86_64": 55,
+                "X86": 55
               },
               "isExperimental": false,
               "minSdk": 24,
-              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 54"
+              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 55"
             }
           ]
         }
       ],
       "options": []
+    },
+    {
+      "name": "Google Drive backup via MicroG RE",
+      "description": "Makes the Google Drive backup sign-in work on a re-signed Daylio by signing in as the original app, and stops the \"won't run without Google Play services\" dialog. Needs MicroG RE installed with a Google account added. Daylio's local journal and every other feature are unaffected.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.daylio",
+          "name": "Daylio",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00BFA5",
+          "signatures": [
+            "6afb7e4100413a77e13b6a1e4f8ac1f9e3421862b3678fb9abe6aa531e859a9d"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.72.0",
+              "versionCodes": {
+                "ARM64_V8A": 291,
+                "ARMEABI_V7A": 291,
+                "X86_64": 291,
+                "X86": 291
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": "APKM (arm64-v8a / armeabi-v7a / x86 / x86_64, 480-640 dpi, Android 8.0+), build 291"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "spoofOriginalIdentity",
+          "title": "Sign in as the original app",
+          "description": "Tells MicroG Daylio's original package name and signing-certificate SHA-1, which is what makes Google accept the sign-in on a re-signed APK.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "routeGoogleServices",
+          "title": "Send Google calls to MicroG",
+          "description": "Points Daylio's Play services sign-in and account lookups at MicroG.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "addMicrogQueries",
+          "title": "Let the app find Google and MicroG",
+          "description": "Makes both Play services packages visible on Android 11+. Stock Daylio declares neither, so this changes nothing else.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Google sign-in via MicroG RE",
@@ -400,16 +462,16 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "7.4",
+              "version": "7.5",
               "versionCodes": {
-                "ARM64_V8A": 54,
-                "ARMEABI_V7A": 54,
-                "X86_64": 54,
-                "X86": 54
+                "ARM64_V8A": 55,
+                "ARMEABI_V7A": 55,
+                "X86_64": 55,
+                "X86": 55
               },
               "isExperimental": false,
               "minSdk": 24,
-              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 54"
+              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 55"
             }
           ]
         }
@@ -570,16 +632,16 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "7.4",
+              "version": "7.5",
               "versionCodes": {
-                "ARM64_V8A": 54,
-                "ARMEABI_V7A": 54,
-                "X86_64": 54,
-                "X86": 54
+                "ARM64_V8A": 55,
+                "ARMEABI_V7A": 55,
+                "X86_64": 55,
+                "X86": 55
               },
               "isExperimental": false,
               "minSdk": 24,
-              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 54"
+              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 55"
             }
           ]
         }
@@ -997,7 +1059,7 @@
     },
     {
       "name": "Remove ads, proxy & restrictions",
-      "description": "Stops background bandwidth sharing, removes ads, and hides the player app logo on 7.4.",
+      "description": "Stops background bandwidth sharing, removes ads, and hides the player app logo on 7.5.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1013,16 +1075,16 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "7.4",
+              "version": "7.5",
               "versionCodes": {
-                "ARM64_V8A": 54,
-                "ARMEABI_V7A": 54,
-                "X86_64": 54,
-                "X86": 54
+                "ARM64_V8A": 55,
+                "ARMEABI_V7A": 55,
+                "X86_64": 55,
+                "X86": 55
               },
               "isExperimental": false,
               "minSdk": 24,
-              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 54"
+              "description": "Universal APK (arm64-v8a / armeabi-v7a / x86 / x86_64, Android 7.0+), build 55"
             }
           ]
         }
@@ -1383,6 +1445,130 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Remove promos & partner ads",
+      "description": "Removes Daylio's built-in advertising: the BetterHelp partner offer, the cross-promotion cards for the developer's other apps, and the \"More Great Apps\" row that opens a screen of their app catalogue. Daylio has no ad network; the journal, statistics and backups are untouched.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.daylio",
+          "name": "Daylio",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00BFA5",
+          "signatures": [
+            "6afb7e4100413a77e13b6a1e4f8ac1f9e3421862b3678fb9abe6aa531e859a9d"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.72.0",
+              "versionCodes": {
+                "ARM64_V8A": 291,
+                "ARMEABI_V7A": 291,
+                "X86_64": 291,
+                "X86": 291
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": "APKM (arm64-v8a / armeabi-v7a / x86 / x86_64, 480-640 dpi, Android 8.0+), build 291"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hidePartnerAds",
+          "title": "Hide the BetterHelp partner banner",
+          "description": "Removes the BetterHelp icon from the main screen's top bar and disables the partner offer screen behind it. Daylio's own screens are not affected.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideAppPromos",
+          "title": "Hide the \"try our other app\" cards",
+          "description": "Removes the cross-promotion cards for Daylio's own apps (My Diary, Better Weight, Nutrilio) from the More screen and the main screen, and hides the \"More Great Apps\" row that opens a screen of four of their app cards.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove tracking & marketing",
+      "description": "Daylio ships no ad SDK - this build has none to block. It does ship Firebase Analytics, Tag Manager, Crashlytics and the advertising-ID permissions; this turns those off. Every part is switchable.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.daylio",
+          "name": "Daylio",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#00BFA5",
+          "signatures": [
+            "6afb7e4100413a77e13b6a1e4f8ac1f9e3421862b3678fb9abe6aa531e859a9d"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.72.0",
+              "versionCodes": {
+                "ARM64_V8A": 291,
+                "ARMEABI_V7A": 291,
+                "X86_64": 291,
+                "X86": 291
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": "APKM (arm64-v8a / armeabi-v7a / x86 / x86_64, 480-640 dpi, Android 8.0+), build 291"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "disableAnalytics",
+          "title": "Turn off analytics",
+          "description": "Stops Firebase Analytics and Google Tag Manager from collecting or sending anything. The app keeps working; its analytics calls become no-ops.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableCrashlytics",
+          "title": "Turn off crash reporting",
+          "description": "Stops Firebase Crashlytics from uploading crash reports.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeAdvertisingPermissions",
+          "title": "Remove advertising-ID and install-referrer access",
+          "description": "Removes the AD_ID, ad-services and install-referrer permissions, so the app cannot read your advertising ID or the install attribution that came with it.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeSpecialOffers",
+          "title": "Remove discount notifications",
+          "description": "Removes the three receivers that schedule Daylio's discount / special-offer notifications. Off by default because it changes something you can see: you stop being notified when a discount is running.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Unlock AdGuard Premium",

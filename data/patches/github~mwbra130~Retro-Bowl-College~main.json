@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.79.15",
+  "version": "1.79.22",
   "patches": [
     {
       "name": "Bypass PairIP application checks",
@@ -160,6 +160,32 @@
     },
     {
       "name": "Bypass PairIP license check",
+      "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends unlicensed installs to a Play Store block page. Disables that check at its entry point so the patched app can open.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.skylum.luminar",
+          "name": "Luminar",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7C4DFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
       "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends unlicensed installs to a Play Store block page. Disables that check, its verdict handler and both block-page launchers so the patched app can open.",
       "default": true,
       "dependencies": [],
@@ -202,6 +228,32 @@
               "version": "6.1.0",
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP signature check",
+      "description": "Required for re-signed builds: PairIP verifies the app's signing certificate at startup and kills tampered builds. Disables that Java-layer check (its pass state is returning normally). The native PairIP VM layer is untouched.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "ai.moises",
+          "name": "Moises",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7B61FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.141.0",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -938,6 +990,32 @@
       "options": []
     },
     {
+      "name": "Enable Lifetime",
+      "description": "Turns on Lifetime permanently: every premium feature unlocks as if the one-time Lifetime purchase (Mobile + Web) were bought, and stays on across restarts.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.skylum.luminar",
+          "name": "Luminar",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7C4DFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable Lifetime Pro",
       "description": "Turns on the app's Pro state (no ads, unlimited functions) as if the one-time \"Super Pro Forever\" purchase were owned — the lifetime state, with nothing to expire.",
       "default": true,
@@ -1416,6 +1494,32 @@
     },
     {
       "name": "Enable Pro",
+      "description": "Turns on the app's Pro plan state (plan-gated features, Hi-Fi and drum-part pickers, advanced creative control, credit checks) as if the Pro plan were active. Note: stem separation itself runs on Moises' servers, which meter the account separately.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "ai.moises",
+          "name": "Moises",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7B61FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.141.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable Pro",
       "description": "Turns on the app's Pro state (no ads, Pro features) as if the lifetime plan were active.",
       "default": true,
       "dependencies": [],
@@ -1484,6 +1588,32 @@
               "version": "9.45.41-WEAR_RELEASE",
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable license",
+      "description": "Opens the full app without an activation code. FORScan Lite checks your license once at startup against its server; this patch pins that startup check to its licensed outcome, so the activation dialog never appears and no activation request is sent. FORScan Lite 1.5.31 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.astech.forscanlite",
+          "name": "FORScan Lite",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#33B5E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.5.31",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -1669,6 +1799,32 @@
       "options": []
     },
     {
+      "name": "Plain listings only",
+      "description": "Removes featured, boosted and paid-promo listings and all agency, dealer and store listings from home, search and category feeds, leaving only plain listings from individual sellers. OLX Pakistan 18.13.1 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.pk",
+          "name": "OLX Pakistan",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#002E25",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.13.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove ads",
       "description": "Stops banner, interstitial and app-open ads from loading (AppLovin MAX). Rewarded ads for hints are left working.",
       "default": true,
@@ -1740,6 +1896,32 @@
               "version": "2.2.2",
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes the Google Ads banner, featured-agency cards and promo widgets that are interleaved into home, search and category feeds. OLX Pakistan 18.13.1 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.pk",
+          "name": "OLX Pakistan",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#002E25",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.13.1",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -1922,6 +2104,114 @@
           "targets": [
             {
               "version": "3.9.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops the app from phoning home. FORScan Lite has no analytics or ad SDKs; the only non-essential traffic is a launch-time version check to forscan.org, which this patch disables. Diagnostics and all other features are unaffected. FORScan Lite 1.5.31 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.astech.forscanlite",
+          "name": "FORScan Lite",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#33B5E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.5.31",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops the app reporting usage: AppsFlyer and the TikTok Business SDK never initialize, Skylum's own stats sender (stats-api.skylum.com) is disabled, Firebase Analytics/Crashlytics/Performance collection is turned off, and Sentry is removed. Editing, purchases and sign-in are unaffected. Luminar 4.6 only.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.skylum.luminar",
+          "name": "Luminar",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7C4DFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops the app reporting usage: the Singular attribution SDK never initializes and its events are refused, and Firebase Analytics/Crashlytics collection is turned off in the manifest. Separation jobs, account, purchases and push are unaffected.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "ai.moises",
+          "name": "Moises",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#7B61FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.141.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Turns off Firebase Analytics, Crashlytics and Performance reporting and ad-id collection, disables the Firebase report-upload plumbing, and disables MoEngage in-app campaigns and push-open tracking. Search, chat, sign-in and notifications are unaffected. OLX Pakistan 18.13.1 only.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.olx.pk",
+          "name": "OLX Pakistan",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": "#002E25",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.13.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
