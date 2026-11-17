@@ -3,6 +3,12 @@
 > [!NOTE]
 > This document describes the project structure, automation workflows, and data-processing logic behind the [Awesome Morphe Website](https://awesome-morphe.vercel.app/).
 
+> [!WARNING]
+> This document is outdated and is currently being revised.
+
+<details>
+<summary>Outdated documentation</summary>
+
 ## 📂 Project Structure
 
 ```text
@@ -228,3 +234,5 @@ uv run pytest
 ```
 
 Lint and formatting commands may modify files.
+
+</details>
