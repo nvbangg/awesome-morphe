@@ -57,7 +57,12 @@ def request(
     response = HTTP_CLIENT.request(
         method, url, headers=get_auth_headers(url, headers), **kwargs
     )
-    response.raise_for_status()
+    if not response.is_success:
+        raise httpx2.HTTPStatusError(
+            f"HTTP Error {response.status_code}: {response.reason_phrase}",
+            request=response.request,
+            response=response,
+        )
     return response
 
 
