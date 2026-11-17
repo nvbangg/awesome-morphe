@@ -2,7 +2,7 @@
 
 from concurrent.futures import ThreadPoolExecutor
 
-from common.config import (
+from common.constants import (
     CONCURRENCY,
     PROJECTS_DIR,
     README_REPOS_PATH,

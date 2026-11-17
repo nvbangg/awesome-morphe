@@ -9,7 +9,7 @@ from typing import Any
 
 from dotenv import load_dotenv
 
-from common.config import (
+from common.constants import (
     BUNDLE_SOURCES_DIR,
     BUNDLES_DIR,
     DATA_DIR,

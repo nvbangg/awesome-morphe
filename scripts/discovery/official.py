@@ -2,7 +2,11 @@
 
 import httpx2
 
-from common.config import BUNDLE_SOURCES_DIR, OFFICIAL_BUNDLES_PATH, PROJECT_USER_AGENT
+from common.constants import (
+    BUNDLE_SOURCES_DIR,
+    OFFICIAL_BUNDLES_PATH,
+    PROJECT_USER_AGENT,
+)
 from common.files import save_json
 from common.http import fetch
 from common.models import OFFICIAL_CATALOG

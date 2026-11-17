@@ -11,7 +11,7 @@ from pathlib import Path
 import httpx2
 from dotenv import load_dotenv
 
-from common.config import SCRIPTS_DIR, WHATS_NEW_PATH
+from common.constants import SCRIPTS_DIR, WHATS_NEW_PATH
 from common.http import HTTP_CLIENT, request
 
 

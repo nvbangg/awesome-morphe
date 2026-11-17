@@ -5,7 +5,7 @@ import urllib.parse
 import httpx2
 from pydantic import ValidationError
 
-from common.config import UNAVAILABLE_HTTP_CODES
+from common.constants import UNAVAILABLE_HTTP_CODES
 from common.http import fetch
 from common.models import GITHUB_REPOSITORY, GITLAB_REPOSITORY
 

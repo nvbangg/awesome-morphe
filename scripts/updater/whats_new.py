@@ -5,7 +5,7 @@ import unicodedata
 import urllib.parse
 from datetime import UTC, datetime
 
-from common.config import (
+from common.constants import (
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
     PUBLIC_DIR,

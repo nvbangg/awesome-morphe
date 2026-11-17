@@ -8,7 +8,7 @@ from google_play_scraper.exceptions import ExtraHTTPError
 
 import update as bundle_update
 from common import repositories
-from common.config import PACKAGE_UNIVERSAL
+from common.constants import PACKAGE_UNIVERSAL
 from common.files import load_json, save_json
 from updater import gplay_scrape, local_data, whats_new
 

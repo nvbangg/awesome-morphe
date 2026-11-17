@@ -18,7 +18,7 @@ import httpx2
 from dotenv import load_dotenv
 from pydantic import ValidationError
 
-from common.config import (
+from common.constants import (
     BUNDLES_DIR,
     CONCURRENCY,
     DEFAULT_BRANCHES,

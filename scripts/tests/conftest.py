@@ -6,7 +6,7 @@ import httpx2
 import pytest
 
 from common import http
-from common.config import HTTP_TIMEOUT_SECONDS
+from common.constants import HTTP_TIMEOUT_SECONDS
 
 
 @pytest.fixture(autouse=True)

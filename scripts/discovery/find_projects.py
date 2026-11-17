@@ -9,7 +9,7 @@ from itertools import compress
 
 import httpx2
 
-from common.config import (
+from common.constants import (
     CONCURRENCY,
     DEAD_LINK_HTTP_CODES,
     PROJECTS_DIR,

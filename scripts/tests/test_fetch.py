@@ -10,7 +10,7 @@ import httpx2
 import pytest
 
 import fetch as bundle_fetch
-from common.config import DEFAULT_BRANCHES
+from common.constants import DEFAULT_BRANCHES
 from common.files import load_json, save_json
 from common.repositories import build_raw_url, parse_repo_url
 

@@ -2,7 +2,7 @@
 
 import httpx2
 
-from common.config import BUNDLE_SOURCES_DIR
+from common.constants import BUNDLE_SOURCES_DIR
 from common.http import fetch
 from common.models import JMAN_SOURCES
 from common.repositories import build_repo_url, parse_repo_url

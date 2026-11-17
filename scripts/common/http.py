@@ -4,7 +4,11 @@ from typing import Any
 
 import httpx2
 
-from common.config import DEAD_LINK_HTTP_CODES, HTTP_TIMEOUT_SECONDS, PROJECT_USER_AGENT
+from common.constants import (
+    DEAD_LINK_HTTP_CODES,
+    HTTP_TIMEOUT_SECONDS,
+    PROJECT_USER_AGENT,
+)
 
 HTTP_CLIENT = httpx2.Client(timeout=HTTP_TIMEOUT_SECONDS, follow_redirects=True)
 

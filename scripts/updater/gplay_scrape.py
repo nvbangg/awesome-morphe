@@ -6,7 +6,7 @@ from http.client import HTTPException
 from google_play_scraper import app as gplay_app
 from google_play_scraper.exceptions import GooglePlayScraperException, NotFoundError
 
-from common.config import CONCURRENCY, OFFICIAL_BUNDLES_PATH, PACKAGE_UNIVERSAL
+from common.constants import CONCURRENCY, OFFICIAL_BUNDLES_PATH, PACKAGE_UNIVERSAL
 from common.files import load_json
 from common.images import normalize_image_url
 

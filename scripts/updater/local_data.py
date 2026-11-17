@@ -10,7 +10,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from common.config import (
+from common.constants import (
     BUNDLES_DIR,
     DEFAULT_BRANCHES,
     PACKAGE_EXAMPLE,
