@@ -24,42 +24,39 @@ def audit_repos_and_links() -> str:
     issues: list[str] = []
     other_errors: list[str] = []
 
-    if repo_urls:
-        with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            for url, details in zip(
-                repo_urls, executor.map(fetch_repo_details, repo_urls), strict=True
-            ):
-                if details.get("is_404"):
-                    issues.append(f"{url}: 404 Not Found")
-                elif details.get("is_451"):
-                    issues.append(f"{url}: 451 Unavailable For Legal Reasons")
-                elif details.get("is_archived"):
-                    issues.append(f"{url}: Repository is archived")
-                elif full_name := details.get("full_name"):
-                    source, original_repo = parse_repo_url(url)
-                    if (
-                        source
-                        and original_repo
-                        and full_name.lower() != original_repo.lower()
-                    ):
-                        issues.append(f"{url} -> {build_repo_url(source, full_name)}")
-                elif details.get("error"):
-                    other_errors.append(f"{url}: {details['error']}")
-
-    if link_urls:
-        with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            for url, status in zip(
-                link_urls, executor.map(check_link_status, link_urls), strict=True
-            ):
+    with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
+        for url, details in zip(
+            repo_urls, executor.map(fetch_repo_details, repo_urls), strict=True
+        ):
+            if details.get("is_404"):
+                issues.append(f"{url}: 404 Not Found")
+            elif details.get("is_451"):
+                issues.append(f"{url}: 451 Unavailable For Legal Reasons")
+            elif details.get("is_archived"):
+                issues.append(f"{url}: Repository is archived")
+            elif full_name := details.get("full_name"):
+                source, original_repo = parse_repo_url(url)
                 if (
-                    status.get("is_dead")
-                    or status.get("status_code") in UNAVAILABLE_HTTP_CODES
+                    source
+                    and original_repo
+                    and full_name.lower() != original_repo.lower()
                 ):
-                    issues.append(f"{url}: {status.get('error', 'Dead')}")
-                elif status.get("is_redirect"):
-                    issues.append(f"{url} -> {status.get('final_url', '')}")
-                elif status.get("error"):
-                    other_errors.append(f"{url}: {status['error']}")
+                    issues.append(f"{url} -> {build_repo_url(source, full_name)}")
+            elif details.get("error"):
+                other_errors.append(f"{url}: {details['error']}")
+
+        for url, status in zip(
+            link_urls, executor.map(check_link_status, link_urls), strict=True
+        ):
+            if (
+                status.get("is_dead")
+                or status.get("status_code") in UNAVAILABLE_HTTP_CODES
+            ):
+                issues.append(f"{url}: {status.get('error', 'Dead')}")
+            elif status.get("is_redirect"):
+                issues.append(f"{url} -> {status.get('final_url', '')}")
+            elif status.get("error"):
+                other_errors.append(f"{url}: {status['error']}")
 
     print(f"Audited {len(repo_urls)} repositories and {len(link_urls)} links.")
 

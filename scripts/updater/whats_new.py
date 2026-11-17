@@ -36,10 +36,7 @@ def is_valid_package_name(package_name: str) -> bool:
 
 
 def format_app_name(package_name: str, app_metadata: dict) -> str:
-    metadata = app_metadata.get(package_name)
-    if isinstance(metadata, dict):
-        return metadata.get("name") or package_name
-    return metadata if isinstance(metadata, str) else package_name
+    return app_metadata.get(package_name, {}).get("name") or package_name
 
 
 def normalize_patch_name(name: str) -> str:
@@ -92,8 +89,7 @@ def get_app_sort_key(
 ) -> tuple:
     is_universal = 1 if package_name == PACKAGE_UNIVERSAL else 0
     app_name = format_app_name(package_name, app_metadata)
-    metadata = app_metadata.get(package_name)
-    min_installs = metadata.get("minInstalls", 0) if isinstance(metadata, dict) else 0
+    min_installs = app_metadata.get(package_name, {}).get("minInstalls", 0)
     return (
         is_universal,
         -(min_installs or 0),

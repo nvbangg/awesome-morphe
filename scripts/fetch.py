@@ -3,7 +3,6 @@
 import argparse
 import contextlib
 import io
-import json
 import re
 import subprocess
 import sys
@@ -281,12 +280,11 @@ def process_repo_branch(
     except (OSError, httpx2.HTTPError, httpx2.InvalidURL) as error:
         return failed(str(error), "metadata")
     try:
-        bundle_data = json.loads(bundle_content)
-        manifest = BUNDLE_MANIFEST.validate_python(bundle_data)
+        bundle_data = BUNDLE_MANIFEST.validate_json(bundle_content)
     except ValueError:
         return failed("Invalid data", "metadata", True)
     try:
-        mpp_url = manifest["download_url"]
+        mpp_url = bundle_data["download_url"]
         if not mpp_url.lower().endswith(".mpp"):
             return failed("Invalid `download_url`", "metadata", True)
         parsed_url = urllib.parse.urlsplit(mpp_url)
