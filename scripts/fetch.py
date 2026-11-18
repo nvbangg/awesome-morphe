@@ -177,11 +177,6 @@ def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | N
         raise
 
 
-def get_image_sha(source: str, repo: str) -> str | None:
-    url = build_raw_url(source, repo, "main", "patches-bundle.png")
-    return get_remote_file_hash(url, source, "exists") if url else None
-
-
 def process_repo_branch(
     source: str,
     repo: str,
@@ -419,7 +414,10 @@ def process_image(
 ) -> tuple[str, str, str | None, bool, str | None]:
     repo_url = build_repo_url(source, repo)
     try:
-        remote_sha = get_image_sha(source, repo)
+        image_url = build_raw_url(source, repo, "main", "patches-bundle.png")
+        remote_sha = (
+            get_remote_file_hash(image_url, source, "exists") if image_url else None
+        )
     except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
         if (
             isinstance(error, httpx2.HTTPStatusError)

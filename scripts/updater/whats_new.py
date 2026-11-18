@@ -57,11 +57,7 @@ def should_show_bundle_owner(display_name: str, owner: str) -> bool:
     clean_owner = re.sub(r"[^a-zA-Z]", "", owner).lower()
     if not clean_owner or not clean_name:
         return display_name.lower() != owner.lower()
-    return not (
-        clean_name == clean_owner
-        or clean_owner in clean_name
-        or clean_name in clean_owner
-    )
+    return not (clean_owner in clean_name or clean_name in clean_owner)
 
 
 def make_url(
@@ -178,7 +174,7 @@ def build_json_diff(
                     "isNew": True,
                 }
             elif added_patches := set(patches_dict[package_name]) - set(
-                old_patches_dict.get(package_name, [])
+                old_patches_dict[package_name]
             ):
                 apps_dict[package_name] = {"patches": sorted(added_patches)}
 
@@ -219,9 +215,6 @@ def generate_markdown(
     app_patch_counts: dict[str, int] | None = None,
 ) -> str:
     app_patch_counts = app_patch_counts or {}
-    known_apps = {
-        package_name for bundle in old_history.values() for package_name in bundle
-    }
     known_patches_by_app: dict[str, set[str]] = {}
     for bundle in old_history.values():
         for package_name, patches in bundle.items():
@@ -249,7 +242,7 @@ def generate_markdown(
             if (
                 not is_new_bundle
                 and is_new_app_in_bundle
-                and package_name in known_apps
+                and package_name in known_patches_by_app
                 and package_name != PACKAGE_UNIVERSAL
                 and package_name != PACKAGE_EXAMPLE
             ):
@@ -258,20 +251,19 @@ def generate_markdown(
             if not patches:
                 continue
 
-            if package_name not in known_apps:
+            if package_name not in known_patches_by_app:
                 target_map = new_apps_map.setdefault(package_name, {})
                 for patch_name in patches:
                     target_map.setdefault(normalize_patch_name(patch_name), patch_name)
             else:
-                known_set = known_patches_by_app.get(package_name, set())
+                known_set = known_patches_by_app[package_name]
                 for patch_name in patches:
-                    if normalize_patch_name(patch_name) not in known_set:
+                    normalized_name = normalize_patch_name(patch_name)
+                    if normalized_name not in known_set:
                         target_map = existing_apps_new_patches_map.setdefault(
                             package_name, {}
                         )
-                        target_map.setdefault(
-                            normalize_patch_name(patch_name), patch_name
-                        )
+                        target_map.setdefault(normalized_name, patch_name)
 
     if not new_bundle_repos and not new_apps_map and not existing_apps_new_patches_map:
         return ""

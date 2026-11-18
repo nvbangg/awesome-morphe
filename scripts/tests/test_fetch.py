@@ -218,9 +218,6 @@ class TestBundleFetch:
             )
         )
         self.patch_context.enter_context(
-            patch.object(bundle_fetch, "get_image_sha", return_value="image-old")
-        )
-        self.patch_context.enter_context(
             patch.object(bundle_fetch, "append_step_summary")
         )
         self.run_process = self.patch_context.enter_context(
@@ -687,9 +684,10 @@ class TestBundleFetch:
         with patch.object(
             bundle_fetch,
             "get_remote_file_hash",
-            side_effect=self.http_error(
-                self.bundle_data["download_url"], HTTP_NOT_FOUND
-            ),
+            side_effect=[
+                self.http_error(self.bundle_data["download_url"], HTTP_NOT_FOUND),
+                "image-old",
+            ],
         ):
             bundle_fetch.fetch_all_repos(weekly=True)
         assert (
@@ -715,15 +713,15 @@ class TestBundleFetch:
         self.fetch_request.assert_not_called()
 
     def test_image_updates_are_independent_of_branch_failures(self) -> None:
-        self.fetch_hash.side_effect = self.http_error(
-            self.url("main", "patches-bundle.json"), HTTP_NOT_FOUND
-        )
-        with patch.object(bundle_fetch, "get_image_sha", return_value="image-new"):
-            bundle_fetch.fetch_all_repos(daily=True)
-            updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
-            assert updated_repo["image"] == "image-new"
-            assert updated_repo["main"] is None
-            assert updated_repo["name"] == "Alpha old"
+        self.fetch_hash.side_effect = [
+            self.http_error(self.url("main", "patches-bundle.json"), HTTP_NOT_FOUND),
+            "image-new",
+        ]
+        bundle_fetch.fetch_all_repos(daily=True)
+        updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
+        assert updated_repo["image"] == "image-new"
+        assert updated_repo["main"] is None
+        assert updated_repo["name"] == "Alpha old"
 
     def test_file_write_failure_stops_fetch(self) -> None:
         with (

@@ -330,8 +330,7 @@ def process(
                             app_name := discovered_names.get(package_name)
                         ) and not apps_dict[package_name].get("name"):
                             apps_dict[package_name]["name"] = app_name
-                        if package_name not in app_first_seen_map:
-                            app_first_seen_map[package_name] = now_ms
+                        app_first_seen_map.setdefault(package_name, now_ms)
             else:
                 current_apps_in_bundle.add(PACKAGE_UNIVERSAL)
 
@@ -351,11 +350,8 @@ def process(
                 ordered_patch["compatiblePackages"] = compatible_packages
             final_patches.append(ordered_patch)
 
-        if (
-            PACKAGE_UNIVERSAL in current_apps_in_bundle
-            and PACKAGE_UNIVERSAL not in app_first_seen_map
-        ):
-            app_first_seen_map[PACKAGE_UNIVERSAL] = now_ms
+        if PACKAGE_UNIVERSAL in current_apps_in_bundle:
+            app_first_seen_map.setdefault(PACKAGE_UNIVERSAL, now_ms)
 
         source_entry["patches"] = final_patches
         source_entry["appFirstSeen"] = {
