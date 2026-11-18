@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "patches": [
     {
       "name": "Daemon gate bypass",
-      "description": "Keeps the root scene-daemon's monitor gate open so live stats (dashboard cards, system/mini/FPS overlays) keep updating instead of freezing ~40s after connect on rooted devices. Patches the daemon launcher script (raw resource \"up\") to hold two bytes in the running daemon's memory open; unknown daemon layouts fail safe. Requires root (the daemon itself runs as root).",
+      "description": "Keeps the root scene-daemon's monitor gate open so live stats (dashboard cards, system/mini/FPS overlays) keep updating instead of freezing ~40s after connect on rooted devices. Extends the daemon launcher script (raw resource 'up') with a validated gate poker that runs on every daemon start; unknown daemon layouts fail safe. Requires root (the daemon itself runs as root).",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -205,6 +205,46 @@
           "targets": [
             {
               "version": "1.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock optional features",
+      "description": "Shows the gated entries of the tuner's Optional features dialog: Refresh rate (Samsung panels report no discrete 60Hz mode through the display API, so Scene hides the control), FAS in games (cloud lp-branch gated) and CPU limiters (online-profile gated). The features themselves work locally; Bypass power supply stays hidden on devices without a supported charging sysfs node.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.omarea.vtools",
+          "name": "Scene",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00BCD4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "N1 2026.10 Alpha13",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "N1 2026.11 PreRelease 1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "N1 2026.11 PreRelease 2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
