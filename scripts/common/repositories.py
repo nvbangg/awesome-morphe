@@ -6,7 +6,7 @@ import httpx2
 from pydantic import ValidationError
 
 from common.constants import UNAVAILABLE_HTTP_CODES
-from common.http import fetch
+from common.http import request
 from common.models import GITHUB_REPOSITORY, GITLAB_REPOSITORY
 
 
@@ -51,16 +51,6 @@ def build_raw_url(source: str, repo: str, branch: str, file_path: str) -> str | 
     return None
 
 
-def _request_error(error: Exception) -> dict:
-    details: dict[str, str | bool] = {"error": str(error)}
-    if (
-        isinstance(error, httpx2.HTTPStatusError)
-        and error.response.status_code in UNAVAILABLE_HTTP_CODES
-    ):
-        details[f"is_{error.response.status_code}"] = True
-    return details
-
-
 def fetch_repo_details(repo_url: str) -> dict:
     source, repo = parse_repo_url(repo_url)
     if not source or not repo:
@@ -73,7 +63,7 @@ def fetch_repo_details(repo_url: str) -> dict:
     )
 
     try:
-        response = fetch(api_url, as_json=True)
+        response = request(api_url).json()
         if source == "github":
             response = GITHUB_REPOSITORY.validate_python(response)
             return {
@@ -101,4 +91,10 @@ def fetch_repo_details(repo_url: str) -> dict:
     except ValidationError:
         return {"error": "Invalid repository data"}
     except (httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
-        return _request_error(error)
+        details: dict[str, str | bool] = {"error": str(error)}
+        if (
+            isinstance(error, httpx2.HTTPStatusError)
+            and error.response.status_code in UNAVAILABLE_HTTP_CODES
+        ):
+            details[f"is_{error.response.status_code}"] = True
+        return details

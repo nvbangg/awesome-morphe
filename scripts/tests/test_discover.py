@@ -84,7 +84,11 @@ class TestDiscover:
         self, module, data
     ) -> None:
         snapshot = self.official_path.read_bytes()
-        with patch.object(module, "fetch", return_value=data):
+        with patch.object(
+            module,
+            "request",
+            return_value=httpx2.Response(200, json=data),
+        ):
             assert module.discover()
         assert load_json(module.OUTPUT_PATH) == self.saved_sources
         assert self.official_path.read_bytes() == snapshot
@@ -109,7 +113,15 @@ class TestDiscover:
         self, module, data
     ) -> None:
         snapshot = self.official_path.read_bytes()
-        with patch.object(module, "fetch", return_value=data):
+        with patch.object(
+            module,
+            "request",
+            return_value=(
+                httpx2.Response(200, text=data)
+                if module is morphe_archive
+                else httpx2.Response(200, json=data)
+            ),
+        ):
             assert module.discover()
         assert load_json(module.OUTPUT_PATH) == self.saved_sources
         assert self.official_path.read_bytes() == snapshot
@@ -122,7 +134,9 @@ class TestDiscover:
             ],
             "store": {"com.test.app": {"name": "Test app"}},
         }
-        with patch.object(official, "fetch", return_value=data):
+        with patch.object(
+            official, "request", return_value=httpx2.Response(200, json=data)
+        ):
             assert official.discover() is None
         assert load_json(self.official_path) == data
         assert load_json(official.OUTPUT_PATH) == {
@@ -141,7 +155,9 @@ class TestDiscover:
             "invalid": {"patches": 7},
             "other": "ignored",
         }
-        with patch.object(jman, "fetch", return_value=data):
+        with patch.object(
+            jman, "request", return_value=httpx2.Response(200, json=data)
+        ):
             assert jman.discover() is None
         assert load_json(jman.OUTPUT_PATH) == {"https://github.com/owner/new": {}}
 
@@ -151,7 +167,9 @@ class TestDiscover:
             "[Duplicate](https://morphe.software/add-source?github=owner/new)\n"
             "[GitLab](https://morphe.software/add-source?gitlab=group/project)"
         )
-        with patch.object(morphe_archive, "fetch", return_value=content):
+        with patch.object(
+            morphe_archive, "request", return_value=httpx2.Response(200, text=content)
+        ):
             assert morphe_archive.discover() is None
         assert load_json(morphe_archive.OUTPUT_PATH) == {
             "https://github.com/owner/new": {},
@@ -200,16 +218,22 @@ class TestDiscover:
             ]
         }
         with (
-            patch.object(official, "fetch", return_value=data),
+            patch.object(
+                official, "request", return_value=httpx2.Response(200, json=data)
+            ),
             patch.object(
                 jman,
-                "fetch",
-                return_value={"saved": {"patches": "https://github.com/owner/saved"}},
+                "request",
+                return_value=httpx2.Response(
+                    200, json={"saved": {"patches": "https://github.com/owner/saved"}}
+                ),
             ),
             patch.object(
                 morphe_archive,
-                "fetch",
-                return_value="https://morphe.software/add-source?github=owner/saved",
+                "request",
+                return_value=httpx2.Response(
+                    200, text="https://morphe.software/add-source?github=owner/saved"
+                ),
             ),
         ):
             assert discover.main([]) == 0
@@ -224,8 +248,10 @@ class TestDiscover:
         with (
             patch.object(
                 official,
-                "fetch",
-                return_value={"bundles": [{"source": "github", "repo": "owner/new"}]},
+                "request",
+                return_value=httpx2.Response(
+                    200, json={"bundles": [{"source": "github", "repo": "owner/new"}]}
+                ),
             ),
             patch.object(official, "save_json", side_effect=OSError("disk full")),
             pytest.raises(OSError, match="disk full"),
@@ -236,8 +262,10 @@ class TestDiscover:
         with (
             patch.object(
                 morphe_archive,
-                "fetch",
-                return_value="https://morphe.software/add-source?github=owner/new",
+                "request",
+                return_value=httpx2.Response(
+                    200, text="https://morphe.software/add-source?github=owner/new"
+                ),
             ),
             patch("discovery.save_json", side_effect=OSError("disk full")),
             pytest.raises(OSError, match="disk full"),
@@ -250,10 +278,12 @@ class TestDiscover:
         snapshot = self.repos_path.read_bytes()
         with (
             patch.object(
-                official, "fetch", side_effect=RuntimeError("Unexpected failure")
+                official, "request", side_effect=RuntimeError("Unexpected failure")
             ),
-            patch.object(jman, "fetch", return_value={}),
-            patch.object(morphe_archive, "fetch", return_value=""),
+            patch.object(jman, "request", return_value=httpx2.Response(200, json={})),
+            patch.object(
+                morphe_archive, "request", return_value=httpx2.Response(200, text="")
+            ),
             pytest.raises(RuntimeError, match="Unexpected failure"),
         ):
             discover.main([])
@@ -315,18 +345,21 @@ class TestDiscover:
             ),
             patch.object(
                 find_projects,
-                "fetch",
-                return_value={
-                    "total_count": 6,
-                    "items": [
-                        repository,
-                        repository,
-                        bundle,
-                        known,
-                        excluded,
-                        no_readme,
-                    ],
-                },
+                "request",
+                return_value=httpx2.Response(
+                    200,
+                    json={
+                        "total_count": 6,
+                        "items": [
+                            repository,
+                            repository,
+                            bundle,
+                            known,
+                            excluded,
+                            no_readme,
+                        ],
+                    },
+                ),
             ) as search,
             patch.object(
                 find_projects,

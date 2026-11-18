@@ -78,8 +78,8 @@ def main() -> None:
 
     try:
         request(
-            "POST",
             f"https://api.telegram.org/bot{token}/sendMessage",
+            method="POST",
             data={
                 "chat_id": chat_id,
                 "text": f"{formatted_title}\n\n{formatted_content}",

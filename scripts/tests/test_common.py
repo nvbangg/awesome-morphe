@@ -104,7 +104,7 @@ def test_token_is_only_attached_to_supported_https_hosts(
 ) -> None:
     with patch.dict(os.environ, {"GITHUB_TOKEN": "test-token"}):
         block_network.side_effect = None
-        http.request("GET", url)
+        http.request(url)
     headers = block_network.call_args.args[0].headers
     assert ("Authorization" in headers) == authenticated
 
@@ -132,6 +132,6 @@ def test_gitlab_token_is_only_attached_to_gitlab_api(
 ) -> None:
     with patch.dict(os.environ, {"GITLAB_TOKEN": "test-token"}):
         block_network.side_effect = None
-        http.request("GET", url)
+        http.request(url)
     headers = block_network.call_args.args[0].headers
     assert headers.get("PRIVATE-TOKEN") == ("test-token" if authenticated else None)

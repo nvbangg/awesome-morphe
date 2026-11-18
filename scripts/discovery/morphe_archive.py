@@ -5,7 +5,7 @@ import re
 import httpx2
 
 from common.constants import BUNDLE_SOURCES_DIR
-from common.http import fetch
+from common.http import request
 from common.repositories import build_repo_url
 from discovery import export_provider, report_provider_warning
 
@@ -18,7 +18,7 @@ _REPO_RE = re.compile(r"morphe\.software/add-source\?(github|gitlab)=([^)\s]+)")
 
 def discover() -> str | None:
     try:
-        content = fetch(README_URL)
+        content = request(README_URL).text
     except (httpx2.HTTPError, httpx2.InvalidURL, UnicodeError) as error:
         return report_provider_warning("morphe-archive", error, OUTPUT_PATH)
 

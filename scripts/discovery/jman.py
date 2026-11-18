@@ -3,7 +3,7 @@
 import httpx2
 
 from common.constants import BUNDLE_SOURCES_DIR
-from common.http import fetch
+from common.http import request
 from common.models import JMAN_SOURCES
 from common.repositories import build_repo_url, parse_repo_url
 from discovery import export_provider, report_provider_warning
@@ -14,7 +14,7 @@ OUTPUT_PATH = BUNDLE_SOURCES_DIR / "jman.json"
 
 def discover() -> str | None:
     try:
-        sources_data = JMAN_SOURCES.validate_python(fetch(SOURCES_URL, as_json=True))
+        sources_data = JMAN_SOURCES.validate_python(request(SOURCES_URL).json())
     except (httpx2.HTTPError, httpx2.InvalidURL) as error:
         return report_provider_warning("jman", error, OUTPUT_PATH)
     except ValueError:

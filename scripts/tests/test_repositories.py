@@ -18,7 +18,7 @@ class TestRepositoryMetadata:
         self, source, code
     ) -> None:
         error = self.http_error("https://example.com", code)
-        with patch.object(repositories, "fetch", side_effect=error):
+        with patch.object(repositories, "request", side_effect=error):
             details = repositories.fetch_repo_details(
                 f"https://{source}.com/owner/alpha"
             )
@@ -31,7 +31,7 @@ class TestRepositoryMetadata:
         (httpx2.ConnectError("DNS lookup failed"), ValueError("Invalid JSON")),
     )
     def test_request_failure_does_not_mark_repository_unavailable(self, error) -> None:
-        with patch.object(repositories, "fetch", side_effect=error):
+        with patch.object(repositories, "request", side_effect=error):
             assert repositories.fetch_repo_details(
                 "https://github.com/owner/alpha"
             ) == {"error": str(error)}
@@ -45,23 +45,25 @@ class TestRepositoryMetadata:
     ) -> None:
         with patch.object(
             repositories,
-            "fetch",
-            return_value={
-                "id": 123,
-                "path_with_namespace": "group/owner/new",
-                "star_count": 5,
-                "description": "Example bundle",
-                "archived": archived,
-                "avatar_url": project_avatar,
-                "namespace": {"avatar_url": "/uploads/group.png"},
-            },
+            "request",
+            return_value=httpx2.Response(
+                200,
+                json={
+                    "id": 123,
+                    "path_with_namespace": "group/owner/new",
+                    "star_count": 5,
+                    "description": "Example bundle",
+                    "archived": archived,
+                    "avatar_url": project_avatar,
+                    "namespace": {"avatar_url": "/uploads/group.png"},
+                },
+            ),
         ) as request:
             details = repositories.fetch_repo_details(
                 "https://gitlab.com/group/owner/old"
             )
         request.assert_called_once_with(
-            "https://gitlab.com/api/v4/projects/group%2Fowner%2Fold",
-            as_json=True,
+            "https://gitlab.com/api/v4/projects/group%2Fowner%2Fold"
         )
         assert details == {
             "project_id": 123,
@@ -80,7 +82,9 @@ class TestRepositoryMetadata:
         ),
     )
     def test_gitlab_incomplete_metadata_is_rejected(self, response) -> None:
-        with patch.object(repositories, "fetch", return_value=response):
+        with patch.object(
+            repositories, "request", return_value=httpx2.Response(200, json=response)
+        ):
             assert repositories.fetch_repo_details(
                 "https://gitlab.com/owner/alpha"
             ) == {"error": "Invalid repository data"}

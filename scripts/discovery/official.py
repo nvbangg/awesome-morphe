@@ -8,7 +8,7 @@ from common.constants import (
     PROJECT_USER_AGENT,
 )
 from common.files import save_json
-from common.http import fetch
+from common.http import request
 from common.models import OFFICIAL_CATALOG
 from common.repositories import build_repo_url
 from discovery import export_provider, report_provider_warning
@@ -23,7 +23,7 @@ HEADERS = {
 
 def discover() -> str | None:
     try:
-        data = fetch(BUNDLES_URL, HEADERS, as_json=True)
+        data = request(BUNDLES_URL, HEADERS).json()
         catalog = OFFICIAL_CATALOG.validate_python(data)
     except (httpx2.HTTPError, httpx2.InvalidURL) as error:
         return report_provider_warning("official", error, OUTPUT_PATH)

@@ -75,17 +75,16 @@ def test_concurrent_targets_share_download_without_blocking_other_urls(
     release_download = threading.Event()
     downloads = bundle_fetch.BundleDownloads()
 
-    def download(url: str, binary: bool) -> bytes:
-        assert binary
+    def download(url: str) -> httpx2.Response:
         if url == shared_url:
             download_started.set()
             assert release_download.wait(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
             if failure is not None:
                 raise failure
-        return url.encode()
+        return httpx2.Response(200, content=url.encode())
 
     with (
-        patch.object(bundle_fetch, "fetch", side_effect=download) as request,
+        patch.object(bundle_fetch, "request", side_effect=download) as request,
         ThreadPoolExecutor(max_workers=3) as executor,
     ):
         first = executor.submit(downloads.download, shared_url)
@@ -208,7 +207,7 @@ class TestBundleFetch:
             )
         )
         self.fetch_request = self.patch_context.enter_context(
-            patch.object(bundle_fetch, "fetch", side_effect=self.download)
+            patch.object(bundle_fetch, "request", side_effect=self.download)
         )
         self.fetch_hash = self.patch_context.enter_context(
             patch.object(bundle_fetch, "get_remote_file_hash", return_value="main-new")
@@ -233,11 +232,11 @@ class TestBundleFetch:
         assert url is not None
         return url
 
-    def download(self, url: str, binary: bool = False) -> str | bytes:
+    def download(self, url: str) -> httpx2.Response:
         response = self.responses[url]
         if isinstance(response, Exception):
             raise response
-        return response if binary else response.decode()
+        return httpx2.Response(200, content=response)
 
     def github_metadata(
         self, url: str, current_sha: str | None
@@ -245,7 +244,7 @@ class TestBundleFetch:
         remote_sha = self.fetch_hash(url, "github")
         if current_sha and remote_sha == current_sha:
             return (current_sha, None)
-        return (remote_sha, self.fetch_request(url, binary=True))
+        return (remote_sha, self.fetch_request(url).content)
 
     def seed_target(self) -> dict[Path, bytes]:
         old_contents = {
@@ -265,11 +264,11 @@ class TestBundleFetch:
             self.url(branch, "patches-list.json") for branch in DEFAULT_BRANCHES
         }
 
-        def download(url: str, binary: bool = False) -> str | bytes:
+        def download(url: str) -> httpx2.Response:
             if url in patch_urls:
                 assert threading.current_thread() is not threading.main_thread()
                 barrier.wait(timeout=PATCH_LIST_BARRIER_TIMEOUT_SECONDS)
-            return self.download(url, binary=binary)
+            return self.download(url)
 
         self.fetch_request.side_effect = download
         self.fetch_hash.side_effect = lambda url, _source: (
@@ -295,7 +294,7 @@ class TestBundleFetch:
         self.run_process.assert_not_called()
         assert (
             self.fetch_request.call_args_list.count(
-                call(self.bundle_data["download_url"], binary=True)
+                call(self.bundle_data["download_url"])
             )
             == 1
         )
@@ -311,7 +310,7 @@ class TestBundleFetch:
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
         for url in (self.bundle_data["download_url"], dev_bundle_data["download_url"]):
-            assert self.fetch_request.call_args_list.count(call(url, binary=True)) == 1
+            assert self.fetch_request.call_args_list.count(call(url)) == 1
         for branch in DEFAULT_BRANCHES:
             assert (
                 self.mpp_dir / f"github~owner~alpha~{branch}.mpp"
@@ -323,7 +322,7 @@ class TestBundleFetch:
         bundle_fetch.fetch_all_repos()
         assert (
             self.fetch_request.call_args_list.count(
-                call(self.bundle_data["download_url"], binary=True)
+                call(self.bundle_data["download_url"])
             )
             == 2
         )
@@ -398,7 +397,7 @@ class TestBundleFetch:
         assert result.status_changed
         assert result.bundle_name == "Alpha new"
         assert (
-            call(self.url("main", "patches-bundle.json"), binary=True)
+            call(self.url("main", "patches-bundle.json"))
             not in self.fetch_request.call_args_list
         )
 
@@ -669,9 +668,9 @@ class TestBundleFetch:
             )
         lookup.assert_called_once_with("https://gitlab.com/owner/alpha")
         assert result.new_sha == expected_sha
-        assert (
-            call(download_url, binary=True) in self.fetch_request.call_args_list
-        ) == (expected_sha == "main-new")
+        assert (call(download_url) in self.fetch_request.call_args_list) == (
+            expected_sha == "main-new"
+        )
         if expected_sha == "main-new":
             assert load_json(self.bundles_dir / f"{result.target_name}.json") == {
                 "download_url": download_url
@@ -812,9 +811,7 @@ class TestBundleFetch:
             load_json(self.repos_path)["https://github.com/owner/alpha"]["name"]
             == "Alpha old"
         )
-        self.fetch_request.assert_any_call(
-            self.url("dev", "patches-list.json"), binary=True
-        )
+        self.fetch_request.assert_any_call(self.url("dev", "patches-list.json"))
         assert (self.mpp_dir / "github~owner~alpha~dev.mpp").is_file()
 
     def test_new_empty_repository_entry_is_fetched(self) -> None:
@@ -917,7 +914,7 @@ class TestBundleFetch:
         assert result.new_sha is None
         assert result.error_message == "Invalid `download_url`"
         self.fetch_request.assert_called_once_with(
-            self.url("main", "patches-bundle.json"), binary=True
+            self.url("main", "patches-bundle.json")
         )
 
     def test_fetch_records_verified_rename_without_modifying_local_keys(self) -> None:

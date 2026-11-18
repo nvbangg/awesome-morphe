@@ -28,7 +28,7 @@ from common.constants import (
     UNAVAILABLE_HTTP_CODES,
 )
 from common.files import load_json, load_lines, save_json
-from common.http import HTTP_CLIENT, fetch, request
+from common.http import HTTP_CLIENT, request
 from common.images import normalize_image_url
 from common.models import BUNDLE_MANIFEST, REPOSITORIES
 from common.repositories import (
@@ -102,7 +102,7 @@ class BundleDownloads:
                 owns_download = False
         if owns_download:
             try:
-                future.set_result(fetch(url, binary=True))
+                future.set_result(request(url).content)
             except BaseException as error:
                 future.set_exception(error)
                 raise
@@ -152,7 +152,7 @@ class BranchFetchResult:
 
 
 def get_remote_file_hash(url: str, source: str, fallback: str | None = None) -> str:
-    response = request("HEAD", url, HASH_REQUEST_HEADERS)
+    response = request(url, HASH_REQUEST_HEADERS, "HEAD")
     header_name = "ETag" if source == "github" else "x-gitlab-content-sha256"
     if remote_hash := response.headers.get(header_name):
         return remote_hash.removeprefix("W/").strip('"')
@@ -166,7 +166,7 @@ def get_github_bundle(url: str, current_sha: str | None) -> tuple[str, bytes | N
     if current_sha:
         headers["If-None-Match"] = f'"{current_sha}"'
     try:
-        response = request("GET", url, headers)
+        response = request(url, headers)
         remote_hash = response.headers.get("ETag")
         if not remote_hash:
             raise ValueError("Missing `ETag` header")
@@ -265,7 +265,7 @@ def process_repo_branch(
 
     try:
         if bundle_content is None:
-            bundle_content = fetch(bundle_url, binary=True)
+            bundle_content = request(bundle_url).content
     except httpx2.HTTPStatusError as error:
         return failed(
             str(error),
@@ -344,7 +344,7 @@ def process_repo_branch(
         mpp_content = (
             bundle_downloads.download(mpp_url)
             if bundle_downloads is not None
-            else fetch(mpp_url, binary=True)
+            else request(mpp_url).content
         )
     except httpx2.HTTPStatusError as error:
         return failed(
@@ -359,7 +359,7 @@ def process_repo_branch(
     patches_url = build_raw_url(source, repo, branch, "patches-list.json")
     assert patches_url is not None
     try:
-        patches_content = fetch(patches_url, binary=True)
+        patches_content = request(patches_url).content
     except httpx2.HTTPStatusError as error:
         if error.response.status_code != HTTPStatus.NOT_FOUND:
             return failed(str(error), "patch_list")

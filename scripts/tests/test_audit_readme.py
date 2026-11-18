@@ -13,7 +13,7 @@ def test_audit_reports_unavailable_repositories(
     repo_url = f"https://{source}.com/owner/alpha"
     error = http_error(repo_url, code)
     with (
-        patch.object(repositories, "fetch", side_effect=error),
+        patch.object(repositories, "request", side_effect=error),
         patch.object(audit_readme, "load_lines", side_effect=[[repo_url], []]),
     ):
         block_network.side_effect = error

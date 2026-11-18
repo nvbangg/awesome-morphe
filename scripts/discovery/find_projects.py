@@ -17,7 +17,7 @@ from common.constants import (
     ROOT_DIR,
 )
 from common.files import load_lines
-from common.http import fetch, request
+from common.http import request
 from common.repositories import build_raw_url, parse_repo_url
 from common.summary import format_summary_section
 
@@ -75,7 +75,7 @@ def build_user_query(user: str) -> str:
 
 def _file_exists(url: str) -> bool | None:
     try:
-        request("HEAD", url)
+        request(url, method="HEAD")
         return True
     except httpx2.HTTPStatusError as error:
         if error.response.status_code in DEAD_LINK_HTTP_CODES:
@@ -136,7 +136,7 @@ def search_repos() -> list[dict]:
             encoded_query = urllib.parse.quote(query)
             url = f"https://api.github.com/search/repositories?q={encoded_query}&sort=updated&per_page={PAGE_SIZE}&page={page}"
             try:
-                page_data = fetch(url, as_json=True)
+                page_data = request(url).json()
             except (httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
                 print(f"Failed to fetch page {page}: {error}")
                 break
@@ -214,8 +214,8 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
     repos.sort(
         key=lambda item: (
             item["stars"],
-            item["pushed_at"],
             item["created_at"],
+            item["pushed_at"],
             item["full_name"].lower(),
         ),
         reverse=True,

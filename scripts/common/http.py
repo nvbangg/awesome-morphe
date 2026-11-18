@@ -52,7 +52,10 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> httpx2.
 
 
 def request(
-    method: str, url: str, headers: dict[str, str] | None = None, **kwargs: Any
+    url: str,
+    headers: dict[str, str] | None = None,
+    method: str = "GET",
+    **kwargs: Any,
 ) -> httpx2.Response:
     response = HTTP_CLIENT.request(
         method, url, headers=get_auth_headers(url, headers), **kwargs
@@ -66,21 +69,9 @@ def request(
     return response
 
 
-def fetch(
-    url: str,
-    headers: dict[str, str] | None = None,
-    as_json: bool = False,
-    binary: bool = False,
-) -> Any:
-    response = request("GET", url, headers)
-    if binary:
-        return response.content
-    return response.json() if as_json else response.text
-
-
 def check_link_status(url: str) -> dict:
     try:
-        response = request("GET", url)
+        response = request(url)
         final_url = str(response.url).rstrip("/")
         original_url = str(httpx2.URL(url)).rstrip("/")
         if final_url != original_url:
