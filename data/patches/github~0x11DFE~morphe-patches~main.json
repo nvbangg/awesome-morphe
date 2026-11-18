@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "patches": [
     {
       "name": "Daemon gate bypass",
@@ -109,6 +109,32 @@
       "options": []
     },
     {
+      "name": "Remove Ads",
+      "description": "Empties every app-side ad loader (banner, interstitial, home rewarded, app-open) and NOPs the rewarded load inside the server-row boost button, so no ad request leaves the device and no fullscreen ad can show. The interstitial show path is null-guarded in the app, so nothing crashes. Pair with 'Unlock Speed Boost' to keep the boost button functional.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.vpnproxymd.mdproxyvpn",
+          "name": "MD PROXY VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00C853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v1.0.8.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Skip Waypoint onboarding paywall",
       "description": "The paywall screen shown after the Waypoint tutorial immediately invokes the app's own free-choice handler (completeOnboarding + navigate home) and renders nothing. Matches the PaywallScreen bytecode pattern and fails cleanly when the app is rebuilt.",
       "default": true,
@@ -124,6 +150,32 @@
           "targets": [
             {
               "version": "1.10.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlimited Time",
+      "description": "The session clock (MMKV 'TimeLeft', 1h default, reset to 10 minutes per connect, decremented by a countdown service that kills the VPN on finish) always reports 100 years, so sessions never expire. The countdown display shows the infinity sign instead of a huge number. Reward-ad time top-ups become unnecessary.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.vpnproxymd.mdproxyvpn",
+          "name": "MD PROXY VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00C853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v1.0.8.8",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -188,6 +240,32 @@
           }
         }
       ]
+    },
+    {
+      "name": "Unlock Speed Boost",
+      "description": "The per-server 'Speed Boost' is granted after an interstitial ad shows. This rewrites the boost gate: tapping boost writes the selected server into the BoostedServer list immediately (same storage, same rocket icon) and shows the 'Server Boosted!!!' toast. The periodic interstitial the app shows every 3 minutes while connected is silenced too. All obfuscated helper calls (MMKV getter, BoostedServer reader, toast helper) are resolved from the app's own bytecode at patch time, so the rewrite survives R8 renames across updates.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.vpnproxymd.mdproxyvpn",
+          "name": "MD PROXY VPN",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00C853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v1.0.8.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Unlock Waypoint Pro",
