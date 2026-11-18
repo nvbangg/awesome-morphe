@@ -28,9 +28,7 @@ class TestBundleParser:
                 GRADLE_EXECUTABLE_PATH=self.gradle_path,
             )
         )
-        self.run_process = self.patch_context.enter_context(
-            patch.object(bundle_fetch.subprocess, "run")
-        )
+        self.run_process = self.patch_context.enter_context(patch.object(bundle_fetch.subprocess, "run"))
 
     def target(
         self, repo: str = "owner/alpha", branch: str = "main", source: str = "github"
@@ -50,9 +48,7 @@ class TestBundleParser:
         targets: list[bundle_fetch.BranchFetchResult],
     ) -> None:
 
-        def run_parser(
-            *_args: object, **_kwargs: object
-        ) -> subprocess.CompletedProcess:
+        def run_parser(*_args: object, **_kwargs: object) -> subprocess.CompletedProcess:
             assert not self.parsed_path.exists()
             for target in targets:
                 save_json(
@@ -83,9 +79,7 @@ class TestBundleParser:
         self.complete_parser(targets)
         bundle_fetch.run_bundle_parser(targets)
         self.run_process.assert_called_once()
-        assert load_lines(self.updated_path) == [
-            f"mpp/{target.target_name}.mpp" for target in targets
-        ]
+        assert load_lines(self.updated_path) == [f"mpp/{target.target_name}.mpp" for target in targets]
         assert all(target.new_sha == "new-sha" for target in targets)
 
     def test_process_failure_rejects_stale_success(self) -> None:
@@ -119,9 +113,7 @@ class TestBundleParser:
     def test_success_entry_without_output_clears_target(self) -> None:
         target = self.target()
 
-        def run_parser(
-            *_args: object, **_kwargs: object
-        ) -> subprocess.CompletedProcess:
+        def run_parser(*_args: object, **_kwargs: object) -> subprocess.CompletedProcess:
             self.parsed_path.write_text(f"{target.target_name}.json", encoding="utf-8")
             return subprocess.CompletedProcess([], 0)
 

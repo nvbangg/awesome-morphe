@@ -37,9 +37,7 @@ def http_error():
     def create_error(url: str, code: int) -> httpx2.HTTPStatusError:
         request = httpx2.Request("GET", url)
         response = httpx2.Response(code, request=request)
-        return httpx2.HTTPStatusError(
-            f"HTTP {code}", request=request, response=response
-        )
+        return httpx2.HTTPStatusError(f"HTTP {code}", request=request, response=response)
 
     return create_error
 

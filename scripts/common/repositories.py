@@ -25,9 +25,7 @@ def parse_repo_url(repo_url: str) -> tuple[str, str] | tuple[None, None]:
             return "github", f"{owner}/{repo}"
     elif parsed_url.hostname == "gitlab.com":
         if path.startswith("api/v4/projects/"):
-            project = urllib.parse.unquote(
-                path.removeprefix("api/v4/projects/").split("/", 1)[0]
-            ).strip("/")
+            project = urllib.parse.unquote(path.removeprefix("api/v4/projects/").split("/", 1)[0]).strip("/")
         else:
             project = path.split("/-/", 1)[0].removesuffix(".git")
         if "/" in project and all(project.split("/")):
@@ -75,9 +73,7 @@ def fetch_repo_details(repo_url: str) -> dict:
             }
 
         response = GITLAB_REPOSITORY.validate_python(response)
-        avatar = response.get("avatar_url") or (response.get("namespace") or {}).get(
-            "avatar_url"
-        )
+        avatar = response.get("avatar_url") or (response.get("namespace") or {}).get("avatar_url")
         if isinstance(avatar, str) and avatar.startswith("/"):
             avatar = urllib.parse.urljoin("https://gitlab.com/", avatar)
         return {
@@ -92,9 +88,6 @@ def fetch_repo_details(repo_url: str) -> dict:
         return {"error": "Invalid repository data"}
     except (httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
         details: dict[str, str | bool] = {"error": str(error)}
-        if (
-            isinstance(error, httpx2.HTTPStatusError)
-            and error.response.status_code in UNAVAILABLE_HTTP_CODES
-        ):
+        if isinstance(error, httpx2.HTTPStatusError) and error.response.status_code in UNAVAILABLE_HTTP_CODES:
             details[f"is_{error.response.status_code}"] = True
         return details

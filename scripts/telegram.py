@@ -56,25 +56,18 @@ def main() -> None:
     title = sys.argv[1] if len(sys.argv) >= 2 else f"🔔 What's New ({formatted_date})"
     filepath = Path(sys.argv[2]) if len(sys.argv) >= 3 else WHATS_NEW_PATH
 
-    if not filepath.exists() or not (
-        content := filepath.read_text(encoding="utf-8").strip()
-    ):
+    if not filepath.exists() or not (content := filepath.read_text(encoding="utf-8").strip()):
         print(f"File {filepath} not found or empty, skipping notification.")
         return
 
-    lines = [
-        line.lstrip("# ") if line.startswith("#") else line
-        for line in content.splitlines()
-    ]
+    lines = [line.lstrip("# ") if line.startswith("#") else line for line in content.splitlines()]
     formatted_content = convert_to_html("\n".join(lines).strip())
     formatted_title = f"<b>{html.escape(title)}</b>"
 
     token = os.environ.get("TG_TOKEN")
     chat_id = os.environ.get("TG_CHAT")
     if not token or not chat_id:
-        raise SystemExit(
-            "Error: TG_TOKEN or TG_CHAT environment variables are not set."
-        )
+        raise SystemExit("Error: TG_TOKEN or TG_CHAT environment variables are not set.")
 
     try:
         request(
@@ -89,18 +82,12 @@ def main() -> None:
         )
         print("Telegram notification sent successfully.")
     except httpx2.HTTPStatusError as error:
-        error_message = (
-            f"HTTP {error.response.status_code}: {error.response.reason_phrase}"
-        )
+        error_message = f"HTTP {error.response.status_code}: {error.response.reason_phrase}"
         try:
             response = error.response.json()
         except ValueError:
             response = {}
-        if (
-            isinstance(response, dict)
-            and isinstance(description := response.get("description"), str)
-            and description
-        ):
+        if isinstance(response, dict) and isinstance(description := response.get("description"), str) and description:
             error_message = f"HTTP {error.response.status_code}: {description}"
         raise SystemExit(
             f"Failed to send Telegram notification: {error_message.replace(token, '[redacted]')}"

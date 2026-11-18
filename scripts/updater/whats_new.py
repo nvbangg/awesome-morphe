@@ -29,9 +29,7 @@ WHATS_NEW_URL = "https://awesome-morphe.vercel.app/whats-new"
 
 def is_valid_package_name(package_name: str) -> bool:
     return package_name == PACKAGE_UNIVERSAL or (
-        "." in package_name
-        and " " not in package_name
-        and package_name != PACKAGE_EXAMPLE
+        "." in package_name and " " not in package_name and package_name != PACKAGE_EXAMPLE
     )
 
 
@@ -73,9 +71,7 @@ def make_url(
         params["app"] = app
     if patch:
         params["patch"] = patch
-    return (
-        f"{WHATS_NEW_URL}?{urllib.parse.urlencode(params, safe='/')}" if params else ""
-    )
+    return f"{WHATS_NEW_URL}?{urllib.parse.urlencode(params, safe='/')}" if params else ""
 
 
 def get_app_sort_key(
@@ -101,9 +97,7 @@ def extract_bundle_metadata(
     bundle_names = {}
     bundle_order = {}
 
-    sorted_bundles = sorted(
-        bundles, key=lambda bundle: bundle.get("hotRank", DEFAULT_BUNDLE_RANK)
-    )
+    sorted_bundles = sorted(bundles, key=lambda bundle: bundle.get("hotRank", DEFAULT_BUNDLE_RANK))
     for rank, bundle in enumerate(sorted_bundles):
         source = bundle["source"]
         repo = bundle.get("repo", "")
@@ -127,8 +121,7 @@ def collect_patch_history(
     package_names = {
         package_name
         for item in compatibility or []
-        if (package_name := item.get("packageName"))
-        and is_valid_package_name(package_name)
+        if (package_name := item.get("packageName")) and is_valid_package_name(package_name)
     }
     for package_name in package_names or {PACKAGE_UNIVERSAL}:
         bundle_apps.setdefault(package_name, set()).add(patch_name)
@@ -173,9 +166,7 @@ def build_json_diff(
                     "patches": sorted(patches_dict[package_name]),
                     "isNew": True,
                 }
-            elif added_patches := set(patches_dict[package_name]) - set(
-                old_patches_dict[package_name]
-            ):
+            elif added_patches := set(patches_dict[package_name]) - set(old_patches_dict[package_name]):
                 apps_dict[package_name] = {"patches": sorted(added_patches)}
 
         if apps_dict:
@@ -222,12 +213,8 @@ def generate_markdown(
                 normalize_patch_name(patch_name) for patch_name in patches
             )
 
-    new_bundle_repos = [
-        repo_url for repo_url, data in json_diff.items() if data.get("isNew", False)
-    ]
-    new_bundle_repos.sort(
-        key=lambda repo_url: bundle_order.get(repo_url, DEFAULT_BUNDLE_RANK)
-    )
+    new_bundle_repos = [repo_url for repo_url, data in json_diff.items() if data.get("isNew", False)]
+    new_bundle_repos.sort(key=lambda repo_url: bundle_order.get(repo_url, DEFAULT_BUNDLE_RANK))
 
     new_apps_map: dict[str, dict[str, str]] = {}
     existing_apps_new_patches_map: dict[str, dict[str, str]] = {}
@@ -260,9 +247,7 @@ def generate_markdown(
                 for patch_name in patches:
                     normalized_name = normalize_patch_name(patch_name)
                     if normalized_name not in known_set:
-                        target_map = existing_apps_new_patches_map.setdefault(
-                            package_name, {}
-                        )
+                        target_map = existing_apps_new_patches_map.setdefault(package_name, {})
                         target_map.setdefault(normalized_name, patch_name)
 
     if not new_bundle_repos and not new_apps_map and not existing_apps_new_patches_map:
@@ -278,15 +263,9 @@ def generate_markdown(
                 continue
             display_name = bundle_names.get(repo_url) or repo_path.split("/")[-1]
             owner = repo_path.split("/")[0]
-            owner_suffix = (
-                f" (by {owner})"
-                if should_show_bundle_owner(display_name, owner)
-                else ""
-            )
+            owner_suffix = f" (by {owner})" if should_show_bundle_owner(display_name, owner) else ""
             bundle_url = make_url(source, repo_path)
-            bundle_lines.append(
-                f"+ 📦 (✨New) [{display_name}]({bundle_url}){owner_suffix}"
-            )
+            bundle_lines.append(f"+ 📦 (✨New) [{display_name}]({bundle_url}){owner_suffix}")
         remaining_count = len(bundle_lines) - NEW_ENTRY_LIMIT
         if remaining_count > 0:
             bundle_lines = bundle_lines[:NEW_ENTRY_LIMIT]
@@ -325,17 +304,11 @@ def generate_markdown(
             key=lambda package_name: get_app_sort_key(
                 package_name,
                 app_metadata,
-                app_patch_counts.get(
-                    package_name, len(existing_apps_new_patches_map[package_name])
-                ),
+                app_patch_counts.get(package_name, len(existing_apps_new_patches_map[package_name])),
             ),
         )
         total_apps = len(sorted_packages)
-        display_count = (
-            total_apps
-            if total_apps <= EXISTING_ENTRY_LIMIT + 1
-            else EXISTING_ENTRY_LIMIT
-        )
+        display_count = total_apps if total_apps <= EXISTING_ENTRY_LIMIT + 1 else EXISTING_ENTRY_LIMIT
 
         for package_name in sorted_packages[:display_count]:
             app_name = format_app_name(package_name, app_metadata)
@@ -372,10 +345,7 @@ def generate(
     today_str = current_time.strftime(f"%B {current_time.day}, %Y")
 
     new_bundles = {
-        repo_url: {
-            package_name: sorted(patches)
-            for package_name, patches in sorted(bundle_apps.items())
-        }
+        repo_url: {package_name: sorted(patches) for package_name, patches in sorted(bundle_apps.items())}
         for repo_url, bundle_apps in current_bundles.items()
     }
     app_patch_counts = count_app_patches(new_bundles)
@@ -388,22 +358,15 @@ def generate(
     )
 
     if not json_diff:
-        info_message = (
-            "No changes detected in patch bundles. Skipping What's New generation."
-        )
+        info_message = "No changes detected in patch bundles. Skipping What's New generation."
         print(f"[-] {info_message}")
         append_step_summary(f"## 🆕 What's New:\n\n- {info_message}")
         return old_history
 
-    latest_entry = (
-        whats_new_data[0]
-        if whats_new_data and isinstance(whats_new_data[0], dict)
-        else {}
-    )
+    latest_entry = whats_new_data[0] if whats_new_data and isinstance(whats_new_data[0], dict) else {}
     if latest_entry.get("date") == today_str:
         warning_message = (
-            f"Date '{today_str}' already exists in"
-            f" `{WHATS_NEW_JSON_PATH.name}`. Skipping What's New generation."
+            f"Date '{today_str}' already exists in `{WHATS_NEW_JSON_PATH.name}`. Skipping What's New generation."
         )
         print(f"[-] {warning_message}")
         append_step_summary(f"## 🆕 What's New:\n\n- {warning_message}")
@@ -421,10 +384,7 @@ def generate(
         WHATS_NEW_PATH.write_text(markdown_str + "\n", encoding="utf-8")
         print(f"Generated {WHATS_NEW_PATH.name}")
     else:
-        info_message = (
-            "No new patches or apps to announce. Skipped"
-            f" `{WHATS_NEW_PATH.name}` generation."
-        )
+        info_message = f"No new patches or apps to announce. Skipped `{WHATS_NEW_PATH.name}` generation."
         print(f"[-] {info_message}")
         append_step_summary(f"## 🆕 What's New:\n\n- {info_message}")
 

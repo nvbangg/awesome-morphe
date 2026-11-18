@@ -8,27 +8,17 @@ def load_provider_sources(path: Path) -> dict:
     return SOURCES.validate_python(load_json(path))
 
 
-def report_provider_warning(
-    provider_name: str, reason: str | Exception, output_path: Path
-) -> str:
-    saved_sources = (
-        "kept saved sources"
-        if load_provider_sources(output_path)
-        else "no saved sources available"
-    )
+def report_provider_warning(provider_name: str, reason: str | Exception, output_path: Path) -> str:
+    saved_sources = "kept saved sources" if load_provider_sources(output_path) else "no saved sources available"
     warning_message = f"[{provider_name}]: {reason}; {saved_sources}"
     print(f"[-] {warning_message}")
     return warning_message
 
 
-def export_provider(
-    provider_name: str, discovered: dict, output_path: Path
-) -> str | None:
+def export_provider(provider_name: str, discovered: dict, output_path: Path) -> str | None:
     if not discovered:
         return report_provider_warning(provider_name, "No sources found", output_path)
 
-    save_json(
-        output_path, dict(sorted(discovered.items(), key=lambda item: item[0].lower()))
-    )
+    save_json(output_path, dict(sorted(discovered.items(), key=lambda item: item[0].lower())))
     print(f"[{provider_name}] Exported {len(discovered)} sources to {output_path.name}")
     return None

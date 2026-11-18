@@ -35,9 +35,7 @@ class TestGithubBundle:
         self.open_url.return_value = self.response
 
     @pytest.mark.parametrize("etag", ('"new-hash"', 'W/"new-hash"'))
-    def test_changed_metadata_uses_one_conditional_get_with_response_etag(
-        self, etag
-    ) -> None:
+    def test_changed_metadata_uses_one_conditional_get_with_response_etag(self, etag) -> None:
         self.response.headers["ETag"] = etag
         result = bundle_fetch.get_github_bundle(self.url, "old-hash")
         assert result == ("new-hash", self.response.content)
@@ -92,18 +90,12 @@ def test_concurrent_targets_share_download_without_blocking_other_urls(
             assert download_started.wait(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
             second = executor.submit(downloads.download, shared_url)
             other = executor.submit(downloads.download, other_url)
-            assert (
-                other.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
-                == other_url.encode()
-            )
+            assert other.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS) == other_url.encode()
         finally:
             release_download.set()
         for result in (first, second):
             if failure is None:
-                assert (
-                    result.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
-                    == shared_url.encode()
-                )
+                assert result.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS) == shared_url.encode()
             else:
                 with pytest.raises(type(failure)) as raised:
                     result.result(timeout=DOWNLOAD_WAIT_TIMEOUT_SECONDS)
@@ -171,28 +163,18 @@ class TestBundleFetch:
                 return_value={"error": "HTTP Error 503: Request failed"},
             )
         )
-        self.patch_context.enter_context(
-            patch.object(bundle_fetch, "refresh_repo_metadata", return_value=[])
-        )
+        self.patch_context.enter_context(patch.object(bundle_fetch, "refresh_repo_metadata", return_value=[]))
         save_json(self.repos_path, self.initial_repos)
-        self.bundle_data = {
-            "download_url": "https://github.com/owner/alpha/releases/download/latest/bundle.mpp"
-        }
+        self.bundle_data = {"download_url": "https://github.com/owner/alpha/releases/download/latest/bundle.mpp"}
         self.patches_data = {"patches": [{"name": "Valid patch"}]}
         mpp_buffer = io.BytesIO()
         with zipfile.ZipFile(mpp_buffer, "w") as archive:
             archive.writestr("META-INF/MANIFEST.MF", "Name: Alpha new\n")
         self.mpp_bytes = mpp_buffer.getvalue()
-        self.responses: dict[str, bytes | Exception] = {
-            self.bundle_data["download_url"]: self.mpp_bytes
-        }
+        self.responses: dict[str, bytes | Exception] = {self.bundle_data["download_url"]: self.mpp_bytes}
         for branch in DEFAULT_BRANCHES:
-            self.responses[self.url(branch, "patches-bundle.json")] = json.dumps(
-                self.bundle_data
-            ).encode()
-            self.responses[self.url(branch, "patches-list.json")] = json.dumps(
-                self.patches_data
-            ).encode()
+            self.responses[self.url(branch, "patches-bundle.json")] = json.dumps(self.bundle_data).encode()
+            self.responses[self.url(branch, "patches-list.json")] = json.dumps(self.patches_data).encode()
         self.patch_context.enter_context(
             patch.multiple(
                 bundle_fetch,
@@ -213,16 +195,10 @@ class TestBundleFetch:
             patch.object(bundle_fetch, "get_remote_file_hash", return_value="main-new")
         )
         self.github_metadata_request = self.patch_context.enter_context(
-            patch.object(
-                bundle_fetch, "get_github_bundle", side_effect=self.github_metadata
-            )
+            patch.object(bundle_fetch, "get_github_bundle", side_effect=self.github_metadata)
         )
-        self.patch_context.enter_context(
-            patch.object(bundle_fetch, "append_step_summary")
-        )
-        self.run_process = self.patch_context.enter_context(
-            patch.object(bundle_fetch.subprocess, "run")
-        )
+        self.patch_context.enter_context(patch.object(bundle_fetch, "append_step_summary"))
+        self.run_process = self.patch_context.enter_context(patch.object(bundle_fetch.subprocess, "run"))
 
     def url(self, branch: str, filename: str) -> str:
         url = build_raw_url("github", "owner/alpha", branch, filename)
@@ -235,9 +211,7 @@ class TestBundleFetch:
             raise response
         return httpx2.Response(200, content=response)
 
-    def github_metadata(
-        self, url: str, current_sha: str | None
-    ) -> tuple[str, bytes | None]:
+    def github_metadata(self, url: str, current_sha: str | None) -> tuple[str, bytes | None]:
         remote_sha = self.fetch_hash(url, "github")
         if current_sha and remote_sha == current_sha:
             return (current_sha, None)
@@ -246,8 +220,7 @@ class TestBundleFetch:
     def seed_target(self) -> dict[Path, bytes]:
         old_contents = {
             self.bundles_dir / "github~owner~alpha~main.json": b'{"version": "old"}',
-            self.patches_dir
-            / "github~owner~alpha~main.json": b'{"patches": [{"name": "Old patch"}]}',
+            self.patches_dir / "github~owner~alpha~main.json": b'{"patches": [{"name": "Old patch"}]}',
             self.mpp_dir / "github~owner~alpha~main.mpp": b"old mpp",
         }
         for path, content in old_contents.items():
@@ -257,9 +230,7 @@ class TestBundleFetch:
 
     def test_patch_lists_download_concurrently_and_keep_targets_separate(self) -> None:
         barrier = threading.Barrier(len(DEFAULT_BRANCHES))
-        patch_urls = {
-            self.url(branch, "patches-list.json") for branch in DEFAULT_BRANCHES
-        }
+        patch_urls = {self.url(branch, "patches-list.json") for branch in DEFAULT_BRANCHES}
 
         def download(url: str) -> httpx2.Response:
             if url in patch_urls:
@@ -268,20 +239,14 @@ class TestBundleFetch:
             return self.download(url)
 
         self.fetch_request.side_effect = download
-        self.fetch_hash.side_effect = lambda url, _source: (
-            "dev-new" if "/dev/" in url else "main-new"
-        )
+        self.fetch_hash.side_effect = lambda url, _source: "dev-new" if "/dev/" in url else "main-new"
         self.updated_path.write_text("mpp/stale.mpp", encoding="utf-8")
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
         for branch in DEFAULT_BRANCHES:
             file_prefix = f"github~owner~alpha~{branch}"
-            assert (
-                load_json(self.bundles_dir / f"{file_prefix}.json") == self.bundle_data
-            )
-            assert (
-                load_json(self.patches_dir / f"{file_prefix}.json") == self.patches_data
-            )
+            assert load_json(self.bundles_dir / f"{file_prefix}.json") == self.bundle_data
+            assert load_json(self.patches_dir / f"{file_prefix}.json") == self.patches_data
             assert (self.mpp_dir / f"{file_prefix}.mpp").read_bytes() == self.mpp_bytes
         updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
         assert updated_repo["name"] == "Alpha new"
@@ -289,52 +254,32 @@ class TestBundleFetch:
             assert updated_repo[branch] == f"{branch}-new"
         assert not self.updated_path.exists()
         self.run_process.assert_not_called()
-        assert (
-            self.fetch_request.call_args_list.count(
-                call(self.bundle_data["download_url"])
-            )
-            == 1
-        )
+        assert self.fetch_request.call_args_list.count(call(self.bundle_data["download_url"])) == 1
 
     def test_different_bundle_urls_are_downloaded_separately(self) -> None:
-        dev_bundle_data = {
-            "download_url": "https://github.com/owner/alpha/releases/download/dev/bundle.mpp"
-        }
-        self.responses[self.url("dev", "patches-bundle.json")] = json.dumps(
-            dev_bundle_data
-        ).encode()
+        dev_bundle_data = {"download_url": "https://github.com/owner/alpha/releases/download/dev/bundle.mpp"}
+        self.responses[self.url("dev", "patches-bundle.json")] = json.dumps(dev_bundle_data).encode()
         self.responses[dev_bundle_data["download_url"]] = self.mpp_bytes
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
         for url in (self.bundle_data["download_url"], dev_bundle_data["download_url"]):
             assert self.fetch_request.call_args_list.count(call(url)) == 1
         for branch in DEFAULT_BRANCHES:
-            assert (
-                self.mpp_dir / f"github~owner~alpha~{branch}.mpp"
-            ).read_bytes() == self.mpp_bytes
+            assert (self.mpp_dir / f"github~owner~alpha~{branch}.mpp").read_bytes() == self.mpp_bytes
 
     def test_bundle_downloads_are_not_reused_between_fetch_runs(self) -> None:
         bundle_fetch.fetch_all_repos()
         save_json(self.repos_path, self.initial_repos)
         bundle_fetch.fetch_all_repos()
-        assert (
-            self.fetch_request.call_args_list.count(
-                call(self.bundle_data["download_url"])
-            )
-            == 2
-        )
+        assert self.fetch_request.call_args_list.count(call(self.bundle_data["download_url"])) == 2
 
     def test_only_patch_list_404_queues_downloaded_mpp(self) -> None:
         url = self.url("main", "patches-list.json")
         self.responses[url] = self.http_error(url, HTTP_NOT_FOUND)
-        result = bundle_fetch.process_repo_branch(
-            "github", "owner/alpha", "main", "main-old"
-        )
+        result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", "main-old")
         assert result.needs_parse
         assert result.new_sha == "main-new"
-        assert (
-            self.mpp_dir / f"{result.target_name}.mpp"
-        ).read_bytes() == self.mpp_bytes
+        assert (self.mpp_dir / f"{result.target_name}.mpp").read_bytes() == self.mpp_bytes
         self.run_process.assert_not_called()
 
     def test_unchanged_target_skips_downloads_without_local_mpp(self) -> None:
@@ -346,38 +291,25 @@ class TestBundleFetch:
         self.fetch_request.assert_not_called()
         self.run_process.assert_not_called()
         assert self.repos_path.read_bytes() == original_content
-        self.github_metadata_request.assert_called_once_with(
-            self.url("main", "patches-bundle.json"), "main-old"
-        )
+        self.github_metadata_request.assert_called_once_with(self.url("main", "patches-bundle.json"), "main-old")
 
     @pytest.mark.parametrize("directory_name", ("bundles", "patches"))
-    def test_missing_json_refetches_even_with_unchanged_hash(
-        self, directory_name
-    ) -> None:
+    def test_missing_json_refetches_even_with_unchanged_hash(self, directory_name) -> None:
         self.fetch_hash.return_value = "main-old"
-        missing_directory = {"bundles": self.bundles_dir, "patches": self.patches_dir}[
-            directory_name
-        ]
+        missing_directory = {"bundles": self.bundles_dir, "patches": self.patches_dir}[directory_name]
         self.seed_target()
         (missing_directory / "github~owner~alpha~main.json").unlink()
         self.fetch_request.reset_mock()
         self.github_metadata_request.reset_mock()
         bundle_fetch.fetch_all_repos()
-        assert (
-            load_json(self.patches_dir / "github~owner~alpha~main.json")
-            == self.patches_data
-        )
+        assert load_json(self.patches_dir / "github~owner~alpha~main.json") == self.patches_data
         assert self.fetch_request.call_count == 3
-        self.github_metadata_request.assert_called_once_with(
-            self.url("main", "patches-bundle.json"), None
-        )
+        self.github_metadata_request.assert_called_once_with(self.url("main", "patches-bundle.json"), None)
 
     def test_null_sha_refetches_despite_existing_local_files(self) -> None:
         self.seed_target()
         result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", None)
-        self.github_metadata_request.assert_called_once_with(
-            self.url("main", "patches-bundle.json"), None
-        )
+        self.github_metadata_request.assert_called_once_with(self.url("main", "patches-bundle.json"), None)
         assert result.new_sha == "main-new"
         assert result.status_changed
 
@@ -388,23 +320,16 @@ class TestBundleFetch:
             "main-old",
             json.dumps(self.bundle_data).encode(),
         )
-        result = bundle_fetch.process_repo_branch(
-            "github", "owner/alpha", "main", "main-old"
-        )
+        result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", "main-old")
         assert result.status_changed
         assert result.bundle_name == "Alpha new"
-        assert (
-            call(self.url("main", "patches-bundle.json"))
-            not in self.fetch_request.call_args_list
-        )
+        assert call(self.url("main", "patches-bundle.json")) not in self.fetch_request.call_args_list
 
     def test_gitlab_unchanged_metadata_still_skips_get(self) -> None:
         self.fetch_hash.return_value = "main-old"
         for directory in (self.bundles_dir, self.patches_dir):
             save_json(directory / "gitlab~owner~alpha~main.json", {})
-        result = bundle_fetch.process_repo_branch(
-            "gitlab", "owner/alpha", "main", "main-old"
-        )
+        result = bundle_fetch.process_repo_branch("gitlab", "owner/alpha", "main", "main-old")
         assert result.new_sha == "main-old"
         assert not result.status_changed
         self.fetch_hash.assert_called_once_with(
@@ -490,9 +415,7 @@ class TestBundleFetch:
             (("metadata", "bundle"), {"metadata": 1, "bundle": 1}),
         ),
     )
-    def test_errors_are_deduplicated_per_repository_and_stage(
-        self, categories, expected_counts
-    ) -> None:
+    def test_errors_are_deduplicated_per_repository_and_stage(self, categories, expected_counts) -> None:
         results = [
             bundle_fetch.BranchFetchResult(
                 "github",
@@ -506,19 +429,11 @@ class TestBundleFetch:
         ]
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             errors = bundle_fetch.collect_fetch_errors(results)
-        assert {
-            category: len(messages) for category, messages in errors.items() if messages
-        } == expected_counts
-        assert all(
-            "https://github.com/owner/alpha" in message
-            for messages in errors.values()
-            for message in messages
-        )
+        assert {category: len(messages) for category, messages in errors.items() if messages} == expected_counts
+        assert all("https://github.com/owner/alpha" in message for messages in errors.values() for message in messages)
 
     @pytest.mark.parametrize("category", ("metadata", "bundle", "patch_list"))
-    def test_branch_errors_are_suppressed_when_the_other_branch_succeeds(
-        self, category
-    ) -> None:
+    def test_branch_errors_are_suppressed_when_the_other_branch_succeeds(self, category) -> None:
         results = [
             bundle_fetch.BranchFetchResult(
                 "github",
@@ -558,37 +473,22 @@ class TestBundleFetch:
             bundle_fetch.fetch_all_repos()
         self.run_process.assert_called_once()
         for branch in DEFAULT_BRANCHES:
-            assert (
-                load_json(self.repos_path)["https://github.com/owner/alpha"][branch]
-                is None
-            )
+            assert load_json(self.repos_path)["https://github.com/owner/alpha"][branch] is None
 
-    @pytest.mark.parametrize(
-        "stage,code", (("hash", 404), ("metadata", 451), ("mpp", 404))
-    )
-    def test_unavailable_metadata_and_mpp_clear_sha_without_deleting_files(
-        self, stage, code
-    ) -> None:
+    @pytest.mark.parametrize("stage,code", (("hash", 404), ("metadata", 451), ("mpp", 404)))
+    def test_unavailable_metadata_and_mpp_clear_sha_without_deleting_files(self, stage, code) -> None:
         original_responses = self.responses.copy()
         save_json(self.repos_path, self.initial_repos)
         self.responses = original_responses.copy()
         self.fetch_hash.side_effect = (
-            self.http_error(self.url("main", "patches-bundle.json"), code)
-            if stage == "hash"
-            else None
+            self.http_error(self.url("main", "patches-bundle.json"), code) if stage == "hash" else None
         )
         if stage != "hash":
-            url = (
-                self.url("main", "patches-bundle.json")
-                if stage == "metadata"
-                else self.bundle_data["download_url"]
-            )
+            url = self.url("main", "patches-bundle.json") if stage == "metadata" else self.bundle_data["download_url"]
             self.responses[url] = self.http_error(url, code)
         old_contents = self.seed_target()
         bundle_fetch.fetch_all_repos()
-        assert (
-            load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] is None
-        )
+        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] is None
         for path, content in old_contents.items():
             assert path.read_bytes() == content
         self.run_process.assert_not_called()
@@ -598,9 +498,7 @@ class TestBundleFetch:
         [
             b"{broken",
             b"{}",
-            json.dumps(
-                {"download_url": "https://github.com/other/repo/bundle.mpp"}
-            ).encode(),
+            json.dumps({"download_url": "https://github.com/other/repo/bundle.mpp"}).encode(),
             *(
                 json.dumps({"download_url": url}).encode()
                 for url in (
@@ -617,9 +515,7 @@ class TestBundleFetch:
             "fetch_repo_details",
             side_effect=lambda url: {"full_name": parse_repo_url(url)[1]},
         ):
-            result = bundle_fetch.process_repo_branch(
-                "github", "owner/alpha", "main", "main-old"
-            )
+            result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", "main-old")
         assert result.new_sha is None
         assert not result.needs_parse
         assert result.error_message
@@ -647,9 +543,7 @@ class TestBundleFetch:
     def test_gitlab_numeric_download_url_verifies_project_and_preserves_url(
         self, download_url, project_id, expected_sha
     ) -> None:
-        bundle_url = build_raw_url(
-            "gitlab", "owner/alpha", "main", "patches-bundle.json"
-        )
+        bundle_url = build_raw_url("gitlab", "owner/alpha", "main", "patches-bundle.json")
         patch_url = build_raw_url("gitlab", "owner/alpha", "main", "patches-list.json")
         assert bundle_url is not None and patch_url is not None
         self.responses[bundle_url] = json.dumps({"download_url": download_url}).encode()
@@ -660,18 +554,12 @@ class TestBundleFetch:
             "fetch_repo_details",
             return_value={"project_id": project_id, "full_name": "owner/alpha"},
         ) as lookup:
-            result = bundle_fetch.process_repo_branch(
-                "gitlab", "owner/alpha", "main", "main-old"
-            )
+            result = bundle_fetch.process_repo_branch("gitlab", "owner/alpha", "main", "main-old")
         lookup.assert_called_once_with("https://gitlab.com/owner/alpha")
         assert result.new_sha == expected_sha
-        assert (call(download_url) in self.fetch_request.call_args_list) == (
-            expected_sha == "main-new"
-        )
+        assert (call(download_url) in self.fetch_request.call_args_list) == (expected_sha == "main-new")
         if expected_sha == "main-new":
-            assert load_json(self.bundles_dir / f"{result.target_name}.json") == {
-                "download_url": download_url
-            }
+            assert load_json(self.bundles_dir / f"{result.target_name}.json") == {"download_url": download_url}
             assert result.bundle_name == "Alpha new"
             assert not result.needs_parse
         else:
@@ -690,9 +578,7 @@ class TestBundleFetch:
             ],
         ):
             bundle_fetch.fetch_all_repos(weekly=True)
-        assert (
-            load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] is None
-        )
+        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] is None
         assert (self.patches_dir / "github~owner~alpha~main.json").exists()
         self.fetch_request.assert_not_called()
 
@@ -705,9 +591,7 @@ class TestBundleFetch:
             "get_remote_file_hash",
             side_effect=TimeoutError("Check failed"),
         ):
-            result = bundle_fetch.process_repo_branch(
-                "github", "owner/alpha", "main", "main-old", weekly=True
-            )
+            result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", "main-old", weekly=True)
         assert result.new_sha == "main-old"
         assert not result.status_changed
         self.fetch_request.assert_not_called()
@@ -725,9 +609,7 @@ class TestBundleFetch:
 
     def test_file_write_failure_stops_fetch(self) -> None:
         with (
-            patch.object(
-                bundle_fetch, "save_json", side_effect=PermissionError("Cannot write")
-            ),
+            patch.object(bundle_fetch, "save_json", side_effect=PermissionError("Cannot write")),
             pytest.raises(PermissionError),
         ):
             bundle_fetch.fetch_all_repos()
@@ -745,21 +627,13 @@ class TestBundleFetch:
         for branch in DEFAULT_BRANCHES:
             patch_url = self.url(branch, "patches-list.json")
             self.responses[patch_url] = self.http_error(patch_url, HTTP_NOT_FOUND)
-        self.fetch_hash.side_effect = lambda url, _source: (
-            "dev-new" if "/dev/" in url else "main-new"
-        )
+        self.fetch_hash.side_effect = lambda url, _source: "dev-new" if "/dev/" in url else "main-new"
         save_json(self.patches_dir / "github~owner~alpha~dev.json", self.patches_data)
 
-        def run_parser(
-            *_args: object, **_kwargs: object
-        ) -> bundle_fetch.subprocess.CompletedProcess:
+        def run_parser(*_args: object, **_kwargs: object) -> bundle_fetch.subprocess.CompletedProcess:
             assert not self.parsed_path.exists()
-            save_json(
-                self.patches_dir / "github~owner~alpha~main.json", self.patches_data
-            )
-            self.parsed_path.write_text(
-                "github~owner~alpha~main.json", encoding="utf-8"
-            )
+            save_json(self.patches_dir / "github~owner~alpha~main.json", self.patches_data)
+            self.parsed_path.write_text("github~owner~alpha~main.json", encoding="utf-8")
             return bundle_fetch.subprocess.CompletedProcess([], 0)
 
         self.run_process.side_effect = run_parser
@@ -792,55 +666,35 @@ class TestBundleFetch:
             patch.object(bundle_fetch, "process_repo_branch", side_effect=process),
         ):
             bundle_fetch.fetch_all_repos()
-        assert (
-            load_json(self.repos_path)["https://github.com/owner/alpha"]["name"]
-            == "main name"
-        )
+        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["name"] == "main name"
 
     def test_dev_update_downloads_bundle_but_keeps_existing_main_name(self) -> None:
         self.seed_target()
         save_json(self.bundles_dir / "github~owner~alpha~main.json", self.bundle_data)
-        self.fetch_hash.side_effect = lambda url, _source: (
-            "main-old" if "/main/" in url else "dev-new"
-        )
+        self.fetch_hash.side_effect = lambda url, _source: "main-old" if "/main/" in url else "dev-new"
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
-        assert (
-            load_json(self.repos_path)["https://github.com/owner/alpha"]["name"]
-            == "Alpha old"
-        )
+        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["name"] == "Alpha old"
         self.fetch_request.assert_any_call(self.url("dev", "patches-list.json"))
         assert (self.mpp_dir / "github~owner~alpha~dev.mpp").is_file()
 
     def test_new_empty_repository_entry_is_fetched(self) -> None:
         save_json(self.repos_path, {"https://github.com/owner/alpha": {}})
         bundle_fetch.fetch_all_repos()
-        assert (
-            load_json(self.repos_path)["https://github.com/owner/alpha"]["main"]
-            == "main-new"
-        )
-        assert (
-            load_json(self.repos_path)["https://github.com/owner/alpha"]["name"]
-            == "Alpha new"
-        )
+        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] == "main-new"
+        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["name"] == "Alpha new"
 
     def test_confirmed_rename_allows_download_from_the_new_repository(self) -> None:
         new_url = "https://github.com/owner/new/releases/latest/bundle.mpp"
-        self.responses[self.url("main", "patches-bundle.json")] = json.dumps(
-            {"download_url": new_url}
-        ).encode()
+        self.responses[self.url("main", "patches-bundle.json")] = json.dumps({"download_url": new_url}).encode()
         self.responses[new_url] = self.mpp_bytes
-        result = bundle_fetch.process_repo_branch(
-            "github", "owner/alpha", "main", "main-old", renamed_repo="owner/new"
-        )
+        result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", "main-old", renamed_repo="owner/new")
         assert result.new_sha == "main-new"
         assert result.error_message is None
 
     @pytest.mark.parametrize("source", ("github", "gitlab"))
     @pytest.mark.parametrize("direction", ("forward", "reverse"))
-    def test_mismatched_asset_uses_confirmed_repository_identity(
-        self, source, direction
-    ) -> None:
+    def test_mismatched_asset_uses_confirmed_repository_identity(self, source, direction) -> None:
         asset_repo = "owner/new" if direction == "forward" else "owner/old"
         canonical_repo = "owner/new" if direction == "forward" else "owner/alpha"
         asset_url = (
@@ -848,9 +702,7 @@ class TestBundleFetch:
             if source == "github"
             else f"https://gitlab.com/{asset_repo}/-/releases/v1/downloads/bundle.mpp"
         )
-        metadata_url = build_raw_url(
-            source, "owner/alpha", "main", "patches-bundle.json"
-        )
+        metadata_url = build_raw_url(source, "owner/alpha", "main", "patches-bundle.json")
         patches_url = build_raw_url(source, "owner/alpha", "main", "patches-list.json")
         assert metadata_url is not None and patches_url is not None
         self.responses[metadata_url] = json.dumps({"download_url": asset_url}).encode()
@@ -861,33 +713,21 @@ class TestBundleFetch:
             "fetch_repo_details",
             return_value={"full_name": canonical_repo},
         ) as request:
-            result = bundle_fetch.process_repo_branch(
-                source, "owner/alpha", "main", "main-old"
-            )
+            result = bundle_fetch.process_repo_branch(source, "owner/alpha", "main", "main-old")
         assert result.new_sha == "main-new"
         assert result.error_message is None
-        assert result.renamed_to == (
-            f"https://{source}.com/owner/new" if direction == "forward" else None
-        )
+        assert result.renamed_to == (f"https://{source}.com/owner/new" if direction == "forward" else None)
         assert request.call_count == (1 if direction == "forward" else 2)
 
-    @pytest.mark.parametrize(
-        "lookup,details", (("source", {"error": "Unavailable"}), ("asset", {}))
-    )
-    def test_unverified_repository_identity_preserves_saved_target(
-        self, lookup, details
-    ) -> None:
+    @pytest.mark.parametrize("lookup,details", (("source", {"error": "Unavailable"}), ("asset", {})))
+    def test_unverified_repository_identity_preserves_saved_target(self, lookup, details) -> None:
         self.responses[self.url("main", "patches-bundle.json")] = json.dumps(
             {"download_url": "https://github.com/owner/new/bundle.mpp"}
         ).encode()
         old_contents = self.seed_target()
-        responses = (
-            [details] if lookup == "source" else [{"full_name": "owner/alpha"}, details]
-        )
+        responses = [details] if lookup == "source" else [{"full_name": "owner/alpha"}, details]
         with patch.object(bundle_fetch, "fetch_repo_details", side_effect=responses):
-            result = bundle_fetch.process_repo_branch(
-                "github", "owner/alpha", "main", "main-old"
-            )
+            result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", "main-old")
         assert result.new_sha == "main-old"
         assert not result.status_changed
         assert not result.renamed_to
@@ -906,32 +746,21 @@ class TestBundleFetch:
             "fetch_repo_details",
             side_effect=[{"full_name": "owner/alpha"}, {"full_name": "owner/old"}],
         ):
-            result = bundle_fetch.process_repo_branch(
-                "github", "owner/alpha", "main", "main-old"
-            )
+            result = bundle_fetch.process_repo_branch("github", "owner/alpha", "main", "main-old")
         assert result.new_sha is None
         assert result.error_message == "Invalid `download_url`"
-        self.fetch_request.assert_called_once_with(
-            self.url("main", "patches-bundle.json")
-        )
+        self.fetch_request.assert_called_once_with(self.url("main", "patches-bundle.json"))
 
     def test_fetch_records_verified_rename_without_modifying_local_keys(self) -> None:
         asset_url = "https://github.com/owner/new/releases/v1/bundle.mpp"
-        self.responses[self.url("main", "patches-bundle.json")] = json.dumps(
-            {"download_url": asset_url}
-        ).encode()
+        self.responses[self.url("main", "patches-bundle.json")] = json.dumps({"download_url": asset_url}).encode()
         self.responses[asset_url] = self.mpp_bytes
         save_json(self.repos_path, {"https://github.com/owner/alpha": {}})
-        with patch.object(
-            bundle_fetch, "fetch_repo_details", return_value={"full_name": "owner/new"}
-        ) as request:
+        with patch.object(bundle_fetch, "fetch_repo_details", return_value={"full_name": "owner/new"}) as request:
             bundle_fetch.fetch_all_repos()
         repos = load_json(self.repos_path)
         assert set(repos) == {"https://github.com/owner/alpha"}
-        assert (
-            repos["https://github.com/owner/alpha"]["renamedTo"]
-            == "https://github.com/owner/new"
-        )
+        assert repos["https://github.com/owner/alpha"]["renamedTo"] == "https://github.com/owner/new"
         assert repos["https://github.com/owner/alpha"]["main"] == "main-new"
         assert (self.bundles_dir / "github~owner~alpha~main.json").is_file()
         request.assert_called_once_with("https://github.com/owner/alpha")
@@ -966,9 +795,7 @@ class TestRepositoryMetadataRefresh:
 
     def test_refresh_failure_preserves_metadata_and_pending_rename(self) -> None:
         self.metadata["renamedTo"] = "https://github.com/owner/new"
-        with patch.object(
-            bundle_fetch, "fetch_repo_details", return_value={"error": "Unavailable"}
-        ):
+        with patch.object(bundle_fetch, "fetch_repo_details", return_value={"error": "Unavailable"}):
             repos = {self.url: dict(self.metadata)}
             assert bundle_fetch.refresh_repo_metadata(repos, True)
         assert repos[self.url] == self.metadata
@@ -997,9 +824,7 @@ class TestRepositoryMetadataRefresh:
         assert repos[self.url]["isArchived"]
         assert warnings
 
-    def test_fetch_persists_metadata_without_changing_custom_sources(
-        self, tmp_path: Path
-    ) -> None:
+    def test_fetch_persists_metadata_without_changing_custom_sources(self, tmp_path: Path) -> None:
         root = tmp_path
         repos_path = root / "repos.json"
         custom_path = root / "custom.json"

@@ -189,9 +189,7 @@ def process_repo_branch(
 ) -> BranchFetchResult:
     renamed_to = None
 
-    def failed(
-        message: str, category: str, unavailable: bool = False
-    ) -> BranchFetchResult:
+    def failed(message: str, category: str, unavailable: bool = False) -> BranchFetchResult:
         return BranchFetchResult(
             source,
             repo,
@@ -213,9 +211,7 @@ def process_repo_branch(
     bundle_content = None
     try:
         if source == "github":
-            remote_sha, bundle_content = get_github_bundle(
-                bundle_url, current_sha if has_local_data else None
-            )
+            remote_sha, bundle_content = get_github_bundle(bundle_url, current_sha if has_local_data else None)
         else:
             remote_sha = get_remote_file_hash(bundle_url, source)
     except httpx2.HTTPStatusError as error:
@@ -233,17 +229,10 @@ def process_repo_branch(
             "metadata",
             True,
         )
-    if (
-        current_sha
-        and remote_sha == current_sha
-        and has_local_data
-        and bundle_content is None
-    ):
+    if current_sha and remote_sha == current_sha and has_local_data and bundle_content is None:
         if weekly:
             try:
-                mpp_url = BUNDLE_MANIFEST.validate_python(load_json(bundle_file))[
-                    "download_url"
-                ]
+                mpp_url = BUNDLE_MANIFEST.validate_python(load_json(bundle_file))["download_url"]
             except ValidationError:
                 return failed("Invalid `download_url`", "metadata", True)
             try:
@@ -285,9 +274,7 @@ def process_repo_branch(
             if source == "gitlab" and parsed_url.hostname == "gitlab.com"
             else None
         )
-        mpp_source, mpp_repo = (
-            (source, project_match[1]) if project_match else parse_repo_url(mpp_url)
-        )
+        mpp_source, mpp_repo = (source, project_match[1]) if project_match else parse_repo_url(mpp_url)
         if mpp_source != source or not mpp_repo:
             return failed("Invalid `download_url`", "metadata", True)
         if project_match or mpp_repo.lower() not in {
@@ -317,14 +304,9 @@ def process_repo_branch(
                 assert download_repo_url is not None
                 download_details = repository_details.get(download_repo_url)
                 download_canonical = download_details.get("full_name")
-                if (
-                    download_details.get("error")
-                    or not isinstance(download_canonical, str)
-                    or not download_canonical
-                ):
+                if download_details.get("error") or not isinstance(download_canonical, str) or not download_canonical:
                     return failed(
-                        download_details.get("error")
-                        or "Could not verify repository identity",
+                        download_details.get("error") or "Could not verify repository identity",
                         "metadata",
                     )
                 if download_canonical.lower() != canonical_repo.lower():
@@ -336,11 +318,7 @@ def process_repo_branch(
         return failed("Invalid `download_url`", "metadata", True)
 
     try:
-        mpp_content = (
-            bundle_downloads.download(mpp_url)
-            if bundle_downloads is not None
-            else request(mpp_url).content
-        )
+        mpp_content = bundle_downloads.download(mpp_url) if bundle_downloads is not None else request(mpp_url).content
     except httpx2.HTTPStatusError as error:
         return failed(
             str(error),
@@ -409,20 +387,13 @@ def run_bundle_parser(targets: list[BranchFetchResult]) -> None:
         target.error_message = "Failed to generate `patches-list.json`"
 
 
-def process_image(
-    source: str, repo: str, current_image: str | None
-) -> tuple[str, str, str | None, bool, str | None]:
+def process_image(source: str, repo: str, current_image: str | None) -> tuple[str, str, str | None, bool, str | None]:
     repo_url = build_repo_url(source, repo)
     try:
         image_url = build_raw_url(source, repo, "main", "patches-bundle.png")
-        remote_sha = (
-            get_remote_file_hash(image_url, source, "exists") if image_url else None
-        )
+        remote_sha = get_remote_file_hash(image_url, source, "exists") if image_url else None
     except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
-        if (
-            isinstance(error, httpx2.HTTPStatusError)
-            and error.response.status_code in UNAVAILABLE_HTTP_CODES
-        ):
+        if isinstance(error, httpx2.HTTPStatusError) and error.response.status_code in UNAVAILABLE_HTTP_CODES:
             return source, repo, None, current_image is not None, None
         return source, repo, current_image, False, f"{repo_url}: {error}"
     return source, repo, remote_sha, remote_sha != current_image, None
@@ -442,18 +413,13 @@ def collect_fetch_errors(results: list[BranchFetchResult]) -> dict[str, list[str
         first_result = branch_results[0]
         assert first_result.error_category is not None
         if all(
-            (result.error_category, result.error_message)
-            == (first_result.error_category, first_result.error_message)
+            (result.error_category, result.error_message) == (first_result.error_category, first_result.error_message)
             for result in branch_results
         ):
-            errors[first_result.error_category].append(
-                f"{repo_url}: {first_result.error_message}"
-            )
+            errors[first_result.error_category].append(f"{repo_url}: {first_result.error_message}")
         else:
             category_errors: dict[str, list[str]] = {}
-            for result in sorted(
-                branch_results, key=lambda result: DEFAULT_BRANCHES.index(result.branch)
-            ):
+            for result in sorted(branch_results, key=lambda result: DEFAULT_BRANCHES.index(result.branch)):
                 assert result.error_category is not None
                 category_errors.setdefault(result.error_category, []).append(
                     f"({result.branch}) {result.error_message}"
@@ -471,18 +437,11 @@ def refresh_repo_metadata(
         url
         for url, metadata in repos_data.items()
         if any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
-        and (
-            refresh
-            or any(
-                field not in metadata for field in ("description", "avatarUrl", "stars")
-            )
-        )
+        and (refresh or any(field not in metadata for field in ("description", "avatarUrl", "stars")))
     ]
     warnings = []
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-        for repo_url, details in zip(
-            tasks, executor.map(repository_details.get, tasks)
-        ):
+        for repo_url, details in zip(tasks, executor.map(repository_details.get, tasks)):
             if not details or details.get("error"):
                 reason = details.get("error", "Invalid repository data")
                 warnings.append(f"{repo_url}: {reason}")
@@ -517,26 +476,18 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     tasks = []
     image_tasks = []
     checked_repos = {
-        url
-        for url, metadata in repos_data.items()
-        if any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
+        url for url, metadata in repos_data.items() if any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
     }
     repository_details = RepositoryDetails()
-    repository_warnings = refresh_repo_metadata(
-        repos_data, daily or weekly, repository_details
-    )
+    repository_warnings = refresh_repo_metadata(repos_data, daily or weekly, repository_details)
     previous_preferred = {}
     renamed_repos = {}
     for repo_url, repo_metadata in repos_data.items():
         source, repo = parse_repo_url(repo_url)
         if not source or not repo:
             continue
-        previous_preferred[repo_url] = next(
-            (branch for branch in DEFAULT_BRANCHES if repo_metadata.get(branch)), None
-        )
-        renamed_repos[source, repo] = parse_repo_url(
-            repo_metadata.get("renamedTo") or ""
-        )[1]
+        previous_preferred[repo_url] = next((branch for branch in DEFAULT_BRANCHES if repo_metadata.get(branch)), None)
+        renamed_repos[source, repo] = parse_repo_url(repo_metadata.get("renamedTo") or "")[1]
         for branch in DEFAULT_BRANCHES:
             tasks.append((source, repo, branch, repo_metadata.get(branch)))
         if daily or weekly:
@@ -581,13 +532,9 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     if image_tasks:
         print(f"Processing {len(image_tasks)} image targets...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            image_futures = [
-                executor.submit(process_image, *task) for task in image_tasks
-            ]
+            image_futures = [executor.submit(process_image, *task) for task in image_tasks]
             for future in as_completed(image_futures):
-                source, repo, new_image_sha, status_changed, error_message = (
-                    future.result()
-                )
+                source, repo, new_image_sha, status_changed, error_message = future.result()
                 if error_message:
                     errors["image"].append(error_message)
                 if status_changed:
@@ -597,14 +544,10 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                     repos_data[repo_url]["image"] = new_image_sha
     grouped_results = {}
     for result in results:
-        grouped_results.setdefault(
-            build_repo_url(result.source, result.repo), []
-        ).append(result)
+        grouped_results.setdefault(build_repo_url(result.source, result.repo), []).append(result)
     for repo_url, branch_results in grouped_results.items():
         metadata = repos_data[repo_url]
-        preferred = next(
-            (branch for branch in DEFAULT_BRANCHES if metadata.get(branch)), None
-        )
+        preferred = next((branch for branch in DEFAULT_BRANCHES if metadata.get(branch)), None)
         if not preferred:
             continue
         chosen = next(result for result in branch_results if result.branch == preferred)
@@ -621,25 +564,15 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 content = (
                     local_mpp.read_bytes()
                     if local_mpp.is_file()
-                    else bundle_downloads.download(
-                        load_json(BUNDLES_DIR / f"{prefix}.json")["download_url"]
-                    )
+                    else bundle_downloads.download(load_json(BUNDLES_DIR / f"{prefix}.json")["download_url"])
                 )
-                metadata["name"] = (
-                    extract_mpp_name(content) or metadata.get("name") or ""
-                )
+                metadata["name"] = extract_mpp_name(content) or metadata.get("name") or ""
             except (OSError, httpx2.HTTPError, httpx2.InvalidURL) as error:
                 print(f"[-] {repo_url}: Failed to read bundle name: {error}")
-        updated_count += int(
-            metadata.get("name") != initial_repos[repo_url].get("name")
-        )
+        updated_count += int(metadata.get("name") != initial_repos[repo_url].get("name"))
     repository_warnings.extend(
         refresh_repo_metadata(
-            {
-                url: metadata
-                for url, metadata in repos_data.items()
-                if url not in checked_repos
-            },
+            {url: metadata for url, metadata in repos_data.items() if url not in checked_repos},
             daily or weekly,
             repository_details,
         )
@@ -649,14 +582,8 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         save_json(
             REPOS_JSON_PATH,
             {
-                url: {
-                    field: metadata[field]
-                    for field in REPOSITORY_FIELDS
-                    if field in metadata
-                }
-                for url, metadata in sorted(
-                    repos_data.items(), key=lambda item: item[0].lower()
-                )
+                url: {field: metadata[field] for field in REPOSITORY_FIELDS if field in metadata}
+                for url, metadata in sorted(repos_data.items(), key=lambda item: item[0].lower())
             },
         )
     total_repo_count = len(grouped_results)

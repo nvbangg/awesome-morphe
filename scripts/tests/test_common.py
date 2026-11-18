@@ -13,9 +13,7 @@ from discovery import load_provider_sources
     "content,error_type",
     ((b"{broken", json.JSONDecodeError), (b"\xff", UnicodeDecodeError)),
 )
-def test_json_read_defaults_only_when_missing(
-    tmp_path: Path, content, error_type
-) -> None:
+def test_json_read_defaults_only_when_missing(tmp_path: Path, content, error_type) -> None:
     path = tmp_path / "history.json"
     assert files.load_json(path) == {}
     assert files.load_json(path, []) == []
@@ -27,9 +25,7 @@ def test_json_read_defaults_only_when_missing(
 
 
 @pytest.mark.parametrize("failure_stage", ("serialization", "replace"))
-def test_json_write_failure_preserves_original_and_removes_temporary_file(
-    tmp_path: Path, failure_stage: str
-) -> None:
+def test_json_write_failure_preserves_original_and_removes_temporary_file(tmp_path: Path, failure_stage: str) -> None:
     path = tmp_path / "history.json"
     files.save_json(path, {"saved": "Dữ liệu cũ"})
     original = path.read_bytes()
@@ -99,9 +95,7 @@ def test_repository_identity_uses_host_and_path(url, expected) -> None:
         ("https://notgithubusercontent.com/file", False),
     ),
 )
-def test_token_is_only_attached_to_supported_https_hosts(
-    url, authenticated, block_network
-) -> None:
+def test_token_is_only_attached_to_supported_https_hosts(url, authenticated, block_network) -> None:
     with patch.dict(os.environ, {"GITHUB_TOKEN": "test-token"}):
         block_network.side_effect = None
         http.request(url)
@@ -127,9 +121,7 @@ def test_token_is_only_attached_to_supported_https_hosts(
         ("https://api.github.com/repos/owner/repo", False),
     ),
 )
-def test_gitlab_token_is_only_attached_to_gitlab_api(
-    url, authenticated, block_network
-) -> None:
+def test_gitlab_token_is_only_attached_to_gitlab_api(url, authenticated, block_network) -> None:
     with patch.dict(os.environ, {"GITLAB_TOKEN": "test-token"}):
         block_network.side_effect = None
         http.request(url)

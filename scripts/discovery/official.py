@@ -30,11 +30,7 @@ def discover() -> str | None:
     except ValueError:
         return report_provider_warning("official", "Invalid provider data", OUTPUT_PATH)
 
-    discovered = {
-        url: {}
-        for bundle in catalog["bundles"]
-        if (url := build_repo_url(bundle["source"], bundle["repo"]))
-    }
+    discovered = {url: {} for bundle in catalog["bundles"] if (url := build_repo_url(bundle["source"], bundle["repo"]))}
     if discovered:
         save_json(OFFICIAL_BUNDLES_PATH, data)
     return export_provider("official", discovered, OUTPUT_PATH)

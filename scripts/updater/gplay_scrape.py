@@ -17,11 +17,7 @@ def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:
         if not result:
             return None, False
         categories = result.get("categories") or []
-        category = (
-            result.get("genre")
-            or (categories[0].get("name") if categories else "")
-            or ""
-        )
+        category = result.get("genre") or (categories[0].get("name") if categories else "") or ""
         return {
             "name": result.get("title"),
             "iconUrl": normalize_image_url(result.get("icon")),
@@ -38,9 +34,7 @@ def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:
 
 def process(apps_dict: dict, mode: str) -> None:
     official_data = load_json(OFFICIAL_BUNDLES_PATH)
-    official_store = (
-        official_data.get("store", {}) if isinstance(official_data, dict) else {}
-    )
+    official_store = official_data.get("store", {}) if isinstance(official_data, dict) else {}
 
     apps_to_scrape = [
         package_name
@@ -61,9 +55,7 @@ def process(apps_dict: dict, mode: str) -> None:
         )
     ]
     if apps_to_scrape:
-        print(
-            f"\nScraping Google Play for {len(apps_to_scrape)} apps (mode: {mode})..."
-        )
+        print(f"\nScraping Google Play for {len(apps_to_scrape)} apps (mode: {mode})...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
             for package_name, (details, is_404) in zip(
                 apps_to_scrape,
@@ -71,11 +63,7 @@ def process(apps_dict: dict, mode: str) -> None:
             ):
                 current_app = apps_dict[package_name]
                 if not is_404 and details:
-                    current_app.update(
-                        (key, value)
-                        for key, value in details.items()
-                        if value is not None
-                    )
+                    current_app.update((key, value) for key, value in details.items() if value is not None)
                 elif is_404:
                     current_app["minInstalls"] = 0
                     current_app["category"] = ""
@@ -84,9 +72,7 @@ def process(apps_dict: dict, mode: str) -> None:
                 for field in ("name", "iconUrl", "description"):
                     if current_app.get(field) is None:
                         current_app[field] = ""
-    print(
-        f"\nSyncing with official store data ({len(official_store)} apps in store)..."
-    )
+    print(f"\nSyncing with official store data ({len(official_store)} apps in store)...")
     for package_name, app_data in apps_dict.items():
         official_app = official_store.get(package_name)
         if official_app:

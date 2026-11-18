@@ -38,9 +38,7 @@ HOT_RANK_ACTIVE_DAYS = 30
 HOT_RANK_ACTIVE_MS = HOT_RANK_ACTIVE_DAYS * 24 * 60 * 60 * 1000
 
 
-def apply_renames(
-    bundle_sources: dict, repos_data: dict, custom_data: dict
-) -> tuple[dict[str, str], dict[str, str]]:
+def apply_renames(bundle_sources: dict, repos_data: dict, custom_data: dict) -> tuple[dict[str, str], dict[str, str]]:
     renames = {}
     file_renames = {}
     for old_url, metadata in list(repos_data.items()):
@@ -49,26 +47,17 @@ def apply_renames(
             continue
         source, old_repo = parse_repo_url(old_url)
         new_source, new_repo = parse_repo_url(new_url)
-        if (
-            not source
-            or source != new_source
-            or not new_repo
-            or new_url.lower() == old_url.lower()
-        ):
+        if not source or source != new_source or not new_repo or new_url.lower() == old_url.lower():
             raise ValueError(f"Invalid rename: {old_url} -> {new_url}")
         new_url = build_repo_url(source, new_repo)
         assert new_url is not None
-        existing_url = next(
-            (url for url in repos_data if url.lower() == new_url.lower()), None
-        )
+        existing_url = next((url for url in repos_data if url.lower() == new_url.lower()), None)
         if existing_url:
             new_url = existing_url
             bundle_sources.pop(old_url, None)
         else:
             file_renames[old_url] = new_url
-            repos_data[new_url] = {
-                key: value for key, value in metadata.items() if key != "renamedTo"
-            }
+            repos_data[new_url] = {key: value for key, value in metadata.items() if key != "renamedTo"}
             if old_url in bundle_sources:
                 bundle_sources[old_url]["repo"] = new_repo
         repos_data.pop(old_url)
@@ -95,12 +84,8 @@ def move_renamed_files(renames: dict[str, str]) -> None:
             raise ValueError(f"Invalid rename: {old_url} -> {new_url}")
         for directory in (BUNDLES_DIR, PATCHES_DIR):
             for branch in DEFAULT_BRANCHES:
-                old_file = (
-                    directory / f"{source}~{old_repo.replace('/', '~')}~{branch}.json"
-                )
-                new_file = (
-                    directory / f"{source}~{new_repo.replace('/', '~')}~{branch}.json"
-                )
+                old_file = directory / f"{source}~{old_repo.replace('/', '~')}~{branch}.json"
+                new_file = directory / f"{source}~{new_repo.replace('/', '~')}~{branch}.json"
                 if old_file.is_file() and not new_file.exists():
                     old_file.rename(new_file)
 
@@ -137,9 +122,7 @@ def main() -> int:
         for field in ("appFirstSeen", "appUpdates"):
             if field in existing:
                 source_entry[field] = existing[field]
-        source_entry["stars"] = repo_metadata.get("stars", 0) - custom_data.get(
-            repo_url, {}
-        ).get("revancedStars", 0)
+        source_entry["stars"] = repo_metadata.get("stars", 0) - custom_data.get(repo_url, {}).get("revancedStars", 0)
         source_entry["repoDescription"] = repo_metadata.get("description") or ""
         source_entry["avatarUrl"] = (
             build_raw_url(source, repo, "main", "patches-bundle.png")
@@ -162,9 +145,7 @@ def main() -> int:
     successful_repo_count = len(local_hashes)
     renames, file_renames = apply_renames(bundle_sources, repos_data, custom_data)
     active_apps = {
-        package_name
-        for bundle in bundle_sources.values()
-        for package_name in bundle.get("appFirstSeen", {})
+        package_name for bundle in bundle_sources.values() for package_name in bundle.get("appFirstSeen", {})
     }
     apps_dict = {
         package_name: app_data
@@ -175,8 +156,7 @@ def main() -> int:
     official_ranks = {
         repo_url.lower(): bundle.get("hotRank")
         for bundle in load_json(OFFICIAL_BUNDLES_PATH).get("bundles", [])
-        if (repo := bundle.get("repo"))
-        and (repo_url := build_repo_url(bundle.get("source"), repo))
+        if (repo := bundle.get("repo")) and (repo_url := build_repo_url(bundle.get("source"), repo))
     }
     official_ranks["https://github.com/morpheapp/morphe-patches"] = -1
     for old_url, new_url in renames.items():
@@ -204,9 +184,7 @@ def main() -> int:
         return (2, 0, -updated_at, -stars, name, repo_lower)
 
     hot_ranked_keys = sorted(bundle_sources, key=get_bundle_sort_key)
-    bundle_hot_ranks = {
-        key: rank_index for rank_index, key in enumerate(hot_ranked_keys)
-    }
+    bundle_hot_ranks = {key: rank_index for rank_index, key in enumerate(hot_ranked_keys)}
 
     sorted_keys = sorted(
         bundle_sources,
@@ -256,14 +234,10 @@ def main() -> int:
 
         is_bundle_prerelease = bool(bundle.get("isPreRelease"))
         for patch in bundle.get("patches", []):
-            is_patch_prerelease = is_bundle_prerelease or bool(
-                patch.get("isPreRelease")
-            )
+            is_patch_prerelease = is_bundle_prerelease or bool(patch.get("isPreRelease"))
             compatibility_data = patch.pop("compatiblePackages", None)
             if mode != "default":
-                whats_new.collect_patch_history(
-                    bundle_apps, patch["name"], compatibility_data
-                )
+                whats_new.collect_patch_history(bundle_apps, patch["name"], compatibility_data)
             if compatibility_data:
                 compatibility_json = json.dumps(compatibility_data, sort_keys=True)
                 if compatibility_json not in compatibility_map:
@@ -273,13 +247,9 @@ def main() -> int:
                 for compatibility_entry in compatibility_data:
                     package_name = compatibility_entry.get("packageName")
                     if package_name:
-                        app_patches_status.setdefault(package_name, []).append(
-                            is_patch_prerelease
-                        )
+                        app_patches_status.setdefault(package_name, []).append(is_patch_prerelease)
             else:
-                app_patches_status.setdefault(PACKAGE_UNIVERSAL, []).append(
-                    is_patch_prerelease
-                )
+                app_patches_status.setdefault(PACKAGE_UNIVERSAL, []).append(is_patch_prerelease)
         if bundle_apps:
             repo_url = build_repo_url(bundle["source"], bundle["repo"])
             assert repo_url is not None
@@ -330,8 +300,7 @@ def main() -> int:
     cleaned_hashes = {
         repo_url: local_hashes[repo_key]
         for repo_key, bundle in bundle_sources.items()
-        if repo_key in local_hashes
-        and (repo_url := build_repo_url(bundle["source"], bundle["repo"]))
+        if repo_key in local_hashes and (repo_url := build_repo_url(bundle["source"], bundle["repo"]))
     }
     save_json(
         HASHES_PATH,
@@ -350,9 +319,7 @@ def main() -> int:
         )
         save_json(CUSTOM_JSON_PATH, custom_data)
     local_data.cleanup_orphan_files(repos_data)
-    print(
-        f"Update completed. Saved {len(final_bundles)} bundles and {len(apps_store)} apps."
-    )
+    print(f"Update completed. Saved {len(final_bundles)} bundles and {len(apps_store)} apps.")
 
     summary_sections = []
     if patch_list_errors:
@@ -368,9 +335,7 @@ def main() -> int:
         )
 
     if incomplete_apps:
-        sorted_incomplete_apps = [
-            app_issue for _has_name, app_issue in sorted(incomplete_apps)
-        ]
+        sorted_incomplete_apps = [app_issue for _has_name, app_issue in sorted(incomplete_apps)]
         print(f"Incomplete apps: {len(sorted_incomplete_apps)}")
         summary_sections.append(
             format_summary_section(
@@ -390,9 +355,7 @@ def main() -> int:
         )
     )
     if mode != "default":
-        history_data = whats_new.generate(
-            current_history, history_data, final_bundles, apps_store
-        )
+        history_data = whats_new.generate(current_history, history_data, final_bundles, apps_store)
     if history_data != existing_history:
         save_json(
             HISTORY_PATH,

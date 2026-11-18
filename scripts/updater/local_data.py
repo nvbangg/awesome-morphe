@@ -35,20 +35,14 @@ def parse_timestamp(timestamp: Any) -> int:
         return int(timestamp)
     with contextlib.suppress(ValueError, OverflowError, OSError):
         parsed_datetime = datetime.fromisoformat(str(timestamp))
-        tz_aware = (
-            parsed_datetime
-            if parsed_datetime.tzinfo
-            else parsed_datetime.replace(tzinfo=UTC)
-        )
+        tz_aware = parsed_datetime if parsed_datetime.tzinfo else parsed_datetime.replace(tzinfo=UTC)
         return int(tz_aware.timestamp() * 1000)
     return 0
 
 
 def compute_app_hash(raw_patches: list[dict]) -> str:
     sorted_patches = sorted(raw_patches, key=lambda patch: patch.get("name", ""))
-    content = json.dumps(sorted_patches, sort_keys=True, ensure_ascii=False).encode(
-        "utf-8"
-    )
+    content = json.dumps(sorted_patches, sort_keys=True, ensure_ascii=False).encode("utf-8")
     return hashlib.md5(content).hexdigest()[:16]
 
 
@@ -87,10 +81,7 @@ def strip_patch(patch: Patch, discovered_names: dict[str, str]) -> dict:
 
     compatible_packages = patch.get("compatiblePackages")
     package_entries = (
-        [
-            (package_name, versions, None)
-            for package_name, versions in compatible_packages.items()
-        ]
+        [(package_name, versions, None) for package_name, versions in compatible_packages.items()]
         if isinstance(compatible_packages, dict)
         else [
             (
@@ -109,11 +100,7 @@ def strip_patch(patch: Patch, discovered_names: dict[str, str]) -> dict:
     for package_name, versions, app_name in package_entries:
         if app_name:
             discovered_names[package_name] = app_name
-        targets = [
-            parsed
-            for version_item in (versions or [])
-            if (parsed := parse_version_item(version_item))
-        ]
+        targets = [parsed for version_item in (versions or []) if (parsed := parse_version_item(version_item))]
         target_entry = {"packageName": package_name}
         if targets:
             target_entry["targets"] = targets
@@ -243,32 +230,20 @@ def process(
             True,
             main_patch_names,
         )
-        branch_errors = [
-            (branch, reason)
-            for branch, reason in (("main", main_reason), ("dev", dev_reason))
-            if reason
-        ]
+        branch_errors = [(branch, reason) for branch, reason in (("main", main_reason), ("dev", dev_reason)) if reason]
         if not (main_patches or dev_patches):
             keys_to_remove.append(repo_url)
             if errors is not None and branch_errors:
                 reason = (
                     main_reason
                     if main_reason and main_reason == dev_reason
-                    else "; ".join(
-                        f"({branch}) {reason}" for branch, reason in branch_errors
-                    )
+                    else "; ".join(f"({branch}) {reason}" for branch, reason in branch_errors)
                 )
                 errors.append(f"{repo_url}: {reason}")
             continue
-        main_timestamp = (
-            parse_timestamp(main_bundle.get("created_at")) if main_bundle else 0
-        )
-        dev_timestamp = (
-            parse_timestamp(dev_bundle.get("created_at")) if dev_bundle else 0
-        )
-        use_dev = bool(
-            dev_patches and (not main_patches or dev_timestamp > main_timestamp)
-        )
+        main_timestamp = parse_timestamp(main_bundle.get("created_at")) if main_bundle else 0
+        dev_timestamp = parse_timestamp(dev_bundle.get("created_at")) if dev_bundle else 0
+        use_dev = bool(dev_patches and (not main_patches or dev_timestamp > main_timestamp))
         source_entry["source"] = source
         source_entry["isPreRelease"] = not bool(main_patches)
         source_entry["updatedAt"] = dev_timestamp if use_dev else main_timestamp
@@ -279,9 +254,7 @@ def process(
         raw_name = repo_metadata.get("name") or ""
         if raw_name:
             raw_name = (
-                ""
-                if raw_name.lower() == "morphe patches"
-                else _BUNDLE_NAME_SUFFIX_RE.sub("", raw_name).strip("- ")
+                "" if raw_name.lower() == "morphe patches" else _BUNDLE_NAME_SUFFIX_RE.sub("", raw_name).strip("- ")
             )
         source_entry["name"] = raw_name or owner
 
@@ -291,11 +264,7 @@ def process(
             packages = (
                 list(compat.keys())
                 if isinstance(compat, dict)
-                else [
-                    item.get("packageName")
-                    for item in compat
-                    if isinstance(item, dict) and item.get("packageName")
-                ]
+                else [item.get("packageName") for item in compat if isinstance(item, dict) and item.get("packageName")]
                 if isinstance(compat, list)
                 else []
             ) or [PACKAGE_UNIVERSAL]
@@ -303,9 +272,7 @@ def process(
                 raw_app_patches_map.setdefault(package_name, []).append(raw_patch)
 
         app_first_seen_map = (
-            source_entry.get("appFirstSeen")
-            if isinstance(source_entry.get("appFirstSeen"), dict)
-            else {}
+            source_entry.get("appFirstSeen") if isinstance(source_entry.get("appFirstSeen"), dict) else {}
         )
         current_apps_in_bundle: set[str] = set()
 
@@ -326,9 +293,7 @@ def process(
                     if package_name and package_name != PACKAGE_UNIVERSAL:
                         current_apps_in_bundle.add(package_name)
                         apps_dict.setdefault(package_name, {})
-                        if (
-                            app_name := discovered_names.get(package_name)
-                        ) and not apps_dict[package_name].get("name"):
+                        if (app_name := discovered_names.get(package_name)) and not apps_dict[package_name].get("name"):
                             apps_dict[package_name]["name"] = app_name
                         app_first_seen_map.setdefault(package_name, now_ms)
             else:
@@ -364,9 +329,7 @@ def process(
         repo_hashes = existing_hashes.get(repo_url, {})
         new_repo_hashes = {}
         app_updates_map = (
-            dict(source_entry.get("appUpdates"))
-            if isinstance(source_entry.get("appUpdates"), dict)
-            else {}
+            dict(source_entry.get("appUpdates")) if isinstance(source_entry.get("appUpdates"), dict) else {}
         )
 
         for package_name in source_entry["appFirstSeen"]:

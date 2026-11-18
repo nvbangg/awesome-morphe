@@ -18,16 +18,13 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> httpx2.
     parsed_url = urllib.parse.urlparse(url)
     hostname = parsed_url.hostname or ""
     is_github = any(
-        hostname == domain or hostname.endswith(f".{domain}")
-        for domain in ("github.com", "githubusercontent.com")
+        hostname == domain or hostname.endswith(f".{domain}") for domain in ("github.com", "githubusercontent.com")
     )
     is_gitlab = hostname == "gitlab.com"
 
     if "user-agent" not in result_headers:
         result_headers["User-Agent"] = (
-            PROJECT_USER_AGENT
-            if is_github or is_gitlab
-            else "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+            PROJECT_USER_AGENT if is_github or is_gitlab else "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
         )
 
     if parsed_url.scheme != "https" or "authorization" in result_headers:
@@ -57,9 +54,7 @@ def request(
     method: str = "GET",
     **kwargs: Any,
 ) -> httpx2.Response:
-    response = HTTP_CLIENT.request(
-        method, url, headers=get_auth_headers(url, headers), **kwargs
-    )
+    response = HTTP_CLIENT.request(method, url, headers=get_auth_headers(url, headers), **kwargs)
     if not response.is_success:
         raise httpx2.HTTPStatusError(
             f"HTTP Error {response.status_code}: {response.reason_phrase}",

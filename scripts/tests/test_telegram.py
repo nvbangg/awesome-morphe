@@ -11,16 +11,12 @@ import telegram
 def prepare_notification(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     path = tmp_path / "notification.md"
     path.write_text(
-        "## Example bundle\n"
-        "- [owner/repo](https://github.com/owner/repo?ref=main&name=a_b)\n"
-        "- `x < y`\n",
+        "## Example bundle\n- [owner/repo](https://github.com/owner/repo?ref=main&name=a_b)\n- `x < y`\n",
         encoding="utf-8",
     )
     monkeypatch.setenv("TG_TOKEN", "test-token")
     monkeypatch.setenv("TG_CHAT", "test-chat")
-    monkeypatch.setattr(
-        telegram.sys, "argv", ["telegram.py", "Updates <daily> & news", str(path)]
-    )
+    monkeypatch.setattr(telegram.sys, "argv", ["telegram.py", "Updates <daily> & news", str(path)])
 
 
 def test_notification_payload_preserves_links_and_escapes_html(block_network) -> None:
@@ -42,9 +38,7 @@ def test_notification_payload_preserves_links_and_escapes_html(block_network) ->
 def test_notification_failure_stops_with_error(failure_kind, block_network) -> None:
     if failure_kind == "api":
         block_network.side_effect = None
-        block_network.return_value = httpx2.Response(
-            400, json={"description": "Invalid HTML"}
-        )
+        block_network.return_value = httpx2.Response(400, json={"description": "Invalid HTML"})
     else:
         block_network.side_effect = httpx2.ConnectError("DNS lookup failed")
     with pytest.raises(SystemExit) as raised:

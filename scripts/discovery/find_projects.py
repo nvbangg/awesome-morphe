@@ -44,17 +44,13 @@ PAGE_DELAY_SECONDS = 1
 def build_date_filters() -> list[str]:
     parts = []
     if CREATED_WITHIN_DAYS:
-        created_after = (
-            datetime.now(UTC) - timedelta(days=CREATED_WITHIN_DAYS)
-        ).strftime("%Y-%m-%d")
+        created_after = (datetime.now(UTC) - timedelta(days=CREATED_WITHIN_DAYS)).strftime("%Y-%m-%d")
         parts.append(f"created:>{created_after}")
     elif CREATED_AFTER:
         parts.append(f"created:>{CREATED_AFTER}")
 
     if PUSHED_WITHIN_DAYS:
-        pushed_after = (
-            datetime.now(UTC) - timedelta(days=PUSHED_WITHIN_DAYS)
-        ).strftime("%Y-%m-%d")
+        pushed_after = (datetime.now(UTC) - timedelta(days=PUSHED_WITHIN_DAYS)).strftime("%Y-%m-%d")
         parts.append(f"pushed:>{pushed_after}")
     return parts
 
@@ -89,9 +85,7 @@ def _file_exists(url: str) -> bool | None:
 def is_valid_candidate(repo: dict) -> bool:
     full_name = repo.get("full_name", "")
     metadata_url = build_raw_url("github", full_name, "main", "patches-bundle.json")
-    readme_url = build_raw_url(
-        "github", full_name, repo.get("default_branch") or "main", "README.md"
-    )
+    readme_url = build_raw_url("github", full_name, repo.get("default_branch") or "main", "README.md")
     if not metadata_url or not readme_url:
         return False
     return _file_exists(metadata_url) is False and _file_exists(readme_url) is True
@@ -124,9 +118,7 @@ def matches_filter_criteria(repo: dict) -> bool:
 
 def search_repos() -> list[dict]:
     unique_repos: dict[str, dict] = {}
-    queries = [build_search_query(kw) for kw in SEARCH_KEYWORDS] + [
-        build_user_query(user) for user in TARGET_USERS
-    ]
+    queries = [build_search_query(kw) for kw in SEARCH_KEYWORDS] + [build_user_query(user) for user in TARGET_USERS]
 
     for query in queries:
         print(f"\nSearching GitHub: {query}")
@@ -166,23 +158,16 @@ def filter_repos(repos: list[dict]) -> list[dict]:
         print("Repository list is empty. Skipping filter step.")
         return []
 
-    known_links = set(load_lines(README_REPOS_PATH)) | set(
-        load_lines(EXCLUDED_REPOS_PATH)
-    )
+    known_links = set(load_lines(README_REPOS_PATH)) | set(load_lines(EXCLUDED_REPOS_PATH))
     excluded_repos = {(parse_repo_url(link)[1] or link).lower() for link in known_links}
-    print(
-        f"Loaded {len(excluded_repos)} known repositories ({README_REPOS_PATH.name} & {EXCLUDED_REPOS_PATH.name})"
-    )
+    print(f"Loaded {len(excluded_repos)} known repositories ({README_REPOS_PATH.name} & {EXCLUDED_REPOS_PATH.name})")
 
     candidates = [
         repo
         for repo in repos
-        if repo.get("full_name", "").lower() not in excluded_repos
-        and matches_filter_criteria(repo)
+        if repo.get("full_name", "").lower() not in excluded_repos and matches_filter_criteria(repo)
     ]
-    print(
-        f"Filtered {len(candidates)} candidate repositories (excluded {len(repos) - len(candidates)} repositories)."
-    )
+    print(f"Filtered {len(candidates)} candidate repositories (excluded {len(repos) - len(candidates)} repositories).")
 
     return candidates
 
@@ -190,13 +175,9 @@ def filter_repos(repos: list[dict]) -> list[dict]:
 def verify_and_export_repos(candidates: list[dict]) -> str:
     valid_repos = []
     if candidates:
-        print(
-            f"Checking {len(candidates)} candidates for patches-bundle.json and README...\n"
-        )
+        print(f"Checking {len(candidates)} candidates for patches-bundle.json and README...\n")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            valid_repos = list(
-                compress(candidates, executor.map(is_valid_candidate, candidates))
-            )
+            valid_repos = list(compress(candidates, executor.map(is_valid_candidate, candidates)))
     else:
         print("Candidate list is empty. Skipping verification.")
 
@@ -221,9 +202,7 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
         reverse=True,
     )
 
-    queries = [build_search_query(kw) for kw in SEARCH_KEYWORDS] + [
-        build_user_query(user) for user in TARGET_USERS
-    ]
+    queries = [build_search_query(kw) for kw in SEARCH_KEYWORDS] + [build_user_query(user) for user in TARGET_USERS]
     query_lines = "\n".join(f"- `{query}`" for query in queries)
     excluded_keywords = ", ".join(EXCLUDED_KEYWORDS)
     if excluded_keywords:
@@ -233,26 +212,16 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
         summary_sections.append("No new standalone repositories found.")
     else:
         for repo in repos:
-            desc = (
-                f"\n  - Description: {repo['description']}"
-                if repo["description"]
-                else ""
-            )
+            desc = f"\n  - Description: {repo['description']}" if repo["description"] else ""
             summary_sections.append(
                 f"- [{repo['full_name']}]({repo['url']}) | ⭐ {repo['stars']}\n"
                 f"  - Created: `{repo['created_at']}` | Updated: `{repo['pushed_at']}`{desc}"
             )
 
-    summary_sections.append(
-        format_summary_section(
-            "Search queries", query_lines, heading_level=None, collapsed=True
-        )
-    )
+    summary_sections.append(format_summary_section("Search queries", query_lines, heading_level=None, collapsed=True))
     if candidates:
         PROJECTS_DIR.mkdir(parents=True, exist_ok=True)
-        NEW_PROJECTS_PATH.write_text(
-            "\n".join(repo["url"] for repo in repos) + "\n", encoding="utf-8"
-        )
+        NEW_PROJECTS_PATH.write_text("\n".join(repo["url"] for repo in repos) + "\n", encoding="utf-8")
         print(
             f"Saved {len(repos)} URLs to {NEW_PROJECTS_PATH.relative_to(ROOT_DIR)} (excluded {len(candidates) - len(repos)} patch bundles or without README)"
         )

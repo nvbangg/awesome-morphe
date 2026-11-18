@@ -68,9 +68,7 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
         canonical_url = build_repo_url(source, repo)
         if not canonical_url:
             continue
-        saved_url, metadata = existing_lower.get(
-            canonical_url.lower(), (canonical_url, {})
-        )
+        saved_url, metadata = existing_lower.get(canonical_url.lower(), (canonical_url, {}))
         synced[saved_url] = dict(metadata)
     return dict(sorted(synced.items(), key=lambda item: item[0].lower()))
 
@@ -79,9 +77,7 @@ def main(argv: list[str] | None = None) -> int:
     load_dotenv(SCRIPTS_DIR / ".env", override=True)
     parser = argparse.ArgumentParser(description="Discover Morphe bundles and projects")
     modes = parser.add_mutually_exclusive_group()
-    modes.add_argument(
-        "--daily", action="store_true", help="Also audit README links and find projects"
-    )
+    modes.add_argument("--daily", action="store_true", help="Also audit README links and find projects")
     modes.add_argument(
         "--weekly",
         action="store_true",
@@ -92,9 +88,7 @@ def main(argv: list[str] | None = None) -> int:
     warnings = _run_providers()
     print()
     provider_files = [
-        data
-        for provider in PROVIDERS
-        if (data := load_provider_sources(BUNDLE_SOURCES_DIR / f"{provider}.json"))
+        data for provider in PROVIDERS if (data := load_provider_sources(BUNDLE_SOURCES_DIR / f"{provider}.json"))
     ]
     if not provider_files:
         message = "No usable provider files found; discovery stopped"

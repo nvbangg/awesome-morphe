@@ -33,12 +33,7 @@ def test_project_requires_confirmed_missing_bundle_and_available_readme(
         return httpx2.Response(status)
 
     block_network.side_effect = open_url
-    assert (
-        find_projects.is_valid_candidate(
-            {"full_name": "owner/project", "default_branch": "develop"}
-        )
-        == expected
-    )
+    assert find_projects.is_valid_candidate({"full_name": "owner/project", "default_branch": "develop"}) == expected
 
 
 def test_only_verified_projects_are_exported(tmp_path: Path) -> None:
@@ -64,9 +59,7 @@ def test_only_verified_projects_are_exported(tmp_path: Path) -> None:
         ),
     ):
         report = find_projects.verify_and_export_repos(candidates)
-    assert output_path.read_text(encoding="utf-8").splitlines() == [
-        "https://github.com/owner/valid"
-    ]
+    assert output_path.read_text(encoding="utf-8").splitlines() == ["https://github.com/owner/valid"]
     assert "https://github.com/owner/valid" in report
     assert "https://github.com/owner/rejected" not in report
 
