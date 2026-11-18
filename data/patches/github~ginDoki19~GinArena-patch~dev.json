@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.12.0",
+  "version": "2.12.1",
   "patches": [
     {
       "name": "AdBlocker turbo & userscript bundle",
@@ -340,7 +340,7 @@
           "packageName": "cn.wps.moffice_eng",
           "name": "WPS Office",
           "description": null,
-          "apkFileType": "XAPK",
+          "apkFileType": "APK",
           "appIconColor": "#E64A19",
           "signatures": [
             "643990878d3ca83952a5be5f3e58d9f8bb6cdc57bf0f228700212071c68db3d7"
@@ -348,16 +348,16 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "26.11.0",
+              "version": "26.11.1",
               "versionCodes": {
-                "ARM64_V8A": 1650,
-                "ARMEABI_V7A": 1650,
-                "X86_64": 1650,
-                "X86": 1650
+                "ARM64_V8A": 1651,
+                "ARMEABI_V7A": 1651,
+                "X86_64": 1651,
+                "X86": 1651
               },
               "isExperimental": false,
               "minSdk": 29,
-              "description": "XAPK bundle (base + config splits, arm64-v8a, Android 10+), build 1650"
+              "description": "Standalone APK (arm64-v8a, Android 10+), build 1651, APKMirror"
             }
           ]
         }
@@ -1128,8 +1128,8 @@
         },
         {
           "key": "stripNativeBloat",
-          "title": "Strip proxy & ad native libraries",
-          "description": "Deletes unused proxy/ad libraries to save about 7.7 MB. Not needed for ad removal.",
+          "title": "Strip unused ad native libraries",
+          "description": "Deletes Unity ad framework libraries nothing can reach, to save about 2 MB. Safe to leave off; not needed for ad removal.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1646,7 +1646,7 @@
           "packageName": "cn.wps.moffice_eng",
           "name": "WPS Office",
           "description": null,
-          "apkFileType": "XAPK",
+          "apkFileType": "APK",
           "appIconColor": "#E64A19",
           "signatures": [
             "643990878d3ca83952a5be5f3e58d9f8bb6cdc57bf0f228700212071c68db3d7"
@@ -1654,16 +1654,16 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "26.11.0",
+              "version": "26.11.1",
               "versionCodes": {
-                "ARM64_V8A": 1650,
-                "ARMEABI_V7A": 1650,
-                "X86_64": 1650,
-                "X86": 1650
+                "ARM64_V8A": 1651,
+                "ARMEABI_V7A": 1651,
+                "X86_64": 1651,
+                "X86": 1651
               },
               "isExperimental": false,
               "minSdk": 29,
-              "description": "XAPK bundle (base + config splits, arm64-v8a, Android 10+), build 1650"
+              "description": "Standalone APK (arm64-v8a, Android 10+), build 1651, APKMirror"
             }
           ]
         }
@@ -1726,10 +1726,10 @@
         {
           "key": "bypassAsyncPrivilegeChecks",
           "title": "Hide the upgrade banner on tool pages",
-          "description": "Removes the \"Upgrade to WPS Membership\" banner shown above the tool pages. It can invent usage counters, so it stays off until you want it.",
+          "description": "Removes the storage and export-limit upsell banner shown above the tool pages. It overrides a single banner processor and answers its callback with \"do not show\", which is a path the stock code already uses. It does NOT touch the privilege/coroutine path. Verified working on device: banner gone, no hang.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": false,
+          "default": true,
           "values": null
         },
         {
