@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.12.0",
+  "version": "1.12.4",
   "patches": [
     {
       "name": "Daemon gate bypass",
@@ -110,7 +110,7 @@
     },
     {
       "name": "Remove Ads",
-      "description": "Empties every app-side ad loader (banner, interstitial, home rewarded, app-open) and NOPs the rewarded load inside the server-row boost button, so no ad request leaves the device and no fullscreen ad can show. The interstitial show path is null-guarded in the app, so nothing crashes. Pair with 'Unlock Speed Boost' to keep the boost button functional.",
+      "description": "Empties the banner, interstitial, rewarded and app-open ad loaders and the rewarded load in the server-row boost button. No ad request leaves the device. Use with 'Unlock Speed Boost' to keep the boost button working.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -162,7 +162,7 @@
     },
     {
       "name": "Unlimited Time",
-      "description": "The session clock (MMKV 'TimeLeft', 1h default, reset to 10 minutes per connect, decremented by a countdown service that kills the VPN on finish) always reports 100 years, so sessions never expire. The countdown display shows the infinity sign instead of a huge number. Reward-ad time top-ups become unnecessary.",
+      "description": "The session clock always reports 100 years, so sessions never expire. The countdown display shows the infinity sign.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -243,7 +243,7 @@
     },
     {
       "name": "Unlock Speed Boost",
-      "description": "The per-server 'Speed Boost' is granted after an interstitial ad shows. This rewrites the boost gate: tapping boost writes the selected server into the BoostedServer list immediately (same storage, same rocket icon) and shows the 'Server Boosted!!!' toast. The periodic interstitial the app shows every 3 minutes while connected is silenced too. All obfuscated helper calls (MMKV getter, BoostedServer reader, toast helper) are resolved from the app's own bytecode at patch time, so the rewrite survives R8 renames across updates.",
+      "description": "Grants the per-server boost on tap instead of after an interstitial. Same storage, rocket icon and toast as the ad flow. The 3-minute interstitial while connected is gone as well. Use together with 'Remove Ads'.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
