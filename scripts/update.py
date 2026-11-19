@@ -10,10 +10,11 @@ from typing import Any
 from dotenv import load_dotenv
 
 from common.constants import (
-    BUNDLE_SOURCES_DIR,
     BUNDLES_DIR,
+    CUSTOM_JSON_PATH,
     DATA_DIR,
     DEFAULT_BRANCHES,
+    DISCOVERY_JSON_PATH,
     OFFICIAL_BUNDLES_PATH,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
@@ -24,12 +25,12 @@ from common.constants import (
 )
 from common.files import load_json, save_json
 from common.http import HTTP_CLIENT
-from common.models import APP_HASHES, HISTORY, REPOSITORIES, SOURCES
-from common.repositories import build_raw_url, build_repo_url, parse_repo_url
+from common.models import APP_HASHES, DISCOVERY, HISTORY, REPOSITORIES, SOURCES
+from common.repositories import build_raw_url, build_repo_url, parse_repo_url, record_repo_rename
 from common.summary import append_step_summary, format_summary_section
+from discovery import apply_source_config
 from updater import gplay_scrape, local_data, whats_new
 
-CUSTOM_JSON_PATH = BUNDLE_SOURCES_DIR / "custom.json"
 HISTORY_PATH = DATA_DIR / "history.json"
 HASHES_PATH = DATA_DIR / "hashes.json"
 BUNDLES_JSON_PATH = PUBLIC_DIR / "bundles.json"
@@ -38,14 +39,16 @@ HOT_RANK_ACTIVE_DAYS = 30
 HOT_RANK_ACTIVE_MS = HOT_RANK_ACTIVE_DAYS * 24 * 60 * 60 * 1000
 
 
-def apply_renames(bundle_sources: dict, repos_data: dict, custom_data: dict) -> tuple[dict[str, str], dict[str, str]]:
+def apply_renames(
+    bundle_sources: dict, repos_data: dict, rename_data: dict[str, str]
+) -> tuple[dict[str, str], dict[str, str]]:
     renames = {}
     file_renames = {}
     for old_url, metadata in list(repos_data.items()):
         new_url = metadata.get("renamedTo")
         if not new_url:
             continue
-        source, old_repo = parse_repo_url(old_url)
+        source, _ = parse_repo_url(old_url)
         new_source, new_repo = parse_repo_url(new_url)
         if not source or source != new_source or not new_repo or new_url.lower() == old_url.lower():
             raise ValueError(f"Invalid rename: {old_url} -> {new_url}")
@@ -61,17 +64,7 @@ def apply_renames(bundle_sources: dict, repos_data: dict, custom_data: dict) -> 
             if old_url in bundle_sources:
                 bundle_sources[old_url]["repo"] = new_repo
         repos_data.pop(old_url)
-        custom_data[old_url] = {
-            **custom_data.get(old_url, {}),
-            "enabled": False,
-            "note": f"Automatically disabled by GitHub Actions (Redirected/Renamed to {new_repo})",
-        }
-        custom_data.setdefault(
-            new_url,
-            {
-                "note": f"Automatically added by GitHub Actions (Redirected/Renamed from {old_repo})",
-            },
-        )
+        record_repo_rename(rename_data, old_url, new_url)
         renames[old_url] = new_url
     return renames, file_renames
 
@@ -99,9 +92,12 @@ def main() -> int:
     mode = "weekly" if args.weekly else "daily" if args.daily else "default"
 
     repos_data = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
+    initial_repos = {url: dict(metadata) for url, metadata in repos_data.items()}
+    discovery = DISCOVERY.validate_python(load_json(DISCOVERY_JSON_PATH, {"providers": {}, "renames": {}}))
+    rename_data = discovery["renames"]
     existing_hashes = APP_HASHES.validate_python(load_json(HASHES_PATH))
     existing_history = HISTORY.validate_python(load_json(HISTORY_PATH))
-    custom_data = SOURCES.validate_python(load_json(CUSTOM_JSON_PATH))
+    custom_data = apply_source_config(repos_data, SOURCES.validate_python(load_json(CUSTOM_JSON_PATH)), rename_data)
     existing_bundles_data = load_json(BUNDLES_JSON_PATH)
     existing_bundles = {
         build_repo_url(bundle.get("source"), bundle.get("repo")): bundle
@@ -112,6 +108,8 @@ def main() -> int:
     bundle_sources: dict[str, dict[str, Any]] = {}
     total_repo_count = 0
     for repo_url, repo_metadata in repos_data.items():
+        if repo_metadata.get("enabled") is False:
+            continue
         source, repo = parse_repo_url(repo_url)
         if not source or not repo:
             continue
@@ -122,7 +120,9 @@ def main() -> int:
         for field in ("appFirstSeen", "appUpdates"):
             if field in existing:
                 source_entry[field] = existing[field]
-        source_entry["stars"] = repo_metadata.get("stars", 0) - custom_data.get(repo_url, {}).get("revancedStars", 0)
+        source_entry["stars"] = repo_metadata.get("stars", 0) - custom_data.get(repo_url.lower(), {}).get(
+            "revancedStars", 0
+        )
         source_entry["repoDescription"] = repo_metadata.get("description") or ""
         source_entry["avatarUrl"] = (
             build_raw_url(source, repo, "main", "patches-bundle.png")
@@ -143,7 +143,7 @@ def main() -> int:
         existing_bundles,
     )
     successful_repo_count = len(local_hashes)
-    renames, file_renames = apply_renames(bundle_sources, repos_data, custom_data)
+    renames, file_renames = apply_renames(bundle_sources, repos_data, rename_data)
     active_apps = {
         package_name for bundle in bundle_sources.values() for package_name in bundle.get("appFirstSeen", {})
     }
@@ -313,11 +313,13 @@ def main() -> int:
             history_data.setdefault(new_url, previous_history)
     if renames:
         move_renamed_files(file_renames)
+        discovery["renames"] = dict(sorted(rename_data.items()))
+        save_json(DISCOVERY_JSON_PATH, discovery)
+    if repos_data != initial_repos:
         save_json(
             REPOS_JSON_PATH,
             dict(sorted(repos_data.items(), key=lambda item: item[0].lower())),
         )
-        save_json(CUSTOM_JSON_PATH, custom_data)
     local_data.cleanup_orphan_files(repos_data)
     print(f"Update completed. Saved {len(final_bundles)} bundles and {len(apps_store)} apps.")
 

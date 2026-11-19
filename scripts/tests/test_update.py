@@ -29,6 +29,7 @@ class TestBundleUpdate:
         self.hashes_path = self.root / "hashes.json"
         self.history_path = self.root / "history.json"
         self.custom_path = self.root / "custom.json"
+        self.discovery_path = self.root / "discovery.json"
         self.official_path = self.root / "official.json"
         self.changelog_path = self.root / "whats-new.json"
         self.markdown_path = self.root / "whats-new.md"
@@ -38,10 +39,12 @@ class TestBundleUpdate:
             self.hashes_path,
             self.history_path,
             self.custom_path,
+            self.discovery_path,
         ]
         for path in [*self.state_paths, self.official_path]:
             save_json(path, {})
         save_json(self.changelog_path, [])
+        save_json(self.discovery_path, {"providers": {}, "renames": {}})
         self.patch_context.enter_context(
             patch.multiple(
                 whats_new,
@@ -60,6 +63,7 @@ class TestBundleUpdate:
                 HASHES_PATH=self.hashes_path,
                 HISTORY_PATH=self.history_path,
                 CUSTOM_JSON_PATH=self.custom_path,
+                DISCOVERY_JSON_PATH=self.discovery_path,
                 OFFICIAL_BUNDLES_PATH=self.official_path,
                 BUNDLES_DIR=self.bundles_dir,
                 PATCHES_DIR=self.patches_dir,
@@ -322,7 +326,8 @@ class TestBundleUpdate:
         assert catalog["bundles"][0]["firstSeen"] == FIRST_SEEN_MS
         assert catalog["bundles"][0]["isOfficial"]
 
-    def test_rename_preserves_history_hashes_and_first_seen(self) -> None:
+    @pytest.mark.parametrize("enabled", (True, False))
+    def test_rename_preserves_history_hashes_and_first_seen(self, enabled) -> None:
         self.add_target()
         save_json(
             self.public_path,
@@ -340,17 +345,42 @@ class TestBundleUpdate:
         save_json(self.history_path, {"https://github.com/owner/alpha": old_history})
         repos = load_json(self.repos_path)
         repos["https://github.com/owner/alpha"]["renamedTo"] = "https://github.com/owner/renamed"
+        repos["https://github.com/owner/alpha"]["stars"] = 10
         save_json(self.repos_path, repos)
+        save_json(
+            self.custom_path,
+            {
+                "https://github.com/owner/alpha": {
+                    "enabled": enabled,
+                    "request": "Keep this request",
+                    "revancedStars": 3,
+                }
+            },
+        )
+        custom_before = self.custom_path.read_bytes()
+        providers_before = load_json(self.discovery_path)["providers"]
         catalog = self.run_update("daily")
-        assert catalog["bundles"][0]["repo"] == "owner/renamed"
-        assert catalog["bundles"][0]["firstSeen"] == FIRST_SEEN_MS
+        if enabled:
+            assert catalog["bundles"][0]["repo"] == "owner/renamed"
+            assert catalog["bundles"][0]["firstSeen"] == FIRST_SEEN_MS
+            assert catalog["bundles"][0]["stars"] == 7
+        else:
+            assert catalog["bundles"] == []
+            self.fetch_app.assert_not_called()
+            assert load_json(self.repos_path)["https://github.com/owner/renamed"]["enabled"] is False
         assert load_json(self.history_path) == {"https://github.com/owner/renamed": old_history}
-        assert set(load_json(self.hashes_path)) == {"https://github.com/owner/renamed"}
+        assert set(load_json(self.hashes_path)) == ({"https://github.com/owner/renamed"} if enabled else set())
         assert set(load_json(self.repos_path)) == {"https://github.com/owner/renamed"}
-        assert not load_json(self.custom_path)["https://github.com/owner/alpha"]["enabled"]
+        assert load_json(self.discovery_path)["renames"] == {
+            "https://github.com/owner/alpha": "https://github.com/owner/renamed"
+        }
+        assert self.custom_path.read_bytes() == custom_before
+        assert load_json(self.discovery_path)["providers"] == providers_before
         assert "renamedTo" not in load_json(self.repos_path)["https://github.com/owner/renamed"]
         assert (self.bundles_dir / "github~owner~renamed~main.json").is_file()
         assert (self.patches_dir / "github~owner~renamed~main.json").is_file()
+        assert self.run_update() == catalog
+        assert self.custom_path.read_bytes() == custom_before
 
     def test_hot_ranks_follow_official_and_activity_priority_without_gaps(self) -> None:
         now_ms = CURRENT_TIME_SECONDS * 1000

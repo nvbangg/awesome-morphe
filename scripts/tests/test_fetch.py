@@ -183,6 +183,8 @@ class TestBundleFetch:
                 PATCHES_DIR=self.patches_dir,
                 MPP_DIR=self.mpp_dir,
                 REPOS_JSON_PATH=self.repos_path,
+                CUSTOM_JSON_PATH=self.root / "custom.json",
+                DISCOVERY_JSON_PATH=self.root / "discovery.json",
                 UPDATED_FILES_PATH=self.updated_path,
                 PARSED_FILES_PATH=self.parsed_path,
                 DEFAULT_BRANCHES=("main",),
@@ -751,18 +753,27 @@ class TestBundleFetch:
         assert result.error_message == "Invalid `download_url`"
         self.fetch_request.assert_called_once_with(self.url("main", "patches-bundle.json"))
 
-    def test_fetch_records_verified_rename_without_modifying_local_keys(self) -> None:
+    @pytest.mark.parametrize("disabled", (False, True))
+    def test_fetch_records_verified_rename_without_modifying_local_keys(self, disabled) -> None:
         asset_url = "https://github.com/owner/new/releases/v1/bundle.mpp"
         self.responses[self.url("main", "patches-bundle.json")] = json.dumps({"download_url": asset_url}).encode()
         self.responses[asset_url] = self.mpp_bytes
         save_json(self.repos_path, {"https://github.com/owner/alpha": {}})
+        if disabled:
+            save_json(self.root / "custom.json", {"https://github.com/owner/new": {"enabled": False}})
+            for branch in DEFAULT_BRANCHES:
+                url = self.url(branch, "patches-list.json")
+                self.responses[url] = self.http_error(url, HTTP_NOT_FOUND)
         with patch.object(bundle_fetch, "fetch_repo_details", return_value={"full_name": "owner/new"}) as request:
             bundle_fetch.fetch_all_repos()
         repos = load_json(self.repos_path)
         assert set(repos) == {"https://github.com/owner/alpha"}
         assert repos["https://github.com/owner/alpha"]["renamedTo"] == "https://github.com/owner/new"
-        assert repos["https://github.com/owner/alpha"]["main"] == "main-new"
+        assert repos["https://github.com/owner/alpha"].get("main") == (None if disabled else "main-new")
         assert (self.bundles_dir / "github~owner~alpha~main.json").is_file()
+        if disabled:
+            assert repos["https://github.com/owner/alpha"]["enabled"] is False
+            self.run_process.assert_not_called()
         request.assert_called_once_with("https://github.com/owner/alpha")
 
 
@@ -778,6 +789,53 @@ class TestRepositoryMetadataRefresh:
             "description": "Old",
             "avatarUrl": "https://example.com/old.png",
         }
+
+    @pytest.mark.parametrize("daily,weekly", ((False, False), (True, False), (False, True)))
+    def test_disabled_rename_blocks_old_and_new_bundle_tasks(self, tmp_path: Path, daily, weekly) -> None:
+        repos_path = tmp_path / "repos.json"
+        custom_path = tmp_path / "custom.json"
+        destination = "https://github.com/owner/new"
+        save_json(repos_path, {self.url: {**self.metadata, "isArchived": True}, destination: {}})
+        save_json(custom_path, {self.url: {"enabled": False, "note": "Archived"}})
+        custom_before = custom_path.read_bytes()
+        with (
+            patch.multiple(
+                bundle_fetch,
+                REPOS_JSON_PATH=repos_path,
+                CUSTOM_JSON_PATH=custom_path,
+                DISCOVERY_JSON_PATH=tmp_path / "discovery.json",
+                BUNDLES_DIR=tmp_path / "bundles",
+                PATCHES_DIR=tmp_path / "patches",
+                MPP_DIR=tmp_path / "mpp",
+                UPDATED_FILES_PATH=tmp_path / "updated_files.txt",
+            ),
+            patch.object(
+                bundle_fetch,
+                "fetch_repo_details",
+                return_value={
+                    "full_name": "owner/new",
+                    "stars": 23,
+                    "description": "Active again",
+                    "avatar_url": "https://example.com/avatar.png",
+                    "is_archived": False,
+                },
+            ) as metadata,
+            patch.object(bundle_fetch, "process_repo_branch", side_effect=AssertionError("Disabled bundle")) as bundle,
+            patch.object(bundle_fetch, "process_image", side_effect=AssertionError("Disabled image")) as image,
+            patch.object(bundle_fetch.subprocess, "run", side_effect=AssertionError("Disabled parser")),
+            patch.object(bundle_fetch, "append_step_summary"),
+        ):
+            bundle_fetch.fetch_all_repos(daily, weekly)
+            saved = load_json(repos_path)
+            assert saved[self.url]["renamedTo"] == destination
+            assert saved[self.url]["main"] == self.metadata["main"]
+            for url in (self.url, destination):
+                assert call(url) in metadata.call_args_list
+                assert saved[url]["enabled"] is False
+                assert "isArchived" not in saved[url]
+            bundle.assert_not_called()
+            image.assert_not_called()
+            assert custom_path.read_bytes() == custom_before
 
     def test_default_skips_complete_metadata_and_refreshes_missing_fields(self) -> None:
         repos = {self.url: dict(self.metadata)}
@@ -846,6 +904,8 @@ class TestRepositoryMetadataRefresh:
             patch.multiple(
                 bundle_fetch,
                 REPOS_JSON_PATH=repos_path,
+                CUSTOM_JSON_PATH=custom_path,
+                DISCOVERY_JSON_PATH=root / "discovery.json",
                 BUNDLES_DIR=root / "bundles",
                 PATCHES_DIR=root / "patches",
                 MPP_DIR=root / "mpp",

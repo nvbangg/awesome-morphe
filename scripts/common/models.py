@@ -36,6 +36,12 @@ class SourceConfig(TypedDict, total=False):
 
 
 @with_config(strict=True)
+class DiscoveryState(TypedDict):
+    providers: dict[str, list[NonEmptyString]]
+    renames: dict[Annotated[str, Field(pattern=r"^[^A-Z]+$")], NonEmptyString]
+
+
+@with_config(strict=True)
 class BundleSource(TypedDict):
     source: NonEmptyString
     repo: NonEmptyString
@@ -54,6 +60,7 @@ class JmanSource(TypedDict):
 
 @with_config(strict=True, extra="allow")
 class RepositoryState(TypedDict, total=False):
+    enabled: bool
     main: str | None
     dev: str | None
     image: str | None
@@ -94,6 +101,7 @@ BUNDLE_MANIFEST = TypeAdapter(BundleManifest)
 PATCH = TypeAdapter(Patch)
 PATCH_LIST = TypeAdapter(PatchList)
 SOURCES = TypeAdapter(dict[str, SourceConfig])
+DISCOVERY = TypeAdapter(DiscoveryState)
 OFFICIAL_CATALOG = TypeAdapter(OfficialCatalog)
 JMAN_SOURCES = TypeAdapter(dict[str, OnErrorOmit[JmanSource]])
 REPOSITORIES = TypeAdapter(dict[str, RepositoryState])

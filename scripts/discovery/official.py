@@ -3,7 +3,6 @@
 import httpx2
 
 from common.constants import (
-    BUNDLE_SOURCES_DIR,
     OFFICIAL_BUNDLES_PATH,
     PROJECT_USER_AGENT,
 )
@@ -11,26 +10,24 @@ from common.files import save_json
 from common.http import request
 from common.models import OFFICIAL_CATALOG
 from common.repositories import build_repo_url
-from discovery import export_provider, report_provider_warning
 
 BUNDLES_URL = "https://morphe-patches.software/data/bundles.json"
-OUTPUT_PATH = BUNDLE_SOURCES_DIR / "official.json"
 HEADERS = {
     "Referer": "https://morphe-patches.software/",
     "User-Agent": PROJECT_USER_AGENT,
 }
 
 
-def discover() -> str | None:
+def discover() -> tuple[list[str], str | None]:
     try:
         data = request(BUNDLES_URL, HEADERS).json()
         catalog = OFFICIAL_CATALOG.validate_python(data)
     except (httpx2.HTTPError, httpx2.InvalidURL) as error:
-        return report_provider_warning("official", error, OUTPUT_PATH)
+        return [], str(error)
     except ValueError:
-        return report_provider_warning("official", "Invalid provider data", OUTPUT_PATH)
+        return [], "Invalid provider data"
 
-    discovered = {url: {} for bundle in catalog["bundles"] if (url := build_repo_url(bundle["source"], bundle["repo"]))}
+    discovered = [url for bundle in catalog["bundles"] if (url := build_repo_url(bundle["source"], bundle["repo"]))]
     if discovered:
         save_json(OFFICIAL_BUNDLES_PATH, data)
-    return export_provider("official", discovered, OUTPUT_PATH)
+    return discovered, None

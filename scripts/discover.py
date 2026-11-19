@@ -6,51 +6,46 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from dotenv import load_dotenv
 
-from common.constants import BUNDLE_SOURCES_DIR, REPOS_JSON_PATH, ROOT_DIR, SCRIPTS_DIR
+from common.constants import (
+    CUSTOM_JSON_PATH,
+    DISCOVERY_JSON_PATH,
+    REPOS_JSON_PATH,
+    ROOT_DIR,
+    SCRIPTS_DIR,
+)
 from common.files import load_json, save_json
 from common.http import HTTP_CLIENT
-from common.models import REPOSITORIES
+from common.models import DISCOVERY, REPOSITORIES, SOURCES
 from common.repositories import build_repo_url, parse_repo_url
 from common.summary import append_step_summary, format_summary_section
 from discovery import (
     audit_readme,
     find_projects,
     jman,
-    load_provider_sources,
+    merge_sources,
     morphe_archive,
     official,
 )
 
-PROVIDERS = [
-    "custom",
-    "official",
-    "morphe-archive",
-    "jman",
-]
-PROVIDER_MODULES = [official, jman, morphe_archive]
+PROVIDER_MODULES = {"official": official, "morphe-archive": morphe_archive, "jman": jman}
 
 
-def _run_providers() -> list[str]:
+def _run_providers(providers: dict[str, list[str]]) -> list[str]:
     warnings = []
     with ThreadPoolExecutor(max_workers=len(PROVIDER_MODULES)) as executor:
-        futures = [executor.submit(module.discover) for module in PROVIDER_MODULES]
+        futures = {executor.submit(module.discover): name for name, module in PROVIDER_MODULES.items()}
         for future in as_completed(futures):
-            warning_message = future.result()
-            if warning_message:
+            name = futures[future]
+            discovered, error = future.result()
+            if discovered:
+                providers[name] = sorted(set(discovered))
+                print(f"[{name}] Discovered {len(providers[name])} sources")
+            else:
+                saved = "kept saved sources" if providers.get(name) else "no saved sources available"
+                warning_message = f"[{name}]: {error or 'No sources found'}; {saved}"
+                print(f"[-] {warning_message}")
                 warnings.append(warning_message)
     return warnings
-
-
-def _merge(provider_files: list[dict]) -> dict:
-    canonical_keys = {}
-    merged = {}
-    for provider_dict in provider_files:
-        for raw_key, data in sorted(provider_dict.items()):
-            final_key = canonical_keys.setdefault(raw_key.lower(), raw_key)
-            merged_data = merged.setdefault(final_key, {})
-            for key, value in data.items():
-                merged_data.setdefault(key, value)
-    return merged
 
 
 def _sync_repos(merged: dict, existing_repos: dict) -> dict:
@@ -60,8 +55,6 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
     }
     synced = {}
     for repo_url, entry in merged.items():
-        if entry.get("enabled") is False:
-            continue
         source, repo = parse_repo_url(repo_url)
         if not source or not repo:
             continue
@@ -70,6 +63,10 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
             continue
         saved_url, metadata = existing_lower.get(canonical_url.lower(), (canonical_url, {}))
         synced[saved_url] = dict(metadata)
+        if entry.get("enabled") is False:
+            synced[saved_url]["enabled"] = False
+        else:
+            synced[saved_url].pop("enabled", None)
     return dict(sorted(synced.items(), key=lambda item: item[0].lower()))
 
 
@@ -85,11 +82,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    warnings = _run_providers()
+    discovery = DISCOVERY.validate_python(load_json(DISCOVERY_JSON_PATH, {"providers": {}, "renames": {}}))
+    custom = SOURCES.validate_python(load_json(CUSTOM_JSON_PATH))
+    warnings = _run_providers(discovery["providers"])
+    save_json(DISCOVERY_JSON_PATH, discovery)
     print()
     provider_files = [
-        data for provider in PROVIDERS if (data := load_provider_sources(BUNDLE_SOURCES_DIR / f"{provider}.json"))
+        custom,
+        *({url: {} for url in discovery["providers"].get(name, [])} for name in PROVIDER_MODULES),
+        {url: {} for url in discovery["renames"].values()},
     ]
+    provider_files = [data for data in provider_files if data]
     if not provider_files:
         message = "No usable provider files found; discovery stopped"
         print(message)
@@ -109,7 +112,7 @@ def main(argv: list[str] | None = None) -> int:
         append_step_summary("\n\n".join(summary_sections))
         return 1
 
-    merged = _merge(provider_files)
+    merged = merge_sources(provider_files, discovery["renames"])
     print(f"Merged {len(merged)} unique sources")
 
     existing_repos = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))

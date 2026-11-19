@@ -37,6 +37,28 @@ def build_repo_url(source: str, repo: str) -> str | None:
     return f"https://{source}.com/{repo}" if source and repo else None
 
 
+def resolve_repo_url(url: str, renames: dict[str, str]) -> str:
+    visited = set()
+    while url.lower() in renames:
+        key = url.lower()
+        destination = renames[key]
+        if destination.lower() == key:
+            return destination
+        if key in visited:
+            raise ValueError(f"Repository rename cycle: {url}")
+        visited.add(key)
+        url = destination
+    return url
+
+
+def record_repo_rename(renames: dict[str, str], old_url: str, new_url: str) -> None:
+    renames.pop(new_url.lower(), None)
+    for alias, destination in renames.items():
+        if destination.lower() == old_url.lower():
+            renames[alias] = new_url
+    renames[old_url.lower()] = new_url
+
+
 def build_raw_url(source: str, repo: str, branch: str, file_path: str) -> str | None:
     if not source or not repo or not branch or not file_path:
         return None

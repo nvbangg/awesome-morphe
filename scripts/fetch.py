@@ -21,7 +21,9 @@ from pydantic import ValidationError
 from common.constants import (
     BUNDLES_DIR,
     CONCURRENCY,
+    CUSTOM_JSON_PATH,
     DEFAULT_BRANCHES,
+    DISCOVERY_JSON_PATH,
     PATCHES_DIR,
     REPOS_JSON_PATH,
     SCRIPTS_DIR,
@@ -30,7 +32,7 @@ from common.constants import (
 from common.files import load_json, load_lines, save_json
 from common.http import HTTP_CLIENT, request
 from common.images import normalize_image_url
-from common.models import BUNDLE_MANIFEST, REPOSITORIES
+from common.models import BUNDLE_MANIFEST, DISCOVERY, REPOSITORIES, SOURCES
 from common.repositories import (
     build_raw_url,
     build_repo_url,
@@ -38,6 +40,7 @@ from common.repositories import (
     parse_repo_url,
 )
 from common.summary import append_step_summary, format_summary_section
+from discovery import apply_source_config
 
 BUNDLE_PARSER_DIR = SCRIPTS_DIR / "bundle-parser"
 MPP_DIR = BUNDLE_PARSER_DIR / "mpp"
@@ -46,6 +49,7 @@ PARSED_FILES_PATH = BUNDLE_PARSER_DIR / "parsed_files.txt"
 GRADLE_EXECUTABLE_NAME = "gradlew.bat" if sys.platform == "win32" else "gradlew"
 GRADLE_EXECUTABLE_PATH = BUNDLE_PARSER_DIR / GRADLE_EXECUTABLE_NAME
 REPOSITORY_FIELDS = (
+    "enabled",
     "main",
     "dev",
     "image",
@@ -436,8 +440,11 @@ def refresh_repo_metadata(
     tasks = [
         url
         for url, metadata in repos_data.items()
-        if any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
-        and (refresh or any(field not in metadata for field in ("description", "avatarUrl", "stars")))
+        if metadata.get("enabled") is False
+        or (
+            any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
+            and (refresh or any(field not in metadata for field in ("description", "avatarUrl", "stars")))
+        )
     ]
     warnings = []
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
@@ -470,19 +477,27 @@ def refresh_repo_metadata(
 def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     repos_data = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
     initial_repos = {url: dict(metadata) for url, metadata in repos_data.items()}
+    custom_data = SOURCES.validate_python(load_json(CUSTOM_JSON_PATH))
+    discovery = DISCOVERY.validate_python(load_json(DISCOVERY_JSON_PATH, {"providers": {}, "renames": {}}))
+    apply_source_config(repos_data, custom_data, discovery["renames"])
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
     MPP_DIR.mkdir(parents=True, exist_ok=True)
     tasks = []
     image_tasks = []
     checked_repos = {
-        url for url, metadata in repos_data.items() if any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
+        url
+        for url, metadata in repos_data.items()
+        if metadata.get("enabled") is False or any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
     }
     repository_details = RepositoryDetails()
     repository_warnings = refresh_repo_metadata(repos_data, daily or weekly, repository_details)
+    apply_source_config(repos_data, custom_data, discovery["renames"])
     previous_preferred = {}
     renamed_repos = {}
     for repo_url, repo_metadata in repos_data.items():
+        if repo_metadata.get("enabled") is False:
+            continue
         source, repo = parse_repo_url(repo_url)
         if not source or not repo:
             continue
@@ -515,8 +530,6 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
             DEFAULT_BRANCHES.index(result.branch),
         )
     )
-    run_bundle_parser([result for result in results if result.needs_parse])
-    errors = collect_fetch_errors(results)
     updated_count = 0
     for result in results:
         repo_url = build_repo_url(result.source, result.repo)
@@ -525,10 +538,23 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         if result.renamed_to and repo_metadata.get("renamedTo") != result.renamed_to:
             repo_metadata["renamedTo"] = result.renamed_to
             repository_warnings.append(f"{repo_url}: Renamed to {result.renamed_to}")
-        if not result.status_changed:
-            continue
-        updated_count += 1
-        repo_metadata.update({result.branch: result.new_sha})
+    apply_source_config(repos_data, custom_data, discovery["renames"])
+    active_results = [
+        result
+        for result in results
+        if repos_data[f"https://{result.source}.com/{result.repo}"].get("enabled") is not False
+    ]
+    run_bundle_parser([result for result in active_results if result.needs_parse])
+    errors = collect_fetch_errors(active_results)
+    for result in active_results:
+        if result.status_changed:
+            updated_count += 1
+            repo_url = build_repo_url(result.source, result.repo)
+            assert repo_url is not None
+            repos_data[repo_url].update({result.branch: result.new_sha})
+    image_tasks = [
+        task for task in image_tasks if repos_data[f"https://{task[0]}.com/{task[1]}"].get("enabled") is not False
+    ]
     if image_tasks:
         print(f"Processing {len(image_tasks)} image targets...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
@@ -547,6 +573,8 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         grouped_results.setdefault(build_repo_url(result.source, result.repo), []).append(result)
     for repo_url, branch_results in grouped_results.items():
         metadata = repos_data[repo_url]
+        if metadata.get("enabled") is False:
+            continue
         preferred = next((branch for branch in DEFAULT_BRANCHES if metadata.get(branch)), None)
         if not preferred:
             continue
@@ -578,6 +606,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         )
     )
     errors["repo_metadata"].extend(dict.fromkeys(repository_warnings))
+    apply_source_config(repos_data, custom_data, discovery["renames"])
     if repos_data != initial_repos:
         save_json(
             REPOS_JSON_PATH,

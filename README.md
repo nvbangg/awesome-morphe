@@ -149,6 +149,6 @@ Maintained with ❤️ by **[@nvbangg](https://github.com/nvbangg)**
 
 ### 🙏 Credits
 
-- Patch data is automatically aggregated from [nvbangg's custom sources](data/bundle-sources/custom.json), [Morphe Community Patches](https://morphe-patches.software), [Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) and [Morphe Archive](https://github.com/rushiforai/morphe-archive).
+- Patch data is automatically aggregated from [nvbangg's custom sources](data/custom.json), [Morphe Community Patches](https://morphe-patches.software), [Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) and [Morphe Archive](https://github.com/rushiforai/morphe-archive).
 - Website design is inspired by [Morphe Community Patches](https://morphe-patches.software).
 - Bundle parser is adapted from [Jman's Patch Bundle Registry](https://github.com/Jman-Github/Patch-Bundle-Registry) to fit this project and Morphe.

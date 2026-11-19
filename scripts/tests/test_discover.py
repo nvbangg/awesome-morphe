@@ -16,7 +16,8 @@ class TestDiscover:
         self.patch_context = patch_context
         self.http_error = http_error
         self.root = tmp_path
-        self.discover_dir = self.root / "discover"
+        self.discovery_path = self.root / "discovery.json"
+        self.custom_path = self.root / "custom.json"
         self.repos_path = self.root / "repos.json"
         self.official_path = self.root / "official-bundles.json"
         self.saved_sources = {"https://github.com/owner/saved": {}}
@@ -30,15 +31,16 @@ class TestDiscover:
         }
         save_json(self.repos_path, self.saved_repos)
         save_json(self.official_path, {"bundles": [], "store": {"saved": {}}})
-        for module in discover.PROVIDER_MODULES:
-            output_path = self.discover_dir / module.OUTPUT_PATH.name
-            save_json(output_path, self.saved_sources)
-            output_patcher = patch.object(module, "OUTPUT_PATH", output_path)
-            self.patch_context.enter_context(output_patcher)
+        save_json(self.custom_path, {})
+        save_json(
+            self.discovery_path,
+            {"providers": {name: list(self.saved_sources) for name in discover.PROVIDER_MODULES}, "renames": {}},
+        )
         for patcher in (
             patch.multiple(
                 discover,
-                BUNDLE_SOURCES_DIR=self.discover_dir,
+                DISCOVERY_JSON_PATH=self.discovery_path,
+                CUSTOM_JSON_PATH=self.custom_path,
                 REPOS_JSON_PATH=self.repos_path,
                 ROOT_DIR=self.root,
             ),
@@ -54,7 +56,7 @@ class TestDiscover:
     )
     def test_provider_failure_preserves_saved_sources(self, module, failure_kind) -> None:
         snapshot = self.official_path.read_bytes()
-        saved_file = module.OUTPUT_PATH.read_bytes()
+        saved_file = self.discovery_path.read_bytes()
         if failure_kind == "http":
             error = self.http_error("https://example.com", 503)
         elif failure_kind == "network":
@@ -62,8 +64,8 @@ class TestDiscover:
         else:
             error = httpx2.ReadTimeout("timed out")
         self.open_url.side_effect = error
-        assert module.discover()
-        assert module.OUTPUT_PATH.read_bytes() == saved_file
+        assert module.discover() == ([], str(error))
+        assert self.discovery_path.read_bytes() == saved_file
         assert self.official_path.read_bytes() == snapshot
 
     @pytest.mark.parametrize("module", (official, jman))
@@ -71,8 +73,7 @@ class TestDiscover:
         snapshot = self.official_path.read_bytes()
         self.open_url.side_effect = None
         self.open_url.return_value = httpx2.Response(200, content=b"{broken")
-        assert module.discover()
-        assert load_json(module.OUTPUT_PATH) == self.saved_sources
+        assert module.discover() == ([], "Invalid provider data")
         assert self.official_path.read_bytes() == snapshot
 
     @pytest.mark.parametrize("module,data", ((official, {"bundles": {}}), (jman, [])))
@@ -83,8 +84,7 @@ class TestDiscover:
             "request",
             return_value=httpx2.Response(200, json=data),
         ):
-            assert module.discover()
-        assert load_json(module.OUTPUT_PATH) == self.saved_sources
+            assert module.discover() == ([], "Invalid provider data")
         assert self.official_path.read_bytes() == snapshot
 
     @pytest.mark.parametrize(
@@ -112,8 +112,7 @@ class TestDiscover:
                 httpx2.Response(200, text=data) if module is morphe_archive else httpx2.Response(200, json=data)
             ),
         ):
-            assert module.discover()
-        assert load_json(module.OUTPUT_PATH) == self.saved_sources
+            assert module.discover() == ([], None)
         assert self.official_path.read_bytes() == snapshot
 
     def test_official_success_updates_sources_and_complete_snapshot(self) -> None:
@@ -125,12 +124,10 @@ class TestDiscover:
             "store": {"com.test.app": {"name": "Test app"}},
         }
         with patch.object(official, "request", return_value=httpx2.Response(200, json=data)):
-            assert official.discover() is None
+            sources, error = official.discover()
+        assert error is None
         assert load_json(self.official_path) == data
-        assert load_json(official.OUTPUT_PATH) == {
-            "https://github.com/owner/new": {},
-            "https://gitlab.com/group/project": {},
-        }
+        assert sources == ["https://github.com/owner/new", "https://gitlab.com/group/project"]
 
     def test_jman_keeps_enabled_usable_sources(self) -> None:
         data = {
@@ -144,21 +141,31 @@ class TestDiscover:
             "other": "ignored",
         }
         with patch.object(jman, "request", return_value=httpx2.Response(200, json=data)):
-            assert jman.discover() is None
-        assert load_json(jman.OUTPUT_PATH) == {"https://github.com/owner/new": {}}
+            assert jman.discover() == (["https://github.com/owner/new"], None)
 
     def test_archive_extracts_and_deduplicates_source_links(self) -> None:
         content = (
             "[GitHub](https://morphe.software/add-source?github=owner/new)\n"
             "[Duplicate](https://morphe.software/add-source?github=owner/new)\n"
+            "[Case variant](https://morphe.software/add-source?github=owner/New)\n"
             "[GitLab](https://morphe.software/add-source?gitlab=group/project)"
         )
-        with patch.object(morphe_archive, "request", return_value=httpx2.Response(200, text=content)):
-            assert morphe_archive.discover() is None
-        assert load_json(morphe_archive.OUTPUT_PATH) == {
-            "https://github.com/owner/new": {},
-            "https://gitlab.com/group/project": {},
-        }
+        with (
+            patch.object(discover, "PROVIDER_MODULES", {"morphe-archive": morphe_archive}),
+            patch.object(morphe_archive, "request", return_value=httpx2.Response(200, text=content)) as request,
+        ):
+            assert discover.main([]) == 0
+            saved_sources = self.discovery_path.read_bytes()
+            saved_repos = self.repos_path.read_bytes()
+            request.return_value = httpx2.Response(200, text="\n".join(reversed(content.splitlines())))
+            assert discover.main([]) == 0
+        assert load_json(self.discovery_path)["providers"]["morphe-archive"] == [
+            "https://github.com/owner/New",
+            "https://github.com/owner/new",
+            "https://gitlab.com/group/project",
+        ]
+        assert self.discovery_path.read_bytes() == saved_sources
+        assert self.repos_path.read_bytes() == saved_repos
 
     def test_provider_outage_keeps_saved_repositories(
         self,
@@ -170,8 +177,7 @@ class TestDiscover:
     @pytest.mark.parametrize("arguments", ([], ["--daily"]))
     @pytest.mark.parametrize("content", ("{}", "[]"))
     def test_no_usable_sources_stops_without_changing_repositories(self, arguments, content) -> None:
-        for module in discover.PROVIDER_MODULES:
-            module.OUTPUT_PATH.write_text(content, encoding="utf-8")
+        save_json(self.discovery_path, {"providers": [] if content == "[]" else {}, "renames": {}})
         snapshot = self.repos_path.read_bytes()
         self.open_url.side_effect = httpx2.ConnectError("offline")
         with (
@@ -189,14 +195,19 @@ class TestDiscover:
 
     def test_main_preserves_custom_exclusions_and_existing_repo_state(self) -> None:
         save_json(
-            self.discover_dir / "custom.json",
+            self.custom_path,
             {"https://github.com/owner/disabled": {"enabled": False}},
         )
+        discovery_state = load_json(self.discovery_path)
+        discovery_state["renames"] = {"https://github.com/owner/old": "https://github.com/owner/saved"}
+        save_json(self.discovery_path, discovery_state)
         data = {
             "bundles": [
                 {"source": "github", "repo": "owner/disabled"},
                 {"source": "github", "repo": "OWNER/SAVED"},
                 {"source": "github", "repo": "owner/new"},
+                {"source": "github", "repo": "owner/old"},
+                {"source": "github", "repo": "owner/Old"},
             ]
         }
         with (
@@ -215,12 +226,13 @@ class TestDiscover:
             assert discover.main([]) == 0
         assert load_json(self.repos_path) == {
             **self.saved_repos,
+            "https://github.com/owner/disabled": {"enabled": False},
             "https://github.com/owner/new": {},
         }
 
     def test_snapshot_and_provider_write_failures_propagate(self) -> None:
         snapshot = self.official_path.read_bytes()
-        sources = official.OUTPUT_PATH.read_bytes()
+        sources = self.discovery_path.read_bytes()
         with (
             patch.object(
                 official,
@@ -232,17 +244,13 @@ class TestDiscover:
         ):
             official.discover()
         assert self.official_path.read_bytes() == snapshot
-        assert official.OUTPUT_PATH.read_bytes() == sources
+        assert self.discovery_path.read_bytes() == sources
         with (
-            patch.object(
-                morphe_archive,
-                "request",
-                return_value=httpx2.Response(200, text="https://morphe.software/add-source?github=owner/new"),
-            ),
-            patch("discovery.save_json", side_effect=OSError("disk full")),
+            patch.object(self.open_url, "side_effect", httpx2.ConnectError("offline")),
+            patch.object(discover, "save_json", side_effect=OSError("disk full")),
             pytest.raises(OSError, match="disk full"),
         ):
-            morphe_archive.discover()
+            discover.main([])
 
     def test_unexpected_provider_errors_stop_discovery_without_rewriting_repos(
         self,
@@ -347,8 +355,10 @@ class TestDiscover:
 
 
 @pytest.mark.parametrize("reverse_custom", (False, True))
+@pytest.mark.parametrize("renamed", (False, True))
 def test_merge_keeps_provider_priority_and_stable_case_conflicts(
     reverse_custom,
+    renamed,
 ) -> None:
     custom_items = [
         (
@@ -362,6 +372,10 @@ def test_merge_keeps_provider_priority_and_stable_case_conflicts(
     ]
     if reverse_custom:
         custom_items.reverse()
+    destination = "https://github.com/Owner/Latest" if renamed else "https://github.com/Owner/Repo"
+    renames = {"https://github.com/owner/repo": destination} if renamed else {}
+    if renamed:
+        custom_items.append((destination, {"enabled": True, "note": "Latest custom"}))
     providers = [
         dict(custom_items),
         {
@@ -374,17 +388,17 @@ def test_merge_keeps_provider_priority_and_stable_case_conflicts(
         {"https://github.com/owner/repo": {"note": "Archive", "archiveField": True}},
         {"https://github.com/owner/repo": {"note": "Jman", "archiveField": False}},
     ]
-    merged = discover._merge(providers)
+    merged = discover.merge_sources(providers, renames)
     assert merged == {
-        "https://github.com/Owner/Repo": {
-            "enabled": False,
-            "note": "Preferred custom",
+        destination: {
+            "enabled": renamed,
+            "note": "Latest custom" if renamed else "Preferred custom",
             "extra": 7,
             "officialField": True,
             "archiveField": True,
         }
     }
-    assert discover._sync_repos(merged, {}) == {}
+    assert discover._sync_repos(merged, {}) == {destination: {} if renamed else {"enabled": False}}
 
 
 def test_sync_keeps_hosts_independent_and_preserves_saved_fields() -> None:
@@ -395,3 +409,5 @@ def test_sync_keeps_hosts_independent_and_preserves_saved_fields() -> None:
     assert actual[github] == saved[github]
     assert actual[gitlab] == {}
     assert len(actual) == 2
+    saved[github]["enabled"] = False
+    assert discover._sync_repos({github: {}, gitlab: {}}, saved)[github] == actual[github]

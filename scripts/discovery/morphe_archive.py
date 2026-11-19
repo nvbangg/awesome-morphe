@@ -4,26 +4,23 @@ import re
 
 import httpx2
 
-from common.constants import BUNDLE_SOURCES_DIR
 from common.http import request
 from common.repositories import build_repo_url
-from discovery import export_provider, report_provider_warning
 
 README_URL = "https://raw.githubusercontent.com/rushiforai/morphe-archive/main/README.md"
-OUTPUT_PATH = BUNDLE_SOURCES_DIR / "morphe-archive.json"
 _REPO_RE = re.compile(r"morphe\.software/add-source\?(github|gitlab)=([^)\s]+)")
 
 
-def discover() -> str | None:
+def discover() -> tuple[list[str], str | None]:
     try:
         content = request(README_URL).text
     except (httpx2.HTTPError, httpx2.InvalidURL, UnicodeError) as error:
-        return report_provider_warning("morphe-archive", error, OUTPUT_PATH)
+        return [], str(error)
 
-    discovered = {
-        url: {}
+    discovered = [
+        url
         for match in _REPO_RE.finditer(content)
         if (url := build_repo_url(match.group(1), match.group(2).strip())) and "/" in match.group(2)
-    }
+    ]
 
-    return export_provider("morphe-archive", discovered, OUTPUT_PATH)
+    return discovered, None

@@ -6,7 +6,6 @@ from unittest.mock import patch
 import pytest
 
 from common import files, http, repositories
-from discovery import load_provider_sources
 
 
 @pytest.mark.parametrize(
@@ -20,8 +19,6 @@ def test_json_read_defaults_only_when_missing(tmp_path: Path, content, error_typ
     path.write_bytes(content)
     with pytest.raises(error_type):
         files.load_json(path)
-    with pytest.raises(error_type):
-        load_provider_sources(path)
 
 
 @pytest.mark.parametrize("failure_stage", ("serialization", "replace"))
