@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.1.0-dev.2",
   "patches": [
     {
       "name": "Chessbook local gates",
@@ -109,6 +109,42 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Remove ads and trackers",
+      "description": "Stops the ad, analytics and crash-reporting SDKs an app contains and drops the advertising ID. Universal: apps without those SDKs patch untouched.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "ads",
+          "title": "Ads",
+          "description": "Stops the ad SDKs from starting and from loading ads: Google AdMob, AppLovin MAX, Unity Ads, Pangle, Meta Audience Network, InMobi, ironSource/LevelPlay, Vungle, Mintegral, myTarget and BIGO.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "analytics",
+          "title": "Analytics and crash reporting",
+          "description": "Turns off Firebase Analytics and Crashlytics, the Facebook SDK, AppMetrica, AppsFlyer and the Play install referrer when the app has them.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "advertisingId",
+          "title": "Advertising ID",
+          "description": "Removes the advertising ID permissions so no SDK can read the device's advertising ID.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     }
   ]
 }
