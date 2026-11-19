@@ -14,7 +14,6 @@ from common.constants import (
     CUSTOM_JSON_PATH,
     DATA_DIR,
     DEFAULT_BRANCHES,
-    DISCOVERY_JSON_PATH,
     OFFICIAL_BUNDLES_PATH,
     PACKAGE_EXAMPLE,
     PACKAGE_UNIVERSAL,
@@ -25,13 +24,13 @@ from common.constants import (
 )
 from common.files import load_json, save_json
 from common.http import HTTP_CLIENT
-from common.models import DISCOVERY, REPOSITORIES, SOURCES, UPDATE_STATE
+from common.models import REPOSITORIES, SOURCES, UPDATE_STATE
 from common.repositories import build_raw_url, build_repo_url, parse_repo_url, record_repo_rename
 from common.summary import append_step_summary, format_summary_section
 from discovery import apply_source_config
 from updater import gplay_scrape, local_data, whats_new
 
-UPDATE_STATE_PATH = DATA_DIR / "update-state.json"
+STATE_PATH = DATA_DIR / "state.json"
 BUNDLES_JSON_PATH = PUBLIC_DIR / "bundles.json"
 
 HOT_RANK_ACTIVE_DAYS = 30
@@ -90,11 +89,13 @@ def main() -> int:
     args = parser.parse_args()
     mode = "weekly" if args.weekly else "daily" if args.daily else "default"
 
-    repos_data = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
+    registry = REPOSITORIES.validate_python(
+        load_json(REPOS_JSON_PATH, {"repositories": {}, "providers": {}, "renames": {}})
+    )
+    repos_data = registry["repositories"]
     initial_repos = {url: dict(metadata) for url, metadata in repos_data.items()}
-    discovery = DISCOVERY.validate_python(load_json(DISCOVERY_JSON_PATH, {"providers": {}, "renames": {}}))
-    rename_data = discovery["renames"]
-    update_state = UPDATE_STATE.validate_python(load_json(UPDATE_STATE_PATH, {"appHashes": {}, "history": {}}))
+    rename_data = registry["renames"]
+    update_state = UPDATE_STATE.validate_python(load_json(STATE_PATH, {"appHashes": {}, "history": {}}))
     existing_hashes = update_state["appHashes"]
     existing_history = update_state["history"]
     custom_data = apply_source_config(repos_data, SOURCES.validate_python(load_json(CUSTOM_JSON_PATH)), rename_data)
@@ -309,13 +310,10 @@ def main() -> int:
             history_data.setdefault(new_url, previous_history)
     if renames:
         move_renamed_files(file_renames)
-        discovery["renames"] = dict(sorted(rename_data.items()))
-        save_json(DISCOVERY_JSON_PATH, discovery)
-    if repos_data != initial_repos:
-        save_json(
-            REPOS_JSON_PATH,
-            dict(sorted(repos_data.items(), key=lambda item: item[0].lower())),
-        )
+        registry["renames"] = dict(sorted(rename_data.items()))
+    if repos_data != initial_repos or renames:
+        registry["repositories"] = dict(sorted(repos_data.items(), key=lambda item: item[0].lower()))
+        save_json(REPOS_JSON_PATH, registry)
     local_data.cleanup_orphan_files(repos_data)
     print(f"Update completed. Saved {len(final_bundles)} bundles and {len(apps_store)} apps.")
 
@@ -357,7 +355,7 @@ def main() -> int:
     update_state["appHashes"] = dict(sorted(cleaned_hashes.items(), key=lambda item: item[0].lower()))
     if history_data != existing_history:
         update_state["history"] = dict(sorted(history_data.items(), key=lambda item: item[0].lower()))
-    save_json(UPDATE_STATE_PATH, update_state)
+    save_json(STATE_PATH, update_state)
     return 0
 
 

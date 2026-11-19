@@ -164,7 +164,14 @@ class TestBundleFetch:
             )
         )
         self.patch_context.enter_context(patch.object(bundle_fetch, "refresh_repo_metadata", return_value=[]))
-        save_json(self.repos_path, self.initial_repos)
+        save_json(
+            self.repos_path,
+            {
+                "repositories": self.initial_repos,
+                "providers": {"official": ["https://github.com/owner/alpha"]},
+                "renames": {"https://github.com/legacy/other": "https://github.com/owner/other"},
+            },
+        )
         self.bundle_data = {"download_url": "https://github.com/owner/alpha/releases/download/latest/bundle.mpp"}
         self.patches_data = {"patches": [{"name": "Valid patch"}]}
         mpp_buffer = io.BytesIO()
@@ -184,7 +191,6 @@ class TestBundleFetch:
                 MPP_DIR=self.mpp_dir,
                 REPOS_JSON_PATH=self.repos_path,
                 CUSTOM_JSON_PATH=self.root / "custom.json",
-                DISCOVERY_JSON_PATH=self.root / "discovery.json",
                 UPDATED_FILES_PATH=self.updated_path,
                 PARSED_FILES_PATH=self.parsed_path,
                 DEFAULT_BRANCHES=("main",),
@@ -201,6 +207,11 @@ class TestBundleFetch:
         )
         self.patch_context.enter_context(patch.object(bundle_fetch, "append_step_summary"))
         self.run_process = self.patch_context.enter_context(patch.object(bundle_fetch.subprocess, "run"))
+
+    def save_repos(self, repositories: dict) -> None:
+        registry = load_json(self.repos_path)
+        registry["repositories"] = repositories
+        save_json(self.repos_path, registry)
 
     def url(self, branch: str, filename: str) -> str:
         url = build_raw_url("github", "owner/alpha", branch, filename)
@@ -250,7 +261,7 @@ class TestBundleFetch:
             assert load_json(self.bundles_dir / f"{file_prefix}.json") == self.bundle_data
             assert load_json(self.patches_dir / f"{file_prefix}.json") == self.patches_data
             assert (self.mpp_dir / f"{file_prefix}.mpp").read_bytes() == self.mpp_bytes
-        updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
+        updated_repo = load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]
         assert updated_repo["name"] == "Alpha new"
         for branch in DEFAULT_BRANCHES:
             assert updated_repo[branch] == f"{branch}-new"
@@ -271,7 +282,7 @@ class TestBundleFetch:
 
     def test_bundle_downloads_are_not_reused_between_fetch_runs(self) -> None:
         bundle_fetch.fetch_all_repos()
-        save_json(self.repos_path, self.initial_repos)
+        self.save_repos(self.initial_repos)
         bundle_fetch.fetch_all_repos()
         assert self.fetch_request.call_args_list.count(call(self.bundle_data["download_url"])) == 2
 
@@ -371,7 +382,7 @@ class TestBundleFetch:
             self.responses[urls[stage]] = failure
         old_contents = self.seed_target()
         bundle_fetch.fetch_all_repos()
-        assert load_json(self.repos_path) == self.initial_repos
+        assert load_json(self.repos_path)["repositories"] == self.initial_repos
         for path, content in old_contents.items():
             assert path.read_bytes() == content
         self.run_process.assert_not_called()
@@ -458,7 +469,7 @@ class TestBundleFetch:
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
         self.run_process.assert_not_called()
-        assert load_json(self.repos_path) == self.initial_repos
+        assert load_json(self.repos_path)["repositories"] == self.initial_repos
 
     def test_failed_parser_batch_does_not_confirm_branches(
         self,
@@ -475,12 +486,12 @@ class TestBundleFetch:
             bundle_fetch.fetch_all_repos()
         self.run_process.assert_called_once()
         for branch in DEFAULT_BRANCHES:
-            assert load_json(self.repos_path)["https://github.com/owner/alpha"][branch] is None
+            assert load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"][branch] is None
 
     @pytest.mark.parametrize("stage,code", (("hash", 404), ("metadata", 451), ("mpp", 404)))
     def test_unavailable_metadata_and_mpp_clear_sha_without_deleting_files(self, stage, code) -> None:
         original_responses = self.responses.copy()
-        save_json(self.repos_path, self.initial_repos)
+        self.save_repos(self.initial_repos)
         self.responses = original_responses.copy()
         self.fetch_hash.side_effect = (
             self.http_error(self.url("main", "patches-bundle.json"), code) if stage == "hash" else None
@@ -490,7 +501,7 @@ class TestBundleFetch:
             self.responses[url] = self.http_error(url, code)
         old_contents = self.seed_target()
         bundle_fetch.fetch_all_repos()
-        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] is None
+        assert load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]["main"] is None
         for path, content in old_contents.items():
             assert path.read_bytes() == content
         self.run_process.assert_not_called()
@@ -527,7 +538,7 @@ class TestBundleFetch:
     def test_unreadable_manifest_keeps_existing_display_name(self) -> None:
         self.responses[self.bundle_data["download_url"]] = b"not a zip archive"
         bundle_fetch.fetch_all_repos()
-        updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
+        updated_repo = load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]
         assert updated_repo["name"] == "Alpha old"
         assert updated_repo["main"] == "main-new"
 
@@ -580,7 +591,7 @@ class TestBundleFetch:
             ],
         ):
             bundle_fetch.fetch_all_repos(weekly=True)
-        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] is None
+        assert load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]["main"] is None
         assert (self.patches_dir / "github~owner~alpha~main.json").exists()
         self.fetch_request.assert_not_called()
 
@@ -604,7 +615,7 @@ class TestBundleFetch:
             "image-new",
         ]
         bundle_fetch.fetch_all_repos(daily=True)
-        updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
+        updated_repo = load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]
         assert updated_repo["image"] == "image-new"
         assert updated_repo["main"] is None
         assert updated_repo["name"] == "Alpha old"
@@ -615,7 +626,7 @@ class TestBundleFetch:
             pytest.raises(PermissionError),
         ):
             bundle_fetch.fetch_all_repos()
-        assert load_json(self.repos_path) == self.initial_repos
+        assert load_json(self.repos_path)["repositories"] == self.initial_repos
 
     def test_parser_failure_stops_before_saving_repos(self) -> None:
         patch_url = self.url("main", "patches-list.json")
@@ -623,7 +634,7 @@ class TestBundleFetch:
         self.run_process.side_effect = OSError("Cannot launch parser")
         with pytest.raises(OSError):
             bundle_fetch.fetch_all_repos()
-        assert load_json(self.repos_path) == self.initial_repos
+        assert load_json(self.repos_path)["repositories"] == self.initial_repos
 
     def test_partial_parser_batch_publishes_only_successful_target(self) -> None:
         for branch in DEFAULT_BRANCHES:
@@ -643,7 +654,7 @@ class TestBundleFetch:
             patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES),
         ):
             bundle_fetch.fetch_all_repos()
-        updated_repo = load_json(self.repos_path)["https://github.com/owner/alpha"]
+        updated_repo = load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]
         assert updated_repo["main"] == "main-new"
         assert updated_repo["dev"] is None
         assert updated_repo["name"] == "Alpha new"
@@ -668,7 +679,7 @@ class TestBundleFetch:
             patch.object(bundle_fetch, "process_repo_branch", side_effect=process),
         ):
             bundle_fetch.fetch_all_repos()
-        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["name"] == "main name"
+        assert load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]["name"] == "main name"
 
     def test_dev_update_downloads_bundle_but_keeps_existing_main_name(self) -> None:
         self.seed_target()
@@ -676,15 +687,15 @@ class TestBundleFetch:
         self.fetch_hash.side_effect = lambda url, _source: "main-old" if "/main/" in url else "dev-new"
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
-        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["name"] == "Alpha old"
+        assert load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]["name"] == "Alpha old"
         self.fetch_request.assert_any_call(self.url("dev", "patches-list.json"))
         assert (self.mpp_dir / "github~owner~alpha~dev.mpp").is_file()
 
     def test_new_empty_repository_entry_is_fetched(self) -> None:
-        save_json(self.repos_path, {"https://github.com/owner/alpha": {}})
+        self.save_repos({"https://github.com/owner/alpha": {}})
         bundle_fetch.fetch_all_repos()
-        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] == "main-new"
-        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["name"] == "Alpha new"
+        assert load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]["main"] == "main-new"
+        assert load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]["name"] == "Alpha new"
 
     def test_confirmed_rename_allows_download_from_the_new_repository(self) -> None:
         new_url = "https://github.com/owner/new/releases/latest/bundle.mpp"
@@ -758,7 +769,7 @@ class TestBundleFetch:
         asset_url = "https://github.com/owner/new/releases/v1/bundle.mpp"
         self.responses[self.url("main", "patches-bundle.json")] = json.dumps({"download_url": asset_url}).encode()
         self.responses[asset_url] = self.mpp_bytes
-        save_json(self.repos_path, {"https://github.com/owner/alpha": {}})
+        self.save_repos({"https://github.com/owner/alpha": {}})
         if disabled:
             save_json(self.root / "custom.json", {"https://github.com/owner/new": {"enabled": False}})
             for branch in DEFAULT_BRANCHES:
@@ -766,7 +777,7 @@ class TestBundleFetch:
                 self.responses[url] = self.http_error(url, HTTP_NOT_FOUND)
         with patch.object(bundle_fetch, "fetch_repo_details", return_value={"full_name": "owner/new"}) as request:
             bundle_fetch.fetch_all_repos()
-        repos = load_json(self.repos_path)
+        repos = load_json(self.repos_path)["repositories"]
         assert set(repos) == {"https://github.com/owner/alpha"}
         assert repos["https://github.com/owner/alpha"]["renamedTo"] == "https://github.com/owner/new"
         assert repos["https://github.com/owner/alpha"].get("main") == (None if disabled else "main-new")
@@ -795,7 +806,14 @@ class TestRepositoryMetadataRefresh:
         repos_path = tmp_path / "repos.json"
         custom_path = tmp_path / "custom.json"
         destination = "https://github.com/owner/new"
-        save_json(repos_path, {self.url: {**self.metadata, "isArchived": True}, destination: {}})
+        save_json(
+            repos_path,
+            {
+                "repositories": {self.url: {**self.metadata, "isArchived": True}, destination: {}},
+                "providers": {},
+                "renames": {},
+            },
+        )
         save_json(custom_path, {self.url: {"enabled": False, "note": "Archived"}})
         custom_before = custom_path.read_bytes()
         with (
@@ -803,7 +821,6 @@ class TestRepositoryMetadataRefresh:
                 bundle_fetch,
                 REPOS_JSON_PATH=repos_path,
                 CUSTOM_JSON_PATH=custom_path,
-                DISCOVERY_JSON_PATH=tmp_path / "discovery.json",
                 BUNDLES_DIR=tmp_path / "bundles",
                 PATCHES_DIR=tmp_path / "patches",
                 MPP_DIR=tmp_path / "mpp",
@@ -826,7 +843,7 @@ class TestRepositoryMetadataRefresh:
             patch.object(bundle_fetch, "append_step_summary"),
         ):
             bundle_fetch.fetch_all_repos(daily, weekly)
-            saved = load_json(repos_path)
+            saved = load_json(repos_path)["repositories"]
             assert saved[self.url]["renamedTo"] == destination
             assert saved[self.url]["main"] == self.metadata["main"]
             for url in (self.url, destination):
@@ -886,7 +903,12 @@ class TestRepositoryMetadataRefresh:
         root = tmp_path
         repos_path = root / "repos.json"
         custom_path = root / "custom.json"
-        save_json(repos_path, {self.url: {"main": "sha", "name": "Alpha"}})
+        registry = {
+            "repositories": {self.url: {"main": "sha", "name": "Alpha"}},
+            "providers": {"official": [self.url]},
+            "renames": {"https://github.com/owner/old": self.url},
+        }
+        save_json(repos_path, registry)
         save_json(custom_path, {self.url: {"note": "Keep me"}})
         custom_before = custom_path.read_bytes()
 
@@ -905,7 +927,6 @@ class TestRepositoryMetadataRefresh:
                 bundle_fetch,
                 REPOS_JSON_PATH=repos_path,
                 CUSTOM_JSON_PATH=custom_path,
-                DISCOVERY_JSON_PATH=root / "discovery.json",
                 BUNDLES_DIR=root / "bundles",
                 PATCHES_DIR=root / "patches",
                 MPP_DIR=root / "mpp",
@@ -926,7 +947,10 @@ class TestRepositoryMetadataRefresh:
         ):
             bundle_fetch.fetch_all_repos()
             request.assert_called_once_with(self.url)
-        metadata = load_json(repos_path)[self.url]
+        saved = load_json(repos_path)
+        assert saved["providers"] == registry["providers"]
+        assert saved["renames"] == registry["renames"]
+        metadata = saved["repositories"][self.url]
         assert metadata["renamedTo"] == "https://github.com/owner/new"
         assert metadata["main"] == "sha"
         assert metadata["stars"] == 23

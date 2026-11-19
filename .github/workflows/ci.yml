@@ -32,6 +32,6 @@ jobs:
             --arg week "$WEEK" '
             if .lastWeek != $week then "weekly"
             elif .lastDaily != $today then "daily"
-            else "normal" end' data/update-state.json)
+            else "normal" end' data/state.json)
           gh workflow run sync.yml --ref "$GITHUB_REF_NAME" -f mode="$MODE"
           echo "::notice::Dispatched sync.yml (mode: $MODE)"

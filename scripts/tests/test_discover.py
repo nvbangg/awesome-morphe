@@ -16,7 +16,6 @@ class TestDiscover:
         self.patch_context = patch_context
         self.http_error = http_error
         self.root = tmp_path
-        self.discovery_path = self.root / "discovery.json"
         self.custom_path = self.root / "custom.json"
         self.repos_path = self.root / "repos.json"
         self.official_path = self.root / "official-bundles.json"
@@ -29,17 +28,19 @@ class TestDiscover:
                 "image": "image-sha",
             }
         }
-        save_json(self.repos_path, self.saved_repos)
         save_json(self.official_path, {"bundles": [], "store": {"saved": {}}})
         save_json(self.custom_path, {})
         save_json(
-            self.discovery_path,
-            {"providers": {name: list(self.saved_sources) for name in discover.PROVIDER_MODULES}, "renames": {}},
+            self.repos_path,
+            {
+                "repositories": self.saved_repos,
+                "providers": {name: list(self.saved_sources) for name in discover.PROVIDER_MODULES},
+                "renames": {},
+            },
         )
         for patcher in (
             patch.multiple(
                 discover,
-                DISCOVERY_JSON_PATH=self.discovery_path,
                 CUSTOM_JSON_PATH=self.custom_path,
                 REPOS_JSON_PATH=self.repos_path,
                 ROOT_DIR=self.root,
@@ -56,7 +57,7 @@ class TestDiscover:
     )
     def test_provider_failure_preserves_saved_sources(self, module, failure_kind) -> None:
         snapshot = self.official_path.read_bytes()
-        saved_file = self.discovery_path.read_bytes()
+        saved_file = self.repos_path.read_bytes()
         if failure_kind == "http":
             error = self.http_error("https://example.com", 503)
         elif failure_kind == "network":
@@ -65,7 +66,7 @@ class TestDiscover:
             error = httpx2.ReadTimeout("timed out")
         self.open_url.side_effect = error
         assert module.discover() == ([], str(error))
-        assert self.discovery_path.read_bytes() == saved_file
+        assert self.repos_path.read_bytes() == saved_file
         assert self.official_path.read_bytes() == snapshot
 
     @pytest.mark.parametrize("module", (official, jman))
@@ -155,16 +156,14 @@ class TestDiscover:
             patch.object(morphe_archive, "request", return_value=httpx2.Response(200, text=content)) as request,
         ):
             assert discover.main([]) == 0
-            saved_sources = self.discovery_path.read_bytes()
             saved_repos = self.repos_path.read_bytes()
             request.return_value = httpx2.Response(200, text="\n".join(reversed(content.splitlines())))
             assert discover.main([]) == 0
-        assert load_json(self.discovery_path)["providers"]["morphe-archive"] == [
+        assert load_json(self.repos_path)["providers"]["morphe-archive"] == [
             "https://github.com/owner/New",
             "https://github.com/owner/new",
             "https://gitlab.com/group/project",
         ]
-        assert self.discovery_path.read_bytes() == saved_sources
         assert self.repos_path.read_bytes() == saved_repos
 
     def test_provider_outage_keeps_saved_repositories(
@@ -172,12 +171,14 @@ class TestDiscover:
     ) -> None:
         self.open_url.side_effect = httpx2.ConnectError("offline")
         assert discover.main([]) == 0
-        assert load_json(self.repos_path) == self.saved_repos
+        assert load_json(self.repos_path)["repositories"] == self.saved_repos
 
     @pytest.mark.parametrize("arguments", ([], ["--daily"]))
     @pytest.mark.parametrize("content", ("{}", "[]"))
     def test_no_usable_sources_stops_without_changing_repositories(self, arguments, content) -> None:
-        save_json(self.discovery_path, {"providers": [] if content == "[]" else {}, "renames": {}})
+        registry = load_json(self.repos_path)
+        registry["providers"] = [] if content == "[]" else {}
+        save_json(self.repos_path, registry)
         snapshot = self.repos_path.read_bytes()
         self.open_url.side_effect = httpx2.ConnectError("offline")
         with (
@@ -198,9 +199,9 @@ class TestDiscover:
             self.custom_path,
             {"https://github.com/owner/disabled": {"enabled": False}},
         )
-        discovery_state = load_json(self.discovery_path)
+        discovery_state = load_json(self.repos_path)
         discovery_state["renames"] = {"https://github.com/owner/old": "https://github.com/owner/saved"}
-        save_json(self.discovery_path, discovery_state)
+        save_json(self.repos_path, discovery_state)
         data = {
             "bundles": [
                 {"source": "github", "repo": "owner/disabled"},
@@ -224,15 +225,16 @@ class TestDiscover:
             ),
         ):
             assert discover.main([]) == 0
-        assert load_json(self.repos_path) == {
+        assert load_json(self.repos_path)["repositories"] == {
             **self.saved_repos,
             "https://github.com/owner/disabled": {"enabled": False},
             "https://github.com/owner/new": {},
         }
+        assert load_json(self.repos_path)["renames"] == discovery_state["renames"]
 
     def test_snapshot_and_provider_write_failures_propagate(self) -> None:
         snapshot = self.official_path.read_bytes()
-        sources = self.discovery_path.read_bytes()
+        sources = self.repos_path.read_bytes()
         with (
             patch.object(
                 official,
@@ -244,7 +246,7 @@ class TestDiscover:
         ):
             official.discover()
         assert self.official_path.read_bytes() == snapshot
-        assert self.discovery_path.read_bytes() == sources
+        assert self.repos_path.read_bytes() == sources
         with (
             patch.object(self.open_url, "side_effect", httpx2.ConnectError("offline")),
             patch.object(discover, "save_json", side_effect=OSError("disk full")),
@@ -343,7 +345,7 @@ class TestDiscover:
             summary = self.summary.call_args.args[0]
             assert "https://github.com/owner/archived" in summary
             assert load_json(output_path) == {**projects, "newRepos": [repository["html_url"]]}
-            assert load_json(self.repos_path) == self.saved_repos
+            assert load_json(self.repos_path)["repositories"] == self.saved_repos
 
 
 @pytest.mark.parametrize("reverse_custom", (False, True))

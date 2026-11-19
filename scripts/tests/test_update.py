@@ -26,9 +26,8 @@ class TestBundleUpdate:
         self.patches_dir = self.root / "patches"
         self.repos_path = self.root / "repos.json"
         self.public_path = self.root / "catalog.json"
-        self.state_path = self.root / "update-state.json"
+        self.state_path = self.root / "state.json"
         self.custom_path = self.root / "custom.json"
-        self.discovery_path = self.root / "discovery.json"
         self.official_path = self.root / "official.json"
         self.changelog_path = self.root / "whats-new.json"
         self.markdown_path = self.root / "whats-new.md"
@@ -37,7 +36,6 @@ class TestBundleUpdate:
             self.public_path,
             self.state_path,
             self.custom_path,
-            self.discovery_path,
         ]
         for path in [*self.state_paths, self.official_path]:
             save_json(path, {})
@@ -46,7 +44,10 @@ class TestBundleUpdate:
             {"lastDaily": "2026-01-01", "lastWeek": "2026-W01", "appHashes": {}, "history": {}},
         )
         save_json(self.changelog_path, [])
-        save_json(self.discovery_path, {"providers": {}, "renames": {}})
+        save_json(
+            self.repos_path,
+            {"repositories": {}, "providers": {"official": ["https://github.com/owner/alpha"]}, "renames": {}},
+        )
         self.patch_context.enter_context(
             patch.multiple(
                 whats_new,
@@ -62,9 +63,8 @@ class TestBundleUpdate:
                 bundle_update,
                 REPOS_JSON_PATH=self.repos_path,
                 BUNDLES_JSON_PATH=self.public_path,
-                UPDATE_STATE_PATH=self.state_path,
+                STATE_PATH=self.state_path,
                 CUSTOM_JSON_PATH=self.custom_path,
-                DISCOVERY_JSON_PATH=self.discovery_path,
                 OFFICIAL_BUNDLES_PATH=self.official_path,
                 BUNDLES_DIR=self.bundles_dir,
                 PATCHES_DIR=self.patches_dir,
@@ -95,10 +95,10 @@ class TestBundleUpdate:
         patches: list | None = None,
         sha: str | None = "downloaded-sha",
     ) -> Path:
-        repos = load_json(self.repos_path)
+        repos = load_json(self.repos_path)["repositories"]
         entry = repos.setdefault(f"https://{source}.com/{repo}", {})
         entry[branch] = sha
-        save_json(self.repos_path, repos)
+        self.save_repos(repos)
         prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
         save_json(
             self.bundles_dir / f"{prefix}.json",
@@ -119,6 +119,11 @@ class TestBundleUpdate:
             "name": name,
             "compatiblePackages": [{"packageName": package_name, "targets": [{"version": "1.0"}]}],
         }
+
+    def save_repos(self, repositories: dict) -> None:
+        registry = load_json(self.repos_path)
+        registry["repositories"] = repositories
+        save_json(self.repos_path, registry)
 
     def save_history(self, history: dict) -> None:
         state = load_json(self.state_path)
@@ -220,7 +225,7 @@ class TestBundleUpdate:
         assert catalog["bundles"] == []
         assert catalog["store"] == {}
         assert catalog["compatibilities"] == []
-        assert load_json(self.repos_path)["https://github.com/owner/alpha"]["main"] == "downloaded-sha"
+        assert load_json(self.repos_path)["repositories"]["https://github.com/owner/alpha"]["main"] == "downloaded-sha"
 
     def test_null_sha_prevents_reading_old_valid_patch_list(self) -> None:
         self.add_target(sha=None)
@@ -353,10 +358,10 @@ class TestBundleUpdate:
         )
         old_history = {"com.test.app": ["Patch"]}
         self.save_history({"https://github.com/owner/alpha": old_history})
-        repos = load_json(self.repos_path)
+        repos = load_json(self.repos_path)["repositories"]
         repos["https://github.com/owner/alpha"]["renamedTo"] = "https://github.com/owner/renamed"
         repos["https://github.com/owner/alpha"]["stars"] = 10
-        save_json(self.repos_path, repos)
+        self.save_repos(repos)
         save_json(
             self.custom_path,
             {
@@ -368,7 +373,7 @@ class TestBundleUpdate:
             },
         )
         custom_before = self.custom_path.read_bytes()
-        providers_before = load_json(self.discovery_path)["providers"]
+        providers_before = load_json(self.repos_path)["providers"]
         catalog = self.run_update("daily")
         if enabled:
             assert catalog["bundles"][0]["repo"] == "owner/renamed"
@@ -377,18 +382,18 @@ class TestBundleUpdate:
         else:
             assert catalog["bundles"] == []
             self.fetch_app.assert_not_called()
-            assert load_json(self.repos_path)["https://github.com/owner/renamed"]["enabled"] is False
+            assert load_json(self.repos_path)["repositories"]["https://github.com/owner/renamed"]["enabled"] is False
         assert load_json(self.state_path)["history"] == {"https://github.com/owner/renamed": old_history}
         assert set(load_json(self.state_path)["appHashes"]) == (
             {"https://github.com/owner/renamed"} if enabled else set()
         )
-        assert set(load_json(self.repos_path)) == {"https://github.com/owner/renamed"}
-        assert load_json(self.discovery_path)["renames"] == {
+        assert set(load_json(self.repos_path)["repositories"]) == {"https://github.com/owner/renamed"}
+        assert load_json(self.repos_path)["renames"] == {
             "https://github.com/owner/alpha": "https://github.com/owner/renamed"
         }
         assert self.custom_path.read_bytes() == custom_before
-        assert load_json(self.discovery_path)["providers"] == providers_before
-        assert "renamedTo" not in load_json(self.repos_path)["https://github.com/owner/renamed"]
+        assert load_json(self.repos_path)["providers"] == providers_before
+        assert "renamedTo" not in load_json(self.repos_path)["repositories"]["https://github.com/owner/renamed"]
         assert (self.bundles_dir / "github~owner~renamed~main.json").is_file()
         assert (self.patches_dir / "github~owner~renamed~main.json").is_file()
         assert self.run_update() == catalog
@@ -408,10 +413,10 @@ class TestBundleUpdate:
         for repo, timestamp, _stars in targets:
             self.add_target(repo=repo, timestamp=timestamp)
         self.add_target(repo="owner/invalid", patches=[])
-        repos = load_json(self.repos_path)
+        repos = load_json(self.repos_path)["repositories"]
         for repo, _timestamp, stars in targets:
             repos[f"https://github.com/{repo}"]["stars"] = stars
-        save_json(self.repos_path, repos)
+        self.save_repos(repos)
         save_json(
             self.official_path,
             {
@@ -473,9 +478,9 @@ class TestBundleUpdate:
                 "https://github.com/owner/beta": {"com.beta.app": ["Patch"]},
             },
         )
-        repos = load_json(self.repos_path)
+        repos = load_json(self.repos_path)["repositories"]
         repos["https://github.com/owner/alpha"]["renamedTo"] = "https://github.com/owner/beta"
-        save_json(self.repos_path, repos)
+        self.save_repos(repos)
         catalog = self.run_update("daily")
         assert [bundle["repo"] for bundle in catalog["bundles"]] == ["owner/beta"]
         assert set(catalog["store"]) == {"com.beta.app"}
@@ -615,9 +620,9 @@ class TestBundleUpdate:
         )
         orphan_file = self.patches_dir / "orphan.json"
         save_json(orphan_file, {})
-        repos = load_json(self.repos_path)
+        repos = load_json(self.repos_path)["repositories"]
         repos["https://github.com/owner/alpha"]["renamedTo"] = "https://github.com/owner/renamed"
-        save_json(self.repos_path, repos)
+        self.save_repos(repos)
         snapshot = self.snapshot()
         with (
             patch.object(
@@ -648,10 +653,10 @@ class TestBundleUpdate:
     def test_official_status_and_metadata_do_not_leak_across_hosts(self) -> None:
         self.add_target()
         self.add_target(source="gitlab")
-        repos = load_json(self.repos_path)
+        repos = load_json(self.repos_path)["repositories"]
         repos["https://github.com/owner/alpha"].update({"stars": 100, "description": "GitHub", "isArchived": True})
         repos["https://gitlab.com/owner/alpha"].update({"stars": 5, "description": "GitLab"})
-        save_json(self.repos_path, repos)
+        self.save_repos(repos)
         save_json(
             self.official_path,
             {"bundles": [{"source": "github", "repo": "owner/alpha", "hotRank": 0}]},
@@ -667,15 +672,15 @@ class TestBundleUpdate:
     def test_rename_preserves_other_host_and_keeps_new_files_readable(self) -> None:
         self.add_target()
         self.add_target(source="gitlab")
-        repos = load_json(self.repos_path)
+        repos = load_json(self.repos_path)["repositories"]
         repos["https://github.com/owner/alpha"]["renamedTo"] = "https://github.com/owner/new"
-        save_json(self.repos_path, repos)
+        self.save_repos(repos)
         catalog = self.run_update()
         assert {(bundle["source"], bundle["repo"]) for bundle in catalog["bundles"]} == {
             ("github", "owner/new"),
             ("gitlab", "owner/alpha"),
         }
-        assert "https://gitlab.com/owner/alpha" in load_json(self.repos_path)
+        assert "https://gitlab.com/owner/alpha" in load_json(self.repos_path)["repositories"]
         assert self.run_update() == catalog
 
 

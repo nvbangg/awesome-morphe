@@ -6,7 +6,6 @@ SCRIPTS_DIR = ROOT_DIR / "scripts"
 PUBLIC_DIR = ROOT_DIR / "web" / "public"
 
 CUSTOM_JSON_PATH = DATA_DIR / "custom.json"
-DISCOVERY_JSON_PATH = DATA_DIR / "discovery.json"
 BUNDLES_DIR = DATA_DIR / "bundles"
 PATCHES_DIR = DATA_DIR / "patches"
 PROJECTS_JSON_PATH = DATA_DIR / "projects.json"

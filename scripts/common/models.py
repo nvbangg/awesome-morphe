@@ -35,12 +35,6 @@ class SourceConfig(TypedDict, total=False):
     request: str
 
 
-@with_config(strict=True)
-class DiscoveryState(TypedDict):
-    providers: dict[str, list[NonEmptyString]]
-    renames: dict[Annotated[str, Field(pattern=r"^[^A-Z]+$")], NonEmptyString]
-
-
 @with_config(strict=True, extra="allow")
 class ProjectLists(TypedDict):
     readmeRepos: list[NonEmptyString]
@@ -89,6 +83,13 @@ class RepositoryState(TypedDict, total=False):
 
 
 @with_config(strict=True)
+class RepositoryRegistry(TypedDict):
+    repositories: dict[str, RepositoryState]
+    providers: dict[str, list[NonEmptyString]]
+    renames: dict[Annotated[str, Field(pattern=r"^[^A-Z]+$")], NonEmptyString]
+
+
+@with_config(strict=True)
 class RepositoryAvatar(TypedDict, total=False):
     avatar_url: str | None
 
@@ -117,11 +118,10 @@ BUNDLE_MANIFEST = TypeAdapter(BundleManifest)
 PATCH = TypeAdapter(Patch)
 PATCH_LIST = TypeAdapter(PatchList)
 SOURCES = TypeAdapter(dict[str, SourceConfig])
-DISCOVERY = TypeAdapter(DiscoveryState)
 PROJECTS = TypeAdapter(ProjectLists)
 OFFICIAL_CATALOG = TypeAdapter(OfficialCatalog)
 JMAN_SOURCES = TypeAdapter(dict[str, OnErrorOmit[JmanSource]])
-REPOSITORIES = TypeAdapter(dict[str, RepositoryState])
+REPOSITORIES = TypeAdapter(RepositoryRegistry)
 UPDATE_STATE = TypeAdapter(UpdateState)
 GITHUB_REPOSITORY = TypeAdapter(GitHubRepository)
 GITLAB_REPOSITORY = TypeAdapter(GitLabRepository)

@@ -8,14 +8,13 @@ from dotenv import load_dotenv
 
 from common.constants import (
     CUSTOM_JSON_PATH,
-    DISCOVERY_JSON_PATH,
     REPOS_JSON_PATH,
     ROOT_DIR,
     SCRIPTS_DIR,
 )
 from common.files import load_json, save_json
 from common.http import HTTP_CLIENT
-from common.models import DISCOVERY, REPOSITORIES, SOURCES
+from common.models import REPOSITORIES, SOURCES
 from common.repositories import build_repo_url, parse_repo_url
 from common.summary import append_step_summary, format_summary_section
 from discovery import (
@@ -82,15 +81,16 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    discovery = DISCOVERY.validate_python(load_json(DISCOVERY_JSON_PATH, {"providers": {}, "renames": {}}))
+    registry = REPOSITORIES.validate_python(
+        load_json(REPOS_JSON_PATH, {"repositories": {}, "providers": {}, "renames": {}})
+    )
     custom = SOURCES.validate_python(load_json(CUSTOM_JSON_PATH))
-    warnings = _run_providers(discovery["providers"])
-    save_json(DISCOVERY_JSON_PATH, discovery)
+    warnings = _run_providers(registry["providers"])
     print()
     provider_files = [
         custom,
-        *({url: {} for url in discovery["providers"].get(name, [])} for name in PROVIDER_MODULES),
-        {url: {} for url in discovery["renames"].values()},
+        *({url: {} for url in registry["providers"].get(name, [])} for name in PROVIDER_MODULES),
+        {url: {} for url in registry["renames"].values()},
     ]
     provider_files = [data for data in provider_files if data]
     if not provider_files:
@@ -112,13 +112,13 @@ def main(argv: list[str] | None = None) -> int:
         append_step_summary("\n\n".join(summary_sections))
         return 1
 
-    merged = merge_sources(provider_files, discovery["renames"])
+    merged = merge_sources(provider_files, registry["renames"])
     print(f"Merged {len(merged)} unique sources")
 
-    existing_repos = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
-    synced_repos = _sync_repos(merged, existing_repos)
+    synced_repos = _sync_repos(merged, registry["repositories"])
     print(f"Synced {len(synced_repos)} repos")
-    save_json(REPOS_JSON_PATH, synced_repos)
+    registry["repositories"] = synced_repos
+    save_json(REPOS_JSON_PATH, registry)
     print(f"Saved to {REPOS_JSON_PATH.relative_to(ROOT_DIR)}")
     if args.daily or args.weekly:
         summary_sections.append(audit_readme.audit_repos_and_links())

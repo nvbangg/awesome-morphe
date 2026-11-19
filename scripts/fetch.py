@@ -13,6 +13,7 @@ from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from http import HTTPStatus
 from threading import Lock
+from typing import cast
 
 import httpx2
 from dotenv import load_dotenv
@@ -23,7 +24,6 @@ from common.constants import (
     CONCURRENCY,
     CUSTOM_JSON_PATH,
     DEFAULT_BRANCHES,
-    DISCOVERY_JSON_PATH,
     PATCHES_DIR,
     REPOS_JSON_PATH,
     SCRIPTS_DIR,
@@ -32,7 +32,7 @@ from common.constants import (
 from common.files import load_json, save_json
 from common.http import HTTP_CLIENT, request
 from common.images import normalize_image_url
-from common.models import BUNDLE_MANIFEST, DISCOVERY, REPOSITORIES, SOURCES
+from common.models import BUNDLE_MANIFEST, REPOSITORIES, SOURCES, RepositoryState
 from common.repositories import (
     build_raw_url,
     build_repo_url,
@@ -475,11 +475,13 @@ def refresh_repo_metadata(
 
 
 def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
-    repos_data = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
+    registry = REPOSITORIES.validate_python(
+        load_json(REPOS_JSON_PATH, {"repositories": {}, "providers": {}, "renames": {}})
+    )
+    repos_data = registry["repositories"]
     initial_repos = {url: dict(metadata) for url, metadata in repos_data.items()}
     custom_data = SOURCES.validate_python(load_json(CUSTOM_JSON_PATH))
-    discovery = DISCOVERY.validate_python(load_json(DISCOVERY_JSON_PATH, {"providers": {}, "renames": {}}))
-    apply_source_config(repos_data, custom_data, discovery["renames"])
+    apply_source_config(repos_data, custom_data, registry["renames"])
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
     MPP_DIR.mkdir(parents=True, exist_ok=True)
@@ -492,7 +494,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     }
     repository_details = RepositoryDetails()
     repository_warnings = refresh_repo_metadata(repos_data, daily or weekly, repository_details)
-    apply_source_config(repos_data, custom_data, discovery["renames"])
+    apply_source_config(repos_data, custom_data, registry["renames"])
     previous_preferred = {}
     renamed_repos = {}
     for repo_url, repo_metadata in repos_data.items():
@@ -538,7 +540,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         if result.renamed_to and repo_metadata.get("renamedTo") != result.renamed_to:
             repo_metadata["renamedTo"] = result.renamed_to
             repository_warnings.append(f"{repo_url}: Renamed to {result.renamed_to}")
-    apply_source_config(repos_data, custom_data, discovery["renames"])
+    apply_source_config(repos_data, custom_data, registry["renames"])
     active_results = [
         result
         for result in results
@@ -606,15 +608,13 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         )
     )
     errors["repo_metadata"].extend(dict.fromkeys(repository_warnings))
-    apply_source_config(repos_data, custom_data, discovery["renames"])
+    apply_source_config(repos_data, custom_data, registry["renames"])
     if repos_data != initial_repos:
-        save_json(
-            REPOS_JSON_PATH,
-            {
-                url: {field: metadata[field] for field in REPOSITORY_FIELDS if field in metadata}
-                for url, metadata in sorted(repos_data.items(), key=lambda item: item[0].lower())
-            },
-        )
+        registry["repositories"] = {
+            url: cast(RepositoryState, {field: metadata[field] for field in REPOSITORY_FIELDS if field in metadata})
+            for url, metadata in sorted(repos_data.items(), key=lambda item: item[0].lower())
+        }
+        save_json(REPOS_JSON_PATH, registry)
     total_repo_count = len(grouped_results)
     successful_repo_count = sum(
         any(result.new_sha and not result.error_message for result in branch_results)
