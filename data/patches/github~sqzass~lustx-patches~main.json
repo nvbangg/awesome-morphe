@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.22.2",
+  "version": "1.22.3",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -20,7 +20,7 @@
     },
     {
       "name": "Allow text selection",
-      "description": "Flips setTextIsSelectable(false)/setLongClickable(false) to true so text can be selected and copied.",
+      "description": "Makes it so text can be selected and copied on apps that normally block it.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -28,7 +28,7 @@
     },
     {
       "name": "Bypass root / emulator detection",
-      "description": "Forces common root and emulator detection methods to report clean. Covers Java/Kotlin-level checks in app code; library packages and native (.so) detection are not affected.",
+      "description": "Bypasses root/emulator detection methods.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -36,7 +36,7 @@
     },
     {
       "name": "Bypass signature check",
-      "description": "Forces TamperCheck.validateAppSignature to true. Patched builds are re-signed, so the app's three hardcoded certificate SHA-1 hashes no longer match.",
+      "description": "Bypasses PortDroid's signature check so the re-signed app passes validation.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -68,7 +68,7 @@
     },
     {
       "name": "Change package name",
-      "description": "Renames the app package (appends \".lustx\" by default) and updates custom permissions and content-provider authorities. Changing the package name can break apps that hardcode their package or authorities in code.",
+      "description": "Renames the app package.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -76,13 +76,11 @@
         {
           "key": "packageName",
           "title": "Package name",
-          "description": "New package name. \"Default\" appends \".lustx\" to the original.",
-          "required": true,
+          "description": "Custom package name. Left blank, the original package is suffixed with '.lustx'.",
+          "required": false,
           "type": "kotlin.String",
-          "default": "Default",
-          "values": {
-            "Default": "Default"
-          }
+          "default": null,
+          "values": null
         },
         {
           "key": "updatePermissions",
@@ -106,7 +104,7 @@
     },
     {
       "name": "Change version name / code",
-      "description": "Rewrites the manifest versionName/versionCode and the baked-in BuildConfig values. 'Current' keeps the existing value.",
+      "description": "Changes the manifest and BuildConfig version values. Current keeps the current one, duh, or just disable this patch.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -137,7 +135,7 @@
     },
     {
       "name": "Custom font",
-      "description": "Overrides the app's typeface with a built-in font family. Affects explicit Typeface usage; views that never set a typeface keep the system default.",
+      "description": "Overrides the app's typeface with a built-in font.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -159,7 +157,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Neutralizes common ad SDKs (AdMob, Unity, Meta, AppLovin) by forcing their void load/show sinks to no-op and their boolean readiness predicates to false. Object-returning APIs are left intact to avoid null returns. Missing SDKs are skipped, so this is safe as a universal patch. Tradeoff: rewarded-ad gates never complete, so 'watch an ad to unlock' flows dead-end.",
+      "description": "Neutralizes common ad SDKs (AdMob, Unity, Meta, AppLovin).",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -167,7 +165,7 @@
     },
     {
       "name": "Disable boot start-up",
-      "description": "Prevents the app from auto-starting on device boot by removing boot intent-filter actions and the RECEIVE_BOOT_COMPLETED permission.",
+      "description": "Prevents auto-start on boot.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -185,7 +183,7 @@
     },
     {
       "name": "Enable media sniffer",
-      "description": "Restores Pawxy's hidden video/media sniffer to the default tool menu. The toolbar builder excludes Tool$Action.SNIFFER from the default list; this patch removes that exclusion so the sniffer appears like any other tool.",
+      "description": "Restores Pawxy's hidden media sniffer to the toolbar.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -217,7 +215,7 @@
     },
     {
       "name": "Force dark / AMOLED theme",
-      "description": "Forces AppCompat night mode to YES and (optionally) flips AMOLED/pure-black flags. Covers AppCompat/Material apps; Jetpack Compose themes are not affected.",
+      "description": "Forces AppCompat dark / AMOLED theme.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -235,7 +233,7 @@
     },
     {
       "name": "Force refresh rate",
-      "description": "Rewrites the float argument at Surface.setFrameRate() call sites to the selected refresh rate. This only affects apps that already request a frame rate; it does not globally force a display mode. Missing call sites are skipped safely.",
+      "description": "Rewrites Surface.setFrameRate() to the selected refresh rate.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -266,7 +264,7 @@
     },
     {
       "name": "Forced-update bypass",
-      "description": "Neuters in-app forced-update gates (dialogs, blocking checks, version prompts). Works on apps that keep readable method names; fully-obfuscated apps need per-app fingerprints.",
+      "description": "Neuters in-app forced-update gates.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -274,7 +272,7 @@
     },
     {
       "name": "Hide app icon",
-      "description": "Hides the app from the launcher by replacing the LAUNCHER category with DEFAULT. The app stays installed; launch it via another app or a shortcut.",
+      "description": "Hides the app from the launcher.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -282,7 +280,7 @@
     },
     {
       "name": "Rate-us popup",
-      "description": "Either removes the rate-us popup entirely, or rewrites its text. Rewrite mode changes the dialog title/body/buttons. Remove mode kills the trigger so the popup never appears.",
+      "description": "Removes or rewrites the rate-us popup text.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -357,7 +355,7 @@
     },
     {
       "name": "Remove PairIP",
-      "description": "Removes the PairIP Play licensing gate (startup license check, response validation, repeated checks and paywall/kill path). Does not bypass PairIP native virtualization or Play Integrity attestation.",
+      "description": "Removes the PairIP Play licensing gate.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -365,7 +363,7 @@
     },
     {
       "name": "Remove clip bumper",
-      "description": "Removes the ~5s Postparty logo bumper from all exports. Forces client-side transcoding so unedited clips re-encode instead of direct-saving the server-baked file, then nulls the bumper path in both ffmpeg command builders so the re-encode never appends it.",
+      "description": "Removes the Postparty logo bumper from all exports.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -392,7 +390,7 @@
     },
     {
       "name": "Remove rate-us / review prompts",
-      "description": "Suppresses in-app rating/review dialogs and gates. Optionally blocks the Play Core system review dialog (may crash apps that don't null-check the returned Task).",
+      "description": "Suppresses in-app rating/review prompts.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -410,7 +408,7 @@
     },
     {
       "name": "Rename app label",
-      "description": "Sets a literal launcher name on <application>, launcher activities and aliases. 'Current' keeps the existing label.",
+      "description": "Sets a literal launcher name.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -430,7 +428,7 @@
     },
     {
       "name": "Skip splash",
-      "description": "Skips splash/intro screens by running their deferred navigation immediately and removing artificial sleeps. Scoped to splash-named Activity/Fragment classes.",
+      "description": "Skips splash/intro screens.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -448,7 +446,7 @@
     },
     {
       "name": "Spoof device identity",
-      "description": "Unified device spoofing with per-category toggles: Android ID, MAC address, SIM/carrier, and Build device fields. Includes emulator presets. Library packages keep the real device so their internal behavior is unaffected.",
+      "description": "Spoofs Android ID, MAC, SIM/carrier and Build fields.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -628,7 +626,7 @@
     },
     {
       "name": "Spoof rooted environment",
-      "description": "Makes Java-level root checks report rooted: forces named detection methods true, spoofs Build.TAGS/USER/HOST at read sites, and forces su-path file checks to succeed. String/field-based targeting survives obfuscation. Native checks and Runtime.exec(\"su\") are not faked.",
+      "description": "Spoofs root checks and Build fields.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -646,7 +644,7 @@
     },
     {
       "name": "Strip VPN checks",
-      "description": "Hides an active VPN from the app by neutralizing NetworkCapabilities transport/capability checks and (optionally) network-interface name checks.",
+      "description": "Hides active VPN from the app.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -664,7 +662,7 @@
     },
     {
       "name": "Strip sensitive permissions",
-      "description": "Removes selected sensitive permissions from the manifest. Can break features that rely on them; enable only the groups you want stripped.",
+      "description": "Removes selected sensitive permissions from the manifest.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -763,7 +761,7 @@
     },
     {
       "name": "Telemetry / crash-reporter kill",
-      "description": "Silences common analytics, crash-reporting, attribution, session-replay and telemetry SDKs by forcing void logging/tracking sinks and boolean readiness predicates to no-op. Object-returning SDK methods are left intact to avoid null return crashes. Missing SDKs are skipped, so this is safe as a universal patch.",
+      "description": "No-ops analytics, crash-reporting and telemetry SDK calls.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
@@ -781,7 +779,7 @@
     },
     {
       "name": "Toast on launch",
-      "description": "Shows a Toast when the app starts by injecting framework Toast calls into the Application subclass's onCreate(). Pure inline smali — adds no classes or methods. No-op, never crashes, if the app has no custom Application, does not override onCreate, or its onCreate has too few free registers.",
+      "description": "Shows a Toast when the app launches.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
