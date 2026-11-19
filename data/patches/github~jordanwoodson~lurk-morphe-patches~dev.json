@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when the release workflow (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.18.0-dev.1",
+  "version": "1.19.0",
   "patches": [
     {
       "name": "AMOLED black",
@@ -172,7 +172,7 @@
     },
     {
       "name": "Auto-claim Drops",
-      "description": "Adds a switch that claims a Drop for your account as soon as Twitch's drops notification in a channel shows it as claimable, by pressing that notification's Claim button for you: the same claim request and the same \"claim\" analytics event a tap sends (Disable analytics blocks the event). Each drop is claimed once per app start. Needs a signed-in account and the notification, which shows while you watch a channel with Drops; drops earned elsewhere stay in your inventory. Checked against Twitch's code on Android's runtime, not yet with a real account. Starts off. Turn it on in Lurk settings > Chat.",
+      "description": "Adds a switch that claims a Drop for your account as soon as Twitch's drops notification in a channel shows it as claimable, by pressing that notification's Claim button for you: the same claim request and the same \"claim\" analytics event a tap sends (Disable analytics blocks the event). Each drop is claimed once per app start. Needs a signed-in account and the notification, which shows while you watch a channel with Drops; drops earned elsewhere stay in your inventory. Time-based Drops progress from the watch-time event Disable analytics blocks, so while this is on that one event still goes; every other analytics event stays blocked. Checked against Twitch's code on Android's runtime, not yet with a real account. Starts off. Turn it on in Lurk settings > Chat.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1592,7 +1592,7 @@
     },
     {
       "name": "Disable analytics",
-      "description": "Stops Twitch's native and React Native Spade event uploads, denies local analytics SDK consent, enables Branch's limited tracking mode, blocks Crashlytics uploads, Nielsen audience pings and Sprig surveys, and prevents Sentry initialization. Watch progress, viewing statistics and rewards may stop updating; with Auto-claim channel points on, the minute-watched event that earns channel points still goes. Restart Twitch after changing this setting. Playback requests still run.",
+      "description": "Stops Twitch's native and React Native Spade event uploads, denies local analytics SDK consent, enables Branch's limited tracking mode, blocks Crashlytics uploads, Nielsen audience pings and Sprig surveys, and prevents Sentry initialization. Watch progress, viewing statistics and rewards may stop updating; with Auto-claim channel points or Auto-claim Drops on, the minute-watched event that earns channel points and progresses Drops still goes. Restart Twitch after changing this setting. Playback requests still run.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2246,7 +2246,7 @@
     },
     {
       "name": "Hide Home sections",
-      "description": "Hides Stories on Home and, each with its own switch, the Continue watching, offline channels and recommended channels sections of Following and the recent streams shelf of the Live tab.",
+      "description": "Hides Stories on Home and, each with its own switch, the Continue watching, offline channels and recommended channels sections of Following, the recent streams shelf of the Live tab and the Live tab itself.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -2749,6 +2749,34 @@
       "options": []
     },
     {
+      "name": "Keep Drops banner",
+      "description": "Keeps Twitch's \"Twitch Drops\" banner above chat in the native player for as long as you watch a channel with Drops, the way the React Native player keeps its Drops card, instead of removing it after a minute. Expand it for the campaign and its end date, then View Details for each Drop and how to earn it, or Dismiss to remove it. Twitch shows Drops only to a signed-in account. Starts on; turn it off in Lurk settings > Chat.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "32.1.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Keep playing during other sounds",
       "description": "Choose whether Rumble pauses when another app plays sound: always (Rumble's behavior), only for longer interruptions, or never. Calls still pause playback. Starts off. Choose it in Lurk settings > Playback.",
       "default": true,
@@ -2834,7 +2862,7 @@
     },
     {
       "name": "Lurk icon",
-      "description": "Replaces Kick's launcher icon with Lurk artwork, including Android's themed icon.",
+      "description": "Replaces Kick's launcher icon with Lurk artwork, including Android's themed icon. Lurk settings > Interface > App icon switches back to Kick's own icon without patching again (not on a root mount install).",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2862,7 +2890,7 @@
     },
     {
       "name": "Lurk icon",
-      "description": "Replaces Rumble's launcher icon with the Lurk icon, including the themed icon on Android 13+.",
+      "description": "Replaces Rumble's launcher icon with the Lurk icon, including the themed icon on Android 13+. Lurk settings > Interface > App icon switches back to Rumble's own icon without patching again (not on a root mount install).",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2890,7 +2918,7 @@
     },
     {
       "name": "Lurk icon",
-      "description": "Replaces Twitch's launcher icon with Lurk artwork, including Android's themed icon.",
+      "description": "Replaces Twitch's launcher icon with Lurk artwork, including Android's themed icon. Lurk settings > Interface > App icon switches back to Twitch's own icon without patching again (not on a root mount install).",
       "default": true,
       "category": null,
       "compatiblePackages": [
