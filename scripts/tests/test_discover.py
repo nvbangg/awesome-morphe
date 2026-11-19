@@ -276,9 +276,14 @@ class TestDiscover:
         search.assert_not_called()
 
     def test_extended_discovery_exports_only_verified_unknown_projects(self) -> None:
-        project_dir = self.root / "projects"
-        project_dir.mkdir()
-        output_path = project_dir / "new-projects.txt"
+        output_path = self.root / "projects.json"
+        projects = {
+            "readmeRepos": ["https://github.com/owner/archived", "https://github.com/owner/known-project"],
+            "readmeLinks": [],
+            "newRepos": [],
+            "excludedRepos": ["https://github.com/owner/excluded-project"],
+        }
+        save_json(output_path, projects)
         repository = {
             "name": "new-project",
             "full_name": "owner/new-project",
@@ -303,17 +308,12 @@ class TestDiscover:
             )
 
         with (
-            patch.object(
-                audit_readme,
-                "load_lines",
-                side_effect=[["https://github.com/owner/archived"], []],
-            ),
+            patch.object(audit_readme, "PROJECTS_JSON_PATH", output_path),
             patch.object(audit_readme, "fetch_repo_details", return_value={"is_archived": True}),
             patch.multiple(
                 find_projects,
                 ROOT_DIR=self.root,
-                PROJECTS_DIR=project_dir,
-                NEW_PROJECTS_PATH=output_path,
+                PROJECTS_JSON_PATH=output_path,
                 SEARCH_KEYWORDS=["morphe"],
                 TARGET_USERS=[],
             ),
@@ -335,14 +335,6 @@ class TestDiscover:
                     },
                 ),
             ) as search,
-            patch.object(
-                find_projects,
-                "load_lines",
-                side_effect=[
-                    ["https://github.com/owner/known-project"],
-                    ["https://github.com/owner/excluded-project"],
-                ],
-            ),
             patch.object(find_projects, "_file_exists", side_effect=file_exists),
         ):
             self.open_url.side_effect = httpx2.ConnectError("offline")
@@ -350,7 +342,7 @@ class TestDiscover:
             search.assert_called_once()
             summary = self.summary.call_args.args[0]
             assert "https://github.com/owner/archived" in summary
-            assert output_path.read_text(encoding="utf-8") == repository["html_url"] + "\n"
+            assert load_json(output_path) == {**projects, "newRepos": [repository["html_url"]]}
             assert load_json(self.repos_path) == self.saved_repos
 
 

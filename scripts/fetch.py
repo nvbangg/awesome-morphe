@@ -29,7 +29,7 @@ from common.constants import (
     SCRIPTS_DIR,
     UNAVAILABLE_HTTP_CODES,
 )
-from common.files import load_json, load_lines, save_json
+from common.files import load_json, save_json
 from common.http import HTTP_CLIENT, request
 from common.images import normalize_image_url
 from common.models import BUNDLE_MANIFEST, DISCOVERY, REPOSITORIES, SOURCES
@@ -380,7 +380,7 @@ def run_bundle_parser(targets: list[BranchFetchResult]) -> None:
     )
     if not PARSED_FILES_PATH.is_file():
         raise RuntimeError("bundle-parser did not write parsed_files.txt")
-    successful_files = set(load_lines(PARSED_FILES_PATH))
+    successful_files = set(PARSED_FILES_PATH.read_text(encoding="utf-8").splitlines())
     for target in targets:
         output_name = f"{target.target_name}.json"
         if output_name in successful_files and (PATCHES_DIR / output_name).is_file():

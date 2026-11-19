@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 import fetch as bundle_fetch
-from common.files import load_lines, save_json
+from common.files import save_json
 
 
 class TestBundleParser:
@@ -79,7 +79,9 @@ class TestBundleParser:
         self.complete_parser(targets)
         bundle_fetch.run_bundle_parser(targets)
         self.run_process.assert_called_once()
-        assert load_lines(self.updated_path) == [f"mpp/{target.target_name}.mpp" for target in targets]
+        assert self.updated_path.read_text(encoding="utf-8").splitlines() == [
+            f"mpp/{target.target_name}.mpp" for target in targets
+        ]
         assert all(target.new_sha == "new-sha" for target in targets)
 
     def test_process_failure_rejects_stale_success(self) -> None:

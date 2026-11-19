@@ -91,7 +91,7 @@ jobs:
           COMMIT_MSG="Sync bundles"
           if [ "$MODE" != "normal" ]; then
             jq --arg d "$TODAY" --arg w "$WEEK" --arg m "$MODE" \
-              '.lastDaily = $d | if $m == "weekly" then .lastWeek = $w else . end' data/ci.json > data/ci.tmp && mv data/ci.tmp data/ci.json
+              '.lastDaily = $d | if $m == "weekly" then .lastWeek = $w else . end' data/update-state.json > data/update-state.tmp && mv data/update-state.tmp data/update-state.json
             COMMIT_MSG="Update history (${TODAY})"
             if [ "$MODE" = "weekly" ]; then
               COMMIT_MSG="Update history (weekly ${TODAY})"

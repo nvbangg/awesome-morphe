@@ -9,12 +9,11 @@ CUSTOM_JSON_PATH = DATA_DIR / "custom.json"
 DISCOVERY_JSON_PATH = DATA_DIR / "discovery.json"
 BUNDLES_DIR = DATA_DIR / "bundles"
 PATCHES_DIR = DATA_DIR / "patches"
-PROJECTS_DIR = DATA_DIR / "projects"
+PROJECTS_JSON_PATH = DATA_DIR / "projects.json"
 REPOS_JSON_PATH = DATA_DIR / "repos.json"
 OFFICIAL_BUNDLES_PATH = DATA_DIR / "official-bundles.json"
 
 WHATS_NEW_PATH = SCRIPTS_DIR / "temp" / "whats-new.md"
-README_REPOS_PATH = PROJECTS_DIR / "readme-repos.txt"
 
 DEFAULT_BRANCHES = ("main", "dev")
 PACKAGE_UNIVERSAL = "__universal__"

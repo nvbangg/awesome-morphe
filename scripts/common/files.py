@@ -28,11 +28,3 @@ def save_json(path: str | Path, data: Any) -> None:
     finally:
         if temporary_path is not None:
             temporary_path.unlink(missing_ok=True)
-
-
-def load_lines(path: str | Path) -> list[str]:
-    path = Path(path)
-    if not path.exists():
-        return []
-    lines = map(str.strip, path.read_text(encoding="utf-8").splitlines())
-    return [line for line in lines if line and not line.startswith("#")]

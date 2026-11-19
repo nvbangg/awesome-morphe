@@ -4,19 +4,20 @@ from concurrent.futures import ThreadPoolExecutor
 
 from common.constants import (
     CONCURRENCY,
-    PROJECTS_DIR,
-    README_REPOS_PATH,
+    PROJECTS_JSON_PATH,
     UNAVAILABLE_HTTP_CODES,
 )
-from common.files import load_lines
+from common.files import load_json
 from common.http import check_link_status
+from common.models import PROJECTS
 from common.repositories import build_repo_url, fetch_repo_details, parse_repo_url
 from common.summary import format_summary_section
 
 
 def audit_repos_and_links() -> str:
-    repo_urls = load_lines(README_REPOS_PATH)
-    link_urls = load_lines(PROJECTS_DIR / "readme-links.txt")
+    projects = PROJECTS.validate_python(load_json(PROJECTS_JSON_PATH))
+    repo_urls = projects["readmeRepos"]
+    link_urls = projects["readmeLinks"]
     print(f"Auditing {len(repo_urls)} repositories and {len(link_urls)} links from README...")
 
     issues: list[str] = []

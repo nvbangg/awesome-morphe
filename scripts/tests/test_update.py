@@ -26,8 +26,7 @@ class TestBundleUpdate:
         self.patches_dir = self.root / "patches"
         self.repos_path = self.root / "repos.json"
         self.public_path = self.root / "catalog.json"
-        self.hashes_path = self.root / "hashes.json"
-        self.history_path = self.root / "history.json"
+        self.state_path = self.root / "update-state.json"
         self.custom_path = self.root / "custom.json"
         self.discovery_path = self.root / "discovery.json"
         self.official_path = self.root / "official.json"
@@ -36,13 +35,16 @@ class TestBundleUpdate:
         self.state_paths = [
             self.repos_path,
             self.public_path,
-            self.hashes_path,
-            self.history_path,
+            self.state_path,
             self.custom_path,
             self.discovery_path,
         ]
         for path in [*self.state_paths, self.official_path]:
             save_json(path, {})
+        save_json(
+            self.state_path,
+            {"lastDaily": "2026-01-01", "lastWeek": "2026-W01", "appHashes": {}, "history": {}},
+        )
         save_json(self.changelog_path, [])
         save_json(self.discovery_path, {"providers": {}, "renames": {}})
         self.patch_context.enter_context(
@@ -60,8 +62,7 @@ class TestBundleUpdate:
                 bundle_update,
                 REPOS_JSON_PATH=self.repos_path,
                 BUNDLES_JSON_PATH=self.public_path,
-                HASHES_PATH=self.hashes_path,
-                HISTORY_PATH=self.history_path,
+                UPDATE_STATE_PATH=self.state_path,
                 CUSTOM_JSON_PATH=self.custom_path,
                 DISCOVERY_JSON_PATH=self.discovery_path,
                 OFFICIAL_BUNDLES_PATH=self.official_path,
@@ -119,13 +120,22 @@ class TestBundleUpdate:
             "compatiblePackages": [{"packageName": package_name, "targets": [{"version": "1.0"}]}],
         }
 
+    def save_history(self, history: dict) -> None:
+        state = load_json(self.state_path)
+        state["history"] = history
+        save_json(self.state_path, state)
+
     def run_update(self, mode: str = "default") -> dict:
+        previous_state = load_json(self.state_path)
         arguments = ["update.py"] + ([] if mode == "default" else [f"--{mode}"])
         with (
             patch.object(bundle_update.sys, "argv", arguments),
             patch("time.time", return_value=CURRENT_TIME_SECONDS),
         ):
             assert bundle_update.main() == 0
+        state = load_json(self.state_path)
+        for field in ("lastDaily", "lastWeek"):
+            assert state[field] == previous_state[field]
         return load_json(self.public_path)
 
     def snapshot(self) -> dict[Path, bytes]:
@@ -139,7 +149,7 @@ class TestBundleUpdate:
         valid_patch = self.app_patch()
         self.add_target(patches=[valid_patch])
         baseline = self.run_update()
-        baseline_hashes = load_json(self.hashes_path)
+        baseline_hashes = load_json(self.state_path)["appHashes"]
         if isinstance(rejected, dict):
             rejected = {
                 **rejected,
@@ -148,7 +158,7 @@ class TestBundleUpdate:
         self.add_target(patches=[valid_patch, rejected])
         catalog = self.run_update()
         assert catalog == baseline
-        assert load_json(self.hashes_path) == baseline_hashes
+        assert load_json(self.state_path)["appHashes"] == baseline_hashes
 
     @pytest.mark.parametrize(
         "field,value",
@@ -165,10 +175,10 @@ class TestBundleUpdate:
         valid_patch = self.app_patch()
         self.add_target(patches=[valid_patch])
         self.run_update()
-        previous_hashes = load_json(self.hashes_path)
+        previous_hashes = load_json(self.state_path)["appHashes"]
         self.add_target(patches=[{**valid_patch, field: value}], timestamp=BUNDLE_TIME_MS + 1)
         catalog = self.run_update()
-        assert load_json(self.hashes_path) != previous_hashes
+        assert load_json(self.state_path)["appHashes"] != previous_hashes
         assert catalog["bundles"][0]["appUpdates"]["com.test.app"] == BUNDLE_TIME_MS + 1
 
     @pytest.mark.parametrize(
@@ -342,7 +352,7 @@ class TestBundleUpdate:
             },
         )
         old_history = {"com.test.app": ["Patch"]}
-        save_json(self.history_path, {"https://github.com/owner/alpha": old_history})
+        self.save_history({"https://github.com/owner/alpha": old_history})
         repos = load_json(self.repos_path)
         repos["https://github.com/owner/alpha"]["renamedTo"] = "https://github.com/owner/renamed"
         repos["https://github.com/owner/alpha"]["stars"] = 10
@@ -368,8 +378,10 @@ class TestBundleUpdate:
             assert catalog["bundles"] == []
             self.fetch_app.assert_not_called()
             assert load_json(self.repos_path)["https://github.com/owner/renamed"]["enabled"] is False
-        assert load_json(self.history_path) == {"https://github.com/owner/renamed": old_history}
-        assert set(load_json(self.hashes_path)) == ({"https://github.com/owner/renamed"} if enabled else set())
+        assert load_json(self.state_path)["history"] == {"https://github.com/owner/renamed": old_history}
+        assert set(load_json(self.state_path)["appHashes"]) == (
+            {"https://github.com/owner/renamed"} if enabled else set()
+        )
         assert set(load_json(self.repos_path)) == {"https://github.com/owner/renamed"}
         assert load_json(self.discovery_path)["renames"] == {
             "https://github.com/owner/alpha": "https://github.com/owner/renamed"
@@ -455,8 +467,7 @@ class TestBundleUpdate:
     ) -> None:
         self.add_target(patches=[self.app_patch(package_name="com.alpha.app")])
         self.add_target(repo="owner/beta", patches=[self.app_patch(package_name="com.beta.app")])
-        save_json(
-            self.history_path,
+        self.save_history(
             {
                 "https://github.com/owner/alpha": {"com.alpha.app": ["Patch"]},
                 "https://github.com/owner/beta": {"com.beta.app": ["Patch"]},
@@ -468,19 +479,19 @@ class TestBundleUpdate:
         catalog = self.run_update("daily")
         assert [bundle["repo"] for bundle in catalog["bundles"]] == ["owner/beta"]
         assert set(catalog["store"]) == {"com.beta.app"}
-        assert set(load_json(self.hashes_path)) == {"https://github.com/owner/beta"}
-        assert load_json(self.history_path) == {"https://github.com/owner/beta": {"com.beta.app": ["Patch"]}}
+        assert set(load_json(self.state_path)["appHashes"]) == {"https://github.com/owner/beta"}
+        assert load_json(self.state_path)["history"] == {"https://github.com/owner/beta": {"com.beta.app": ["Patch"]}}
         assert [call.args[0] for call in self.fetch_app.call_args_list] == ["com.beta.app"]
         assert catalog["compatibilities"][0][0]["packageName"] == "com.beta.app"
 
     def test_normal_update_preserves_daily_history_baseline(self) -> None:
         self.add_target()
         self.run_update()
-        assert load_json(self.history_path) == {}
+        assert load_json(self.state_path)["history"] == {}
         assert load_json(self.changelog_path) == []
         self.run_update("daily")
         repo_url = "https://github.com/owner/alpha"
-        assert load_json(self.history_path) == {repo_url: {"com.test.app": ["Patch"]}}
+        assert load_json(self.state_path)["history"] == {repo_url: {"com.test.app": ["Patch"]}}
         assert load_json(self.changelog_path)[0]["bundles"][repo_url]["isNew"]
         assert self.markdown_path.is_file()
 
@@ -494,7 +505,7 @@ class TestBundleUpdate:
             invalid_url: {"com.invalid.app": ["Old patch"]},
             removed_url: {"com.removed.app": ["Old patch"]},
         }
-        save_json(self.history_path, saved_history)
+        self.save_history(saved_history)
         self.add_target(repo="owner/unavailable", sha=None)
         self.add_target(repo="owner/invalid", patches=[])
         self.add_target(
@@ -504,12 +515,12 @@ class TestBundleUpdate:
         catalog = self.run_update(mode)
         assert catalog["bundles"] == []
         assert "com.old.app" not in catalog["store"]
-        assert load_json(self.history_path) == saved_history
+        assert load_json(self.state_path)["history"] == saved_history
         assert load_json(self.changelog_path) == []
 
     def test_returning_bundle_only_announces_added_patches(self) -> None:
         repo_url = "https://github.com/owner/alpha"
-        save_json(self.history_path, {repo_url: {"com.test.app": ["Patch"]}})
+        self.save_history({repo_url: {"com.test.app": ["Patch"]}})
         self.add_target(sha=None)
         self.run_update("daily")
         self.add_target()
@@ -523,18 +534,17 @@ class TestBundleUpdate:
 
     def test_known_app_in_new_bundle_is_not_a_new_app_in_telegram(self) -> None:
         old_url = "https://github.com/owner/unavailable"
-        save_json(self.history_path, {old_url: {"com.test.app": ["Patch"]}})
+        self.save_history({old_url: {"com.test.app": ["Patch"]}})
         self.add_target()
         self.run_update("daily")
-        assert old_url in load_json(self.history_path)
+        assert old_url in load_json(self.state_path)["history"]
         markdown = self.markdown_path.read_text(encoding="utf-8")
         assert "owner/alpha" in markdown
         assert "com.test.app" not in markdown
 
     def test_known_app_added_to_existing_bundle_is_not_announced(self) -> None:
         repo_url = "https://github.com/owner/alpha"
-        save_json(
-            self.history_path,
+        self.save_history(
             {
                 "https://github.com/owner/unavailable": {"com.test.app": ["Patch"]},
                 repo_url: {"com.other.app": ["Other patch"]},
@@ -555,12 +565,12 @@ class TestBundleUpdate:
     def test_unchanged_daily_removes_the_previous_notification(self) -> None:
         self.add_target()
         self.run_update("daily")
-        history = self.history_path.read_bytes()
+        history = load_json(self.state_path)["history"]
         changelog = self.changelog_path.read_bytes()
         assert self.markdown_path.exists()
         self.run_update("daily")
         assert not self.markdown_path.exists()
-        assert self.history_path.read_bytes() == history
+        assert load_json(self.state_path)["history"] == history
         assert self.changelog_path.read_bytes() == changelog
 
     def test_same_day_skip_preserves_baseline_and_removes_stale_notification(
@@ -570,12 +580,12 @@ class TestBundleUpdate:
         self.add_target()
         self.run_update("daily")
         assert load_json(self.changelog_path)[0]["date"] == "November 15, 2026"
-        history = self.history_path.read_bytes()
+        history = load_json(self.state_path)["history"]
         changelog = self.changelog_path.read_bytes()
         assert self.markdown_path.exists()
         self.add_target(patches=[self.app_patch(name="Next patch")])
         self.run_update("daily")
-        assert self.history_path.read_bytes() == history
+        assert load_json(self.state_path)["history"] == history
         assert self.changelog_path.read_bytes() == changelog
         assert not self.markdown_path.exists()
         self.clock.now.return_value += timedelta(days=1)
@@ -584,14 +594,15 @@ class TestBundleUpdate:
         changes = load_json(self.changelog_path)[0]["bundles"]
         assert changes["https://github.com/owner/alpha"]["apps"] == {"com.test.app": {"patches": ["Next patch"]}}
 
-    def test_changelog_failure_propagates_without_advancing_history(self) -> None:
+    def test_changelog_failure_propagates_without_advancing_state(self) -> None:
         self.add_target()
+        previous_state = self.state_path.read_bytes()
         with (
             patch.object(whats_new, "generate", side_effect=OSError("Cannot write changelog")),
             pytest.raises(OSError),
         ):
             self.run_update("daily")
-        assert load_json(self.history_path) == {}
+        assert self.state_path.read_bytes() == previous_state
 
     @pytest.mark.parametrize("failure_stage", ("process", "fetch_app_details"))
     def test_failure_before_final_output_does_not_write_state_or_cleanup_files(
@@ -599,8 +610,7 @@ class TestBundleUpdate:
         failure_stage,
     ) -> None:
         self.add_target()
-        save_json(
-            self.history_path,
+        self.save_history(
             {"https://github.com/owner/alpha": {"patches": ["Patch"]}},
         )
         orphan_file = self.patches_dir / "orphan.json"

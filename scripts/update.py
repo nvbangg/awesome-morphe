@@ -25,14 +25,13 @@ from common.constants import (
 )
 from common.files import load_json, save_json
 from common.http import HTTP_CLIENT
-from common.models import APP_HASHES, DISCOVERY, HISTORY, REPOSITORIES, SOURCES
+from common.models import DISCOVERY, REPOSITORIES, SOURCES, UPDATE_STATE
 from common.repositories import build_raw_url, build_repo_url, parse_repo_url, record_repo_rename
 from common.summary import append_step_summary, format_summary_section
 from discovery import apply_source_config
 from updater import gplay_scrape, local_data, whats_new
 
-HISTORY_PATH = DATA_DIR / "history.json"
-HASHES_PATH = DATA_DIR / "hashes.json"
+UPDATE_STATE_PATH = DATA_DIR / "update-state.json"
 BUNDLES_JSON_PATH = PUBLIC_DIR / "bundles.json"
 
 HOT_RANK_ACTIVE_DAYS = 30
@@ -95,8 +94,9 @@ def main() -> int:
     initial_repos = {url: dict(metadata) for url, metadata in repos_data.items()}
     discovery = DISCOVERY.validate_python(load_json(DISCOVERY_JSON_PATH, {"providers": {}, "renames": {}}))
     rename_data = discovery["renames"]
-    existing_hashes = APP_HASHES.validate_python(load_json(HASHES_PATH))
-    existing_history = HISTORY.validate_python(load_json(HISTORY_PATH))
+    update_state = UPDATE_STATE.validate_python(load_json(UPDATE_STATE_PATH, {"appHashes": {}, "history": {}}))
+    existing_hashes = update_state["appHashes"]
+    existing_history = update_state["history"]
     custom_data = apply_source_config(repos_data, SOURCES.validate_python(load_json(CUSTOM_JSON_PATH)), rename_data)
     existing_bundles_data = load_json(BUNDLES_JSON_PATH)
     existing_bundles = {
@@ -302,10 +302,6 @@ def main() -> int:
         for repo_key, bundle in bundle_sources.items()
         if repo_key in local_hashes and (repo_url := build_repo_url(bundle["source"], bundle["repo"]))
     }
-    save_json(
-        HASHES_PATH,
-        dict(sorted(cleaned_hashes.items(), key=lambda item: item[0].lower())),
-    )
     history_data = dict(existing_history)
     for old_url, new_url in renames.items():
         if old_url in history_data:
@@ -358,11 +354,10 @@ def main() -> int:
     )
     if mode != "default":
         history_data = whats_new.generate(current_history, history_data, final_bundles, apps_store)
+    update_state["appHashes"] = dict(sorted(cleaned_hashes.items(), key=lambda item: item[0].lower()))
     if history_data != existing_history:
-        save_json(
-            HISTORY_PATH,
-            dict(sorted(history_data.items(), key=lambda item: item[0].lower())),
-        )
+        update_state["history"] = dict(sorted(history_data.items(), key=lambda item: item[0].lower()))
+    save_json(UPDATE_STATE_PATH, update_state)
     return 0
 
 

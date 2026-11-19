@@ -12,17 +12,14 @@ import httpx2
 from common.constants import (
     CONCURRENCY,
     DEAD_LINK_HTTP_CODES,
-    PROJECTS_DIR,
-    README_REPOS_PATH,
+    PROJECTS_JSON_PATH,
     ROOT_DIR,
 )
-from common.files import load_lines
+from common.files import load_json, save_json
 from common.http import request
+from common.models import PROJECTS
 from common.repositories import build_raw_url, parse_repo_url
 from common.summary import format_summary_section
-
-EXCLUDED_REPOS_PATH = PROJECTS_DIR / "excluded-repos.txt"
-NEW_PROJECTS_PATH = PROJECTS_DIR / "new-projects.txt"
 
 SEARCH_KEYWORDS = ["morphe"]
 EXCLUDED_USERS = []
@@ -158,9 +155,10 @@ def filter_repos(repos: list[dict]) -> list[dict]:
         print("Repository list is empty. Skipping filter step.")
         return []
 
-    known_links = set(load_lines(README_REPOS_PATH)) | set(load_lines(EXCLUDED_REPOS_PATH))
+    projects = PROJECTS.validate_python(load_json(PROJECTS_JSON_PATH))
+    known_links = projects["readmeRepos"] + projects["excludedRepos"]
     excluded_repos = {(parse_repo_url(link)[1] or link).lower() for link in known_links}
-    print(f"Loaded {len(excluded_repos)} known repositories ({README_REPOS_PATH.name} & {EXCLUDED_REPOS_PATH.name})")
+    print(f"Loaded {len(excluded_repos)} known repositories ({PROJECTS_JSON_PATH.name})")
 
     candidates = [
         repo
@@ -220,10 +218,11 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
 
     summary_sections.append(format_summary_section("Search queries", query_lines, heading_level=None, collapsed=True))
     if candidates:
-        PROJECTS_DIR.mkdir(parents=True, exist_ok=True)
-        NEW_PROJECTS_PATH.write_text("\n".join(repo["url"] for repo in repos) + "\n", encoding="utf-8")
+        projects = PROJECTS.validate_python(load_json(PROJECTS_JSON_PATH))
+        projects["newRepos"] = [repo["url"] for repo in repos]
+        save_json(PROJECTS_JSON_PATH, projects)
         print(
-            f"Saved {len(repos)} URLs to {NEW_PROJECTS_PATH.relative_to(ROOT_DIR)} (excluded {len(candidates) - len(repos)} patch bundles or without README)"
+            f"Saved {len(repos)} URLs to {PROJECTS_JSON_PATH.relative_to(ROOT_DIR)} (excluded {len(candidates) - len(repos)} patch bundles or without README)"
         )
     return format_summary_section(
         "New projects",

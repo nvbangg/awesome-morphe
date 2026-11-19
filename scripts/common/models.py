@@ -41,6 +41,22 @@ class DiscoveryState(TypedDict):
     renames: dict[Annotated[str, Field(pattern=r"^[^A-Z]+$")], NonEmptyString]
 
 
+@with_config(strict=True, extra="allow")
+class ProjectLists(TypedDict):
+    readmeRepos: list[NonEmptyString]
+    readmeLinks: list[NonEmptyString]
+    newRepos: list[NonEmptyString]
+    excludedRepos: list[NonEmptyString]
+
+
+@with_config(strict=True)
+class UpdateState(TypedDict):
+    lastDaily: NotRequired[str]
+    lastWeek: NotRequired[str]
+    appHashes: dict[str, dict[str, str]]
+    history: dict[str, dict[str, list[str]]]
+
+
 @with_config(strict=True)
 class BundleSource(TypedDict):
     source: NonEmptyString
@@ -102,10 +118,10 @@ PATCH = TypeAdapter(Patch)
 PATCH_LIST = TypeAdapter(PatchList)
 SOURCES = TypeAdapter(dict[str, SourceConfig])
 DISCOVERY = TypeAdapter(DiscoveryState)
+PROJECTS = TypeAdapter(ProjectLists)
 OFFICIAL_CATALOG = TypeAdapter(OfficialCatalog)
 JMAN_SOURCES = TypeAdapter(dict[str, OnErrorOmit[JmanSource]])
 REPOSITORIES = TypeAdapter(dict[str, RepositoryState])
-APP_HASHES = TypeAdapter(dict[str, dict[str, str]], config={"strict": True})
-HISTORY = TypeAdapter(dict[str, dict[str, list[str]]], config={"strict": True})
+UPDATE_STATE = TypeAdapter(UpdateState)
 GITHUB_REPOSITORY = TypeAdapter(GitHubRepository)
 GITLAB_REPOSITORY = TypeAdapter(GitLabRepository)

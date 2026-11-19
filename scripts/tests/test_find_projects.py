@@ -4,6 +4,7 @@ from unittest.mock import patch
 import httpx2
 import pytest
 
+from common.files import load_json, save_json
 from discovery import find_projects
 
 
@@ -44,13 +45,19 @@ def test_only_verified_projects_are_exported(tmp_path: Path) -> None:
             "html_url": "https://github.com/owner/rejected",
         },
     ]
-    output_path = tmp_path / "new-projects.txt"
+    output_path = tmp_path / "projects.json"
+    saved = {
+        "readmeRepos": ["https://github.com/owner/zebra", "https://github.com/owner/alpha"],
+        "readmeLinks": ["https://example.com/second", "https://example.com/first"],
+        "newRepos": ["https://github.com/owner/saved-project"],
+        "excludedRepos": ["https://github.com/owner/last", "https://github.com/owner/first"],
+    }
+    save_json(output_path, saved)
     with (
         patch.multiple(
             find_projects,
             ROOT_DIR=tmp_path,
-            PROJECTS_DIR=tmp_path,
-            NEW_PROJECTS_PATH=output_path,
+            PROJECTS_JSON_PATH=output_path,
         ),
         patch.object(
             find_projects,
@@ -59,15 +66,26 @@ def test_only_verified_projects_are_exported(tmp_path: Path) -> None:
         ),
     ):
         report = find_projects.verify_and_export_repos(candidates)
-    assert output_path.read_text(encoding="utf-8").splitlines() == ["https://github.com/owner/valid"]
+        first_result = output_path.read_bytes()
+        find_projects.verify_and_export_repos(candidates)
+    assert load_json(output_path) == {**saved, "newRepos": ["https://github.com/owner/valid"]}
+    assert output_path.read_bytes() == first_result
     assert "https://github.com/owner/valid" in report
     assert "https://github.com/owner/rejected" not in report
 
 
 def test_no_candidates_preserves_saved_project_file(tmp_path: Path) -> None:
-    output_path = tmp_path / "new-projects.txt"
-    saved_content = "https://github.com/owner/saved-project\n"
-    output_path.write_text(saved_content, encoding="utf-8")
-    with patch.object(find_projects, "NEW_PROJECTS_PATH", output_path):
+    output_path = tmp_path / "projects.json"
+    save_json(
+        output_path,
+        {
+            "readmeRepos": [],
+            "readmeLinks": [],
+            "newRepos": ["https://github.com/owner/saved-project"],
+            "excludedRepos": [],
+        },
+    )
+    saved_content = output_path.read_bytes()
+    with patch.object(find_projects, "PROJECTS_JSON_PATH", output_path):
         find_projects.verify_and_export_repos([])
-    assert output_path.read_text(encoding="utf-8") == saved_content
+    assert output_path.read_bytes() == saved_content
