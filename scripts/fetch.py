@@ -632,7 +632,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 title,
                 content,
                 len(errors[category]),
-                collapsed=category not in ("repo_metadata", "patch_list"),
+                collapsed=category != "patch_list",
             )
         )
     append_step_summary("\n\n".join(summary_sections))
