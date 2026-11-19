@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "patches": [
     {
       "name": "Disable telemetry",
-      "description": "Disables Firebase Analytics/Crashlytics and automatic page tracking. Works by turning off the app's own analytics feature flags.",
+      "description": "Disables Firebase Analytics/Crashlytics and automatic page tracking, and stops the app's analytics, log-upload and attribution subsystems from starting.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -57,6 +57,15 @@
           "key": "disablePageTracking",
           "title": "Disable page tracking",
           "description": "Turns off automatic page/event tracking.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "stopTrackingSubsystems",
+          "title": "Stop tracking subsystems",
+          "description": "Removes the analytics, log-upload, API event, page tracking and AppsFlyer attribution startup pipelines so they never start.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -152,7 +161,7 @@
     },
     {
       "name": "Hide ads",
-      "description": "Disables in-app ads: AdMob/PID banners and the Tuya marketing ad service. Works by turning off the app's own advertising feature flags.",
+      "description": "Disables in-app ads (including the AdMob native ad on the home screen), promotional banners, ad push, and ad-related attribution. Stops the corresponding advertising subsystems and removes Home/Profile ad entries.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -191,7 +200,35 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "removeAdPipelines",
+          "title": "Stop ad subsystems",
+          "description": "Removes the ad, ad-push and attribution startup pipelines so they never start.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeAdEntries",
+          "title": "Remove Home/Profile ad entries",
+          "description": "Removes the marketing, PID banner and shopping mall cards from Home and the advertising, welfare banner and mall rows from Profile.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeAdServices",
+          "title": "Remove ad services (experimental)",
+          "description": "Also unregisters the ad, marketing booth, ad push and AppsFlyer services. A screen that still looks one of them up may crash, so this is off by default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Hide home recommendations",

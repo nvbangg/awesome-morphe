@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "patches": [
     {
       "name": "Apple emojis everywhere",
@@ -650,6 +650,39 @@
       "options": []
     },
     {
+      "name": "PairIP bypass (+ OCR scanning)",
+      "description": "Neutralizes PairIP for Poke Genie end to end: skips the startup program (integrity check + Play-Store paywall) and restores its tables, nukes the Java license/signature checks, stops the native VM (so virtualized methods no-op and nothing re-checks the DEX), and swaps in de-PairIP'd OCR libs so iVision scanning works. Requires a universal arm64-v8a APK. Battle simulator is sacrificed.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.cjin.pokegenie.standard",
+          "name": "Poke Genie -Remote Raid IV PvP",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2878B4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.19.3",
+              "versionCodes": {
+                "ARM64_V8A": 419,
+                "ARMEABI_V7A": 419,
+                "X86_64": 419,
+                "X86": 419
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Quick Join Button",
       "description": "Adds an optimistic JOIN button to room cards using PokeRaid's stock authenticated join request.",
       "default": true,
@@ -830,37 +863,6 @@
                 "ARMEABI_V7A": 846,
                 "X86_64": 846,
                 "X86": 846
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Strip PairIP",
-      "description": "Neutralizes PairIP's startup program (integrity check + Play-Store paywall) and restores its obfuscation tables, while leaving the native VM intact so virtualized methods still run. Also nukes the Java license/signature checks. Required by every other Poke Genie patch -- keep it enabled.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.cjin.pokegenie.standard",
-          "name": "Poke Genie -Remote Raid IV PvP",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#2878B4",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.19.3",
-              "versionCodes": {
-                "ARM64_V8A": 419,
-                "ARMEABI_V7A": 419,
-                "X86_64": 419,
-                "X86": 419
               },
               "isExperimental": false,
               "minSdk": null,
