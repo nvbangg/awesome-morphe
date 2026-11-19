@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when the release workflow (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.17.2",
+  "version": "1.18.0-dev.1",
   "patches": [
     {
       "name": "AMOLED black",
@@ -200,7 +200,7 @@
     },
     {
       "name": "Auto-claim channel points",
-      "description": "Adds a switch that claims the channel points bonus for your account as soon as its chest appears in a channel's chat, with the same request as tapping the chest. Each bonus is claimed once. Needs a signed-in account. Checked against Twitch's code and with a stand-in for the claim service, not yet with a real account. The claim leaves out the chat mode a tap sends, which Twitch only adds to its analytics event. Starts off. Turn it on in Lurk settings > Chat.",
+      "description": "Adds a switch that claims the channel points bonus for your account as soon as its chest appears in a channel's chat, with the same request as tapping the chest. Each bonus is claimed once. Needs a signed-in account. Twitch only offers points and the chest for watch time it is told about, so while Disable analytics is on, this also lets its minute-watched event through; every other analytics event stays blocked. The claim leaves out the chat mode a tap sends, which Twitch only adds to its analytics event. Starts off. Turn it on in Lurk settings > Chat.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -840,6 +840,34 @@
           "targets": [
             {
               "version": "32.1.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Chat search",
+      "description": "Adds a search button to the top right of chat. Type a word or a username and only the messages from or containing it stay shown, new ones included, until the box is cleared or closed. It searches the messages the chat still holds, not older ones. Kick's chat page draws chat, so a change to that page can stop it. Starts off. Turn it on in Lurk settings > Chat.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.kick.mobile",
+          "name": "Kick",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#53FC18",
+          "signatures": [
+            "b12320227268c9c37e190b493120a7f6ce83c0e9a761f9213df677b58d095b73"
+          ],
+          "targets": [
+            {
+              "version": "40.35.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1564,7 +1592,7 @@
     },
     {
       "name": "Disable analytics",
-      "description": "Stops Twitch's native and React Native Spade event uploads, denies local analytics SDK consent, enables Branch's limited tracking mode, blocks Crashlytics uploads, Nielsen audience pings and Sprig surveys, and prevents Sentry initialization. Watch progress, viewing statistics and rewards may stop updating. Restart Twitch after changing this setting. Playback requests still run.",
+      "description": "Stops Twitch's native and React Native Spade event uploads, denies local analytics SDK consent, enables Branch's limited tracking mode, blocks Crashlytics uploads, Nielsen audience pings and Sprig surveys, and prevents Sentry initialization. Watch progress, viewing statistics and rewards may stop updating; with Auto-claim channel points on, the minute-watched event that earns channel points still goes. Restart Twitch after changing this setting. Playback requests still run.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2106,7 +2134,7 @@
     },
     {
       "name": "Hide Clips",
-      "description": "Hides the Clips discovery tab on Home and the Clips tab on native channel profiles. Shared clip links still open.",
+      "description": "Hides the Clips discovery tab and clip shelves such as \"Clips for you\" on Home, and the Clips tab on native channel profiles. Shared clip links still open.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -2414,7 +2442,7 @@
     },
     {
       "name": "Hide chat highlights",
-      "description": "Hides the Hype Train, Bits and gift leaderboards, other viewers' sub and gift messages and gift banners, pinned cheers and watch-streak pop-ups, each with its own switch. Celebrations can be hidden too. Other chat messages are unchanged.",
+      "description": "Hides the Hype Train, Bits and gift leaderboards, other viewers' sub and gift messages and gift banners, pinned cheers and watch-streak pop-ups, each with its own switch. Celebrations and the extension icons above chat can be hidden too. Other chat messages are unchanged.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -2526,7 +2554,7 @@
     },
     {
       "name": "Hide player buttons",
-      "description": "Hides the player's Clip, Cast and Share buttons, each with its own switch. Cast stays visible by default. Other ways to clip and share, such as the channel page, are unchanged.",
+      "description": "Hides the player's Clip, Cast and Share buttons and the pop-up after a landscape chat mode change, each with its own switch. Cast stays visible by default. Other ways to clip and share, such as the channel page, are unchanged.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -2974,7 +3002,7 @@
     },
     {
       "name": "Navigation bar position",
-      "description": "Adds a choice that moves Twitch's bottom navigation bar to the top of the screen and/or hides its labels, leaving only the icons. Twitch's own layout stays until another choice is made in Lurk settings.",
+      "description": "Adds a choice that moves Twitch's bottom navigation bar to the top of the screen and/or hides its labels, leaving only the icons, and switches that hide its Create, Browse and Activity buttons. Twitch's own layout stays until another choice is made in Lurk settings.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -3142,7 +3170,7 @@
     },
     {
       "name": "Playlist proxy",
-      "description": "Sends live stream playlist requests to a proxy server you set in this patch's options, for example one that returns playlists without stitched ads. The proxy sees which channel you watch and when. With {channel}, only the lowercase channel name is forwarded; the original signed query is omitted. Without {channel}, the proxy gets the full request, including your signed playback token, which identifies your account. The token is in the request's address (its query, or with {url} the whole Twitch URL), so the proxy's access logs can keep it. The proxy decides what the player plays and can add segments of its own: only use a proxy you trust. An http:// proxy gets an exception from Twitch's HTTPS-only rule for its host alone, and the request travels unencrypted. Does nothing while the proxy URL is empty; once it's set, the patch's switch starts on (Lurk settings > Playback). Videos and clips are not proxied. Avoid stitched ads leaves proxied streams alone: the proxy decides what their playlists hold.",
+      "description": "Sends live stream playlist requests to a proxy server you set in this patch's options or later in Lurk settings, for example one that returns playlists without stitched ads. The proxy sees which channel you watch and when. With {channel}, only the lowercase channel name is forwarded; the original signed query is omitted. Without {channel}, the proxy gets the full request, including your signed playback token, which identifies your account. The token is in the request's address (its query, or with {url} the whole Twitch URL), so the proxy's access logs can keep it. The proxy decides what the player plays and can add segments of its own: only use a proxy you trust. An http:// proxy gets an exception from Twitch's HTTPS-only rule for its host alone, and the request travels unencrypted; a URL typed in Lurk settings must be https:// or use that host. Does nothing while no proxy URL is set; with one set in the options, the patch's switch starts on (Lurk settings > Playback). Videos and clips are not proxied. Avoid stitched ads leaves proxied streams alone: the proxy decides what their playlists hold.",
       "default": false,
       "category": null,
       "compatiblePackages": [
