@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.5.0",
+  "version": "1.6.0-dev.2",
   "patches": [
     {
       "name": "1080p download quality",
@@ -30,6 +30,145 @@
       "options": []
     },
     {
+      "name": "ASS subtitle style & margin override",
+      "description": "Customizes ASS subtitle font scale, bottom margin, outline, shadow, and colors, and adapts subtitle viewport margins to the active video aspect ratio and resize mode.",
+      "default": true,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "fontScale",
+          "title": "Subtitle font scale",
+          "description": "Multiplier applied to ASS subtitle font sizes (0.25 to 4.0).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "1.0",
+          "values": {
+            "0.75x": "0.75",
+            "0.85x": "0.85",
+            "1.0x (default)": "1.0",
+            "1.15x": "1.15",
+            "1.25x": "1.25",
+            "1.5x": "1.5",
+            "2.0x": "2.0"
+          }
+        },
+        {
+          "key": "scaleInlineFontTags",
+          "title": "Scale inline \\fs tags",
+          "description": "Also scales inline {\\fsN} tags on non-positioned dialogue lines (skips lines using \\pos or \\move).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "bottomMarginOffset",
+          "title": "ASS bottom MarginV offset",
+          "description": "Vertical offset added to bottom-aligned ASS styles and events (normalized to 720p PlayResY; positive moves subtitles up).",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
+        },
+        {
+          "key": "bottomSafeMarginDp",
+          "title": "Extra bottom screen margin (dp)",
+          "description": "Additional bottom viewport margin in dp passed to the subtitle renderer (positive moves subtitles up).",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
+        },
+        {
+          "key": "outlineThickness",
+          "title": "Outline thickness",
+          "description": "Overrides ASS style Outline thickness (0.0 to 10.0), or 'default' to keep script values.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "default",
+          "values": {
+            "Script default": "default",
+            "None (0.0)": "0.0",
+            "Thin (1.5)": "1.5",
+            "Medium (2.0)": "2.0",
+            "Thick (3.0)": "3.0",
+            "Extra thick (4.0)": "4.0"
+          }
+        },
+        {
+          "key": "shadowDepth",
+          "title": "Shadow depth",
+          "description": "Overrides ASS style Shadow depth (0.0 to 10.0), or 'default' to keep script values.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "default",
+          "values": {
+            "Script default": "default",
+            "None (0.0)": "0.0",
+            "Subtle (1.0)": "1.0",
+            "Medium (2.0)": "2.0",
+            "Deep (3.0)": "3.0"
+          }
+        },
+        {
+          "key": "primaryColor",
+          "title": "Primary text color",
+          "description": "Overrides ASS PrimaryColour (#RRGGBB, #AARRGGBB, or ASS &HAABBGGRR), or 'default' to keep script values.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "default",
+          "values": {
+            "Script default": "default",
+            "White (#FFFFFF)": "#FFFFFF",
+            "Warm Yellow (#FFF066)": "#FFF066",
+            "Soft Cyan (#99FFFF)": "#99FFFF"
+          }
+        },
+        {
+          "key": "outlineColor",
+          "title": "Outline color",
+          "description": "Overrides ASS OutlineColour (#RRGGBB, #AARRGGBB, or ASS &HAABBGGRR), or 'default' to keep script values.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "default",
+          "values": {
+            "Script default": "default",
+            "Black (#000000)": "#000000",
+            "Charcoal (#202020)": "#202020"
+          }
+        },
+        {
+          "key": "adaptMarginsToResizeMode",
+          "title": "Adapt margins to aspect & resize mode",
+          "description": "Replaces Crunchyroll's hardcoded 16:9 Fit margin math with true video aspect ratio and Fit/Zoom/Fill resize-mode awareness, refreshing immediately when resize mode changes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Allow screenshots",
       "description": "Removes FLAG_SECURE from membership card and Compose dialogs to permit screenshots and disables Android 14+ screen capture detection in the Arc reader.",
       "default": true,
@@ -55,6 +194,56 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Aspect mode cycle & persistence",
+      "description": "Cycles video aspect modes (Fit, Zoom, Fill) on pinch and remembers the selected mode across sessions.",
+      "default": true,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "enableThreeWayCycle",
+          "title": "Enable 3-way aspect cycle",
+          "description": "Cycles Fit -> Zoom -> Fill -> Fit when pinching out instead of toggling only Fit and Zoom.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "defaultAspectMode",
+          "title": "Default aspect mode",
+          "description": "Initial video aspect mode before a user pinch selection is saved.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "fit",
+          "values": {
+            "Fit (default)": "fit",
+            "Zoom (crop to fill)": "zoom",
+            "Fill (stretch)": "fill"
+          }
+        }
+      ]
     },
     {
       "name": "Auto-skip segments",
@@ -130,6 +319,43 @@
       ]
     },
     {
+      "name": "Controls auto-hide timeout",
+      "description": "Customizes the delay before player controls automatically hide, or disables auto-hiding.",
+      "default": false,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "controlsTimeoutMs",
+          "title": "Controls auto-hide timeout (ms)",
+          "description": "Delay in milliseconds before player controls auto-hide. Set to 0 or less to keep controls visible until toggled.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 4000,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Disable background services",
       "description": "Disables background broadcast receivers, schedulers, widget polling, Firebase sessions initialization and service binding, and DataTransport JobScheduler tasks to eliminate background wakeups and idle battery drain.",
       "default": true,
@@ -161,6 +387,160 @@
       "description": "Blocks Segment initialization, Mux events, advertising ID lookup, Firebase Analytics pre-init, Crashlytics NDK native loading, Braze session and push flush alarms, and Datadog uploads; disables Firebase Analytics after consent updates, denies automatic Crashlytics uploads, and selects disabled Datadog setup.",
       "default": true,
       "category": "Privacy",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide feed & show promos",
+      "description": "Hides promotional cards, vertical promo rows, floating action buttons, and show-page promo banners.",
+      "default": true,
+      "category": "UI",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "hideArcFeedCard",
+          "title": "Hide CR Arc feed card",
+          "description": "Prevents the CR Arc promotional card from being injected into the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideHeroCarousel",
+          "title": "Hide hero carousel",
+          "description": "Hides the top hero banner carousel on the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideGamePromoCards",
+          "title": "Hide game promo cards",
+          "description": "Hides standalone game promotional cards in the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideMediaCards",
+          "title": "Hide media promo cards",
+          "description": "Hides standalone media promotional cards in the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideGamesRows",
+          "title": "Hide Games rows",
+          "description": "Hides Crunchyroll Games collection rows from the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideMangaRows",
+          "title": "Hide Manga rows",
+          "description": "Hides Crunchyroll Manga collection rows from the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideMusicRows",
+          "title": "Hide Music rows",
+          "description": "Hides music collection rows from the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideGoPremiumButton",
+          "title": "Hide Go Premium button",
+          "description": "Hides the floating Go Premium button overlay on the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hidePromotionalFab",
+          "title": "Hide promotional FAB",
+          "description": "Hides the floating promotional action button on the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideArcFab",
+          "title": "Hide CR Arc FAB",
+          "description": "Hides the floating CR Arc quick-access action button on the home feed.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "hideShowPagePromoBanner",
+          "title": "Hide show page promo banner",
+          "description": "Hides the cross-promo banner shown on series pages.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Hide maturity rating overlay",
+      "description": "Hides the maturity rating overlay when starting or resuming playback.",
+      "default": false,
+      "category": "Player",
       "compatiblePackages": [
         {
           "packageName": "com.crunchyroll.crunchyroid",
@@ -239,7 +619,7 @@
     },
     {
       "name": "Playback speed",
-      "description": "Unhides the player's speed menu and fills it out to 0.5x-2.0x.",
+      "description": "Unhides the player's speed menu and expands playback speed options up to 4.0x.",
       "default": true,
       "category": "Player",
       "compatiblePackages": [
@@ -262,7 +642,198 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "maxPlaybackSpeed",
+          "title": "Maximum playback speed",
+          "description": "Highest playback speed multiplier shown in the player speed menu.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "4.0",
+          "values": {
+            "2.0x": "2.0",
+            "2.5x": "2.5",
+            "3.0x": "3.0",
+            "3.5x": "3.5",
+            "4.0x (default)": "4.0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Player gestures",
+      "description": "Enables pinch-to-zoom, double-tap-to-seek, and vertical swipe gestures for brightness and volume.",
+      "default": true,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "enablePinchToZoom",
+          "title": "Enable pinch-to-zoom",
+          "description": "Allows pinching on the video player to zoom or cycle aspect modes.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableDoubleTapToSeek",
+          "title": "Enable double-tap-to-seek",
+          "description": "Enables double-tapping the left or right side of the player to seek.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableBrightnessSwipe",
+          "title": "Enable brightness swipe",
+          "description": "Allows swiping vertically on the left side of the player to adjust screen brightness.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableVolumeSwipe",
+          "title": "Enable volume swipe",
+          "description": "Allows swiping vertically on the right side of the player to adjust media volume.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Player preference defaults",
+      "description": "Overrides initial default values for audio language, subtitles, autoplay, cellular streaming, closed captions, audio description, and playback speed.",
+      "default": false,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "defaultAudioLanguage",
+          "title": "Default audio language",
+          "description": "Initial player audio locale when no user preference has been saved yet.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "ja-JP",
+          "values": {
+            "Japanese (ja-JP)": "ja-JP",
+            "English (en-US)": "en-US",
+            "Spanish (es-419)": "es-419",
+            "Portuguese (pt-BR)": "pt-BR",
+            "French (fr-FR)": "fr-FR",
+            "German (de-DE)": "de-DE"
+          }
+        },
+        {
+          "key": "defaultSubtitleLanguage",
+          "title": "Default subtitle language",
+          "description": "Initial player subtitle locale when no user preference has been saved yet.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "en-US",
+          "values": {
+            "English (en-US)": "en-US",
+            "Spanish (es-419)": "es-419",
+            "Portuguese (pt-BR)": "pt-BR",
+            "French (fr-FR)": "fr-FR",
+            "German (de-DE)": "de-DE",
+            "None (off)": ""
+          }
+        },
+        {
+          "key": "defaultAutoplay",
+          "title": "Default autoplay",
+          "description": "Initial state for auto-playing the next episode.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "defaultStreamOverCellular",
+          "title": "Default stream over cellular",
+          "description": "Initial state for allowing video streaming over cellular data.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "defaultClosedCaptions",
+          "title": "Default closed captions",
+          "description": "Initial state for showing closed captions when available.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "defaultAudioDescription",
+          "title": "Default audio description",
+          "description": "Initial state for audio description tracks.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "defaultPlaybackSpeed",
+          "title": "Default playback speed",
+          "description": "Initial playback speed multiplier when no user preference has been saved yet.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "1.0",
+          "values": {
+            "0.75x": "0.75",
+            "1.0x": "1.0",
+            "1.25x": "1.25",
+            "1.5x": "1.5",
+            "2.0x": "2.0"
+          }
+        }
+      ]
     },
     {
       "name": "Proxy token requests",
@@ -338,6 +909,181 @@
       ]
     },
     {
+      "name": "Remaining time toggle",
+      "description": "Allows tapping the player timestamp or duration to toggle between elapsed time and remaining time (-MM:SS).",
+      "default": true,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "defaultShowRemaining",
+          "title": "Start in remaining time mode",
+          "description": "Displays remaining time (-MM:SS) by default before tapping the timestamp.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Screen & orientation lock",
+      "description": "Adds a screen lock toggle to the player toolbar and locks orientation against accidental rotation.",
+      "default": true,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "enableScreenLockButton",
+          "title": "Add screen lock button",
+          "description": "Adds a lock icon to the player toolbar that blocks touch input until unlocked via the floating Unlock pill.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "lockOrientationWhileScreenLocked",
+          "title": "Lock orientation while screen is locked",
+          "description": "Prevents device rotation from exiting or entering fullscreen while the player screen is locked.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "alwaysLockRotationFullscreen",
+          "title": "Always ignore rotation fullscreen changes",
+          "description": "Prevents device rotation from automatically toggling fullscreen even when the screen is unlocked.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Seek interval",
+      "description": "Customizes the double-tap and rewind/fast-forward seek interval in the video player.",
+      "default": false,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "seekIntervalSeconds",
+          "title": "Seek interval (seconds)",
+          "description": "Number of seconds to rewind or fast-forward when double-tapping or pressing skip buttons.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 10,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Skip animated splash",
+      "description": "Skips the animated startup splash video and its audio focus request, and skips cold-start checkout WebView preloading.",
+      "default": true,
+      "category": "UI",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "skipAnimatedSplash",
+          "title": "Skip animated splash video",
+          "description": "Skips the 6-second animated splash video and AudioFocus request on startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "skipRazorPayPreload",
+          "title": "Skip RazorPay WebView preload",
+          "description": "Skips preloading the RazorPay checkout WebView on the main thread during app startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Suppress bloat workers",
       "description": "Forces Google Engage, Continue Watching, Datadog, and OneTrust CMP background workers to return success immediately without performing network requests, disk I/O, or image prefetching.",
       "default": true,
@@ -363,6 +1109,107 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Suppress modals & prompts",
+      "description": "Suppresses Braze in-app message overlays, Play in-app review prompts, Play in-app update prompts, and the startup notification permission prompt.",
+      "default": true,
+      "category": "UI",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "discardBrazeInAppMessages",
+          "title": "Discard Braze in-app messages",
+          "description": "Discards Braze promotional in-app message overlays immediately instead of displaying or deferring them.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableInAppReview",
+          "title": "Disable Play in-app review",
+          "description": "Prevents the Google Play in-app review rating prompt from being bound and launched.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "disableInAppUpdates",
+          "title": "Disable Play in-app updates",
+          "description": "Disables Google Play in-app update checks and hides the in-app update prompt banner.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "suppressNotificationPrompt",
+          "title": "Suppress notification permission prompt",
+          "description": "Prevents the automatic POST_NOTIFICATIONS runtime permission prompt on startup.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Up Next banner window",
+      "description": "Customizes how many seconds before the end of an episode the Up Next banner appears.",
+      "default": false,
+      "category": "Player",
+      "compatiblePackages": [
+        {
+          "packageName": "com.crunchyroll.crunchyroid",
+          "name": "Crunchyroll",
+          "description": null,
+          "apkFileType": "APKM_REQUIRED",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.129.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "upNextWindowSeconds",
+          "title": "Up Next banner window (seconds)",
+          "description": "Seconds before the end of playback when the Up Next banner appears. Set to 0 to suppress early appearance.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 10,
+          "values": null
+        }
+      ]
     }
   ]
 }
