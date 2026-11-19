@@ -31,7 +31,6 @@ https://gitlab.com/Paresh-Maheshwari/patch-explorer
 https://github.com/MorpheApp/PotHelper
 https://github.com/drnx64/fresh-morphe
 https://github.com/crimera/morphe-bytecode
-https://github.com/Akash-Sriram/morphe-fetch
 https://github.com/GROWNUPS/Patchium
 https://github.com/d3ffen/patchit
 https://github.com/heval99/sideport

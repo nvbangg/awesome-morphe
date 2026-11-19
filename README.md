@@ -93,7 +93,6 @@ Helpers for downloading original APKs.
 [![rushiranpise/helper-for-morphe](https://github-stats-extended.vercel.app/api/pin?username=rushiranpise&repo=helper-for-morphe&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/rushiranpise/helper-for-morphe)
 [![GeneralZyonix/morphe-download-helper](https://github-stats-extended.vercel.app/api/pin?username=GeneralZyonix&repo=morphe-download-helper&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/GeneralZyonix/morphe-download-helper)
 [![heval99/sideport](https://github-stats-extended.vercel.app/api/pin?username=heval99&repo=sideport&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/heval99/sideport)
-[![Akash-Sriram/morphe-fetch](https://github-stats-extended.vercel.app/api/pin?username=Akash-Sriram&repo=morphe-fetch&show_owner=true&theme_light=light_github_repocard&theme_dark=dark_github_repocard)](https://github.com/Akash-Sriram/morphe-fetch)
 
 ## <a id="other-resources"></a> 📚 Other Resources
 
