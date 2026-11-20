@@ -350,49 +350,55 @@ class TestDiscover:
 
 @pytest.mark.parametrize("reverse_custom", (False, True))
 @pytest.mark.parametrize("renamed", (False, True))
-def test_merge_keeps_provider_priority_and_stable_case_conflicts(
+def test_merge_keeps_provider_priority_and_later_custom_entries(
     reverse_custom,
     renamed,
 ) -> None:
+    first_url = "https://github.com/Owner/Original" if renamed else "https://github.com/Owner/Repo"
+    second_url = "https://github.com/owner/previous" if renamed else "https://github.com/owner/repo"
     custom_items = [
         (
-            "https://github.com/Owner/Repo",
-            {"enabled": False, "note": "Preferred custom"},
+            first_url,
+            {"enabled": False, "note": "Earlier custom", "request": "Earlier request"},
         ),
         (
-            "https://github.com/owner/repo",
-            {"enabled": True, "note": "Other custom", "extra": 7},
+            second_url,
+            {"enabled": True, "note": "Later custom", "extra": 7},
         ),
     ]
+    renames: dict[str, str] = {}
+    if renamed:
+        destination = "https://github.com/Owner/Latest"
+        renames = {first_url.lower(): destination, second_url.lower(): destination}
+        custom_items.append((destination, {"enabled": True, "note": "Latest custom"}))
     if reverse_custom:
         custom_items.reverse()
-    destination = "https://github.com/Owner/Latest" if renamed else "https://github.com/Owner/Repo"
-    renames = {"https://github.com/owner/repo": destination} if renamed else {}
-    if renamed:
-        custom_items.append((destination, {"enabled": True, "note": "Latest custom"}))
+    if not renamed:
+        destination = custom_items[-1][0]
     providers = [
         dict(custom_items),
         {
-            "https://github.com/OWNER/REPO": {
+            first_url.upper(): {
                 "enabled": True,
                 "note": "Official",
                 "officialField": True,
             }
         },
-        {"https://github.com/owner/repo": {"note": "Archive", "archiveField": True}},
-        {"https://github.com/owner/repo": {"note": "Jman", "archiveField": False}},
+        {first_url: {"note": "Archive", "archiveField": True}},
+        {second_url: {"note": "Jman", "archiveField": False}},
     ]
     merged = discover.merge_sources(providers, renames)
     assert merged == {
         destination: {
-            "enabled": renamed,
-            "note": "Latest custom" if renamed else "Preferred custom",
+            "enabled": not reverse_custom,
+            "note": "Earlier custom" if reverse_custom else "Latest custom" if renamed else "Later custom",
+            "request": "Earlier request",
             "extra": 7,
             "officialField": True,
             "archiveField": True,
         }
     }
-    assert discover._sync_repos(merged, {}) == {destination: {} if renamed else {"enabled": False}}
+    assert discover._sync_repos(merged, {}) == {destination: {"enabled": False} if reverse_custom else {}}
 
 
 def test_sync_keeps_hosts_independent_and_preserves_saved_fields() -> None:

@@ -205,7 +205,7 @@ class TestBundleFetch:
         self.github_metadata_request = self.patch_context.enter_context(
             patch.object(bundle_fetch, "get_github_bundle", side_effect=self.github_metadata)
         )
-        self.patch_context.enter_context(patch.object(bundle_fetch, "append_step_summary"))
+        self.summary = self.patch_context.enter_context(patch.object(bundle_fetch, "append_step_summary"))
         self.run_process = self.patch_context.enter_context(patch.object(bundle_fetch.subprocess, "run"))
 
     def save_repos(self, repositories: dict) -> None:
@@ -785,6 +785,11 @@ class TestBundleFetch:
         if disabled:
             assert repos["https://github.com/owner/alpha"]["enabled"] is False
             self.run_process.assert_not_called()
+            assert self.summary.call_args.args[0] == "## 📥 Fetch (0/0):"
+        else:
+            summary = self.summary.call_args.args[0]
+            assert "## 📥 Fetch (1/1):" in summary
+            assert "https://github.com/owner/alpha: Renamed to https://github.com/owner/new" in summary
         request.assert_called_once_with("https://github.com/owner/alpha")
 
 
@@ -840,7 +845,7 @@ class TestRepositoryMetadataRefresh:
             patch.object(bundle_fetch, "process_repo_branch", side_effect=AssertionError("Disabled bundle")) as bundle,
             patch.object(bundle_fetch, "process_image", side_effect=AssertionError("Disabled image")) as image,
             patch.object(bundle_fetch.subprocess, "run", side_effect=AssertionError("Disabled parser")),
-            patch.object(bundle_fetch, "append_step_summary"),
+            patch.object(bundle_fetch, "append_step_summary") as summary,
         ):
             bundle_fetch.fetch_all_repos(daily, weekly)
             saved = load_json(repos_path)["repositories"]
@@ -853,6 +858,7 @@ class TestRepositoryMetadataRefresh:
             bundle.assert_not_called()
             image.assert_not_called()
             assert custom_path.read_bytes() == custom_before
+            assert summary.call_args.args[0] == "## 📥 Fetch (0/0):"
 
     def test_default_skips_complete_metadata_and_refreshes_missing_fields(self) -> None:
         repos = {self.url: dict(self.metadata)}
@@ -903,13 +909,14 @@ class TestRepositoryMetadataRefresh:
         root = tmp_path
         repos_path = root / "repos.json"
         custom_path = root / "custom.json"
+        disabled_url = "https://github.com/owner/disabled"
         registry = {
-            "repositories": {self.url: {"main": "sha", "name": "Alpha"}},
+            "repositories": {self.url: {"main": "sha", "name": "Alpha"}, disabled_url: {}},
             "providers": {"official": [self.url]},
             "renames": {"https://github.com/owner/old": self.url},
         }
         save_json(repos_path, registry)
-        save_json(custom_path, {self.url: {"note": "Keep me"}})
+        save_json(custom_path, {self.url: {"note": "Keep me"}, disabled_url: {"enabled": False}})
         custom_before = custom_path.read_bytes()
 
         def unchanged(
@@ -936,17 +943,24 @@ class TestRepositoryMetadataRefresh:
             patch.object(
                 bundle_fetch,
                 "fetch_repo_details",
-                return_value={
-                    "full_name": "owner/new",
-                    "stars": 23,
-                    "description": "New",
-                    "avatar_url": "https://example.com/avatar.png",
-                },
+                side_effect=lambda url: (
+                    {"error": "HTTP Error 404: Not Found"}
+                    if url == disabled_url
+                    else {
+                        "full_name": "owner/new",
+                        "stars": 23,
+                        "description": "New",
+                        "avatar_url": "https://example.com/avatar.png",
+                        "is_archived": True,
+                    }
+                ),
             ) as request,
-            patch.object(bundle_fetch, "append_step_summary"),
+            patch.object(bundle_fetch, "append_step_summary") as summary,
         ):
             bundle_fetch.fetch_all_repos()
-            request.assert_called_once_with(self.url)
+            assert request.call_count == 2
+            request.assert_any_call(self.url)
+            request.assert_any_call(disabled_url)
         saved = load_json(repos_path)
         assert saved["providers"] == registry["providers"]
         assert saved["renames"] == registry["renames"]
@@ -955,3 +969,9 @@ class TestRepositoryMetadataRefresh:
         assert metadata["main"] == "sha"
         assert metadata["stars"] == 23
         assert custom_path.read_bytes() == custom_before
+        report = summary.call_args.args[0]
+        assert "## 📥 Fetch (1/1):" in report
+        assert disabled_url not in report
+        assert "HTTP Error 404" not in report
+        assert f"{self.url}: Repository is archived" in report
+        assert f"{self.url}: Renamed to https://github.com/owner/new" in report

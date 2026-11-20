@@ -5,9 +5,7 @@ def merge_sources(provider_data: list[dict], renames: dict[str, str]) -> dict:
     canonical_keys = {url.lower(): resolve_repo_url(url, renames) for url in renames.values()}
     merged = {}
     for sources in provider_data:
-        for url, data in sorted(
-            sources.items(), key=lambda item: (item[0].lower() != resolve_repo_url(item[0], renames).lower(), item[0])
-        ):
+        for url, data in reversed(sources.items()):
             destination = resolve_repo_url(url, renames)
             key = canonical_keys.setdefault(destination.lower(), destination)
             entry = merged.setdefault(key, {})

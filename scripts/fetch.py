@@ -435,7 +435,7 @@ def collect_fetch_errors(results: list[BranchFetchResult]) -> dict[str, list[str
 
 def refresh_repo_metadata(
     repos_data: dict, refresh: bool, repository_details: RepositoryDetails | None = None
-) -> list[str]:
+) -> list[tuple[str, str]]:
     repository_details = repository_details or RepositoryDetails()
     tasks = [
         url
@@ -451,7 +451,7 @@ def refresh_repo_metadata(
         for repo_url, details in zip(tasks, executor.map(repository_details.get, tasks)):
             if not details or details.get("error"):
                 reason = details.get("error", "Invalid repository data")
-                warnings.append(f"{repo_url}: {reason}")
+                warnings.append((repo_url, reason))
                 continue
             metadata = repos_data[repo_url]
             metadata["description"] = details.get("description") or ""
@@ -459,7 +459,7 @@ def refresh_repo_metadata(
             metadata["stars"] = details.get("stars", 0)
             if details.get("is_archived"):
                 metadata["isArchived"] = True
-                warnings.append(f"{repo_url}: Repository is archived")
+                warnings.append((repo_url, "Repository is archived"))
             else:
                 metadata.pop("isArchived", None)
             source, repo = parse_repo_url(repo_url)
@@ -468,7 +468,7 @@ def refresh_repo_metadata(
             full_name = details.get("full_name")
             if full_name and full_name.lower() != repo.lower():
                 metadata["renamedTo"] = build_repo_url(source, full_name)
-                warnings.append(f"{repo_url}: Renamed to {metadata['renamedTo']}")
+                warnings.append((repo_url, f"Renamed to {metadata['renamedTo']}"))
             elif full_name:
                 metadata.pop("renamedTo", None)
     return warnings
@@ -539,7 +539,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         repo_metadata = repos_data[repo_url]
         if result.renamed_to and repo_metadata.get("renamedTo") != result.renamed_to:
             repo_metadata["renamedTo"] = result.renamed_to
-            repository_warnings.append(f"{repo_url}: Renamed to {result.renamed_to}")
+            repository_warnings.append((repo_url, f"Renamed to {result.renamed_to}"))
     apply_source_config(repos_data, custom_data, registry["renames"])
     active_results = [
         result
@@ -547,7 +547,6 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         if repos_data[f"https://{result.source}.com/{result.repo}"].get("enabled") is not False
     ]
     run_bundle_parser([result for result in active_results if result.needs_parse])
-    errors = collect_fetch_errors(active_results)
     for result in active_results:
         if result.status_changed:
             updated_count += 1
@@ -557,6 +556,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     image_tasks = [
         task for task in image_tasks if repos_data[f"https://{task[0]}.com/{task[1]}"].get("enabled") is not False
     ]
+    image_errors = {}
     if image_tasks:
         print(f"Processing {len(image_tasks)} image targets...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
@@ -564,19 +564,17 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
             for future in as_completed(image_futures):
                 source, repo, new_image_sha, status_changed, error_message = future.result()
                 if error_message:
-                    errors["image"].append(error_message)
+                    image_errors[f"https://{source}.com/{repo}"] = error_message
                 if status_changed:
                     updated_count += 1
                     repo_url = build_repo_url(source, repo)
                     assert repo_url is not None
                     repos_data[repo_url]["image"] = new_image_sha
     grouped_results = {}
-    for result in results:
+    for result in active_results:
         grouped_results.setdefault(build_repo_url(result.source, result.repo), []).append(result)
     for repo_url, branch_results in grouped_results.items():
         metadata = repos_data[repo_url]
-        if metadata.get("enabled") is False:
-            continue
         preferred = next((branch for branch in DEFAULT_BRANCHES if metadata.get(branch)), None)
         if not preferred:
             continue
@@ -607,8 +605,21 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
             repository_details,
         )
     )
-    errors["repo_metadata"].extend(dict.fromkeys(repository_warnings))
     apply_source_config(repos_data, custom_data, registry["renames"])
+    grouped_results = {
+        url: branch_results
+        for url, branch_results in grouped_results.items()
+        if repos_data[url].get("enabled") is not False
+    }
+    errors = collect_fetch_errors([result for branch_results in grouped_results.values() for result in branch_results])
+    errors["image"].extend(
+        message for url, message in image_errors.items() if repos_data[url].get("enabled") is not False
+    )
+    errors["repo_metadata"].extend(
+        f"{url}: {message}"
+        for url, message in dict.fromkeys(repository_warnings)
+        if repos_data[url].get("enabled") is not False
+    )
     if repos_data != initial_repos:
         registry["repositories"] = {
             url: cast(RepositoryState, {field: metadata[field] for field in REPOSITORY_FIELDS if field in metadata})
