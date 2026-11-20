@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0-dev.7",
+  "version": "1.9.0-dev.9",
   "apps": [
     {
       "packageName": "com.adobe.reader",
@@ -278,7 +278,7 @@
       ],
       "targets": [
         {
-          "version": "8.10.0",
+          "version": "8.12.0",
           "versionCodes": null,
           "isExperimental": false,
           "minSdk": 28,
@@ -286,12 +286,18 @@
         }
       ],
       "patchNames": [
-        "Remove Tracking and Analytics"
+        "Change App Icon",
+        "Change App Name",
+        "Clone App",
+        "Disable AI Study Tools",
+        "Remove Tracking and Analytics",
+        "Show Remote Config Editor",
+        "Unlock Notebook and Offline Content"
       ],
       "supportedVersions": [
-        "8.10.0"
+        "8.12.0"
       ],
-      "latestSupportedVersion": "8.10.0"
+      "latestSupportedVersion": "8.12.0"
     },
     {
       "packageName": "com.nhl.gc1112.free",
@@ -679,6 +685,102 @@
       "options": []
     },
     {
+      "name": "Change App Icon",
+      "description": "Recolors the Canvas launcher icon and optionally replaces its foreground with a custom PNG. The image is an adaptive-icon foreground, so launchers mask it to their icon shape; keep artwork inside the central safe area of a 432x432 PNG.",
+      "default": false,
+      "category": "Customization",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instructure.candroid",
+          "name": "Canvas Student",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E62725",
+          "signatures": [
+            "abfe1362d84c5234c174c2c03d405a480405e361162f7b28dad6bec825ba02b3"
+          ],
+          "targets": [
+            {
+              "version": "8.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "foregroundColor",
+          "title": "Foreground Color",
+          "description": "Color of the original launcher foreground vector (#RRGGBB or opaque #AARRGGBB). Also tints the monochrome icon vector.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#E62429",
+          "values": null
+        },
+        {
+          "key": "backgroundColor",
+          "title": "Background Color",
+          "description": "Adaptive icon background color (#RRGGBB or opaque #AARRGGBB).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#FFFFFF",
+          "values": null
+        },
+        {
+          "key": "customForeground",
+          "title": "Custom Foreground Image",
+          "description": "Optional square PNG used as the adaptive icon foreground. The launcher masks the image to its icon shape, so keep artwork inside the central safe area.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change App Name",
+      "description": "Replaces the launcher label shown under the app icon. In-app text is unchanged.",
+      "default": false,
+      "category": "Customization",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instructure.candroid",
+          "name": "Canvas Student",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E62725",
+          "signatures": [
+            "abfe1362d84c5234c174c2c03d405a480405e361162f7b28dad6bec825ba02b3"
+          ],
+          "targets": [
+            {
+              "version": "8.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "App Name",
+          "description": "Launcher label shown under the app icon.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Canvas",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Change Brand Color",
       "description": "Customizes the primary accent brand color across SidelineSwap buttons, navigation highlights, badges, and accents.",
       "default": false,
@@ -759,6 +861,45 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Clone App",
+      "description": "Changes the package name so this build installs alongside the original Canvas Student. The clone has separate app data. Re-signed or cloned App Links, push notifications, and package/certificate-bound services may not work; verify login, sharing, and document viewing.",
+      "default": false,
+      "category": "Customization",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instructure.candroid",
+          "name": "Canvas Student",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E62725",
+          "signatures": [
+            "abfe1362d84c5234c174c2c03d405a480405e361162f7b28dad6bec825ba02b3"
+          ],
+          "targets": [
+            {
+              "version": "8.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Clone Package Name",
+          "description": "Android package name for the clone. It must contain at least two segments and must differ from com.instructure.candroid.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "com.instructure.candroid.morphe",
           "values": null
         }
       ]
@@ -892,6 +1033,35 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Disable AI Study Tools",
+      "description": "Hides Study Tools and stops page content from being sent to Instructure's AI study-assist endpoint.",
+      "default": false,
+      "category": "Privacy",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instructure.candroid",
+          "name": "Canvas Student",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E62725",
+          "signatures": [
+            "abfe1362d84c5234c174c2c03d405a480405e361162f7b28dad6bec825ba02b3"
+          ],
+          "targets": [
+            {
+              "version": "8.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Display Cutout Adaptation",
@@ -2902,7 +3072,7 @@
           ],
           "targets": [
             {
-              "version": "8.10.0",
+              "version": "8.12.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 28,
@@ -2911,7 +3081,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "removeCrashlyticsCollection",
+          "title": "Disable Crashlytics Collection",
+          "description": "Sets the Firebase Crashlytics collection manifest flag to false and removes the Crashlytics NDK registrar. The existing Java Crashlytics method stubs remain active.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Remove Tracking and Analytics",
@@ -3309,6 +3489,35 @@
       "options": []
     },
     {
+      "name": "Show Remote Config Editor",
+      "description": "Adds the hidden Remote Config editor to Settings, allowing Firebase remote-config overrides and experimental flags to be inspected and changed.",
+      "default": false,
+      "category": "Developer",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instructure.candroid",
+          "name": "Canvas Student",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E62725",
+          "signatures": [
+            "abfe1362d84c5234c174c2c03d405a480405e361162f7b28dad6bec825ba02b3"
+          ],
+          "targets": [
+            {
+              "version": "8.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Skip to Next Level",
       "description": "Allows tapping the next level indicator on the top bar to show a confirmation dialog and skip to the next level. REQUIRES Add Custom Chip Store to be enabled.",
       "default": true,
@@ -3691,6 +3900,54 @@
           "key": "showGameZoneOnHome",
           "title": "Show GameZone on Home",
           "description": "Forces the shipped NHL GameZone Home visibility gate on; web content and authentication remain server-controlled.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Unlock Notebook and Offline Content",
+      "description": "Forces the client-side Notebook and Offline Content environment feature flags on, regardless of the institution's rollout. Server support is still required for content sync.",
+      "default": false,
+      "category": "Features",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instructure.candroid",
+          "name": "Canvas Student",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E62725",
+          "signatures": [
+            "abfe1362d84c5234c174c2c03d405a480405e361162f7b28dad6bec825ba02b3"
+          ],
+          "targets": [
+            {
+              "version": "8.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "enableNotebook",
+          "title": "Enable Notebook",
+          "description": "Forces FeatureFlagProvider.notebookEnabled to return true.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "enableOfflineContent",
+          "title": "Enable Offline Content",
+          "description": "Forces FeatureFlagProvider.offlineEnabled to return true.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
