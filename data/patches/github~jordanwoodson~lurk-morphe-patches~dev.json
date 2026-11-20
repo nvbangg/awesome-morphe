@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when the release workflow (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.19.0",
+  "version": "1.20.0-dev.1",
   "patches": [
     {
       "name": "AMOLED black",
@@ -1360,7 +1360,7 @@
     },
     {
       "name": "Default video quality",
-      "description": "Sets the default adaptive quality ceiling to the selected height when that rendition exists. Kick can still choose a lower quality. The player's Auto option uses this ceiling. A lower starting ceiling can be set for mobile data in Lurk settings > Playback; it's off until then. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
+      "description": "Caps the default adaptive quality at the selected height: the tallest rendition at or below it, or the lowest one when every rendition is taller. Kick can still choose a lower quality. The player's Auto option uses this ceiling. A lower starting ceiling can be set for mobile data in Lurk settings > Playback; it's off until then. Like every patch that changes Kick's JavaScript, it turns off Kick's over-the-air JavaScript updates, so Kick's code fixes arrive only when you patch a newer version.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -1388,7 +1388,7 @@
         {
           "key": "quality",
           "title": "Default quality ceiling",
-          "description": "Adaptive playback ceiling. Repatch to change this height.",
+          "description": "Adaptive playback ceiling. Without a rendition at this height the next lower one plays (Kick's lowest is 160p). Repatch to change this height.",
           "required": true,
           "type": "kotlin.String",
           "default": "1080",
@@ -1397,7 +1397,8 @@
             "720p": "720",
             "480p": "480",
             "360p": "360",
-            "240p": "240"
+            "240p": "240",
+            "160p": "160"
           }
         }
       ]
@@ -2134,7 +2135,7 @@
     },
     {
       "name": "Hide Clips",
-      "description": "Hides the Clips discovery tab and clip shelves such as \"Clips for you\" on Home, and the Clips tab on native channel profiles. Shared clip links still open.",
+      "description": "Hides the Clips discovery tab and clip shelves such as \"Clips for you\" on Home, and the Clips tab on native channel profiles. Keep Clips on channel pages, a second switch, leaves the channel tab. Shared clip links still open.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -2497,6 +2498,34 @@
       "options": []
     },
     {
+      "name": "Hide content label",
+      "description": "Hides the \"Intended for certain audiences\" label at the top of the player on streams with content labels. It doesn't skip the content warning; Hide mature content warning does that. Starts off. Turn it on in Lurk settings > Interface.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "32.1.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide mature content warning",
       "description": "Skips the content warning on streams, videos and clips with mature content labels, as if you had chosen Start Watching. Age, region, guardian and account restrictions still apply. Off by default.",
       "default": false,
@@ -2666,7 +2695,7 @@
     },
     {
       "name": "Hide subscription upsells",
-      "description": "Hides Subscribe and Gift a Sub prompts, Turbo promotions and the native Turbo signup/startup offer. Keeps the existing subscribed indicator and legitimate account entitlements.",
+      "description": "Hides Subscribe, Gift a Sub and Upgrade prompts (in chat, under the stream title and on channel pages), Turbo promotions such as Try Ad-Free on your channel page, and the native Turbo signup/startup offer. Keeps the existing subscribed indicator and legitimate account entitlements.",
       "default": false,
       "category": null,
       "compatiblePackages": [
