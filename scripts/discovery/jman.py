@@ -22,9 +22,7 @@ def discover() -> tuple[list[str], str | None]:
         if value.get("disabled"):
             continue
         source, repo = parse_repo_url(value["patches"])
-        if source and repo:
-            canonical_url = build_repo_url(source, repo)
-            assert canonical_url is not None
+        if canonical_url := build_repo_url(source, repo):
             discovered.append(canonical_url)
 
     return discovered, None

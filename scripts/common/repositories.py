@@ -33,7 +33,7 @@ def parse_repo_url(repo_url: str) -> tuple[str, str] | tuple[None, None]:
     return None, None
 
 
-def build_repo_url(source: str, repo: str) -> str | None:
+def build_repo_url(source: str | None, repo: str | None) -> str | None:
     return f"https://{source}.com/{repo}" if source and repo else None
 
 

@@ -3,6 +3,7 @@
 import re
 import unicodedata
 import urllib.parse
+from collections.abc import Iterable
 from datetime import UTC, datetime
 
 from common.constants import (
@@ -101,9 +102,6 @@ def extract_bundle_metadata(
     for rank, bundle in enumerate(sorted_bundles):
         source = bundle["source"]
         repo = bundle.get("repo", "")
-        if not repo:
-            continue
-
         repo_url = build_repo_url(source, repo)
         if not repo_url:
             continue
@@ -178,7 +176,7 @@ def build_json_diff(
 
 def render_patches(
     package_name: str,
-    patches: list[str],
+    patches: Iterable[str],
     limit: int = DISPLAY_ITEM_LIMIT,
 ) -> list[str]:
     sorted_patches = sorted(patches)
@@ -289,8 +287,7 @@ def generate_markdown(
             app_url = make_url(app=package_name)
             app_lines.append(f"+ 📱 (✨New) [{app_name}]({app_url})")
             if not is_compact:
-                patch_list = list(new_apps_map[package_name].values())
-                app_lines.extend(render_patches(package_name, patch_list))
+                app_lines.extend(render_patches(package_name, new_apps_map[package_name].values()))
         remaining_count = len(sorted_new_packages) - NEW_ENTRY_LIMIT
         if remaining_count > 0:
             app_label = "app" if remaining_count == 1 else "apps"
@@ -313,11 +310,10 @@ def generate_markdown(
         for package_name in sorted_packages[:display_count]:
             app_name = format_app_name(package_name, app_metadata)
             app_lines.append(f"- 📱 {app_name}")
-            patch_list = list(existing_apps_new_patches_map[package_name].values())
             app_lines.extend(
                 render_patches(
                     package_name,
-                    patch_list,
+                    existing_apps_new_patches_map[package_name].values(),
                     EXISTING_ITEM_LIMIT,
                 )
             )

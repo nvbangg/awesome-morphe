@@ -145,9 +145,7 @@ def main() -> int:
     )
     successful_repo_count = len(local_hashes)
     renames, file_renames = apply_renames(bundle_sources, repos_data, rename_data)
-    active_apps = {
-        package_name for bundle in bundle_sources.values() for package_name in bundle.get("appFirstSeen", {})
-    }
+    active_apps = {package_name for bundle in bundle_sources.values() for package_name in bundle["appFirstSeen"]}
     apps_dict = {
         package_name: app_data
         for package_name, app_data in apps_dict.items()
@@ -177,8 +175,8 @@ def main() -> int:
         if hot_rank is not None:
             return (0, hot_rank, 0, 0, name, repo_lower)
 
-        updated_at = bundle_entry.get("updatedAt", 0) or 0
-        stars = bundle_entry.get("stars", 0) or 0
+        updated_at = bundle_entry["updatedAt"]
+        stars = bundle_entry["stars"]
 
         if (now_ms - updated_at) <= HOT_RANK_ACTIVE_MS:
             return (1, 0, -stars, -updated_at, name, repo_lower)
@@ -199,22 +197,21 @@ def main() -> int:
         bundle = bundle_sources[key]
         repo_url = build_repo_url(bundle["source"], bundle["repo"])
         assert repo_url is not None
-        is_official = repo_url.lower() in official_ranks
         ordered_bundle = {
-            "source": bundle.get("source") or "",
-            "repo": bundle.get("repo") or "",
-            "name": bundle.get("name") or "",
-            "repoDescription": html.unescape(bundle.get("repoDescription") or ""),
-            "avatarUrl": bundle.get("avatarUrl") or "",
+            "source": bundle["source"],
+            "repo": bundle["repo"],
+            "name": bundle["name"],
+            "repoDescription": html.unescape(bundle["repoDescription"]),
+            "avatarUrl": bundle["avatarUrl"],
             "hotRank": bundle_hot_ranks[key],
-            "stars": bundle.get("stars") or 0,
-            "updatedAt": bundle.get("updatedAt") or 0,
+            "stars": bundle["stars"],
+            "updatedAt": bundle["updatedAt"],
             "firstSeen": existing_bundles.get(key, {}).get("firstSeen", now_ms),
-            "appFirstSeen": bundle.get("appFirstSeen") or {},
-            "appUpdates": bundle.get("appUpdates") or {},
-            "patches": bundle.get("patches") or [],
+            "appFirstSeen": bundle["appFirstSeen"],
+            "appUpdates": bundle["appUpdates"],
+            "patches": bundle["patches"],
         }
-        if is_official:
+        if repo_url.lower() in official_ranks:
             ordered_bundle["isOfficial"] = True
         if bundle.get("isPreRelease"):
             ordered_bundle["isPreRelease"] = True
@@ -222,19 +219,19 @@ def main() -> int:
             ordered_bundle["isArchived"] = True
         final_bundles.append(ordered_bundle)
 
-    app_patches_status: dict[str, list[bool]] = {}
+    app_prerelease: dict[str, bool] = {}
     app_latest_updates: dict[str, int] = {}
     compatibilities = []
     compatibility_map = {}
     current_history: dict[str, dict[str, set[str]]] = {}
     for bundle in final_bundles:
         bundle_apps = {}
-        for package_name, update_time in bundle.get("appUpdates", {}).items():
+        for package_name, update_time in bundle["appUpdates"].items():
             if update_time and update_time > app_latest_updates.get(package_name, 0):
                 app_latest_updates[package_name] = update_time
 
         is_bundle_prerelease = bool(bundle.get("isPreRelease"))
-        for patch in bundle.get("patches", []):
+        for patch in bundle["patches"]:
             is_patch_prerelease = is_bundle_prerelease or bool(patch.get("isPreRelease"))
             compatibility_data = patch.pop("compatiblePackages", None)
             if mode != "default":
@@ -248,9 +245,9 @@ def main() -> int:
                 for compatibility_entry in compatibility_data:
                     package_name = compatibility_entry.get("packageName")
                     if package_name:
-                        app_patches_status.setdefault(package_name, []).append(is_patch_prerelease)
+                        app_prerelease[package_name] = app_prerelease.get(package_name, True) and is_patch_prerelease
             else:
-                app_patches_status.setdefault(PACKAGE_UNIVERSAL, []).append(is_patch_prerelease)
+                app_prerelease[PACKAGE_UNIVERSAL] = app_prerelease.get(PACKAGE_UNIVERSAL, True) and is_patch_prerelease
         if bundle_apps:
             repo_url = build_repo_url(bundle["source"], bundle["repo"])
             assert repo_url is not None
@@ -260,7 +257,6 @@ def main() -> int:
     incomplete_apps = []
     for package_name, app_data in apps_dict.items():
         app_data.setdefault("firstSeen", now_ms)
-        statuses = app_patches_status.get(package_name, [])
         name = app_data.get("name")
         icon_url = app_data.get("iconUrl")
         app_entry = {
@@ -270,9 +266,9 @@ def main() -> int:
             "minInstalls": app_data.get("minInstalls"),
             "category": app_data.get("category"),
             "updatedAt": app_latest_updates.get(package_name, 0),
-            "firstSeen": app_data.get("firstSeen"),
+            "firstSeen": app_data["firstSeen"],
         }
-        if statuses and all(statuses):
+        if app_prerelease.get(package_name):
             app_entry["isPreRelease"] = True
         apps_store[package_name] = app_entry
         if package_name not in (PACKAGE_UNIVERSAL, PACKAGE_EXAMPLE):

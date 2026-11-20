@@ -81,6 +81,5 @@ def process(apps_dict: dict, mode: str) -> None:
                 if field_value:
                     app_data[field_name] = field_value
 
-    for app_data in apps_dict.values():
         if app_data.get("iconUrl"):
             app_data["iconUrl"] = normalize_image_url(app_data["iconUrl"])

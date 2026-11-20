@@ -55,8 +55,6 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
     synced = {}
     for repo_url, entry in merged.items():
         source, repo = parse_repo_url(repo_url)
-        if not source or not repo:
-            continue
         canonical_url = build_repo_url(source, repo)
         if not canonical_url:
             continue

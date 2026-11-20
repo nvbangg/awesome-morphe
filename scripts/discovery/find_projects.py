@@ -119,10 +119,10 @@ def search_repos() -> list[dict]:
 
     for query in queries:
         print(f"\nSearching GitHub: {query}")
+        encoded_query = urllib.parse.quote(query)
         page = 1
 
         while True:
-            encoded_query = urllib.parse.quote(query)
             url = f"https://api.github.com/search/repositories?q={encoded_query}&sort=updated&per_page={PAGE_SIZE}&page={page}"
             try:
                 page_data = request(url).json()

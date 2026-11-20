@@ -9,6 +9,7 @@ import sys
 import urllib.parse
 import zipfile
 import zlib
+from collections.abc import Iterable
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from http import HTTPStatus
@@ -403,13 +404,14 @@ def process_image(source: str, repo: str, current_image: str | None) -> tuple[st
     return source, repo, remote_sha, remote_sha != current_image, None
 
 
-def collect_fetch_errors(results: list[BranchFetchResult]) -> dict[str, list[str]]:
+def collect_fetch_errors(results: Iterable[BranchFetchResult]) -> dict[str, list[str]]:
     errors = {category: [] for category in FETCH_ERROR_SECTIONS}
     grouped_results: dict[tuple[str, str], list[BranchFetchResult]] = {}
     for result in results:
         grouped_results.setdefault((result.source, result.repo), []).append(result)
+    expected_branches = set(DEFAULT_BRANCHES)
     for (source, repo), branch_results in grouped_results.items():
-        if {result.branch for result in branch_results} != set(DEFAULT_BRANCHES) or any(
+        if {result.branch for result in branch_results} != expected_branches or any(
             not result.error_message for result in branch_results
         ):
             continue
@@ -513,7 +515,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     print(f"Processing {len(tasks)} branch targets...")
     bundle_downloads = BundleDownloads()
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-        futures = [
+        futures = (
             executor.submit(
                 process_repo_branch,
                 *task,
@@ -523,7 +525,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
                 repository_details=repository_details,
             )
             for task in tasks
-        ]
+        )
         results = [future.result() for future in as_completed(futures)]
     results.sort(
         key=lambda result: (
@@ -560,7 +562,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
     if image_tasks:
         print(f"Processing {len(image_tasks)} image targets...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            image_futures = [executor.submit(process_image, *task) for task in image_tasks]
+            image_futures = (executor.submit(process_image, *task) for task in image_tasks)
             for future in as_completed(image_futures):
                 source, repo, new_image_sha, status_changed, error_message = future.result()
                 if error_message:
@@ -611,7 +613,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         for url, branch_results in grouped_results.items()
         if repos_data[url].get("enabled") is not False
     }
-    errors = collect_fetch_errors([result for branch_results in grouped_results.values() for result in branch_results])
+    errors = collect_fetch_errors(result for branch_results in grouped_results.values() for result in branch_results)
     errors["image"].extend(
         message for url, message in image_errors.items() if repos_data[url].get("enabled") is not False
     )

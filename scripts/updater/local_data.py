@@ -262,7 +262,7 @@ def process(
         for raw_patch in chosen_raw_patches or []:
             compat = raw_patch.get("compatiblePackages")
             packages = (
-                list(compat.keys())
+                compat
                 if isinstance(compat, dict)
                 else [item.get("packageName") for item in compat if isinstance(item, dict) and item.get("packageName")]
                 if isinstance(compat, list)
@@ -320,12 +320,10 @@ def process(
 
         source_entry["patches"] = final_patches
         source_entry["appFirstSeen"] = {
-            package_name: app_first_seen_map[package_name]
-            for package_name in sorted(current_apps_in_bundle)
-            if package_name in app_first_seen_map
+            package_name: app_first_seen_map[package_name] for package_name in sorted(current_apps_in_bundle)
         }
 
-        bundle_timestamp = source_entry.get("updatedAt", 0)
+        bundle_timestamp = source_entry["updatedAt"]
         repo_hashes = existing_hashes.get(repo_url, {})
         new_repo_hashes = {}
         app_updates_map = (

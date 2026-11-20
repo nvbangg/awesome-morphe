@@ -20,7 +20,7 @@ def discover() -> tuple[list[str], str | None]:
     discovered = [
         url
         for match in _REPO_RE.finditer(content)
-        if (url := build_repo_url(match.group(1), match.group(2).strip())) and "/" in match.group(2)
+        if (url := build_repo_url(match.group(1), match.group(2))) and "/" in match.group(2)
     ]
 
     return discovered, None
