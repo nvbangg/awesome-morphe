@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.1",
+  "version": "1.9.3-dev.1",
   "apps": [
     {
       "packageName": "com.adobe.reader",
@@ -290,6 +290,7 @@
         "Change App Name",
         "Clone App",
         "Disable AI Study Tools",
+        "Fix PDF Viewer Crash",
         "Remove Tracking and Analytics",
         "Show Remote Config Editor",
         "Unlock Notebook and Offline Content"
@@ -1419,6 +1420,45 @@
           "key": "forceLiveActivitiesEnabled",
           "title": "Force Live Activities Enabled",
           "description": "Forces the Live Activity game score tracker toggle to be available on all live and upcoming games.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Fix PDF Viewer Crash",
+      "description": "Stops the document viewer from aborting when opening any PDF. Nutrient's license grants form viewing and filling but not form editing, yet the native library applies its editing-only license assertion to view-path calls such as form field loading, so the process is killed.",
+      "default": true,
+      "category": "General",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instructure.candroid",
+          "name": "Canvas Student",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#E62725",
+          "signatures": [
+            "abfe1362d84c5234c174c2c03d405a480405e361162f7b28dad6bec825ba02b3"
+          ],
+          "targets": [
+            {
+              "version": "8.12.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "removeEvaluationWatermark",
+          "title": "Remove Evaluation Watermark",
+          "description": "Blanks the native 'For Evaluation Purposes Only' watermark. A cloned package's bundle identifier does not match the bundled Nutrient license, so the SDK stamps the watermark over every document.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,

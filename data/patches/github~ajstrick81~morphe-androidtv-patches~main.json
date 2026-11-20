@@ -1,5 +1,5 @@
 {
-  "version": "1.58.0",
+  "version": "1.60.0",
   "appNames": {
     "com.discovery.dplay": "discovery+ Android TV",
     "com.disney.disneyplus": "Disney+ Android TV",
@@ -8,6 +8,7 @@
     "com.fox.foxone": "Fox One Android TV",
     "com.future.moviesByFawesomeAndroidTV": "Fawesome Movies & TV (Android TV)",
     "com.wbd.hbomax": "HBO Max Android TV",
+    "de.prosiebensat1digital.seventv": "Joyn Android TV",
     "it.mediaset.infinitytv": "Mediaset Infinity Android TV",
     "com.bamnetworks.mobile.android.gameday.atbat": "MLB.tv Android TV",
     "com.netflix.ninja": "Netflix Android TV",
@@ -1478,6 +1479,32 @@
     },
     {
       "name": "Skip ads",
+      "description": "Removes ads before and during videos in the Joyn Android TV app. It turns off the app's own \"ads enabled\" flag, so the player is built without Joyn's Ad SDK. Joyn is geo-restricted, so playback still needs Germany, Austria or Switzerland.",
+      "use": true,
+      "dependencies": [],
+      "compatiblePackages": {
+        "de.prosiebensat1digital.seventv": [
+          "6.5.2-ATV-605282491"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "Joyn Android TV",
+          "packageName": "de.prosiebensat1digital.seventv",
+          "description": null,
+          "appIconColor": 0,
+          "targets": [
+            {
+              "version": "6.5.2-ATV-605282491",
+              "experimental": false
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip ads",
       "description": "Blocks the FreeWheel and Google ad calls the Mediaset Infinity Android TV web app makes, so no pre-roll, mid-roll, pause or welcome ad is ever chosen. Ads stitched into a live channel's stream on the server (if any) are not affected.",
       "use": true,
       "dependencies": [],
@@ -1990,6 +2017,44 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "discovery+ - Store Country Override",
+      "description": "Reports a fixed Google Play store country to discovery+ (default IT). With an Italian IP address this brings back the free 'Naviga gratis' (browse for free) tier, which otherwise depends on your Play account's country. Off by default: it also changes the subscription offers shown in the app.",
+      "use": false,
+      "dependencies": [],
+      "compatiblePackages": {
+        "com.discovery.dplay": [
+          "22.1.0.71"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "discovery+ Android TV",
+          "packageName": "com.discovery.dplay",
+          "description": null,
+          "appIconColor": 663132,
+          "targets": [
+            {
+              "version": "22.1.0.71",
+              "experimental": true
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "country",
+          "title": "Store country",
+          "description": "Two-letter country code to report as the Google Play store country.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "IT",
+          "values": {
+            "Italy": "IT"
+          }
+        }
+      ]
     }
   ]
 }

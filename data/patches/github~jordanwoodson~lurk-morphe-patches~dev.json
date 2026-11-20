@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when the release workflow (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.20.0",
+  "version": "1.21.0",
   "patches": [
     {
       "name": "AMOLED black",
@@ -1593,7 +1593,7 @@
     },
     {
       "name": "Disable analytics",
-      "description": "Stops Twitch's native and React Native Spade event uploads, denies local analytics SDK consent, enables Branch's limited tracking mode, blocks Crashlytics uploads, Nielsen audience pings and Sprig surveys, and prevents Sentry initialization. Watch progress, viewing statistics and rewards may stop updating; with Auto-claim channel points or Auto-claim Drops on, the minute-watched event that earns channel points and progresses Drops still goes. Restart Twitch after changing this setting. Playback requests still run.",
+      "description": "Stops Twitch's native and React Native Spade event uploads, denies local analytics SDK consent, enables Branch's limited tracking mode, blocks Crashlytics uploads, Nielsen audience pings and Sprig surveys, and prevents Sentry initialization. Twitch's in-app web pages (Create Clip, Report, Sign up) get an empty local answer for their requests to Sentry, Sprig, comScore and Nielsen; their Spade events go through Twitch's GraphQL API like the page's other requests and still go out. Keep watch time (on by default) still sends the minute-watched event that earns channel points and watch streaks and progresses Drops; with it off, those stop unless Auto-claim channel points or Auto-claim Drops is on. Restart Twitch after changing this setting. Playback requests still run.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -1996,6 +1996,34 @@
     {
       "name": "Fix stuck start screen",
       "description": "Opens Twitch when its start screen is still waiting after 5 seconds. Twitch waits for Branch's link lookup before it routes, and when that never answers, it stays on a blank start screen until it's closed, unpatched Twitch included. On by default; the switch is in Lurk settings > Interface.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tv.twitch.android.app",
+          "name": "Twitch",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#9146FF",
+          "signatures": [
+            "1338f9b049893cc70b78432a177582f90bd4bc6296ea4ed35bcc7df59687ac53"
+          ],
+          "targets": [
+            {
+              "version": "32.1.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix web page errors",
+      "description": "Keeps Twitch's in-app web pages (Create Clip, Report, Sign up and others) open when a request they make to another site fails its certificate check, as it does behind an HTTPS-filtering ad blocker, VPN or DNS block page. Twitch closes the whole page on any such error (Create Clip: \"There was an error, please try again later\"), unpatched Twitch included. The failed request stays blocked; errors on the page's own site still close it. On by default; the switch is in Lurk settings > Interface.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2863,7 +2891,7 @@
     },
     {
       "name": "Latency badge",
-      "description": "Shows how far a live stream plays behind the broadcast on Twitch's native player in the theatre, read from the player itself once a second (the latency the stats panel reports). Tapping it reloads the stream through Twitch's own Retry, a new access token and playlist that start at the live edge: the native player has no seek to live. After a switch between channels the player can lose its measure until the stream reloads; the badge then reads ? s, and a tap brings it back. Feed previews, videos and clips show nothing. Starts off. Turn it on in Lurk settings > Playback.",
+      "description": "Shows how far a live stream plays behind the broadcast on Twitch's native player in the theatre, read from the player itself once a second (the latency the stats panel reports). Tapping it reloads the stream through Twitch's own Retry, a new access token and playlist that start at the live edge: the native player has no seek to live. After a switch between channels the player can lose its measure until the stream reloads; the badge then shows Twitch's own delay behind the broadcast from the stream's timing tags, and reads ? s only until the first tag arrives. Feed previews, videos and clips show nothing. Starts off. Turn it on in Lurk settings > Playback.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -3350,6 +3378,34 @@
     {
       "name": "Remember playback speed",
       "description": "Keeps the playback speed you last picked for every video, including after Rumble restarts, instead of going back to 1x. Live streams without rewind still play at 1x. Starts off. Turn it on in Lurk settings > Playback.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.rumble.battles",
+          "name": "Rumble",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#85C742",
+          "signatures": [
+            "eca34178cd915ce443fa1d3900ae6a3b3a3b6532488543d22a39ecb844872b5d"
+          ],
+          "targets": [
+            {
+              "version": "3.22.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remote control",
+      "description": "Lets a TV remote, gamepad or keyboard control the video player: OK, Enter or Space plays and pauses, left and right skip back and forward, media keys work, and Back leaves the player. On by default. Turn it off in Lurk settings > Playback.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -4021,7 +4077,7 @@
     },
     {
       "name": "Third-party emotes",
-      "description": "Adds switches that show 7TV, BetterTTV and FrankerFaceZ emotes in chat, Twitch's chat history and VOD chat replay. When on, each sends the ID of the channel you watch to that service (7tv.io, api.betterttv.net, api.frankerfacez.com) for its emote lists and loads the emote images from its CDN. \"Emotes in the picker\" also lists them in the emote picker, one section per service, and in autocomplete after ':', from the same lists; that part was checked with Twitch's own picker and autocomplete code on Android's runtime, not in the app, which needs an account to open the picker. \"Autocomplete without ':'\" suggests emotes (Twitch's and these) for a plain word of three letters or more, checked the same way. \"Favorite emotes\" adds a Favorites section to the picker: long-press an emote to add it, long-press a favorite to remove it; kept on the phone, checked the same way. Starts off. Turn it on in Lurk settings > Chat.",
+      "description": "Adds switches that show 7TV, BetterTTV and FrankerFaceZ emotes in chat, Twitch's chat history and VOD chat replay. When on, each sends the ID of the channel you watch to that service (7tv.io, api.betterttv.net, api.frankerfacez.com) for its emote lists and loads the emote images from its CDN; while api.frankerfacez.com doesn't answer, FrankerFaceZ's lists and images come from BetterTTV's copy of them (api.betterttv.net, cdn.betterttv.net). \"Emotes in the picker\" also lists them in the emote picker, one section per service, and in autocomplete after ':', from the same lists; that part was checked with Twitch's own picker and autocomplete code on Android's runtime, not in the app, which needs an account to open the picker. \"Autocomplete without ':'\" suggests emotes (Twitch's and these) for a plain word of three letters or more, checked the same way. \"Favorite emotes\" adds a Favorites section to the picker: long-press an emote to add it, long-press a favorite to remove it; kept on the phone, checked the same way. Starts off. Turn it on in Lurk settings > Chat.",
       "default": true,
       "category": null,
       "compatiblePackages": [
