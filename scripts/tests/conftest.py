@@ -6,7 +6,6 @@ import httpx2
 import pytest
 
 from common import http
-from common.constants import HTTP_TIMEOUT_SECONDS
 
 
 @pytest.fixture(autouse=True)
@@ -25,7 +24,6 @@ def block_network(monkeypatch: pytest.MonkeyPatch) -> Iterator[MagicMock]:
     monkeypatch.setattr("httpx2.HTTPTransport.handle_request", reject_request)
     with httpx2.Client(
         transport=httpx2.MockTransport(request),
-        timeout=HTTP_TIMEOUT_SECONDS,
         follow_redirects=True,
     ) as client:
         monkeypatch.setattr(http, "HTTP_CLIENT", client)

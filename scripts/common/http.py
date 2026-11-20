@@ -4,13 +4,9 @@ from typing import Any
 
 import httpx2
 
-from common.constants import (
-    DEAD_LINK_HTTP_CODES,
-    HTTP_TIMEOUT_SECONDS,
-    PROJECT_USER_AGENT,
-)
+from common.constants import DEAD_LINK_HTTP_CODES, PROJECT_USER_AGENT
 
-HTTP_CLIENT = httpx2.Client(timeout=HTTP_TIMEOUT_SECONDS, follow_redirects=True)
+HTTP_CLIENT = httpx2.Client(follow_redirects=True)
 
 
 def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> httpx2.Headers:
