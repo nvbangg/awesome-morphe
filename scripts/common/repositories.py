@@ -39,8 +39,7 @@ def build_repo_url(source: str | None, repo: str | None) -> str | None:
 
 def resolve_repo_url(url: str, renames: dict[str, str]) -> str:
     visited = set()
-    while url.lower() in renames:
-        key = url.lower()
+    while (key := url.lower()) in renames:
         destination = renames[key]
         if destination.lower() == key:
             return destination
