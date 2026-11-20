@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.1",
+  "version": "1.9.0",
   "patches": [
     {
       "name": "AMOLED dark mode",
@@ -19,13 +19,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -66,13 +59,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -100,7 +86,7 @@
     {
       "name": "Block Branch tracking",
       "description": "Turns on Branch's \"disable tracking\" mode and turns off its debug mode. Branch tracks where installs come from. Quora's quora.app.link links may open with less detail.",
-      "default": false,
+      "default": true,
       "category": "Privacy",
       "compatiblePackages": [
         {
@@ -114,13 +100,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -161,13 +140,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -202,13 +174,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -237,13 +202,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -294,13 +252,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -315,7 +266,7 @@
     {
       "name": "Block promotional notifications",
       "description": "Drops digest and promotional push notifications. Replies, comments and other notifications about you still arrive.",
-      "default": false,
+      "default": true,
       "category": "App",
       "compatiblePackages": [
         {
@@ -329,13 +280,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -376,13 +320,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -411,13 +348,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -458,7 +388,34 @@
               "description": null
             },
             {
-              "version": "3.2.30",
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Clone app",
+      "description": "Changes the package name, so the patched app installs next to the official Quora app instead of replacing it. Both apps keep their own login and data. Sharing to Facebook may not work in the clone.",
+      "default": false,
+      "category": "App",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -474,7 +431,31 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Package name of the cloned app. Each install needs its own package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.quora.android.clone",
+          "values": {
+            "Default": "com.quora.android.clone"
+          }
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "Name shown under the clone's launcher icon.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Quora Clone",
+          "values": {
+            "Default": "Quora Clone",
+            "Quora": "Quora"
+          }
+        }
+      ]
     },
     {
       "name": "Comfortable reading",
@@ -499,13 +480,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -520,7 +494,7 @@
     {
       "name": "Copy answer text",
       "description": "Adds a Copy button next to Share under answers and posts. It copies their text without formatting.",
-      "default": false,
+      "default": true,
       "category": "Reading",
       "compatiblePackages": [
         {
@@ -534,13 +508,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -575,13 +542,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -632,13 +592,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -667,13 +620,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -714,13 +660,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -755,13 +694,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -776,7 +708,7 @@
     {
       "name": "Disable sign-in prompts",
       "description": "Stops Google's \"Save password?\" and automatic Google sign-in prompts. You can still sign in with the buttons on the login page.",
-      "default": false,
+      "default": true,
       "category": "App",
       "compatiblePackages": [
         {
@@ -790,13 +722,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -831,13 +756,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -897,13 +815,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -932,13 +843,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -979,13 +883,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1014,13 +911,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1061,13 +951,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1082,7 +965,7 @@
     {
       "name": "Enable text selection",
       "description": "Lets you select and copy text on every page.",
-      "default": false,
+      "default": true,
       "category": "Reading",
       "compatiblePackages": [
         {
@@ -1096,13 +979,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1123,7 +999,7 @@
     {
       "name": "Expand answers",
       "description": "Opens shortened answers on question pages, and shows the whole answer preview in the feed.",
-      "default": false,
+      "default": true,
       "category": "Reading",
       "compatiblePackages": [
         {
@@ -1137,13 +1013,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1184,13 +1053,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1213,10 +1075,10 @@
       ]
     },
     {
-      "name": "Hide AI answers",
-      "description": "Hides answers written by Poe bots.",
-      "default": false,
-      "category": "Feed",
+      "name": "Fix device theme",
+      "description": "On a new install, follows the device's dark or light theme everywhere. Without it, Quora shows dark bars around light pages until you pick a theme again.",
+      "default": true,
+      "category": "App",
       "compatiblePackages": [
         {
           "packageName": "com.quora.android",
@@ -1235,7 +1097,136 @@
               "description": null
             },
             {
-              "version": "3.2.30",
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix push notifications",
+      "description": "Makes push notifications work in the patched app. Quora's Firebase key only accepts the official app's package and signature, so a patched app never gets a push token.",
+      "default": true,
+      "category": "App",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fullscreen reading",
+      "description": "Hides the top bar and the tabs while you scroll down, and shows them again when you scroll up. On answer and question pages it hides their top bar.",
+      "default": false,
+      "category": "Reading",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Makes Google sign-in and push notifications work through MicroG-RE instead of Google Play services. A patched app can't sign in with Google through Play services, because it is no longer signed by Quora. Needs MicroG-RE installed, with your Google account added to it.",
+      "default": false,
+      "category": "App",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide AI answers",
+      "description": "Hides answers written by Poe bots.",
+      "default": true,
+      "category": "Feed",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1276,13 +1267,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1317,7 +1301,34 @@
               "description": null
             },
             {
-              "version": "3.2.30",
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide More Stories button",
+      "description": "Hides the red \"More Stories\" button that appears over the feed. Pull down to load new stories.",
+      "default": true,
+      "category": "Feed",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1338,7 +1349,7 @@
     {
       "name": "Hide Poe",
       "description": "Hides links and buttons that open Poe or Quora's AI assistant.",
-      "default": false,
+      "default": true,
       "category": "Feed",
       "compatiblePackages": [
         {
@@ -1352,13 +1363,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1379,7 +1383,7 @@
     {
       "name": "Hide Quora+ answers",
       "description": "Hides answers and posts that can only be read with a Quora+ subscription.",
-      "default": false,
+      "default": true,
       "category": "Feed",
       "compatiblePackages": [
         {
@@ -1393,13 +1397,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1420,7 +1417,7 @@
     {
       "name": "Hide Quora+ promotions",
       "description": "Hides buttons that ask you to try or join Quora+.",
-      "default": false,
+      "default": true,
       "category": "Feed",
       "compatiblePackages": [
         {
@@ -1434,13 +1431,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1481,13 +1471,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1522,7 +1505,34 @@
               "description": null
             },
             {
-              "version": "3.2.30",
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ask box",
+      "description": "Hides the \"What do you want to ask or share?\" box with Ask, Answer and Post at the top of the feed.",
+      "default": true,
+      "category": "Feed",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1563,13 +1573,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1598,13 +1601,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1645,13 +1641,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1680,13 +1669,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1727,13 +1709,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1762,13 +1737,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1825,13 +1793,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1866,13 +1827,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1901,13 +1855,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1961,13 +1908,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -1981,8 +1921,8 @@
     },
     {
       "name": "Hide surveys",
-      "description": "Hides Quora's surveys in the feed, such as \"How satisfied are you with your home feed?\".",
-      "default": false,
+      "description": "Hides Quora's surveys in the feed, such as \"How satisfied are you with your home feed?\" and \"Was this worth your time?\" under answers.",
+      "default": true,
       "category": "Feed",
       "compatiblePackages": [
         {
@@ -1996,13 +1936,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2037,13 +1970,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2121,13 +2047,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -2156,13 +2075,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2203,13 +2115,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -2244,7 +2149,34 @@
               "description": null
             },
             {
-              "version": "3.2.30",
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Reading history",
+      "description": "Remembers the answers, posts and questions you open, so you can find them again under History in Patch settings. The list stays on your phone.",
+      "default": true,
+      "category": "Reading",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2285,13 +2217,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -2326,13 +2251,6 @@
               "description": null
             },
             {
-              "version": "3.2.30",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -2345,10 +2263,10 @@
       "options": []
     },
     {
-      "name": "Spoof installer",
-      "description": "Reports Google Play as the app installer, so Quora does not treat the patched app as installed from an unknown source.",
+      "name": "Share answer text",
+      "description": "Adds a Share text button next to Share under answers and posts. It shares their text without formatting, for example to a notes app.",
       "default": true,
-      "category": "Privacy",
+      "category": "Reading",
       "compatiblePackages": [
         {
           "packageName": "com.quora.android",
@@ -2367,7 +2285,81 @@
               "description": null
             },
             {
-              "version": "3.2.30",
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Sort answers",
+      "description": "Opens questions with their answers sorted by the order you pick instead of Recommended. You can still change the order on the page.",
+      "default": false,
+      "category": "Reading",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "sortOrder",
+          "title": "Order",
+          "description": "Recent or Upvotes. Can be changed later in Patch settings.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Recent",
+          "values": {
+            "Recent": "Recent",
+            "Upvotes": "Upvotes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Spoof installer",
+      "description": "Reports Google Play as the app installer, so Quora does not treat the patched app as installed from an unknown source.",
+      "default": true,
+      "category": "Privacy",
+      "compatiblePackages": [
+        {
+          "packageName": "com.quora.android",
+          "name": "Quora",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B92B27",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.42",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2402,13 +2394,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2458,13 +2443,6 @@
           "targets": [
             {
               "version": "3.2.42",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "3.2.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
