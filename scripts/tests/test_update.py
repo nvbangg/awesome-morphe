@@ -132,12 +132,8 @@ class TestBundleUpdate:
 
     def run_update(self, mode: str = "default") -> dict:
         previous_state = load_json(self.state_path)
-        arguments = ["update.py"] + ([] if mode == "default" else [f"--{mode}"])
-        with (
-            patch.object(bundle_update.sys, "argv", arguments),
-            patch("time.time", return_value=CURRENT_TIME_SECONDS),
-        ):
-            assert bundle_update.main() == 0
+        with patch("time.time", return_value=CURRENT_TIME_SECONDS):
+            assert bundle_update.run(mode) == 0
         state = load_json(self.state_path)
         for field in ("lastDaily", "lastWeek"):
             assert state[field] == previous_state[field]

@@ -155,10 +155,10 @@ class TestDiscover:
             patch.object(discover, "PROVIDER_MODULES", {"morphe-archive": morphe_archive}),
             patch.object(morphe_archive, "request", return_value=httpx2.Response(200, text=content)) as request,
         ):
-            assert discover.main([]) == 0
+            assert discover.run() == 0
             saved_repos = self.repos_path.read_bytes()
             request.return_value = httpx2.Response(200, text="\n".join(reversed(content.splitlines())))
-            assert discover.main([]) == 0
+            assert discover.run() == 0
         assert load_json(self.repos_path)["providers"]["morphe-archive"] == [
             "https://github.com/owner/New",
             "https://github.com/owner/new",
@@ -170,12 +170,12 @@ class TestDiscover:
         self,
     ) -> None:
         self.open_url.side_effect = httpx2.ConnectError("offline")
-        assert discover.main([]) == 0
+        assert discover.run() == 0
         assert load_json(self.repos_path)["repositories"] == self.saved_repos
 
-    @pytest.mark.parametrize("arguments", ([], ["--daily"]))
+    @pytest.mark.parametrize("daily", (False, True))
     @pytest.mark.parametrize("content", ("{}", "[]"))
-    def test_no_usable_sources_stops_without_changing_repositories(self, arguments, content) -> None:
+    def test_no_usable_sources_stops_without_changing_repositories(self, daily, content) -> None:
         registry = load_json(self.repos_path)
         registry["providers"] = [] if content == "[]" else {}
         save_json(self.repos_path, registry)
@@ -187,14 +187,14 @@ class TestDiscover:
         ):
             if content == "[]":
                 with pytest.raises(ValidationError):
-                    discover.main(arguments)
+                    discover.run(daily)
             else:
-                assert discover.main(arguments) == 1
+                assert discover.run(daily) == 1
         assert self.repos_path.read_bytes() == snapshot
         audit.assert_not_called()
         search.assert_not_called()
 
-    def test_main_preserves_custom_exclusions_and_existing_repo_state(self) -> None:
+    def test_discovery_preserves_custom_exclusions_and_existing_repo_state(self) -> None:
         save_json(
             self.custom_path,
             {"https://github.com/owner/disabled": {"enabled": False}},
@@ -224,7 +224,7 @@ class TestDiscover:
                 return_value=httpx2.Response(200, text="https://morphe.software/add-source?github=owner/saved"),
             ),
         ):
-            assert discover.main([]) == 0
+            assert discover.run() == 0
         assert load_json(self.repos_path)["repositories"] == {
             **self.saved_repos,
             "https://github.com/owner/disabled": {"enabled": False},
@@ -252,7 +252,7 @@ class TestDiscover:
             patch.object(discover, "save_json", side_effect=OSError("disk full")),
             pytest.raises(OSError, match="disk full"),
         ):
-            discover.main([])
+            discover.run()
 
     def test_unexpected_provider_errors_stop_discovery_without_rewriting_repos(
         self,
@@ -264,7 +264,7 @@ class TestDiscover:
             patch.object(morphe_archive, "request", return_value=httpx2.Response(200, text="")),
             pytest.raises(RuntimeError, match="Unexpected failure"),
         ):
-            discover.main([])
+            discover.run()
         assert self.repos_path.read_bytes() == snapshot
 
     def test_default_does_not_audit_or_search_projects(self) -> None:
@@ -273,7 +273,7 @@ class TestDiscover:
             patch.object(audit_readme, "audit_repos_and_links") as audit,
             patch.object(find_projects, "run") as search,
         ):
-            assert discover.main([]) == 0
+            assert discover.run() == 0
         audit.assert_not_called()
         search.assert_not_called()
 
@@ -340,7 +340,7 @@ class TestDiscover:
             patch.object(find_projects, "_file_exists", side_effect=file_exists),
         ):
             self.open_url.side_effect = httpx2.ConnectError("offline")
-            assert discover.main(["--daily"]) == 0
+            assert discover.run(True) == 0
             search.assert_called_once()
             summary = self.summary.call_args.args[0]
             assert "https://github.com/owner/archived" in summary

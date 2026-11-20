@@ -55,9 +55,6 @@ jobs:
       - name: Install Python dependencies
         run: uv sync --project scripts --locked --no-dev
 
-      - name: Discover bundles and projects
-        run: uv run --project scripts --no-sync scripts/discover.py ${{ steps.mode.outputs.args }}
-
       - name: Setup Java environment
         uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
         with:
@@ -65,24 +62,13 @@ jobs:
           java-version: "21"
           cache: "gradle"
 
-      - name: Fetch new bundles
-        run: uv run --project scripts --no-sync scripts/fetch.py ${{ steps.mode.outputs.args }}
-
-      - name: Check data changes
-        if: inputs.mode == 'normal'
-        id: changes
-        run: |
-          if [ -n "$(git status --porcelain -- data/ web/public/)" ]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Update bundles data
-        if: inputs.mode != 'normal' || steps.changes.outputs.changed == 'true'
-        id: update
-        run: uv run --project scripts --no-sync scripts/update.py ${{ steps.mode.outputs.args }}
+      - name: Sync bundles
+        id: sync
+        working-directory: scripts
+        run: uv run --no-sync main.py ${{ steps.mode.outputs.args }}
 
       - name: Commit and push changes
-        if: steps.update.outcome == 'success'
+        if: steps.sync.outputs.updated == 'true'
         id: commit
         env:
           TODAY: ${{ steps.mode.outputs.today }}
@@ -111,7 +97,8 @@ jobs:
         env:
           TG_CHAT: ${{ secrets.TG_CHAT }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
-        run: uv run --project scripts --no-sync scripts/telegram.py
+        working-directory: scripts
+        run: uv run --no-sync main.py telegram
 
       - name: Cleanup old workflow runs
         if: inputs.mode != 'normal'

@@ -1,19 +1,13 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-import argparse
-import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
-from dotenv import load_dotenv
 
 from common.constants import (
     CUSTOM_JSON_PATH,
     REPOS_JSON_PATH,
     ROOT_DIR,
-    SCRIPTS_DIR,
 )
 from common.files import load_json, save_json
-from common.http import HTTP_CLIENT
 from common.models import REPOSITORIES, SOURCES
 from common.repositories import build_repo_url, parse_repo_url
 from common.summary import append_step_summary, format_summary_section
@@ -67,18 +61,7 @@ def _sync_repos(merged: dict, existing_repos: dict) -> dict:
     return dict(sorted(synced.items(), key=lambda item: item[0].lower()))
 
 
-def main(argv: list[str] | None = None) -> int:
-    load_dotenv(SCRIPTS_DIR / ".env", override=True)
-    parser = argparse.ArgumentParser(description="Discover Morphe bundles and projects")
-    modes = parser.add_mutually_exclusive_group()
-    modes.add_argument("--daily", action="store_true", help="Also audit README links and find projects")
-    modes.add_argument(
-        "--weekly",
-        action="store_true",
-        help="Also audit README links and find projects",
-    )
-    args = parser.parse_args(argv)
-
+def run(daily: bool = False, weekly: bool = False) -> int:
     registry = REPOSITORIES.validate_python(
         load_json(REPOS_JSON_PATH, {"repositories": {}, "providers": {}, "renames": {}})
     )
@@ -118,14 +101,9 @@ def main(argv: list[str] | None = None) -> int:
     registry["repositories"] = synced_repos
     save_json(REPOS_JSON_PATH, registry)
     print(f"Saved to {REPOS_JSON_PATH.relative_to(ROOT_DIR)}")
-    if args.daily or args.weekly:
+    if daily or weekly:
         summary_sections.append(audit_readme.audit_repos_and_links())
         summary_sections.append(find_projects.run())
     if len(summary_sections) > 1:
         append_step_summary("\n\n".join(summary_sections))
     return 0
-
-
-if __name__ == "__main__":
-    with HTTP_CLIENT:
-        sys.exit(main())

@@ -1,13 +1,9 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-import argparse
 import html
 import json
-import sys
 import time
 from typing import Any
-
-from dotenv import load_dotenv
 
 from common.constants import (
     BUNDLES_DIR,
@@ -20,10 +16,8 @@ from common.constants import (
     PATCHES_DIR,
     PUBLIC_DIR,
     REPOS_JSON_PATH,
-    SCRIPTS_DIR,
 )
 from common.files import load_json, save_json
-from common.http import HTTP_CLIENT
 from common.models import REPOSITORIES, SOURCES, UPDATE_STATE
 from common.repositories import build_raw_url, build_repo_url, parse_repo_url, record_repo_rename
 from common.summary import append_step_summary, format_summary_section
@@ -81,14 +75,7 @@ def move_renamed_files(renames: dict[str, str]) -> None:
                     old_file.rename(new_file)
 
 
-def main() -> int:
-    load_dotenv(SCRIPTS_DIR / ".env", override=True)
-    parser = argparse.ArgumentParser(description="Update Morphe patches and bundles")
-    parser.add_argument("--daily", action="store_true", help="Daily update")
-    parser.add_argument("--weekly", action="store_true", help="Weekly update")
-    args = parser.parse_args()
-    mode = "weekly" if args.weekly else "daily" if args.daily else "default"
-
+def run(mode: str = "default") -> int:
     registry = REPOSITORIES.validate_python(
         load_json(REPOS_JSON_PATH, {"repositories": {}, "providers": {}, "renames": {}})
     )
@@ -353,8 +340,3 @@ def main() -> int:
         update_state["history"] = dict(sorted(history_data.items(), key=lambda item: item[0].lower()))
     save_json(STATE_PATH, update_state)
     return 0
-
-
-if __name__ == "__main__":
-    with HTTP_CLIENT:
-        sys.exit(main())

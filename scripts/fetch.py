@@ -1,6 +1,5 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-import argparse
 import contextlib
 import io
 import re
@@ -17,7 +16,6 @@ from threading import Lock
 from typing import cast
 
 import httpx2
-from dotenv import load_dotenv
 from pydantic import ValidationError
 
 from common.constants import (
@@ -31,7 +29,7 @@ from common.constants import (
     UNAVAILABLE_HTTP_CODES,
 )
 from common.files import load_json, save_json
-from common.http import HTTP_CLIENT, request
+from common.http import request
 from common.images import normalize_image_url
 from common.models import BUNDLE_MANIFEST, REPOSITORIES, SOURCES, RepositoryState
 from common.repositories import (
@@ -650,21 +648,3 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         )
     append_step_summary("\n\n".join(summary_sections))
     print(f"Fetch completed. Updated {updated_count} targets.")
-
-
-def main() -> None:
-    load_dotenv(SCRIPTS_DIR / ".env", override=True)
-    parser = argparse.ArgumentParser(description="Fetch Morphe patches bundles")
-    parser.add_argument("--daily", action="store_true", help="Daily sync")
-    parser.add_argument(
-        "--weekly",
-        action="store_true",
-        help="Weekly sync to check bundles availability",
-    )
-    args = parser.parse_args()
-    fetch_all_repos(args.daily, args.weekly)
-
-
-if __name__ == "__main__":
-    with HTTP_CLIENT:
-        sys.exit(main())

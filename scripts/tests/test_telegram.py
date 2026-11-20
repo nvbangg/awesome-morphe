@@ -8,7 +8,7 @@ import telegram
 
 
 @pytest.fixture(autouse=True)
-def prepare_notification(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def prepare_notification(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[str, Path]:
     path = tmp_path / "notification.md"
     path.write_text(
         "## Example bundle\n- [owner/repo](https://github.com/owner/repo?ref=main&name=a_b)\n- `x < y`\n",
@@ -16,12 +16,12 @@ def prepare_notification(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Non
     )
     monkeypatch.setenv("TG_TOKEN", "test-token")
     monkeypatch.setenv("TG_CHAT", "test-chat")
-    monkeypatch.setattr(telegram.sys, "argv", ["telegram.py", "Updates <daily> & news", str(path)])
+    return "Updates <daily> & news", path
 
 
-def test_notification_payload_preserves_links_and_escapes_html(block_network) -> None:
+def test_notification_payload_preserves_links_and_escapes_html(block_network, prepare_notification) -> None:
     block_network.side_effect = None
-    telegram.main()
+    telegram.send_notification(*prepare_notification)
     block_network.assert_called_once()
     request = block_network.call_args.args[0]
     payload = parse_qs(request.content.decode("utf-8"))
@@ -35,14 +35,14 @@ def test_notification_payload_preserves_links_and_escapes_html(block_network) ->
 
 
 @pytest.mark.parametrize("failure_kind", ("api", "network"))
-def test_notification_failure_stops_with_error(failure_kind, block_network) -> None:
+def test_notification_failure_stops_with_error(failure_kind, block_network, prepare_notification) -> None:
     if failure_kind == "api":
         block_network.side_effect = None
         block_network.return_value = httpx2.Response(400, json={"description": "Invalid HTML"})
     else:
         block_network.side_effect = httpx2.ConnectError("DNS lookup failed")
     with pytest.raises(SystemExit) as raised:
-        telegram.main()
+        telegram.send_notification(*prepare_notification)
     block_network.assert_called_once()
     assert raised.value.code not in (None, 0)
     assert "test-token" not in str(raised.value)

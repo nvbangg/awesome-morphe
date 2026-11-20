@@ -3,16 +3,14 @@
 import html
 import os
 import re
-import sys
 import urllib.parse
 from datetime import UTC, datetime
 from pathlib import Path
 
 import httpx2
-from dotenv import load_dotenv
 
-from common.constants import SCRIPTS_DIR, WHATS_NEW_PATH
-from common.http import HTTP_CLIENT, request
+from common.constants import WHATS_NEW_PATH
+from common.http import request
 
 
 def format_inline_markdown(text: str) -> str:
@@ -49,12 +47,10 @@ def convert_to_html(text: str) -> str:
     return formatted_text
 
 
-def main() -> None:
-    load_dotenv(SCRIPTS_DIR / ".env", override=True)
+def send_notification(title: str | None = None, filepath: Path = WHATS_NEW_PATH) -> None:
     current_time = datetime.now(UTC)
     formatted_date = f"{current_time.strftime('%B')} {current_time.day}"
-    title = sys.argv[1] if len(sys.argv) >= 2 else f"🔔 What's New ({formatted_date})"
-    filepath = Path(sys.argv[2]) if len(sys.argv) >= 3 else WHATS_NEW_PATH
+    title = title if title is not None else f"🔔 What's New ({formatted_date})"
 
     if not filepath.exists() or not (content := filepath.read_text(encoding="utf-8").strip()):
         print(f"File {filepath} not found or empty, skipping notification.")
@@ -95,8 +91,3 @@ def main() -> None:
     except (httpx2.RequestError, httpx2.InvalidURL) as error:
         message = str(error).replace(token, "[redacted]")
         raise SystemExit(f"Failed to send Telegram notification: {message}") from None
-
-
-if __name__ == "__main__":
-    with HTTP_CLIENT:
-        main()
