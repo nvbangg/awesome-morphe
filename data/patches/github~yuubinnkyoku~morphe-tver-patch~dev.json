@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0-dev.31",
+  "version": "1.2.0-dev.32",
   "patches": [
     {
       "name": "TVer: Android system PiP (7.2.1/7.4.1)",
@@ -70,7 +70,7 @@
     },
     {
       "name": "TVer: keep live playback in background (7.2.1/7.4.1)",
-      "description": "Live/DVR streams keep playing (audio, and video via PiP) when the app is backgrounded instead of pausing. Paused-on-background bookkeeping and screen-recording suspension for live are disabled as a side effect.",
+      "description": "Live/DVR streams keep playing (audio, and video via PiP) when the app itself is backgrounded, e.g. Home gesture, while in-app navigation and modal sheets pause/release them as in the stock app.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -104,6 +104,39 @@
     {
       "name": "TVer: live pre-roll and companion ad suppression (7.2.1/7.4.1)",
       "description": "Skip the client-side pre-roll ad on live/DVR starts and never hand companion ads to the live overlay. SSAI mid-rolls stitched into the stream are out of scope.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "jp.hamitv.hamiand1",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.2.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "7.4.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "TVer: live resolution quality picker (7.2.1/7.4.1)",
+      "description": "Choose live/DVR video resolutions from the actual rendition list (Auto, 1080p, 720p, etc.) instead of the fixed 4-choice quality sheet.",
       "default": true,
       "category": null,
       "compatiblePackages": [

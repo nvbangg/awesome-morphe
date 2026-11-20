@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.51.0",
+  "version": "1.52.0",
   "patches": [
     {
       "name": "AD Instant Rewards",
@@ -238,6 +238,58 @@
     },
     {
       "name": "Bypass PairIP license check",
+      "description": "Disables PairIP (com.pairip.licensecheck) verification: no install-source check, no Play licensing bind, no paywall/error dialog and no delayed process exit. Required for sideloaded or re-signed APKs, which PairIP would otherwise close after 30 seconds.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.a0soft.gphone.uninstaller",
+          "name": "App Usage",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FE6C5E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.19",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
+      "description": "Disables PairIP (com.pairip.licensecheck) verification: no install-source check, no Play licensing bind, no paywall and no delayed process exit. Required for sideloaded or re-signed APKs, which PairIP would otherwise close after 30 seconds with LicenseActivity plus System.exit(0).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.crazygames.crazygamesapp",
+          "name": "CrazyGames",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#6842FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.7.13",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
       "description": "Disables the PairIP licence check (Play licensing service, signed-response validation, paywall/error dialog and the delayed System.exit) so the re-signed app launches instead of closing itself. Required for every other Ophelia's Paradise patch.",
       "default": true,
       "dependencies": [],
@@ -461,7 +513,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "6.9.9",
+              "version": "6.9.14",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -709,7 +761,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.0.49",
+              "version": "1.0.50",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -921,7 +973,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.14.11",
+              "version": "1.14.12",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -972,13 +1024,16 @@
           "packageName": "com.halfbrick.fruitninjafree",
           "name": "Fruit Ninja (Free)",
           "description": null,
-          "apkFileType": "XAPK",
+          "apkFileType": "APKM",
           "appIconColor": "#C36B3E",
           "signatures": null,
           "targets": [
             {
-              "version": "3.97.9",
-              "versionCodes": {},
+              "version": "3.98.4",
+              "versionCodes": {
+                "ARM64_V8A": 90061600,
+                "ARMEABI_V7A": 90061600
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -1000,12 +1055,12 @@
           "packageName": "com.grandgames.magicsort",
           "name": "Magic Sort",
           "description": null,
-          "apkFileType": "APKS",
+          "apkFileType": "XAPK",
           "appIconColor": "#6C4AB6",
           "signatures": null,
           "targets": [
             {
-              "version": "0.0.3480",
+              "version": "0.0.3497",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1469,6 +1524,34 @@
       "options": []
     },
     {
+      "name": "Google login via MicroG-RE",
+      "description": "Redirects Google Play Services to MicroG-RE (app.revanced.android.gms), spoofs the original package + signing certificate for Google's OAuth check, and forces the legacy Google Sign-In flow, so \"Continue with Google\" works on a re-signed build. Requires MicroG-RE installed and signed in; the patched app must replace the Play install. Does not help with stock GMS; the email login needs no patch.",
+      "default": false,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.crazygames.crazygamesapp",
+          "name": "CrazyGames",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#6842FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.7.13",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "HAAK Free Purchases and Unlocked Paid Content",
       "description": "Redirects purchase failure callbacks to their success twins: cancelling the Google Play dialog, a billing error, or an \"not purchased\" query result all grant the product instead.",
       "default": true,
@@ -1504,12 +1587,12 @@
           "packageName": "com.fingersoft.hillclimb",
           "name": "Hill Climb Racing",
           "description": null,
-          "apkFileType": "XAPK",
+          "apkFileType": "APK",
           "appIconColor": "#2E7D32",
           "signatures": null,
           "targets": [
             {
-              "version": "1.73.3",
+              "version": "1.74.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1530,12 +1613,12 @@
           "packageName": "com.fingersoft.hillclimb",
           "name": "Hill Climb Racing",
           "description": null,
-          "apkFileType": "XAPK",
+          "apkFileType": "APK",
           "appIconColor": "#2E7D32",
           "signatures": null,
           "targets": [
             {
-              "version": "1.73.3",
+              "version": "1.74.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1556,12 +1639,12 @@
           "packageName": "com.fingersoft.hillclimb",
           "name": "Hill Climb Racing",
           "description": null,
-          "apkFileType": "XAPK",
+          "apkFileType": "APK",
           "appIconColor": "#2E7D32",
           "signatures": null,
           "targets": [
             {
-              "version": "1.73.3",
+              "version": "1.74.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1677,6 +1760,32 @@
       "options": []
     },
     {
+      "name": "Injustice Native Store Unlock",
+      "description": "Unlocks the native storefront without Google Play (patches libInjusticeGAU.so: store never enters the blocked state, purchase gates are skipped), so the free-item hooks can grant every pack.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.wb.goog.injustice",
+          "name": "Injustice: Gods Among Us",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FFC107",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.5.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Instant Rewarded Ads",
       "description": "Every watch-ad offer grants its reward instantly with no video.",
       "default": true,
@@ -1686,12 +1795,12 @@
           "packageName": "com.grandgames.magicsort",
           "name": "Magic Sort",
           "description": null,
-          "apkFileType": "APKS",
+          "apkFileType": "XAPK",
           "appIconColor": "#6C4AB6",
           "signatures": null,
           "targets": [
             {
-              "version": "0.0.3480",
+              "version": "0.0.3497",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2122,7 +2231,7 @@
     },
     {
       "name": "Native IAP Patch",
-      "description": "Fixes the native purchase result so every store purchase (gold packs, skins, remove ads) is granted on device — without depending on the Java bridge handshake.",
+      "description": "Fixes the native purchase result on both ABIs (arm64-v8a + armeabi-v7a) so every store purchase (gold packs, skins, remove ads) is granted on device — without depending on the Java bridge handshake.",
       "default": true,
       "dependencies": [
         "RawResourcePatch"
@@ -2137,7 +2246,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.14.11",
+              "version": "1.14.12",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2661,7 +2770,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.18.0",
+              "version": "3.19.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2687,7 +2796,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.18.0",
+              "version": "3.19.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2788,12 +2897,12 @@
           "packageName": "com.grandgames.magicsort",
           "name": "Magic Sort",
           "description": null,
-          "apkFileType": "APKS",
+          "apkFileType": "XAPK",
           "appIconColor": "#6C4AB6",
           "signatures": null,
           "targets": [
             {
-              "version": "0.0.3480",
+              "version": "0.0.3497",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2925,7 +3034,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.14.11",
+              "version": "1.14.12",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2982,6 +3091,32 @@
           "targets": [
             {
               "version": "8.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads and unlock ad rewards",
+      "description": "Suppresses every midroll and rewarded ad (native AdMob and Web ad providers) and answers the game's ad request locally, so rewards are granted without watching a video. No ad request ever reaches the portal or AdMob.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.crazygames.crazygamesapp",
+          "name": "CrazyGames",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#6842FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.7.13",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3191,6 +3326,32 @@
       "options": []
     },
     {
+      "name": "Spoof original signature",
+      "description": "Makes the app see the original developer certificate instead of the one used to re-sign the APK. Stops the ~2 second anti-tamper process kill (Process.killProcess + System.exit) scheduled from icr.onCreate/onDestroy, prevents the PRO flag from being reset to the free version, and restores the trusted paths used by widgets, export/backup and history queries.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.a0soft.gphone.uninstaller",
+          "name": "App Usage",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FE6C5E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.19",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Swamp Attack 2: Instant Rewarded Ads",
       "description": "Watch-ad offers grant their reward instantly with no ad. Forced interstitials stay gone.",
       "default": true,
@@ -3205,7 +3366,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.5.0",
+              "version": "1.5.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3231,7 +3392,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.5.0",
+              "version": "1.5.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3257,7 +3418,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.5.0",
+              "version": "1.5.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3528,7 +3689,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "2.20",
+              "version": "2.21",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3554,7 +3715,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "2.20",
+              "version": "2.21",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3840,7 +4001,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.14.11",
+              "version": "1.14.12",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3866,7 +4027,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "1.14.11",
+              "version": "1.14.12",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -3948,6 +4109,32 @@
           "targets": [
             {
               "version": "26.11.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks the PRO entitlement: isPro returns true, the free-build/paywall gate returns false, the \"Upgrade to PRO\" dialog is disabled and the free-version master flag is never set at startup (which also removes the PRO-only placeholders and limits in the widget configuration, usage history, export and backup windows).",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.a0soft.gphone.uninstaller",
+          "name": "App Usage",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#FE6C5E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.19",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -4051,7 +4238,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.47.0",
+              "version": "3.48.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -4077,7 +4264,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "3.47.0",
+              "version": "3.48.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
