@@ -1,0 +1,52 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.0.0",
+  "patches": [
+    {
+      "name": "Share to audio server",
+      "description": "Adds 'Send to server' and 'Send to server (Kids)' to Android's share menu. Before patching, tap this patch's options (gear icon) and set the Server URL and API token; patching fails without them.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.youtube.music",
+          "name": "YouTube Music",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#FF0000",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "serverUrl",
+          "title": "Server URL",
+          "description": "Base URL of the audio server: http://<server-ip>:8080 at home, or the server's Tailscale address. Required.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "token",
+          "title": "API token",
+          "description": "The value of AUDIOSERVER_TOKEN on the server. Required.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    }
+  ]
+}
