@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.12.1-dev.1",
+  "version": "3.13.0-dev.3",
   "patches": [
     {
       "name": "[Ad] Block ad telemetry",
@@ -1288,6 +1288,51 @@
       "options": []
     },
     {
+      "name": "[General] Block analytics",
+      "description": "Stops LINE from sending usage events to its analytics service, such as the screens you open and the buttons you tap. Crash reports are not changed.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.16.0",
+              "versionCodes": {
+                "ARM64_V8A": 261600106,
+                "ARMEABI_V7A": 261600106,
+                "X86_64": 261600106,
+                "X86": 261600106
+              },
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            },
+            {
+              "version": "26.17.1",
+              "versionCodes": {
+                "ARM64_V8A": 261710173,
+                "ARMEABI_V7A": 261710173,
+                "X86_64": 261710173,
+                "X86": 261710173
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "[General] Custom font",
       "description": "Adds a button to LINE's Font page to use a font file from your device. The page then no longer loads LINE's font list from the server.",
       "default": true,
@@ -1839,7 +1884,9 @@
       "name": "[Premium] Disable LINE Premium",
       "description": "Hides all LINE Premium upsells, badges and pages. It unlocks nothing, because the server enforces Premium.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "jp.naver.line.android",
@@ -1884,6 +1931,51 @@
       "default": true,
       "dependencies": [
         "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "jp.naver.line.android",
+          "name": "LINE",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#06C755",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.16.0",
+              "versionCodes": {
+                "ARM64_V8A": 261600106,
+                "ARMEABI_V7A": 261600106,
+                "X86_64": 261600106,
+                "X86": 261600106
+              },
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": null
+            },
+            {
+              "version": "26.17.1",
+              "versionCodes": {
+                "ARM64_V8A": 261710173,
+                "ARMEABI_V7A": 261710173,
+                "X86_64": 261710173,
+                "X86": 261710173
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "[Premium] Unlock app icons",
+      "description": "Shows the App icon page in Settings, also with \"Disable LINE Premium\" on. It also lists the collaboration icons that are in the app but not offered now. You can apply every icon on the page, also the Premium ones.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
