@@ -713,14 +713,14 @@ class TestRepositoryMetadataRefresh:
         }
         discovered = {new_url: {"enabled": False, "revancedStars": 99}, old_url: dict(config)}
         with patch.object(
-            bundle_fetch, "fetch_repo_details", return_value={"id": "github:1", "full_name": "owner/new", "stars": 10}
+            bundle_fetch, "fetch_repo_details", return_value={"id": "github:1", "full_name": "Owner/New", "stars": 10}
         ) as lookup:
             actual, warnings, failed = bundle_fetch.refresh_repo_metadata(
                 discovered, existing, bundle_fetch.RepositoryDetails()
             )
         assert lookup.call_count == 2
         assert set(actual) == {"github:1"}
-        assert actual["github:1"]["repo"] == "owner/new"
+        assert actual["github:1"]["repo"] == "Owner/New"
         assert actual["github:1"]["main"] == "saved"
         assert discovered[old_url]["id"] == discovered[new_url]["id"] == "github:1"
         assert {
@@ -728,7 +728,7 @@ class TestRepositoryMetadataRefresh:
         } == config
         assert "isArchived" not in actual["github:1"]
         assert not failed
-        assert bool(warnings) == (config.get("enabled") is not False)
+        assert not warnings
 
     def test_reused_name_does_not_inherit_old_id_state_or_disable_other_repo(self) -> None:
         old_url = "https://github.com/owner/old"

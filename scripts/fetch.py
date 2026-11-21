@@ -435,8 +435,6 @@ def refresh_repo_metadata(
                     warnings.append((url, "Repository is archived"))
                 else:
                     metadata.pop("isArchived", None)
-                if build_repo_url(source, details["full_name"]) != url:
-                    warnings.append((url, f"Renamed to {build_repo_url(source, details['full_name'])}"))
                 resolved_ids.add(repo_id)
             configs[repo_id] = config
     for repo_id in unavailable_ids - resolved_ids:
