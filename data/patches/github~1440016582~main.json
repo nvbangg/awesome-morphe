@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. It is generated with ./gradlew generatePatchesList for every release. Manually editing this file can break third party tools that use this file.",
-  "version": "1.12.1",
+  "version": "1.12.2",
   "patches": [
     {
       "name": "AMOLED black",
@@ -741,7 +741,7 @@
     },
     {
       "name": "Stockfish analysis",
-      "description": "Stockfish 19 on your phone, offline (arm64): best-move arrows on finished games, the analysis boards, the game explorer and Game Review (in a Lichess review, on the moves Lichess didn't mark), and an eval bar where chess.com has none of its own. It never shows while a game is being played or in puzzles. Patching downloads the official Stockfish 19 (80 MB) from Stockfish's GitHub, so it needs internet.",
+      "description": "Stockfish 19 on your phone, offline (arm64): best-move arrows on finished games, the analysis boards, the game explorer and Game Review (in a Lichess review, on the moves Lichess didn't mark), and an eval bar where chess.com has none of its own. It never shows while a game is being played or in puzzles. Patching downloads the official Stockfish 19 (80 MB) from Stockfish's GitHub or a mirror, or uses the archive picked in this patch's option, so it needs internet or that file.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -774,7 +774,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "stockfishArchive",
+          "title": "Stockfish 19 archive",
+          "description": "Optional: a stockfish-android-arm64-universal.tar.gz downloaded earlier, used instead of the download. The file is checked against Stockfish's published SHA-256.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Time controls under a minute",
