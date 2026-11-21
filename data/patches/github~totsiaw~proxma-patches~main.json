@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.28.2",
+  "version": "1.29.0",
   "patches": [
     {
       "name": "Auto check-in & claim daily reward",
@@ -37,7 +37,7 @@
     },
     {
       "name": "Auto check-in daily streak",
-      "description": "Presses the Daily Streak Check-in button for you when the app is open, once a day. It runs the app's own check-in, so it needs you to be signed in and to open the app each day.",
+      "description": "Presses the Daily Streak Check-in button for you when the app is open, once a day. It runs the app's own check-in, so it needs you to be signed in. Add \"Auto check-in in the background\" so you don't have to open the app each day.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -50,7 +50,36 @@
           "signatures": [],
           "targets": [
             {
-              "version": "3.0.13",
+              "version": "3.0.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Auto check-in in the background",
+      "description": "Does the daily streak check-in without you opening ROX. Shortly after midnight (Pakistan time) an alarm that also fires while the phone sleeps wakes ROX; if today's check-in isn't done yet, ROX opens its own screen for a moment, presses Check-in and closes again. While the phone is in use that screen is see-through and lets your taps through, so you keep using what you had open. While the phone is locked it opens over the lock screen if full-screen notifications are allowed for ROX; otherwise the check-in waits and runs right after you next unlock the phone. If Android doesn't allow ROX to open itself, a notification on the next app open asks you to turn on \"Appear on top\" for ROX; until then it tries off-screen. It retries up to three times a day. A notification says when it worked, or asks you to tap it if it couldn't; the next time you open ROX a short message also says what the last background try did. You must be signed in, and ROX must have been opened once after installing. Force-stopping ROX stops it until the next time you open the app.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.rox",
+          "name": "ROX",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#E4002B",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.0.14",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 28,
@@ -229,6 +258,32 @@
       "options": []
     },
     {
+      "name": "Bypass Play Store check",
+      "description": "Stops ROX from sending a patched copy to the \"Get this app from Play\" screen and closing, so no separate installer-source patch is needed.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.rox",
+          "name": "ROX",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#E4002B",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.0.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Bypass Play license check (NetMonster)",
       "description": "Removes Google Play's PairIP license check so a re-signed NetMonster 5.0.x build runs instead of being blocked by the \"Get this app from Play\" screen. Without it, patched 5.0.0 / 5.0.1 open the Play Store on launch and close. No effect on 4.0.4, which has no such check.",
       "default": true,
@@ -398,6 +453,34 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Close when idle in background",
+      "description": "Closes ROX once it has been out of sight for three minutes and nothing is playing, so its timers, ad and analytics code stop using the battery. This also covers ROX being started in the background by a push message or a job. Notifications still arrive. Opening ROX after that is a fresh start.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.rox",
+          "name": "ROX",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#E4002B",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.0.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -784,7 +867,7 @@
           "signatures": [],
           "targets": [
             {
-              "version": "3.0.13",
+              "version": "3.0.14",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 28,
@@ -913,6 +996,58 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip forced update prompt",
+      "description": "Stops the \"Update Available\" screen that blocks ROX until you install a newer version, so this patched copy keeps working after ROX releases an update. ROX's own code is told the app is a newer version than it is; Android still sees the real version. Off by default: turn it on only if ROX shows that screen again before a new patched build is out.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.rox",
+          "name": "ROX",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#E4002B",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.0.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop background service",
+      "description": "Keeps ROX's background service from running. It can hold the phone awake, restarts itself when the system stops it and starts again after a reboot, which drains the battery. The check-in and the rest of the app don't need it.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.jazz.rox",
+          "name": "ROX",
+          "description": null,
+          "apkFileType": "APK_REQUIRED",
+          "appIconColor": "#E4002B",
+          "signatures": [],
+          "targets": [
+            {
+              "version": "3.0.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
