@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "patches": [
     {
       "name": "AMOLED black (Splitwise)",
@@ -707,6 +707,43 @@
       "options": []
     },
     {
+      "name": "GmsCore support (Google Photos)",
+      "description": "Routes Google sign-in and Firebase push through MicroG-RE (GmsCore) instead of Google Play services, and signs the push registration with Google Photos' original certificate, so the account backs up from a re-signed build. MicroG-RE has to be installed and signed in to the same Google account.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.photos",
+          "name": "Google Photos",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.1.0.1023737660",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "GmsCore support (LinkedIn)",
       "description": "Routes \"Continue with Google\" and Firebase push through MicroG-RE (GmsCore) instead of Google Play services. Signs the FCM registration with LinkedIn's original certificate, so notifications still arrive on a re-signed build. MicroG-RE has to be installed and signed in to a Google account.",
       "default": false,
@@ -1202,6 +1239,43 @@
       "options": []
     },
     {
+      "name": "Install next to the original (Google Photos)",
+      "description": "Installs the patched Google Photos as a separate app (package name + \".loki\"), so the Photos that came with the phone does not have to be removed. Needs \"GmsCore support (Google Photos)\" to sign in. Turn backup off in the original Photos so the two do not both upload.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.photos",
+          "name": "Google Photos",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.1.0.1023737660",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Keep feed on reopen",
       "description": "Keeps your place in the feed when you come back to LinkedIn, instead of reloading it. Pull down or tap the \"New posts\" button to load new posts.",
       "default": true,
@@ -1316,6 +1390,43 @@
             },
             {
               "version": "4.1.1272",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Only real camera photos count as Camera",
+      "description": "Google Photos treats everything under DCIM as Camera, so screenshots and other apps' DCIM folders are always backed up with it. Only DCIM/Camera counts; the rest become normal device folders you choose in Photos' own Backup settings. A switch in Loki Patches restores Photos' rule.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.photos",
+          "name": "Google Photos",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.1.0.1023737660",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1685,6 +1796,44 @@
             },
             {
               "version": "4.1.1272",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlimited backup (Pixel XL)",
+      "description": "One switch for the whole Pixel XL entitlement: Photos believes it may back up unlimited original-quality photos, and every upload reports this phone as a Pixel XL so Google marks it free. New photos then read \"doesn't take up space in your account storage\". Google lists the phone as a Pixel XL under your account's devices; creations Google renders on its servers still use your quota.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.photos",
+          "name": "Google Photos",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.1.0.1023737660",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
