@@ -37,27 +37,6 @@ def build_repo_url(source: str | None, repo: str | None) -> str | None:
     return f"https://{source}.com/{repo}" if source and repo else None
 
 
-def resolve_repo_url(url: str, renames: dict[str, str]) -> str:
-    visited = set()
-    while (key := url.lower()) in renames:
-        destination = renames[key]
-        if destination.lower() == key:
-            return destination
-        if key in visited:
-            raise ValueError(f"Repository rename cycle: {url}")
-        visited.add(key)
-        url = destination
-    return url
-
-
-def record_repo_rename(renames: dict[str, str], old_url: str, new_url: str) -> None:
-    renames.pop(new_url.lower(), None)
-    for alias, destination in renames.items():
-        if destination.lower() == old_url.lower():
-            renames[alias] = new_url
-    renames[old_url.lower()] = new_url
-
-
 def build_raw_url(source: str, repo: str, branch: str, file_path: str) -> str | None:
     if not source or not repo or not branch or not file_path:
         return None
@@ -86,6 +65,7 @@ def fetch_repo_details(repo_url: str) -> dict:
         if source == "github":
             response = GITHUB_REPOSITORY.validate_python(response)
             return {
+                "id": f"github:{response['id']}",
                 "stars": response.get("stargazers_count", 0),
                 "description": response.get("description"),
                 "avatar_url": response.get("owner", {}).get("avatar_url"),
@@ -98,7 +78,7 @@ def fetch_repo_details(repo_url: str) -> dict:
         if isinstance(avatar, str) and avatar.startswith("/"):
             avatar = urllib.parse.urljoin("https://gitlab.com/", avatar)
         return {
-            "project_id": response.get("id"),
+            "id": f"gitlab:{response['id']}",
             "stars": response.get("star_count", 0),
             "description": response.get("description"),
             "avatar_url": avatar,

@@ -13,7 +13,6 @@ from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from http import HTTPStatus
 from threading import Lock
-from typing import cast
 
 import httpx2
 from pydantic import ValidationError
@@ -21,8 +20,8 @@ from pydantic import ValidationError
 from common.constants import (
     BUNDLES_DIR,
     CONCURRENCY,
-    CUSTOM_JSON_PATH,
     DEFAULT_BRANCHES,
+    DISCOVERY_JSON_PATH,
     PATCHES_DIR,
     REPOS_JSON_PATH,
     SCRIPTS_DIR,
@@ -31,7 +30,7 @@ from common.constants import (
 from common.files import load_json, save_json
 from common.http import request
 from common.images import normalize_image_url
-from common.models import BUNDLE_MANIFEST, REPOSITORIES, SOURCES, RepositoryState
+from common.models import BUNDLE_MANIFEST, DISCOVERY, REPOSITORIES
 from common.repositories import (
     build_raw_url,
     build_repo_url,
@@ -39,7 +38,6 @@ from common.repositories import (
     parse_repo_url,
 )
 from common.summary import append_step_summary, format_summary_section
-from discovery import apply_source_config
 
 BUNDLE_PARSER_DIR = SCRIPTS_DIR / "bundle-parser"
 MPP_DIR = BUNDLE_PARSER_DIR / "mpp"
@@ -47,18 +45,6 @@ UPDATED_FILES_PATH = BUNDLE_PARSER_DIR / "updated_files.txt"
 PARSED_FILES_PATH = BUNDLE_PARSER_DIR / "parsed_files.txt"
 GRADLE_EXECUTABLE_NAME = "gradlew.bat" if sys.platform == "win32" else "gradlew"
 GRADLE_EXECUTABLE_PATH = BUNDLE_PARSER_DIR / GRADLE_EXECUTABLE_NAME
-REPOSITORY_FIELDS = (
-    "enabled",
-    "main",
-    "dev",
-    "image",
-    "name",
-    "description",
-    "avatarUrl",
-    "stars",
-    "isArchived",
-    "renamedTo",
-)
 FETCH_ERROR_SECTIONS = {
     "metadata": "Bundle metadata",
     "bundle": "Bundle download",
@@ -142,16 +128,16 @@ class BranchFetchResult:
     repo: str
     branch: str
     new_sha: str | None
+    repo_id: str
     status_changed: bool = False
     needs_parse: bool = False
     bundle_name: str | None = None
     error_message: str | None = None
     error_category: str | None = None
-    renamed_to: str | None = None
 
     @property
     def target_name(self) -> str:
-        return f"{self.source}~{self.repo.replace('/', '~')}~{self.branch}"
+        return f"{self.repo_id.replace(':', '~')}~{self.branch}"
 
 
 def get_remote_file_hash(url: str, source: str, fallback: str | None = None) -> str:
@@ -185,13 +171,11 @@ def process_repo_branch(
     repo: str,
     branch: str,
     current_sha: str | None,
-    weekly: bool = False,
+    repo_id: str,
+    daily: bool = False,
     bundle_downloads: BundleDownloads | None = None,
-    renamed_repo: str | None = None,
     repository_details: RepositoryDetails | None = None,
 ) -> BranchFetchResult:
-    renamed_to = None
-
     def failed(message: str, category: str, unavailable: bool = False) -> BranchFetchResult:
         return BranchFetchResult(
             source,
@@ -201,10 +185,10 @@ def process_repo_branch(
             status_changed=unavailable,
             error_message=message,
             error_category=category,
-            renamed_to=renamed_to,
+            repo_id=repo_id,
         )
 
-    file_prefix = f"{source}~{repo.replace('/', '~')}~{branch}"
+    file_prefix = f"{repo_id.replace(':', '~')}~{branch}"
     bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
     patches_file = PATCHES_DIR / f"{file_prefix}.json"
     has_local_data = bundle_file.is_file() and patches_file.is_file()
@@ -232,8 +216,8 @@ def process_repo_branch(
             "metadata",
             True,
         )
-    if current_sha and remote_sha == current_sha and has_local_data and bundle_content is None:
-        if weekly:
+    if current_sha and remote_sha == current_sha and has_local_data:
+        if daily:
             try:
                 mpp_url = BUNDLE_MANIFEST.validate_python(load_json(bundle_file))["download_url"]
             except ValidationError:
@@ -248,7 +232,7 @@ def process_repo_branch(
                 )
             except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
                 return failed(str(error), "bundle")
-        return BranchFetchResult(source, repo, branch, current_sha)
+        return BranchFetchResult(source, repo, branch, current_sha, repo_id=repo_id)
 
     try:
         if bundle_content is None:
@@ -280,42 +264,18 @@ def process_repo_branch(
         mpp_source, mpp_repo = (source, project_match[1]) if project_match else parse_repo_url(mpp_url)
         if mpp_source != source or not mpp_repo:
             return failed("Invalid `download_url`", "metadata", True)
-        if project_match or mpp_repo.lower() not in {
-            repo.lower(),
-            (renamed_repo or repo).lower(),
-        }:
+        if project_match:
+            if f"gitlab:{project_match[1]}" != repo_id:
+                return failed("Invalid `download_url`", "metadata", True)
+        elif mpp_repo.lower() != repo.lower():
             repository_details = repository_details or RepositoryDetails()
-            repo_url = build_repo_url(source, repo)
-            assert repo_url is not None
-            details = repository_details.get(repo_url)
-            canonical_repo = details.get("full_name")
-            if (
-                details.get("error")
-                or not isinstance(canonical_repo, str)
-                or not canonical_repo
-                or (project_match and details.get("project_id") is None)
-            ):
-                return failed(
-                    details.get("error") or "Could not verify repository identity",
-                    "metadata",
-                )
-            if project_match:
-                if str(details["project_id"]) != project_match[1]:
-                    return failed("Invalid `download_url`", "metadata", True)
-            elif canonical_repo.lower() != mpp_repo.lower():
-                download_repo_url = build_repo_url(source, mpp_repo)
-                assert download_repo_url is not None
-                download_details = repository_details.get(download_repo_url)
-                download_canonical = download_details.get("full_name")
-                if download_details.get("error") or not isinstance(download_canonical, str) or not download_canonical:
-                    return failed(
-                        download_details.get("error") or "Could not verify repository identity",
-                        "metadata",
-                    )
-                if download_canonical.lower() != canonical_repo.lower():
-                    return failed("Invalid `download_url`", "metadata", True)
-            if canonical_repo.lower() != repo.lower():
-                renamed_to = build_repo_url(source, canonical_repo)
+            download_repo_url = build_repo_url(source, mpp_repo)
+            assert download_repo_url is not None
+            details = repository_details.get(download_repo_url)
+            if details.get("error") or not details.get("id"):
+                return failed(details.get("error") or "Could not verify repository identity", "metadata")
+            if details["id"] != repo_id:
+                return failed("Invalid `download_url`", "metadata", True)
 
     except ValueError:
         return failed("Invalid `download_url`", "metadata", True)
@@ -357,7 +317,7 @@ def process_repo_branch(
         status_changed=True,
         needs_parse=patches_content is None,
         bundle_name=bundle_name,
-        renamed_to=renamed_to,
+        repo_id=repo_id,
     )
 
 
@@ -434,82 +394,84 @@ def collect_fetch_errors(results: Iterable[BranchFetchResult]) -> dict[str, list
 
 
 def refresh_repo_metadata(
-    repos_data: dict, refresh: bool, repository_details: RepositoryDetails | None = None
-) -> list[tuple[str, str]]:
-    repository_details = repository_details or RepositoryDetails()
-    tasks = [
-        url
-        for url, metadata in repos_data.items()
-        if metadata.get("enabled") is False
-        or (
-            any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
-            and (refresh or any(field not in metadata for field in ("description", "avatarUrl", "stars")))
-        )
-    ]
+    discovered: dict, existing: dict, repository_details: RepositoryDetails
+) -> tuple[dict, list[tuple[str, str]], set[str]]:
+    repositories = {}
     warnings = []
+    failed_ids = set()
+    unavailable_ids = set()
+    configs = {}
+    resolved_ids = set()
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-        for repo_url, details in zip(tasks, executor.map(repository_details.get, tasks)):
-            if not details or details.get("error"):
-                reason = details.get("error", "Invalid repository data")
-                warnings.append((repo_url, reason))
+        for url, details in zip(discovered, executor.map(repository_details.get, discovered)):
+            entry = discovered[url]
+            config = {field: entry[field] for field in ("enabled", "revancedStars") if field in entry}
+            source, _repo = parse_repo_url(url)
+            if not source:
                 continue
-            metadata = repos_data[repo_url]
-            metadata["description"] = details.get("description") or ""
-            metadata["avatarUrl"] = normalize_image_url(details.get("avatar_url"))
-            metadata["stars"] = details.get("stars", 0)
-            if details.get("is_archived"):
-                metadata["isArchived"] = True
-                warnings.append((repo_url, "Repository is archived"))
+            repo_id = details.get("id")
+            if not repo_id or details.get("error"):
+                if config.get("enabled") is not False:
+                    warnings.append((url, details.get("error") or "Invalid repository data"))
+                repo_id = entry.get("id")
+                if repo_id in existing:
+                    metadata = repositories.setdefault(repo_id, dict(existing[repo_id]))
+                    failed_ids.add(repo_id)
+                    if details.get("is_404") or details.get("is_451"):
+                        unavailable_ids.add(repo_id)
+                else:
+                    continue
             else:
-                metadata.pop("isArchived", None)
-            source, repo = parse_repo_url(repo_url)
-            if not source or not repo:
-                continue
-            full_name = details.get("full_name")
-            if full_name and full_name.lower() != repo.lower():
-                metadata["renamedTo"] = build_repo_url(source, full_name)
-                warnings.append((repo_url, f"Renamed to {metadata['renamedTo']}"))
-            elif full_name:
-                metadata.pop("renamedTo", None)
-    return warnings
+                entry["id"] = repo_id
+                metadata = repositories.setdefault(repo_id, dict(existing.get(repo_id, {})))
+                metadata.update(
+                    repo=details["full_name"],
+                    description=details.get("description") or "",
+                    avatarUrl=normalize_image_url(details.get("avatar_url")),
+                    stars=details.get("stars", 0),
+                )
+                if details.get("is_archived"):
+                    metadata["isArchived"] = True
+                    warnings.append((url, "Repository is archived"))
+                else:
+                    metadata.pop("isArchived", None)
+                if build_repo_url(source, details["full_name"]) != url:
+                    warnings.append((url, f"Renamed to {build_repo_url(source, details['full_name'])}"))
+                resolved_ids.add(repo_id)
+            configs[repo_id] = config
+    for repo_id in unavailable_ids - resolved_ids:
+        repositories[repo_id].update({branch: None for branch in DEFAULT_BRANCHES})
+    for repo_id, config in configs.items():
+        repositories[repo_id].pop("enabled", None)
+        repositories[repo_id].pop("revancedStars", None)
+        repositories[repo_id].update(config)
+    warnings = [
+        (url, message)
+        for url, message in warnings
+        if repositories.get(discovered[url].get("id"), {}).get("enabled") is not False
+    ]
+    return repositories, warnings, failed_ids - resolved_ids
 
 
-def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
-    registry = REPOSITORIES.validate_python(
-        load_json(REPOS_JSON_PATH, {"repositories": {}, "providers": {}, "renames": {}})
-    )
-    repos_data = registry["repositories"]
-    initial_repos = {url: dict(metadata) for url, metadata in repos_data.items()}
-    custom_data = SOURCES.validate_python(load_json(CUSTOM_JSON_PATH))
-    apply_source_config(repos_data, custom_data, registry["renames"])
+def fetch_all_repos(daily: bool = False) -> None:
+    initial_discovery = load_json(DISCOVERY_JSON_PATH, {"providers": {}, "repositories": {}})
+    registry = DISCOVERY.validate_python(initial_discovery)
+    discovered = registry["repositories"]
+    if not discovered:
+        raise ValueError("No discovered repositories; fetch stopped")
+    initial_repos = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
+    repository_details = RepositoryDetails()
+    repos_data, repository_warnings, failed_ids = refresh_repo_metadata(discovered, initial_repos, repository_details)
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
     MPP_DIR.mkdir(parents=True, exist_ok=True)
     tasks = []
-    image_tasks = []
-    checked_repos = {
-        url
-        for url, metadata in repos_data.items()
-        if metadata.get("enabled") is False or any(metadata.get(branch) for branch in DEFAULT_BRANCHES)
-    }
-    repository_details = RepositoryDetails()
-    repository_warnings = refresh_repo_metadata(repos_data, daily or weekly, repository_details)
-    apply_source_config(repos_data, custom_data, registry["renames"])
-    previous_preferred = {}
-    renamed_repos = {}
-    for repo_url, repo_metadata in repos_data.items():
-        if repo_metadata.get("enabled") is False:
+    for repo_id, metadata in repos_data.items():
+        if metadata.get("enabled") is False or repo_id in failed_ids:
             continue
-        source, repo = parse_repo_url(repo_url)
-        if not source or not repo:
-            continue
-        previous_preferred[repo_url] = next((branch for branch in DEFAULT_BRANCHES if repo_metadata.get(branch)), None)
-        renamed_repos[source, repo] = parse_repo_url(repo_metadata.get("renamedTo") or "")[1]
+        source = repo_id.split(":", 1)[0]
         for branch in DEFAULT_BRANCHES:
-            tasks.append((source, repo, branch, repo_metadata.get(branch)))
-        if daily or weekly:
-            image_tasks.append((source, repo, repo_metadata.get("image")))
-
+            tasks.append((source, metadata["repo"], branch, metadata.get(branch), repo_id))
     print(f"Processing {len(tasks)} branch targets...")
     bundle_downloads = BundleDownloads()
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
@@ -517,116 +479,78 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
             executor.submit(
                 process_repo_branch,
                 *task,
-                weekly=weekly,
+                daily=daily,
                 bundle_downloads=bundle_downloads,
-                renamed_repo=renamed_repos[task[0], task[1]],
                 repository_details=repository_details,
             )
             for task in tasks
         )
         results = [future.result() for future in as_completed(futures)]
-    results.sort(
-        key=lambda result: (
-            result.repo.lower(),
-            result.source,
-            DEFAULT_BRANCHES.index(result.branch),
-        )
-    )
+    results.sort(key=lambda result: (result.repo.lower(), result.source, DEFAULT_BRANCHES.index(result.branch)))
+    run_bundle_parser([result for result in results if result.needs_parse])
     updated_count = 0
-    for result in results:
-        repo_url = build_repo_url(result.source, result.repo)
-        assert repo_url is not None
-        repo_metadata = repos_data[repo_url]
-        if result.renamed_to and repo_metadata.get("renamedTo") != result.renamed_to:
-            repo_metadata["renamedTo"] = result.renamed_to
-            repository_warnings.append((repo_url, f"Renamed to {result.renamed_to}"))
-    apply_source_config(repos_data, custom_data, registry["renames"])
-    active_results = [
-        result
-        for result in results
-        if repos_data[f"https://{result.source}.com/{result.repo}"].get("enabled") is not False
-    ]
-    run_bundle_parser([result for result in active_results if result.needs_parse])
-    for result in active_results:
-        if result.status_changed:
-            updated_count += 1
-            repo_url = build_repo_url(result.source, result.repo)
-            assert repo_url is not None
-            repos_data[repo_url].update({result.branch: result.new_sha})
-    image_tasks = [
-        task for task in image_tasks if repos_data[f"https://{task[0]}.com/{task[1]}"].get("enabled") is not False
-    ]
-    image_errors = {}
-    if image_tasks:
-        print(f"Processing {len(image_tasks)} image targets...")
-        with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-            image_futures = (executor.submit(process_image, *task) for task in image_tasks)
-            for future in as_completed(image_futures):
-                source, repo, new_image_sha, status_changed, error_message = future.result()
-                if error_message:
-                    image_errors[f"https://{source}.com/{repo}"] = error_message
-                if status_changed:
-                    updated_count += 1
-                    repo_url = build_repo_url(source, repo)
-                    assert repo_url is not None
-                    repos_data[repo_url]["image"] = new_image_sha
     grouped_results = {}
-    for result in active_results:
-        grouped_results.setdefault(build_repo_url(result.source, result.repo), []).append(result)
-    for repo_url, branch_results in grouped_results.items():
-        metadata = repos_data[repo_url]
+    for result in results:
+        metadata = repos_data[result.repo_id]
+        grouped_results.setdefault(result.repo_id, []).append(result)
+        if result.status_changed:
+            metadata[result.branch] = result.new_sha
+            updated_count += 1
+    for repo_id, branch_results in grouped_results.items():
+        metadata = repos_data[repo_id]
         preferred = next((branch for branch in DEFAULT_BRANCHES if metadata.get(branch)), None)
         if not preferred:
             continue
         chosen = next(result for result in branch_results if result.branch == preferred)
         if chosen.error_message:
             continue
+        previous = initial_repos.get(repo_id, {})
+        previous_preferred = next((branch for branch in DEFAULT_BRANCHES if previous.get(branch)), None)
         if chosen.bundle_name:
             metadata["name"] = chosen.bundle_name
         elif chosen.status_changed:
             metadata["name"] = metadata.get("name") or ""
-        elif previous_preferred[repo_url] != preferred or metadata.get("name") is None:
-            prefix = chosen.target_name
-            local_mpp = MPP_DIR / f"{prefix}.mpp"
+        elif previous_preferred != preferred or metadata.get("name") is None:
+            local_mpp = MPP_DIR / f"{chosen.target_name}.mpp"
             try:
                 content = (
                     local_mpp.read_bytes()
                     if local_mpp.is_file()
-                    else bundle_downloads.download(load_json(BUNDLES_DIR / f"{prefix}.json")["download_url"])
+                    else bundle_downloads.download(
+                        load_json(BUNDLES_DIR / f"{chosen.target_name}.json")["download_url"]
+                    )
                 )
                 metadata["name"] = extract_mpp_name(content) or metadata.get("name") or ""
             except (OSError, httpx2.HTTPError, httpx2.InvalidURL) as error:
-                print(f"[-] {repo_url}: Failed to read bundle name: {error}")
-        updated_count += int(metadata.get("name") != initial_repos[repo_url].get("name"))
-    repository_warnings.extend(
-        refresh_repo_metadata(
-            {url: metadata for url, metadata in repos_data.items() if url not in checked_repos},
-            daily or weekly,
-            repository_details,
-        )
-    )
-    apply_source_config(repos_data, custom_data, registry["renames"])
-    grouped_results = {
-        url: branch_results
-        for url, branch_results in grouped_results.items()
-        if repos_data[url].get("enabled") is not False
-    }
-    errors = collect_fetch_errors(result for branch_results in grouped_results.values() for result in branch_results)
-    errors["image"].extend(
-        message for url, message in image_errors.items() if repos_data[url].get("enabled") is not False
-    )
-    errors["repo_metadata"].extend(
-        f"{url}: {message}"
-        for url, message in dict.fromkeys(repository_warnings)
-        if repos_data[url].get("enabled") is not False
-    )
+                print(f"[-] {build_repo_url(chosen.source, chosen.repo)}: Failed to read bundle name: {error}")
+    image_errors = []
+    if daily:
+        image_ids = list(grouped_results)
+        with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
+            futures = [
+                executor.submit(
+                    process_image,
+                    repo_id.split(":", 1)[0],
+                    repos_data[repo_id]["repo"],
+                    repos_data[repo_id].get("image"),
+                )
+                for repo_id in image_ids
+            ]
+            for repo_id, future in zip(image_ids, futures):
+                _source, _repo, image_sha, changed, error = future.result()
+                if changed:
+                    repos_data[repo_id]["image"] = image_sha
+                    updated_count += 1
+                if error:
+                    image_errors.append(error)
     if repos_data != initial_repos:
-        registry["repositories"] = {
-            url: cast(RepositoryState, {field: metadata[field] for field in REPOSITORY_FIELDS if field in metadata})
-            for url, metadata in sorted(repos_data.items(), key=lambda item: item[0].lower())
-        }
-        save_json(REPOS_JSON_PATH, registry)
-    total_repo_count = len(grouped_results)
+        save_json(REPOS_JSON_PATH, dict(sorted(repos_data.items())))
+    if registry != initial_discovery:
+        save_json(DISCOVERY_JSON_PATH, registry)
+    errors = collect_fetch_errors(results)
+    errors["image"].extend(image_errors)
+    errors["repo_metadata"].extend(f"{url}: {message}" for url, message in dict.fromkeys(repository_warnings))
+    total_repo_count = sum(metadata.get("enabled") is not False for metadata in repos_data.values())
     successful_repo_count = sum(
         any(result.new_sha and not result.error_message for result in branch_results)
         for branch_results in grouped_results.values()
@@ -639,12 +563,7 @@ def fetch_all_repos(daily: bool = False, weekly: bool = False) -> None:
         print(f"{title}: {len(sorted_errors)} repositories")
         content = "\n".join(f"- {error}" for error in sorted_errors)
         summary_sections.append(
-            format_summary_section(
-                title,
-                content,
-                len(errors[category]),
-                collapsed=category != "patch_list",
-            )
+            format_summary_section(title, content, len(sorted_errors), collapsed=category != "patch_list")
         )
     append_step_summary("\n\n".join(summary_sections))
     print(f"Fetch completed. Updated {updated_count} targets.")

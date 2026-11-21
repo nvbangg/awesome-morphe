@@ -38,6 +38,7 @@ class TestBundleParser:
             repo,
             branch,
             "new-sha",
+            f"{source}:1",
             status_changed=True,
             needs_parse=True,
             bundle_name=f"{repo} {branch}",

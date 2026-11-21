@@ -32,7 +32,7 @@ def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:
         return None, False
 
 
-def process(apps_dict: dict, mode: str) -> None:
+def process(apps_dict: dict, daily: bool = False) -> None:
     official_data = load_json(OFFICIAL_BUNDLES_PATH)
     official_store = official_data.get("store", {}) if isinstance(official_data, dict) else {}
 
@@ -41,7 +41,7 @@ def process(apps_dict: dict, mode: str) -> None:
         for package_name, app_data in apps_dict.items()
         if package_name != PACKAGE_UNIVERSAL
         and (
-            mode == "weekly"
+            daily
             or any(
                 app_data.get(field) is None
                 for field in (
@@ -55,7 +55,7 @@ def process(apps_dict: dict, mode: str) -> None:
         )
     ]
     if apps_to_scrape:
-        print(f"\nScraping Google Play for {len(apps_to_scrape)} apps (mode: {mode})...")
+        print(f"\nScraping Google Play for {len(apps_to_scrape)} apps (daily: {daily})...")
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
             for package_name, (details, is_404) in zip(
                 apps_to_scrape,

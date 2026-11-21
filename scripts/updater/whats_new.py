@@ -344,12 +344,14 @@ def generate(
         repo_url: {package_name: sorted(patches) for package_name, patches in sorted(bundle_apps.items())}
         for repo_url, bundle_apps in current_bundles.items()
     }
+    bundle_urls = {bundle["id"]: f"https://{bundle['source']}.com/{bundle['repo']}" for bundle in bundles}
+    id_order = {repo_id: bundle_order[url] for repo_id, url in bundle_urls.items()}
     app_patch_counts = count_app_patches(new_bundles)
     json_diff = build_json_diff(
         old_history,
         new_bundles,
         app_metadata,
-        bundle_order,
+        id_order,
         app_patch_counts,
     )
 
@@ -368,6 +370,7 @@ def generate(
         append_step_summary(f"## 🆕 What's New:\n\n- {warning_message}")
         return old_history
 
+    json_diff = {bundle_urls[repo_id]: diff for repo_id, diff in json_diff.items()}
     if markdown_str := generate_markdown(
         json_diff,
         old_history,

@@ -52,7 +52,7 @@ class TestRepositoryMetadata:
             details = repositories.fetch_repo_details("https://gitlab.com/group/owner/old")
         request.assert_called_once_with("https://gitlab.com/api/v4/projects/group%2Fowner%2Fold")
         assert details == {
-            "project_id": 123,
+            "id": "gitlab:123",
             "full_name": "group/owner/new",
             "stars": 5,
             "description": "Example bundle",

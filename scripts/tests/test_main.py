@@ -19,6 +19,9 @@ def pipeline(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> tuple[MagicMock
     monkeypatch.setattr(sync.telegram, "send_notification", tasks.telegram)
     monkeypatch.setattr(sync.http, "HTTP_CLIENT", client)
     monkeypatch.setattr(sync.subprocess, "check_output", git_status)
+    monkeypatch.setattr(sync.audit_readme, "audit_repos_and_links", MagicMock(return_value="Audit"))
+    monkeypatch.setattr(sync.find_projects, "run", MagicMock(return_value="Projects"))
+    monkeypatch.setattr(sync, "append_step_summary", MagicMock())
     monkeypatch.setenv("GITHUB_OUTPUT", str(tmp_path / "output"))
     return tasks, git_status, client
 
@@ -29,17 +32,16 @@ def pipeline(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> tuple[MagicMock
         ([], b"", None),
         ([], b" M data/repos.json\n", "default"),
         (["--daily"], b"", "daily"),
-        (["--weekly"], b"", "weekly"),
     ),
 )
 def test_sync_preserves_update_gate_and_stage_order(arguments, changes, mode, pipeline, tmp_path: Path) -> None:
     tasks, git_status, _client = pipeline
     git_status.return_value = changes
     assert sync.main(arguments) == 0
-    daily, weekly = "--daily" in arguments, "--weekly" in arguments
-    expected = [call.discover(daily, weekly), call.fetch(daily, weekly)]
+    daily = "--daily" in arguments
+    expected = [call.discover(), call.fetch(daily)]
     if mode:
-        expected.append(call.update(mode))
+        expected.append(call.update(daily))
         assert (tmp_path / "output").read_text(encoding="utf-8") == "updated=true\n"
     else:
         assert not (tmp_path / "output").exists()
@@ -71,9 +73,9 @@ def test_sync_failure_stops_later_tasks_and_does_not_mark_update(stage, pipeline
 @pytest.mark.parametrize(
     "arguments,expected",
     (
-        (["--daily", "discover"], call.discover(True, False)),
-        (["fetch", "--weekly"], call.fetch(False, True)),
-        (["update", "--daily"], call.update("daily")),
+        (["discover"], call.discover()),
+        (["fetch", "--daily"], call.fetch(True)),
+        (["update", "--daily"], call.update(True)),
         (["telegram", "Custom title", "notification.md"], call.telegram("Custom title", Path("notification.md"))),
     ),
 )

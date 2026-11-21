@@ -19,7 +19,7 @@ from common.constants import (
 )
 from common.files import load_json
 from common.models import BUNDLE_MANIFEST, PATCH, PATCH_LIST, Patch
-from common.repositories import parse_repo_url
+from common.repositories import build_repo_url
 
 _BUNDLE_NAME_SUFFIX_RE = re.compile(
     r"(?i)(?: for use with morphe| for morphe|['\u2019]s morphe patches|['\u2019]s patches| morphe| patches| patch)+$"
@@ -201,18 +201,18 @@ def process(
     all_new_hashes: dict[str, dict[str, str]] = {}
 
     print(f"\nParsing local patches and bundles for {len(bundle_sources)} sources...")
-    for repo_url, source_entry in bundle_sources.items():
-        source, repo = parse_repo_url(repo_url)
-        if not source or not repo:
-            continue
+    for repo_id, source_entry in bundle_sources.items():
+        source = repo_id.split(":", 1)[0]
+        repo = source_entry["repo"]
+        repo_url = build_repo_url(source, repo)
         owner = repo.split("/", 1)[0]
-        repo_metadata = repos_data[repo_url]
+        repo_metadata = repos_data[repo_id]
         main_sha = repo_metadata.get("main")
         dev_sha = repo_metadata.get("dev")
         if not main_sha and not dev_sha:
-            keys_to_remove.append(repo_url)
+            keys_to_remove.append(repo_id)
             continue
-        file_prefix = f"{source}~{repo.replace('/', '~')}"
+        file_prefix = repo_id.replace(":", "~")
         main_names = {}
         dev_names = {}
         main_bundle, main_patches, main_raw, main_reason = load_branch_data(
@@ -232,7 +232,7 @@ def process(
         )
         branch_errors = [(branch, reason) for branch, reason in (("main", main_reason), ("dev", dev_reason)) if reason]
         if not (main_patches or dev_patches):
-            keys_to_remove.append(repo_url)
+            keys_to_remove.append(repo_id)
             if errors is not None and branch_errors:
                 reason = (
                     main_reason
@@ -276,7 +276,7 @@ def process(
         )
         current_apps_in_bundle: set[str] = set()
 
-        existing_bundle = (existing_bundles or {}).get(repo_url, {})
+        existing_bundle = (existing_bundles or {}).get(repo_id, {})
         existing_patches = {
             patch["name"]: patch
             for patch in existing_bundle.get("patches", [])
@@ -324,7 +324,7 @@ def process(
         }
 
         bundle_timestamp = source_entry["updatedAt"]
-        repo_hashes = existing_hashes.get(repo_url, {})
+        repo_hashes = existing_hashes.get(repo_id, {})
         new_repo_hashes = {}
         app_updates_map = (
             dict(source_entry.get("appUpdates")) if isinstance(source_entry.get("appUpdates"), dict) else {}
@@ -346,7 +346,7 @@ def process(
             for package_name in source_entry["appFirstSeen"]
             if package_name in app_updates_map
         }
-        all_new_hashes[repo_url] = new_repo_hashes
+        all_new_hashes[repo_id] = new_repo_hashes
 
     for key in keys_to_remove:
         bundle_sources.pop(key, None)
@@ -356,11 +356,7 @@ def process(
 
 def cleanup_orphan_files(repos_data: dict) -> None:
     target_files = {
-        f"{source}~{repo.replace('/', '~')}~{branch}.json"
-        for repo_url in repos_data
-        for source, repo in [parse_repo_url(repo_url)]
-        if source and repo
-        for branch in DEFAULT_BRANCHES
+        f"{repo_id.replace(':', '~')}~{branch}.json" for repo_id in repos_data for branch in DEFAULT_BRANCHES
     }
     for directory in (BUNDLES_DIR, PATCHES_DIR):
         for filepath in directory.glob("*.json"):

@@ -12,7 +12,6 @@ on:
         options:
           - normal
           - daily
-          - weekly
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -39,9 +38,8 @@ jobs:
       - name: Prepare sync
         id: mode
         run: |
-          read -r TODAY WEEK <<< "$(date -u +'%Y-%m-%d %G-W%V')"
+          TODAY=$(date -u +'%Y-%m-%d')
           echo "today=$TODAY" >> "$GITHUB_OUTPUT"
-          echo "week=$WEEK" >> "$GITHUB_OUTPUT"
           if [ "$MODE" != "normal" ]; then
             echo "args=--$MODE" >> "$GITHUB_OUTPUT"
           fi
@@ -72,16 +70,11 @@ jobs:
         id: commit
         env:
           TODAY: ${{ steps.mode.outputs.today }}
-          WEEK: ${{ steps.mode.outputs.week }}
         run: |
           COMMIT_MSG="Sync bundles"
           if [ "$MODE" != "normal" ]; then
-            jq --arg d "$TODAY" --arg w "$WEEK" --arg m "$MODE" \
-              '.lastDaily = $d | if $m == "weekly" then .lastWeek = $w else . end' data/state.json > data/state.tmp && mv data/state.tmp data/state.json
+            jq --arg d "$TODAY" '.lastDaily = $d' data/state.json > data/state.tmp && mv data/state.tmp data/state.json
             COMMIT_MSG="Update history (${TODAY})"
-            if [ "$MODE" = "weekly" ]; then
-              COMMIT_MSG="Update history (weekly ${TODAY})"
-            fi
           fi
           git add data/ web/public/
           if ! git diff --staged --quiet; then

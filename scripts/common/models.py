@@ -3,6 +3,7 @@ from typing import Annotated, Any, NotRequired, TypedDict
 from pydantic import Field, OnErrorOmit, TypeAdapter, with_config
 
 NonEmptyString = Annotated[str, Field(min_length=1)]
+RepositoryId = Annotated[str, Field(pattern=r"^(github|gitlab):[1-9]\d*$")]
 
 
 @with_config(strict=True, extra="allow")
@@ -31,8 +32,6 @@ class PatchList(TypedDict):
 class SourceConfig(TypedDict, total=False):
     enabled: bool
     revancedStars: int
-    note: str
-    request: str
 
 
 @with_config(strict=True, extra="allow")
@@ -46,7 +45,6 @@ class ProjectLists(TypedDict):
 @with_config(strict=True)
 class UpdateState(TypedDict):
     lastDaily: NotRequired[str]
-    lastWeek: NotRequired[str]
     appHashes: dict[str, dict[str, str]]
     history: dict[str, dict[str, list[str]]]
 
@@ -70,7 +68,9 @@ class JmanSource(TypedDict):
 
 @with_config(strict=True, extra="allow")
 class RepositoryState(TypedDict, total=False):
+    repo: str
     enabled: bool
+    revancedStars: int
     main: str | None
     dev: str | None
     image: str | None
@@ -79,14 +79,19 @@ class RepositoryState(TypedDict, total=False):
     avatarUrl: str
     stars: int
     isArchived: bool
-    renamedTo: str
 
 
 @with_config(strict=True)
-class RepositoryRegistry(TypedDict):
-    repositories: dict[str, RepositoryState]
+class DiscoveredRepository(TypedDict, total=False):
+    id: RepositoryId
+    enabled: bool
+    revancedStars: int
+
+
+@with_config(strict=True)
+class DiscoveryState(TypedDict):
     providers: dict[str, list[NonEmptyString]]
-    renames: dict[Annotated[str, Field(pattern=r"^[^A-Z]+$")], NonEmptyString]
+    repositories: dict[Annotated[str, Field(pattern=r"^[^A-Z]+$")], DiscoveredRepository]
 
 
 @with_config(strict=True)
@@ -96,6 +101,7 @@ class RepositoryAvatar(TypedDict, total=False):
 
 @with_config(strict=True)
 class GitHubRepository(TypedDict):
+    id: int
     full_name: NonEmptyString
     stargazers_count: NotRequired[int]
     description: NotRequired[str | None]
@@ -107,7 +113,7 @@ class GitHubRepository(TypedDict):
 class GitLabRepository(TypedDict):
     path_with_namespace: NonEmptyString
     archived: bool
-    id: NotRequired[int]
+    id: int
     star_count: NotRequired[int]
     description: NotRequired[str | None]
     avatar_url: NotRequired[str | None]
@@ -121,7 +127,8 @@ SOURCES = TypeAdapter(dict[str, SourceConfig])
 PROJECTS = TypeAdapter(ProjectLists)
 OFFICIAL_CATALOG = TypeAdapter(OfficialCatalog)
 JMAN_SOURCES = TypeAdapter(dict[str, OnErrorOmit[JmanSource]])
-REPOSITORIES = TypeAdapter(RepositoryRegistry)
+REPOSITORIES = TypeAdapter(dict[RepositoryId, RepositoryState])
+DISCOVERY = TypeAdapter(DiscoveryState)
 UPDATE_STATE = TypeAdapter(UpdateState)
 GITHUB_REPOSITORY = TypeAdapter(GitHubRepository)
 GITLAB_REPOSITORY = TypeAdapter(GitLabRepository)

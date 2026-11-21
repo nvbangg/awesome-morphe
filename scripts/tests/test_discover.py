@@ -3,11 +3,10 @@ from unittest.mock import patch
 
 import httpx2
 import pytest
-from pydantic import ValidationError
 
 import discover
 from common.files import load_json, save_json
-from discovery import audit_readme, find_projects, jman, morphe_archive, official
+from discovery import jman, morphe_archive, official
 
 
 class TestDiscover:
@@ -33,16 +32,15 @@ class TestDiscover:
         save_json(
             self.repos_path,
             {
-                "repositories": self.saved_repos,
+                "repositories": self.saved_sources,
                 "providers": {name: list(self.saved_sources) for name in discover.PROVIDER_MODULES},
-                "renames": {},
             },
         )
         for patcher in (
             patch.multiple(
                 discover,
                 CUSTOM_JSON_PATH=self.custom_path,
-                REPOS_JSON_PATH=self.repos_path,
+                DISCOVERY_JSON_PATH=self.repos_path,
                 ROOT_DIR=self.root,
             ),
             patch.object(official, "OFFICIAL_BUNDLES_PATH", self.official_path),
@@ -171,66 +169,7 @@ class TestDiscover:
     ) -> None:
         self.open_url.side_effect = httpx2.ConnectError("offline")
         assert discover.run() == 0
-        assert load_json(self.repos_path)["repositories"] == self.saved_repos
-
-    @pytest.mark.parametrize("daily", (False, True))
-    @pytest.mark.parametrize("content", ("{}", "[]"))
-    def test_no_usable_sources_stops_without_changing_repositories(self, daily, content) -> None:
-        registry = load_json(self.repos_path)
-        registry["providers"] = [] if content == "[]" else {}
-        save_json(self.repos_path, registry)
-        snapshot = self.repos_path.read_bytes()
-        self.open_url.side_effect = httpx2.ConnectError("offline")
-        with (
-            patch.object(audit_readme, "audit_repos_and_links") as audit,
-            patch.object(find_projects, "run") as search,
-        ):
-            if content == "[]":
-                with pytest.raises(ValidationError):
-                    discover.run(daily)
-            else:
-                assert discover.run(daily) == 1
-        assert self.repos_path.read_bytes() == snapshot
-        audit.assert_not_called()
-        search.assert_not_called()
-
-    def test_discovery_preserves_custom_exclusions_and_existing_repo_state(self) -> None:
-        save_json(
-            self.custom_path,
-            {"https://github.com/owner/disabled": {"enabled": False}},
-        )
-        discovery_state = load_json(self.repos_path)
-        discovery_state["renames"] = {"https://github.com/owner/old": "https://github.com/owner/saved"}
-        save_json(self.repos_path, discovery_state)
-        data = {
-            "bundles": [
-                {"source": "github", "repo": "owner/disabled"},
-                {"source": "github", "repo": "OWNER/SAVED"},
-                {"source": "github", "repo": "owner/new"},
-                {"source": "github", "repo": "owner/old"},
-                {"source": "github", "repo": "owner/Old"},
-            ]
-        }
-        with (
-            patch.object(official, "request", return_value=httpx2.Response(200, json=data)),
-            patch.object(
-                jman,
-                "request",
-                return_value=httpx2.Response(200, json={"saved": {"patches": "https://github.com/owner/saved"}}),
-            ),
-            patch.object(
-                morphe_archive,
-                "request",
-                return_value=httpx2.Response(200, text="https://morphe.software/add-source?github=owner/saved"),
-            ),
-        ):
-            assert discover.run() == 0
-        assert load_json(self.repos_path)["repositories"] == {
-            **self.saved_repos,
-            "https://github.com/owner/disabled": {"enabled": False},
-            "https://github.com/owner/new": {},
-        }
-        assert load_json(self.repos_path)["renames"] == discovery_state["renames"]
+        assert load_json(self.repos_path)["repositories"] == self.saved_sources
 
     def test_snapshot_and_provider_write_failures_propagate(self) -> None:
         snapshot = self.official_path.read_bytes()
@@ -267,147 +206,31 @@ class TestDiscover:
             discover.run()
         assert self.repos_path.read_bytes() == snapshot
 
-    def test_default_does_not_audit_or_search_projects(self) -> None:
+    def test_custom_config_is_filtered_and_later_case_variant_wins(self) -> None:
+        save_json(
+            self.custom_path,
+            {
+                "https://github.com/owner/saved": {"enabled": False, "note": "Private", "revancedStars": 5},
+                "https://github.com/OWNER/SAVED": {"revancedStars": 8, "request": "Private"},
+                "https://gitlab.com/owner/new": {"enabled": False},
+            },
+        )
+        before = self.custom_path.read_bytes()
+        registry = load_json(self.repos_path)
+        registry["repositories"]["https://github.com/owner/saved"]["id"] = "github:1"
+        save_json(self.repos_path, registry)
         self.open_url.side_effect = httpx2.ConnectError("offline")
-        with (
-            patch.object(audit_readme, "audit_repos_and_links") as audit,
-            patch.object(find_projects, "run") as search,
-        ):
-            assert discover.run() == 0
-        audit.assert_not_called()
-        search.assert_not_called()
-
-    def test_extended_discovery_exports_only_verified_unknown_projects(self) -> None:
-        output_path = self.root / "projects.json"
-        projects = {
-            "readmeRepos": ["https://github.com/owner/archived", "https://github.com/owner/known-project"],
-            "readmeLinks": [],
-            "newRepos": [],
-            "excludedRepos": ["https://github.com/owner/excluded-project"],
+        assert discover.run() == 0
+        repositories = load_json(self.repos_path)["repositories"]
+        assert repositories == {
+            "https://github.com/owner/saved": {"revancedStars": 8, "id": "github:1"},
+            "https://gitlab.com/owner/new": {"enabled": False},
         }
-        save_json(output_path, projects)
-        repository = {
-            "name": "new-project",
-            "full_name": "owner/new-project",
-            "html_url": "https://github.com/owner/new-project",
-            "default_branch": "develop",
-            "stargazers_count": 4,
-            "created_at": "2026-01-01T00:00:00Z",
-            "pushed_at": "2026-10-19T00:00:00Z",
-            "description": "A standalone Morphe project",
-        }
-        bundle = {**repository, "full_name": "owner/patch-bundle"}
-        known = {**repository, "full_name": "owner/known-project"}
-        excluded = {**repository, "full_name": "owner/excluded-project"}
-        no_readme = {**repository, "full_name": "owner/no-readme"}
+        assert self.custom_path.read_bytes() == before
 
-        def file_exists(url: str) -> bool:
-            return url.endswith(
-                (
-                    "owner/new-project/develop/README.md",
-                    "owner/patch-bundle/main/patches-bundle.json",
-                )
-            )
-
-        with (
-            patch.object(audit_readme, "PROJECTS_JSON_PATH", output_path),
-            patch.object(audit_readme, "fetch_repo_details", return_value={"is_archived": True}),
-            patch.multiple(
-                find_projects,
-                ROOT_DIR=self.root,
-                PROJECTS_JSON_PATH=output_path,
-                SEARCH_KEYWORDS=["morphe"],
-                TARGET_USERS=[],
-            ),
-            patch.object(
-                find_projects,
-                "request",
-                return_value=httpx2.Response(
-                    200,
-                    json={
-                        "total_count": 6,
-                        "items": [
-                            repository,
-                            repository,
-                            bundle,
-                            known,
-                            excluded,
-                            no_readme,
-                        ],
-                    },
-                ),
-            ) as search,
-            patch.object(find_projects, "_file_exists", side_effect=file_exists),
-        ):
-            self.open_url.side_effect = httpx2.ConnectError("offline")
-            assert discover.run(True) == 0
-            search.assert_called_once()
-            summary = self.summary.call_args.args[0]
-            assert "https://github.com/owner/archived" in summary
-            assert load_json(output_path) == {**projects, "newRepos": [repository["html_url"]]}
-            assert load_json(self.repos_path)["repositories"] == self.saved_repos
-
-
-@pytest.mark.parametrize("reverse_custom", (False, True))
-@pytest.mark.parametrize("renamed", (False, True))
-def test_merge_keeps_provider_priority_and_later_custom_entries(
-    reverse_custom,
-    renamed,
-) -> None:
-    first_url = "https://github.com/Owner/Original" if renamed else "https://github.com/Owner/Repo"
-    second_url = "https://github.com/owner/previous" if renamed else "https://github.com/owner/repo"
-    custom_items = [
-        (
-            first_url,
-            {"enabled": False, "note": "Earlier custom", "request": "Earlier request"},
-        ),
-        (
-            second_url,
-            {"enabled": True, "note": "Later custom", "extra": 7},
-        ),
-    ]
-    renames: dict[str, str] = {}
-    if renamed:
-        destination = "https://github.com/Owner/Latest"
-        renames = {first_url.lower(): destination, second_url.lower(): destination}
-        custom_items.append((destination, {"enabled": True, "note": "Latest custom"}))
-    if reverse_custom:
-        custom_items.reverse()
-    if not renamed:
-        destination = custom_items[-1][0]
-    providers = [
-        dict(custom_items),
-        {
-            first_url.upper(): {
-                "enabled": True,
-                "note": "Official",
-                "officialField": True,
-            }
-        },
-        {first_url: {"note": "Archive", "archiveField": True}},
-        {second_url: {"note": "Jman", "archiveField": False}},
-    ]
-    merged = discover.merge_sources(providers, renames)
-    assert merged == {
-        destination: {
-            "enabled": not reverse_custom,
-            "note": "Earlier custom" if reverse_custom else "Latest custom" if renamed else "Later custom",
-            "request": "Earlier request",
-            "extra": 7,
-            "officialField": True,
-            "archiveField": True,
-        }
-    }
-    assert discover._sync_repos(merged, {}) == {destination: {"enabled": False} if reverse_custom else {}}
-
-
-def test_sync_keeps_hosts_independent_and_preserves_saved_fields() -> None:
-    github = "https://github.com/owner/repo"
-    gitlab = "https://gitlab.com/owner/repo"
-    saved = {github: {"main": "sha", "stars": 2, "renamedTo": "https://github.com/owner/new"}}
-    actual = discover._sync_repos({github.upper(): {}, gitlab: {}}, saved)
-    assert actual[github] == saved[github]
-    assert actual[gitlab] == {}
-    assert len(actual) == 2
-    saved[github]["enabled"] = False
-    assert discover._sync_repos({github: {}, gitlab: {}}, saved)[github] == actual[github]
+    def test_empty_sources_stop_without_replacing_saved_discovery(self) -> None:
+        save_json(self.repos_path, {"providers": {}, "repositories": {}})
+        before = self.repos_path.read_bytes()
+        self.open_url.side_effect = httpx2.ConnectError("offline")
+        assert discover.run() == 1
+        assert self.repos_path.read_bytes() == before

@@ -9,6 +9,7 @@ export const TEST_TIMESTAMP = Date.UTC(2026, 0, 15);
 export const catalog: CatalogArtifact = {
 	bundles: [
 		{
+			id: "github:1",
 			source: "github",
 			repo: "Example/core",
 			name: "Core patches",
@@ -46,6 +47,7 @@ export const catalog: CatalogArtifact = {
 			],
 		},
 		{
+			id: "gitlab:1",
 			source: "gitlab",
 			repo: "group/community",
 			name: "Community patches",

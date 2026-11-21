@@ -40,6 +40,7 @@ export const appMetadataSchema = z.object({
 });
 
 export const bundleSchema = z.object({
+	id: z.string(),
 	source: z.enum(["github", "gitlab"]),
 	repo: z.string(),
 	name: z.string(),

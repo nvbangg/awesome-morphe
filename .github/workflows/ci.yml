@@ -26,12 +26,10 @@ jobs:
 
       - name: Select and trigger sync
         run: |
-          read -r TODAY WEEK <<< "$(date -u +'%Y-%m-%d %G-W%V')"
+          TODAY=$(date -u +'%Y-%m-%d')
           MODE=$(jq -r \
-            --arg today "$TODAY" \
-            --arg week "$WEEK" '
-            if .lastWeek != $week then "weekly"
-            elif .lastDaily != $today then "daily"
+            --arg today "$TODAY" '
+            if .lastDaily != $today then "daily"
             else "normal" end' data/state.json)
           gh workflow run sync.yml --ref "$GITHUB_REF_NAME" -f mode="$MODE"
           echo "::notice::Dispatched sync.yml (mode: $MODE)"
