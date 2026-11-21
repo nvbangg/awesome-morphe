@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.7.0",
+  "version": "1.9.0",
   "patches": [
     {
       "name": "Cricbuzz Disable Ads",
@@ -55,6 +55,50 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "GmsCore support (MicroG)",
+      "description": "Routes Google Play Services calls through MicroG instead of real GPS.\n\nWorks for: Google apps (YouTube, Maps, News, Photos) and third-party apps using classic Google Sign-In (Android 13 and below).\n\nDoes not work for: Android 14+ Credential Manager sign-in (most modern third-party apps), Play Integrity / SafetyNet checks, or apps with custom auth.\n\nRequires MicroG RE installed. Apply with Original app certificate patch.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "gmsCoreVendor",
+          "title": "MicroG package name",
+          "description": "Which MicroG / GmsCore app is installed on your device. Check your device's app list for \"MicroG\" or \"GmsCore\" if unsure — most users should leave this as the default.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.revanced.android.gms",
+          "values": {
+            "app.revanced.android.gms (default)": "app.revanced.android.gms",
+            "app.morphe.android.gms": "app.morphe.android.gms",
+            "app.morphe.manager": "app.morphe.manager",
+            "app.revanced.manager": "app.revanced.manager",
+            "app.rvx.manager": "app.rvx.manager",
+            "com.google.android.gms": "com.google.android.gms",
+            "org.microg.gms": "org.microg.gms"
+          }
+        },
+        {
+          "key": "mainActivityName",
+          "title": "Main activity class (optional)",
+          "description": "The app's main Activity class name ending with a semicolon, e.g. /MainActivity; Used to inject the MicroG check at startup. Leave blank for auto-detection.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "packageName",
+          "title": "Custom package name (optional)",
+          "description": "Rename the app to this package name. Leave blank to keep the original. Must be a valid package name (e.g. com.example.myapp).",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Provide Original app certificate",
@@ -187,7 +231,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "6.1.5",
+              "version": "6.2.5",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
