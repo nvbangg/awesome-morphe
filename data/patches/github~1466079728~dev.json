@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "patches": [
     {
       "name": "Блокировать аналитику Плюса",
-      "description": "Перенаправляет на localhost хосты событий и привлечения Плюса, а также устаревшие триггеры динамических страниц. API музыки и платежей не затрагиваются.",
+      "description": "Перенаправляет на localhost хосты событий и привлечения Плюса, а также устаревшие триггеры динамических страниц.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -92,7 +92,7 @@
     },
     {
       "name": "Отдельный аккаунт Passport",
-      "description": "Даёт переподписанному приложению собственный тип аккаунта Passport, чтобы Android разрешил создать в нём аккаунт Яндекса, а оригинальные приложения Яндекса сохранили общий.",
+      "description": "Требуется для работы. Создаёт собственный тип аккаунта Passport, не мешая работе других приложений Яндекс.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -136,7 +136,7 @@
     },
     {
       "name": "Отключить Play Billing",
-      "description": "Отключает вызовы Play Billing и Play Core. Покупки становятся недоступны, и ни один платёжный запрос не доходит до Google Play.",
+      "description": "Отключает вызовы Play Billing и Play Core. Делает покупки недоступными.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -268,7 +268,7 @@
     },
     {
       "name": "Подменить подпись приложения",
-      "description": "Приложение видит свою оригинальную подпись Яндекса, поэтому вход через Яндекс ID и другие проверки подписи работают после переподписи APK в Morphe. Нужен для входа.",
+      "description": "Нужен для входа. Приложение видит свою оригинальную подпись Яндекса, поэтому вход через Яндекс ID и другие проверки подписи работают после переподписи APK в Morphe.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -312,7 +312,7 @@
     },
     {
       "name": "Разблокировать Яндекс Плюс",
-      "description": "Принудительно задаёт hasPlus, hasMusicSubscription, serviceAvailable и isChild в DTO музыкальной сессии и профиля Passport. Сервер по-прежнему видит настоящий аккаунт.",
+      "description": "Разблокирует клиентский код, включающий подписку Plus.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -356,7 +356,51 @@
     },
     {
       "name": "Скрыть вкладки нижней панели",
-      "description": "Добавляет на страницу настроек Nyandex переключатели для скрытия вкладок нижней панели (Моя волна, Главная, Подкасты, Концерты, Детям, Коллекция). Применяется после перезапуска.",
+      "description": "Добавляет настройки скрытия нижних панелей в параметры Nyandex.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ru.yandex.music",
+          "name": "Yandex Music",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FFCC00",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2026.11.1 #171gpr",
+              "versionCodes": {
+                "ARM64_V8A": 24026561,
+                "ARMEABI_V7A": 24026561,
+                "X86_64": 24026561,
+                "X86": 24026561
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            },
+            {
+              "version": "2026.11.2 #172.1gpr",
+              "versionCodes": {
+                "ARM64_V8A": 24026572,
+                "ARMEABI_V7A": 24026572,
+                "X86_64": 24026572,
+                "X86": 24026572
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Тактильный отклик",
+      "description": "Добавляет настройки виброотклика при нажатии клавиш в параметры Nyandex.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -400,7 +444,7 @@
     },
     {
       "name": "Тексты песен из LRCLIB",
-      "description": "Тексты песен загружаются только из LRCLIB (lrclib.net), API текстов Яндекса не используется. Текст можно открыть у любого трека; текст следующего трека и скачанных треков загружается заранее и сохраняется для офлайна. Если LRCLIB недоступен, появляется уведомление.",
+      "description": "Получает тексты песен из LRCLIB. API текстов Яндекса не используется.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -444,7 +488,7 @@
     },
     {
       "name": "Тема Monet",
-      "description": "Окрашивает карточки, акценты, основную кнопку, кнопку воспроизведения в плеере и кнопки «Моей волны» в цвета обоев Android 12+ (Material You); фон страниц остаётся чёрным. Настройка «Светлая / Тёмная / Системная» продолжает работать. На старых версиях Android цвета остаются стандартными.",
+      "description": "(Android 12+) Окрашивает большУю часть элементов интерфейсов в цвета Material You, генерируемые из Ваших обоев.",
       "default": false,
       "category": null,
       "compatiblePackages": [

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "patches": [
     {
       "name": "Block Instant Games ads",
@@ -85,7 +85,7 @@
     },
     {
       "name": "Dark mode on tablets",
-      "description": "Turns Facebook's dark mode on for tablets, where its Settings page has no Dark mode row. Phones keep Facebook's own light or dark choice. Off by default: pick it in Morphe Manager before patching. Works as soon as you patch it in, with no switch.",
+      "description": "Turns Facebook's dark mode on for tablets, where its Settings page has no Dark mode row. Phones keep Facebook's own light or dark choice. Off by default: pick it in Morphe Manager before patching. By default a tablet is always dark; the Follow the system theme option makes it dark only while the system's dark theme is on.",
       "default": false,
       "category": null,
       "compatiblePackages": [
@@ -108,7 +108,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "followSystemTheme",
+          "title": "Follow the system theme",
+          "description": "On a tablet, turn dark mode on only while the system's dark theme is on. When off, a tablet is always dark. A change of the system theme shows fully once Facebook restarts.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Disable Audience Network",
