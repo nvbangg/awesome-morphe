@@ -4,8 +4,8 @@ from unittest.mock import patch
 import httpx2
 import pytest
 
+import find_projects
 from common.files import load_json, save_json
-from discovery import find_projects
 
 
 @pytest.mark.parametrize(

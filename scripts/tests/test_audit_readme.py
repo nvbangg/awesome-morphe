@@ -2,8 +2,8 @@ from unittest.mock import patch
 
 import pytest
 
+import audit_readme
 from common import repositories
-from discovery import audit_readme
 
 
 @pytest.mark.parametrize("source,code", (("github", 404), ("gitlab", 451)))

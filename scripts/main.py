@@ -6,14 +6,15 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+import audit_readme
 import discover
 import fetch
+import find_projects
 import telegram
 import update
 from common import http
 from common.constants import ROOT_DIR, SCRIPTS_DIR, WHATS_NEW_PATH
 from common.summary import append_step_summary
-from discovery import audit_readme, find_projects
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -22,14 +23,14 @@ def main(argv: list[str] | None = None) -> int:
 
     parser = argparse.ArgumentParser(description="Sync Morphe bundles and projects", parents=[mode_parser])
     commands = parser.add_subparsers(dest="task", help="Run one task instead of the full sync")
-    for task in ("discover", "fetch", "update"):
-        commands.add_parser(task, parents=[mode_parser] if task != "discover" else [])
+    for task in ("audit-readme", "find-projects", "discover", "fetch", "update"):
+        commands.add_parser(task, parents=[mode_parser] if task in ("fetch", "update") else [])
     notification = commands.add_parser("telegram", help="Send a Telegram notification")
     notification.add_argument("title", nargs="?", help="Notification title")
     notification.add_argument("filepath", nargs="?", type=Path, default=WHATS_NEW_PATH, help="Markdown file to send")
     args = parser.parse_args(argv)
     daily = getattr(args, "daily", False)
-    if args.task in ("discover", "telegram") and daily:
+    if args.task not in (None, "fetch", "update") and daily:
         parser.error(f"{args.task} does not accept --daily")
 
     load_dotenv(SCRIPTS_DIR / ".env", override=True)
@@ -37,6 +38,16 @@ def main(argv: list[str] | None = None) -> int:
         if args.task == "telegram":
             telegram.send_notification(args.title, args.filepath)
             return 0
+
+        if args.task in ("audit-readme", "find-projects") or (args.task is None and daily):
+            sections = ["## 📋 Review:"]
+            if args.task in (None, "audit-readme"):
+                sections.append(audit_readme.audit_repos_and_links())
+            if args.task in (None, "find-projects"):
+                sections.append(find_projects.run())
+            append_step_summary("\n\n".join(sections))
+            if args.task is not None:
+                return 0
 
         if args.task in (None, "discover"):
             result = discover.run()
@@ -47,9 +58,6 @@ def main(argv: list[str] | None = None) -> int:
             fetch.fetch_all_repos(daily)
             if args.task == "fetch":
                 return 0
-
-        if args.task is None and daily:
-            append_step_summary(f"## 🔎 Discovery:\n\n{audit_readme.audit_repos_and_links()}\n\n{find_projects.run()}")
 
         if (
             args.task is None
