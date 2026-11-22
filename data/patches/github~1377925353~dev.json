@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.10.0-dev.1",
+  "version": "1.10.0-dev.2",
   "apps": [
     {
       "packageName": "com.adobe.reader",
@@ -702,7 +702,7 @@
     },
     {
       "name": "Change App Icon",
-      "description": "Recolors the Canvas launcher icon and optionally replaces its foreground with a custom PNG. The image is an adaptive-icon foreground, so launchers mask it to their icon shape; keep artwork inside the central safe area of a 432x432 PNG.",
+      "description": "Recolors the Canvas launcher icon and optionally replaces its foreground with a custom PNG. The colors also theme the launch splash screen and the signed-out Canvas logo when changed. The image is an adaptive-icon foreground, so launchers mask it to their icon shape; keep artwork inside the central safe area of a 432x432 PNG.",
       "default": false,
       "category": "Customization",
       "dependencies": [],
@@ -731,7 +731,7 @@
         {
           "key": "foregroundColor",
           "title": "Foreground Color",
-          "description": "Color of the original launcher foreground vector (#RRGGBB or opaque #AARRGGBB). Also tints the monochrome icon vector.",
+          "description": "Color of the original launcher foreground vector (#RRGGBB or opaque #AARRGGBB). Also tints the monochrome icon vector and, when changed from the default, the splash logo, animated loader, and signed-out Canvas logo.",
           "required": false,
           "type": "kotlin.String",
           "default": "#E62429",
@@ -744,6 +744,33 @@
           "required": false,
           "type": "kotlin.String",
           "default": "#FFFFFF",
+          "values": null
+        },
+        {
+          "key": "splashBackgroundColor",
+          "title": "Splash Background Color",
+          "description": "Splash screen background color used when Theme Splash Screen is enabled (#RRGGBB or opaque #AARRGGBB). Independent of the launcher icon background.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "#FFFFFF",
+          "values": null
+        },
+        {
+          "key": "themeSplashScreen",
+          "title": "Theme Splash Screen",
+          "description": "Applies the splash background color to the Android 12+ system splash and the legacy splash window, and the foreground color to the splash logo and animated loader, when each differs from its default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "themeLandingLogo",
+          "title": "Theme Signed-Out Logo",
+          "description": "Tints the Canvas mark on the signed-out landing page with the foreground color when it differs from the default.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         },
         {

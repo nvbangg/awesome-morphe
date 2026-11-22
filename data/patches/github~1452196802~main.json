@@ -1,7 +1,36 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "patches": [
+    {
+      "name": "Disable location gate",
+      "description": "Stops AmberIT from requiring device location at startup. Forces hb4.f() (\"should show GPS restriction dialog\") to false, which suppresses the GPS alert and the blocking location-permission dialog app-wide, and makes the chat share-location permission check return true. The country allow-list itself is server-side and is not affected. Verified on AmberIT 1.3.2 (versionCode 103021).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.amberit.dialer",
+          "name": "AmberIT",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#009688",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.3.2",
+              "versionCodes": {
+                "ARM64_V8A": 103021
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "MicroG RE Google Sign-In",
       "description": "Redirects Google Sign-In to MicroG RE (app.revanced.android.gms): forces normal sign-in mode, rewrites the sign-in action/package, and drops the unused ID-token request. Pair with the 'MicroG signature spoof' manifest patch or login fails with error 8. Verified on Shohay 2.1.1.",

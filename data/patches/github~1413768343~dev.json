@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.25.0",
+  "version": "1.26.0",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -33,6 +33,41 @@
       "category": null,
       "compatiblePackages": null,
       "options": []
+    },
+    {
+      "name": "Bypass screen recording detection",
+      "description": "Blinds display/recording callbacks and recorder-package checks.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Bypass screenshot detection",
+      "description": "Blinds MediaStore ContentObservers and screenshot FileObservers.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "blockContentObservers",
+          "title": "Block MediaStore observers",
+          "description": "No-ops onChange in ContentObserver subclasses. May break apps that use observers for legitimate UI updates.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "blockFileObservers",
+          "title": "Block file observers",
+          "description": "No-ops onEvent in FileObserver subclasses (screenshot directory watchers).",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Bypass signature check",
@@ -363,7 +398,7 @@
     },
     {
       "name": "Remove clip bumper",
-      "description": "Removes the Postparty logo bumper from all exports.",
+      "description": "Removes the Postparty logo bumper from all exports. NOTE: I SUCK AT CODING, USE *MODIFIED* CLIPS. TRIM A SECOND OR ADD A STICKER!",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -835,7 +870,7 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Unlocks MEGA `Pro I` features and removes ads.",
+      "description": "Unlocks all MEGA Pro features and removes ads.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -849,7 +884,7 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "16.15.2",
+              "version": "16.15.2(263201951)(c9da563417)",
               "versionCodes": {
                 "ARM64_V8A": 263201951,
                 "ARMEABI_V7A": 263201951,
@@ -863,7 +898,24 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "proTier",
+          "title": "Pro tier",
+          "description": "Which Pro tier to spoof. PRO III is the highest consumer tier.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "PRO_III",
+          "values": {
+            "PRO Lite": "PRO_LITE",
+            "PRO I": "PRO_I",
+            "PRO II": "PRO_II",
+            "PRO III (Recommended)": "PRO_III",
+            "PRO Flexi": "PRO_FLEXI",
+            "Business": "BUSINESS"
+          }
+        }
+      ]
     },
     {
       "name": "Unlock premium",
