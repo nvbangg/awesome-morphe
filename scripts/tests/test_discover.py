@@ -90,15 +90,7 @@ class TestDiscover:
         "module,data",
         (
             (official, {"bundles": []}),
-            (
-                jman,
-                {
-                    "disabled": {
-                        "disabled": True,
-                        "patches": "https://github.com/owner/new",
-                    }
-                },
-            ),
+            (jman, {"data": {"source": []}}),
             (morphe_archive, "README without source links"),
         ),
     )
@@ -128,19 +120,38 @@ class TestDiscover:
         assert load_json(self.official_path) == data
         assert sources == ["https://github.com/owner/new", "https://gitlab.com/group/project"]
 
-    def test_jman_keeps_enabled_usable_sources(self) -> None:
-        data = {
-            "enabled": {"patches": "https://github.com/owner/new/releases/bundle.mpp"},
-            "disabled": {
-                "disabled": True,
-                "patches": "https://github.com/owner/disabled",
-            },
-            "unrelated": {"patches": "https://example.com/bundle.mpp"},
-            "invalid": {"patches": 7},
-            "other": "ignored",
-        }
-        with patch.object(jman, "request", return_value=httpx2.Response(200, json=data)):
-            assert jman.discover() == (["https://github.com/owner/new"], None)
+    @pytest.mark.parametrize(
+        "last_page",
+        (
+            {"data": {"source": [{"url": "https://gitlab.com/group/project"}]}},
+            {"errors": [{"message": "Query failed"}], "data": {"source": []}},
+            httpx2.ReadTimeout("timed out"),
+        ),
+    )
+    def test_jman_pagination_is_complete_or_keeps_saved_sources(self, last_page) -> None:
+        pages = [
+            httpx2.Response(
+                200,
+                json={
+                    "data": {
+                        "source": [{"url": "https://github.com/owner/new"}, {"url": "https://example.com/unrelated"}]
+                    }
+                },
+            ),
+            last_page if isinstance(last_page, Exception) else httpx2.Response(200, json=last_page),
+        ]
+        with patch.object(jman, "PAGE_SIZE", 2), patch.object(jman, "request", side_effect=pages) as request:
+            result, error = jman.discover()
+        assert [call.kwargs["json"]["variables"] for call in request.call_args_list] == [
+            {"limit": 2, "offset": 0},
+            {"limit": 2, "offset": 2},
+        ]
+        if isinstance(last_page, Exception):
+            assert (result, error) == ([], "timed out")
+        elif "errors" in last_page:
+            assert (result, error) == ([], "Invalid provider data")
+        else:
+            assert (result, error) == (["https://github.com/owner/new", "https://gitlab.com/group/project"], None)
 
     def test_archive_extracts_and_deduplicates_source_links(self) -> None:
         content = (

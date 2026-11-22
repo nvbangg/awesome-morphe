@@ -62,8 +62,7 @@ class OfficialCatalog(TypedDict):
 
 @with_config(strict=True)
 class JmanSource(TypedDict):
-    patches: str
-    disabled: NotRequired[bool]
+    url: NonEmptyString
 
 
 @with_config(strict=True, extra="allow")
@@ -126,7 +125,7 @@ PATCH_LIST = TypeAdapter(PatchList)
 SOURCES = TypeAdapter(dict[str, SourceConfig])
 PROJECTS = TypeAdapter(ProjectLists)
 OFFICIAL_CATALOG = TypeAdapter(OfficialCatalog)
-JMAN_SOURCES = TypeAdapter(dict[str, OnErrorOmit[JmanSource]])
+JMAN_SOURCES = TypeAdapter(list[JmanSource])
 REPOSITORIES = TypeAdapter(dict[RepositoryId, RepositoryState])
 DISCOVERY = TypeAdapter(DiscoveryState)
 UPDATE_STATE = TypeAdapter(UpdateState)
