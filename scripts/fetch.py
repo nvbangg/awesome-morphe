@@ -402,13 +402,24 @@ def refresh_repo_metadata(
     unavailable_ids = set()
     configs = {}
     resolved_ids = set()
+    disabled_ids = {entry["id"] for entry in discovered.values() if entry.get("enabled") is False and entry.get("id")}
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
-        for url, details in zip(discovered, executor.map(repository_details.get, discovered)):
-            entry = discovered[url]
+        futures = {
+            url: executor.submit(repository_details.get, url)
+            for url, entry in discovered.items()
+            if entry.get("id") not in disabled_ids
+        }
+        for url, entry in discovered.items():
             config = {field: entry[field] for field in ("enabled", "revancedStars") if field in entry}
-            source, _repo = parse_repo_url(url)
+            source, repo = parse_repo_url(url)
             if not source:
                 continue
+            if url not in futures:
+                repo_id = entry["id"]
+                repositories.setdefault(repo_id, dict(existing.get(repo_id, {"repo": repo})))
+                configs[repo_id] = config
+                continue
+            details = futures[url].result()
             repo_id = details.get("id")
             if not repo_id or details.get("error"):
                 if config.get("enabled") is not False:
@@ -436,6 +447,8 @@ def refresh_repo_metadata(
                 else:
                     metadata.pop("isArchived", None)
                 resolved_ids.add(repo_id)
+            if config.get("enabled") is False:
+                disabled_ids.add(repo_id)
             configs[repo_id] = config
     for repo_id in unavailable_ids - resolved_ids:
         repositories[repo_id].update({branch: None for branch in DEFAULT_BRANCHES})
@@ -443,6 +456,8 @@ def refresh_repo_metadata(
         repositories[repo_id].pop("enabled", None)
         repositories[repo_id].pop("revancedStars", None)
         repositories[repo_id].update(config)
+        if repo_id in disabled_ids:
+            repositories[repo_id]["enabled"] = False
     warnings = [
         (url, message)
         for url, message in warnings

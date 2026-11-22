@@ -711,7 +711,7 @@ class TestRepositoryMetadataRefresh:
                 "isArchived": True,
             }
         }
-        discovered = {new_url: {"enabled": False, "revancedStars": 99}, old_url: dict(config)}
+        discovered = {new_url: {"revancedStars": 99}, old_url: dict(config)}
         with patch.object(
             bundle_fetch, "fetch_repo_details", return_value={"id": "github:1", "full_name": "Owner/New", "stars": 10}
         ) as lookup:
@@ -730,7 +730,7 @@ class TestRepositoryMetadataRefresh:
         assert not failed
         assert not warnings
 
-    def test_reused_name_does_not_inherit_old_id_state_or_disable_other_repo(self) -> None:
+    def test_disabled_identity_skips_known_urls_and_tracks_unknown_aliases(self) -> None:
         old_url = "https://github.com/owner/old"
         new_url = "https://github.com/owner/new"
         existing = {
@@ -739,20 +739,41 @@ class TestRepositoryMetadataRefresh:
         }
         details = {
             old_url: {"id": "github:2", "full_name": "owner/old"},
-            new_url: {"id": "github:1", "full_name": "owner/new"},
+            new_url: {"id": "github:1", "full_name": "owner/new", "is_archived": True},
         }
-        discovered = {new_url: {}, old_url: {"id": "github:1", "enabled": False}}
-        with patch.object(bundle_fetch, "fetch_repo_details", side_effect=details.__getitem__):
-            actual, _warnings, failed = bundle_fetch.refresh_repo_metadata(
+        discovered = {old_url: {"id": "github:1", "enabled": False}, new_url: {}}
+        with patch.object(bundle_fetch, "fetch_repo_details", side_effect=details.__getitem__) as lookup:
+            actual, warnings, failed = bundle_fetch.refresh_repo_metadata(
                 discovered, existing, bundle_fetch.RepositoryDetails()
             )
-        assert set(actual) == {"github:1", "github:2"}
+        lookup.assert_called_once_with(new_url)
+        assert set(actual) == {"github:1"}
         assert actual["github:1"]["main"] == "saved"
-        assert "enabled" not in actual["github:1"]
-        assert actual["github:2"]["enabled"] is False
-        assert "main" not in actual["github:2"]
+        assert actual["github:1"]["enabled"] is False
+        assert discovered[old_url]["id"] == discovered[new_url]["id"] == "github:1"
+        assert not warnings
+        assert not failed
+
+        with patch.object(bundle_fetch, "fetch_repo_details") as lookup:
+            repeated, warnings, failed = bundle_fetch.refresh_repo_metadata(
+                discovered, actual, bundle_fetch.RepositoryDetails()
+            )
+        lookup.assert_not_called()
+        assert repeated == actual
+        assert not warnings
+        assert not failed
+
+        discovered[old_url].pop("enabled")
+        with patch.object(bundle_fetch, "fetch_repo_details", side_effect=details.__getitem__) as lookup:
+            enabled, _warnings, failed = bundle_fetch.refresh_repo_metadata(
+                discovered, repeated, bundle_fetch.RepositoryDetails()
+            )
+        assert lookup.call_count == 2
+        assert set(enabled) == {"github:1", "github:2"}
+        assert enabled["github:1"]["main"] == "saved"
+        assert all("enabled" not in metadata for metadata in enabled.values())
+        assert "main" not in enabled["github:2"]
         assert discovered[old_url]["id"] == "github:2"
-        assert all("sources" not in metadata for metadata in actual.values())
         assert not failed
 
     @pytest.mark.parametrize(
@@ -784,7 +805,7 @@ class TestRepositoryMetadataRefresh:
         assert set(actual) == {"github:1"}
         assert warnings == [(url, error["error"]), (alias_url, alias_error["error"]), (unknown_url, error["error"])]
 
-    def test_disabled_repositories_refresh_metadata_but_skip_bundle_and_summary(self, tmp_path: Path) -> None:
+    def test_disabled_repositories_resolve_once_and_skip_bundle_and_summary(self, tmp_path: Path) -> None:
         url = "https://github.com/owner/disabled"
         discovery_path = tmp_path / "discovery.json"
         repos_path = tmp_path / "repos.json"
@@ -808,6 +829,7 @@ class TestRepositoryMetadataRefresh:
             patch.object(bundle_fetch, "process_image", side_effect=AssertionError("Disabled image")) as image,
             patch.object(bundle_fetch, "append_step_summary") as summary,
         ):
+            bundle_fetch.fetch_all_repos(True)
             bundle_fetch.fetch_all_repos(True)
         metadata.assert_called_once_with(url)
         branch.assert_not_called()
