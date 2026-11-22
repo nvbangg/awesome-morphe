@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.1",
+  "version": "1.9.0-dev.2",
   "patches": [
     {
       "name": "Apple emojis everywhere",
@@ -123,6 +123,37 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Client-Side Premium",
+      "description": "Removes ads, the join wait, and premium UI locks by forcing the local premium flag. Server features (boss-subscription notifications, premium visible to others) are unaffected.",
+      "default": true,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "net.tinywhale.remote",
+          "name": "Raid Party",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#234E8E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.9.2",
+              "versionCodes": {
+                "ARM64_V8A": 93,
+                "ARMEABI_V7A": 93,
+                "X86_64": 93,
+                "X86": 93
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Current Frame Media Artwork",
@@ -325,6 +356,39 @@
                 "ARMEABI_V7A": 160,
                 "X86_64": 160,
                 "X86": 160
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Google Login Fix (microG-RE)",
+      "description": "Fixes \"Authentication Failed\" after re-signing by routing Google Play Services to MicroG-RE (app.revanced.android.gms), which presents Raid Party's original signing certificate so Google issues a valid ID token. Install MicroG-RE and add your Google account there. Login only; no Facebook, no push/FCM.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "net.tinywhale.remote",
+          "name": "Raid Party",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#234E8E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.9.2",
+              "versionCodes": {
+                "ARM64_V8A": 93,
+                "ARMEABI_V7A": 93,
+                "X86_64": 93,
+                "X86": 93
               },
               "isExperimental": false,
               "minSdk": null,
@@ -606,6 +670,16 @@
           ]
         }
       ],
+      "options": []
+    },
+    {
+      "name": "Memory editor",
+      "description": "Adds a floating in-app memory editor (like iGameGod / GameGuardian): scan for a value, refine by changed/unchanged/increased/decreased, edit results live, and save or freeze addresses. Works on any app without root. Server-side values can't be changed.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": null,
       "options": []
     },
     {
