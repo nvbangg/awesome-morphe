@@ -18,16 +18,59 @@ from common.summary import append_step_summary
 
 
 def main(argv: list[str] | None = None) -> int:
-    mode_parser = argparse.ArgumentParser(add_help=False, argument_default=argparse.SUPPRESS)
-    mode_parser.add_argument("--daily", action="store_true", help="Run daily refresh tasks")
-
-    parser = argparse.ArgumentParser(description="Sync Morphe bundles and projects", parents=[mode_parser])
-    commands = parser.add_subparsers(dest="task", help="Run one task instead of the full sync")
-    for task in ("audit-readme", "find-projects", "discover", "fetch", "update"):
-        commands.add_parser(task, parents=[mode_parser] if task in ("fetch", "update") else [])
-    notification = commands.add_parser("telegram", help="Send a Telegram notification")
-    notification.add_argument("title", nargs="?", help="Notification title")
-    notification.add_argument("filepath", nargs="?", type=Path, default=WHATS_NEW_PATH, help="Markdown file to send")
+    parser = argparse.ArgumentParser(
+        description="Sync Morphe bundles and projects. Without a command, run the normal sync pipeline.",
+        epilog="Use uv run main.py COMMAND --help for command details.",
+    )
+    parser.add_argument("--daily", action="store_true", help="Enable daily refresh for sync, fetch or update")
+    commands = parser.add_subparsers(dest="task", title="commands")
+    commands.add_parser(
+        "audit-readme",
+        help="Check README repositories and links",
+        description="Check README repositories and links",
+    )
+    commands.add_parser(
+        "find-projects",
+        help="Find new projects for manual review",
+        description="Find new projects for manual review",
+    )
+    commands.add_parser("discover", help="Collect bundle sources", description="Collect bundle sources")
+    fetch_parser = commands.add_parser(
+        "fetch",
+        help="Refresh repository metadata and fetch bundle data",
+        description="Refresh repository metadata and fetch bundle data",
+    )
+    fetch_parser.add_argument(
+        "--daily",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="Also recheck bundle downloads and image hashes",
+    )
+    update_parser = commands.add_parser(
+        "update", help="Build the catalog from local data", description="Build the catalog from local data"
+    )
+    update_parser.add_argument(
+        "--daily",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="Also refresh all app metadata and generate the changelog",
+    )
+    notification = commands.add_parser(
+        "telegram",
+        help="Send a Markdown notification to Telegram",
+        description="Send a Markdown notification to Telegram.",
+    )
+    notification.add_argument(
+        "title", nargs="?", metavar="TITLE", help="Notification title (default: generated from the UTC date)"
+    )
+    notification.add_argument(
+        "filepath",
+        nargs="?",
+        type=Path,
+        default=WHATS_NEW_PATH,
+        metavar="FILEPATH",
+        help=f"Markdown file (default: {WHATS_NEW_PATH.relative_to(ROOT_DIR).as_posix()})",
+    )
     args = parser.parse_args(argv)
     daily = getattr(args, "daily", False)
     if args.task not in (None, "fetch", "update") and daily:

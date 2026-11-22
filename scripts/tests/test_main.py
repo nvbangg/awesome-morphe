@@ -85,7 +85,9 @@ def test_sync_failure_stops_later_tasks_and_does_not_mark_update(stage, pipeline
         (["find-projects"], call.find_projects()),
         (["discover"], call.discover()),
         (["fetch", "--daily"], call.fetch(True)),
+        (["--daily", "fetch"], call.fetch(True)),
         (["update", "--daily"], call.update(True)),
+        (["--daily", "update"], call.update(True)),
         (["telegram", "Custom title", "notification.md"], call.telegram("Custom title", Path("notification.md"))),
     ),
 )
