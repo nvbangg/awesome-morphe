@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. It is generated with ./gradlew generatePatchesList for every release. Manually editing this file can break third party tools that use this file.",
-  "version": "1.13.0",
+  "version": "1.13.2",
   "patches": [
     {
       "name": "AMOLED black",
@@ -778,7 +778,7 @@
     },
     {
       "name": "Stockfish analysis",
-      "description": "Stockfish 19 on your phone, offline (arm64): best-move arrows on finished games, the analysis boards, the game explorer and Game Review (in a Lichess review, on the moves Lichess didn't mark), and an eval bar where chess.com has none of its own. It never shows while a game is being played or in puzzles. Patching downloads the official Stockfish 19 (80 MB) from Stockfish's GitHub or a mirror, or uses the archive picked in this patch's option, so it needs internet or that file.",
+      "description": "Stockfish 19 on your phone, offline (64-bit and 32-bit ARM): best-move arrows on finished games, the analysis boards, the game explorer and Game Review (in a Lichess review, on the moves Lichess didn't mark), and an eval bar where chess.com has none of its own. It never shows while a game is being played or in puzzles. Patching downloads the official Stockfish 19 (80 MB) from Stockfish's GitHub or a mirror, or uses the archive picked in this patch's option, so it needs internet or that file.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -815,10 +815,19 @@
         {
           "key": "stockfishArchive",
           "title": "Stockfish 19 archive",
-          "description": "Optional: a stockfish-android-arm64-universal.tar.gz downloaded earlier, used instead of the download. The file is checked against Stockfish's published SHA-256.",
+          "description": "Optional: a stockfish-android-arm64-universal.tar.gz or stockfish-android-armv7-neon.tar.gz downloaded earlier, used instead of the download. The file is checked against Stockfish's published SHA-256.",
           "required": false,
           "type": "kotlin.String",
           "default": "",
+          "values": null
+        },
+        {
+          "key": "stockfish32Bit",
+          "title": "32-bit engine",
+          "description": "Use Stockfish's 32-bit ARM build (armeabi-v7a) instead of the 64-bit one. Needed only when patching on a computer for a phone whose Android is 32-bit: patching on the phone picks the right engine itself.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         }
       ]

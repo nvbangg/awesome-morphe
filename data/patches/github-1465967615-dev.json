@@ -1,0 +1,138 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.0.0",
+  "patches": [
+    {
+      "name": "Account organizer",
+      "description": "Adds categories to organize accounts, shown as folders or as cards. Switch layouts and manage categories from the bar above the account list.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.authenticator2",
+          "name": "Google Authenticator",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Custom branding",
+      "description": "Changes the app name and launcher icon, so the patched app is easy to tell apart from the original Google Authenticator.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.authenticator2",
+          "name": "Google Authenticator",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "The name of the app on the home screen and in the app list.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Authenticator+",
+          "values": {
+            "Authenticator+": "Authenticator+",
+            "Authenticator Organizer": "Authenticator Organizer",
+            "Authenticator": "Authenticator"
+          }
+        },
+        {
+          "key": "iconBackground",
+          "title": "Icon background",
+          "description": "Background color of the launcher icon, behind the Authenticator mark. Not used when a custom icon is set.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "#FF202124",
+          "values": {
+            "Dark grey": "#FF202124",
+            "Black": "#FF000000",
+            "Deep green": "#FF0F3D2A",
+            "Deep purple": "#FF2E1F4F",
+            "Cream": "#FFFFF3D6",
+            "White (original)": "#FFFFFFFF"
+          }
+        },
+        {
+          "key": "customIcon",
+          "title": "Custom icon",
+          "description": "Optional square image (PNG, JPG or WEBP) to use as the whole launcher icon instead. The launcher crops it to its icon shape, so keep important content away from the edges. 432 x 432 pixels or larger is recommended.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Allows signing in with a Google Account and using Google Account sync by using GmsCore (MicroG-RE) instead of Google Play services. The app is installed under a different package name, so it can be installed next to the original app.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.authenticator2",
+          "name": "Google Authenticator",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The package name of the patched app. It must be different from the original package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.merak.android.apps.authenticator2",
+          "values": {
+            "Default": "app.merak.android.apps.authenticator2"
+          }
+        }
+      ]
+    }
+  ]
+}
