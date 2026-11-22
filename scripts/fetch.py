@@ -46,11 +46,11 @@ PARSED_FILES_PATH = BUNDLE_PARSER_DIR / "parsed_files.txt"
 GRADLE_EXECUTABLE_NAME = "gradlew.bat" if sys.platform == "win32" else "gradlew"
 GRADLE_EXECUTABLE_PATH = BUNDLE_PARSER_DIR / GRADLE_EXECUTABLE_NAME
 FETCH_ERROR_SECTIONS = {
+    "repo_metadata": "Repository metadata",
     "metadata": "Bundle metadata",
     "bundle": "Bundle download",
     "patch_list": "Patch list",
     "image": "Bundle image",
-    "repo_metadata": "Repository metadata",
 }
 HASH_REQUEST_HEADERS = {"Accept-Encoding": "identity"}
 
@@ -520,7 +520,7 @@ def fetch_all_repos(daily: bool = False) -> None:
                 )
                 metadata["name"] = extract_mpp_name(content) or metadata.get("name") or ""
             except (OSError, httpx2.HTTPError, httpx2.InvalidURL) as error:
-                print(f"[-] {build_repo_url(chosen.source, chosen.repo)}: Failed to read bundle name: {error}")
+                print(f"[warning] {build_repo_url(chosen.source, chosen.repo)}: Failed to read bundle name: {error}")
     image_errors = []
     if daily:
         image_ids = list(grouped_results)
@@ -558,7 +558,7 @@ def fetch_all_repos(daily: bool = False) -> None:
         if not errors[category]:
             continue
         sorted_errors = sorted(errors[category], key=str.lower)
-        print(f"{title}: {len(sorted_errors)} repositories")
+        print(f"[warning] {title}: {len(sorted_errors)} repositories with issues")
         content = "\n".join(f"- {error}" for error in sorted_errors)
         summary_sections.append(
             format_summary_section(

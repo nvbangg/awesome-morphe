@@ -2,11 +2,7 @@
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from common.constants import (
-    CUSTOM_JSON_PATH,
-    DISCOVERY_JSON_PATH,
-    ROOT_DIR,
-)
+from common.constants import CUSTOM_JSON_PATH, DISCOVERY_JSON_PATH
 from common.files import load_json, save_json
 from common.models import DISCOVERY, SOURCES
 from common.summary import append_step_summary, format_summary_section
@@ -32,7 +28,7 @@ def _run_providers(providers: dict[str, list[str]]) -> list[str]:
             else:
                 saved = "kept saved sources" if providers.get(name) else "no saved sources available"
                 warning_message = f"[{name}]: {error or 'No sources found'}; {saved}"
-                print(f"[-] {warning_message}")
+                print(f"[warning] {warning_message}")
                 warnings.append(warning_message)
     return warnings
 
@@ -76,8 +72,7 @@ def run() -> int:
         DISCOVERY_JSON_PATH,
         DISCOVERY.validate_python({**registry, "repositories": dict(sorted(repositories.items()))}),
     )
-    print(f"Synced {len(repositories)} repos")
-    print(f"Saved to {DISCOVERY_JSON_PATH.relative_to(ROOT_DIR)}")
+    print(f"Discovery completed: {len(repositories)} repositories.")
     if len(summary_sections) > 1:
         append_step_summary("\n\n".join(summary_sections))
     return 0

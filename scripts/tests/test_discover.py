@@ -41,7 +41,6 @@ class TestDiscover:
                 discover,
                 CUSTOM_JSON_PATH=self.custom_path,
                 DISCOVERY_JSON_PATH=self.repos_path,
-                ROOT_DIR=self.root,
             ),
             patch.object(official, "OFFICIAL_BUNDLES_PATH", self.official_path),
         ):

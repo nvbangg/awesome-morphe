@@ -232,7 +232,7 @@ def run(daily: bool = False) -> int:
     summary_sections = []
     if patch_list_errors:
         sorted_errors = sorted(patch_list_errors, key=str.lower)
-        print(f"Patch list: {len(sorted_errors)} repositories")
+        print(f"[warning] Patch list: {len(sorted_errors)} repositories with issues")
         summary_sections.append(
             format_summary_section(
                 "Patch list",
@@ -243,7 +243,7 @@ def run(daily: bool = False) -> int:
 
     if incomplete_apps:
         sorted_incomplete_apps = [app_issue for _has_name, app_issue in sorted(incomplete_apps)]
-        print(f"Incomplete apps: {len(sorted_incomplete_apps)}")
+        print(f"[warning] App metadata: {len(sorted_incomplete_apps)} apps missing a name or icon")
         summary_sections.append(
             format_summary_section(
                 "Incomplete Apps",
