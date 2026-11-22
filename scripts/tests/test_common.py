@@ -83,7 +83,8 @@ def test_repository_identity_uses_host_and_path(url, expected) -> None:
     "url,authenticated",
     (
         ("https://api.github.com/repos/owner/repo", True),
-        ("https://raw.githubusercontent.com/owner/repo/main/file.json", True),
+        ("https://raw.githubusercontent.com/owner/repo/main/file.json", False),
+        ("https://github.com/owner/repo", False),
         ("https://github.com/owner/repo/releases/download/v1/file.mpp", False),
         ("https://objects.githubusercontent.com/file", False),
         ("http://api.github.com/repos/owner/repo", False),
@@ -92,7 +93,7 @@ def test_repository_identity_uses_host_and_path(url, expected) -> None:
         ("https://notgithubusercontent.com/file", False),
     ),
 )
-def test_token_is_only_attached_to_supported_https_hosts(url, authenticated, block_network) -> None:
+def test_github_token_is_only_attached_to_https_api(url, authenticated, block_network) -> None:
     with patch.dict(os.environ, {"GITHUB_TOKEN": "test-token"}):
         block_network.side_effect = None
         http.request(url)

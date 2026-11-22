@@ -26,12 +26,7 @@ def get_auth_headers(url: str, headers: dict[str, str] | None = None) -> httpx2.
     if parsed_url.scheme != "https" or "authorization" in result_headers:
         return result_headers
 
-    if (
-        is_github
-        and "/releases/download/" not in parsed_url.path
-        and hostname != "objects.githubusercontent.com"
-        and (github_token := os.environ.get("GITHUB_TOKEN"))
-    ):
+    if hostname == "api.github.com" and (github_token := os.environ.get("GITHUB_TOKEN")):
         result_headers["Authorization"] = f"Bearer {github_token}"
     elif (
         is_gitlab
