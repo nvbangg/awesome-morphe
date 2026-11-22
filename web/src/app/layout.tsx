@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Suspense } from "react";
 import { SkeletonGrid } from "@/components/common/CardGrid";
 import { Footer } from "@/components/layout/Footer";
@@ -40,6 +39,13 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en" className="scroll-smooth" suppressHydrationWarning>
+			<head>
+				<script
+					async
+					src="https://www.googletagmanager.com/gtag/js?id=G-80G574QRZ0"
+				/>
+				<script id="google-tag">{`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-80G574QRZ0');`}</script>
+			</head>
 			<body>
 				<script type="application/ld+json">
 					{JSON.stringify({
@@ -67,8 +73,6 @@ export default function RootLayout({
 						<Footer />
 					</div>
 				</Providers>
-				<Script src="https://www.googletagmanager.com/gtag/js?id=G-80G574QRZ0" />
-				<Script id="google-tag">{`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-80G574QRZ0');`}</Script>
 			</body>
 		</html>
 	);
