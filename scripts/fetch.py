@@ -561,7 +561,9 @@ def fetch_all_repos(daily: bool = False) -> None:
         print(f"{title}: {len(sorted_errors)} repositories")
         content = "\n".join(f"- {error}" for error in sorted_errors)
         summary_sections.append(
-            format_summary_section(title, content, len(sorted_errors), collapsed=category != "patch_list")
+            format_summary_section(
+                title, content, len(sorted_errors), display="details-open" if category == "patch_list" else "details"
+            )
         )
     append_step_summary("\n\n".join(summary_sections))
     print(f"Fetch completed. Updated {updated_count} targets.")

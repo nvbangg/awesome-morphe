@@ -71,6 +71,7 @@ def run() -> int:
                 "Bundle sources",
                 "\n".join(f"- {warning}" for warning in sorted(warnings)),
                 len(warnings),
+                display="details-open",
             )
         )
 

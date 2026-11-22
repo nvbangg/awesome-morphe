@@ -54,10 +54,11 @@ def audit_repos_and_links() -> str:
             "Other errors",
             "\n".join(f"- {error}" for error in sorted(other_errors)),
             heading_level=None,
-            collapsed=True,
         )
         summary_sections.append("- " + details.replace("\n", "\n  "))
     if not issues and not other_errors:
         summary_sections.append("All repositories and links are active.")
 
-    return format_summary_section("README audit", "\n\n".join(summary_sections), len(issues) + len(other_errors))
+    return format_summary_section(
+        "README audit", "\n\n".join(summary_sections), len(issues) + len(other_errors), display="details-open"
+    )

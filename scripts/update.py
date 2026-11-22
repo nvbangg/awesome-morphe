@@ -238,7 +238,6 @@ def run(daily: bool = False) -> int:
                 "Patch list",
                 "\n".join(f"- {error}" for error in sorted_errors),
                 len(sorted_errors),
-                collapsed=True,
             )
         )
 
@@ -250,7 +249,6 @@ def run(daily: bool = False) -> int:
                 "Incomplete Apps",
                 "\n".join(sorted_incomplete_apps),
                 len(sorted_incomplete_apps),
-                collapsed=True,
             )
         )
 

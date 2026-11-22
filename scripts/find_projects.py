@@ -216,7 +216,7 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
                 f"  - Created: `{repo['created_at']}` | Updated: `{repo['pushed_at']}`{desc}"
             )
 
-    summary_sections.append(format_summary_section("Search queries", query_lines, heading_level=None, collapsed=True))
+    summary_sections.append(format_summary_section("Search queries", query_lines, heading_level=None))
     if candidates:
         projects = PROJECTS.validate_python(load_json(PROJECTS_JSON_PATH))
         projects["newRepos"] = [repo["url"] for repo in repos]
@@ -228,7 +228,6 @@ def verify_and_export_repos(candidates: list[dict]) -> str:
         "New projects",
         "\n\n".join(summary_sections),
         len(repos),
-        collapsed=True,
     )
 
 
