@@ -98,15 +98,14 @@ def extract_bundle_metadata(
     bundle_names = {}
     bundle_order = {}
 
-    sorted_bundles = sorted(bundles, key=lambda bundle: bundle.get("hotRank", DEFAULT_BUNDLE_RANK))
-    for rank, bundle in enumerate(sorted_bundles):
+    for bundle in bundles:
         source = bundle["source"]
         repo = bundle.get("repo", "")
         repo_url = build_repo_url(source, repo)
         if not repo_url:
             continue
         bundle_names[repo_url] = bundle.get("name") or repo.split("/")[-1]
-        bundle_order[repo_url] = rank
+        bundle_order[repo_url] = bundle["hotRank"]
 
     return bundle_names, bundle_order
 

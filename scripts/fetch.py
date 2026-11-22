@@ -350,16 +350,16 @@ def run_bundle_parser(targets: list[BranchFetchResult]) -> None:
         target.error_message = "Failed to generate `patches-list.json`"
 
 
-def process_image(source: str, repo: str, current_image: str | None) -> tuple[str, str, str | None, bool, str | None]:
+def process_image(source: str, repo: str, current_image: str | None) -> tuple[str | None, str | None]:
     repo_url = build_repo_url(source, repo)
     try:
         image_url = build_raw_url(source, repo, "main", "patches-bundle.png")
         remote_sha = get_remote_file_hash(image_url, source, "exists") if image_url else None
     except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
         if isinstance(error, httpx2.HTTPStatusError) and error.response.status_code in UNAVAILABLE_HTTP_CODES:
-            return source, repo, None, current_image is not None, None
-        return source, repo, current_image, False, f"{repo_url}: {error}"
-    return source, repo, remote_sha, remote_sha != current_image, None
+            return None, None
+        return current_image, f"{repo_url}: {error}"
+    return remote_sha, None
 
 
 def collect_fetch_errors(results: Iterable[BranchFetchResult]) -> dict[str, list[str]]:
@@ -550,8 +550,8 @@ def fetch_all_repos(daily: bool = False) -> None:
                 for repo_id in image_ids
             ]
             for repo_id, future in zip(image_ids, futures):
-                _source, _repo, image_sha, changed, error = future.result()
-                if changed:
+                image_sha, error = future.result()
+                if image_sha != repos_data[repo_id].get("image"):
                     repos_data[repo_id]["image"] = image_sha
                     updated_count += 1
                 if error:

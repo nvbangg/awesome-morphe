@@ -18,7 +18,7 @@ from common.constants import (
     PATCHES_DIR,
 )
 from common.files import load_json
-from common.models import BUNDLE_MANIFEST, PATCH, PATCH_LIST, Patch
+from common.models import BUNDLE_MANIFEST, PATCH, PATCH_LIST, Patch, PatchVersion
 from common.repositories import build_repo_url
 
 _BUNDLE_NAME_SUFFIX_RE = re.compile(
@@ -46,15 +46,13 @@ def compute_app_hash(raw_patches: list[dict]) -> str:
     return hashlib.md5(content).hexdigest()[:16]
 
 
-def parse_version_item(item: Any) -> dict | None:
+def parse_version_item(item: str | PatchVersion) -> dict:
     if isinstance(item, str):
         return {"version": item}
-    if isinstance(item, dict) and "version" in item:
-        entry = {"version": item["version"]}
-        if item.get("isExperimental") or item.get("experimental"):
-            entry["isExperimental"] = True
-        return entry
-    return None
+    entry = {"version": item["version"]}
+    if item.get("isExperimental") or item.get("experimental"):
+        entry["isExperimental"] = True
+    return entry
 
 
 def strip_patch(patch: Patch, discovered_names: dict[str, str]) -> dict:
@@ -69,15 +67,13 @@ def strip_patch(patch: Patch, discovered_names: dict[str, str]) -> dict:
     if options := patch.get("options"):
         options_list = []
         for opt in options:
-            if isinstance(opt, dict) and "key" in opt:
-                opt_entry = {"key": opt["key"]}
-                if opt.get("title"):
-                    opt_entry["title"] = opt["title"]
-                if opt.get("description"):
-                    opt_entry["description"] = opt["description"]
-                options_list.append(opt_entry)
-        if options_list:
-            output["options"] = options_list
+            opt_entry = {"key": opt["key"]}
+            if opt.get("title"):
+                opt_entry["title"] = opt["title"]
+            if opt.get("description"):
+                opt_entry["description"] = opt["description"]
+            options_list.append(opt_entry)
+        output["options"] = options_list
 
     compatible_packages = patch.get("compatiblePackages")
     package_entries = (
@@ -85,12 +81,12 @@ def strip_patch(patch: Patch, discovered_names: dict[str, str]) -> dict:
         if isinstance(compatible_packages, dict)
         else [
             (
-                entry.get("packageName"),
+                entry["packageName"],
                 entry.get("targets", []),
                 entry.get("name"),
             )
             for entry in compatible_packages
-            if isinstance(entry, dict) and entry.get("packageName")
+            if entry["packageName"]
         ]
         if isinstance(compatible_packages, list)
         else []
@@ -100,7 +96,7 @@ def strip_patch(patch: Patch, discovered_names: dict[str, str]) -> dict:
     for package_name, versions, app_name in package_entries:
         if app_name:
             discovered_names[package_name] = app_name
-        targets = [parsed for version_item in (versions or []) if (parsed := parse_version_item(version_item))]
+        targets = [parse_version_item(version_item) for version_item in versions or []]
         target_entry = {"packageName": package_name}
         if targets:
             target_entry["targets"] = targets

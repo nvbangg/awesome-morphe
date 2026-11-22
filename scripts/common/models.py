@@ -13,14 +13,33 @@ class BundleManifest(TypedDict):
 
 
 @with_config(strict=True, extra="allow")
+class PatchOption(TypedDict):
+    key: str
+    title: NotRequired[str | None]
+    description: NotRequired[str | None]
+
+
+@with_config(strict=True, extra="allow")
+class PatchVersion(TypedDict):
+    version: str | None
+
+
+@with_config(strict=True, extra="allow")
+class PatchCompatibility(TypedDict):
+    packageName: str
+    name: NotRequired[str | None]
+    targets: NotRequired[list[str | PatchVersion] | None]
+
+
+@with_config(strict=True, extra="allow")
 class Patch(TypedDict):
     name: Annotated[str, Field(pattern=r"\S")]
     description: NotRequired[str | None]
     default: NotRequired[bool]
     use: NotRequired[bool]
     isPreRelease: NotRequired[bool]
-    options: NotRequired[list[Any] | None]
-    compatiblePackages: NotRequired[dict[str, Any] | list[Any] | None]
+    options: NotRequired[list[PatchOption] | None]
+    compatiblePackages: NotRequired[dict[str, list[str | PatchVersion] | None] | list[PatchCompatibility] | None]
 
 
 @with_config(strict=True)

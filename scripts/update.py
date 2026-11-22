@@ -77,10 +77,11 @@ def run(daily: bool = False) -> int:
         for package_name, app_data in apps_dict.items()
         if package_name in active_apps or package_name == PACKAGE_UNIVERSAL
     }
-    gplay_scrape.process(apps_dict, daily)
+    official_data = load_json(OFFICIAL_BUNDLES_PATH)
+    gplay_scrape.process(apps_dict, official_data.get("store", {}), daily)
     official_ranks = {
         repo_url.lower(): bundle.get("hotRank")
-        for bundle in load_json(OFFICIAL_BUNDLES_PATH).get("bundles", [])
+        for bundle in official_data.get("bundles", [])
         if (repo := bundle.get("repo")) and (repo_url := build_repo_url(bundle.get("source"), repo))
     }
     official_ranks["https://github.com/morpheapp/morphe-patches"] = -1

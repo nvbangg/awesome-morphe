@@ -6,8 +6,7 @@ from http.client import HTTPException
 from google_play_scraper import app as gplay_app
 from google_play_scraper.exceptions import GooglePlayScraperException, NotFoundError
 
-from common.constants import CONCURRENCY, OFFICIAL_BUNDLES_PATH, PACKAGE_UNIVERSAL
-from common.files import load_json
+from common.constants import CONCURRENCY, PACKAGE_UNIVERSAL
 from common.images import normalize_image_url
 
 
@@ -32,10 +31,7 @@ def fetch_app_details(package_name: str) -> tuple[dict | None, bool]:
         return None, False
 
 
-def process(apps_dict: dict, daily: bool = False) -> None:
-    official_data = load_json(OFFICIAL_BUNDLES_PATH)
-    official_store = official_data.get("store", {}) if isinstance(official_data, dict) else {}
-
+def process(apps_dict: dict, official_store: dict, daily: bool = False) -> None:
     apps_to_scrape = [
         package_name
         for package_name, app_data in apps_dict.items()

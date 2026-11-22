@@ -97,7 +97,6 @@ class TestBundleUpdate:
         self.patch_context.enter_context(
             patch.multiple(local_data, BUNDLES_DIR=self.bundles_dir, PATCHES_DIR=self.patches_dir)
         )
-        self.patch_context.enter_context(patch.object(gplay_scrape, "OFFICIAL_BUNDLES_PATH", self.official_path))
         self.fetch_repo = self.patch_context.enter_context(
             patch.object(
                 repositories,
@@ -169,7 +168,23 @@ class TestBundleUpdate:
 
     @pytest.mark.parametrize(
         "rejected",
-        (None, {"name": " "}, {"name": 7}, {"name": "Patch", "description": 123}),
+        (
+            None,
+            {"name": " "},
+            {"name": 7},
+            {"name": "Patch", "description": 123},
+            {"name": "Patch", "options": [{"key": 42}]},
+            {"name": "Patch", "options": [{"key": "setting", "title": 42}]},
+            {"name": "Patch", "options": [{"key": "setting", "description": 42}]},
+            {"name": "Patch", "compatiblePackages": {"com.test.app": [{"version": 123}]}},
+            {
+                "name": "Patch",
+                "compatiblePackages": [{"packageName": "com.test.app", "targets": [{"version": 123}]}],
+            },
+            {"name": "Patch", "compatiblePackages": [{"packageName": 123}]},
+            {"name": "Patch", "compatiblePackages": [{"packageName": "com.test.app", "name": 123}]},
+            {"name": "Patch", "compatiblePackages": [{"packageName": "com.test.app", "targets": "1.0"}]},
+        ),
     )
     def test_rejected_patch_does_not_change_app_hash_or_updates(self, rejected) -> None:
         valid_patch = self.app_patch()
@@ -178,8 +193,8 @@ class TestBundleUpdate:
         baseline_hashes = load_json(self.state_path)["appHashes"]
         if isinstance(rejected, dict):
             rejected = {
-                **rejected,
                 "compatiblePackages": valid_patch["compatiblePackages"],
+                **rejected,
             }
         self.add_target(patches=[valid_patch, rejected])
         catalog = self.run_update()
@@ -654,9 +669,7 @@ class TestBundleUpdate:
         assert "isArchived" not in bundles["gitlab"]
 
 
-def test_google_play_failure_preserves_saved_app_and_updates_other_apps(
-    tmp_path: Path,
-) -> None:
+def test_google_play_failure_preserves_saved_app_and_updates_other_apps() -> None:
     saved_app = {"name": "Saved app", "minInstalls": 100, "category": "Tools"}
     apps = {"com.test.failed": dict(saved_app), "com.test.working": {}}
 
@@ -665,11 +678,8 @@ def test_google_play_failure_preserves_saved_app_and_updates_other_apps(
             raise ExtraHTTPError("HTTP 503")
         return {"title": "Working app"}
 
-    with (
-        patch.object(gplay_scrape, "gplay_app", side_effect=fetch_app),
-        patch.object(gplay_scrape, "OFFICIAL_BUNDLES_PATH", tmp_path / "official.json"),
-    ):
-        gplay_scrape.process(apps, True)
+    with patch.object(gplay_scrape, "gplay_app", side_effect=fetch_app):
+        gplay_scrape.process(apps, {}, True)
     assert apps["com.test.failed"] == saved_app
     assert apps["com.test.working"]["name"] == "Working app"
 
@@ -686,15 +696,12 @@ def test_universal_skips_google_play_and_keeps_official_metadata(mode) -> None:
             }
         }
     }
-    with (
-        patch.object(gplay_scrape, "load_json", return_value=official),
-        patch.object(
-            gplay_scrape,
-            "fetch_app_details",
-            return_value=({"name": "Real app"}, False),
-        ) as request,
-    ):
-        gplay_scrape.process(apps, mode == "daily")
+    with patch.object(
+        gplay_scrape,
+        "fetch_app_details",
+        return_value=({"name": "Real app"}, False),
+    ) as request:
+        gplay_scrape.process(apps, official["store"], mode == "daily")
     request.assert_called_once_with("com.test.app")
     assert apps[PACKAGE_UNIVERSAL] == official["store"][PACKAGE_UNIVERSAL]
     assert apps["com.test.app"]["name"] == "Real app"
