@@ -1,39 +1,35 @@
 {
-  "version": "v0.1.1",
-  "appNames": {
-    "com.univision.prendetv": "ViX"
-  },
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "0.2.1",
   "patches": [
     {
       "name": "Allow screenshots and screen recording",
       "description": "Removes Window FLAG_SECURE and prevents LuraPlayer SurfaceView from forcing secure mode. Note: hardware-backed Widevine L1 DRM video surfaces may still be blanked by Android.",
+      "default": true,
       "category": "Interaction",
-      "use": true,
-      "dependencies": [],
-      "compatiblePackages": {
-        "com.univision.prendetv": [
-          "4.52.1_mobile"
-        ]
-      },
-      "compatibility": [
+      "compatiblePackages": [
         {
-          "name": "ViX",
           "packageName": "com.univision.prendetv",
+          "name": "ViX",
           "description": null,
-          "appIconColor": 16739072,
+          "apkFileType": null,
+          "appIconColor": "#FF6B00",
           "signatures": [
             "eb6f3b76c6110bb945f88530ff5742634e48223c382931c319daceb431fe666d"
           ],
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "4.52.1_mobile",
-              "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 7902,
                 "ARMEABI_V7A": 7902,
-                "X86": 7902,
-                "X86_64": 7902
-              }
+                "X86_64": 7902,
+                "X86": 7902
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -43,33 +39,133 @@
     {
       "name": "Auto-skip server-side ads",
       "description": "Automatically calls LuraPlayer.skipAd() when an ad starts on non-live VOD streams.",
+      "default": true,
       "category": "Ads",
-      "use": true,
-      "dependencies": [],
-      "compatiblePackages": {
-        "com.univision.prendetv": [
-          "4.52.1_mobile"
-        ]
-      },
-      "compatibility": [
+      "compatiblePackages": [
         {
-          "name": "ViX",
           "packageName": "com.univision.prendetv",
+          "name": "ViX",
           "description": null,
-          "appIconColor": 16739072,
+          "apkFileType": null,
+          "appIconColor": "#FF6B00",
           "signatures": [
             "eb6f3b76c6110bb945f88530ff5742634e48223c382931c319daceb431fe666d"
           ],
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "4.52.1_mobile",
-              "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 7902,
                 "ARMEABI_V7A": 7902,
-                "X86": 7902,
-                "X86_64": 7902
-              }
+                "X86_64": 7902,
+                "X86": 7902
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block app Firebase custom events",
+      "description": "Stops the app's Firebase custom-event logging call. Other Firebase collection and other analytics SDKs may remain active.",
+      "default": true,
+      "category": "Privacy",
+      "compatiblePackages": [
+        {
+          "packageName": "com.caracol.streaming",
+          "name": "Ditu",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6600",
+          "signatures": [
+            "6cc4605aa7b9ee71a34e0f8125a9050330563d795e87ae54b5c792868c188895"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.8.1",
+              "versionCodes": {
+                "ARM64_V8A": 4731,
+                "ARMEABI_V7A": 4731,
+                "X86_64": 4731,
+                "X86": 4731
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block client-side VOD ads",
+      "description": "Keeps the original VOD media item instead of attaching the client-side ad configuration. Does not remove stitched server-side ads.",
+      "default": true,
+      "category": "Ads",
+      "compatiblePackages": [
+        {
+          "packageName": "com.caracol.streaming",
+          "name": "Ditu",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6600",
+          "signatures": [
+            "6cc4605aa7b9ee71a34e0f8125a9050330563d795e87ae54b5c792868c188895"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.8.1",
+              "versionCodes": {
+                "ARM64_V8A": 4731,
+                "ARMEABI_V7A": 4731,
+                "X86_64": 4731,
+                "X86": 4731
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block client-side live prerolls",
+      "description": "Uses the live player's existing content-only route in place of its local IMA preroll. Ads already in the live stream can still play.",
+      "default": true,
+      "category": "Ads",
+      "compatiblePackages": [
+        {
+          "packageName": "com.caracol.streaming",
+          "name": "Ditu",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6600",
+          "signatures": [
+            "6cc4605aa7b9ee71a34e0f8125a9050330563d795e87ae54b5c792868c188895"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.8.1",
+              "versionCodes": {
+                "ARM64_V8A": 4731,
+                "ARMEABI_V7A": 4731,
+                "X86_64": 4731,
+                "X86": 4731
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -79,33 +175,99 @@
     {
       "name": "Block player ads",
       "description": "Disables Lura client-side prerolls, pause ads, GAM pod-serve DAI configurations, clip ad tags, and Google IMA ad tag resolution in ViX players.",
+      "default": true,
       "category": "Ads",
-      "use": true,
-      "dependencies": [],
-      "compatiblePackages": {
-        "com.univision.prendetv": [
-          "4.52.1_mobile"
-        ]
-      },
-      "compatibility": [
+      "compatiblePackages": [
         {
-          "name": "ViX",
           "packageName": "com.univision.prendetv",
+          "name": "ViX",
           "description": null,
-          "appIconColor": 16739072,
+          "apkFileType": null,
+          "appIconColor": "#FF6B00",
           "signatures": [
             "eb6f3b76c6110bb945f88530ff5742634e48223c382931c319daceb431fe666d"
           ],
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "4.52.1_mobile",
-              "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 7902,
                 "ARMEABI_V7A": 7902,
-                "X86": 7902,
-                "X86_64": 7902
-              }
+                "X86_64": 7902,
+                "X86": 7902
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block remote startup video",
+      "description": "Loads the bundled Ditu logo animation in place of the remote full-screen startup video.",
+      "default": true,
+      "category": "Ads",
+      "compatiblePackages": [
+        {
+          "packageName": "com.caracol.streaming",
+          "name": "Ditu",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6600",
+          "signatures": [
+            "6cc4605aa7b9ee71a34e0f8125a9050330563d795e87ae54b5c792868c188895"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.8.1",
+              "versionCodes": {
+                "ARM64_V8A": 4731,
+                "ARMEABI_V7A": 4731,
+                "X86_64": 4731,
+                "X86": 4731
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block startup ads, banners and interstitials",
+      "description": "Blocks automatic app-open ads, display ads in app screens, interstitials, and client-side VAST prerolls.",
+      "default": true,
+      "category": "Ads",
+      "compatiblePackages": [
+        {
+          "packageName": "colombia.tv.plus",
+          "name": "TV Colombia Play",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "58469bf5383c2348f5082835eef797d179d9f065cb8e64c409e0e7382967dce2"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1015",
+              "versionCodes": {
+                "ARM64_V8A": 20,
+                "ARMEABI_V7A": 20,
+                "X86_64": 20,
+                "X86": 20
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -115,33 +277,31 @@
     {
       "name": "Bypass OneTrust consent delay",
       "description": "Skips OneTrust CMP SDK initialization at startup and invokes the startup continuation immediately.",
+      "default": false,
       "category": "Privacy",
-      "use": false,
-      "dependencies": [],
-      "compatiblePackages": {
-        "com.univision.prendetv": [
-          "4.52.1_mobile"
-        ]
-      },
-      "compatibility": [
+      "compatiblePackages": [
         {
-          "name": "ViX",
           "packageName": "com.univision.prendetv",
+          "name": "ViX",
           "description": null,
-          "appIconColor": 16739072,
+          "apkFileType": null,
+          "appIconColor": "#FF6B00",
           "signatures": [
             "eb6f3b76c6110bb945f88530ff5742634e48223c382931c319daceb431fe666d"
           ],
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "4.52.1_mobile",
-              "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 7902,
                 "ARMEABI_V7A": 7902,
-                "X86": 7902,
-                "X86_64": 7902
-              }
+                "X86_64": 7902,
+                "X86": 7902
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -151,33 +311,65 @@
     {
       "name": "Bypass forced app update",
       "description": "Prevents SplashScreenFragment from displaying the blocking AppUpdateDialog.",
+      "default": true,
       "category": "Misc",
-      "use": true,
-      "dependencies": [],
-      "compatiblePackages": {
-        "com.univision.prendetv": [
-          "4.52.1_mobile"
-        ]
-      },
-      "compatibility": [
+      "compatiblePackages": [
         {
-          "name": "ViX",
           "packageName": "com.univision.prendetv",
+          "name": "ViX",
           "description": null,
-          "appIconColor": 16739072,
+          "apkFileType": null,
+          "appIconColor": "#FF6B00",
           "signatures": [
             "eb6f3b76c6110bb945f88530ff5742634e48223c382931c319daceb431fe666d"
           ],
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "4.52.1_mobile",
-              "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 7902,
                 "ARMEABI_V7A": 7902,
-                "X86": 7902,
-                "X86_64": 7902
-              }
+                "X86_64": 7902,
+                "X86": 7902
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass forced update",
+      "description": "Disables the client forced-update decision while retaining optional update checks. Server-side version requirements can still apply.",
+      "default": true,
+      "category": "Misc",
+      "compatiblePackages": [
+        {
+          "packageName": "com.caracol.streaming",
+          "name": "Ditu",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6600",
+          "signatures": [
+            "6cc4605aa7b9ee71a34e0f8125a9050330563d795e87ae54b5c792868c188895"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.8.1",
+              "versionCodes": {
+                "ARM64_V8A": 4731,
+                "ARMEABI_V7A": 4731,
+                "X86_64": 4731,
+                "X86": 4731
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -187,33 +379,99 @@
     {
       "name": "Disable telemetry and tracking",
       "description": "Disables NewRelic, Permutive, AppsFlyer attribution, Conviva/PAL player telemetry, advertising ID collection, and strips the AD_ID manifest permission.",
+      "default": true,
       "category": "Privacy",
-      "use": true,
-      "dependencies": [],
-      "compatiblePackages": {
-        "com.univision.prendetv": [
-          "4.52.1_mobile"
-        ]
-      },
-      "compatibility": [
+      "compatiblePackages": [
         {
-          "name": "ViX",
           "packageName": "com.univision.prendetv",
+          "name": "ViX",
           "description": null,
-          "appIconColor": 16739072,
+          "apkFileType": null,
+          "appIconColor": "#FF6B00",
           "signatures": [
             "eb6f3b76c6110bb945f88530ff5742634e48223c382931c319daceb431fe666d"
           ],
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "4.52.1_mobile",
-              "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 7902,
                 "ARMEABI_V7A": 7902,
-                "X86": 7902,
-                "X86_64": 7902
-              }
+                "X86_64": 7902,
+                "X86": 7902
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Glass channel grid",
+      "description": "Gives channel cards one translucent surface, more legible labels, and a simpler loading indicator.",
+      "default": true,
+      "category": "Appearance",
+      "compatiblePackages": [
+        {
+          "packageName": "colombia.tv.plus",
+          "name": "TV Colombia Play",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "58469bf5383c2348f5082835eef797d179d9f065cb8e64c409e0e7382967dce2"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1015",
+              "versionCodes": {
+                "ARM64_V8A": 20,
+                "ARMEABI_V7A": 20,
+                "X86_64": 20,
+                "X86": 20
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide player campaign banners",
+      "description": "Disables the player's optional Megaphone banner overlay on phone and TV. This can hide announcements as well as promotions.",
+      "default": false,
+      "category": "Ads",
+      "compatiblePackages": [
+        {
+          "packageName": "com.caracol.streaming",
+          "name": "Ditu",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6600",
+          "signatures": [
+            "6cc4605aa7b9ee71a34e0f8125a9050330563d795e87ae54b5c792868c188895"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.8.1",
+              "versionCodes": {
+                "ARM64_V8A": 4731,
+                "ARMEABI_V7A": 4731,
+                "X86_64": 4731,
+                "X86": 4731
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -223,33 +481,99 @@
     {
       "name": "Hide promotional popups",
       "description": "Suppresses Braze in-app promotional dialogs and upgrade banners.",
+      "default": true,
       "category": "Ads",
-      "use": true,
-      "dependencies": [],
-      "compatiblePackages": {
-        "com.univision.prendetv": [
-          "4.52.1_mobile"
-        ]
-      },
-      "compatibility": [
+      "compatiblePackages": [
         {
-          "name": "ViX",
           "packageName": "com.univision.prendetv",
+          "name": "ViX",
           "description": null,
-          "appIconColor": 16739072,
+          "apkFileType": null,
+          "appIconColor": "#FF6B00",
           "signatures": [
             "eb6f3b76c6110bb945f88530ff5742634e48223c382931c319daceb431fe666d"
           ],
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "4.52.1_mobile",
-              "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 7902,
                 "ARMEABI_V7A": 7902,
-                "X86": 7902,
-                "X86_64": 7902
-              }
+                "X86_64": 7902,
+                "X86": 7902
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Open television on launch",
+      "description": "Opens the television section directly when the startup menu contains the TV, RadioHub, and GeoSky cards.",
+      "default": true,
+      "category": "Interaction",
+      "compatiblePackages": [
+        {
+          "packageName": "colombia.tv.plus",
+          "name": "TV Colombia Play",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": null,
+          "signatures": [
+            "58469bf5383c2348f5082835eef797d179d9f065cb8e64c409e0e7382967dce2"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1015",
+              "versionCodes": {
+                "ARM64_V8A": 20,
+                "ARMEABI_V7A": 20,
+                "X86_64": 20,
+                "X86": 20
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove advertising ID permissions",
+      "description": "Removes the Google advertising ID and Android Ad Services advertising ID permissions. Other identifiers and telemetry may remain.",
+      "default": true,
+      "category": "Privacy",
+      "compatiblePackages": [
+        {
+          "packageName": "com.caracol.streaming",
+          "name": "Ditu",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF6600",
+          "signatures": [
+            "6cc4605aa7b9ee71a34e0f8125a9050330563d795e87ae54b5c792868c188895"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.8.1",
+              "versionCodes": {
+                "ARM64_V8A": 4731,
+                "ARMEABI_V7A": 4731,
+                "X86_64": 4731,
+                "X86": 4731
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -259,33 +583,31 @@
     {
       "name": "Unlock Developer Tools",
       "description": "Bypasses the passcode gate for ViX's hidden Developer Tools menu. Tap the app version 6 times in Settings to open it.",
+      "default": true,
       "category": "Misc",
-      "use": true,
-      "dependencies": [],
-      "compatiblePackages": {
-        "com.univision.prendetv": [
-          "4.52.1_mobile"
-        ]
-      },
-      "compatibility": [
+      "compatiblePackages": [
         {
-          "name": "ViX",
           "packageName": "com.univision.prendetv",
+          "name": "ViX",
           "description": null,
-          "appIconColor": 16739072,
+          "apkFileType": null,
+          "appIconColor": "#FF6B00",
           "signatures": [
             "eb6f3b76c6110bb945f88530ff5742634e48223c382931c319daceb431fe666d"
           ],
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "4.52.1_mobile",
-              "experimental": false,
               "versionCodes": {
                 "ARM64_V8A": 7902,
                 "ARMEABI_V7A": 7902,
-                "X86": 7902,
-                "X86_64": 7902
-              }
+                "X86_64": 7902,
+                "X86": 7902
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }

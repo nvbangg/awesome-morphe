@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.4",
+  "version": "1.2.0",
   "patches": [
     {
       "name": "AMOLED Dark Theme",
@@ -38,7 +38,41 @@
     },
     {
       "name": "Clone Dialer Package",
-      "description": "Changes package to com.google.android.dialer.amoled so non-rooted devices can install it without signature conflict.",
+      "description": "Changes package to com.google.android.dialer.amoled for non-rooted install. Leave OFF on rooted devices to mount over stock dialer without crashing.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.dialer",
+          "name": "Phone",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1A73E8",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "241.0.996790549",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix Cloned DroidGuard Crash",
+      "description": "Prevents Google Phone from crashing on launch when running as a cloned package on non-rooted devices.",
       "default": true,
       "category": null,
       "compatiblePackages": [
