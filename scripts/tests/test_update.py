@@ -127,7 +127,7 @@ class TestBundleUpdate:
         discovery = load_json(self.discovery_path)
         discovery["repositories"][f"https://{source}.com/{repo}".lower()] = {"id": repository_id}
         save_json(self.discovery_path, discovery)
-        prefix = f"{repository_id.replace(':', '~')}~{branch}"
+        prefix = f"{repository_id.replace(':', '-')}-{branch}"
         save_json(
             self.bundles_dir / f"{prefix}.json",
             {
@@ -260,7 +260,7 @@ class TestBundleUpdate:
     @pytest.mark.parametrize("metadata", (None, {}))
     def test_unusable_bundle_metadata_is_not_published(self, metadata) -> None:
         self.add_target()
-        bundle_path = self.bundles_dir / "github~1~main.json"
+        bundle_path = self.bundles_dir / "github-1-main.json"
         if metadata is None:
             bundle_path.unlink()
         else:
@@ -378,7 +378,7 @@ class TestBundleUpdate:
         assert renamed["repo"] == "owner/renamed"
         for field in ("firstSeen", "appFirstSeen", "appUpdates", "patches", "hotRank", "isOfficial"):
             assert renamed[field] == saved_bundle[field]
-        assert (self.patches_dir / "github~1~main.json").is_file()
+        assert (self.patches_dir / "github-1-main.json").is_file()
 
     def test_hot_ranks_follow_official_and_activity_priority_without_gaps(self) -> None:
         now_ms = CURRENT_TIME_SECONDS * 1000

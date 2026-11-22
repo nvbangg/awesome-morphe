@@ -137,7 +137,7 @@ class BranchFetchResult:
 
     @property
     def target_name(self) -> str:
-        return f"{self.repo_id.replace(':', '~')}~{self.branch}"
+        return f"{self.repo_id.replace(':', '-')}-{self.branch}"
 
 
 def get_remote_file_hash(url: str, source: str, fallback: str | None = None) -> str:
@@ -188,7 +188,7 @@ def process_repo_branch(
             repo_id=repo_id,
         )
 
-    file_prefix = f"{repo_id.replace(':', '~')}~{branch}"
+    file_prefix = f"{repo_id.replace(':', '-')}-{branch}"
     bundle_file = BUNDLES_DIR / f"{file_prefix}.json"
     patches_file = PATCHES_DIR / f"{file_prefix}.json"
     has_local_data = bundle_file.is_file() and patches_file.is_file()

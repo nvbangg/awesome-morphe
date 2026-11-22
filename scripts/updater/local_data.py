@@ -164,8 +164,8 @@ def load_branch_data(
 ) -> tuple[dict | None, list[dict] | None, list[dict] | None, str | None]:
     if not has_sha:
         return None, None, None, None
-    bundle_file = BUNDLES_DIR / f"{file_prefix}~{branch}.json"
-    list_file = PATCHES_DIR / f"{file_prefix}~{branch}.json"
+    bundle_file = BUNDLES_DIR / f"{file_prefix}-{branch}.json"
+    list_file = PATCHES_DIR / f"{file_prefix}-{branch}.json"
     bundle = load_json(bundle_file)
     try:
         BUNDLE_MANIFEST.validate_python(bundle)
@@ -212,7 +212,7 @@ def process(
         if not main_sha and not dev_sha:
             keys_to_remove.append(repo_id)
             continue
-        file_prefix = repo_id.replace(":", "~")
+        file_prefix = repo_id.replace(":", "-")
         main_names = {}
         dev_names = {}
         main_bundle, main_patches, main_raw, main_reason = load_branch_data(
@@ -356,7 +356,7 @@ def process(
 
 def cleanup_orphan_files(repos_data: dict) -> None:
     target_files = {
-        f"{repo_id.replace(':', '~')}~{branch}.json" for repo_id in repos_data for branch in DEFAULT_BRANCHES
+        f"{repo_id.replace(':', '-')}-{branch}.json" for repo_id in repos_data for branch in DEFAULT_BRANCHES
     }
     for directory in (BUNDLES_DIR, PATCHES_DIR):
         for filepath in directory.glob("*.json"):

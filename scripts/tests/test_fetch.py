@@ -232,9 +232,9 @@ class TestBundleFetch:
 
     def seed_target(self) -> dict[Path, bytes]:
         old_contents = {
-            self.bundles_dir / "github~1~main.json": b'{"version": "old"}',
-            self.patches_dir / "github~1~main.json": b'{"patches": [{"name": "Old patch"}]}',
-            self.mpp_dir / "github~1~main.mpp": b"old mpp",
+            self.bundles_dir / "github-1-main.json": b'{"version": "old"}',
+            self.patches_dir / "github-1-main.json": b'{"patches": [{"name": "Old patch"}]}',
+            self.mpp_dir / "github-1-main.mpp": b"old mpp",
         }
         for path, content in old_contents.items():
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -257,7 +257,7 @@ class TestBundleFetch:
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
         for branch in DEFAULT_BRANCHES:
-            file_prefix = f"github~1~{branch}"
+            file_prefix = f"github-1-{branch}"
             assert load_json(self.bundles_dir / f"{file_prefix}.json") == self.bundle_data
             assert load_json(self.patches_dir / f"{file_prefix}.json") == self.patches_data
             assert (self.mpp_dir / f"{file_prefix}.mpp").read_bytes() == self.mpp_bytes
@@ -278,7 +278,7 @@ class TestBundleFetch:
         for url in (self.bundle_data["download_url"], dev_bundle_data["download_url"]):
             assert self.fetch_request.call_args_list.count(call(url)) == 1
         for branch in DEFAULT_BRANCHES:
-            assert (self.mpp_dir / f"github~1~{branch}.mpp").read_bytes() == self.mpp_bytes
+            assert (self.mpp_dir / f"github-1-{branch}.mpp").read_bytes() == self.mpp_bytes
 
     def test_bundle_downloads_are_not_reused_between_fetch_runs(self) -> None:
         bundle_fetch.fetch_all_repos()
@@ -296,8 +296,8 @@ class TestBundleFetch:
         self.run_process.assert_not_called()
 
     def test_unchanged_target_skips_downloads_without_local_mpp(self) -> None:
-        save_json(self.bundles_dir / "github~1~main.json", self.bundle_data)
-        save_json(self.patches_dir / "github~1~main.json", self.patches_data)
+        save_json(self.bundles_dir / "github-1-main.json", self.bundle_data)
+        save_json(self.patches_dir / "github-1-main.json", self.patches_data)
         self.fetch_hash.return_value = "main-old"
         original_content = self.repos_path.read_bytes()
         bundle_fetch.fetch_all_repos()
@@ -311,11 +311,11 @@ class TestBundleFetch:
         self.fetch_hash.return_value = "main-old"
         missing_directory = {"bundles": self.bundles_dir, "patches": self.patches_dir}[directory_name]
         self.seed_target()
-        (missing_directory / "github~1~main.json").unlink()
+        (missing_directory / "github-1-main.json").unlink()
         self.fetch_request.reset_mock()
         self.github_metadata_request.reset_mock()
         bundle_fetch.fetch_all_repos()
-        assert load_json(self.patches_dir / "github~1~main.json") == self.patches_data
+        assert load_json(self.patches_dir / "github-1-main.json") == self.patches_data
         assert self.fetch_request.call_count == 3
         self.github_metadata_request.assert_called_once_with(self.url("main", "patches-bundle.json"), None)
 
@@ -341,7 +341,7 @@ class TestBundleFetch:
     def test_gitlab_unchanged_metadata_still_skips_get(self) -> None:
         self.fetch_hash.return_value = "main-old"
         for directory in (self.bundles_dir, self.patches_dir):
-            save_json(directory / "gitlab~1~main.json", {})
+            save_json(directory / "gitlab-1-main.json", {})
         result = bundle_fetch.process_repo_branch("gitlab", "owner/alpha", "main", "main-old", repo_id="gitlab:1")
         assert result.new_sha == "main-old"
         assert not result.status_changed
@@ -580,8 +580,8 @@ class TestBundleFetch:
         assert (call(download_url) in self.fetch_request.call_args_list) == (project_id == 1)
 
     def test_daily_unavailable_mpp_clears_sha_and_retains_files(self) -> None:
-        save_json(self.bundles_dir / "github~1~main.json", self.bundle_data)
-        save_json(self.patches_dir / "github~1~main.json", self.patches_data)
+        save_json(self.bundles_dir / "github-1-main.json", self.bundle_data)
+        save_json(self.patches_dir / "github-1-main.json", self.patches_data)
         self.fetch_hash.return_value = "main-old"
         with patch.object(
             bundle_fetch,
@@ -593,12 +593,12 @@ class TestBundleFetch:
         ):
             bundle_fetch.fetch_all_repos(daily=True)
         assert load_json(self.repos_path)["github:1"]["main"] is None
-        assert (self.patches_dir / "github~1~main.json").exists()
+        assert (self.patches_dir / "github-1-main.json").exists()
         self.fetch_request.assert_not_called()
 
     def test_daily_check_failure_preserves_sha(self) -> None:
-        save_json(self.bundles_dir / "github~1~main.json", self.bundle_data)
-        save_json(self.patches_dir / "github~1~main.json", self.patches_data)
+        save_json(self.bundles_dir / "github-1-main.json", self.bundle_data)
+        save_json(self.patches_dir / "github-1-main.json", self.patches_data)
         self.fetch_hash.return_value = "main-old"
         with patch.object(
             bundle_fetch,
@@ -644,12 +644,12 @@ class TestBundleFetch:
             patch_url = self.url(branch, "patches-list.json")
             self.responses[patch_url] = self.http_error(patch_url, HTTP_NOT_FOUND)
         self.fetch_hash.side_effect = lambda url, _source: "dev-new" if "/dev/" in url else "main-new"
-        save_json(self.patches_dir / "github~1~dev.json", self.patches_data)
+        save_json(self.patches_dir / "github-1-dev.json", self.patches_data)
 
         def run_parser(*_args: object, **_kwargs: object) -> bundle_fetch.subprocess.CompletedProcess:
             assert not self.parsed_path.exists()
-            save_json(self.patches_dir / "github~1~main.json", self.patches_data)
-            self.parsed_path.write_text("github~1~main.json", encoding="utf-8")
+            save_json(self.patches_dir / "github-1-main.json", self.patches_data)
+            self.parsed_path.write_text("github-1-main.json", encoding="utf-8")
             return bundle_fetch.subprocess.CompletedProcess([], 0)
 
         self.run_process.side_effect = run_parser
@@ -681,13 +681,13 @@ class TestBundleFetch:
 
     def test_dev_update_downloads_bundle_but_keeps_existing_main_name(self) -> None:
         self.seed_target()
-        save_json(self.bundles_dir / "github~1~main.json", self.bundle_data)
+        save_json(self.bundles_dir / "github-1-main.json", self.bundle_data)
         self.fetch_hash.side_effect = lambda url, _source: "main-old" if "/main/" in url else "dev-new"
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             bundle_fetch.fetch_all_repos()
         assert load_json(self.repos_path)["github:1"]["name"] == "Alpha old"
         self.fetch_request.assert_any_call(self.url("dev", "patches-list.json"))
-        assert (self.mpp_dir / "github~1~dev.mpp").is_file()
+        assert (self.mpp_dir / "github-1-dev.mpp").is_file()
 
     def test_new_empty_repository_entry_is_fetched(self) -> None:
         self.save_repos({})
