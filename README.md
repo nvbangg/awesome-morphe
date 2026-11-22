@@ -15,7 +15,7 @@
 ### 🔥 Feature Highlights
 
 - 🌐 A curated list of [Morphe](https://morphe.software) resources and community projects.
-- 🔍 An interactive [website](https://awesome-morphe.vercel.app/) to explore all patch bundles from the Morphe community, with data aggregated automatically.
+- 🔍 An interactive [website](https://awesome-morphe.pages.dev/) to explore all patch bundles from the Morphe community, with data aggregated automatically.
 - 🔔 Automatic notifications via the [Telegram channel](https://t.me/awesome_morphe) whenever there's a new update.
 - 🛡️ Automated filtering of taken-down or unavailable bundles, along with detection of archived or renamed repositories.
 - 🧩 Automated fallback parsing from `.mpp` files whenever `patches-list.json` is missing.
@@ -75,7 +75,7 @@ Official Morphe resources and projects.
 
 Places to discover Morphe patch sources.
 
-- [Awesome Morphe Website](https://awesome-morphe.vercel.app/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/nvbangg/awesome-morphe)
+- [Awesome Morphe Website](https://awesome-morphe.pages.dev/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/nvbangg/awesome-morphe)
 - [Morphe Community Patches](https://morphe-patches.software/)
 - [Fresh Morphe](https://drnx64.github.io/fresh-morphe/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/drnx64/fresh-morphe)
 - [Morphe Archive](https://rushiforai.github.io/morphe-archive/) [![Repo](https://img.shields.io/badge/Repo-black?style=social&logo=github)](https://github.com/rushiforai/morphe-archive)

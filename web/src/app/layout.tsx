@@ -7,7 +7,7 @@ import { CatalogShell } from "@/features/catalog/CatalogShell";
 import { Providers } from "./providers";
 import "@/index.css";
 
-const SITE_URL = "https://awesome-morphe.vercel.app";
+const SITE_URL = "https://awesome-morphe.pages.dev";
 const SITE_DESCRIPTION = "Explore all patch bundles from the Morphe community.";
 
 export const metadata: Metadata = {

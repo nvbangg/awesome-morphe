@@ -1,7 +1,7 @@
 ## [nvbangg/awesome-morphe](https://github.com/nvbangg/awesome-morphe)
 
 > [!NOTE]
-> This document describes the project structure, automation workflows, and data-processing logic behind the [Awesome Morphe Website](https://awesome-morphe.vercel.app/).
+> This document describes the project structure, automation workflows, and data-processing logic behind the [Awesome Morphe Website](https://awesome-morphe.pages.dev/).
 
 > [!WARNING]
 > This document is outdated and is currently being revised.

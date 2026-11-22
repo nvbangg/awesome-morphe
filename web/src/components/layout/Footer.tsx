@@ -22,7 +22,7 @@ export function Footer() {
 				<div className="container mx-auto px-6 max-w-300 flex flex-col gap-3">
 					<div className="flex items-center gap-3 w-fit">
 						<a
-							href="https://awesome-morphe.vercel.app/"
+							href="https://awesome-morphe.pages.dev/"
 							className="no-underline shrink-0 flex items-center hover:opacity-85 transition-opacity"
 						>
 							<img
@@ -35,7 +35,7 @@ export function Footer() {
 						</a>
 						<div className="flex flex-col justify-center">
 							<a
-								href="https://awesome-morphe.vercel.app/"
+								href="https://awesome-morphe.pages.dev/"
 								className="font-bold text-lg leading-tight no-underline hover:opacity-85 transition-opacity"
 							>
 								<span className="bg-primary-gradient bg-clip-text text-transparent">

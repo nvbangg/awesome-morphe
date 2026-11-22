@@ -25,7 +25,7 @@ EXISTING_ENTRY_LIMIT = 9
 EXISTING_ITEM_LIMIT = 4
 NEW_APP_THRESHOLD = 10
 DEFAULT_BUNDLE_RANK = 9999
-WHATS_NEW_URL = "https://awesome-morphe.vercel.app/whats-new"
+WHATS_NEW_URL = "https://awesome-morphe.pages.dev/whats-new"
 
 
 def is_valid_package_name(package_name: str) -> bool:
