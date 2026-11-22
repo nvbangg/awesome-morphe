@@ -9,7 +9,6 @@ from common.constants import (
 )
 from common.files import load_json, save_json
 from common.models import DISCOVERY, SOURCES
-from common.repositories import build_repo_url, parse_repo_url
 from common.summary import append_step_summary, format_summary_section
 from discovery import (
     jman,
@@ -43,22 +42,13 @@ def run() -> int:
     custom = SOURCES.validate_python(load_json(CUSTOM_JSON_PATH))
     warnings = _run_providers(registry["providers"])
     print()
-    repositories = {}
-    for urls in registry["providers"].values():
-        for url in urls:
-            source, repo = parse_repo_url(url)
-            if canonical_url := build_repo_url(source, repo):
-                repositories.setdefault(canonical_url.lower(), {})
+    repositories = {url.lower(): {} for urls in registry["providers"].values() for url in urls}
     for url, config in custom.items():
-        source, repo = parse_repo_url(url)
-        if canonical_url := build_repo_url(source, repo):
-            repositories.pop(canonical_url.lower(), None)
-            config = {
-                field: value
-                for field, value in config.items()
-                if field == "revancedStars" or (field == "enabled" and value is False)
-            }
-            repositories[canonical_url.lower()] = config
+        repositories[url.lower()] = {
+            field: value
+            for field, value in config.items()
+            if field == "revancedStars" or (field == "enabled" and value is False)
+        }
     if not repositories:
         message = "No usable provider files found; discovery stopped"
         print(message)
@@ -82,7 +72,10 @@ def run() -> int:
     for url, config in repositories.items():
         if repo_id := registry["repositories"].get(url, {}).get("id"):
             config["id"] = repo_id
-    save_json(DISCOVERY_JSON_PATH, DISCOVERY.validate_python({**registry, "repositories": repositories}))
+    save_json(
+        DISCOVERY_JSON_PATH,
+        DISCOVERY.validate_python({**registry, "repositories": dict(sorted(repositories.items()))}),
+    )
     print(f"Synced {len(repositories)} repos")
     print(f"Saved to {DISCOVERY_JSON_PATH.relative_to(ROOT_DIR)}")
     if len(summary_sections) > 1:

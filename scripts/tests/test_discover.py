@@ -224,19 +224,30 @@ class TestDiscover:
                 "https://github.com/owner/saved": {"enabled": False, "note": "Private", "revancedStars": 5},
                 "https://github.com/OWNER/SAVED": {"revancedStars": 8, "request": "Private"},
                 "https://gitlab.com/owner/new": {"enabled": False},
+                "https://github.com/aaa/custom": {},
             },
         )
         before = self.custom_path.read_bytes()
         registry = load_json(self.repos_path)
-        registry["repositories"]["https://github.com/owner/saved"]["id"] = "github:1"
+        registry["repositories"] = {
+            "https://github.com/owner/saved": {"id": "github:1", "enabled": False, "revancedStars": 99},
+            "https://github.com/aaa/custom": {"id": "github:2", "enabled": False, "revancedStars": 20},
+            "https://github.com/owner/stale": {"id": "github:3"},
+        }
         save_json(self.repos_path, registry)
         self.open_url.side_effect = httpx2.ConnectError("offline")
         assert discover.run() == 0
         repositories = load_json(self.repos_path)["repositories"]
         assert repositories == {
+            "https://github.com/aaa/custom": {"id": "github:2"},
             "https://github.com/owner/saved": {"revancedStars": 8, "id": "github:1"},
             "https://gitlab.com/owner/new": {"enabled": False},
         }
+        assert list(repositories) == [
+            "https://github.com/aaa/custom",
+            "https://github.com/owner/saved",
+            "https://gitlab.com/owner/new",
+        ]
         assert self.custom_path.read_bytes() == before
 
     def test_empty_sources_stop_without_replacing_saved_discovery(self) -> None:

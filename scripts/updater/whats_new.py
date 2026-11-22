@@ -161,7 +161,7 @@ def build_json_diff(
         ):
             if package_name not in old_patches_dict:
                 apps_dict[package_name] = {
-                    "patches": sorted(patches_dict[package_name]),
+                    "patches": patches_dict[package_name],
                     "isNew": True,
                 }
             elif added_patches := set(patches_dict[package_name]) - set(old_patches_dict[package_name]):
@@ -200,7 +200,6 @@ def generate_markdown(
     old_history: dict,
     app_metadata: dict,
     bundle_names: dict,
-    bundle_order: dict[str, int],
     app_patch_counts: dict[str, int] | None = None,
 ) -> str:
     app_patch_counts = app_patch_counts or {}
@@ -212,7 +211,6 @@ def generate_markdown(
             )
 
     new_bundle_repos = [repo_url for repo_url, data in json_diff.items() if data.get("isNew", False)]
-    new_bundle_repos.sort(key=lambda repo_url: bundle_order.get(repo_url, DEFAULT_BUNDLE_RANK))
 
     new_apps_map: dict[str, dict[str, str]] = {}
     existing_apps_new_patches_map: dict[str, dict[str, str]] = {}
@@ -376,7 +374,6 @@ def generate(
         old_history,
         app_metadata,
         bundle_names,
-        bundle_order,
         app_patch_counts,
     ):
         WHATS_NEW_PATH.parent.mkdir(parents=True, exist_ok=True)
