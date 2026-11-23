@@ -1,11 +1,11 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.30.66-dev.5",
+  "version": "0.30.66-dev.6",
   "patches": [
     {
       "name": "Alert distances",
-      "description": "How early alerts sound, plus a speed-bump switch and per-alert distances.",
-      "default": true,
+      "description": "How early alerts sound, plus a speed-bump switch and per-alert distances. Pick a level; Standard changes nothing.",
+      "default": false,
       "category": "Map & Alerts",
       "dependencies": [
         "BytecodePatch"
@@ -33,10 +33,10 @@
         {
           "key": "level",
           "title": "Alert distance level",
-          "description": "Standard is Waze's own. Moderate and Heavier warn earlier - about 1.5x and 2.5x on average; cameras change more than police.",
+          "description": "Moderate warns about 1.5x earlier, Heavier about 2.5x. Standard writes Waze's own numbers back, i.e. changes nothing.",
           "required": false,
           "type": "kotlin.String",
-          "default": "Standard",
+          "default": "Moderate",
           "values": {
             "Standard (1x)": "Standard",
             "Moderate (about 1.5x)": "Moderate",
@@ -128,6 +128,15 @@
           "key": "between",
           "title": "Gap between alerts",
           "description": "0 = keep the preset, Standard 300 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
+        },
+        {
+          "key": "cameras",
+          "title": "Speed cameras - all types",
+          "description": "0 = keep the preset. In most countries Waze uses this one distance for every camera type; set it if camera alerts do not move.",
           "required": false,
           "type": "kotlin.Int",
           "default": 0,

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.99.0",
+  "version": "1.100.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -3328,6 +3328,40 @@
       "options": []
     },
     {
+      "name": "Disable Crashlytics reporter",
+      "description": "Stops Titanium's Crashlytics exception reporter. Required together with the ad/tracking patch: the reporter calls FirebaseCrashlytics after that component is removed, which otherwise crashes the app on any JavaScript exception.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.douglas.upflix",
+          "name": "upflix",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#E50914",
+          "signatures": [
+            "f353b78a9eb823d58cd45fc3ba1afba336346969c8b78809b91638444ec39007"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.12.10",
+              "versionCodes": {
+                "ARM64_V8A": 423,
+                "ARMEABI_V7A": 423,
+                "X86_64": 423,
+                "X86": 423
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable GEM telemetry dispatch",
       "description": "ARM64 only: prevents the traced GEM storage and usage telemetry jobs from being queued. Keeps SDK initialization intact. Local statistics storage may remain; runtime validation pending.",
       "default": false,
@@ -3422,6 +3456,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Play license check",
+      "description": "Required for a patched (re-signed) Upflix: skips the Google Play (PairIP) license check that would otherwise close the app.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.douglas.upflix",
+          "name": "upflix",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#E50914",
+          "signatures": [
+            "f353b78a9eb823d58cd45fc3ba1afba336346969c8b78809b91638444ec39007"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.12.10",
+              "versionCodes": {
+                "ARM64_V8A": 423,
+                "ARMEABI_V7A": 423,
+                "X86_64": 423,
+                "X86": 423
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -3560,6 +3628,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable ads and tracking",
+      "description": "Removes all seven ad placements and the ad SDK bootstrap, the Google UMP consent flow, Firebase Analytics/Crashlytics collection, the advertising ID, Facebook SDK auto-init and third-party IP geolocation. The encrypted Titanium bundle is rewritten and re-encrypted with the app's own key, and the stable device identifier becomes a random per-install UUID.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.douglas.upflix",
+          "name": "upflix",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#E50914",
+          "signatures": [
+            "f353b78a9eb823d58cd45fc3ba1afba336346969c8b78809b91638444ec39007"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.12.10",
+              "versionCodes": {
+                "ARM64_V8A": 423,
+                "ARMEABI_V7A": 423,
+                "X86_64": 423,
+                "X86": 423
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
