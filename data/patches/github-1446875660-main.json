@@ -1,37 +1,11 @@
 {
-    "version": "1.2.23",
+    "version": "1.3.3",
     "patches": [
         {
-            "name": "Bundle controls toggle",
-            "description": "Add a button beside Search to hide or restore bundle categories, validity chips and filters. Remembers your choice.",
+            "name": "Bottom navigation",
+            "description": "Configure the bottom bar, tab labels and individual tabs.",
             "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Charcoal dark mode",
-            "description": "Dark grey backgrounds, lighter charcoal cards, pale text and restrained accents. Keeps card geometry unchanged.",
-            "default": true,
-            "category": null,
+            "category": "Header & navigation",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -53,9 +27,54 @@
             ],
             "options": [
                 {
-                    "key": "systemMaterialAccent",
-                    "title": "Use system Material accent",
-                    "description": "Use Android 12+ wallpaper accent for highlighted values and navigation; use muted green on older Android.",
+                    "key": "hideNavigation",
+                    "title": "Show bottom navigation",
+                    "description": "Display the whole bottom navigation bar. Turning off hides every tab while retaining the individual tab choices below.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "iconOnly",
+                    "title": "Show text labels under bottom-tab icons",
+                    "description": "Display labels beneath the bottom navigation icons. Turning off keeps icons only; it does not hide any tab.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideMore",
+                    "title": "Show More tab",
+                    "description": "Display More in the bottom navigation bar. The whole-bar setting takes precedence.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideZPlay",
+                    "title": "Show Z Play tab",
+                    "description": "Display Z Play in the bottom navigation bar. Turning off hides that tab without deleting its destination.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideUsage",
+                    "title": "Show Usage tab",
+                    "description": "Display Usage in the bottom navigation bar. Consider how you will return to Usage before hiding it.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "hideBundles",
+                    "title": "Show Bundles tab",
+                    "description": "Display Bundles in the bottom bar. When hidden, Header can provide a replacement shortcut on Home.",
                     "required": true,
                     "type": "kotlin.Boolean",
                     "default": true,
@@ -64,10 +83,10 @@
             ]
         },
         {
-            "name": "Customize header",
-            "description": "Choose header items to hide.",
+            "name": "Bundles and Usage",
+            "description": "Configure the Bundles controls button and promotional sections.",
             "default": true,
-            "category": null,
+            "category": "Bundles & Usage",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -89,27 +108,48 @@
             ],
             "options": [
                 {
-                    "key": "headerItemsToHide",
-                    "title": "Header items to hide",
-                    "description": "Available names: Notifications, Menu, Refresh, Search, Greeting. An empty list keeps all items.",
+                    "key": "bundleControlsToggle",
+                    "title": "Show Bundles controls button",
+                    "description": "Add a button beside Bundles search that hides/restores categories, validity chips and Filter by together. Its choice is remembered in the app.",
                     "required": true,
-                    "type": "kotlin.collections.List<kotlin.String>",
-                    "default": [
-                        "Notifications",
-                        "Menu",
-                        "Refresh",
-                        "Search",
-                        "Greeting"
-                    ],
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "hideBundlePromotions",
+                    "title": "Show bundle browsing promotions",
+                    "description": "Display advertising banners around supported bundle browsing/details areas. Offer cards remain available when off.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideUsageBanner",
+                    "title": "Show Usage top banner",
+                    "description": "Display the large promotional banner above the Usage summary. Does not affect allowance cards.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideUsagePromotions",
+                    "title": "Show Usage promotions",
+                    "description": "Display the external-promotion label and advertising container on Usage. Subscription details remain available when off.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
                     "values": null
                 }
             ]
         },
         {
-            "name": "Customize home shortcuts",
-            "description": "Keep only the selected home options. Defaults to Rewards and Rs 100 Shop; no other items are kept automatically.",
+            "name": "Dialogs and drawer",
+            "description": "Configure the chatbot, WhatsApp notice and grouped drawer links.",
             "default": true,
-            "category": null,
+            "category": "Recharge & dialogs",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -130,6 +170,411 @@
                 }
             ],
             "options": [
+                {
+                    "key": "hideChatbot",
+                    "title": "Show chatbot launcher and dialog",
+                    "description": "Display the floating chatbot launcher and allow its dialog to open. Turning off hides the overlay and blocks its opening method.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideWhatsAppChannel",
+                    "title": "Show WhatsApp channel notice",
+                    "description": "Allow the Zong 5G WhatsApp 'AISA HAI FUTURE' / 'Follow!' notice, including notices triggered after refresh.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideDrawerExtras",
+                    "title": "Show support and promotional drawer links",
+                    "description": "Display Press Release, Find Us, Contact Us, Video Tutorials, FAQs and Feedback as one group. The menu button is controlled under Header.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Header",
+            "description": "Choose visible header items, titles and replacement shortcuts.",
+            "default": true,
+            "category": "Header & navigation",
+            "compatiblePackages": [
+                {
+                    "packageName": "com.zong.customercare",
+                    "name": "My Zong",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#80C342",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.19.19.112",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hideNotifications",
+                    "title": "Show notification bell",
+                    "description": "Display the notification bell in the top header. Turning off hides its launcher, not account notifications.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideMenu",
+                    "title": "Show side-menu button",
+                    "description": "Display the top-header side-menu button. Drawer link visibility is configured under Dialogs and drawer.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideRefresh",
+                    "title": "Show refresh button",
+                    "description": "Display the top-header refresh button. Turning off does not disable pull-to-refresh.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideSearch",
+                    "title": "Show search outside Bundles",
+                    "description": "Display header search outside Bundles. Bundles keeps its search button even when this option is off.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideGreeting",
+                    "title": "Show greeting",
+                    "description": "Display the Home greeting. When off, the optional Home title can occupy that space.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "leftTitles",
+                    "title": "Left-align titles",
+                    "description": "Align supported top-header titles to the start edge instead of centering them. Button positions are retained.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "homeTitle",
+                    "title": "Show Home title when greeting is hidden",
+                    "description": "Display 'Home' in the Home header only when the greeting is hidden. Does not replace a greeting you kept.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "bundlesShortcut",
+                    "title": "Show Home Bundles shortcut",
+                    "description": "Add a Home header shortcut to Bundles when its bottom tab or the whole bottom bar is hidden.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "freeMbsShortcut",
+                    "title": "Show Home Free MBs shortcut",
+                    "description": "Add a gift icon to the Home header that opens daily rewards, even when the Home shortcuts tray is hidden.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "loanShortcut",
+                    "title": "Show Home take/pay loan shortcut",
+                    "description": "Add a Home header shortcut using the existing take/pay loan action. It remains available when the Home loan button is hidden.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Home account cards",
+            "description": "Configure allowance labels, SMS, tariff, recharge and loan controls.",
+            "default": true,
+            "category": "Home",
+            "compatiblePackages": [
+                {
+                    "packageName": "com.zong.customercare",
+                    "name": "My Zong",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#80C342",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.19.19.112",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hideOfferCounts",
+                    "title": "Show active bundle counts below allowances",
+                    "description": "Display the 'X offers active' labels below Home data/minutes/SMS. Turning off keeps the values and progress bars.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideSmsCard",
+                    "title": "Show Home SMS allowance",
+                    "description": "Display SMS beside Home data and minutes. When hidden, the two remaining cards expand. Usage SMS is unaffected.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideTariff",
+                    "title": "Show package name below balance expiry",
+                    "description": "Display the tariff/package line, such as Economy Package, under the Home balance-expiry date.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "hideHomeRecharge",
+                    "title": "Show recharge beside the Home balance",
+                    "description": "Display the recharge button in the Home balance header. Recharge tabs are configured separately under Recharge.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideLoanButton",
+                    "title": "Show take/pay loan on the Home card",
+                    "description": "Display the take/pay loan button on the Home account card. The optional Header loan shortcut works separately.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Home sections",
+            "description": "Choose which Home sections remain visible and adjust section spacing.",
+            "default": true,
+            "category": "Home",
+            "compatiblePackages": [
+                {
+                    "packageName": "com.zong.customercare",
+                    "name": "My Zong",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#80C342",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.19.19.112",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hideMatch",
+                    "title": "Show match information",
+                    "description": "Display the sports/match information card on Home. Turn off to remove the whole card.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hidePrayers",
+                    "title": "Show prayer times",
+                    "description": "Display prayer/Ramadan timings on Home. Turn off to remove that timing card.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideFamily",
+                    "title": "Show family sharing",
+                    "description": "Display the complete family-sharing button group and MY5 banner on Home.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideStreaks",
+                    "title": "Show streak cards",
+                    "description": "Display the start-your-streak and seven-day streak panels on Home.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hidePromotions",
+                    "title": "Show banners and entertainment row",
+                    "description": "Display Home banners, flash sales, hot offers and the entertainment row beneath the banners.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hide5g",
+                    "title": "Show 5G shortcuts",
+                    "description": "Display the Home 5G map, settings and bundle shortcut group. Other bundle access is unaffected.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideWallet",
+                    "title": "Show Z Wallet",
+                    "description": "Display the Z Wallet section on Home. This does not change your wallet or account.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideSteps",
+                    "title": "Show step counter",
+                    "description": "Display the Home step shortcut and step-counter panel together.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideWeather",
+                    "title": "Show location and weather",
+                    "description": "Display the Home location/weather strip and its expand arrow together.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideCityOffers",
+                    "title": "Show regional and city offers",
+                    "description": "Display the regional/city offer search section on Home, independently of other promotions.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "spaceHomeSections",
+                    "title": "Separate Home sections with 24dp spacing",
+                    "description": "Keep at least 24dp above the utility-shortcuts tray and regional/city offers so adjacent sections do not touch.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                }
+            ]
+        },
+        {
+            "name": "Home shortcuts",
+            "description": "Keep only the selected home options. Defaults to Rewards and Rs 100 Shop; no other items are kept automatically.",
+            "default": true,
+            "category": "Home",
+            "compatiblePackages": [
+                {
+                    "packageName": "com.zong.customercare",
+                    "name": "My Zong",
+                    "description": null,
+                    "apkFileType": "APK",
+                    "appIconColor": "#80C342",
+                    "signatures": null,
+                    "targets": [
+                        {
+                            "version": "5.19.19.112",
+                            "versionCodes": null,
+                            "isExperimental": false,
+                            "minSdk": null,
+                            "description": null
+                        }
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "key": "hideShortcutCard",
+                    "title": "Show the Home utility-shortcuts tray",
+                    "description": "Display the Home utility-shortcuts tray and its kept entries. Turning off overrides the keep list, but not the three large bundle shortcuts.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "hideMyob",
+                    "title": "Show Make Your Own Bundle",
+                    "description": "Display Make Your Own Bundle in the three-button Home row. The other two shortcuts remain independently configurable.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideBachat",
+                    "title": "Show Bachat Bazaar",
+                    "description": "Display Bachat Bazaar in the three-button Home row. If every button is hidden, the row collapses.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideZong4u",
+                    "title": "Show Zong4U",
+                    "description": "Display Zong4U in the three-button Home row. Remaining buttons reflow when others are hidden.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
                 {
                     "key": "shortcutsToKeep",
                     "title": "Home shortcuts to keep",
@@ -145,36 +590,10 @@
             ]
         },
         {
-            "name": "Hide Bachat Bazaar shortcut",
-            "description": "Individually hide Bachat Bazaar; reflow remaining shortcuts.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Bundles bottom tab",
-            "description": "Hide Bundles from bottom navigation.",
+            "name": "Launcher icon",
+            "description": "Use a rounded Light or Dark ring for the launcher and static startup logo. Leave unselected to keep the original icon.",
             "default": false,
-            "category": null,
+            "category": "Appearance",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -194,13 +613,26 @@
                     ]
                 }
             ],
-            "options": []
+            "options": [
+                {
+                    "key": "iconVariant",
+                    "title": "Icon variant",
+                    "description": "Light: off-white background and charcoal ring. Dark: charcoal background and off-white ring.",
+                    "required": true,
+                    "type": "kotlin.String",
+                    "default": "light",
+                    "values": {
+                        "Light": "light",
+                        "Dark": "dark"
+                    }
+                }
+            ]
         },
         {
-            "name": "Hide Home SMS card",
-            "description": "Let remaining MB and minutes cards share the row.",
+            "name": "Material You theme",
+            "description": "Dark Material You colors on Android 12+, with automatic charcoal fallback on older or unsupported devices.",
             "default": true,
-            "category": null,
+            "category": "Appearance",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -220,949 +652,23 @@
                     ]
                 }
             ],
-            "options": []
-        },
-        {
-            "name": "Hide Home loan button",
-            "description": "Hide the Home loan button while keeping the header shortcut available.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
+            "options": [
                 {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
+                    "key": "systemMaterialColors",
+                    "title": "Use wallpaper colors",
+                    "description": "Use Android 12+ system colors for surfaces, text, tracks and accents. Turn off to use charcoal. Missing system colors fall back automatically.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
                 }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Home recharge button",
-            "description": "Hide only the recharge button in the Home account header.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Home tariff line",
-            "description": "Hide the package name below the balance expiry line.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Make Your Own Bundle shortcut",
-            "description": "Individually hide MYOB; reflow remaining shortcuts.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide More bottom tab",
-            "description": "Hide More without removing its navigation destination.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Online Recharge section",
-            "description": "Remove Online Recharge from the recharge pager and its tab titles.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Scratch Card section",
-            "description": "Remove Scratch Card from the recharge pager and its tab titles.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Usage bottom tab",
-            "description": "Hide Usage from bottom navigation.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide WhatsApp channel dialog",
-            "description": "Hide the dialog promoting the Zong 5G WhatsApp channel.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Z Play bottom tab",
-            "description": "Hide Z Play; preserve the remaining bottom navigation items.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide Zong4U shortcut",
-            "description": "Individually hide Zong4U; reflow remaining shortcuts.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide bottom navigation",
-            "description": "Hide the entire bottom navigation bar.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide bottom navigation labels",
-            "description": "Show only icons in bottom navigation.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide bundle browsing promotions",
-            "description": "Hide the advertising banner above the bundle browsing and results section.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide drawer support and promotional links",
-            "description": "Hide Press Release, Find Us, Contact Us, Video Tutorials, FAQs and Feedback in the side menu.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide floating chatbot and dialog",
-            "description": "Hide the launcher and overlay, and block the .112 chatbot opening method.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home 5G shortcuts",
-            "description": "Hide the 5G map/settings/bundles shortcut group.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home Z Wallet",
-            "description": "Hide the Z Wallet section.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home active-offer counts",
-            "description": "Hide X offers active below data/minutes/SMS; retain values and progress.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home family sharing",
-            "description": "Hide the complete family-sharing button group and MY5 banner.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home match card",
-            "description": "Hide the home-screen sports/match information card.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home prayer card",
-            "description": "Hide the home-screen prayer/Ramadan timing card.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home promotions",
-            "description": "Hide promotional banners, flash sales, hot offers, inline ads and the horizontal entertainment row.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home regional and city offers",
-            "description": "Hide the regional/city offer search section independently.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home shortcuts card",
-            "description": "Hide the entire Home shortcuts card.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home step counter",
-            "description": "Hide the step shortcut and step-counter panel.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home streak cards",
-            "description": "Hide the start-your-streak and seven-day streak sections.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide home weather strip",
-            "description": "Hide the location/weather strip and its expand arrow.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide online recharge promotions",
-            "description": "Hide banners and inline promotions on Online Recharge when that section is enabled.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide usage promotions",
-            "description": "Hide the external promotion label and ad container on Usage.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hide usage top banner",
-            "description": "Hide the large banner above usage summary.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Hold startup until Home settles",
-            "description": "Keep a matching dark brand cover for at least 450ms and until loading/three clean frames settle; maximum 1.8 seconds.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Home header Bundles shortcut",
-            "description": "Show a Bundles icon on Home when its bottom tab or the entire bottom bar is hidden.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Home header Free MBs shortcut",
-            "description": "Open daily rewards from a Home header icon.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Home header loan shortcut",
-            "description": "Use the existing take/pay loan action from a Home header icon.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
-        },
-        {
-            "name": "Left align header titles",
-            "description": "Align header titles to the start edge.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
-                {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
-                }
-            ],
-            "options": []
+            ]
         },
         {
             "name": "Material allowance icons",
             "description": "Use Material accent colors on Home and Usage allowance icons.",
             "default": true,
-            "category": null,
+            "category": "Appearance",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -1188,7 +694,7 @@
             "name": "Material shapes",
             "description": "Rounded Home and Usage cards, pill primary buttons and softer dialogs.",
             "default": true,
-            "category": null,
+            "category": "Appearance",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -1214,7 +720,7 @@
             "name": "Material usage favorite star",
             "description": "Use the Material accent for selected Usage and Bundles stars.",
             "default": true,
-            "category": null,
+            "category": "Appearance",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -1237,10 +743,10 @@
             "options": []
         },
         {
-            "name": "Show Home header title",
-            "description": "Show Home when the greeting is hidden.",
+            "name": "Recharge",
+            "description": "Choose recharge sections and promotional content.",
             "default": true,
-            "category": null,
+            "category": "Recharge & dialogs",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -1260,39 +766,41 @@
                     ]
                 }
             ],
-            "options": []
-        },
-        {
-            "name": "Skip animated startup intro",
-            "description": "Replace the full-screen GIF with a static logo and call its existing completion route without waiting for animation. Startup/session checks remain in place.",
-            "default": true,
-            "category": null,
-            "compatiblePackages": [
+            "options": [
                 {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
+                    "key": "hideOnline",
+                    "title": "Show Online Recharge",
+                    "description": "Display Online Recharge and its tab in the recharge pager. The Home recharge button is configured separately.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideScratch",
+                    "title": "Show Scratch Card",
+                    "description": "Display Scratch Card and its tab in the recharge pager. Does not change other recharge methods.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "hideOnlinePromotions",
+                    "title": "Show Online Recharge promotions",
+                    "description": "Display banners and inline promotions within Online Recharge. Has no visible effect when that section is hidden.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
                 }
-            ],
-            "options": []
+            ]
         },
         {
             "name": "Skip daily reward ad",
             "description": "Use My Zong's existing direct-claim branch when tapping the daily reward bubble.",
             "default": false,
-            "category": null,
+            "category": "Startup & rewards",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -1315,10 +823,10 @@
             "options": []
         },
         {
-            "name": "Space home sections",
-            "description": "Ensure at least 24dp above the options tray and regional/city offers.",
+            "name": "Startup",
+            "description": "Configure the intro, initial Home cover and starting screen.",
             "default": true,
-            "category": null,
+            "category": "Startup & rewards",
             "compatiblePackages": [
                 {
                     "packageName": "com.zong.customercare",
@@ -1338,33 +846,53 @@
                     ]
                 }
             ],
-            "options": []
-        },
-        {
-            "name": "Start on Usage",
-            "description": "Open Usage on a fresh launch after sign-in, retaining Back navigation to Home.",
-            "default": false,
-            "category": null,
-            "compatiblePackages": [
+            "options": [
                 {
-                    "packageName": "com.zong.customercare",
-                    "name": "My Zong",
-                    "description": null,
-                    "apkFileType": "APK",
-                    "appIconColor": "#80C342",
-                    "signatures": null,
-                    "targets": [
-                        {
-                            "version": "5.19.19.112",
-                            "versionCodes": null,
-                            "isExperimental": false,
-                            "minSdk": null,
-                            "description": null
-                        }
-                    ]
+                    "key": "skipPersonalDetails",
+                    "title": "Skip personal details after OTP",
+                    "description": "After successful OTP sign-in, continue to Home instead of asking for optional personal details. Profile opened from navigation and wallet identity-verification forms remain available. No personal fields are submitted.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
+                },
+                {
+                    "key": "otpPaste",
+                    "title": "Split pasted PIN/OTP digits across boxes",
+                    "description": "Distribute pasted or keyboard-committed multi-digit codes across the current PIN/OTP row. Full codes replace the row; shorter pastes start at the focused box and clear its remaining digits. Normal typing and native validation stay active.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "skipIntro",
+                    "title": "Use the static startup logo",
+                    "description": "Replace the animated startup intro with the existing centered static logo. Sign-in and startup/session checks still run.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "holdStartup",
+                    "title": "Keep startup cover while Home settles",
+                    "description": "Keep the centered logo cover until Home loading and three clean frames settle, for roughly 450ms–1.8s. Reduces flashes of hidden sections.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": true,
+                    "values": null
+                },
+                {
+                    "key": "startOnUsage",
+                    "title": "Open Usage after a fresh launch",
+                    "description": "Open Usage on a fresh launch after sign-in. Restored screens and deep links are respected; Home stays in navigation history.",
+                    "required": true,
+                    "type": "kotlin.Boolean",
+                    "default": false,
+                    "values": null
                 }
-            ],
-            "options": []
+            ]
         }
     ]
 }

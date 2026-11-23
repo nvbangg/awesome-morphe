@@ -1,59 +1,7 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.79.22",
+  "version": "0.0.2",
   "patches": [
-    {
-      "name": "Bypass PairIP application checks",
-      "description": "Required for re-signed builds: PairIP's Application class runs the signature and license checks at startup. This rewrites that one method so it only registers the app context and never calls either check, instead of relying on the checks themselves being stubbed.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#E8A317",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass PairIP application checks",
-      "description": "Required for re-signed builds: PairIP's Application class runs the signature and license checks at startup. This rewrites that one method so it only registers the app context and never calls either check, instead of relying on the checks themselves being stubbed.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instantbits.cast.webvideo",
-          "name": "Web Video Caster",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#3F51B5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "6.1.0",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
     {
       "name": "Bypass PairIP license check",
       "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends unlicensed installs to a Play Store block page. Disables that check, its verdict handler and both block-page launchers so the patched app can open.",
@@ -108,58 +56,6 @@
     },
     {
       "name": "Bypass PairIP license check",
-      "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends non-Play installs to a Play Store block page. Disables that check, its verdict handler, both block-page launchers, the delayed shutdown, and the block activity itself so the patched app can open.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#E8A317",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass PairIP license check",
-      "description": "Lets the patched app run: stubs out PairIP's license check, which otherwise blocks re-signed builds with a license dialog. Drapes 3.9.3 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.codeswitch.drapes",
-          "name": "Drapes",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FFB300",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "3.9.3",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass PairIP license check",
       "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends unlicensed installs to a Play Store block page. Disables that check at its entry point so the patched app can open.",
       "default": true,
       "dependencies": [],
@@ -185,248 +81,8 @@
       "options": []
     },
     {
-      "name": "Bypass PairIP license check",
-      "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends unlicensed installs to a Play Store block page. Disables that check, its verdict handler and both block-page launchers so the patched app can open.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.pika.dynamicisland",
-          "name": "Pika Spot",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#7C4DFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.4.5",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass PairIP license check",
-      "description": "Required for re-signed builds: PairIP asks Google Play to license the app at startup and sends non-Play installs to a Play Store block page. Disables that check, its verdict handler, both block-page launchers, the delayed shutdown, and the block activity itself so the patched app can open.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instantbits.cast.webvideo",
-          "name": "Web Video Caster",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#3F51B5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "6.1.0",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass PairIP signature check",
-      "description": "Required for re-signed builds: PairIP verifies the app's signing certificate at startup and kills tampered builds. Disables that Java-layer check (its pass state is returning normally). The native PairIP VM layer is untouched.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "ai.moises",
-          "name": "Moises",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#7B61FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "2.141.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass PairIP signature check",
-      "description": "Required for re-signed builds: PairIP checks the APK signature at startup and crashes the app on launch when it is not the developer's. Disables that one check so the patched app can start.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instantbits.cast.webvideo",
-          "name": "Web Video Caster",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#3F51B5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "6.1.0",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass PairIP signature check",
-      "description": "Required for re-signed builds: PairIP verifies the app's signing certificate at startup and kills the app if it isn't the Play signature. This disables that one check so the patched app can open.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.lonelycatgames.Xplore",
-          "name": "X-plore",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#2196F3",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.52.02",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass integrity check",
-      "description": "Stops the Play Integrity (Raindrop) verdict from blocking the app. If the app already shows App Blocked, reinstall it fresh after patching.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.lucky_apps.RainViewer",
-          "name": "RainViewer",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#1E88E5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.4.1",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Change installer source",
-      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for BusinessX: its PairIP local installer check is live, so a re-signed build fails the license check without it — keep it on.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.shrey_businessx.android",
-          "name": "BusinessX",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#0288D1",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "6.5.2",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "packageInstallerName",
-          "title": "Spoofed package installer name",
-          "description": null,
-          "required": false,
-          "type": "kotlin.String",
-          "default": "com.android.vending",
-          "values": {
-            "Google Play": "com.android.vending",
-            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
-            "Amazon Appstore": "com.amazon.venezia",
-            "Huawei AppGallery": "com.huawei.appmarket",
-            "Xiaomi GetApps": "com.xiaomi.mipicks"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Change installer source",
-      "description": "Spoofs the installer source so the app appears to be installed from Google Play everywhere it is read. Pre-selected companion for the DiskWala patch set — keep it on.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#E8A317",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "packageInstallerName",
-          "title": "Spoofed package installer name",
-          "description": null,
-          "required": false,
-          "type": "kotlin.String",
-          "default": "com.android.vending",
-          "values": {
-            "Google Play": "com.android.vending",
-            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
-            "Amazon Appstore": "com.amazon.venezia",
-            "Huawei AppGallery": "com.huawei.appmarket",
-            "Xiaomi GetApps": "com.xiaomi.mipicks"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Change installer source",
-      "description": "Spoofs the installer source so the app appears to be installed from an app store. Required for Enable Pro to take effect — keep it on.",
+      "description": "Spoofs the installer source so the app appears to be installed from an app store. Required for Enable Pro to take effect \u2014 keep it on.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -468,7 +124,7 @@
     },
     {
       "name": "Change installer source",
-      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for Smart MP3 Tagger: its PairIP local installer check is live, so a re-signed build fails the license check without it — keep it on.",
+      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for Smart MP3 Tagger: its PairIP local installer check is live, so a re-signed build fails the license check without it \u2014 keep it on.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -510,49 +166,7 @@
     },
     {
       "name": "Change installer source",
-      "description": "Spoofs the installer source so the app appears to be installed from an app store.",
-      "default": false,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.lucky_apps.RainViewer",
-          "name": "RainViewer",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#1E88E5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.4.1",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "packageInstallerName",
-          "title": "Spoofed package installer name",
-          "description": null,
-          "required": false,
-          "type": "kotlin.String",
-          "default": "com.android.vending",
-          "values": {
-            "Google Play": "com.android.vending",
-            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
-            "Amazon Appstore": "com.amazon.venezia",
-            "Huawei AppGallery": "com.huawei.appmarket",
-            "Xiaomi GetApps": "com.xiaomi.mipicks"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Change installer source",
-      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for Video Cutter: its PairIP local installer check is live, so a re-signed build fails the license check without it — keep it on.",
+      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for Video Cutter: its PairIP local installer check is live, so a re-signed build fails the license check without it \u2014 keep it on.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -568,48 +182,6 @@
               "version": "4.4.6",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "packageInstallerName",
-          "title": "Spoofed package installer name",
-          "description": null,
-          "required": false,
-          "type": "kotlin.String",
-          "default": "com.android.vending",
-          "values": {
-            "Google Play": "com.android.vending",
-            "Samsung Galaxy Store": "com.sec.android.app.samsungapps",
-            "Amazon Appstore": "com.amazon.venezia",
-            "Huawei AppGallery": "com.huawei.appmarket",
-            "Xiaomi GetApps": "com.xiaomi.mipicks"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Change installer source",
-      "description": "Spoofs the installer source so the app appears to be installed from Google Play. Required for Yin Yang Launcher: its PairIP local installer check is live, so a re-signed build fails the license check without it — keep it on.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.yinyang.launcher",
-          "name": "Yin Yang Launcher",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#607D8B",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.13.1",
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -684,58 +256,6 @@
       ]
     },
     {
-      "name": "Disable PairIP license activity",
-      "description": "Required for re-signed builds: removes PairIP's LicenseActivity from the manifest entirely, so the Play Store block page and license error dialog can never be shown, whatever tries to open them.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#E8A317",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable PairIP license activity",
-      "description": "Required for re-signed builds: removes PairIP's LicenseActivity from the manifest entirely, so the Play Store block page and license error dialog can never be shown, whatever tries to open them.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.instantbits.cast.webvideo",
-          "name": "Web Video Caster",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#3F51B5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "6.1.0",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Disable PairIP protection",
       "description": "Lets the patched app run: replaces PairIP's VM startup with harvested vault/handle data, removes the signature check and license dialog, installs the decrypted native libraries and runtime classes, and fixes camera streaming. DroidCam 10.0 only.",
       "default": true,
@@ -755,154 +275,6 @@
               "version": "10.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable QUIC protocol",
-      "description": "Disables the QUIC (HTTP/3) network protocol in the Wear OS app's Cronet stack, forcing TCP-based HTTP/2 connections.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music (Wear OS)",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.45.41-WEAR_RELEASE",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable ads",
-      "description": "Stubs AppLovin, AdMob, InMobi and other ad SDKs at the bytecode level to prevent ads from loading without breaking the app.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#1A73E8",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": {
-                "ARM64_V8A": 367
-              },
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable audio ducking",
-      "description": "Keeps the volume unchanged when another app plays a short sound, such as a notification, instead of ducking the music.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music (Wear OS)",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.45.41-WEAR_RELEASE",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable forced update",
-      "description": "Bypasses PairIP license check ('Download from Play Store'), Play Integrity, and signature verification to allow modified and sideloaded app usage.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#1A73E8",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": {
-                "ARM64_V8A": 367
-              },
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable network telemetry",
-      "description": "Turns off the Cronet networking library's telemetry in the Wear OS app (its manifest switch ships set to true). Does not affect playback, downloads, or sign-in.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music (Wear OS)",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.45.41-WEAR_RELEASE",
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -965,32 +337,6 @@
     },
     {
       "name": "Enable Lifetime",
-      "description": "Pins the license state to the permanent verified state (the $49.99 Lifetime tier) at its single writer, so the app always runs as a lifetime license. Experimental: the license verdict is computed in the app's native library, so whether every feature honors the Java-side state can only be settled on a device. Call Recorder 3.6.9 only — 3.7.x wraps its native code in an anti-tamper payload that cannot run re-signed. Get the exact 3.6.9 APK from the developer's own release archive: https://github.com/skvalex/callrecorder/releases/tag/3.6.9",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "org.skvalex.cr",
-          "name": "Call Recorder",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#689F38",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "3.6.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Lifetime",
       "description": "Turns on Lifetime permanently: every premium feature unlocks as if the one-time Lifetime purchase (Mobile + Web) were bought, and stays on across restarts.",
       "default": true,
       "dependencies": [],
@@ -1017,7 +363,7 @@
     },
     {
       "name": "Enable Lifetime Pro",
-      "description": "Turns on the app's Pro state (no ads, unlimited functions) as if the one-time \"Super Pro Forever\" purchase were owned — the lifetime state, with nothing to expire.",
+      "description": "Turns on the app's Pro state (no ads, unlimited functions) as if the one-time \"Super Pro Forever\" purchase were owned \u2014 the lifetime state, with nothing to expire.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -1033,32 +379,6 @@
               "version": "26.8.130",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Lifetime VIP",
-      "description": "Turns on the lifetime Life Member (SVIP) state: no ads and every animated theme applies for free, with no expiry — the VIP screen reads Level: SVIP and Status: life member. Needs the stock Pika! Spot 1.4.5 XAPK.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.pika.dynamicisland",
-          "name": "Pika Spot",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#7C4DFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.4.5",
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -1121,32 +441,6 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Grants Premium's on-device features: inventory & sales export (PDF/Excel/CSV), full sales history and trends, shop sharing, no ads, and Google Drive backup. BusinessX Cloud backup/sync are authorized on the developer's server and may still require a real subscription.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.shrey_businessx.android",
-          "name": "BusinessX",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#0288D1",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "6.5.2",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Premium",
       "description": "Turns on Premium permanently (Front/Back, Photos, 4K, 60fps, manual controls, teleprompter, timelapse, unlimited projects, trim in review), as if the one-time Lifetime purchase were bought.",
       "default": true,
       "dependencies": [],
@@ -1163,32 +457,6 @@
               "version": "2.8.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Premium",
-      "description": "Turns on Premium (no ads, real file names, HD downloads, faster streaming) as if subscribed. Keep the pre-selected PairIP bypass patches on — a re-signed build cannot pass PairIP's startup license check without them.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#E8A317",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -1251,32 +519,6 @@
     },
     {
       "name": "Enable Premium",
-      "description": "Unlocks RainViewer Pro. Use with Change installer source.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.lucky_apps.RainViewer",
-          "name": "RainViewer",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#1E88E5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.4.1",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Premium",
       "description": "Grants Premium, whose only features over Basic are no ads and VIP support: removes all banner and interstitial ads (the player, playlists and equalizer are already free).",
       "default": true,
       "dependencies": [],
@@ -1319,58 +561,6 @@
               "version": "3.7.36",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Premium",
-      "description": "Unlocks all premium features and removes ads by enabling the app's top donation tier state (the Dinner tier) — no purchase is made.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.lonelycatgames.Xplore",
-          "name": "X-plore",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#2196F3",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.52.02",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Premium",
-      "description": "Unlocks Yin Yang Pro for free, as if the Lifetime purchase were bought: all clocks, fonts, live wallpapers and icons. Also enable the Change installer source patch (pre-selected) — it is required for the patched app to pass the license check.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.yinyang.launcher",
-          "name": "Yin Yang Launcher",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#607D8B",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.13.1",
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -1440,34 +630,6 @@
     },
     {
       "name": "Enable Pro",
-      "description": "Enables Drapes Pro: no advertisements, image effects (blur, grayscale, dimming), auto wallpapers, and favorites sync. Requires 'Bypass PairIP license check'. Drapes 3.9.3 only.",
-      "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.codeswitch.drapes",
-          "name": "Drapes",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FFB300",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "3.9.3",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Pro",
       "description": "Unlocks Echo Pro (the lifetime tier: Auto EQ, limiter, compressor and all other Pro features). Use with Change installer source.",
       "default": true,
       "dependencies": [],
@@ -1482,32 +644,6 @@
           "targets": [
             {
               "version": "9.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable Pro",
-      "description": "Turns on the app's Pro plan state (plan-gated features, Hi-Fi and drum-part pickers, advanced creative control, credit checks) as if the Pro plan were active. Note: stem separation itself runs on Moises' servers, which meter the account separately.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "ai.moises",
-          "name": "Moises",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#7B61FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "2.141.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1571,58 +707,6 @@
       "options": []
     },
     {
-      "name": "Enable downloads",
-      "description": "Unlocks the offline save gate (offlineability) for videos and playlists the app delivers, so attempted downloads save instead of refusing or showing a Premium dialog. Does not change what the server sends a free account.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music (Wear OS)",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.45.41-WEAR_RELEASE",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable license",
-      "description": "Opens the full app without an activation code. FORScan Lite checks your license once at startup against its server; this patch pins that startup check to its licensed outcome, so the activation dialog never appears and no activation request is sent. FORScan Lite 1.5.31 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.astech.forscanlite",
-          "name": "FORScan Lite",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#33B5E5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.5.31",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Enable premium",
       "description": "Enables premium: removes all ads and unlocks unlimited VPN session time (free sessions are capped at 30 to 60 minutes). VPN Gate 20261111 only.",
       "default": true,
@@ -1650,7 +734,7 @@
     },
     {
       "name": "Free store",
-      "description": "The in-game store is free. Just tap \"Buy\" and the item is yours — no payment needed. For an ad-free game, just buy the ad-block item from the store.",
+      "description": "The in-game store is free. Just tap \"Buy\" and the item is yours \u2014 no payment needed. For an ad-free game, just buy the ad-block item from the store.",
       "default": true,
       "dependencies": [
         "RawResourcePatch"
@@ -1666,154 +750,6 @@
           "targets": [
             {
               "version": "7.14.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "GmsCore support",
-      "description": "Routes the app's Google services calls to MicroG (app.revanced.android.gms) instead of real Google Play services, so a re-signed build can sign in. Requires MicroG-RE with a signed-in account on the watch, and the stock app uninstalled first (the package name is not changed). Experimental: verified against 9.45.41-WEAR_RELEASE by dex scan, not yet tested on a watch.",
-      "default": true,
-      "dependencies": [
-        "RawResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music (Wear OS)",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.45.41-WEAR_RELEASE",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Liquid Glass navigation",
-      "description": "Turns Strava's bottom bar into a floating Liquid Glass pill: detached from the screen edges, live blurred backdrop with a translucent tint, content scrolling underneath it, like the current YouTube and Proton VPN bars. Tweak it under Extra Settings at the top of Strava's Settings screen (on/off, floating vs docked, blur, tint opacity). Uses Strava's classic bottom bar to make the effect possible.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.strava",
-          "name": "Strava",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FC5200",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "486.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "486.11",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "OLED black mode",
-      "description": "Turns the dark theme true black (#000000) for OLED screens: backgrounds and surfaces go pure black, raised containers (cards, bubbles, sheets) become near-black steps so they stay visible. Dark theme only — light mode is untouched. Needs the stock APK of the target version (messages.android_20261020_00_RC01.phone_dynamic, the universal APK — not a BUNDLE — from APKMirror: https://www.apkmirror.com/apk/google-inc/messenger-google-inc/); Morphe Manager also suggests that exact version when you don't have the file. A few settings screens on Android 12+ take surfaces from the system palette and stay dark grey.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.messaging",
-          "name": "Google Messages",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#1A73E8",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "messages.android_20261020_00_RC01.phone_dynamic",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Patch native libraries",
-      "description": "Neutralizes PairIP traps in native .so libraries and patches Hermes bundle. Also applies the standalone-install manifest fixes (real Application class, original component factory, native library extraction) and removes the stock baseline profiles.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#1A73E8",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": {
-                "ARM64_V8A": 367
-              },
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Plain listings only",
-      "description": "Removes featured, boosted and paid-promo listings and all agency, dealer and store listings from home, search and category feeds, leaving only plain listings from individual sellers. OLX Pakistan 18.13.1 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.olx.pk",
-          "name": "OLX Pakistan",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#002E25",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.13.1",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1852,7 +788,7 @@
     },
     {
       "name": "Remove ads",
-      "description": "Removes ads (Appodeal mediation and the direct Amazon ads path), hides the app's own rotating promo bars (the bottom house-promo bar and the downloads-screen VPN/Telegram offer strip) and the green \"Upgrade to 1DM+\" bar in the settings drawer. Does NOT unlock 1DM+ features — 1DM+ is a separate paid app and its features are not in this app.",
+      "description": "Removes ads (Appodeal mediation and the direct Amazon ads path), hides the app's own rotating promo bars (the bottom house-promo bar and the downloads-screen VPN/Telegram offer strip) and the green \"Upgrade to 1DM+\" bar in the settings drawer. Does NOT unlock 1DM+ features \u2014 1DM+ is a separate paid app and its features are not in this app.",
       "default": true,
       "dependencies": [
         "ResourcePatch"
@@ -1880,84 +816,6 @@
     },
     {
       "name": "Remove ads",
-      "description": "Stops interstitial ad breaks and native ads in the notes list from loading (Google Mobile Ads). Rewarded ads that unlock features when watched are left working. Does not unlock premium.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.inotesapp.inotes",
-          "name": "Notes",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FFB300",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "2.2.2",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove ads",
-      "description": "Removes the Google Ads banner, featured-agency cards and promo widgets that are interleaved into home, search and category feeds. OLX Pakistan 18.13.1 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.olx.pk",
-          "name": "OLX Pakistan",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#002E25",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.13.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove ads",
-      "description": "Stops banner and interstitial ads from loading (Google Mobile Ads).",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.optimageeks.vehico_app",
-          "name": "Vehico",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#1E88E5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.2.31",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove ads",
       "description": "Removes all ads, as if the Remove Ads purchase were bought. Also enable the Change installer source patch (pre-selected).",
       "default": true,
       "dependencies": [],
@@ -1974,32 +832,6 @@
               "version": "4.4.6",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove background playback restrictions",
-      "description": "Removes restrictions on background playback in the Wear OS app. Experimental: fingerprint verified against 9.45.41-WEAR_RELEASE, not yet tested on a watch.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music (Wear OS)",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.45.41-WEAR_RELEASE",
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -2038,32 +870,6 @@
     },
     {
       "name": "Remove telemetry",
-      "description": "Disables the Bugsnag crash-reporting startup provider so no crash, ANR or session reports are sent. Call Recorder ships no other telemetry SDK. Recording and all other features are unaffected. Call Recorder 3.6.9 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "org.skvalex.cr",
-          "name": "Call Recorder",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#689F38",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "3.6.9",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove telemetry",
       "description": "Disables the unused Google datatransport upload services in the manifest. ContentCam ships no analytics or crash-reporting SDKs; this removes the one piece of inert upload plumbing it carries. All features are unaffected. ContentCam 2.8.0 only.",
       "default": true,
       "dependencies": [],
@@ -2078,58 +884,6 @@
           "targets": [
             {
               "version": "2.8.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove telemetry",
-      "description": "Disables Firebase Analytics and Crashlytics collection, stops the AppMeasurement upload services, and removes the advertising ID permissions. Sign-in, favorites sync and all other features are unaffected. Drapes 3.9.3 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.codeswitch.drapes",
-          "name": "Drapes",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FFB300",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "3.9.3",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove telemetry",
-      "description": "Stops the app from phoning home. FORScan Lite has no analytics or ad SDKs; the only non-essential traffic is a launch-time version check to forscan.org, which this patch disables. Diagnostics and all other features are unaffected. FORScan Lite 1.5.31 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.astech.forscanlite",
-          "name": "FORScan Lite",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#33B5E5",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.5.31",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2170,60 +924,6 @@
     },
     {
       "name": "Remove telemetry",
-      "description": "Stops the app reporting usage: the Singular attribution SDK never initializes and its events are refused, and Firebase Analytics/Crashlytics collection is turned off in the manifest. Separation jobs, account, purchases and push are unaffected.",
-      "default": true,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "ai.moises",
-          "name": "Moises",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#7B61FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "2.141.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove telemetry",
-      "description": "Turns off Firebase Analytics, Crashlytics and Performance reporting and ad-id collection, disables the Firebase report-upload plumbing, and disables MoEngage in-app campaigns and push-open tracking. Search, chat, sign-in and notifications are unaffected. OLX Pakistan 18.13.1 only.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.olx.pk",
-          "name": "OLX Pakistan",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#002E25",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "18.13.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove telemetry",
       "description": "Stops the app reporting usage to SensorsData: both analytics event funnels (the SensorAnalyzeUtil sinks and the framework logger's LogService sinks) are cut, so no clicks, watermark edits, purchase steps or location-page events leave the device. Camera, backup, weather and all other features are unaffected.",
       "default": true,
       "dependencies": [],
@@ -2249,86 +949,8 @@
       "options": []
     },
     {
-      "name": "Skip silence",
-      "description": "Automatically skips silent pauses in audio playback.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music (Wear OS)",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.45.41-WEAR_RELEASE",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Spoof app signature",
-      "description": "Fixes the 'Can not connect to server' stop at 30% on launch: the app's first server login carries a token derived from the APK signing certificate, and a re-signed build computes it from the wrong certificate, so the server rejects the login. Recomputes the token with the stock signing certificate. Needs the stock Pika! Spot 1.4.5 XAPK.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.pika.dynamicisland",
-          "name": "Pika Spot",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#7C4DFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.4.5",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Spoof app version",
-      "description": "Tricks the app into thinking you are running an older version (8.23.51).",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.youtube.music",
-          "name": "YouTube Music (Wear OS)",
-          "description": null,
-          "apkFileType": null,
-          "appIconColor": "#FF0000",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "9.45.41-WEAR_RELEASE",
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Spoof watermark location",
-      "description": "Stamps photos with a location you pick on an OpenStreetMap pin-drop map (Timemark settings → Timemark patches) instead of your real GPS location. Off or unpicked means real GPS; change it any time without re-patching.",
+      "description": "Stamps photos with a location you pick on an OpenStreetMap pin-drop map (Timemark settings \u2192 Timemark patches) instead of your real GPS location. Off or unpicked means real GPS; change it any time without re-patching.",
       "default": true,
       "dependencies": [
         "BytecodePatch"
@@ -2422,7 +1044,7 @@
     },
     {
       "name": "Unlimited gold",
-      "description": "Your coin balance always shows 65,535 and spending coins always works without deducting any — pull the prize machine and buy coin characters as much as you want.",
+      "description": "Your coin balance always shows 65,535 and spending coins always works without deducting any \u2014 pull the prize machine and buy coin characters as much as you want.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2537,7 +1159,7 @@
     },
     {
       "name": "Unlock all characters",
-      "description": "Every character is unlocked and playable — paid, coin, prize machine, progress and secret characters included. Your real collection progress is not changed; characters are unlocked while the patch is applied.",
+      "description": "Every character is unlocked and playable \u2014 paid, coin, prize machine, progress and secret characters included. Your real collection progress is not changed; characters are unlocked while the patch is applied.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2563,42 +1185,7 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Makes RevenueCat entitlements appear active so ads-free and premium features are unlocked.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.diskwalaapp",
-          "name": "DiskWala",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#1A73E8",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "27.3",
-              "versionCodes": {
-                "ARM64_V8A": 367
-              },
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Unlock premium",
-      "description": "Unlocks all games (VIP). The store sees the one-time VIP purchase as owned — no real purchase is made.",
+      "description": "Unlocks all games (VIP). The store sees the one-time VIP purchase as owned \u2014 no real purchase is made.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -2649,23 +1236,23 @@
       "options": []
     },
     {
-      "name": "Unlock premium",
-      "description": "Unlocks Web Video Caster Premium (ad removal, ad block, bookmarks, queue and the other premium features). No real purchase is made.",
-      "default": true,
+      "name": "Use device date & time",
+      "description": "Uses Android's current device time instead of Timemark's network-synchronized timestamp for the watermark clock.",
+      "default": false,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.instantbits.cast.webvideo",
-          "name": "Web Video Caster",
+          "packageName": "com.oceangalaxy.camera.new",
+          "name": "Timemark",
           "description": null,
           "apkFileType": "XAPK",
-          "appIconColor": "#3F51B5",
+          "appIconColor": "#2196F3",
           "signatures": null,
           "targets": [
             {
-              "version": "6.1.0",
+              "version": "v10.0.316",
               "versionCodes": null,
-              "isExperimental": true,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }

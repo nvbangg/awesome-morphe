@@ -1,12 +1,12 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "patches": [
     {
       "name": "Allow screenshots",
-      "description": "Removes the screen capture block so screenshots and recordings work.",
+      "description": "Removes the FLAG_SECURE screen capture block and disables Android 14+ screenshot detection callbacks so screenshots and recordings work everywhere.",
       "default": true,
-      "dependencies": [],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "app.progres.webetu",
@@ -15,10 +15,16 @@
           "apkFileType": "APKM",
           "appIconColor": "#023C69",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2.4.0",
-              "versionCodes": null,
+              "version": "2.5.0",
+              "versionCodes": {
+                "ARM64_V8A": 36,
+                "ARMEABI_V7A": 36,
+                "X86_64": 36,
+                "X86": 36
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -32,9 +38,7 @@
       "name": "Bypass certificate checks",
       "description": "Bypasses certificate pinning so intercepted TLS connections are accepted.",
       "default": true,
-      "dependencies": [
-        "ResourcePatch"
-      ],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "ru.bpc.mobilebank.bpc",
@@ -43,10 +47,16 @@
           "apkFileType": "APKM",
           "appIconColor": "#007A33",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "1.29.1",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 2026093016,
+                "ARMEABI_V7A": 2026093016,
+                "X86_64": 2026093016,
+                "X86": 2026093016
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -58,9 +68,9 @@
     },
     {
       "name": "Disable Frida Detection",
-      "description": "Improves compatibility with debugging tools.",
+      "description": "Improves compatibility with debugging tools. Covers the Dart maps scan, the VdoCipher native marker and the rjsniffer port scanner.",
       "default": true,
-      "dependencies": [],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "com.algeria.selfcare.app.android",
@@ -69,12 +79,18 @@
           "apkFileType": "APKM",
           "appIconColor": "#113C8A",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.5.15",
-              "versionCodes": null,
+              "version": "1.5.21",
+              "versionCodes": {
+                "ARM64_V8A": 2365,
+                "ARMEABI_V7A": 2365,
+                "X86_64": 2365,
+                "X86": 2365
+              },
               "isExperimental": false,
-              "minSdk": null,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -84,9 +100,9 @@
     },
     {
       "name": "Disable Play Integrity",
-      "description": "Short-circuits the Google Play Integrity attestation request with a \"DISABLED\" response, avoiding failures on modified or non-Play builds.",
+      "description": "Short-circuits Google Play Integrity with \"DISABLED\", retains original APK v1/v2 signatures, and spoofs app integrity checksum/signature checks.",
       "default": true,
-      "dependencies": [],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "com.algeria.selfcare.app.android",
@@ -95,12 +111,18 @@
           "apkFileType": "APKM",
           "appIconColor": "#113C8A",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.5.15",
-              "versionCodes": null,
+              "version": "1.5.21",
+              "versionCodes": {
+                "ARM64_V8A": 2365,
+                "ARMEABI_V7A": 2365,
+                "X86_64": 2365,
+                "X86": 2365
+              },
               "isExperimental": false,
-              "minSdk": null,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -110,9 +132,9 @@
     },
     {
       "name": "Disable SSL Pinning",
-      "description": "Improves compatibility with custom certificates.",
+      "description": "Makes the Dart SPKI validator return its own success value, so the app's public key pinning no longer rejects intercepted TLS connections. Covers arm64-v8a and x86_64; armeabi-v7a keeps pinning.",
       "default": true,
-      "dependencies": [],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "com.algeria.selfcare.app.android",
@@ -121,12 +143,18 @@
           "apkFileType": "APKM",
           "appIconColor": "#113C8A",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.5.15",
-              "versionCodes": null,
+              "version": "1.5.21",
+              "versionCodes": {
+                "ARM64_V8A": 2365,
+                "ARMEABI_V7A": 2365,
+                "X86_64": 2365,
+                "X86": 2365
+              },
               "isExperimental": false,
-              "minSdk": null,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -138,9 +166,7 @@
       "name": "Disable analytics and crash reporting",
       "description": "Disables analytics and crash reporting while keeping push notifications.",
       "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "category": "Privacy",
       "compatiblePackages": [
         {
           "packageName": "ru.bpc.mobilebank.bpc",
@@ -149,10 +175,16 @@
           "apkFileType": "APKM",
           "appIconColor": "#007A33",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "1.29.1",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 2026093016,
+                "ARMEABI_V7A": 2026093016,
+                "X86_64": 2026093016,
+                "X86": 2026093016
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -164,9 +196,9 @@
     },
     {
       "name": "Disable developer options detection",
-      "description": "Stops the app from detecting that Developer Options or USB debugging are enabled on the device, removing the blocking security dialog.",
+      "description": "Stops the app from detecting Developer Options, USB debugging or debuggable flags, removing the blocking security dialog.",
       "default": true,
-      "dependencies": [],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "com.algeria.selfcare.app.android",
@@ -175,12 +207,18 @@
           "apkFileType": "APKM",
           "appIconColor": "#113C8A",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.5.15",
-              "versionCodes": null,
+              "version": "1.5.21",
+              "versionCodes": {
+                "ARM64_V8A": 2365,
+                "ARMEABI_V7A": 2365,
+                "X86_64": 2365,
+                "X86": 2365
+              },
               "isExperimental": false,
-              "minSdk": null,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -190,9 +228,9 @@
     },
     {
       "name": "Disable root & emulator detection",
-      "description": "Forces every root, jailbreak, emulator and frida check in the app to report a clean device, so no blocking dialog is shown on modified/rooted environments.",
+      "description": "Forces every root, jailbreak, emulator, hook and mock-location check to report a clean device across Java/Kotlin, Dart AOT, RootBeer, SafeDevice, VdoCipher and rjsniffer native probes, and removes the isolated Magisk sniffer service.",
       "default": true,
-      "dependencies": [],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "com.algeria.selfcare.app.android",
@@ -201,12 +239,18 @@
           "apkFileType": "APKM",
           "appIconColor": "#113C8A",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.5.15",
-              "versionCodes": null,
+              "version": "1.5.21",
+              "versionCodes": {
+                "ARM64_V8A": 2365,
+                "ARMEABI_V7A": 2365,
+                "X86_64": 2365,
+                "X86": 2365
+              },
               "isExperimental": false,
-              "minSdk": null,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -218,7 +262,7 @@
       "name": "Disable root detection",
       "description": "Disables the rooted-device check so the app runs on rooted devices.",
       "default": true,
-      "dependencies": [],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "ru.bpc.mobilebank.bpc",
@@ -227,12 +271,82 @@
           "apkFileType": "APKM",
           "appIconColor": "#007A33",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": "1.29.1",
-              "versionCodes": null,
+              "versionCodes": {
+                "ARM64_V8A": 2026093016,
+                "ARMEABI_V7A": 2026093016,
+                "X86_64": 2026093016,
+                "X86": 2026093016
+              },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable telemetry and OTA updates",
+      "description": "Disables Expo OTA updates so patched JS bundles are not overwritten, removes Sentry crash/performance telemetry and root checks, and strips leaked debug tooling while keeping Firebase push notifications working.",
+      "default": true,
+      "category": "Privacy",
+      "compatiblePackages": [
+        {
+          "packageName": "app.progres.webetu",
+          "name": "Webetu",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#023C69",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.5.0",
+              "versionCodes": {
+                "ARM64_V8A": 36,
+                "ARMEABI_V7A": 36,
+                "X86_64": 36,
+                "X86": 36
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking and analytics",
+      "description": "Disables analytics, crash reporting, performance monitoring, surveys and advertising attribution while keeping push notifications and Remote Config. Stops CleverTap, Qualtrics, Adjust, Facebook App Events, VdoCipher telemetry, Firebase Analytics/Crashlytics/Performance, and Huawei AppGallery Connect.",
+      "default": true,
+      "category": "Privacy",
+      "compatiblePackages": [
+        {
+          "packageName": "com.algeria.selfcare.app.android",
+          "name": "My Ooredoo",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#113C8A",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.5.21",
+              "versionCodes": {
+                "ARM64_V8A": 2365,
+                "ARMEABI_V7A": 2365,
+                "X86_64": 2365,
+                "X86": 2365
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -242,9 +356,9 @@
     },
     {
       "name": "Fix screen freeze",
-      "description": "Fixes screen freezing after resuming the app from the background.",
+      "description": "Fixes dashboard buttons becoming disabled after resuming from the background.",
       "default": true,
-      "dependencies": [],
+      "category": "Fixes",
       "compatiblePackages": [
         {
           "packageName": "app.progres.webetu",
@@ -253,36 +367,16 @@
           "apkFileType": "APKM",
           "appIconColor": "#023C69",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2.4.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove CleverTap tracking",
-      "description": "Removes CleverTap analytics initialization, stopping the app from collecting the phone number as an identity key and from reporting usage data.",
-      "default": true,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.algeria.selfcare.app.android",
-          "name": "My Ooredoo",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#113C8A",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.5.15",
-              "versionCodes": null,
+              "version": "2.5.0",
+              "versionCodes": {
+                "ARM64_V8A": 36,
+                "ARMEABI_V7A": 36,
+                "X86_64": 36,
+                "X86": 36
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -294,11 +388,9 @@
     },
     {
       "name": "Remove PairIP protection",
-      "description": "Removes Google Play's PairIP anti-tamper wrapper so the app runs without license checks. Restores the original Application class in the manifest, removes all injected com.pairip.* components, and neuters PairIP's license client.",
+      "description": "Removes Google Play's PairIP anti-tamper wrapper, restores the original Application class, strips com.pairip.* components and CHECK_LICENSE, and neuters the license client.",
       "default": true,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "category": "Security",
       "compatiblePackages": [
         {
           "packageName": "app.progres.webetu",
@@ -307,12 +399,82 @@
           "apkFileType": "APKM",
           "appIconColor": "#023C69",
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2.4.0",
-              "versionCodes": null,
+              "version": "2.5.0",
+              "versionCodes": {
+                "ARM64_V8A": 36,
+                "ARMEABI_V7A": 36,
+                "X86_64": 36,
+                "X86": 36
+              },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove screen watermark",
+      "description": "Removes the diagonal student registration number watermark overlaid on screens.",
+      "default": true,
+      "category": "UI",
+      "compatiblePackages": [
+        {
+          "packageName": "app.progres.webetu",
+          "name": "Webetu",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#023C69",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.5.0",
+              "versionCodes": {
+                "ARM64_V8A": 36,
+                "ARMEABI_V7A": 36,
+                "X86_64": 36,
+                "X86": 36
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof signature",
+      "description": "Spoofs PackageManager signing certificate queries with the original Play Store certificate via Morphe's signature extension. Requires an unmodified stock APK.",
+      "default": false,
+      "category": "Security",
+      "compatiblePackages": [
+        {
+          "packageName": "com.algeria.selfcare.app.android",
+          "name": "My Ooredoo",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#113C8A",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.5.21",
+              "versionCodes": {
+                "ARM64_V8A": 2365,
+                "ARMEABI_V7A": 2365,
+                "X86_64": 2365,
+                "X86": 2365
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
