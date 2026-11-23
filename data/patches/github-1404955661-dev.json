@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.30.66-dev.6",
+  "version": "0.30.66-dev.7",
   "patches": [
     {
       "name": "Alert distances",
@@ -185,7 +185,7 @@
       "name": "Any audio app as a Waze audio partner",
       "description": "Adds a music app of your choice to Waze's audio player, even though it does not ship Waze's SDK. It only needs a media browser service, like Android Auto. Default: BitChord.",
       "default": false,
-      "category": null,
+      "category": "Audio & Partners",
       "dependencies": [
         "ResourcePatch",
         "BytecodePatch"
@@ -447,7 +447,9 @@
       "description": "Zooms the map on the car screen.",
       "default": false,
       "category": "Experimental",
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.waze",
@@ -735,11 +737,11 @@
       "options": [
         {
           "key": "large",
-          "title": "Large cluster layout",
-          "description": "Uses the bigger layout on the cluster. Stock: small.",
+          "title": "Light-commercial-vehicle mode (LCV)",
+          "description": "Forces AAOS_LCV_SUPPORT_ENABLED. It is Waze's large-commercial-vehicle support (dimension bounds in millimetres), not a cluster layout size - off by default.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         }
       ]
@@ -1556,7 +1558,7 @@
       "name": "Unlock driver moods",
       "description": "Unlocks all moods on the device.",
       "default": true,
-      "category": null,
+      "category": "UI Customization",
       "dependencies": [
         "ResourcePatch"
       ],
@@ -1585,7 +1587,7 @@
       "name": "YouTube Music as a Waze audio partner",
       "description": "Lets Morphe YouTube Music and stock YouTube Music play through Waze's audio player.",
       "default": true,
-      "category": null,
+      "category": "Audio & Partners",
       "dependencies": [
         "ResourcePatch",
         "BytecodePatch"
