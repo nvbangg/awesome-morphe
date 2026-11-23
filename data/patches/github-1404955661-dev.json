@@ -1,36 +1,7 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.30.66-dev.4",
+  "version": "0.30.66-dev.5",
   "patches": [
-    {
-      "name": "AMOLED Dark Mode For UI",
-      "description": "Makes the dark UI pure black.",
-      "default": false,
-      "category": "UI Customization",
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.waze",
-          "name": "Waze",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#33CCFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.28.4.900",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
     {
       "name": "Alert distances",
       "description": "How early alerts sound, plus a speed-bump switch and per-alert distances.",
@@ -1430,6 +1401,11 @@
             "AMOLED Mint": "AMOLED Mint",
             "AMOLED Ice": "AMOLED Ice",
             "AMOLED Peach": "AMOLED Peach",
+            "AMOLED Rose": "AMOLED Rose",
+            "AMOLED Copper": "AMOLED Copper",
+            "AMOLED Lime": "AMOLED Lime",
+            "AMOLED Sand": "AMOLED Sand",
+            "AMOLED Steel": "AMOLED Steel",
             "Dark Purple": "Dark Purple",
             "Dark Emerald": "Dark Emerald",
             "Dark Blue": "Dark Blue",
@@ -1460,6 +1436,11 @@
             "AMOLED Mint": "AMOLED Mint",
             "AMOLED Ice": "AMOLED Ice",
             "AMOLED Peach": "AMOLED Peach",
+            "AMOLED Rose": "AMOLED Rose",
+            "AMOLED Copper": "AMOLED Copper",
+            "AMOLED Lime": "AMOLED Lime",
+            "AMOLED Sand": "AMOLED Sand",
+            "AMOLED Steel": "AMOLED Steel",
             "Dark Purple": "Dark Purple",
             "Dark Emerald": "Dark Emerald",
             "Dark Blue": "Dark Blue",
@@ -1500,6 +1481,67 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "UI Themes",
+      "description": "Chrome colour themes, picked separately for light and dark mode. Stock leaves each mode untouched.",
+      "default": false,
+      "category": "UI Customization",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.28.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "lightTheme",
+          "title": "Light theme",
+          "description": "Applies in light mode: window, sheets, chips, text. Stock leaves light mode as Waze built it.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Stock",
+          "values": {
+            "Stock": "Stock",
+            "Pure White": "Pure White",
+            "Paper": "Paper",
+            "Porcelain": "Porcelain",
+            "Linen": "Linen"
+          }
+        },
+        {
+          "key": "darkTheme",
+          "title": "Dark theme",
+          "description": "Applies in light-off mode. Pure Black is the original AMOLED row; Stock leaves dark mode untouched.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "AMOLED Pure Black",
+          "values": {
+            "Stock": "Stock",
+            "AMOLED Pure Black": "AMOLED Pure Black",
+            "AMOLED Ink": "AMOLED Ink",
+            "AMOLED Slate": "AMOLED Slate",
+            "Dark Graphite": "Dark Graphite",
+            "Dark Navy": "Dark Navy"
+          }
+        }
+      ]
     },
     {
       "name": "Unlock driver moods",

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.10.0-dev.2",
+  "version": "1.10.0-dev.3",
   "apps": [
     {
       "packageName": "com.adobe.reader",
@@ -252,10 +252,10 @@
       ],
       "targets": [
         {
-          "version": "10.21.0",
+          "version": "10.24.0",
           "versionCodes": null,
           "isExperimental": false,
-          "minSdk": 29,
+          "minSdk": 31,
           "description": null
         }
       ],
@@ -271,9 +271,9 @@
         "Unlock Templates"
       ],
       "supportedVersions": [
-        "10.21.0"
+        "10.24.0"
       ],
-      "latestSupportedVersion": "10.21.0"
+      "latestSupportedVersion": "10.24.0"
     },
     {
       "packageName": "com.instructure.candroid",
@@ -388,10 +388,10 @@
       ],
       "targets": [
         {
-          "version": "1.52.0",
+          "version": "2.3.2",
           "versionCodes": null,
           "isExperimental": false,
-          "minSdk": 28,
+          "minSdk": 24,
           "description": null
         }
       ],
@@ -402,9 +402,9 @@
         "Remove Invite Friends"
       ],
       "supportedVersions": [
-        "1.52.0"
+        "2.3.2"
       ],
-      "latestSupportedVersion": "1.52.0"
+      "latestSupportedVersion": "2.3.2"
     },
     {
       "packageName": "com.tripledot.blackjack",
@@ -441,7 +441,7 @@
   "patches": [
     {
       "name": "AMOLED Theme",
-      "description": "Forces SidelineSwap into a pure-black AMOLED theme with dark system bars, black app surfaces, readable light text and icons, and force dark mode on embedded WebViews.",
+      "description": "Applies a pure-black AMOLED palette to SidelineSwap's Compose theme: black surfaces and container tokens, readable light text and icons, a black launch window, light system-bar icons, and force-dark embedded WebViews.",
       "default": false,
       "category": "Customization",
       "dependencies": [],
@@ -457,10 +457,10 @@
           ],
           "targets": [
             {
-              "version": "1.52.0",
+              "version": "2.3.2",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 28,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -528,7 +528,7 @@
     },
     {
       "name": "Block Tracking and Telemetry",
-      "description": "Neutralizes first-party analytics (SidelineSwap backend), behavioral tracking (Amplitude, Firebase Analytics, Facebook App Events, Iterable), diagnostic telemetry (Firebase Crashlytics, Timber logging tree), payment gateway telemetry (Braintree FPTI), Google Play Install Referrer, and zeros the Google Play Advertising ID (AAID).",
+      "description": "Neutralizes first-party analytics (SidelineSwap backend), behavioral tracking (Amplitude, Firebase Analytics, Iterable), diagnostic telemetry (Firebase Crashlytics), payment gateway telemetry (Braintree FPTI), Google Play Install Referrer, and zeros the Google Play Advertising ID (AAID).",
       "default": true,
       "category": "Privacy",
       "dependencies": [],
@@ -544,10 +544,10 @@
           ],
           "targets": [
             {
-              "version": "1.52.0",
+              "version": "2.3.2",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 28,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -557,7 +557,7 @@
         {
           "key": "disableFirstParty",
           "title": "Disable First-Party Analytics",
-          "description": "Neutralizes SidelineSwap's central event dispatcher (AnalyticsLogger), first-party client, and LogRepo HTTP event uploads.",
+          "description": "Neutralizes SidelineSwap's first-party HTTP event client. The fan-out multiplexer stays intact so the remaining clients stay independently controllable.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -566,7 +566,7 @@
         {
           "key": "disableAmplitude",
           "title": "Disable Amplitude Analytics",
-          "description": "Neutralizes the Amplitude client wrapper and core Amplitude SDK event tracking, identification, and initialization across all repositories.",
+          "description": "Neutralizes the Amplitude client wrapper's event, identification, and reset entry points.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -575,7 +575,7 @@
         {
           "key": "disableFirebase",
           "title": "Disable Firebase & GMS Analytics",
-          "description": "Neutralizes FirebaseClient, Google Play Services Measurement event queue, and removes background AppMeasurement services and sessions.",
+          "description": "Neutralizes the Google Play Services measurement event entry point and removes background AppMeasurement services and sessions.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -584,16 +584,7 @@
         {
           "key": "disableCrashlytics",
           "title": "Disable Crashlytics & Diagnostic Logging",
-          "description": "Neutralizes the Timber Crashlytics logging tree and Firebase Crashlytics exception, log, and custom key reporting.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "disableFacebook",
-          "title": "Disable Facebook SDK & App Events",
-          "description": "Neutralizes Facebook SDK initialization, auto-event collection, activity lifecycle tracking, and removes FacebookInitProvider.",
+          "description": "Neutralizes the Crashlytics user-id wrapper and stops the crash handler from recording exceptions, while the default handler still terminates crashed processes.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -602,7 +593,7 @@
         {
           "key": "disableIterable",
           "title": "Disable Iterable Telemetry",
-          "description": "Neutralizes Iterable client calls, In-App message tracking, session event uploads, and lifecycle callback registration.",
+          "description": "Neutralizes the Iterable client wrapper and SDK identity/FCM registration entry points, and removes Iterable push services and receivers.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -611,7 +602,7 @@
         {
           "key": "disableBraintreeTelemetry",
           "title": "Disable Braintree Gateway Telemetry",
-          "description": "Stubs Braintree FPTI background upload and database workers with immediate success, and neutralizes BraintreeClient analytics dispatchers.",
+          "description": "Stubs Braintree FPTI background upload and database workers with immediate success.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -620,7 +611,7 @@
         {
           "key": "zeroAdvertisingId",
           "title": "Zero Google Play Advertising ID",
-          "description": "Spoofs minified and standard Google Play AdvertisingIdClient calls to return an all-zero UUID and forces limit-ad-tracking to true.",
+          "description": "Spoofs the Google Play AdvertisingIdClient entry points to return an all-zero UUID and forces limit-ad-tracking to true.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -629,7 +620,7 @@
         {
           "key": "disableInstallReferrer",
           "title": "Disable Install Referrer Tracking",
-          "description": "Neutralizes Google Play Install Referrer querying and client connections across attribution listeners.",
+          "description": "Neutralizes the Google Play Services install-referrer reporter.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -825,7 +816,7 @@
     },
     {
       "name": "Change Brand Color",
-      "description": "Customizes the primary accent brand color across SidelineSwap buttons, navigation highlights, badges, and accents.",
+      "description": "Customizes the primary brand accent color across SidelineSwap buttons, navigation highlights, badges, and accents.",
       "default": false,
       "category": "Customization",
       "dependencies": [],
@@ -841,10 +832,10 @@
           ],
           "targets": [
             {
-              "version": "1.52.0",
+              "version": "2.3.2",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 28,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -863,7 +854,7 @@
         {
           "key": "primaryDarkColor",
           "title": "Primary Dark Color",
-          "description": "Hex color string for status bars and dark accents (defaults to #1565C0).",
+          "description": "Hex color string for the secondary accent and dark accents (defaults to #1565C0).",
           "required": false,
           "type": "kotlin.String",
           "default": "#1565C0",
@@ -1227,10 +1218,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
@@ -1244,15 +1235,6 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
-          "values": null
-        },
-        {
-          "key": "enableAchievementDebugTap",
-          "title": "Enable Achievement Debug Tap",
-          "description": "Enables the internal Debug.TEST_AWARD tap handler in AchievementActivity to test confetti and cycle achievement states.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
           "values": null
         },
         {
@@ -1283,27 +1265,9 @@
           "values": null
         },
         {
-          "key": "enableCacheDetailsRedesign",
-          "title": "Enable Cache Details Redesign",
-          "description": "Enables the redesigned Geocache Details layout (cache-details-rework).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
-          "key": "showTotalLogCount",
-          "title": "Show Total Log Count",
-          "description": "Shows the total log count in geocache activity and details (show-total-log-count).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        },
-        {
           "key": "enableShareablesInApp",
           "title": "Enable Shareables",
-          "description": "Enables in-app Shareables, filter, and FTUE (show-shareables-in-app, mobile-shareables-filter, mobile-shareables-ftue).",
+          "description": "Enables in-app Shareables and the Shareables filter (show-shareables, mobile-shareables-filter).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1312,7 +1276,7 @@
         {
           "key": "enableCollaborativeLists",
           "title": "Enable Collaborative Lists",
-          "description": "Enables the collaborative lists feature in Listhub (collaborative-lists).",
+          "description": "Enables the collaborative lists feature in Listhub (collab-list-release).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1321,7 +1285,7 @@
         {
           "key": "enableLodestones",
           "title": "Enable Lodestones",
-          "description": "Enables Lodestone features across the app (show-lodestones-mobile).",
+          "description": "Enables Lodestone features across the app (show-lodestones-mobile, show-lodestone-mobile-finders).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1337,36 +1301,9 @@
           "values": null
         },
         {
-          "key": "enableBetterEventsFilter",
-          "title": "Enable Better Events Filter",
-          "description": "Enables Better Events filter, map, and AR attribute (better-events-filter, better-events-map, show-ar-attribute-in-filter).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "enableSelectCacheTypes",
-          "title": "Enable Select Cache Types",
-          "description": "Enables select cache types and filter settings saving (select-cache-types, save-filter-settings).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "enableDiagnosticFlags",
-          "title": "Enable Diagnostic Flags",
-          "description": "Enables diagnostic info, FCM token display, ANR data prompt, API regions, and map timeout.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
           "key": "forceMapTrayEnabled",
           "title": "Force Map Tray Enabled",
-          "description": "Forces the map tray feature enabled (RemoteConfig.MAP_TRAY).",
+          "description": "Forces the map tray feature enabled (mapTray).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1375,7 +1312,7 @@
         {
           "key": "forceHideLastLogCount",
           "title": "Force Hide Last Log DNF",
-          "description": "Forces hiding the last log DNF count (RemoteConfig.HIDE_LAST_LOG_DNF).",
+          "description": "Forces hiding the last log DNF count (hideLastLogDNF).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1384,34 +1321,7 @@
         {
           "key": "forceShowDowntimeBanner",
           "title": "Force Show Downtime Banner",
-          "description": "Forces the downtime maintenance banner visible (RemoteConfig.SHOW_DOWNTIME_BANNER).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "forceDisableMapAutoUpdate",
-          "title": "Force Disable Map Auto Update",
-          "description": "Disables automatic map updating when panning/zooming (RemoteConfig.MAP_AUTO_UPDATE_DISABLED).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "forceSendDiagnosticLogs",
-          "title": "Force Send Diagnostic Logs",
-          "description": "Forces sending diagnostic logs with bug reports (RemoteConfig.SEND_DIAGNOSTIC_INFO_LOGS).",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        },
-        {
-          "key": "forceLinearCalloutsEnabled",
-          "title": "Force Linear Callouts Enabled",
-          "description": "Forces linear callout views enabled (RemoteConfig.LINEAR_CALLOUTS_ENABLED).",
+          "description": "Forces the downtime maintenance banner visible (showMobileDowntimeBanner).",
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
@@ -1685,10 +1595,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
@@ -1698,7 +1608,7 @@
         {
           "key": "showLocalPremiumWarnings",
           "title": "Show Local Premium Warnings",
-          "description": "Shows an informational warning banner on Premium Member Only caches indicating that complete cache data is restricted by the server for basic accounts.",
+          "description": "Shows an informational notice when opening a Premium Member Only cache, indicating that complete cache data is restricted by the server for basic accounts.",
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
@@ -1764,10 +1674,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
@@ -2328,7 +2238,7 @@
     },
     {
       "name": "Remove Invite Friends",
-      "description": "Removes the Invite Friends option from the Account screen and eliminates the non-functional orange dot notification badge from the Account navigation icon.",
+      "description": "Removes the Invite Friends entry from the Account screen and blocks direct and deep-link navigation to the referral screen.",
       "default": true,
       "category": "Interface",
       "dependencies": [],
@@ -2344,10 +2254,10 @@
           ],
           "targets": [
             {
-              "version": "1.52.0",
+              "version": "2.3.2",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 28,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -2374,10 +2284,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
@@ -2711,10 +2621,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
@@ -3246,7 +3156,7 @@
     },
     {
       "name": "Remove Tracking and Analytics",
-      "description": "Neutralizes first-party analytics (AnalyticsRepo), Google Analytics / Firebase (Analytics, Crashlytics, Performance, In-App Messaging), Facebook App Events, Iterable marketing telemetry, Usercentrics consent collection, and zeros the Google Play Advertising ID (AAID).",
+      "description": "Neutralizes first-party analytics (AnalyticsRepo), Google Analytics / Firebase (Analytics, Crashlytics, Performance, In-App Messaging), Facebook App Events dispatch, Iterable marketing telemetry, Usercentrics consent collection, and zeros the Google Play Advertising ID (AAID).",
       "default": true,
       "category": "Privacy",
       "dependencies": [],
@@ -3263,10 +3173,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
@@ -3780,10 +3690,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
@@ -3921,10 +3831,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
@@ -4142,10 +4052,10 @@
           ],
           "targets": [
             {
-              "version": "10.21.0",
+              "version": "10.24.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 31,
               "description": null
             }
           ]
