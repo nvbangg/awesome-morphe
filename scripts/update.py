@@ -6,7 +6,6 @@ import time
 from typing import Any
 
 from common.constants import (
-    DATA_DIR,
     DEFAULT_BRANCHES,
     DISCOVERY_JSON_PATH,
     OFFICIAL_BUNDLES_PATH,
@@ -14,6 +13,7 @@ from common.constants import (
     PACKAGE_UNIVERSAL,
     PUBLIC_DIR,
     REPOS_JSON_PATH,
+    STATE_PATH,
 )
 from common.files import load_json, save_json
 from common.models import DISCOVERY, REPOSITORIES, UPDATE_STATE
@@ -21,7 +21,6 @@ from common.repositories import build_raw_url, build_repo_url
 from common.summary import append_step_summary, format_summary_section
 from updater import gplay_scrape, local_data, whats_new
 
-STATE_PATH = DATA_DIR / "state.json"
 BUNDLES_JSON_PATH = PUBLIC_DIR / "bundles.json"
 
 HOT_RANK_ACTIVE_DAYS = 30

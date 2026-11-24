@@ -53,6 +53,7 @@ FETCH_ERROR_SECTIONS = {
     "image": "Bundle image",
 }
 HASH_REQUEST_HEADERS = {"Accept-Encoding": "identity"}
+REPO_GROUPS = 2
 
 
 def extract_mpp_name(mpp_file: bytes) -> str | None:
@@ -402,7 +403,7 @@ def collect_fetch_errors(results: Iterable[BranchFetchResult]) -> dict[str, list
 
 
 def refresh_repo_metadata(
-    discovered: dict, existing: dict, repository_details: RepositoryDetails
+    discovered: dict, existing: dict, repository_details: RepositoryDetails, repo_group: int | None = None
 ) -> tuple[dict, list[tuple[str, str]], set[str]]:
     repositories = {}
     warnings = []
@@ -415,7 +416,13 @@ def refresh_repo_metadata(
         futures = {
             url: executor.submit(repository_details.get, url)
             for url, entry in discovered.items()
-            if entry.get("id") not in disabled_ids
+            if (repo_id := entry.get("id")) not in disabled_ids
+            and (
+                repo_group is None
+                or not repo_id
+                or not repo_id.startswith("github:")
+                or int(repo_id.split(":", 1)[1]) % REPO_GROUPS == repo_group
+            )
         }
         for url, entry in discovered.items():
             config = {field: entry[field] for field in ("enabled", "revancedStars") if field in entry}
@@ -424,8 +431,9 @@ def refresh_repo_metadata(
                 continue
             if url not in futures:
                 repo_id = entry["id"]
-                repositories.setdefault(repo_id, dict(existing.get(repo_id, {"repo": repo})))
-                configs[repo_id] = config
+                if repo_id in repositories or repo_id in existing or repo_id in disabled_ids:
+                    repositories.setdefault(repo_id, dict(existing.get(repo_id, {"repo": repo})))
+                    configs[repo_id] = config
                 continue
             details = futures[url].result()
             repo_id = details.get("id")
@@ -482,7 +490,9 @@ def refresh_repo_metadata(
     return repositories, warnings, failed_ids - resolved_ids
 
 
-def fetch_all_repos(daily: bool = False) -> None:
+def fetch_all_repos(daily: bool = False, repo_group: int | None = None) -> int | None:
+    if repo_group is not None:
+        repo_group %= REPO_GROUPS
     initial_discovery = load_json(DISCOVERY_JSON_PATH, {"providers": {}, "repositories": {}})
     registry = DISCOVERY.validate_python(initial_discovery)
     discovered = registry["repositories"]
@@ -490,7 +500,11 @@ def fetch_all_repos(daily: bool = False) -> None:
         raise ValueError("No discovered repositories; fetch stopped")
     initial_repos = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
     repository_details = RepositoryDetails(discovered, initial_repos)
-    repos_data, repository_warnings, failed_ids = refresh_repo_metadata(discovered, initial_repos, repository_details)
+    scope = "all groups" if repo_group is None else f"group {repo_group + 1}/{REPO_GROUPS}"
+    print(f"Refreshing GitHub metadata: {scope}.")
+    repos_data, repository_warnings, failed_ids = refresh_repo_metadata(
+        discovered, initial_repos, repository_details, repo_group
+    )
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
     MPP_DIR.mkdir(parents=True, exist_ok=True)
@@ -598,3 +612,4 @@ def fetch_all_repos(daily: bool = False) -> None:
         )
     append_step_summary("\n\n".join(summary_sections))
     print(f"Fetch completed. Updated {updated_count} targets.")
+    return (repo_group + 1) % REPO_GROUPS if repo_group is not None else None

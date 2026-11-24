@@ -689,6 +689,19 @@ class TestBundleFetch:
         self.fetch_request.assert_any_call(self.url("dev", "patches-list.json"))
         assert (self.mpp_dir / "github-1-dev.mpp").is_file()
 
+    def test_skipped_metadata_still_fetches_bundle_and_preserves_custom(self) -> None:
+        url = "https://github.com/owner/alpha"
+        save_json(self.discovery_path, {"providers": {}, "repositories": {url: {"id": "github:1", "revancedStars": 5}}})
+        with (
+            patch.object(bundle_fetch, "REPO_GROUPS", 2),
+            patch.object(bundle_fetch, "fetch_repo_details", side_effect=AssertionError("Metadata not scheduled")),
+        ):
+            assert bundle_fetch.fetch_all_repos(False, 4) == 1
+        saved = load_json(self.repos_path)["github:1"]
+        assert saved["main"] == "main-new"
+        assert saved["revancedStars"] == 5
+        self.fetch_request.assert_any_call(self.bundle_data["download_url"])
+
     def test_new_empty_repository_entry_is_fetched(self) -> None:
         self.save_repos({})
         bundle_fetch.fetch_all_repos()
@@ -936,3 +949,55 @@ class TestRepositoryMetadataRefresh:
             assert "(0/0)" in report
             assert url not in report
             assert "owner/new" not in report
+
+
+@pytest.mark.parametrize(
+    "groups,partitions,missing_group",
+    ((2, ((2, 4, 6), (1, 3, 5)), 1), (3, ((3, 6), (1, 4), (2, 5)), 0), (4, ((4,), (1, 5), (2, 6), (3,)), 3)),
+)
+def test_metadata_groups_keep_cached_repos_and_always_resolve_new_urls(
+    groups, partitions, missing_group, monkeypatch
+) -> None:
+    monkeypatch.setattr(bundle_fetch, "REPO_GROUPS", groups)
+    existing = {
+        f"github:{number}": {"repo": f"owner/repo-{number}", "main": "saved", "stars": 1} for number in range(1, 7)
+    }
+    registry: dict[str, dict] = {
+        f"https://github.com/owner/repo-{number}": {"id": f"github:{number}"} for number in range(1, 7)
+    }
+    registry.update(
+        {
+            "https://github.com/owner/alias": {"id": "github:2", "revancedStars": 5},
+            "https://github.com/owner/missing": {"id": "github:99"},
+            "https://github.com/owner/new": {},
+            "https://github.com/owner/disabled": {"id": "github:7", "enabled": False},
+            "https://gitlab.com/group/repo": {"id": "gitlab:1"},
+        }
+    )
+
+    for group, partition in [(None, tuple(range(1, 7))), *enumerate(partitions)]:
+        discovered = {url: dict(entry) for url, entry in registry.items()}
+
+        def lookup(url):
+            repo_id = registry[url].get("id", "github:100")
+            return {"id": repo_id, "full_name": url.split(".com/", 1)[1], "stars": 10}
+
+        with patch.object(bundle_fetch, "fetch_repo_details", side_effect=lookup) as request:
+            actual, warnings, failed = bundle_fetch.refresh_repo_metadata(
+                discovered, existing, bundle_fetch.RepositoryDetails(discovered, existing), group
+            )
+        selected_ids = {f"github:{number}" for number in partition} | {"gitlab:1"}
+        expected_urls = {url for url, entry in registry.items() if entry.get("id") in selected_ids}
+        expected_urls.add("https://github.com/owner/new")
+        if group is None or group == missing_group:
+            expected_urls.add("https://github.com/owner/missing")
+        assert {call.args[0] for call in request.call_args_list} == expected_urls
+        assert not warnings and not failed
+        assert set(existing) <= actual.keys()
+        for number in range(1, 7):
+            assert actual[f"github:{number}"]["main"] == "saved"
+            assert actual[f"github:{number}"]["stars"] == (10 if number in partition else 1)
+        assert actual["github:2"]["revancedStars"] == 5
+        assert actual["github:7"]["enabled"] is False
+        assert ("github:99" in actual) == (group is None or group == missing_group)
+        assert discovered["https://github.com/owner/new"]["id"] == "github:100"

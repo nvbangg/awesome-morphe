@@ -13,7 +13,9 @@ import find_projects
 import telegram
 import update
 from common import http
-from common.constants import ROOT_DIR, SCRIPTS_DIR, WHATS_NEW_PATH
+from common.constants import ROOT_DIR, SCRIPTS_DIR, STATE_PATH, WHATS_NEW_PATH
+from common.files import load_json, save_json
+from common.models import UPDATE_STATE
 from common.summary import append_step_summary
 
 
@@ -97,22 +99,26 @@ def main(argv: list[str] | None = None) -> int:
             if result or args.task == "discover":
                 return result
 
+        next_repo_group = None
         if args.task in (None, "fetch"):
-            fetch.fetch_all_repos(daily)
-            if args.task == "fetch":
-                return 0
+            state = UPDATE_STATE.validate_python(load_json(STATE_PATH, {"appHashes": {}, "history": {}}))
+            next_repo_group = fetch.fetch_all_repos(daily, state.get("nextRepoGroup", 0))
 
-        if (
-            args.task is None
-            and not daily
-            and not subprocess.check_output(
-                ["git", "status", "--porcelain", "--", "data/", "web/public/"], cwd=ROOT_DIR
-            )
+        result = 0
+        if args.task != "fetch" and (
+            args.task == "update"
+            or daily
+            or subprocess.check_output(["git", "status", "--porcelain", "--", "data/", "web/public/"], cwd=ROOT_DIR)
         ):
-            return 0
+            result = update.run(daily)
+        if result:
+            return result
 
-        result = update.run(daily)
-        if result == 0 and (output_path := os.environ.get("GITHUB_OUTPUT")):
+        if next_repo_group is not None:
+            state = UPDATE_STATE.validate_python(load_json(STATE_PATH, {"appHashes": {}, "history": {}}))
+            state["nextRepoGroup"] = next_repo_group
+            save_json(STATE_PATH, state)
+        if args.task != "fetch" and (output_path := os.environ.get("GITHUB_OUTPUT")):
             with Path(output_path).open("a", encoding="utf-8") as file:
                 file.write("updated=true\n")
         return result

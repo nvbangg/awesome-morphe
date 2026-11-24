@@ -12,6 +12,7 @@ PATCHES_DIR = DATA_DIR / "patches"
 PROJECTS_JSON_PATH = DATA_DIR / "projects.json"
 REPOS_JSON_PATH = DATA_DIR / "repos.json"
 OFFICIAL_BUNDLES_PATH = DATA_DIR / "official-bundles.json"
+STATE_PATH = DATA_DIR / "state.json"
 
 WHATS_NEW_PATH = SCRIPTS_DIR / "temp" / "whats-new.md"
 

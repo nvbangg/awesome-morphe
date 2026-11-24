@@ -65,7 +65,7 @@ class TestBundleUpdate:
             save_json(path, {})
         save_json(
             self.state_path,
-            {"lastDaily": "2026-01-01", "appHashes": {}, "history": {}},
+            {"lastDaily": "2026-01-01", "nextRepoGroup": 1, "appHashes": {}, "history": {}},
         )
         save_json(self.changelog_path, [])
         save_json(
@@ -159,6 +159,7 @@ class TestBundleUpdate:
             assert bundle_update.run(mode == "daily") == 0
         state = load_json(self.state_path)
         assert state["lastDaily"] == previous_state["lastDaily"]
+        assert state["nextRepoGroup"] == previous_state["nextRepoGroup"]
         return load_json(self.public_path)
 
     def snapshot(self) -> dict[Path, bytes]:

@@ -64,6 +64,7 @@ class ProjectLists(TypedDict):
 @with_config(strict=True)
 class UpdateState(TypedDict):
     lastDaily: NotRequired[str]
+    nextRepoGroup: NotRequired[Annotated[int, Field(ge=0)]]
     appHashes: dict[str, dict[str, str]]
     history: dict[str, dict[str, list[str]]]
 
