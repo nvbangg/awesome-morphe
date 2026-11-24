@@ -115,9 +115,9 @@ def main(argv: list[str] | None = None) -> int:
             return result
 
         if next_repo_group is not None:
-            state = UPDATE_STATE.validate_python(load_json(STATE_PATH, {"appHashes": {}, "history": {}}))
+            state = load_json(STATE_PATH, {"appHashes": {}, "history": {}})
             state["nextRepoGroup"] = next_repo_group
-            save_json(STATE_PATH, state)
+            save_json(STATE_PATH, UPDATE_STATE.validate_python(state))
         if args.task != "fetch" and (output_path := os.environ.get("GITHUB_OUTPUT")):
             with Path(output_path).open("a", encoding="utf-8") as file:
                 file.write("updated=true\n")

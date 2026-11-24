@@ -125,3 +125,4 @@ def test_group_save_preserves_state_written_by_update(pipeline) -> None:
     tasks.update.side_effect = update
     assert sync.main(["--daily"]) == 0
     assert load_json(sync.STATE_PATH) == {**state, "nextRepoGroup": 1}
+    assert list(load_json(sync.STATE_PATH)) == ["lastDaily", "nextRepoGroup", "appHashes", "history"]
