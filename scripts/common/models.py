@@ -102,6 +102,7 @@ class RepositoryState(TypedDict, total=False):
 @with_config(strict=True)
 class DiscoveredRepository(TypedDict, total=False):
     id: RepositoryId
+    etag: str
     enabled: bool
     revancedStars: int
 

@@ -222,15 +222,20 @@ class TestDiscover:
         registry = load_json(self.repos_path)
         registry["repositories"] = {
             "https://github.com/owner/saved": {"id": "github:1", "enabled": False, "revancedStars": 99},
-            "https://github.com/aaa/custom": {"id": "github:2", "enabled": False, "revancedStars": 20},
-            "https://github.com/owner/stale": {"id": "github:3"},
+            "https://github.com/aaa/custom": {
+                "id": "github:2",
+                "etag": 'W/"saved"',
+                "enabled": False,
+                "revancedStars": 20,
+            },
+            "https://github.com/owner/stale": {"id": "github:3", "etag": '"removed"'},
         }
         save_json(self.repos_path, registry)
         self.open_url.side_effect = httpx2.ConnectError("offline")
         assert discover.run() == 0
         repositories = load_json(self.repos_path)["repositories"]
         assert repositories == {
-            "https://github.com/aaa/custom": {"id": "github:2"},
+            "https://github.com/aaa/custom": {"id": "github:2", "etag": 'W/"saved"'},
             "https://github.com/owner/saved": {"revancedStars": 8, "id": "github:1"},
             "https://gitlab.com/owner/new": {"enabled": False},
         }

@@ -65,8 +65,10 @@ def run() -> int:
         return 1
 
     for url, config in repositories.items():
-        if repo_id := registry["repositories"].get(url, {}).get("id"):
-            config["id"] = repo_id
+        previous = registry["repositories"].get(url, {})
+        for field in ("id", "etag"):
+            if field in previous:
+                config[field] = previous[field]
     save_json(
         DISCOVERY_JSON_PATH,
         DISCOVERY.validate_python({**registry, "repositories": dict(sorted(repositories.items()))}),

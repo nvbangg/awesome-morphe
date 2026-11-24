@@ -99,9 +99,11 @@ class BundleDownloads:
 
 
 class RepositoryDetails:
-    def __init__(self) -> None:
+    def __init__(self, discovered: dict | None = None, existing: dict | None = None) -> None:
         self.futures: dict[str, Future[dict]] = {}
         self.lock = Lock()
+        self.discovered = discovered or {}
+        self.existing = existing or {}
 
     def get(self, url: str) -> dict:
         key = url.lower()
@@ -115,7 +117,13 @@ class RepositoryDetails:
                 owns_request = False
         if owns_request:
             try:
-                future.set_result(fetch_repo_details(url))
+                entry = self.discovered.get(key, {})
+                cached = self.existing.get(entry.get("id"), {})
+                etag = entry.get("etag") if key.startswith("https://github.com/") and cached.get("repo") else None
+                details = fetch_repo_details(url, etag) if etag else fetch_repo_details(url)
+                if details.get("not_modified"):
+                    details["id"] = entry["id"]
+                future.set_result(details)
             except BaseException as error:
                 future.set_exception(error)
                 raise
@@ -435,17 +443,24 @@ def refresh_repo_metadata(
             else:
                 entry["id"] = repo_id
                 metadata = repositories.setdefault(repo_id, dict(existing.get(repo_id, {})))
-                metadata.update(
-                    repo=details["full_name"],
-                    description=details.get("description") or "",
-                    avatarUrl=normalize_image_url(details.get("avatar_url")),
-                    stars=details.get("stars", 0),
-                )
-                if details.get("is_archived"):
-                    metadata["isArchived"] = True
+                if source == "github":
+                    if etag := details.get("etag"):
+                        entry["etag"] = etag
+                    else:
+                        entry.pop("etag", None)
+                if not details.get("not_modified"):
+                    metadata.update(
+                        repo=details["full_name"],
+                        description=details.get("description") or "",
+                        avatarUrl=normalize_image_url(details.get("avatar_url")),
+                        stars=details.get("stars", 0),
+                    )
+                    if details.get("is_archived"):
+                        metadata["isArchived"] = True
+                    else:
+                        metadata.pop("isArchived", None)
+                if metadata.get("isArchived"):
                     warnings.append((url, "Repository is archived"))
-                else:
-                    metadata.pop("isArchived", None)
                 resolved_ids.add(repo_id)
             if config.get("enabled") is False:
                 disabled_ids.add(repo_id)
@@ -462,6 +477,7 @@ def refresh_repo_metadata(
         (url, message)
         for url, message in warnings
         if repositories.get(discovered[url].get("id"), {}).get("enabled") is not False
+        and (message != "Repository is archived" or repositories[discovered[url]["id"]].get("isArchived"))
     ]
     return repositories, warnings, failed_ids - resolved_ids
 
@@ -473,7 +489,7 @@ def fetch_all_repos(daily: bool = False) -> None:
     if not discovered:
         raise ValueError("No discovered repositories; fetch stopped")
     initial_repos = REPOSITORIES.validate_python(load_json(REPOS_JSON_PATH))
-    repository_details = RepositoryDetails()
+    repository_details = RepositoryDetails(discovered, initial_repos)
     repos_data, repository_warnings, failed_ids = refresh_repo_metadata(discovered, initial_repos, repository_details)
     BUNDLES_DIR.mkdir(parents=True, exist_ok=True)
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)

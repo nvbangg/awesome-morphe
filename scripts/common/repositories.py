@@ -1,6 +1,7 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
 import urllib.parse
+from http import HTTPStatus
 
 import httpx2
 from pydantic import ValidationError
@@ -49,7 +50,7 @@ def build_raw_url(source: str, repo: str, branch: str, file_path: str) -> str | 
     return None
 
 
-def fetch_repo_details(repo_url: str) -> dict:
+def fetch_repo_details(repo_url: str, etag: str | None = None) -> dict:
     source, repo = parse_repo_url(repo_url)
     if not source or not repo:
         return {}
@@ -61,19 +62,20 @@ def fetch_repo_details(repo_url: str) -> dict:
     )
 
     try:
-        response = request(api_url).json()
+        response = request(api_url, {"If-None-Match": etag}) if source == "github" and etag else request(api_url)
         if source == "github":
-            response = GITHUB_REPOSITORY.validate_python(response)
+            data = GITHUB_REPOSITORY.validate_python(response.json())
             return {
-                "id": f"github:{response['id']}",
-                "stars": response.get("stargazers_count", 0),
-                "description": response.get("description"),
-                "avatar_url": response.get("owner", {}).get("avatar_url"),
-                "full_name": response["full_name"],
-                "is_archived": bool(response.get("archived")),
+                "id": f"github:{data['id']}",
+                "stars": data.get("stargazers_count", 0),
+                "description": data.get("description"),
+                "avatar_url": data.get("owner", {}).get("avatar_url"),
+                "full_name": data["full_name"],
+                "is_archived": bool(data.get("archived")),
+                "etag": response.headers.get("etag"),
             }
 
-        response = GITLAB_REPOSITORY.validate_python(response)
+        response = GITLAB_REPOSITORY.validate_python(response.json())
         avatar = response.get("avatar_url") or (response.get("namespace") or {}).get("avatar_url")
         if isinstance(avatar, str) and avatar.startswith("/"):
             avatar = urllib.parse.urljoin("https://gitlab.com/", avatar)
@@ -89,6 +91,9 @@ def fetch_repo_details(repo_url: str) -> dict:
         return {"error": "Invalid repository data"}
     except (httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
         details: dict[str, str | bool] = {"error": str(error)}
-        if isinstance(error, httpx2.HTTPStatusError) and error.response.status_code in UNAVAILABLE_HTTP_CODES:
-            details[f"is_{error.response.status_code}"] = True
+        if isinstance(error, httpx2.HTTPStatusError):
+            if source == "github" and etag and error.response.status_code == HTTPStatus.NOT_MODIFIED:
+                return {"not_modified": True, "etag": error.response.headers.get("etag") or etag}
+            if error.response.status_code in UNAVAILABLE_HTTP_CODES:
+                details[f"is_{error.response.status_code}"] = True
         return details

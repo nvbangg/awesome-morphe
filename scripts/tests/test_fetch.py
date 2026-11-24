@@ -698,6 +698,101 @@ class TestBundleFetch:
 
 
 class TestRepositoryMetadataRefresh:
+    def test_conditional_metadata_reuses_cache_and_detects_reused_url(self, block_network, monkeypatch) -> None:
+        monkeypatch.setenv("GITHUB_TOKEN", "test-token")
+        url = "https://github.com/owner/repo"
+        discovered = {url: {}}
+        existing = {}
+        block_network.side_effect = [
+            httpx2.Response(
+                200, headers={"ETag": 'W/"first"'}, json={"id": 1, "full_name": "owner/repo", "stargazers_count": 8}
+            ),
+            httpx2.Response(304),
+            httpx2.Response(200, json={"id": 2, "full_name": "owner/repo", "stargazers_count": 3}),
+        ]
+        current, warnings, failed = bundle_fetch.refresh_repo_metadata(
+            discovered, existing, bundle_fetch.RepositoryDetails(discovered, existing)
+        )
+        assert discovered[url] == {"id": "github:1", "etag": 'W/"first"'}
+        assert current["github:1"]["stars"] == 8
+        current["github:1"]["main"] = "saved"
+        cached, warnings, failed = bundle_fetch.refresh_repo_metadata(
+            discovered, current, bundle_fetch.RepositoryDetails(discovered, current)
+        )
+        assert cached == current
+        assert not warnings and not failed
+        replaced, warnings, failed = bundle_fetch.refresh_repo_metadata(
+            discovered, cached, bundle_fetch.RepositoryDetails(discovered, cached)
+        )
+        assert discovered[url] == {"id": "github:2"}
+        assert set(replaced) == {"github:2"}
+        assert replaced["github:2"]["stars"] == 3
+        assert "main" not in replaced["github:2"]
+        assert not warnings and not failed
+        assert [request.args[0].headers.get("If-None-Match") for request in block_network.call_args_list] == [
+            None,
+            'W/"first"',
+            'W/"first"',
+        ]
+        assert all(
+            request.args[0].headers["Authorization"] == "Bearer test-token" for request in block_network.call_args_list
+        )
+
+    @pytest.mark.parametrize("alias_status", (200, 404, "timeout", "invalid"))
+    @pytest.mark.parametrize("reverse", (False, True))
+    def test_cached_alias_does_not_override_fresh_metadata_or_clear_hash(
+        self, alias_status, reverse, block_network
+    ) -> None:
+        cached_url = "https://github.com/owner/old"
+        alias_url = "https://github.com/owner/new"
+        discovered = {cached_url: {"id": "github:1", "etag": '"old"'}, alias_url: {"id": "github:1", "etag": '"new"'}}
+        if reverse:
+            discovered = dict(reversed(discovered.items()))
+        existing = {"github:1": {"repo": "owner/new", "stars": 5, "main": "saved", "isArchived": True}}
+
+        def respond(request):
+            if request.url.path.endswith("/old"):
+                assert request.headers["If-None-Match"] == '"old"'
+                return httpx2.Response(304)
+            assert request.headers["If-None-Match"] == '"new"'
+            if alias_status == "timeout":
+                raise httpx2.ReadTimeout("timed out", request=request)
+            if alias_status == "invalid":
+                return httpx2.Response(200, headers={"ETag": '"invalid"'}, json={"id": 1})
+            return httpx2.Response(
+                alias_status,
+                headers={"ETag": '"changed"'},
+                json={"id": 1, "full_name": "Owner/New", "stargazers_count": 10, "archived": False},
+            )
+
+        block_network.side_effect = respond
+        cache = bundle_fetch.RepositoryDetails(discovered, existing)
+        actual, warnings, failed = bundle_fetch.refresh_repo_metadata(discovered, existing, cache)
+        assert actual["github:1"]["main"] == "saved"
+        assert not failed
+        if alias_status == 200:
+            assert actual["github:1"]["repo"] == "Owner/New"
+            assert actual["github:1"]["stars"] == 10
+            assert "isArchived" not in actual["github:1"]
+            assert not warnings
+            assert discovered[alias_url]["etag"] == '"changed"'
+        else:
+            assert actual == existing
+            assert warnings
+            assert discovered[alias_url]["etag"] == '"new"'
+        assert cache.get(cached_url)["id"] == "github:1"
+        assert block_network.call_count == 2
+
+    @pytest.mark.parametrize("existing", ({}, {"github:1": {}}))
+    def test_etag_without_cached_metadata_uses_unconditional_request(self, existing, block_network) -> None:
+        url = "https://github.com/owner/repo"
+        discovered = {url: {"id": "github:1", "etag": '"stale"'}}
+        block_network.side_effect = None
+        block_network.return_value = httpx2.Response(200, json={"id": 1, "full_name": "owner/repo"})
+        bundle_fetch.refresh_repo_metadata(discovered, existing, bundle_fetch.RepositoryDetails(discovered, existing))
+        assert "If-None-Match" not in block_network.call_args.args[0].headers
+        assert discovered[url] == {"id": "github:1"}
+
     @pytest.mark.parametrize("config", ({}, {"revancedStars": 5}, {"enabled": False, "revancedStars": 5}))
     def test_aliases_merge_by_id_and_later_config_replaces_previous(self, config) -> None:
         old_url = "https://github.com/owner/old"
