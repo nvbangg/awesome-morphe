@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.3.1",
+  "version": "0.4.2",
   "patches": [
     {
       "name": "Allow screenshots and screen recording",
@@ -377,57 +377,6 @@
       "options": []
     },
     {
-      "name": "Clean Home",
-      "description": "Hides promotional icons from Meitu's home by filtering its icon list before it is drawn. Camera, photo, beautify, face, body and collage are protected and never hidden. If a name does not exist in your region, the home is left untouched.",
-      "default": false,
-      "category": "Layout",
-      "compatiblePackages": [
-        {
-          "packageName": "com.mt.mtxx.mtxx",
-          "name": "Meitu",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F01C48",
-          "signatures": [
-            "fbf80b9d1e44cc257b3ff3e51abece20d911fe76c0210b21ff58602c734c0153"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "12.23.3",
-              "versionCodes": {
-                "ARM64_V8A": 122303,
-                "ARMEABI_V7A": 122303
-              },
-              "isExperimental": true,
-              "minSdk": null,
-              "description": "Bytecode verified against the original APK. Not yet run on a device, so the on-screen result is unconfirmed."
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "hiddenIcons",
-          "title": "Icons to hide",
-          "description": "Exact names separated by commas, as they appear on the home. Example: Featured,Dust",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "Featured",
-          "values": null
-        },
-        {
-          "key": "protectedIcons",
-          "title": "Protected icons",
-          "description": "Names this patch never hides, to keep access to the editor.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": "Camera,Photo,Beautify,Face,Body,Collage",
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Disable telemetry and tracking",
       "description": "Disables NewRelic, Permutive, AppsFlyer attribution, Conviva/PAL player telemetry, advertising ID collection, and strips the AD_ID manifest permission.",
       "default": true,
@@ -598,38 +547,6 @@
       "options": []
     },
     {
-      "name": "Remove Ads",
-      "description": "Disables Meitu's banners, interstitials, cold-start splash and native ads by closing its placement gates. The editor, gallery and normal content loading are unaffected.",
-      "default": true,
-      "category": "Ads",
-      "compatiblePackages": [
-        {
-          "packageName": "com.mt.mtxx.mtxx",
-          "name": "Meitu",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#F01C48",
-          "signatures": [
-            "fbf80b9d1e44cc257b3ff3e51abece20d911fe76c0210b21ff58602c734c0153"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "12.23.3",
-              "versionCodes": {
-                "ARM64_V8A": 122303,
-                "ARMEABI_V7A": 122303
-              },
-              "isExperimental": true,
-              "minSdk": null,
-              "description": "Bytecode verified against the original APK. Not yet run on a device, so the on-screen result is unconfirmed."
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Remove advertising ID permissions",
       "description": "Removes the Google advertising ID and Android Ad Services advertising ID permissions. Other identifiers and telemetry may remain.",
       "default": true,
@@ -698,9 +615,9 @@
       "options": []
     },
     {
-      "name": "VIP Unlock",
-      "description": "EXPERIMENTAL. Makes the app treat the current account as VIP by replacing the `XXVipUtil.x0()` gate with `true`. Affects local VIP checks (interface, material flags, local export routes). It does not create rights the Meitu server validates itself.",
-      "default": false,
+      "name": "Unlock VIP",
+      "description": "Reports an active VIP subscriber: isVip() returns true, isValidUser() returns 1, getVipType() returns 1 and VIP trial materials count as unlocked. Static fields E (isValidUser) and F (vipType) are initialized to 1. Server-side per-material rights and AIGC quotas are not affected.",
+      "default": true,
       "category": "Premium",
       "compatiblePackages": [
         {
@@ -710,7 +627,7 @@
           "apkFileType": "APKM",
           "appIconColor": "#F01C48",
           "signatures": [
-            "fbf80b9d1e44cc257b3ff3e51abece20d911fe76c0210b21ff58602c734c0153"
+            "7b1a6d25e5e8711a6e79283df10c648b47a420c4e5413c2c51351a8ca508de25"
           ],
           "formFactor": "MOBILE",
           "targets": [
@@ -718,11 +635,13 @@
               "version": "12.23.3",
               "versionCodes": {
                 "ARM64_V8A": 122303,
-                "ARMEABI_V7A": 122303
+                "ARMEABI_V7A": 122303,
+                "X86_64": 122303,
+                "X86": 122303
               },
-              "isExperimental": true,
+              "isExperimental": false,
               "minSdk": null,
-              "description": "Bytecode verified against the original APK. Not yet run on a device, so the on-screen result is unconfirmed."
+              "description": null
             }
           ]
         }

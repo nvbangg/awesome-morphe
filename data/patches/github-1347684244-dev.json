@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.9.0",
+  "version": "1.10.0-dev.1",
   "patches": [
     {
       "name": "Apple emojis everywhere",
@@ -367,6 +367,111 @@
       "options": []
     },
     {
+      "name": "Ditto navigation vehicle",
+      "description": "Adds an animated Ditto to the 3D vehicles you can pick for navigation. On first launch, Maps opens the Pokémon X/Y Ditto model page (The Models Resource) in an in-app browser; tap download once and Maps builds Ditto from it. Then pick him while navigating (tap the arrow).",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#34A853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.47.00.1022347503",
+              "versionCodes": {
+                "ARM64_V8A": 1068892333,
+                "ARMEABI_V7A": 1068892333,
+                "X86_64": 1068892333,
+                "X86": 1068892333
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "26.44.06.1006895251",
+              "versionCodes": {
+                "ARM64_V8A": 1068856906,
+                "ARMEABI_V7A": 1068856906,
+                "X86_64": 1068856906,
+                "X86": 1068856906
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Find Hub people on Android Auto",
+      "description": "Shows the people sharing their location with you on the Android Auto map, with their profile photo, like Home and Work. Use with a patch that puts Maps' own map on the car screen.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#34A853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.47.00.1022347503",
+              "versionCodes": {
+                "ARM64_V8A": 1068892333,
+                "ARMEABI_V7A": 1068892333,
+                "X86_64": 1068892333,
+                "X86": 1068892333
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "26.44.06.1006895251",
+              "versionCodes": {
+                "ARM64_V8A": 1068856906,
+                "ARMEABI_V7A": 1068856906,
+                "X86_64": 1068856906,
+                "X86": 1068856906
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "photoPinSize",
+          "title": "Photo pin size",
+          "description": "Pixel size Maps asks for when it loads a photo pin. Maps' own 80 px looks small and blurry on a car screen. Also applies to the photo pins of your own saved lists.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 160,
+          "values": {
+            "Maps' own (80 px)": 80,
+            "Medium (120 px)": 120,
+            "Large (160 px)": 160,
+            "Extra large (240 px)": 240
+          }
+        }
+      ]
+    },
+    {
       "name": "Google Login Fix (microG-RE)",
       "description": "Fixes \"Authentication Failed\" after re-signing by routing Google Play Services to MicroG-RE (app.revanced.android.gms), which presents Raid Party's original signing certificate so Google issues a valid ID token. Install MicroG-RE and add your Google account there. Login only; no Facebook, no push/FCM.",
       "default": true,
@@ -420,6 +525,49 @@
                 "ARMEABI_V7A": 160,
                 "X86_64": 160,
                 "X86": 160
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide ads and clutter fixes",
+      "description": "Fixes Dutch App Patches' \"Hide ads and clutter\": the Explore feed (\"Local vibe\") opening instead of hiding, and Ask Maps staying on. Patch in the same run.",
+      "default": false,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#34A853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.47.00.1022347503",
+              "versionCodes": {
+                "ARM64_V8A": 1068892333,
+                "ARMEABI_V7A": 1068892333,
+                "X86_64": 1068892333,
+                "X86": 1068892333
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "26.44.06.1006895251",
+              "versionCodes": {
+                "ARM64_V8A": 1068856906,
+                "ARMEABI_V7A": 1068856906,
+                "X86_64": 1068856906,
+                "X86": 1068856906
               },
               "isExperimental": false,
               "minSdk": null,
@@ -683,6 +831,51 @@
       "options": []
     },
     {
+      "name": "Navigation vehicle in all travel modes",
+      "description": "Shows the 3D vehicle you picked for driving (or your custom one) while navigating on foot, by bike, two-wheeler or taxi too, instead of the plain arrow.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#34A853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.47.00.1022347503",
+              "versionCodes": {
+                "ARM64_V8A": 1068892333,
+                "ARMEABI_V7A": 1068892333,
+                "X86_64": 1068892333,
+                "X86": 1068892333
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "26.44.06.1006895251",
+              "versionCodes": {
+                "ARM64_V8A": 1068856906,
+                "ARMEABI_V7A": 1068856906,
+                "X86_64": 1068856906,
+                "X86": 1068856906
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Open game links directly",
       "description": "Opens Pokémon GO (and other game) links straight in the game instead of going through the AppsFlyer OneLink redirect page.",
       "default": true,
@@ -867,6 +1060,51 @@
                 "X86": 930
               },
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show all map icons while navigating",
+      "description": "Keeps place icons (restaurants, shops, gas stations) and your pins (Home, Work, saved places, Find Hub people) on the map during navigation, on the phone and in Android Auto.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.maps",
+          "name": "Google Maps",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#34A853",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.47.00.1022347503",
+              "versionCodes": {
+                "ARM64_V8A": 1068892333,
+                "ARMEABI_V7A": 1068892333,
+                "X86_64": 1068892333,
+                "X86": 1068892333
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "26.44.06.1006895251",
+              "versionCodes": {
+                "ARM64_V8A": 1068856906,
+                "ARMEABI_V7A": 1068856906,
+                "X86_64": 1068856906,
+                "X86": 1068856906
+              },
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
