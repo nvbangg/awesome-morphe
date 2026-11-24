@@ -38,8 +38,14 @@ def run() -> int:
     warnings = _run_providers(registry["providers"])
     print()
     repositories = {url.lower(): {} for urls in registry["providers"].values() for url in urls}
+    owner_rules = {}
     for url, config in custom.items():
-        repositories[url.lower()] = {
+        url = url.lower()
+        owner = url.removeprefix("https://github.com/").rstrip("/")
+        if url.startswith("https://github.com/") and owner and "/" not in owner:
+            owner_rules[url.rstrip("/")] = config.get("enabled") is False
+            continue
+        repositories[url] = {
             field: value
             for field, value in config.items()
             if field == "revancedStars" or (field == "enabled" and value is False)
@@ -65,6 +71,8 @@ def run() -> int:
         return 1
 
     for url, config in repositories.items():
+        if owner_rules.get(url.rsplit("/", 1)[0]):
+            config["enabled"] = False
         previous = registry["repositories"].get(url, {})
         for field in ("id", "etag"):
             if field in previous:

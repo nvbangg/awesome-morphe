@@ -246,6 +246,54 @@ class TestDiscover:
         ]
         assert self.custom_path.read_bytes() == before
 
+    @pytest.mark.parametrize("unblock", ("remove", "override"))
+    def test_owner_rule_disables_exact_owner_and_can_be_cleared(self, unblock) -> None:
+        owner_url = "https://github.com/OWNER/"
+        custom = {
+            owner_url: {"enabled": False, "note": "Private"},
+            "https://github.com/owner/manual": {"enabled": True, "revancedStars": 5},
+            "https://github.com/other/disabled": {"enabled": False},
+        }
+        registry = {
+            "providers": {
+                "official": [
+                    "https://github.com/owner/saved",
+                    "https://github.com/owner/new",
+                    "https://github.com/owner-extra/repo",
+                    "https://gitlab.com/owner/repo",
+                ]
+            },
+            "repositories": {"https://github.com/owner/saved": {"id": "github:1", "etag": 'W/"saved"'}},
+        }
+        save_json(self.repos_path, registry)
+        save_json(self.custom_path, custom)
+        before = self.custom_path.read_bytes()
+        with patch.object(discover, "_run_providers", return_value=[]):
+            assert discover.run() == 0
+            repositories = load_json(self.repos_path)["repositories"]
+            assert repositories == {
+                "https://github.com/owner/saved": {"enabled": False, "id": "github:1", "etag": 'W/"saved"'},
+                "https://github.com/owner/new": {"enabled": False},
+                "https://github.com/owner/manual": {"enabled": False, "revancedStars": 5},
+                "https://github.com/owner-extra/repo": {},
+                "https://gitlab.com/owner/repo": {},
+                "https://github.com/other/disabled": {"enabled": False},
+            }
+            assert self.custom_path.read_bytes() == before
+            if unblock == "remove":
+                custom.pop(owner_url)
+            else:
+                custom["https://github.com/owner"] = {}
+            save_json(self.custom_path, custom)
+            before = self.custom_path.read_bytes()
+            assert discover.run() == 0
+        repositories = load_json(self.repos_path)["repositories"]
+        assert repositories["https://github.com/owner/saved"] == {"id": "github:1", "etag": 'W/"saved"'}
+        assert repositories["https://github.com/owner/new"] == {}
+        assert repositories["https://github.com/owner/manual"] == {"revancedStars": 5}
+        assert repositories["https://github.com/other/disabled"]["enabled"] is False
+        assert self.custom_path.read_bytes() == before
+
     def test_empty_sources_stop_without_replacing_saved_discovery(self) -> None:
         save_json(self.repos_path, {"providers": {}, "repositories": {}})
         before = self.repos_path.read_bytes()
