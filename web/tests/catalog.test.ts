@@ -43,6 +43,41 @@ describe("catalog rules", () => {
 		).toBe(true);
 	});
 
+	it.each([undefined, null, {}])(
+		"keeps apps and patches available with unavailable display metadata (%j)",
+		(value) => {
+			const data = buildCatalog(
+				catalogSchema.parse({
+					...catalog,
+					store: {
+						...catalog.store,
+						[ALPHA_PACKAGE]: {
+							...catalog.store[ALPHA_PACKAGE],
+							name: value,
+							iconUrl: value,
+							description: value,
+							minInstalls: value,
+							category: value,
+						},
+					},
+				}),
+			);
+			expect(
+				data.appItems.find((app) => app.packageName === ALPHA_PACKAGE),
+			).toMatchObject({
+				appName: ALPHA_PACKAGE,
+				appIcon: "",
+				description: "",
+				minInstalls: 0,
+			});
+			expect(
+				data.appItems.find((app) => app.packageName === BETA_PACKAGE),
+			).toMatchObject({ appName: "Beta Reader" });
+			expect(data.appPatchesMap[ALPHA_PACKAGE]).toHaveLength(3);
+			expect(data.stats).toMatchObject({ appsCount: 2, bundlesCount: 2 });
+		},
+	);
+
 	it("combines accent-insensitive multiword search with category filtering", () => {
 		const data = buildCatalog(catalog);
 		expect(

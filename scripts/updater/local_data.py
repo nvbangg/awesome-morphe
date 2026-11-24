@@ -41,7 +41,7 @@ def parse_timestamp(timestamp: Any) -> int:
 
 
 def compute_app_hash(raw_patches: list[dict]) -> str:
-    sorted_patches = sorted(raw_patches, key=lambda patch: patch.get("name", ""))
+    sorted_patches = sorted(raw_patches, key=lambda patch: patch["name"])
     content = json.dumps(sorted_patches, sort_keys=True, ensure_ascii=False).encode("utf-8")
     return hashlib.md5(content).hexdigest()[:16]
 
@@ -249,7 +249,7 @@ def process(
             packages = (
                 compat
                 if isinstance(compat, dict)
-                else [item.get("packageName") for item in compat if isinstance(item, dict) and item.get("packageName")]
+                else [item["packageName"] for item in compat if item["packageName"]]
                 if isinstance(compat, list)
                 else []
             ) or [PACKAGE_UNIVERSAL]

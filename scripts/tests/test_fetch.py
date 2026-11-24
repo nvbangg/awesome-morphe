@@ -359,6 +359,7 @@ class TestBundleFetch:
             ("metadata", 503),
             ("mpp", "network"),
             ("mpp", "invalid-url"),
+            ("patches", 403),
             ("patches", 451),
         ),
     )
@@ -464,16 +465,6 @@ class TestBundleFetch:
         ]
         with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
             assert not any(bundle_fetch.collect_fetch_errors(results).values())
-
-    @pytest.mark.parametrize("code", (403, 451))
-    def test_patch_list_request_errors_do_not_trigger_parsing(self, code) -> None:
-        for branch in DEFAULT_BRANCHES:
-            url = self.url(branch, "patches-list.json")
-            self.responses[url] = self.http_error(url, code)
-        with patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES):
-            bundle_fetch.fetch_all_repos()
-        self.run_process.assert_not_called()
-        assert load_json(self.repos_path) == self.initial_repos
 
     def test_failed_parser_batch_does_not_confirm_branches(
         self,

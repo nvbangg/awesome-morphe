@@ -29,11 +29,11 @@ export const compatibilitySchema = z.object({
 });
 
 export const appMetadataSchema = z.object({
-	name: z.string(),
-	iconUrl: z.string(),
-	description: z.string().default(""),
-	minInstalls: z.number(),
-	category: z.string(),
+	name: z.string().catch(""),
+	iconUrl: z.string().catch(""),
+	description: z.string().catch(""),
+	minInstalls: z.number().catch(0),
+	category: z.string().catch(""),
 	firstSeen: z.number(),
 	updatedAt: z.number().optional(),
 	isPreRelease: z.boolean().optional(),

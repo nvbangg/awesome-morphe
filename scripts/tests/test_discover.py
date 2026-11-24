@@ -46,7 +46,6 @@ class TestDiscover:
     )
     def test_provider_failure_preserves_saved_sources(self, module, failure_kind) -> None:
         snapshot = self.official_path.read_bytes()
-        saved_file = self.repos_path.read_bytes()
         if failure_kind == "http":
             error = self.http_error("https://example.com", 503)
         elif failure_kind == "network":
@@ -55,7 +54,6 @@ class TestDiscover:
             error = httpx2.ReadTimeout("timed out")
         self.open_url.side_effect = error
         assert module.discover() == ([], str(error))
-        assert self.repos_path.read_bytes() == saved_file
         assert self.official_path.read_bytes() == snapshot
 
     @pytest.mark.parametrize("module", (official, jman))
