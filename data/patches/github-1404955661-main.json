@@ -1,40 +1,11 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.30.65",
+  "version": "0.30.66",
   "patches": [
     {
-      "name": "AMOLED Dark Mode For UI",
-      "description": "Makes the dark UI pure black.",
-      "default": false,
-      "category": "UI Customization",
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.waze",
-          "name": "Waze",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#33CCFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.28.4.900",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Alert distances",
-      "description": "How early alerts sound, plus a speed-bump switch and per-alert distances.",
-      "default": true,
+      "description": "How early alerts sound, plus a speed-bump switch and per-alert distances. Pick a level; Standard changes nothing.",
+      "default": false,
       "category": "Map & Alerts",
       "dependencies": [
         "BytecodePatch"
@@ -62,10 +33,10 @@
         {
           "key": "level",
           "title": "Alert distance level",
-          "description": "Standard is Waze's own. Moderate and Heavier warn earlier - about 1.5x and 2.5x on average; cameras change more than police.",
+          "description": "Moderate warns about 1.5x earlier, Heavier about 2.5x. Standard writes Waze's own numbers back, i.e. changes nothing.",
           "required": false,
           "type": "kotlin.String",
-          "default": "Standard",
+          "default": "Moderate",
           "values": {
             "Standard (1x)": "Standard",
             "Moderate (about 1.5x)": "Moderate",
@@ -161,6 +132,15 @@
           "type": "kotlin.Int",
           "default": 0,
           "values": null
+        },
+        {
+          "key": "cameras",
+          "title": "Speed cameras - all types",
+          "description": "0 = keep the preset. In most countries Waze uses this one distance for every camera type; set it if camera alerts do not move.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
         }
       ]
     },
@@ -205,7 +185,7 @@
       "name": "Any audio app as a Waze audio partner",
       "description": "Adds a music app of your choice to Waze's audio player, even though it does not ship Waze's SDK. It only needs a media browser service, like Android Auto. Default: BitChord.",
       "default": false,
-      "category": null,
+      "category": "Audio & Partners",
       "dependencies": [
         "ResourcePatch",
         "BytecodePatch"
@@ -467,7 +447,9 @@
       "description": "Zooms the map on the car screen.",
       "default": false,
       "category": "Experimental",
-      "dependencies": [],
+      "dependencies": [
+        "BytecodePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.waze",
@@ -755,11 +737,11 @@
       "options": [
         {
           "key": "large",
-          "title": "Large cluster layout",
-          "description": "Uses the bigger layout on the cluster. Stock: small.",
+          "title": "Light-commercial-vehicle mode (LCV)",
+          "description": "Forces AAOS_LCV_SUPPORT_ENABLED. It is Waze's large-commercial-vehicle support (dimension bounds in millimetres), not a cluster layout size - off by default.",
           "required": false,
           "type": "kotlin.Boolean",
-          "default": true,
+          "default": false,
           "values": null
         }
       ]
@@ -955,10 +937,10 @@
       "options": []
     },
     {
-      "name": "No Android Auto telemetry",
-      "description": "Stops Waze sending Android Auto screen-switch timings to its analytics.",
+      "name": "No usage stats",
+      "description": "Stops Waze building, storing and uploading usage statistics, and turns off its background thread-responsiveness monitors. Driving, reports and alerts are unaffected.",
       "default": false,
-      "category": "Android Auto",
+      "category": "Privacy & Updates",
       "dependencies": [
         "BytecodePatch"
       ],
@@ -1051,6 +1033,35 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops crash reports, usage analytics and performance data leaving the app. Traffic reporting and alerts keep working.",
+      "default": false,
+      "category": "Privacy & Updates",
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.28.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Rename app",
@@ -1401,6 +1412,11 @@
             "AMOLED Mint": "AMOLED Mint",
             "AMOLED Ice": "AMOLED Ice",
             "AMOLED Peach": "AMOLED Peach",
+            "AMOLED Rose": "AMOLED Rose",
+            "AMOLED Copper": "AMOLED Copper",
+            "AMOLED Lime": "AMOLED Lime",
+            "AMOLED Sand": "AMOLED Sand",
+            "AMOLED Steel": "AMOLED Steel",
             "Dark Purple": "Dark Purple",
             "Dark Emerald": "Dark Emerald",
             "Dark Blue": "Dark Blue",
@@ -1431,6 +1447,11 @@
             "AMOLED Mint": "AMOLED Mint",
             "AMOLED Ice": "AMOLED Ice",
             "AMOLED Peach": "AMOLED Peach",
+            "AMOLED Rose": "AMOLED Rose",
+            "AMOLED Copper": "AMOLED Copper",
+            "AMOLED Lime": "AMOLED Lime",
+            "AMOLED Sand": "AMOLED Sand",
+            "AMOLED Steel": "AMOLED Steel",
             "Dark Purple": "Dark Purple",
             "Dark Emerald": "Dark Emerald",
             "Dark Blue": "Dark Blue",
@@ -1473,10 +1494,71 @@
       "options": []
     },
     {
+      "name": "UI Themes",
+      "description": "Chrome colour themes, picked separately for light and dark mode. Stock leaves each mode untouched.",
+      "default": false,
+      "category": "UI Customization",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.28.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "lightTheme",
+          "title": "Light theme",
+          "description": "Applies in light mode: window, sheets, chips, text. Stock leaves light mode as Waze built it.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Stock",
+          "values": {
+            "Stock": "Stock",
+            "Pure White": "Pure White",
+            "Paper": "Paper",
+            "Porcelain": "Porcelain",
+            "Linen": "Linen"
+          }
+        },
+        {
+          "key": "darkTheme",
+          "title": "Dark theme",
+          "description": "Applies in light-off mode. Pure Black is the original AMOLED row; Stock leaves dark mode untouched.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "AMOLED Pure Black",
+          "values": {
+            "Stock": "Stock",
+            "AMOLED Pure Black": "AMOLED Pure Black",
+            "AMOLED Ink": "AMOLED Ink",
+            "AMOLED Slate": "AMOLED Slate",
+            "Dark Graphite": "Dark Graphite",
+            "Dark Navy": "Dark Navy"
+          }
+        }
+      ]
+    },
+    {
       "name": "Unlock driver moods",
       "description": "Unlocks all moods on the device.",
       "default": true,
-      "category": null,
+      "category": "UI Customization",
       "dependencies": [
         "ResourcePatch"
       ],
@@ -1505,7 +1587,7 @@
       "name": "YouTube Music as a Waze audio partner",
       "description": "Lets Morphe YouTube Music and stock YouTube Music play through Waze's audio player.",
       "default": true,
-      "category": null,
+      "category": "Audio & Partners",
       "dependencies": [
         "ResourcePatch",
         "BytecodePatch"

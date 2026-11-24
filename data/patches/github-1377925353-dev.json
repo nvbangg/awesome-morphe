@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.10.0-dev.11",
+  "version": "1.10.0-dev.12",
   "apps": [
     {
       "packageName": "com.adobe.reader",
@@ -364,6 +364,7 @@
       ],
       "patchNames": [
         "Clean Authentication",
+        "Clean Home",
         "Configure Shortcuts",
         "Enable App Debugging",
         "Hide Sezzle Mobile",
@@ -372,8 +373,8 @@
         "Remove Promos & Giveaways",
         "Remove Rewards",
         "Remove Sezzle Subscriptions",
+        "Rename Shop to Home",
         "Replace AI Discover with Products",
-        "Replace Shop with Home",
         "Suppress In-App Updates and Rating Prompts",
         "Unlock Custom App Icons",
         "Unlock Developer Settings",
@@ -907,6 +908,70 @@
       ]
     },
     {
+      "name": "Clean Home",
+      "description": "Removes store/brand carousels and promotional banners from the Home tab, with an optional shortcut-row cleanup.",
+      "default": true,
+      "category": "Interface",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sezzle.sezzlemobile",
+          "name": "Sezzle",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#5C2C94",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.3.24",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "removeShortcuts",
+          "title": "Remove Shortcuts",
+          "description": "Hides the Your Shortcuts row and its quick-action pills. Disabled by default so the Home tab keeps its shortcuts.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "removeBrands",
+          "title": "Remove Store and Brand Carousels",
+          "description": "Removes the store header, category store lists, and brand carousels.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removePromotions",
+          "title": "Remove Promotional Banners",
+          "description": "Removes the Home deal, cashback, and subscription promotional banners.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "removeSezzleSpendBanner",
+          "title": "Remove Sezzle Spend Balance Banner",
+          "description": "Hides the floating Sezzle Spend balance notification. It represents real spendable balance, so this is opt-in.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Clone App",
       "description": "Changes the package name so this build installs alongside the original Canvas Student. The clone has separate app data. Re-signed or cloned App Links, push notifications, and package/certificate-bound services may not work; verify login, sharing, and document viewing.",
       "default": false,
@@ -1032,6 +1097,33 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        },
+        {
+          "key": "hideSezzlePoints",
+          "title": "Hide Sezzle Points",
+          "description": "Hides the Sezzle Points shortcut from the Your Shortcuts carousel.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideSezzleSpend",
+          "title": "Hide Sezzle Spend",
+          "description": "Hides the Sezzle Spend shortcut from the Your Shortcuts carousel.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hideSezzleUp",
+          "title": "Hide Sezzle Up",
+          "description": "Hides the Sezzle Up shortcut from the Your Shortcuts carousel.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         }
       ]
@@ -2569,7 +2661,7 @@
     },
     {
       "name": "Remove Sezzle Subscriptions",
-      "description": "Removes references to Sezzle Anywhere and Sezzle Premium subscriptions in Account benefits, Wallet, and Orders help.",
+      "description": "Removes references to Sezzle Anywhere and Sezzle Premium subscriptions in Account benefits, the Home gift card carousel, Wallet, and Orders help.",
       "default": false,
       "category": "Interface",
       "dependencies": [],
@@ -2592,7 +2684,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "removeHomeGiftCards",
+          "title": "Remove Gift Cards from Home",
+          "description": "Hides the Home Most Popular Gift Cards carousel. Gift cards require an active Sezzle Anywhere subscription.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Remove Shipment Sync",
@@ -3446,6 +3548,33 @@
       "options": []
     },
     {
+      "name": "Rename Shop to Home",
+      "description": "Renames the Shop bottom navigation tab to Home.",
+      "default": true,
+      "category": "Interface",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sezzle.sezzlemobile",
+          "name": "Sezzle",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#5C2C94",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.3.24",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Replace AI Discover with Products",
       "description": "Replaces the AI Discover navigation tab with Sezzle's original non-AI Products tab and removes the Sezzle AI callout in search. Includes an option to remove the Products tab completely.",
       "default": true,
@@ -3508,33 +3637,6 @@
             },
             {
               "version": "1.72.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Replace Shop with Home",
-      "description": "Replaces the Shop bottom navigation tab with Home, a custom screen to replace the overly-commercial Shop screen.",
-      "default": true,
-      "category": "Interface",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.sezzle.sezzlemobile",
-          "name": "Sezzle",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#5C2C94",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.3.24",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 24,
