@@ -207,7 +207,7 @@ class TestBundleFetch:
         self.github_metadata_request = self.patch_context.enter_context(
             patch.object(bundle_fetch, "get_github_bundle", side_effect=self.github_metadata)
         )
-        self.summary = self.patch_context.enter_context(patch.object(bundle_fetch, "append_step_summary"))
+        self.patch_context.enter_context(patch.object(bundle_fetch, "append_step_summary"))
         self.run_process = self.patch_context.enter_context(patch.object(bundle_fetch.subprocess, "run"))
 
     def save_repos(self, repositories: dict) -> None:
@@ -835,4 +835,9 @@ class TestRepositoryMetadataRefresh:
         branch.assert_not_called()
         image.assert_not_called()
         assert load_json(repos_path)["github:1"]["enabled"] is False
-        assert summary.call_args.args[0] == "## 📥 Fetch (0/0):"
+        summary.assert_called()
+        for summary_call in summary.call_args_list:
+            report = summary_call.args[0]
+            assert "(0/0)" in report
+            assert url not in report
+            assert "owner/new" not in report

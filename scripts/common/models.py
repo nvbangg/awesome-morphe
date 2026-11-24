@@ -1,4 +1,4 @@
-from typing import Annotated, Any, NotRequired, TypedDict
+from typing import Annotated, NotRequired, TypedDict
 
 from pydantic import Field, OnErrorOmit, TypeAdapter, with_config
 
@@ -44,7 +44,7 @@ class Patch(TypedDict):
 
 @with_config(strict=True)
 class PatchList(TypedDict):
-    patches: list[Any]
+    patches: list[OnErrorOmit[Patch]]
 
 
 @with_config(strict=True, extra="allow")
@@ -139,7 +139,6 @@ class GitLabRepository(TypedDict):
 
 
 BUNDLE_MANIFEST = TypeAdapter(BundleManifest)
-PATCH = TypeAdapter(Patch)
 PATCH_LIST = TypeAdapter(PatchList)
 SOURCES = TypeAdapter(dict[str, SourceConfig])
 PROJECTS = TypeAdapter(ProjectLists)

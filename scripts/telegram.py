@@ -9,7 +9,6 @@ from pathlib import Path
 
 import httpx2
 
-from common.constants import WHATS_NEW_PATH
 from common.http import request
 
 
@@ -47,7 +46,7 @@ def convert_to_html(text: str) -> str:
     return formatted_text
 
 
-def send_notification(title: str | None = None, filepath: Path = WHATS_NEW_PATH) -> None:
+def send_notification(title: str | None, filepath: Path) -> None:
     current_time = datetime.now(UTC)
     formatted_date = f"{current_time.strftime('%B')} {current_time.day}"
     title = title if title is not None else f"🔔 What's New ({formatted_date})"

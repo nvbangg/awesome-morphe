@@ -507,8 +507,8 @@ def fetch_all_repos(daily: bool = False) -> None:
         metadata = repos_data[result.repo_id]
         grouped_results.setdefault(result.repo_id, []).append(result)
         if result.status_changed:
+            updated_count += result.new_sha is not None or metadata.get(result.branch) is not None
             metadata[result.branch] = result.new_sha
-            updated_count += 1
     for repo_id, branch_results in grouped_results.items():
         metadata = repos_data[repo_id]
         preferred = next((branch for branch in DEFAULT_BRANCHES if metadata.get(branch)), None)

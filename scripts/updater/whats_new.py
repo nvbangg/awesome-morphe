@@ -78,7 +78,7 @@ def make_url(
 def get_app_sort_key(
     package_name: str,
     app_metadata: dict,
-    patch_count: int = 0,
+    patch_count: int,
 ) -> tuple:
     is_universal = 1 if package_name == PACKAGE_UNIVERSAL else 0
     app_name = format_app_name(package_name, app_metadata)
@@ -105,7 +105,7 @@ def extract_bundle_metadata(
         if not repo_url:
             continue
         bundle_names[repo_url] = bundle.get("name") or repo.split("/")[-1]
-        bundle_order[repo_url] = bundle["hotRank"]
+        bundle_order[bundle["id"]] = bundle["hotRank"]
 
     return bundle_names, bundle_order
 
@@ -139,9 +139,8 @@ def build_json_diff(
     new_bundles: dict,
     app_metadata: dict,
     bundle_order: dict[str, int],
-    app_patch_counts: dict[str, int] | None = None,
+    app_patch_counts: dict[str, int],
 ) -> dict:
-    app_patch_counts = app_patch_counts or {}
     json_diff: dict = {}
 
     for repo_url, patches_dict in sorted(
@@ -155,7 +154,7 @@ def build_json_diff(
             key=lambda package_name: get_app_sort_key(
                 package_name,
                 app_metadata,
-                app_patch_counts.get(package_name, len(patches_dict[package_name])),
+                app_patch_counts[package_name],
             ),
         ):
             if package_name not in old_patches_dict:
@@ -199,9 +198,8 @@ def generate_markdown(
     old_history: dict,
     app_metadata: dict,
     bundle_names: dict,
-    app_patch_counts: dict[str, int] | None = None,
+    app_patch_counts: dict[str, int],
 ) -> str:
-    app_patch_counts = app_patch_counts or {}
     known_patches_by_app: dict[str, set[str]] = {}
     for bundle in old_history.values():
         for package_name, patches in bundle.items():
@@ -276,7 +274,7 @@ def generate_markdown(
             key=lambda package_name: get_app_sort_key(
                 package_name,
                 app_metadata,
-                app_patch_counts.get(package_name, len(new_apps_map[package_name])),
+                app_patch_counts[package_name],
             ),
         )
         for package_name in sorted_new_packages[:NEW_ENTRY_LIMIT]:
@@ -298,7 +296,7 @@ def generate_markdown(
             key=lambda package_name: get_app_sort_key(
                 package_name,
                 app_metadata,
-                app_patch_counts.get(package_name, len(existing_apps_new_patches_map[package_name])),
+                app_patch_counts[package_name],
             ),
         )
         total_apps = len(sorted_packages)
@@ -342,13 +340,12 @@ def generate(
         for repo_url, bundle_apps in current_bundles.items()
     }
     bundle_urls = {bundle["id"]: f"https://{bundle['source']}.com/{bundle['repo']}" for bundle in bundles}
-    id_order = {repo_id: bundle_order[url] for repo_id, url in bundle_urls.items()}
     app_patch_counts = count_app_patches(new_bundles)
     json_diff = build_json_diff(
         old_history,
         new_bundles,
         app_metadata,
-        id_order,
+        bundle_order,
         app_patch_counts,
     )
 

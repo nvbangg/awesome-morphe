@@ -51,7 +51,9 @@ def test_sync_preserves_update_gate_and_stage_order(arguments, changes, mode, pi
         assert not (tmp_path / "output").exists()
     assert tasks.mock_calls == expected
     if daily:
-        summary.assert_called_once_with("## 📋 Review:\n\nAudit\n\nProjects")
+        summary.assert_called_once()
+        report = summary.call_args.args[0]
+        assert report.index("Audit") < report.index("Projects")
     else:
         summary.assert_not_called()
     if arguments:

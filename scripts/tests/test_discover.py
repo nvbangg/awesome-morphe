@@ -19,14 +19,6 @@ class TestDiscover:
         self.repos_path = self.root / "repos.json"
         self.official_path = self.root / "official-bundles.json"
         self.saved_sources = {"https://github.com/owner/saved": {}}
-        self.saved_repos = {
-            "https://github.com/owner/saved": {
-                "name": "Saved bundle",
-                "main": "saved-sha",
-                "dev": None,
-                "image": "image-sha",
-            }
-        }
         save_json(self.official_path, {"bundles": [], "store": {"saved": {}}})
         save_json(self.custom_path, {})
         save_json(
@@ -45,7 +37,7 @@ class TestDiscover:
             patch.object(official, "OFFICIAL_BUNDLES_PATH", self.official_path),
         ):
             self.patch_context.enter_context(patcher)
-        self.summary = self.patch_context.enter_context(patch.object(discover, "append_step_summary"))
+        self.patch_context.enter_context(patch.object(discover, "append_step_summary"))
         self.open_url = block_network
 
     @pytest.mark.parametrize(

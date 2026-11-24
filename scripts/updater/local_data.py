@@ -18,7 +18,7 @@ from common.constants import (
     PATCHES_DIR,
 )
 from common.files import load_json
-from common.models import BUNDLE_MANIFEST, PATCH, PATCH_LIST, Patch, PatchVersion
+from common.models import BUNDLE_MANIFEST, PATCH_LIST, Patch, PatchVersion
 from common.repositories import build_repo_url
 
 _BUNDLE_NAME_SUFFIX_RE = re.compile(
@@ -117,18 +117,12 @@ def parse_patches_list(
         raw_list = PATCH_LIST.validate_python(raw_patches_data)["patches"]
     except ValidationError:
         return None, "Invalid data"
-    if not raw_list:
+    if not raw_patches_data["patches"]:
         return None, "No patches found"
 
     valid_patches = []
-    validated_patches = []
     bundle_apps = set()
-    for raw_patch in raw_list:
-        try:
-            patch = PATCH.validate_python(raw_patch)
-        except ValidationError:
-            continue
-        validated_patches.append(patch)
+    for patch in raw_list:
         if is_dev_branch and main_patch_names and patch["name"] not in main_patch_names:
             patch["isPreRelease"] = True
         patch_dict = strip_patch(patch, discovered_names)
@@ -146,7 +140,7 @@ def parse_patches_list(
     if bundle_apps == {PACKAGE_EXAMPLE}:
         return None, "Only contains `com.example.app`"
 
-    raw_patches_data["patches"] = validated_patches
+    raw_patches_data["patches"] = raw_list
     return valid_patches, None
 
 
@@ -171,14 +165,9 @@ def load_branch_data(
         return None, None, None, "Missing `patches-list.json`"
     try:
         raw = load_json(list_file)
-        patches, reason = parse_patches_list(
-            raw,
-            discovered_names,
-            is_dev_branch,
-            main_patch_names,
-        )
-    except (AttributeError, TypeError, ValueError):
+    except (json.JSONDecodeError, UnicodeDecodeError):
         return None, None, None, "Invalid data"
+    patches, reason = parse_patches_list(raw, discovered_names, is_dev_branch, main_patch_names)
     if not patches:
         return None, None, None, reason
     return bundle, patches, raw["patches"], None
@@ -189,8 +178,8 @@ def process(
     apps_dict: dict,
     repos_data: dict,
     existing_hashes: dict,
-    errors: list[str] | None = None,
-    existing_bundles: dict | None = None,
+    errors: list[str],
+    existing_bundles: dict,
 ) -> dict[str, dict[str, str]]:
     keys_to_remove = []
     now_ms = int(time.time() * 1000)
@@ -229,7 +218,7 @@ def process(
         branch_errors = [(branch, reason) for branch, reason in (("main", main_reason), ("dev", dev_reason)) if reason]
         if not (main_patches or dev_patches):
             keys_to_remove.append(repo_id)
-            if errors is not None and branch_errors:
+            if branch_errors:
                 reason = (
                     main_reason
                     if main_reason and main_reason == dev_reason
@@ -272,7 +261,7 @@ def process(
         )
         current_apps_in_bundle: set[str] = set()
 
-        existing_bundle = (existing_bundles or {}).get(repo_id, {})
+        existing_bundle = existing_bundles.get(repo_id, {})
         existing_patches = {
             patch["name"]: patch
             for patch in existing_bundle.get("patches", [])

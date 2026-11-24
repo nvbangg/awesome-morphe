@@ -51,7 +51,6 @@ class TestBundleUpdate:
         self.repos_path = self.root / "repos.json"
         self.public_path = self.root / "catalog.json"
         self.state_path = self.root / "state.json"
-        self.custom_path = self.root / "custom.json"
         self.official_path = self.root / "official.json"
         self.discovery_path = self.root / "discovery.json"
         save_json(self.discovery_path, {"providers": {}, "repositories": {}})
@@ -61,7 +60,6 @@ class TestBundleUpdate:
             self.repos_path,
             self.public_path,
             self.state_path,
-            self.custom_path,
         ]
         for path in [*self.state_paths, self.official_path]:
             save_json(path, {})
@@ -227,6 +225,7 @@ class TestBundleUpdate:
         (
             "missing-file",
             "invalid-json",
+            "invalid-encoding",
             "empty-patches",
             "template-only",
             "invalid-compatibility",
@@ -239,6 +238,7 @@ class TestBundleUpdate:
         else:
             content = {
                 "invalid-json": b"{broken",
+                "invalid-encoding": b"\xff",
                 "empty-patches": b'{"patches": []}',
                 "template-only": json.dumps({"patches": [self.app_patch(package_name="com.example.app")]}).encode(),
                 "invalid-compatibility": b'{"patches": [{"name": "Patch", "compatiblePackages": {"com.test.app": 5}}]}',

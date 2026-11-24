@@ -72,7 +72,7 @@ def main(argv: list[str] | None = None) -> int:
         help=f"Markdown file (default: {WHATS_NEW_PATH.relative_to(ROOT_DIR).as_posix()})",
     )
     args = parser.parse_args(argv)
-    daily = getattr(args, "daily", False)
+    daily = args.daily
     if args.task not in (None, "fetch", "update") and daily:
         parser.error(f"{args.task} does not accept --daily")
 

@@ -1,6 +1,6 @@
 # Copyright (c) 2026 nvbangg (github.com/nvbangg)
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 
 from common.constants import CUSTOM_JSON_PATH, DISCOVERY_JSON_PATH
 from common.files import load_json, save_json
@@ -18,9 +18,8 @@ PROVIDER_MODULES = {"official": official, "morphe-archive": morphe_archive, "jma
 def _run_providers(providers: dict[str, list[str]]) -> list[str]:
     warnings = []
     with ThreadPoolExecutor(max_workers=len(PROVIDER_MODULES)) as executor:
-        futures = {executor.submit(module.discover): name for name, module in PROVIDER_MODULES.items()}
-        for future in as_completed(futures):
-            name = futures[future]
+        futures = {name: executor.submit(module.discover) for name, module in PROVIDER_MODULES.items()}
+        for name, future in futures.items():
             discovered, error = future.result()
             if discovered:
                 providers[name] = sorted(set(discovered))
