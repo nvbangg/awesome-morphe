@@ -22,10 +22,20 @@
 
 </div>
 
+### 🔗 Jump to:
+
+- [📂 Project Structure](#project-structure)
+- [💻 Local Development](#local-development)
+  - [🌐 Website](#website)
+  - [🐍 Scripts](#local-scripts)
+- [🤖 Automation Workflows](#automation-workflows)
+- [🛠️ Script Logic](#script-logic)
+- [🌐 Website Logic](#website-logic)
+
 > [!NOTE]
 > This document describes the project structure, automation workflows, and data-processing logic behind the [Awesome Morphe Website](https://awesome-morphe.pages.dev/).
 
-## 📂 Project Structure
+## <a id="project-structure"></a> 📂 Project Structure
 
 ```text
 awesome-morphe/
@@ -42,9 +52,9 @@ awesome-morphe/
 └── README.md
 ```
 
-## 💻 Local Development
+## <a id="local-development"></a> 💻 Local Development
 
-### 🌐 Website
+### <a id="website"></a> 🌐 Website
 
 Run the following commands from [`web/`](./web/) (`cd web` from the repository root).
 
@@ -76,7 +86,7 @@ pnpm test
 pnpm test:e2e
 ```
 
-### 🐍 Scripts
+### <a id="local-scripts"></a> 🐍 Scripts
 
 Run the following commands from [`scripts/`](./scripts/) (`cd scripts` from the repository root).
 
@@ -127,7 +137,7 @@ uv run ty check
 uv run pytest
 ```
 
-## 🤖 Automation Workflows
+## <a id="automation-workflows"></a> 🤖 Automation Workflows
 
 ### [Sync Workflow](../../actions/workflows/sync.yml) ([sync.yml](./.github/workflows/sync.yml))
 
@@ -153,7 +163,7 @@ flowchart TD
     Daily -->|No| Done
 ```
 
-## 🛠️ Scripts
+## <a id="script-logic"></a> 🛠️ Script Logic
 
 Core automation scripts are written in Python under [`scripts/`](./scripts/).
 
@@ -195,8 +205,6 @@ Add sources to [`data/custom.json`](./data/custom.json), or set `enabled: false`
   }
 }
 ```
-
-A GitHub or GitLab owner URL with `enabled: false` disables that owner's repositories. Run discovery after configuration changes.
 
 ### Fetch bundle data ([fetch.py](./scripts/fetch.py))
 
@@ -264,7 +272,7 @@ Sends Markdown using `TG_TOKEN` and `TG_CHAT`. Skips missing or empty files.
 - **`"Custom Title"`:** Sets the title.
 - **`"Custom Title" "path/to/file.md"`:** Sets the title and input file.
 
-## 🌐 Website Logic
+## <a id="website-logic"></a> 🌐 Website Logic
 
 Loads the catalog from [`web/public/bundles.json`](./web/public/bundles.json) and What's New from [`web/public/whats-new.json`](./web/public/whats-new.json).
 
