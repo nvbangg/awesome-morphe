@@ -245,23 +245,28 @@ class TestDiscover:
         assert self.custom_path.read_bytes() == before
 
     @pytest.mark.parametrize("unblock", ("remove", "override"))
-    def test_owner_rule_disables_exact_owner_and_can_be_cleared(self, unblock) -> None:
-        owner_url = "https://github.com/OWNER/"
+    @pytest.mark.parametrize("source", ("github", "gitlab"))
+    def test_owner_rule_disables_exact_owner_and_can_be_cleared(self, unblock, source) -> None:
+        owner_url = f"https://{source}.com/OWNER/"
+        owner_base = f"https://{source}.com/owner"
+        other_source = "gitlab" if source == "github" else "github"
         custom = {
             owner_url: {"enabled": False, "note": "Private"},
-            "https://github.com/owner/manual": {"enabled": True, "revancedStars": 5},
-            "https://github.com/other/disabled": {"enabled": False},
+            f"{owner_base}/manual": {"enabled": True, "revancedStars": 5},
+            f"https://{source}.com/other/disabled": {"enabled": False},
         }
         registry = {
             "providers": {
                 "official": [
-                    "https://github.com/owner/saved",
-                    "https://github.com/owner/new",
-                    "https://github.com/owner-extra/repo",
-                    "https://gitlab.com/owner/repo",
+                    f"{owner_base}/saved",
+                    f"{owner_base}/new",
+                    f"https://{source}.com/owner-extra/repo",
+                    f"https://{other_source}.com/owner/repo",
+                    "https://gitlab.com/owner/subgroup/nested/repo",
+                    "https://gitlab.com/other/owner/repo",
                 ]
             },
-            "repositories": {"https://github.com/owner/saved": {"id": "github:1", "etag": 'W/"saved"'}},
+            "repositories": {f"{owner_base}/saved": {"id": f"{source}:1", "etag": 'W/"saved"'}},
         }
         save_json(self.repos_path, registry)
         save_json(self.custom_path, custom)
@@ -270,26 +275,29 @@ class TestDiscover:
             assert discover.run() == 0
             repositories = load_json(self.repos_path)["repositories"]
             assert repositories == {
-                "https://github.com/owner/saved": {"enabled": False, "id": "github:1", "etag": 'W/"saved"'},
-                "https://github.com/owner/new": {"enabled": False},
-                "https://github.com/owner/manual": {"enabled": False, "revancedStars": 5},
-                "https://github.com/owner-extra/repo": {},
-                "https://gitlab.com/owner/repo": {},
-                "https://github.com/other/disabled": {"enabled": False},
+                f"{owner_base}/saved": {"enabled": False, "id": f"{source}:1", "etag": 'W/"saved"'},
+                f"{owner_base}/new": {"enabled": False},
+                f"{owner_base}/manual": {"enabled": False, "revancedStars": 5},
+                f"https://{source}.com/owner-extra/repo": {},
+                f"https://{other_source}.com/owner/repo": {},
+                "https://gitlab.com/owner/subgroup/nested/repo": {"enabled": False} if source == "gitlab" else {},
+                "https://gitlab.com/other/owner/repo": {},
+                f"https://{source}.com/other/disabled": {"enabled": False},
             }
             assert self.custom_path.read_bytes() == before
             if unblock == "remove":
                 custom.pop(owner_url)
             else:
-                custom["https://github.com/owner"] = {}
+                custom[owner_base] = {}
             save_json(self.custom_path, custom)
             before = self.custom_path.read_bytes()
             assert discover.run() == 0
         repositories = load_json(self.repos_path)["repositories"]
-        assert repositories["https://github.com/owner/saved"] == {"id": "github:1", "etag": 'W/"saved"'}
-        assert repositories["https://github.com/owner/new"] == {}
-        assert repositories["https://github.com/owner/manual"] == {"revancedStars": 5}
-        assert repositories["https://github.com/other/disabled"]["enabled"] is False
+        assert repositories[f"{owner_base}/saved"] == {"id": f"{source}:1", "etag": 'W/"saved"'}
+        assert repositories[f"{owner_base}/new"] == {}
+        assert repositories[f"{owner_base}/manual"] == {"revancedStars": 5}
+        assert repositories["https://gitlab.com/owner/subgroup/nested/repo"] == {}
+        assert repositories[f"https://{source}.com/other/disabled"]["enabled"] is False
         assert self.custom_path.read_bytes() == before
 
     def test_empty_sources_stop_without_replacing_saved_discovery(self) -> None:

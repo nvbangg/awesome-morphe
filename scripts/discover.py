@@ -41,9 +41,10 @@ def run() -> int:
     owner_rules = {}
     for url, config in custom.items():
         url = url.lower()
-        owner = url.removeprefix("https://github.com/").rstrip("/")
-        if url.startswith("https://github.com/") and owner and "/" not in owner:
-            owner_rules[url.rstrip("/")] = config.get("enabled") is False
+        owner_url = url.rstrip("/")
+        owner_base, _, owner = owner_url.rpartition("/")
+        if owner_base in ("https://github.com", "https://gitlab.com") and owner:
+            owner_rules[owner_url] = config.get("enabled") is False
             continue
         repositories[url] = {
             field: value
@@ -71,7 +72,7 @@ def run() -> int:
         return 1
 
     for url, config in repositories.items():
-        if owner_rules.get(url.rsplit("/", 1)[0]):
+        if any(disabled and url.startswith(f"{owner_url}/") for owner_url, disabled in owner_rules.items()):
             config["enabled"] = False
         previous = registry["repositories"].get(url, {})
         for field in ("id", "etag"):
