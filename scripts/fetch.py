@@ -98,6 +98,14 @@ class BundleDownloads:
                 raise
         return future.result()
 
+    def verify(self, url: str, source: str) -> None:
+        with self.lock:
+            download = self.futures.get(url)
+        if download is not None:
+            download.result()
+        else:
+            get_remote_file_hash(url, source, "exists")
+
 
 class RepositoryDetails:
     def __init__(self, discovered: dict | None = None, existing: dict | None = None) -> None:
@@ -143,6 +151,7 @@ class BranchFetchResult:
     bundle_name: str | None = None
     error_message: str | None = None
     error_category: str | None = None
+    verification_url: str | None = None
 
     @property
     def target_name(self) -> str:
@@ -226,22 +235,13 @@ def process_repo_branch(
             True,
         )
     if current_sha and remote_sha == current_sha and has_local_data:
+        verification_url = None
         if daily:
             try:
-                mpp_url = BUNDLE_MANIFEST.validate_python(load_json(bundle_file))["download_url"]
+                verification_url = BUNDLE_MANIFEST.validate_python(load_json(bundle_file))["download_url"]
             except ValidationError:
                 return failed("Invalid `download_url`", "metadata", True)
-            try:
-                get_remote_file_hash(mpp_url, source, "exists")
-            except httpx2.HTTPStatusError as error:
-                return failed(
-                    str(error),
-                    "bundle",
-                    error.response.status_code in UNAVAILABLE_HTTP_CODES,
-                )
-            except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
-                return failed(str(error), "bundle")
-        return BranchFetchResult(source, repo, branch, current_sha, repo_id=repo_id)
+        return BranchFetchResult(source, repo, branch, current_sha, repo_id=repo_id, verification_url=verification_url)
 
     try:
         if bundle_content is None:
@@ -328,6 +328,29 @@ def process_repo_branch(
         bundle_name=bundle_name,
         repo_id=repo_id,
     )
+
+
+def verify_bundle_downloads(results: list[BranchFetchResult], downloads: BundleDownloads) -> None:
+    targets = [result for result in results if result.verification_url]
+    if not targets:
+        return
+    with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
+        checks = {}
+        for result in targets:
+            url = result.verification_url
+            assert url is not None
+            if url not in checks:
+                checks[url] = executor.submit(downloads.verify, url, result.source)
+        for result in targets:
+            assert result.verification_url is not None
+            try:
+                checks[result.verification_url].result()
+            except (OSError, httpx2.HTTPError, httpx2.InvalidURL, ValueError) as error:
+                result.error_message = str(error)
+                result.error_category = "bundle"
+                if isinstance(error, httpx2.HTTPStatusError) and error.response.status_code in UNAVAILABLE_HTTP_CODES:
+                    result.new_sha = None
+                    result.status_changed = True
 
 
 def run_bundle_parser(targets: list[BranchFetchResult]) -> None:
@@ -529,6 +552,8 @@ def fetch_all_repos(daily: bool = False, repo_group: int | None = None) -> int |
             for task in tasks
         )
         results = [future.result() for future in as_completed(futures)]
+    if daily:
+        verify_bundle_downloads(results, bundle_downloads)
     results.sort(key=lambda result: (result.repo.lower(), result.source, DEFAULT_BRANCHES.index(result.branch)))
     run_bundle_parser([result for result in results if result.needs_parse])
     updated_count = 0

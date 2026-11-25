@@ -570,22 +570,43 @@ class TestBundleFetch:
         assert result.new_sha == ("main-new" if project_id == 1 else None)
         assert (call(download_url) in self.fetch_request.call_args_list) == (project_id == 1)
 
-    def test_daily_unavailable_mpp_clears_sha_and_retains_files(self) -> None:
-        save_json(self.bundles_dir / "github-1-main.json", self.bundle_data)
-        save_json(self.patches_dir / "github-1-main.json", self.patches_data)
-        self.fetch_hash.return_value = "main-old"
-        with patch.object(
-            bundle_fetch,
-            "get_remote_file_hash",
-            side_effect=[
-                self.http_error(self.bundle_data["download_url"], HTTP_NOT_FOUND),
-                "image-old",
-            ],
+    @pytest.mark.parametrize("changed_branch", (None, "main", "dev"))
+    @pytest.mark.parametrize("status_code", (None, HTTP_NOT_FOUND))
+    def test_daily_shared_mpp_is_checked_once_and_preserves_branch_state(self, changed_branch, status_code) -> None:
+        for branch in DEFAULT_BRANCHES:
+            save_json(self.bundles_dir / f"github-1-{branch}.json", self.bundle_data)
+            save_json(self.patches_dir / f"github-1-{branch}.json", self.patches_data)
+        self.fetch_hash.side_effect = lambda url, _source: next(
+            f"{branch}-{'new' if branch == changed_branch else 'old'}"
+            for branch in DEFAULT_BRANCHES
+            if f"/{branch}/" in url
+        )
+
+        def check(url: str, _source: str, _fallback: str) -> str:
+            if url == self.bundle_data["download_url"] and status_code is not None:
+                raise self.http_error(url, status_code)
+            return "image-old"
+
+        with (
+            patch.object(
+                bundle_fetch,
+                "get_remote_file_hash",
+                side_effect=check,
+            ) as checks,
+            patch.object(bundle_fetch, "DEFAULT_BRANCHES", DEFAULT_BRANCHES),
         ):
             bundle_fetch.fetch_all_repos(daily=True)
-        assert load_json(self.repos_path)["github:1"]["main"] is None
-        assert (self.patches_dir / "github-1-main.json").exists()
-        self.fetch_request.assert_not_called()
+        updated_repo = load_json(self.repos_path)["github:1"]
+        for branch in DEFAULT_BRANCHES:
+            expected_sha = f"{branch}-{'new' if branch == changed_branch else 'old'}"
+            assert updated_repo[branch] == (None if changed_branch is None and status_code else expected_sha)
+            assert (self.patches_dir / f"github-1-{branch}.json").exists()
+        assert checks.call_args_list.count(call(self.bundle_data["download_url"], "github", "exists")) == (
+            changed_branch is None
+        )
+        assert self.fetch_request.call_args_list.count(call(self.bundle_data["download_url"])) == (
+            changed_branch is not None
+        )
 
     def test_daily_check_failure_preserves_sha(self) -> None:
         save_json(self.bundles_dir / "github-1-main.json", self.bundle_data)
@@ -599,8 +620,11 @@ class TestBundleFetch:
             result = bundle_fetch.process_repo_branch(
                 "github", "owner/alpha", "main", "main-old", daily=True, repo_id="github:1"
             )
+            bundle_fetch.verify_bundle_downloads([result], bundle_fetch.BundleDownloads())
         assert result.new_sha == "main-old"
         assert not result.status_changed
+        assert result.error_message == "Check failed"
+        assert result.error_category == "bundle"
         self.fetch_request.assert_not_called()
 
     def test_image_updates_are_independent_of_branch_failures(self) -> None:
