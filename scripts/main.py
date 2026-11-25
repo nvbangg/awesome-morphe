@@ -21,26 +21,26 @@ from common.summary import append_step_summary
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Sync Morphe bundles and projects. Without a command, run the normal sync pipeline.",
+        description="Run sync tasks. Without a command, run the normal sync pipeline.",
         epilog="Use uv run main.py COMMAND --help for command details.",
     )
     parser.add_argument("--daily", action="store_true", help="Enable daily refresh for sync, fetch or update")
     commands = parser.add_subparsers(dest="task", title="commands")
     commands.add_parser(
         "audit-readme",
-        help="Check README repositories and links",
-        description="Check README repositories and links",
+        help="Audit README repositories and links",
+        description="Audit README repositories and links",
     )
     commands.add_parser(
         "find-projects",
-        help="Find new projects for manual review",
-        description="Find new projects for manual review",
+        help="Find new projects",
+        description="Find new projects",
     )
-    commands.add_parser("discover", help="Collect bundle sources", description="Collect bundle sources")
+    commands.add_parser("discover", help="Discover bundle sources", description="Discover bundle sources")
     fetch_parser = commands.add_parser(
         "fetch",
-        help="Refresh repository metadata and fetch bundle data",
-        description="Refresh repository metadata and fetch bundle data",
+        help="Fetch bundle data",
+        description="Fetch bundle data",
     )
     fetch_parser.add_argument(
         "--daily",
@@ -49,7 +49,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Also recheck bundle downloads and image hashes",
     )
     update_parser = commands.add_parser(
-        "update", help="Build the catalog from local data", description="Build the catalog from local data"
+        "update", help="Update catalog and app metadata", description="Update catalog and app metadata"
     )
     update_parser.add_argument(
         "--daily",
@@ -59,8 +59,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     notification = commands.add_parser(
         "telegram",
-        help="Send a Markdown notification to Telegram",
-        description="Send a Markdown notification to Telegram.",
+        help="Send Telegram notification",
+        description="Send Telegram notification",
     )
     notification.add_argument(
         "title", nargs="?", metavar="TITLE", help="Notification title (default: generated from the UTC date)"
