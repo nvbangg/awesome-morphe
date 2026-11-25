@@ -1,5 +1,5 @@
 {
-  "version": "v0.2.0",
+  "version": "v0.3.0",
   "appNames": {
     "com.ss.android.ttmd.video": "PineDrama"
   },
@@ -2678,6 +2678,44 @@
       "options": []
     },
     {
+      "name": "Fix search tab names",
+      "description": "Shows the real name on search result tabs when PineDrama is sent a placeholder like ${drama_tab_name} instead. Works as soon as you patch it in, with no switch.",
+      "category": "Search",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": {
+        "com.ss.android.ttmd.video": [
+          "47.7.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "PineDrama",
+          "packageName": "com.ss.android.ttmd.video",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
+          ],
+          "targets": [
+            {
+              "version": "47.7.3",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Ghost mode",
       "description": "Stops PineDrama telling people you viewed their story or profile, or that you're typing. What PineDrama already recorded stays. A separate switch hides your online status. Starts off. Turn it on in HushPine settings > Privacy.",
       "category": "Privacy",
@@ -4129,6 +4167,65 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "List search and tap to top",
+      "description": "Adds a search bar above the History and Favorites lists, on your profile and in My list, that finds a title anywhere in them, and tapping the tab you're already on takes its list back to the top. On by default. Turn either off in HushPine settings.",
+      "category": "Settings",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "RawResourcePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.ss.android.ttmd.video": [
+          "47.7.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "PineDrama",
+          "packageName": "com.ss.android.ttmd.video",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
+          ],
+          "targets": [
+            {
+              "version": "47.7.3",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024707030,
+                "ARMEABI_V7A": 2024707030,
+                "X86": 2024707030,
+                "X86_64": 2024707030
+              }
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "list_search",
+          "title": "Default: list search",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "list_tab_to_top",
+          "title": "Default: list tab to top",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
           "values": null
         }
       ]

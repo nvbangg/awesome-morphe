@@ -1,5 +1,5 @@
 {
-  "version": "v0.84.0",
+  "version": "v0.85.0",
   "appNames": {
     "com.zhiliaoapp.musically": "TikTok",
     "com.zhiliaoapp.musically.go": "TikTok Lite"
@@ -223,7 +223,7 @@
     },
     {
       "name": "Advanced downloads",
-      "description": "Adds more ways to save: pick the video quality, save full-size photos, the sound on its own or a photo post as one video, hold a profile picture or story to save it, save a story, a video's cover or a mini drama's episodes from the share sheet, put a save button on the video, and pick videos on a profile grid to save in one run. Starts off. Turn it on in Hushfeed settings > Downloads. The save button's switch is in Feed screen > Buttons on videos.",
+      "description": "Adds more ways to save: pick the video quality, save full-size photos, the sound on its own or a photo post as one video, hold a profile picture or story to save it, save a story, a video's cover or a mini drama's episodes from the share sheet, put a save button on the video, and pick videos on a profile grid to save in one run (or delete your own picked posts). Starts off. Turn it on in Hushfeed settings > Downloads. The save button's switch is in Feed screen > Buttons on videos.",
       "category": "Downloads",
       "use": true,
       "dependencies": [
@@ -576,6 +576,15 @@
           "values": null
         },
         {
+          "key": "delete_picked_posts",
+          "title": "Default: delete picked posts",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "download_video_path",
           "title": "Default: download video path",
           "description": null,
@@ -759,6 +768,9 @@
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.9.3"
+        ],
+        "com.zhiliaoapp.musically.go": [
+          "47.8.2"
         ]
       },
       "compatibility": [
@@ -779,6 +791,27 @@
                 "ARMEABI_V7A": 2024709030,
                 "X86": 2024709030,
                 "X86_64": 2024709030
+              }
+            }
+          ]
+        },
+        {
+          "name": "TikTok Lite",
+          "packageName": "com.zhiliaoapp.musically.go",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "d7811ec4166fea6cc720ba66699dc84b584ac9e6986613a76d4e43d8cbe32b27"
+          ],
+          "targets": [
+            {
+              "version": "47.8.2",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 470802,
+                "ARMEABI_V7A": 470802,
+                "X86": 470802,
+                "X86_64": 470802
               }
             }
           ]
@@ -833,6 +866,15 @@
         {
           "key": "publish_date_month_name",
           "title": "Default: publish date month name",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "publish_date_instead_of_age",
+          "title": "Default: publish date instead of age",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -932,6 +974,24 @@
         {
           "key": "liked_jump_to_date",
           "title": "Default: liked jump to date",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "favorites_jump_to_date",
+          "title": "Default: favorites jump to date",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "remember_saved_videos",
+          "title": "Default: remember saved videos",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -4752,6 +4812,15 @@
           "values": null
         },
         {
+          "key": "fill_wide_videos",
+          "title": "Default: fill wide videos",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "stretch_video_to_screen",
           "title": "Default: stretch video to screen",
           "description": null,
@@ -4825,6 +4894,45 @@
       "use": true,
       "dependencies": [
         "Patch"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.9.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
+          ],
+          "targets": [
+            {
+              "version": "47.9.3",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024709030,
+                "ARMEABI_V7A": 2024709030,
+                "X86": 2024709030,
+                "X86_64": 2024709030
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix notifications on OPPO, OnePlus and realme",
+      "description": "On OPPO, OnePlus and realme phones TikTok can send its notifications through OPPO's push service, which only delivers to TikTok as TikTok signed it, not to a patched copy. This has TikTok use Google's push service on those phones, like it does on other phones. Other phones don't change. Works as soon as you patch it in, with no switch.",
+      "category": "Inbox",
+      "use": true,
+      "dependencies": [
+        "Patch",
+        "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
@@ -5013,6 +5121,9 @@
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.9.3"
+        ],
+        "com.zhiliaoapp.musically.go": [
+          "47.8.2"
         ]
       },
       "compatibility": [
@@ -5033,6 +5144,27 @@
                 "ARMEABI_V7A": 2024709030,
                 "X86": 2024709030,
                 "X86_64": 2024709030
+              }
+            }
+          ]
+        },
+        {
+          "name": "TikTok Lite",
+          "packageName": "com.zhiliaoapp.musically.go",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "d7811ec4166fea6cc720ba66699dc84b584ac9e6986613a76d4e43d8cbe32b27"
+          ],
+          "targets": [
+            {
+              "version": "47.8.2",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 470802,
+                "ARMEABI_V7A": 470802,
+                "X86": 470802,
+                "X86_64": 470802
               }
             }
           ]
@@ -5707,7 +5839,7 @@
     },
     {
       "name": "Hide inbox items",
-      "description": "Lets you hide Inbox rows you don't use, like message requests, TikTok Shop, the stories row and the On this day memory in it, plus call buttons and suggested replies in chats. Each has its own switch. Also offers search in loaded Activity notifications and TikTok's Main, Requests, Unread and Starred tabs on any account, a way to rebuild message search, room to pin more than 5 chats and the time under each chat message. Starts off. Turn it on in Hushfeed settings > Inbox.",
+      "description": "Lets you hide Inbox rows you don't use, like message requests, TikTok Shop, the stories row and the On this day memory in it, plus call buttons and suggested replies in chats. Each has its own switch. Also offers search in loaded Activity notifications and TikTok's Main, Requests, Unread and Starred tabs on any account, a way to rebuild message search, room to pin more than 5 chats, the time under each chat message and a way to keep your place in a chat you scrolled up in. Starts off. Turn it on in Hushfeed settings > Inbox.",
       "category": "Inbox",
       "use": true,
       "dependencies": [
@@ -5989,6 +6121,15 @@
         {
           "key": "show_message_times",
           "title": "Default: show message times",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "keep_chat_place",
+          "title": "Default: keep chat place",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -6855,6 +6996,15 @@
           "values": null
         },
         {
+          "key": "burn_in_guard_level",
+          "title": "Default: burn in guard level",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 25,
+          "values": null
+        },
+        {
           "key": "hide_share_guide",
           "title": "Default: hide share guide",
           "description": null,
@@ -7257,6 +7407,24 @@
           "required": false,
           "type": "kotlin.Int",
           "default": 720,
+          "values": null
+        },
+        {
+          "key": "auto_streak_random",
+          "title": "Default: auto streak random",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "auto_streak_latest_minute",
+          "title": "Default: auto streak latest minute",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 1200,
           "values": null
         },
         {
@@ -7738,7 +7906,7 @@
     },
     {
       "name": "LIVE controls",
-      "description": "Stops a LIVE in the feed from opening by itself after a countdown. It can show a LIVE's exact viewer count instead of a rounded one, offer a quality choice and clear screen in more LIVE rooms, and keep your quality pick after TikTok restarts. Starts off. Turn it on in Hushfeed settings > Playback. It also keeps a LIVE in the feed from showing the Service+ row of the LIVE before it (or hides that row altogether), can hide the AI summary on LIVE previews, and can add a Record button to a LIVE room that saves what you watch from when you tap it.",
+      "description": "Stops a LIVE in the feed from opening by itself after a countdown. It can show a LIVE's exact viewer count and battle scores instead of rounded ones, offer a quality choice and clear screen in more LIVE rooms, keep your quality pick after TikTok restarts, and line up the LIVEs you swipe to after one from the Following row in that row's order. Starts off. Turn it on in Hushfeed settings > Playback. It also keeps a LIVE in the feed from showing the Service+ row of the LIVE before it (or hides that row altogether), can hide the AI summary on LIVE previews, and can add a Record button to a LIVE room that saves what you watch from when you tap it.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -7811,8 +7979,35 @@
           "values": null
         },
         {
+          "key": "show_exact_battle_scores",
+          "title": "Default: show exact battle scores",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "live_room_info",
           "title": "Default: live room info",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "live_running_time",
+          "title": "Default: live running time",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "live_following_row_order",
+          "title": "Default: live following row order",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -7835,6 +8030,15 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        },
+        {
+          "key": "live_start_quality",
+          "title": "Default: live start quality",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "last",
           "values": null
         },
         {
@@ -9320,6 +9524,15 @@
           "values": null
         },
         {
+          "key": "hold_speed_hud_size",
+          "title": "Default: hold speed hud size",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 100,
+          "values": null
+        },
+        {
           "key": "hide_speed_toasts",
           "title": "Default: hide speed toasts",
           "description": null,
@@ -9622,6 +9835,24 @@
           "required": false,
           "type": "kotlin.Int",
           "default": 1000,
+          "values": null
+        },
+        {
+          "key": "tap_shows_cleared_controls",
+          "title": "Default: tap shows cleared controls",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "clear_display_fade_out",
+          "title": "Default: clear display fade out",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         },
         {
@@ -10241,6 +10472,9 @@
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.9.3"
+        ],
+        "com.zhiliaoapp.musically.go": [
+          "47.8.2"
         ]
       },
       "compatibility": [
@@ -10261,6 +10495,27 @@
                 "ARMEABI_V7A": 2024709030,
                 "X86": 2024709030,
                 "X86_64": 2024709030
+              }
+            }
+          ]
+        },
+        {
+          "name": "TikTok Lite",
+          "packageName": "com.zhiliaoapp.musically.go",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "d7811ec4166fea6cc720ba66699dc84b584ac9e6986613a76d4e43d8cbe32b27"
+          ],
+          "targets": [
+            {
+              "version": "47.8.2",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 470802,
+                "ARMEABI_V7A": 470802,
+                "X86": 470802,
+                "X86_64": 470802
               }
             }
           ]
@@ -10819,6 +11074,9 @@
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
           "47.9.3"
+        ],
+        "com.zhiliaoapp.musically.go": [
+          "47.8.2"
         ]
       },
       "compatibility": [
@@ -10839,6 +11097,27 @@
                 "ARMEABI_V7A": 2024709030,
                 "X86": 2024709030,
                 "X86_64": 2024709030
+              }
+            }
+          ]
+        },
+        {
+          "name": "TikTok Lite",
+          "packageName": "com.zhiliaoapp.musically.go",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "d7811ec4166fea6cc720ba66699dc84b584ac9e6986613a76d4e43d8cbe32b27"
+          ],
+          "targets": [
+            {
+              "version": "47.8.2",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 470802,
+                "ARMEABI_V7A": 470802,
+                "X86": 470802,
+                "X86_64": 470802
               }
             }
           ]
@@ -10866,6 +11145,33 @@
         {
           "key": "country_date_under_caption",
           "title": "Default: country date under caption",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "country_date_text_size",
+          "title": "Default: country date text size",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
+          "values": null
+        },
+        {
+          "key": "country_date_opacity",
+          "title": "Default: country date opacity",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 100,
+          "values": null
+        },
+        {
+          "key": "country_date_shadow",
+          "title": "Default: country date shadow",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -12035,7 +12341,7 @@
     },
     {
       "name": "Subtitle tools",
-      "description": "Lets you make captions bigger, change their background and keep them in clear display, bring back TikTok's captions switch where it's missing, and save subtitle files with downloaded videos. Starts off. Turn it on in Hushfeed settings > Feed screen, and Downloads for subtitle files.",
+      "description": "Lets you make captions bigger, change their background and keep them in clear display, bring back TikTok's captions switch where it's missing, skip the part of a video whose caption has a promo word you list, and save subtitle files with downloaded videos. Starts off. Turn it on in Hushfeed settings > Feed screen, Feed filter for promo words, and Downloads for subtitle files.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -12170,6 +12476,24 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "skip_promo_lines",
+          "title": "Default: skip promo lines",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "skip_promo_words",
+          "title": "Default: skip promo words",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
           "values": null
         }
       ]
@@ -12636,7 +12960,7 @@
     },
     {
       "name": "Use system font",
-      "description": "Shows TikTok's text in your phone's own font or in a .ttf or .otf font file you import, instead of TikTok's, and can use your phone's emoji too. Starts off. Turn it on in Hushfeed settings > App, then restart TikTok.",
+      "description": "Shows TikTok's text in your phone's own font, in one of 26 fonts that come with Hushfeed or in a .ttf or .otf font file you import, instead of TikTok's, and can use your phone's emoji too. Starts off. Turn it on in Hushfeed settings > App, then restart TikTok.",
       "category": "Interface",
       "use": true,
       "dependencies": [
