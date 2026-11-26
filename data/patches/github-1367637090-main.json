@@ -1,0 +1,677 @@
+{
+  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+  "version": "1.21.19",
+  "patches": [
+    {
+      "name": "Center media in posts",
+      "description": "Centers images, GIFs, and videos embedded in a post's own body horizontally. Media in comments stays left-aligned.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Clean up root settings menu",
+      "description": "Removes the dead \"Developer options\" visibility-check code left behind after removing it from Sync for Reddit's settings menu. This is the bytecode fix \"Clean up root settings menu (resources)\" needs to avoid a crash — select that patch too (or select this one, which pulls it in automatically).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Clean up root settings menu (resources)",
+      "description": "Removes the \"New\" category (\"Developer options\", \"Legacy settings\", and its promotional banner) and moves \"Run setup\" into the \"Other\" category in Sync for Reddit's settings. This patch only edits XML — see \"Clean up root settings menu\" for the matching bytecode fix this resource change requires to avoid a crash.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix blank images in post bodies",
+      "description": "Fixes images embedded directly in a post's own body (not a comment) showing as blank boxes in Sync for Reddit, by giving that render path the available-width value it was never being given.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix comment image margins from missing dimensions",
+      "description": "Fixes comment-embedded preview.redd.it images being boxed as if they were square (causing large empty margins around non-square photos) by giving them the same real-dimension lookup from Reddit's own metadata that post bodies already get.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix inline comment/post images",
+      "description": "Fixes comment and post images hosted on preview.redd.it showing as a raw link instead of embedding, widens the size/aspect-ratio limits that reject large images from embedding at all, adds a caption below images whose link text isn't just the bare URL, stops embedded images/GIFs from being stretched to a square, caps their size, gives Giphy embeds a real animated fallback instead of a static link chip when Reddit's own size metadata for them is missing, and properly embeds bare i.redd.it (and similar) image/GIF links pasted directly in a comment instead of showing a small frozen link-preview chip.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide online user counter",
+      "description": "Hides the subreddit info screen's \"number of users online\" count, which Reddit's API no longer provides to this app at all (confirmed — not a simple field rename), instead of always showing an incorrect 0. The member count is unaffected.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Rebrand About screen",
+      "description": "Renames \"Everything else\" to \"About\", removes \"Help and support\"/\"Rate app!\"/the original Credits entries, adds a row for the original app's version, and repurposes two Credits rows and their links for Morphe and this patch repo's GitHub page in Sync for Reddit. This is the bytecode fix \"Rebrand About screen (resources)\" needs to avoid a crash — select that patch too (or select this one, which pulls it in automatically).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Rebrand About screen (resources)",
+      "description": "Renames \"Everything else\" to \"About\", removes \"Help and support\"/\"Rate app!\"/the original Credits entries, adds a row for the original app's version, and repurposes two Credits rows for Morphe and this patch repo's GitHub page in Sync for Reddit. This patch only edits XML — see \"Rebrand About screen\" for the matching bytecode fix this resource change requires to avoid a crash.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Gestures settings",
+      "description": "Removes the \"Gestures\" section (Swipe to return, Dim behind activity, Swipe to return sensitivity) from Sync for Reddit's General settings screen, including the code that would otherwise crash the settings screen once those preferences no longer exist. This is the bytecode fix \"Remove Gestures settings (resources)\" needs to avoid a crash — select that patch too (or select this one, which pulls it in automatically).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Gestures settings (resources)",
+      "description": "Removes the \"Gestures\" section (Swipe to return, Dim behind activity, Swipe to return sensitivity) from Sync for Reddit's General settings screen. This patch only edits XML — see \"Remove Gestures settings\" for the matching bytecode fix this resource change requires to avoid a crash.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Privacy section",
+      "description": "Removes the \"Privacy\" entry (privacy policy link, Crashlytics toggle, \"Delete Firebase installation ID\", \"Revoke GDPR consent for ads\") from Sync for Reddit's settings, now that telemetry and ads have already been removed.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Restore purchases",
+      "description": "Removes the \"Restore purchases\" entry from Sync for Reddit's settings, plus the Sync Ultra screen's \"Restore subscription\" and dev-only \"Reset subscription locally\" buttons, now that Ultra and ad removal are unlocked unconditionally and don't depend on this state. This is the bytecode fix \"Remove Restore purchases (resources)\" needs to avoid a crash — select that patch too (or select this one, which pulls it in automatically).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Restore purchases (resources)",
+      "description": "Removes the \"Restore purchases\" entry from Sync for Reddit's settings, plus the Sync Ultra screen's \"Restore subscription\" and dev-only \"Reset subscription locally\" buttons, now that Ultra and ad removal are unlocked unconditionally and don't depend on this state. This patch only edits XML — see \"Remove Restore purchases\" for the matching bytecode fix this resource change requires to avoid a crash.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Sync Ultra screen",
+      "description": "Relocates \"Translate text\"/\"Restore removed comments\"/\"Paint users\"/\"Tag users\" click behavior onto the Comments settings screen, and strips the now-pointless preference-wiring setup code from the Sync Ultra screen. This is the bytecode fix \"Remove Sync Ultra screen (resources)\" needs to avoid a crash — select that patch too (or select this one, which pulls it in automatically).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Sync Ultra screen (resources)",
+      "description": "Relocates \"Translate text\"/\"Restore removed comments\" into the existing \"View tweaks\" category and \"Paint users\"/\"Tag users\" into the existing \"Highlighting\" category on the Comments settings screen, then removes everything else on the Sync Ultra screen, including its entry point in the root settings menu. This patch only edits XML — see \"Remove Sync Ultra screen\" for the matching bytecode fix this resource change requires to avoid a crash.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Ultra cloud backup",
+      "description": "Removes the redundant, Firebase-backend-dependent \"Cloud backup and restore\" section from Sync for Reddit's Backup settings screen. This is the bytecode fix \"Remove Ultra cloud backup (resources)\" needs to avoid a crash — select that patch too (or select this one, which pulls it in automatically).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Ultra cloud backup (resources)",
+      "description": "Removes the redundant, Firebase-backend-dependent \"Cloud backup and restore\" section from Sync for Reddit's Backup settings screen. This patch only edits XML — see \"Remove Ultra cloud backup\" for the matching bytecode fix this resource change requires to avoid a crash.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Website previews",
+      "description": "Removes the \"Website previews\" toggle from Sync for Reddit's Sync Ultra screen and disables the underlying feature. This is the bytecode fix \"Remove Website previews (resources)\" needs to avoid a crash — select that patch too (or select this one, which pulls it in automatically).",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove Website previews (resources)",
+      "description": "Removes the \"Website previews\" toggle from Sync for Reddit's Sync Ultra screen and disables the underlying feature. This patch only edits XML — see \"Remove Website previews\" for the matching bytecode fix this resource change requires to avoid a crash.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Permanently disables ads in Sync for Reddit.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Disables Crashlytics crash reporting, Firebase Analytics collection, and a device/account registration call to Google's servers in Sync for Reddit. Depends on \"Remove telemetry (resources)\" for the Analytics half — that patch is also safe to use alone if you only want the Analytics flag disabled.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry (resources)",
+      "description": "Disables Firebase Analytics data collection in Sync for Reddit. Unlike most \"(resources)\"-suffixed patches in this project, this one is safe to use on its own — see \"Remove telemetry\" for the broader bytecode patch that also disables Crashlytics and a device/account registration call, and depends on this one rather than the other way around.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Sync Ultra",
+      "description": "Permanently unlocks Sync Ultra locally, without depending on the abandoned app's validation servers. Also stops the paint/tag cloud-sync jobs, since they'd otherwise keep making network calls to a backend that may no longer respond.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.laurencedawson.reddit_sync",
+          "name": null,
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "targets": [
+            {
+              "version": "v23.06.30-13:39",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    }
+  ]
+}
