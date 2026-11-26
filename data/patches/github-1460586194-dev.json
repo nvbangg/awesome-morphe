@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0",
+  "version": "1.9.0-dev.1",
   "patches": [
     {
       "name": "Bypass PairIP protection",
@@ -174,7 +174,7 @@
     },
     {
       "name": "Disable ads",
-      "description": "Blocks app-open ad load/show in XRecorder. SDK init is kept because the splash depends on it; ad-free comes from Unlock Pro's IProChecker. Server-side ad decisions are not affected. Known issue: the Edit tab closes in tests while loading the native video engine; core screen recording works with Pro unlocked.",
+      "description": "Blocks ads that appear when opening XRecorder.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -208,7 +208,7 @@
     },
     {
       "name": "Disable ads and tracking",
-      "description": "Blocks AdMob banner/interstitial ads and SDK initialization, disables Firebase Analytics and Crashlytics events, and removes advertising ID permissions. REQUIRES Accessibility: on Android 17, disable Advanced Protection or allow restricted settings (Apps > Auto Clicker > menu > Allow restricted settings), then enable the Auto Clicker service.",
+      "description": "Blocks ads, analytics, crash reporting, and advertising ID access. Auto Clicker requires Accessibility.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -439,7 +439,7 @@
     },
     {
       "name": "Disable analytics and tracking",
-      "description": "Disables Firebase Analytics, Crashlytics and ad ID permissions in XRecorder. Does not change any server-side feature or account state. Known issue: the Edit tab closes in tests while loading the native video engine; core screen recording works with Pro unlocked.",
+      "description": "Disables Firebase Analytics, Crashlytics, and advertising ID permissions.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -472,8 +472,42 @@
       "options": []
     },
     {
+      "name": "Disable receipt upload",
+      "description": "Blocks subscription token uploads. Server-side entitlements stay unchanged.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "videoeditor.videorecorder.screenrecorder",
+          "name": "XRecorder",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#2962FF",
+          "signatures": [
+            "11D5525D76147B28FC6D974ABC56710576CF14A7CE78CF8E75FD8A67E312CEC0"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.5.6.1",
+              "versionCodes": {
+                "ARM64_V8A": 2561002,
+                "ARMEABI_V7A": 2561002,
+                "X86_64": 2561002,
+                "X86": 2561002
+              },
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable remote config",
-      "description": "Freezes Firebase Remote Config overrides (AdCfg25, ServerDomain) in XRecorder. Server-side features and A/B flags are NOT emulated. Known issue: the Edit tab closes in tests while loading the native video engine; core screen recording works with Pro unlocked.",
+      "description": "Blocks Firebase Remote Config overrides for ads and the server address.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -566,6 +600,40 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable non-Xiaomi device compatibility",
+      "description": "Enables rootless POCO Launcher on non-Xiaomi Android 14+ devices with native widgets, badges, hidden apps, gestures, icon/label customization, double-tap to lock, and battery optimization.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.mi.android.globallauncher",
+          "name": "POCO Launcher",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FFD400",
+          "signatures": [
+            "c9009d01ebf9f5d0302bc71b2fe9aa9a47a432bba17308a3111b75d7b2149025"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "RELEASE-7.50.06.2599-10091027",
+              "versionCodes": {
+                "ARM64_V8A": 750062599,
+                "ARMEABI_V7A": 750062599,
+                "X86_64": 750062599,
+                "X86": 750062599
+              },
+              "isExperimental": false,
+              "minSdk": 34,
               "description": null
             }
           ]
@@ -892,7 +960,7 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Grants the local ad-free/premium state without a purchase. REQUIRES Accessibility: on Android 17, disable Advanced Protection or allow restricted settings (Apps > Auto Clicker > menu > Allow restricted settings), then enable the Auto Clicker service.",
+      "description": "Unlocks local Pro features and removes ads. Enable Auto Clicker in Accessibility. On Android 17, use Allow restricted settings in the app info menu first if needed.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -953,7 +1021,7 @@
     },
     {
       "name": "Unlock Pro",
-      "description": "Unlocks the local Pro state of XRecorder (paywall, locks, ad-free). LOCAL ONLY: server-side AI, credits/quotas and subscription token validation are NOT unlocked. Known issue: the Edit tab closes in tests while loading the native video engine; core screen recording works with Pro unlocked.",
+      "description": "Unlocks local Pro tools and ad-free mode. AI and credits still require server validation. Known issue: the Edit tab closed during testing on a Galaxy A15.",
       "default": true,
       "category": null,
       "compatiblePackages": [
