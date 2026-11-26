@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.30.0",
+  "version": "1.31.0",
   "patches": [
     {
       "name": "Allow screen recording",
@@ -114,6 +114,152 @@
       "options": []
     },
     {
+      "name": "Change App Icon",
+      "description": "Custom PNG icons + labels for the spoofed Calculator / Notes / Weather slots. Real Proton logos are never touched.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ch.protonvpn.android",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "ch.protonvpn.android.reproducible",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "allImage",
+          "title": "All three: icon",
+          "description": "PNG applied to all three spoofed slots (Calculator, Notes, Weather). A per-slot icon below overrides this. Real Proton logos are never touched.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "allLabel",
+          "title": "All three: label",
+          "description": "\"app\" = Proton VPN, \"slot\" = keep each slot's own name, any other text = custom name. A per-slot label below overrides this.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "slot",
+          "values": null
+        },
+        {
+          "key": "calculatorImage",
+          "title": "Calculator icon (override)",
+          "description": "PNG for the Calculator slot only. Blank = use \"All three\" icon.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "calculatorLabel",
+          "title": "Calculator label (override)",
+          "description": "Blank = use \"All three\" label. Otherwise \"app\", \"slot\", or a custom name.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "notesImage",
+          "title": "Notes icon (override)",
+          "description": "PNG for the Notes slot only. Blank = use \"All three\" icon.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "notesLabel",
+          "title": "Notes label (override)",
+          "description": "Blank = use \"All three\" label. Otherwise \"app\", \"slot\", or a custom name.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "weatherImage",
+          "title": "Weather icon (override)",
+          "description": "PNG for the Weather slot only. Blank = use \"All three\" icon.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "weatherLabel",
+          "title": "Weather label (override)",
+          "description": "Blank = use \"All three\" label. Otherwise \"app\", \"slot\", or a custom name.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        },
+        {
+          "key": "flat",
+          "title": "Flat fallback",
+          "description": "Skip the adaptive retarget and use plain legacy bitmaps instead. Enable this if a custom icon shows up blank after patching.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "renameInApp",
+          "title": "Restore in-app name",
+          "description": "Force the in-app name to \"Proton VPN\" (rewrites app_name and the application label), regardless of the launcher labels.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Change package name",
       "description": "Renames the app package.",
       "default": false,
@@ -201,6 +347,61 @@
           }
         }
       ]
+    },
+    {
+      "name": "Disable Telemetry",
+      "description": "Forces the observability feature flag off and short-circuits telemetry enqueue, upload, and the payments observability worker.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ch.protonvpn.android",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "ch.protonvpn.android.reproducible",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Disable ads",
@@ -318,12 +519,177 @@
       "options": []
     },
     {
+      "name": "Hide Upgrade Promotions",
+      "description": "Kills the upgrade dialog, plan congrats screen, and promo offer activity on launch.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ch.protonvpn.android",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "ch.protonvpn.android.reproducible",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide app icon",
       "description": "Hides the app from the launcher.",
       "default": false,
       "category": null,
       "compatiblePackages": null,
       "options": []
+    },
+    {
+      "name": "Lustx Unlocks",
+      "description": "Unlocks premium features on free plans. Each feature can be toggled individually.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ch.protonvpn.android",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "ch.protonvpn.android.reproducible",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "unlockLan",
+          "title": "Unlock LAN connections",
+          "description": "Unlocks LAN connections on free plans.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockNetShield",
+          "title": "Unlock NetShield",
+          "description": "Unlocks NetShield ad and tracker blocking on free plans.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockCustomDns",
+          "title": "Unlock custom DNS",
+          "description": "Unlocks custom DNS on free plans.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockSplitTunneling",
+          "title": "Unlock split tunneling",
+          "description": "Unlocks split tunneling on free plans.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockConnectionPreferences",
+          "title": "Unlock connection preferences",
+          "description": "Unlocks the default connection, recent connections and excluded locations on free plans.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "unlockProfiles",
+          "title": "Unlock profiles",
+          "description": "Unlocks profiles on free plans and limits them to free locations.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Rate-us popup",
@@ -409,6 +775,61 @@
       "options": []
     },
     {
+      "name": "Remove Server Change Delay",
+      "description": "Removes the cooldown timer when switching between free servers.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ch.protonvpn.android",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "ch.protonvpn.android.reproducible",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove clip bumper",
       "description": "Removes the Postparty logo bumper from all exports. NOTE: I SUCK AT CODING, USE *MODIFIED* CLIPS. TRIM A SECOND OR ADD A STICKER!",
       "default": true,
@@ -472,6 +893,61 @@
           }
         }
       ]
+    },
+    {
+      "name": "Show Free Server Locations",
+      "description": "Shows free server locations in the Countries list and Search, and connects to them on free plans. Paid servers stay hidden and locked.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ch.protonvpn.android",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "ch.protonvpn.android.reproducible",
+          "name": "Proton VPN",
+          "description": null,
+          "apkFileType": null,
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "Skip splash",
