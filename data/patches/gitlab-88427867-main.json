@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.106.0",
+  "version": "1.107.0",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -48,7 +48,7 @@
     },
     {
       "name": "AI Writing Tools",
-      "description": "Enables Gboard's Writing tools: rewrite and tone changes on selected text, in every language and keyboard. Proofread/Auto Fix is not ported to 18.8.",
+      "description": "Enables Gboard's Writing tools: rewrite and tone changes on selected text, with an optional shared Gemma provider for Proofread, local writing, completion and grammar.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2206,6 +2206,47 @@
               "isExperimental": false,
               "minSdk": 29,
               "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block Gboard telemetry",
+      "description": "Stops the identified Clearcut, Play services client metrics and Tenor share-report submissions and disables stock Translate. Local AI Translate, GIF search, downloads and user-initiated feedback remain available.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": [
+            "7ce83c1b71f3d572fed04c8d40c5cb10ff75e6d87d9df6fbd53f0468c2905053",
+            "f0fd6c5b410f25cb25c3b53346c8972fae30f8ee7411df910480ad6b2d60db83"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "18.8.0.1022711984-beta-arm64-v8a",
+              "versionCodes": {
+                "ARM64_V8A": 176124766
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": "64-bit build (arm64-v8a), recommended for 64-bit devices."
+            },
+            {
+              "version": "18.8.0.1022711984-beta-armeabi-v7a",
+              "versionCodes": {
+                "ARMEABI_V7A": 176124765
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": "32-bit build (armeabi-v7a), for 32-bit devices only."
             }
           ]
         }
@@ -11546,7 +11587,7 @@
     },
     {
       "name": "Parakeet voice typing",
-      "description": "Adds Gboard settings → Voice typing → Parakeet voice typing. After downloading NVIDIA Parakeet (Moondream's Parakeet Ultra or the original TDT v3), the microphone key transcribes on the phone and recognises Dutch, English and 23 more languages per sentence without switching. Gives the patched Gboard the Parakeet launcher icon.",
+      "description": "Uses the speech model selected in Local Model Host through Binder while preserving Gboard's native microphone and dictation UI. Choose Parakeet, Nemotron Streaming or Whisper Tiny and download/enable the model in the host. Gboard keeps only its client switch; language support depends on the selected model.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -15648,6 +15689,47 @@
       "name": "Toolbar Editing Buttons",
       "description": "Add Select All, Copy, Cut and Paste to the menu.",
       "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.inputmethod.latin",
+          "name": "Gboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": [
+            "7ce83c1b71f3d572fed04c8d40c5cb10ff75e6d87d9df6fbd53f0468c2905053",
+            "f0fd6c5b410f25cb25c3b53346c8972fae30f8ee7411df910480ad6b2d60db83"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "18.8.0.1022711984-beta-arm64-v8a",
+              "versionCodes": {
+                "ARM64_V8A": 176124766
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": "64-bit build (arm64-v8a), recommended for 64-bit devices."
+            },
+            {
+              "version": "18.8.0.1022711984-beta-armeabi-v7a",
+              "versionCodes": {
+                "ARMEABI_V7A": 176124765
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": "32-bit build (armeabi-v7a), for 32-bit devices only."
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Top Toolbar Item Count",
+      "description": "Adds a setting for three to eight items in Gboard's top toolbar.",
+      "default": false,
       "category": null,
       "compatiblePackages": [
         {
