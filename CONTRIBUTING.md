@@ -39,10 +39,10 @@
 
 ```text
 awesome-morphe/
-├── .github/                # Automation workflows
-├── data/                   # Raw fetched data, source configuration & sync state
-├── scripts/                # Automated data-processing scripts
-├── web/                    # Website source code
+├── .github/   # Automation workflows
+├── data/      # Raw fetched data, source configuration & sync state
+├── scripts/   # Automated data-processing scripts
+├── web/       # Website source code
 │   ├── public/
 │   │   ├── bundles.json    # Metadata of all active bundles, patches & apps
 │   │   └── whats-new.json  # Rolling changelog
@@ -165,7 +165,29 @@ flowchart TD
 
 ## <a id="script-logic"></a> 🛠️ Script Logic
 
-Core automation scripts are written in Python under [`scripts/`](./scripts/).
+<div align="center">
+
+[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://github.com/python/cpython)
+[![Java](https://img.shields.io/badge/Java-ED8B00?logo=openjdk&logoColor=white)](https://github.com/openjdk/jdk)
+[![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white)](https://github.com/JetBrains/kotlin)
+
+[![httpx2](https://img.shields.io/badge/httpx2-3776AB?logo=python&logoColor=white)](https://github.com/pydantic/httpx2)
+[![Pydantic](https://img.shields.io/badge/Pydantic-E92063?logo=pydantic&logoColor=white)](https://github.com/pydantic/pydantic)
+[![google-play-scraper](https://img.shields.io/badge/google--play--scraper-3776AB?logo=python&logoColor=white)](https://github.com/JoMingyu/google-play-scraper)
+[![python-dotenv](https://img.shields.io/badge/python--dotenv-3776AB?logo=python&logoColor=white)](https://github.com/theskumar/python-dotenv)
+[![Morphe Patcher](https://img.shields.io/badge/Morphe_Patcher-3DDC84?logo=android&logoColor=black)](https://github.com/MorpheApp/morphe-patcher)
+
+[![uv](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=black)](https://github.com/astral-sh/uv)
+[![Gradle](https://img.shields.io/badge/Gradle-02303A?logo=gradle&logoColor=white)](https://github.com/gradle/gradle)
+[![Ruff](https://img.shields.io/badge/Ruff-D7FF64?logo=ruff&logoColor=black)](https://github.com/astral-sh/ruff)
+[![ty](https://img.shields.io/badge/ty-46EBE1?logo=ty&logoColor=black)](https://github.com/astral-sh/ty)
+[![pytest](https://img.shields.io/badge/pytest-0A9EDC?logo=pytest&logoColor=white)](https://github.com/pytest-dev/pytest)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white)](https://github.com/nvbangg/awesome-morphe/actions)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflareworkers&logoColor=white)](https://developers.cloudflare.com/workers/)
+
+</div>
+
+Core automation scripts are written in Python under [`scripts/`](./scripts/), with a Java/Kotlin parser for `.mpp` files.
 
 ```text
 scripts/
@@ -176,7 +198,19 @@ scripts/
 ├── audit_readme.py         # Audit README repositories and links
 ├── find_projects.py        # Find new projects
 ├── telegram.py             # Send Telegram notification
-└── ...                     # Other supporting files and directories
+├── common/                 # Shared utilities and data schemas
+├── discovery/              # Bundle source providers
+│   ├── jman.py             # Fetch Jman sources
+│   ├── morphe_archive.py   # Fetch Morphe Archive sources
+│   └── official.py         # Fetch official Morphe sources
+├── updater/                # Catalog, app metadata and changelog processing
+│   ├── gplay_scrape.py     # Sync Google Play and official app metadata
+│   ├── local_data.py       # Parse and select local bundle data
+│   └── whats_new.py        # Generate What's New content
+├── bundle-parser/          # Java/Kotlin .mpp parser
+├── tests/                  # Python tests
+├── .env.example            # Environment configuration template
+└── ...                     # Other configuration files
 ```
 
 ### Discover bundle sources ([discover.py](./scripts/discover.py))
@@ -273,6 +307,66 @@ Sends Markdown using `TG_TOKEN` and `TG_CHAT`. Skips missing or empty files.
 - **`"Custom Title" "path/to/file.md"`:** Sets the title and input file.
 
 ## <a id="website-logic"></a> 🌐 Website Logic
+
+<div align="center">
+
+[![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)](https://github.com/nodejs/node)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://github.com/microsoft/TypeScript)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=white)](https://github.com/vercel/next.js)
+[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://github.com/react/react)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=black)](https://github.com/tailwindlabs/tailwindcss)
+
+[![Base UI](https://img.shields.io/badge/Base_UI-EDEDED?logo=baseui&logoColor=black)](https://github.com/mui/base-ui)
+[![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?logo=reactquery&logoColor=white)](https://github.com/TanStack/query)
+[![nuqs](https://img.shields.io/badge/nuqs-20232A?logo=react&logoColor=61DAFB)](https://github.com/47ng/nuqs)
+[![Zod](https://img.shields.io/badge/Zod-408AFF?logo=zod&logoColor=white)](https://github.com/colinhacks/zod)
+[![Lucide](https://img.shields.io/badge/Lucide-F56565?logo=lucide&logoColor=white)](https://github.com/lucide-icons/lucide)
+[![next-themes](https://img.shields.io/badge/next--themes-000000?logo=nextdotjs&logoColor=white)](https://github.com/pacocoursey/next-themes)
+
+[![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=black)](https://github.com/pnpm/pnpm)
+[![PostCSS](https://img.shields.io/badge/PostCSS-DD3A0A?logo=postcss&logoColor=white)](https://github.com/postcss/postcss)
+[![React Compiler](https://img.shields.io/badge/React_Compiler-20232A?logo=react&logoColor=61DAFB)](https://github.com/react/react/tree/main/compiler)
+[![Biome](https://img.shields.io/badge/Biome-60A5FA?logo=biome&logoColor=black)](https://github.com/biomejs/biome)
+[![Knip](https://img.shields.io/badge/Knip-F56E0F?logo=knip&logoColor=white)](https://github.com/webpro-nl/knip)
+[![Vitest](https://img.shields.io/badge/Vitest-00FF74?logo=vitest&logoColor=black)](https://github.com/vitest-dev/vitest)
+[![Playwright](https://img.shields.io/badge/Playwright-F7DF1E?logo=javascript&logoColor=black)](https://github.com/microsoft/playwright)
+[![axe-core](https://img.shields.io/badge/axe--core-F7DF1E?logo=javascript&logoColor=black)](https://github.com/dequelabs/axe-core-npm)
+[![serve](https://img.shields.io/badge/serve-339933?logo=nodedotjs&logoColor=white)](https://github.com/vercel/serve)
+[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-F38020?logo=cloudflarepages&logoColor=white)](https://pages.cloudflare.com/)
+
+</div>
+
+The website is built with Next.js and React in TypeScript under [`web/`](./web/) and exported as a static site.
+
+```text
+web/
+├── src/                   # Website source code
+│   ├── app/               # Routes, layout and providers
+│   │   ├── apps/          # App catalog route
+│   │   ├── bundles/       # Bundle catalog route
+│   │   ├── whats-new/     # What's New route
+│   │   ├── layout.tsx     # Root layout and site metadata
+│   │   ├── page.tsx       # Home page with app catalog
+│   │   └── providers.tsx  # Query, theme and URL state providers
+│   ├── components/        # Shared UI and layout components
+│   │   ├── common/        # Shared UI components
+│   │   └── layout/        # Header, footer and theme controls
+│   ├── features/          # Feature-specific views and data handling
+│   │   ├── catalog/       # Data model, search and detail views
+│   │   ├── test-bundle/   # Remote patch-list previews
+│   │   └── whats-new/     # Changelog loading and views
+│   ├── hooks/             # Shared React hooks
+│   ├── lib/               # HTTP, string and formatting helpers
+│   ├── constants/         # Shared application constants
+│   └── index.css          # Global styles and color tokens
+├── public/                # Static assets and generated data
+│   ├── assets/            # Site icons and images
+│   ├── bundles.json       # Generated app and bundle catalog
+│   └── whats-new.json     # Generated What's New content
+├── tests/                 # Unit tests and fixtures
+├── e2e/                   # Browser and accessibility tests
+└── ...                    # Other configuration files
+```
 
 Loads the catalog from [`web/public/bundles.json`](./web/public/bundles.json) and What's New from [`web/public/whats-new.json`](./web/public/whats-new.json).
 
