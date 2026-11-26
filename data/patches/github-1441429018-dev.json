@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0-dev.5",
+  "version": "1.8.0-dev.6",
   "patches": [
     {
       "name": "Accent color",
@@ -315,7 +315,7 @@
     },
     {
       "name": "BoldVoice subscription features",
-      "description": "Enables client-side subscriber features and lessons in BoldVoice 5.1.3 and 5.3.6. For 5.1.3, restores devirtualized startup lifecycle methods, hoisted strings, and notification callbacks. For 5.3.6, keeps PairIP string runtime while bypassing licensing, subscription gates, and the in-app force-update screen; the remaining license, paywall, and error entry points are voided and the local license state reads as verified. Restores pristine ARM64 native libraries and disables Expo OTA bundle replacement.",
+      "description": "Enables client-side subscriber features and lessons in BoldVoice 5.1.3. Restores devirtualized startup lifecycle methods, hoisted strings, and notification callbacks; neutralizes PairIP VM and licensing checks; restores pristine ARM64 native libraries; disables Expo OTA bundle replacement. Server-controlled features retain their existing requirements.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -336,15 +336,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": "Version 5.1.3, build 470 (ARM64 split)."
-            },
-            {
-              "version": "5.3.6",
-              "versionCodes": {
-                "ARM64_V8A": 499
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": "Version 5.3.6, build 499 (ARM64 split)."
             }
           ]
         }
@@ -1064,6 +1055,35 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable upgrade nudges",
+      "description": "Disables the BoldVoice in-app force-update screen in 5.1.3 so the current installed version keeps working.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.wellocution.androidapp",
+          "name": "BoldVoice",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": null,
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.1.3",
+              "versionCodes": {
+                "ARM64_V8A": 470
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": "Version 5.1.3, build 470 (ARM64 split)."
             }
           ]
         }
