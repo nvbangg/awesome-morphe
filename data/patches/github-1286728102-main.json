@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.53.0",
+  "version": "1.53.1",
   "patches": [
     {
       "name": "AD Instant Rewards",
@@ -356,6 +356,34 @@
           "targets": [
             {
               "version": "8.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass installer tamper check",
+      "description": "Disables the installer-package blacklist in CrazyGamesApplication.onCreate and in the portal's document-start bundle. Without it, an APK installed by Morphe Manager (installer app.morphe.manager) is SIGKILLed during startup and, if it survives, shows the \"Time to update\" wall. adb-installed builds are unaffected. No gameplay impact.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.crazygames.crazygamesapp",
+          "name": "CrazyGames",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#6842FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.7.14",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1702,7 +1730,7 @@
     {
       "name": "Google login via MicroG-RE",
       "description": "Redirects Google Play Services to MicroG-RE (app.revanced.android.gms), spoofs the original package + signing certificate for Google's OAuth check, and forces the legacy Google Sign-In flow, so \"Continue with Google\" works on a re-signed build. Requires MicroG-RE installed and signed in; the patched app must replace the Play install. Does not help with stock GMS; the email login needs no patch.",
-      "default": false,
+      "default": true,
       "dependencies": [
         "ResourcePatch"
       ],
