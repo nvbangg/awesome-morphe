@@ -1,10 +1,10 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "patches": [
     {
       "name": "App icon",
-      "description": "Choose a classic / premium launcher icon, or pick a PNG from your phone.",
+      "description": "Choose a blue/red/gold launcher icon, or pick a PNG from your phone.",
       "default": false,
       "category": null,
       "dependencies": [],
@@ -87,7 +87,7 @@
         {
           "key": "iconStyle",
           "title": "Style",
-          "description": "Preset icon, or Custom file to use the PNG option below.",
+          "description": "Bundled preset, or Custom file to use the image option below.",
           "required": false,
           "type": "kotlin.String",
           "default": "blue",
@@ -984,8 +984,8 @@
     },
     {
       "name": "Mods settings entry",
-      "description": "Reserves a MightyMich row in Settings. Full dialog wiring needs the settings-list fingerprint for this WhatsApp build.",
-      "default": true,
+      "description": "Placeholder: adds the MightyMich strings but does not inject a Settings row yet. Disabled by default so it cannot be mistaken for a working UI patch.",
+      "default": false,
       "category": null,
       "dependencies": [
         "ResourcePatch"
@@ -1069,8 +1069,8 @@
     },
     {
       "name": "Mods settings resources",
-      "description": "Adds English strings for the MightyMich section in WhatsApp Settings.",
-      "default": true,
+      "description": "Adds English strings for the planned MightyMich section in WhatsApp Settings.",
+      "default": false,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
@@ -1152,7 +1152,7 @@
     },
     {
       "name": "Read receipts",
-      "description": "If enabled, you won't send read receipts (blue ticks).",
+      "description": "Blocks outgoing read receipts (blue ticks). Local read state is kept.",
       "default": true,
       "category": null,
       "dependencies": [],
@@ -1231,17 +1231,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "always",
-          "title": "Always off",
-          "description": "Always disable read receipts, ignoring the in-app toggle.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
       "name": "Remove Flag Secure",
@@ -3168,7 +3158,7 @@
     },
     {
       "name": "Usage data",
-      "description": "Limit diagnostic and analytics data WhatsApp sends.",
+      "description": "Disables Falco analytics event logging and uploads. Leaves crash reporting and core WAM/registration telemetry alone.",
       "default": true,
       "category": null,
       "dependencies": [],
