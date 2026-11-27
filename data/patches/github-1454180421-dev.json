@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0-beta.2",
+  "version": "1.2.0-beta.5",
   "patches": [
     {
       "name": "AMOLED theme",
@@ -94,6 +94,70 @@
       ]
     },
     {
+      "name": "Clone package",
+      "description": "Install Instagram beside the original app (clone) or replace it. Choose the package name, the app name and optionally a custom launcher icon.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E1306C",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "installBesideOriginal",
+          "title": "Install beside original (clone)",
+          "description": "Enabled: rename the package so the patched app installs alongside Instagram. Disabled: keep com.instagram.android and replace the installed app.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "A new package name for the cloned app.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "com.metapaches.insta",
+          "values": null
+        },
+        {
+          "key": "appName",
+          "title": "App name",
+          "description": "A new app name (label). Entering \"Instagram\" will skip changing the app name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "insta by meta",
+          "values": null
+        },
+        {
+          "key": "customIcon",
+          "title": "Custom launcher icon",
+          "description": "Optional image (PNG/JPG) used as the launcher icon of the cloned app. Leave empty to keep the original Instagram icon. Morphe's file picker lets you choose an image from your device gallery.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Instants Mod",
       "description": "Adds a gallery button to post photos and videos, and allows saving friends' Instants to your device.",
       "default": false,
@@ -176,7 +240,7 @@
     },
     {
       "name": "Save Instants to gallery",
-      "description": "Adds a \"Save to gallery\" option to the Instants menu, so you can keep the photo or video you are viewing. Ported to Instagram the target build.",
+      "description": "Adds a \"Save to gallery\" option to the Instants menu, so you can keep the photo or video you are viewing. Hooks are discovered at patch time, so this works across builds.",
       "default": true,
       "category": null,
       "compatiblePackages": [

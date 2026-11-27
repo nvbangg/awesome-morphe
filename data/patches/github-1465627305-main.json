@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "patches": [
     {
       "name": "Allow install on Samsung phones",
@@ -42,6 +42,66 @@
         }
       ],
       "options": []
+    },
+    {
+      "name": "Install alongside SmartThings (experimental)",
+      "description": "EXPERIMENTAL — opt-in. Installs the patched app next to the stock SmartThings so you keep the official app (for SmartTag etc.) and use this copy only to read a device's LocalThings OwnerPSK. Renames the application id, launcher name/icon, process identity and the in-dex provider authorities so the clone installs, launches, signs in and syncs devices alongside stock. The device control web-plugin may not work on non-Samsung phones; read the key from the device's Edit screen (long-press the device -> Edit). Please report results.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.oneconnect",
+          "name": "SmartThings",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1C8CF5",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.8.54.23",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.8.52.23",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": "Unconfirmed build — not verified to work. Try it and please report back."
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "clonePackageName",
+          "title": "Clone application id",
+          "description": "The application id for the renamed copy so it installs next to stock SmartThings. Must be a valid, unused Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "app.smortthings.clone",
+          "values": null
+        },
+        {
+          "key": "cloneAppName",
+          "title": "Clone app name",
+          "description": "The launcher name shown for the renamed copy, so it is distinguishable from stock SmartThings on the home screen.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "Smortthings",
+          "values": null
+        }
+      ]
     },
     {
       "name": "LocalThings Owner PSK in device settings",
