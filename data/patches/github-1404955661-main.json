@@ -1,7 +1,36 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.30.66",
+  "version": "0.30.67",
   "patches": [
+    {
+      "name": "Accept AARE as car host",
+      "description": "Lets AARE and other non-Google hosts show Waze's car screen.",
+      "default": false,
+      "category": "Android Auto",
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.28.4.900",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Alert distances",
       "description": "How early alerts sound, plus a speed-bump switch and per-alert distances. Pick a level; Standard changes nothing.",
@@ -1581,7 +1610,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "keepMood",
+          "title": "Keep my mood after a restart",
+          "description": "Puts the mood you picked back when Waze starts again.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
     },
     {
       "name": "YouTube Music as a Waze audio partner",
