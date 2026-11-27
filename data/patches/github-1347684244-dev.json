@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.10.0-dev.2",
+  "version": "1.10.0-dev.3",
   "patches": [
     {
       "name": "Apple emojis everywhere",
@@ -45,6 +45,52 @@
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Auto Stop After Distance",
+      "description": "Adds a toggle and a km field to the main screen that turn sync off automatically once the session reaches the set distance.",
+      "default": true,
+      "dependencies": [
+        "ResourcePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.fitness.debugger",
+          "name": "DeFit",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#008577",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "0.8.2a",
+              "versionCodes": {
+                "ARM64_V8A": 821,
+                "ARMEABI_V7A": 821,
+                "X86_64": 821,
+                "X86": 821
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "0.9.3",
+              "versionCodes": {
+                "ARM64_V8A": 930,
+                "ARMEABI_V7A": 930,
+                "X86_64": 930,
+                "X86": 930
+              },
+              "isExperimental": true,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -1187,9 +1233,11 @@
     },
     {
       "name": "Unlimited Time Bypass",
-      "description": "Removes the ad requirement and grants the target DeFit version's maximum active time when the button is pressed.",
+      "description": "Removes DeFit's active-time limit entirely so sync never expires and the time-remaining readout stops counting down, then hides the ad-time UI. Only the on/off sync switch matters.",
       "default": true,
-      "dependencies": [],
+      "dependencies": [
+        "ResourcePatch"
+      ],
       "compatiblePackages": [
         {
           "packageName": "com.fitness.debugger",
