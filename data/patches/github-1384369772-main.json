@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.10.1",
+  "version": "2.10.2",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -134,7 +134,7 @@
         {
           "key": "packageName",
           "title": "Package name",
-          "description": "The package microG Gmail installs under. Must be a valid Android package name.",
+          "description": "The package microG Gmail installs under. com.google.android.gm only on phones without Gmail.",
           "required": true,
           "type": "kotlin.String",
           "default": "org.ungoogled.android.gm.microg",
@@ -142,8 +142,8 @@
         },
         {
           "key": "syncMinutes",
-          "title": "Check for new mail (minutes)",
-          "description": "How often Google accounts sync in the background, push or not. 0 = off.",
+          "title": "Background sync (minutes)",
+          "description": "Extra mail check besides push (push needs MicroG-RE 7.4.0+). 0 = off.",
           "required": true,
           "type": "kotlin.Int",
           "default": 15,
@@ -638,7 +638,7 @@
     },
     {
       "name": "Any media app",
-      "description": "Navigation's Default media app (Settings > Navigation) offers every music and podcast app that works with Android Auto, such as Poweramp, also where Google switches media controls off. YouTube Music and Spotify only connect to Google's own Maps.",
+      "description": "Navigation's Default media app (Settings > Navigation) offers every music and podcast app that works with Android Auto, such as Poweramp, also where Google switches media controls off. Spotify connects like the other apps; YouTube Music only connects to Google's own Maps.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -659,6 +659,65 @@
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Any media app",
+      "description": "Lets Waze's audio player use any music app that works with Android Auto.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.waze",
+          "name": "Waze",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#33CCFF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.27.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.27.0.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.26.90.901",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.26.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.24.5.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -1335,7 +1394,7 @@
     },
     {
       "name": "Bypass Play Services checks",
-      "description": "Makes Maps' bundled Play services signature and availability checks always pass, so it runs re-signed and with Play services disabled or absent, and lets it load tiles, search and routing by sending Google's own package and certificate in the identity headers the Maps backend checks. Where Play services rejects the re-signed app, Maps degrades instead of crashing. Also skips Google's \"isn't Play Protect certified\" page, and with no Play services at all uses Android's own Cronet so the map still loads.",
+      "description": "Makes Maps' bundled Play services signature and availability checks always pass, so it runs re-signed and with Play services disabled or absent, and lets it load tiles, search and routing by sending Google's own package and certificate in the identity headers the Maps backend checks. Where Play services or Android Auto rejects the re-signed app, Maps degrades instead of crashing. Also skips Google's \"isn't Play Protect certified\" page, and with no Play services at all uses Android's own Cronet so the map still loads.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -1744,6 +1803,97 @@
     },
     {
       "name": "Change package name",
+      "description": "Installs next to Samsung's own Calculator on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.app.popupcalculator",
+          "name": "Samsung Calculator",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.4.00.13",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.popupcalculator",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Calendar on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.calendar",
+          "name": "Samsung Calendar",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#06BEB0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.8.01.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
+            },
+            {
+              "version": "12.5.06.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungcalendar",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
       "description": "Installs next to Samsung's own Samsung Capture on Galaxy phones (One UI Core).",
       "default": false,
       "category": null,
@@ -1778,6 +1928,402 @@
           "required": true,
           "type": "kotlin.String",
           "default": "org.ungoogled.smartcapture",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Clock on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.app.clockpackage",
+          "name": "Samsung Clock",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.4.02.38",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.clockpackage",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Contacts on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.contacts",
+          "name": "Samsung Contacts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF4545",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.3.00.87",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungcontacts",
+          "values": null
+        },
+        {
+          "key": "phonePackageName",
+          "title": "Samsung Phone package name",
+          "description": "The package name its own \"Change package name\" was given.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungdialer",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Editor Lite on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.app.newtrim",
+          "name": "Samsung Editor Lite",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F52B5F",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.0.85.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.newtrim",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Email on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.email.provider",
+          "name": "Samsung Email",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F31C1C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "6.2.13.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungemail",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Finder on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.galaxyfinder",
+          "name": "Samsung Finder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0088AA",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "10.2.13.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": "needs Android 10 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.galaxyfinder",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Gallery on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.gallery3d",
+          "name": "Samsung Gallery",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F0466E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "15.9.01.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsunggallery",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Good Lock on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.goodlock",
+          "name": "Good Lock",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F24A8C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.0.16.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.goodlock",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Health Monitor on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.shealthmonitor",
+          "name": "Samsung Health Monitor",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F0466A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.5.3.011",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.shealthmonitor",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Home Up, for the renamed One UI Home.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.homestar",
+          "name": "Home Up",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.0.00.24",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 36,
+              "description": "needs Android 16 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.homestar",
+          "values": null
+        },
+        {
+          "key": "oneUiHomePackageName",
+          "title": "One UI Home package name",
+          "description": "The package name its own \"Change package name\" was given.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsunglauncher",
           "values": null
         }
       ]
@@ -1868,6 +2414,717 @@
           "required": true,
           "type": "kotlin.String",
           "default": "org.ungoogled.honeyboard",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own One UI Home on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.app.launcher",
+          "name": "One UI Home",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "18.0.07.59",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
+            },
+            {
+              "version": "16.0.09.35",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            },
+            {
+              "version": "15.1.03.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsunglauncher",
+          "values": null
+        },
+        {
+          "key": "homeUpPackageName",
+          "title": "Home Up package name",
+          "description": "The package name its own \"Change package name\" was given.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.homestar",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Music on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.app.music",
+          "name": "Samsung Music",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6522E9",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.2.45.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungmusic",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own My Files on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.app.myfiles",
+          "name": "Samsung My Files",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F6BC0B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "15.2.03.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.myfiles",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Notes on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.notes",
+          "name": "Samsung Notes",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E8412C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.4.48.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungnotes",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own One Hand Operation + on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.sidegesturepad",
+          "name": "One Hand Operation +",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#22BDC5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "9.3.13.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.sidegesturepad",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Phone on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.dialer",
+          "name": "Samsung Phone",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0CC251",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.3.52.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungdialer",
+          "values": null
+        },
+        {
+          "key": "contactsPackageName",
+          "title": "Samsung Contacts package name",
+          "description": "The package name its own \"Change package name\" was given.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungcontacts",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Photo Editor on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.mimage.photoretouching",
+          "name": "Samsung Photo Editor",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FE0053",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "3.9.04.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
+            },
+            {
+              "version": "3.4.14.63",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.photoretouching",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Reminder on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.reminder",
+          "name": "Samsung Reminder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#410CB7",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "12.8.00.62",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungreminder",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Modes and Routines on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.app.routines",
+          "name": "Samsung Modes and Routines",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#436BEF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.1.03.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungroutines",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Screen Recorder on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.app.screenrecorder",
+          "name": "Samsung Screen Recorder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#9A80FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "4.0.23",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungscreenrecorder",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Sound Assistant on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.soundassistant",
+          "name": "Sound Assistant",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.1.00.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.soundassistant",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Video Library on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.videolist",
+          "name": "Samsung Video Library",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6E269D",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.4.22.81",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.videolist",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Video Player on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.video",
+          "name": "Samsung Video Player",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#9A10F0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.3.47.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungvideo",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Voice Recorder on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.app.voicenote",
+          "name": "Samsung Voice Recorder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F0473E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "21.5.91.33",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.voicenote",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Weather on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.daemonapp",
+          "name": "Samsung Weather",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00A2FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.7.30.50",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.samsungweather",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Change package name",
+      "description": "Installs next to Samsung's own Wonderland on Galaxy phones.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.wonderland.wallpaper",
+          "name": "Wonderland",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#5B6CF0",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "1.6.22",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.wonderland",
           "values": null
         }
       ]
@@ -2371,6 +3628,8 @@
         "BytecodePatch",
         "BytecodePatch",
         "ResourcePatch",
+        "BytecodePatch",
+        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -5234,6 +6493,113 @@
       "options": []
     },
     {
+      "name": "Follow system font size",
+      "description": "Scales Samsung Music's text with the phone's font size.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.app.music",
+          "name": "Samsung Music",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6522E9",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.2.45.1",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Frosted glass",
+      "description": "Makes the keyboard background see-through and blurred.",
+      "default": false,
+      "category": "SBoard",
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.48",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.11",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.97",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.95",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.90",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Full black",
       "description": "True black dark mode for AMOLED screens.",
       "default": true,
@@ -5835,10 +7201,11 @@
     },
     {
       "name": "Hide ads and clutter",
-      "description": "Hides promoted map pins (on the map, in search results and along a route) and \"Sponsored\" search results, Gemini's AI summaries (\"Know before you go\" and the review summary), the row of businesses under an address on its place sheet, the home tab's Explore feed and the Explore / Contribute / You tabs. Each can be switched back on on the Customization screen.",
+      "description": "Hides promoted map pins (on the map, in search results and along a route) and \"Sponsored\" search results, Gemini's AI summaries (\"Know before you go\" and the review summary), the row of businesses under an address on its place sheet, the home tab's Explore feed, the Explore / Contribute / You tabs and the share sheet Maps opens on a screenshot. Each can be switched back on on the Customization screen.",
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -5898,6 +7265,82 @@
       "description": "Removes the \"new\" dots from the toolbar and emoji tabs.",
       "default": true,
       "category": "SBoard",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.48",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.11",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.97",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.95",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.90",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide predictive text download prompt",
+      "description": "Stops asking to download predictive text on phones other than Galaxy.",
+      "default": true,
+      "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
@@ -6221,6 +7664,33 @@
           "targets": [
             {
               "version": "2026.11.02.1012472355.Release",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Icon pack",
+      "description": "Adds an icon pack choice to Home settings. Root (mount) install only.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.apps.nexuslauncher",
+          "name": "Pixel Launcher",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#4285F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": null,
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -6754,7 +8224,7 @@
     },
     {
       "name": "Media panel can be closed",
-      "description": "Navigation's media button stays above the media controls, so they can be closed again.",
+      "description": "Navigation's media button stays above the media controls, so they can be closed again; the lowered sheet ends right below them and the row of media apps scrolls.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -6868,6 +8338,63 @@
             "9": 9,
             "10": 10
           }
+        }
+      ]
+    },
+    {
+      "name": "Navigation bar tabs",
+      "description": "Adds Videos, Favorites and Recent to the navigation bar.",
+      "default": false,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.sec.android.gallery3d",
+          "name": "Samsung Gallery",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F0466E",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "15.9.01.7",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "videos",
+          "title": "Videos",
+          "description": "Shows a Videos tab.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "favorites",
+          "title": "Favorites",
+          "description": "Shows a Favorites tab.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        },
+        {
+          "key": "recent",
+          "title": "Recent",
+          "description": "Shows a Recent tab.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
         }
       ]
     },
@@ -7445,6 +8972,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -8061,6 +9589,74 @@
     },
     {
       "name": "Remove telemetry",
+      "description": "No analytics, attribution, crash reports, surveys or session replay.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.alltrails.alltrails",
+          "name": "AllTrails",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#161F13",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.3.20",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "keepBraze",
+          "title": "Keep push notifications",
+          "description": "Leaves Braze, which sends AllTrails' push notifications and messages, online.",
+          "required": true,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oneplus.calculator",
+          "name": "OnePlus Calculator",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FA6731",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
       "description": "Stops usage statistics and automatic log reports to OPPO. Root (mount) install only.",
       "default": true,
       "category": null,
@@ -8076,6 +9672,340 @@
           "targets": [
             {
               "version": null,
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oneplus.deskclock",
+          "name": "OnePlus Clock",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#D44539",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.19.8",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.coloros.compass2",
+          "name": "OnePlus Compass",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#202035",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.0.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.android.contacts",
+          "name": "OnePlus Contacts",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2A9D5C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.80.15",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "andes.oplus.documentsreader",
+          "name": "OnePlus Documents",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#26B0F4",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.1.26",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oneplus.gallery",
+          "name": "OnePlus Photos",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#2C67E9",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.45.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            },
+            {
+              "version": "15.33.40",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": "needs Android 11 or newer"
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics and log uploads to OPPO on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.android.launcher",
+          "name": "OnePlus System Launcher",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1796FE",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.4.30",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            },
+            {
+              "version": "15.6.24",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 30,
+              "description": "needs Android 11 or newer"
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oneplus.filemanager",
+          "name": "OnePlus My Files",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F1B742",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.12.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oneplus.note",
+          "name": "OnePlus Notes",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F9B80B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.6.14",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oneplus.soundrecorder",
+          "name": "OnePlus Recorder",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF2738",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.17.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oplus.screenrecorder",
+          "name": "OnePlus Screen Recording",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#EB3B30",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "16.5.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OPPO, OnePlus and realme phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "net.oneplus.weather",
+          "name": "OnePlus Weather",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3998FB",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.6.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -8168,6 +10098,35 @@
               "isExperimental": false,
               "minSdk": 29,
               "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove telemetry",
+      "description": "Stops usage statistics to OPPO's statistics service on OnePlus phones.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "net.oneplus.launcher",
+          "name": "OnePlus Launcher (OxygenOS 11)",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#EB0028",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.2.66",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": "needs Android 10 or newer"
             }
           ]
         }
@@ -8443,7 +10402,8 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch"
+        "BytecodePatch",
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -8654,7 +10614,21 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "chime",
+          "title": "Chime",
+          "description": "How loud the camera chime is.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "normal",
+          "values": {
+            "Normal": "normal",
+            "Loud": "loud",
+            "Loud, at alarm volume": "alarm"
+          }
+        }
+      ]
     },
     {
       "name": "Speed camera sound at any speed",
@@ -9215,6 +11189,82 @@
       "options": []
     },
     {
+      "name": "Voice input without navigation bar button",
+      "description": "Starts voice input without asking for the keyboard button on the navigation bar.",
+      "default": false,
+      "category": "SBoard",
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.samsung.android.honeyboard",
+          "name": "Samsung Keyboard",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#3E91FF",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "5.9.40.75",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.48",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.12",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.11",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.40.6",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.97",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.95",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "5.9.30.90",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Waze alerts",
       "description": "Shows the alerts a Waze on the same phone is tracking -- police to begin with, and any of crashes, hazards, traffic jams, closures and speed cameras -- as pins on the map, with a chime and a note as one comes up ahead. Off until turned on in Waze & external data source. Waze has to be patched with Share alerts with Maps, signed in and open; in the background is enough.",
       "default": true,
@@ -9225,7 +11275,8 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch"
+        "BytecodePatch",
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
