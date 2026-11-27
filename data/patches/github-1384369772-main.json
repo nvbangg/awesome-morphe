@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -130,6 +130,24 @@
           "type": "kotlin.Boolean",
           "default": false,
           "values": null
+        },
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The package microG Gmail installs under. Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.android.gm.microg",
+          "values": null
+        },
+        {
+          "key": "syncMinutes",
+          "title": "Check for new mail (minutes)",
+          "description": "How often Google accounts sync in the background, push or not. 0 = off.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 15,
+          "values": null
         }
       ]
     },
@@ -168,7 +186,7 @@
     },
     {
       "name": "Add microG-RE support",
-      "description": "Builds microG Photos, a separate app that signs in to your Google account through microG-RE. Not for root installs.",
+      "description": "Builds microG Photos, a separate app next to the built-in Photos that signs in through microG-RE. Not for root installs.",
       "default": false,
       "category": "microG-RE",
       "dependencies": [
@@ -201,6 +219,15 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "packageName",
+          "title": "Package name",
+          "description": "The package microG Photos installs under. Must be a valid Android package name.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "org.ungoogled.android.apps.photos.microg",
           "values": null
         }
       ]
@@ -378,6 +405,24 @@
           "required": false,
           "type": "kotlin.Int",
           "default": 200,
+          "values": null
+        },
+        {
+          "key": "speedDecrease",
+          "title": "Reduced speed ahead",
+          "description": "Waze: 1000 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 1000,
+          "values": null
+        },
+        {
+          "key": "averageSpeedZones",
+          "title": "Average speed zones",
+          "description": "Waze: 600 m.",
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 600,
           "values": null
         }
       ]
@@ -2329,6 +2374,8 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -3985,6 +4032,13 @@
             },
             {
               "version": "16.0.09.35",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": 33,
+              "description": "needs Android 13 or newer"
+            },
+            {
+              "version": "15.1.03.75",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 33,
