@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -17,30 +17,6 @@
           "appIconColor": "#FC4C02",
           "signatures": null,
           "targets": [
-            {
-              "version": "480.15",
-              "versionCodes": {
-                "ARM64_V8A": 12399564,
-                "ARMEABI_V7A": 12399564,
-                "X86_64": 12399564,
-                "X86": 12399564
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "485.12",
-              "versionCodes": {
-                "ARM64_V8A": 12400090,
-                "ARMEABI_V7A": 12400090,
-                "X86_64": 12400090,
-                "X86": 12400090
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "486.9",
               "versionCodes": {
@@ -60,6 +36,18 @@
                 "ARMEABI_V7A": 12400195,
                 "X86_64": 12400195,
                 "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "490.15",
+              "versionCodes": {
+                "ARM64_V8A": 12400619,
+                "ARMEABI_V7A": 12400619,
+                "X86_64": 12400619,
+                "X86": 12400619
               },
               "isExperimental": false,
               "minSdk": null,
@@ -95,48 +83,6 @@
               },
               "isExperimental": false,
               "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Bypass PairIP",
-      "description": "Disables adidas Running's PairIP licence/VM verification, restores the real Application class and bakes the VM's runtime strings (captured from the original app's heap) so Firebase etc. initialize cleanly. NOTE: adidas runs the full PairIP VM whose startup program is the tamper check — the patched app boots past the licence gate but the VM-virtualized init methods cannot be restored without native reverse engineering, so the app may crash after launch. See docs/adidas.md.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.runtastic.android",
-          "name": "adidas Running",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#000000",
-          "signatures": [
-            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
-          ],
-          "targets": [
-            {
-              "version": "14.12.1",
-              "versionCodes": {
-                "ARM64_V8A": 2026110512
-              },
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            },
-            {
-              "version": "14.4.0",
-              "versionCodes": {
-                "ARM64_V8A": 2026011603
-              },
-              "isExperimental": false,
-              "minSdk": 28,
               "description": null
             }
           ]
@@ -285,6 +231,74 @@
       "options": []
     },
     {
+      "name": "Bypass PairIP license check",
+      "description": "Disables Pluralsight's PairIP / Play licence verification (including its custom-trial re-check) so the app runs after Morphe re-signs it. Launch gate only — subscriptions and course access are validated by Pluralsight's servers.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pluralsight",
+          "name": "Pluralsight",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#F05A28",
+          "signatures": [
+            "8f7fc4fb327d54d6669dad0715f792fded4d353ffc6055b9750524b76ae31bcf"
+          ],
+          "targets": [
+            {
+              "version": "2026.11.05",
+              "versionCodes": {
+                "ARM64_V8A": 903935,
+                "ARMEABI_V7A": 903935,
+                "X86_64": 903935,
+                "X86": 903935
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass PairIP license check",
+      "description": "Disables We Love Deals' PairIP / Play licence verification (including its custom-trial re-check) so the app runs after Morphe re-signs it. Launch gate only — the Flutter deals logic and any server-side checks are untouched.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.thina.welovedeals",
+          "name": "We Love Deals",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#E4002B",
+          "signatures": [
+            "eb7eaf29abbe462c70dddc9e6ddead80a9ee53fbbbb32a0e02bd4c7c2836953a"
+          ],
+          "targets": [
+            {
+              "version": "1.2.0",
+              "versionCodes": {
+                "ARM64_V8A": 87,
+                "ARMEABI_V7A": 87,
+                "X86_64": 87,
+                "X86": 87
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Chat button on profiles",
       "description": "Adds a 'Chat' entry to the profile screen's ⋯ menu: opens your conversation with that user when one exists, otherwise their profile (channels are server-created — no fake channel making).",
       "default": false,
@@ -332,30 +346,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "480.15",
-              "versionCodes": {
-                "ARM64_V8A": 12399564,
-                "ARMEABI_V7A": 12399564,
-                "X86_64": 12399564,
-                "X86": 12399564
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "485.12",
-              "versionCodes": {
-                "ARM64_V8A": 12400090,
-                "ARMEABI_V7A": 12400090,
-                "X86_64": 12400090,
-                "X86": 12400090
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "486.9",
               "versionCodes": {
                 "ARM64_V8A": 12400193,
@@ -378,6 +368,18 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+            },
+            {
+              "version": "490.15",
+              "versionCodes": {
+                "ARM64_V8A": 12400619,
+                "ARMEABI_V7A": 12400619,
+                "X86_64": 12400619,
+                "X86": 12400619
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
             }
           ]
         }
@@ -393,40 +395,6 @@
           "values": null
         }
       ]
-    },
-    {
-      "name": "Disable AppCenter telemetry",
-      "description": "No-ops Microsoft AppCenter's SDK bootstrap (configureAndStartServices / startServices) so the bundled telemetry/crash SDK never initialises.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.teams",
-          "name": "Microsoft Teams",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#5059C9",
-          "signatures": [
-            "d49b848e0580370b89c4da712b8da7296782e866bcbfb58ccd873fd954725985"
-          ],
-          "targets": [
-            {
-              "version": "1416/1.0.0.2026202302",
-              "versionCodes": {
-                "ARM64_V8A": 2026202325,
-                "ARMEABI_V7A": 2026202325,
-                "X86_64": 2026202325,
-                "X86": 2026202325
-              },
-              "isExperimental": false,
-              "minSdk": 30,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
     },
     {
       "name": "Disable AppsFlyer",
@@ -521,6 +489,40 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Blueshift engagement SDK",
+      "description": "No-ops Blueshift's SDK initialisation, identification and event endpoints, so no campaign, push or in-app-message engagement data is sent. Off by default: Blueshift also drives rich push and the in-app inbox, so enabling this can stop in-app messages and inbox content from appearing.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.skillshare.Skillshare",
+          "name": "Skillshare",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00C06F",
+          "signatures": [
+            "da27959206fe1efefc8cbeb8922f6ff3a88f615135e663afef9fdfd82b83aaf4"
+          ],
+          "targets": [
+            {
+              "version": "5.4.81",
+              "versionCodes": {
+                "ARM64_V8A": 7706,
+                "ARMEABI_V7A": 7706,
+                "X86_64": 7706,
+                "X86": 7706
+              },
+              "isExperimental": false,
+              "minSdk": 21,
               "description": null
             }
           ]
@@ -672,37 +674,12 @@
       "options": []
     },
     {
-      "name": "Disable ad SDK",
-      "description": "Disables every partner ad-SDK initializer TextNow runs (Facebook Audience Network, Amazon, Fyber/DT Exchange, InMobi, Nimbus, LiveRamp, The Trade Desk) at its own isEnabled() gate, so no ad SDK ever initialises.",
-      "default": true,
+      "name": "Disable root checks (RootBeer)",
+      "description": "Forces the RootBeer library's detection methods to report a non-rooted device, for apps that use it to refuse to run. Only affects RootBeer; app-specific root checks are not covered.",
+      "default": false,
       "category": null,
       "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.enflick.android.TextNow",
-          "name": "TextNow",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#00A8E1",
-          "signatures": [
-            "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
-          ],
-          "targets": [
-            {
-              "version": "26.45.0.0",
-              "versionCodes": {
-                "ARM64_V8A": 15780,
-                "ARMEABI_V7A": 15780,
-                "X86_64": 15780,
-                "X86": 15780
-              },
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
+      "compatiblePackages": null,
       "options": []
     },
     {
@@ -764,46 +741,6 @@
               },
               "isExperimental": false,
               "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable tracker components",
-      "description": "Disables the Google Analytics measurement receiver/services and the Adjust lifecycle provider, and sets the Firebase/Google Analytics collection opt-outs.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.runtastic.android",
-          "name": "adidas Running",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#000000",
-          "signatures": [
-            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
-          ],
-          "targets": [
-            {
-              "version": "14.12.1",
-              "versionCodes": {
-                "ARM64_V8A": 2026110512
-              },
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            },
-            {
-              "version": "14.4.0",
-              "versionCodes": {
-                "ARM64_V8A": 2026011603
-              },
-              "isExperimental": false,
-              "minSdk": 28,
               "description": null
             }
           ]
@@ -893,102 +830,31 @@
     },
     {
       "name": "Disable tracker components",
-      "description": "Disables Firebase measurement, the AppsFlyer install-referrer provider and Facebook auto-init components, and sets the Firebase/GA/Facebook collection opt-outs. FCM push is kept.",
+      "description": "Disables Heap's two auto-init ContentProviders (behavioural session recording) and sets the Firebase analytics collection opt-outs. FCM push and remote config are kept.",
       "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.enflick.android.TextNow",
-          "name": "TextNow",
+          "packageName": "com.pluralsight",
+          "name": "Pluralsight",
           "description": null,
           "apkFileType": "APKS",
-          "appIconColor": "#00A8E1",
+          "appIconColor": "#F05A28",
           "signatures": [
-            "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
+            "8f7fc4fb327d54d6669dad0715f792fded4d353ffc6055b9750524b76ae31bcf"
           ],
           "targets": [
             {
-              "version": "26.45.0.0",
+              "version": "2026.11.05",
               "versionCodes": {
-                "ARM64_V8A": 15780,
-                "ARMEABI_V7A": 15780,
-                "X86_64": 15780,
-                "X86": 15780
+                "ARM64_V8A": 903935,
+                "ARMEABI_V7A": 903935,
+                "X86_64": 903935,
+                "X86": 903935
               },
               "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable trackers",
-      "description": "No-ops the Adjust SDK's event/lifecycle entry points so no attribution or analytics payload is buffered or sent.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.runtastic.android",
-          "name": "adidas Running",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#000000",
-          "signatures": [
-            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
-          ],
-          "targets": [
-            {
-              "version": "14.12.1",
-              "versionCodes": {
-                "ARM64_V8A": 2026110512
-              },
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            },
-            {
-              "version": "14.4.0",
-              "versionCodes": {
-                "ARM64_V8A": 2026011603
-              },
-              "isExperimental": false,
-              "minSdk": 28,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable trackers",
-      "description": "Disables Google Analytics for Firebase measurement components, switches Crashlytics and Firebase/Google-Analytics collection off via the official opt-out flags, and removes the install-referrer permission. FCM push is kept.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.fitbit.FitbitMobile",
-          "name": "Fitbit",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#00B0B9",
-          "signatures": [
-            "2cc914da5a849426c1b591e12f0a8adb042fa2feade3a4762845ce6bfadcf313"
-          ],
-          "targets": [
-            {
-              "version": "5.11.1.health-mobile-1104134730-1009077909",
-              "versionCodes": {
-                "ARM64_V8A": 1104134730
-              },
-              "isExperimental": false,
-              "minSdk": 30,
+              "minSdk": 32,
               "description": null
             }
           ]
@@ -1207,6 +1073,40 @@
     },
     {
       "name": "Disable trackers",
+      "description": "No-ops Pluralsight's own Firebase Analytics event sink (pa1.a), so no usage event and no analytics user-id is sent. SDK components are disabled by 'Disable tracker components'. Mux video analytics is deliberately left alone (see the docs): it is reachable only through suspend wrappers.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.pluralsight",
+          "name": "Pluralsight",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#F05A28",
+          "signatures": [
+            "8f7fc4fb327d54d6669dad0715f792fded4d353ffc6055b9750524b76ae31bcf"
+          ],
+          "targets": [
+            {
+              "version": "2026.11.05",
+              "versionCodes": {
+                "ARM64_V8A": 903935,
+                "ARMEABI_V7A": 903935,
+                "X86_64": 903935,
+                "X86": 903935
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable trackers",
       "description": "Adds the official analytics/Crashlytics collection opt-out flags, disables any Google measurement component and removes the install-referrer permission. Shima+ itself ships no telemetry SDK.",
       "default": true,
       "category": null,
@@ -1241,71 +1141,31 @@
     },
     {
       "name": "Disable trackers",
-      "description": "No-ops AppsFlyer's implementation entry points (start, logEvent) so the attribution SDK never starts and no attribution or analytics event is sent.",
+      "description": "No-ops the crash-reporting (Sentry), attribution (Singular), the app-owned analytics event sink and the Crashlytics user-identity custom keys, so no crash report, install-attribution or usage event is sent and no username or membership flag is attached to crash reports. Firebase push and install-ID are left intact.",
       "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.enflick.android.TextNow",
-          "name": "TextNow",
+          "packageName": "com.skillshare.Skillshare",
+          "name": "Skillshare",
           "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#00A8E1",
+          "apkFileType": "APK",
+          "appIconColor": "#00C06F",
           "signatures": [
-            "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
+            "da27959206fe1efefc8cbeb8922f6ff3a88f615135e663afef9fdfd82b83aaf4"
           ],
           "targets": [
             {
-              "version": "26.45.0.0",
+              "version": "5.4.81",
               "versionCodes": {
-                "ARM64_V8A": 15780,
-                "ARMEABI_V7A": 15780,
-                "X86_64": 15780,
-                "X86": 15780
+                "ARM64_V8A": 7706,
+                "ARMEABI_V7A": 7706,
+                "X86_64": 7706,
+                "X86": 7706
               },
               "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable dark mode",
-      "description": "Forces adidas Running into its built-in night theme (RtBaseTheme.Dark) by setting AppCompatDelegate night mode at app startup.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.runtastic.android",
-          "name": "adidas Running",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#000000",
-          "signatures": [
-            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
-          ],
-          "targets": [
-            {
-              "version": "14.12.1",
-              "versionCodes": {
-                "ARM64_V8A": 2026110512
-              },
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            },
-            {
-              "version": "14.4.0",
-              "versionCodes": {
-                "ARM64_V8A": 2026011603
-              },
-              "isExperimental": false,
-              "minSdk": 28,
+              "minSdk": 21,
               "description": null
             }
           ]
@@ -1375,30 +1235,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "480.15",
-              "versionCodes": {
-                "ARM64_V8A": 12399564,
-                "ARMEABI_V7A": 12399564,
-                "X86_64": 12399564,
-                "X86": 12399564
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "485.12",
-              "versionCodes": {
-                "ARM64_V8A": 12400090,
-                "ARMEABI_V7A": 12400090,
-                "X86_64": 12400090,
-                "X86": 12400090
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "486.9",
               "versionCodes": {
                 "ARM64_V8A": 12400193,
@@ -1417,6 +1253,18 @@
                 "ARMEABI_V7A": 12400195,
                 "X86_64": 12400195,
                 "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "490.15",
+              "versionCodes": {
+                "ARM64_V8A": 12400619,
+                "ARMEABI_V7A": 12400619,
+                "X86_64": 12400619,
+                "X86": 12400619
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1489,30 +1337,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "480.15",
-              "versionCodes": {
-                "ARM64_V8A": 12399564,
-                "ARMEABI_V7A": 12399564,
-                "X86_64": 12399564,
-                "X86": 12399564
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "485.12",
-              "versionCodes": {
-                "ARM64_V8A": 12400090,
-                "ARMEABI_V7A": 12400090,
-                "X86_64": 12400090,
-                "X86": 12400090
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "486.9",
               "versionCodes": {
                 "ARM64_V8A": 12400193,
@@ -1531,6 +1355,18 @@
                 "ARMEABI_V7A": 12400195,
                 "X86_64": 12400195,
                 "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "490.15",
+              "versionCodes": {
+                "ARM64_V8A": 12400619,
+                "ARMEABI_V7A": 12400619,
+                "X86_64": 12400619,
+                "X86": 12400619
               },
               "isExperimental": false,
               "minSdk": null,
@@ -1877,6 +1713,52 @@
       "options": []
     },
     {
+      "name": "Nike obfuscator access-gate bypass",
+      "description": "Nike Run Club's libnike-obfuscator.so refuses to decrypt its client configuration when the APK is not signed with Nike's key, which breaks the OIDC login (accounts.nike.com answers HTTP 500). This patch forces the library's access gate to allow the transform in every ABI, so the OIDC client id decrypts correctly on re-signed builds.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.nike.plusgps",
+          "name": "Nike Run Club",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#111111",
+          "signatures": [
+            "25512576dacc619bd925d1ea05a3e140311d31b0b853183abe1d9da8fd3f240f"
+          ],
+          "targets": [
+            {
+              "version": "4.80.0",
+              "versionCodes": {
+                "ARM64_V8A": 1717895889,
+                "ARMEABI_V7A": 1717895889,
+                "X86_64": 1717895889,
+                "X86": 1717895889
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "4.80.1",
+              "versionCodes": {
+                "ARM64_V8A": 1717921629,
+                "ARMEABI_V7A": 1717921629,
+                "X86_64": 1717921629,
+                "X86": 1717921629
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "No profile-visitor limit",
       "description": "Lifts Pdb's client-side cap of 3 profile-visitor views per hour (the 'slow down' sheet). Toggle: Pdb Extras → Limits → 'No profile-visitor limit'. The bytecode ships always-on and is inert until the switch is on.",
       "default": true,
@@ -1906,6 +1788,15 @@
           ]
         }
       ],
+      "options": []
+    },
+    {
+      "name": "Override certificate pinning",
+      "description": "Trusts user-installed certificate authorities and disables declarative pin-set enforcement, so a debugging proxy can intercept HTTPS traffic. Covers network-security-config pinning only; in-code pinning (e.g. OkHttp CertificatePinner) needs its own patch. Normal TLS validation is otherwise unchanged.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
       "options": []
     },
     {
@@ -2086,77 +1977,6 @@
     },
     {
       "name": "Remove ads",
-      "description": "adidas Running ships no ad-serving SDK; this denies the advertising ID and the Privacy-Sandbox ad services and removes the install-referrer permission.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.runtastic.android",
-          "name": "adidas Running",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#000000",
-          "signatures": [
-            "08c2c1b48f633287e72f1f29f0fe664348b3fce4c12ddc8cafa66494268d9427"
-          ],
-          "targets": [
-            {
-              "version": "14.12.1",
-              "versionCodes": {
-                "ARM64_V8A": 2026110512
-              },
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            },
-            {
-              "version": "14.4.0",
-              "versionCodes": {
-                "ARM64_V8A": 2026011603
-              },
-              "isExperimental": false,
-              "minSdk": 28,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove ads",
-      "description": "Fitbit ships no ad SDK or ad placement; this additionally disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services / install-referrer permissions so no advertising ID is exposed.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.fitbit.FitbitMobile",
-          "name": "Fitbit",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#00B0B9",
-          "signatures": [
-            "2cc914da5a849426c1b591e12f0a8adb042fa2feade3a4762845ce6bfadcf313"
-          ],
-          "targets": [
-            {
-              "version": "5.11.1.health-mobile-1104134730-1009077909",
-              "versionCodes": {
-                "ARM64_V8A": 1104134730
-              },
-              "isExperimental": false,
-              "minSdk": 30,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove ads",
       "description": "Removes the advertising-ID, ad-services and install-referrer permissions (and disables any ad-SDK init provider). Glassdoor ships no third-party ad SDK.",
       "default": true,
       "category": null,
@@ -2182,6 +2002,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Blocks Hutch's server-driven ads (the home banner carousel and the popup banner) by breaking their API routes in the Hermes bundle, so ad data is never fetched and the ad components render nothing. Hutch bundles no ad SDK; this covers the app's own ad delivery.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.omobio.etisalatone",
+          "name": "Hutch",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#EE1C25",
+          "signatures": [
+            "76700e2a20bf441efba368d36e1cfc186c2ef30053e1c5ecb3fec6e32233459d"
+          ],
+          "targets": [
+            {
+              "version": "4.4.1",
+              "versionCodes": {
+                "ARM64_V8A": 400426001,
+                "ARMEABI_V7A": 400426001,
+                "X86_64": 400426001,
+                "X86": 400426001
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -2368,31 +2222,31 @@
     },
     {
       "name": "Remove ads",
-      "description": "Microsoft Teams ships no ad SDK; this strips the advertising-ID, ad-services and install-referrer permissions and disables any ad-SDK init provider.",
+      "description": "Skillshare ships no ad SDK or ad placement; this additionally disables any ad-SDK auto-init provider and removes the advertising-ID / ad-services permissions so no advertising ID is exposed.",
       "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.microsoft.teams",
-          "name": "Microsoft Teams",
+          "packageName": "com.skillshare.Skillshare",
+          "name": "Skillshare",
           "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#5059C9",
+          "apkFileType": "APK",
+          "appIconColor": "#00C06F",
           "signatures": [
-            "d49b848e0580370b89c4da712b8da7296782e866bcbfb58ccd873fd954725985"
+            "da27959206fe1efefc8cbeb8922f6ff3a88f615135e663afef9fdfd82b83aaf4"
           ],
           "targets": [
             {
-              "version": "1416/1.0.0.2026202302",
+              "version": "5.4.81",
               "versionCodes": {
-                "ARM64_V8A": 2026202325,
-                "ARMEABI_V7A": 2026202325,
-                "X86_64": 2026202325,
-                "X86": 2026202325
+                "ARM64_V8A": 7706,
+                "ARMEABI_V7A": 7706,
+                "X86_64": 7706,
+                "X86": 7706
               },
               "isExperimental": false,
-              "minSdk": 30,
+              "minSdk": 21,
               "description": null
             }
           ]
@@ -2402,31 +2256,31 @@
     },
     {
       "name": "Remove ads",
-      "description": "Disables every ad-network component TextNow declares (Facebook Audience Network, Amazon APS/DTB) and strips the ad-ID / ad-services / install-referrer permissions.",
+      "description": "We Love Deals ships no ad SDK, no ad placement and no advertising permission. This only disables any ad-SDK auto-init provider for future builds and removes the vestigial Play-licence permission.",
       "default": true,
       "category": null,
       "dependencies": [],
       "compatiblePackages": [
         {
-          "packageName": "com.enflick.android.TextNow",
-          "name": "TextNow",
+          "packageName": "com.thina.welovedeals",
+          "name": "We Love Deals",
           "description": null,
           "apkFileType": "APKS",
-          "appIconColor": "#00A8E1",
+          "appIconColor": "#E4002B",
           "signatures": [
-            "1428a295a31d63d9e9361cf6c7b71a76b71bf5ff254f7549c7e6d9341e476354"
+            "eb7eaf29abbe462c70dddc9e6ddead80a9ee53fbbbb32a0e02bd4c7c2836953a"
           ],
           "targets": [
             {
-              "version": "26.45.0.0",
+              "version": "1.2.0",
               "versionCodes": {
-                "ARM64_V8A": 15780,
-                "ARMEABI_V7A": 15780,
-                "X86_64": 15780,
-                "X86": 15780
+                "ARM64_V8A": 87,
+                "ARMEABI_V7A": 87,
+                "X86_64": 87,
+                "X86": 87
               },
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -2435,8 +2289,108 @@
       "options": []
     },
     {
+      "name": "Remove privacy-sensitive permissions",
+      "description": "Strips selected capability permissions (notifications, camera, microphone, media/storage, location, contacts, calendar, nearby devices, sensors, installed-apps visibility) from the app's manifest. Off by default — disabling a permission the app needs breaks the feature that uses it.",
+      "default": false,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "stripNotifications",
+          "title": "Notifications",
+          "description": "android.permission.POST_NOTIFICATIONS",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripCamera",
+          "title": "Camera",
+          "description": "android.permission.CAMERA",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripMicrophone",
+          "title": "Microphone",
+          "description": "Record/capture audio permissions",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripMedia",
+          "title": "Media & storage",
+          "description": "External-storage and media read permissions",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripLocation",
+          "title": "Location",
+          "description": "Fine/coarse/background location",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripContacts",
+          "title": "Contacts & accounts",
+          "description": "Read/write contacts, GET_ACCOUNTS",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripCalendar",
+          "title": "Calendar",
+          "description": "Read/write calendar",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripNearby",
+          "title": "Nearby devices",
+          "description": "Bluetooth scan/connect, nearby WiFi, UWB",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripSensors",
+          "title": "Body sensors & activity",
+          "description": "Body sensors, activity recognition",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "stripInstalledApps",
+          "title": "Installed-apps visibility",
+          "description": "QUERY_ALL_PACKAGES",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Remove telemetry",
-      "description": "Strips Sentry, Embrace and Facebook analytics, disables Firebase analytics, and empties the advertising ID (push notifications keep working).",
+      "description": "Strips Sentry, Embrace and Facebook analytics, disables Firebase analytics, empties the advertising ID, and suppresses the local Strava analytics-event cache (push notifications keep working; the first-party Strava network sender remains active).",
       "default": true,
       "category": null,
       "dependencies": [
@@ -2451,30 +2405,6 @@
           "appIconColor": "#FC4C02",
           "signatures": null,
           "targets": [
-            {
-              "version": "480.15",
-              "versionCodes": {
-                "ARM64_V8A": 12399564,
-                "ARMEABI_V7A": 12399564,
-                "X86_64": 12399564,
-                "X86": 12399564
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "485.12",
-              "versionCodes": {
-                "ARM64_V8A": 12400090,
-                "ARMEABI_V7A": 12400090,
-                "X86_64": 12400090,
-                "X86": 12400090
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "486.9",
               "versionCodes": {
@@ -2494,6 +2424,18 @@
                 "ARMEABI_V7A": 12400195,
                 "X86_64": 12400195,
                 "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "490.15",
+              "versionCodes": {
+                "ARM64_V8A": 12400619,
+                "ARMEABI_V7A": 12400619,
+                "X86_64": 12400619,
+                "X86": 12400619
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2520,30 +2462,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "480.15",
-              "versionCodes": {
-                "ARM64_V8A": 12399564,
-                "ARMEABI_V7A": 12399564,
-                "X86_64": 12399564,
-                "X86": 12399564
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "485.12",
-              "versionCodes": {
-                "ARM64_V8A": 12400090,
-                "ARMEABI_V7A": 12400090,
-                "X86_64": 12400090,
-                "X86": 12400090
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "486.9",
               "versionCodes": {
                 "ARM64_V8A": 12400193,
@@ -2562,6 +2480,18 @@
                 "ARMEABI_V7A": 12400195,
                 "X86_64": 12400195,
                 "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "490.15",
+              "versionCodes": {
+                "ARM64_V8A": 12400619,
+                "ARMEABI_V7A": 12400619,
+                "X86_64": 12400619,
+                "X86": 12400619
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2755,40 +2685,6 @@
       "options": []
     },
     {
-      "name": "Unbloat (trim manifest)",
-      "description": "Removes the third-party launcher-badge permission zoo Teams declares (Samsung/HTC/Sony/Huawei/OPPO/badger), which only add manifest bulk.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.microsoft.teams",
-          "name": "Microsoft Teams",
-          "description": null,
-          "apkFileType": "APKS",
-          "appIconColor": "#5059C9",
-          "signatures": [
-            "d49b848e0580370b89c4da712b8da7296782e866bcbfb58ccd873fd954725985"
-          ],
-          "targets": [
-            {
-              "version": "1416/1.0.0.2026202302",
-              "versionCodes": {
-                "ARM64_V8A": 2026202325,
-                "ARMEABI_V7A": 2026202325,
-                "X86_64": 2026202325,
-                "X86": 2026202325
-              },
-              "isExperimental": false,
-              "minSdk": 30,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Unlock Premium",
       "description": "Unlocks Strava Premium features (spoofs PAID state + far-future expiry). Also re-enables password login after OTP.",
       "default": true,
@@ -2803,30 +2699,6 @@
           "appIconColor": "#FC4C02",
           "signatures": null,
           "targets": [
-            {
-              "version": "480.15",
-              "versionCodes": {
-                "ARM64_V8A": 12399564,
-                "ARMEABI_V7A": 12399564,
-                "X86_64": 12399564,
-                "X86": 12399564
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "485.12",
-              "versionCodes": {
-                "ARM64_V8A": 12400090,
-                "ARMEABI_V7A": 12400090,
-                "X86_64": 12400090,
-                "X86": 12400090
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "486.9",
               "versionCodes": {
@@ -2846,6 +2718,18 @@
                 "ARMEABI_V7A": 12400195,
                 "X86_64": 12400195,
                 "X86": 12400195
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "490.15",
+              "versionCodes": {
+                "ARM64_V8A": 12400619,
+                "ARMEABI_V7A": 12400619,
+                "X86_64": 12400619,
+                "X86": 12400619
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2925,6 +2809,74 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Forces User.has_active_subscription to true in the Dart AOT snapshot (both JSON parse sites), the flag every premium gate branches on, and NOPs the redeem paywall's own branch (tbnz on the gate bool at 0x58eea0) so the redeem flow always runs. Vendor-issued redemption codes and anything the backend re-validates stay server-gated.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.thina.welovedeals",
+          "name": "We Love Deals",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#E4002B",
+          "signatures": [
+            "eb7eaf29abbe462c70dddc9e6ddead80a9ee53fbbbb32a0e02bd4c7c2836953a"
+          ],
+          "targets": [
+            {
+              "version": "1.2.0",
+              "versionCodes": {
+                "ARM64_V8A": 87,
+                "ARMEABI_V7A": 87,
+                "X86_64": 87,
+                "X86": 87
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium (client-side)",
+      "description": "Forces the app's client-side entitlement flags (isMember → true, isLocked → false) so premium badges, paywall CTAs and locked-lesson chrome are gone and every lesson row is playable/downloadable in the UI. Honestly: the video stream itself is served by Skillshare's backend, so premium lessons may still fail to play — that is a server-side check.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.skillshare.Skillshare",
+          "name": "Skillshare",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#00C06F",
+          "signatures": [
+            "da27959206fe1efefc8cbeb8922f6ff3a88f615135e663afef9fdfd82b83aaf4"
+          ],
+          "targets": [
+            {
+              "version": "5.4.81",
+              "versionCodes": {
+                "ARM64_V8A": 7706,
+                "ARMEABI_V7A": 7706,
+                "X86_64": 7706,
+                "X86": 7706
+              },
+              "isExperimental": false,
+              "minSdk": 21,
               "description": null
             }
           ]
