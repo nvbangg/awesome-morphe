@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "patches": [
     {
       "name": "Skip Consent Popup",
@@ -355,22 +355,12 @@
     },
     {
       "name": "Force Resizable Activity",
-      "description": "Sets android:resizeableActivity and supportsFreeformWindowManagement so the app can run in split-screen, free-form windows, DeX, and Chromebooks",
+      "description": "Sets android:resizeableActivity so the app can run in split-screen, free-form windows, DeX, and Chromebooks",
       "default": false,
       "category": "Manifest",
       "dependencies": [],
       "compatiblePackages": null,
-      "options": [
-        {
-          "key": "freeform",
-          "title": "Enable freeform",
-          "description": "Also set supportsFreeformWindowManagement for true free-form.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": true,
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
       "name": "Immersive Fullscreen",
@@ -1091,10 +1081,38 @@
       ]
     },
     {
+      "name": "Add Queries Package",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "addQueriesPackageName",
+          "title": "Package name",
+          "description": null,
+          "required": true,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Allow Background Activity",
       "description": "Makes ActivityManager.isBackgroundRestricted always return false so apps ignore background activity restrictions imposed by the system or user",
       "default": false,
       "category": "Allow",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Allow Backup",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -1126,11 +1144,12 @@
       "compatiblePackages": [
         {
           "packageName": "com.bandcamp.android",
-          "name": null,
+          "name": "Bandcamp",
           "description": null,
           "apkFileType": null,
           "appIconColor": null,
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": null,
@@ -1212,6 +1231,15 @@
           }
         }
       ]
+    },
+    {
+      "name": "Block ACRA",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
     },
     {
       "name": "Block APM Suites",
@@ -1369,6 +1397,69 @@
       ]
     },
     {
+      "name": "Block AdColony",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block AdMob Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Adjust",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Airship",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Amazon Ads",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Amplitude",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Amplitude identity",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block Analytics Long Tail",
       "description": "Stops smaller product analytics SDKs so events never reach their dashboards",
       "default": false,
@@ -1415,6 +1506,60 @@
       ]
     },
     {
+      "name": "Block App Center",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block App Open Ads",
+      "description": null,
+      "default": false,
+      "category": "Ads",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block AppLovin Init",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block AppLovin Mediation Debugger",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Appodeal",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block AppsFlyer",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block Attribution Extras",
       "description": "Stops smaller attribution SDKs so installs and opens are never credited to ad networks",
       "default": false,
@@ -1456,6 +1601,96 @@
       "description": "Blocks Bluetooth Low Energy scans so apps cannot track nearby beacons or accessories",
       "default": false,
       "category": "Privacy",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Banner Ads",
+      "description": null,
+      "default": false,
+      "category": "Ads",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block BidMachine",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block BidMachine via Unity",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Branch.io",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Braze",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Bugsee",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Chartboost Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block CleverTap",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block CleverTap profiles",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Contentsquare",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -1571,6 +1806,96 @@
       ]
     },
     {
+      "name": "Block Datadog",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Dynatrace",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Embrace",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Estimote",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Facebook Analytics",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Firebase Analytics",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Flurry",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block FullStory",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Fyber",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Fyber via Unity",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block GMS Tracking",
       "description": "Blocks Google activity recognition and geofencing so apps cannot track movement or location zones",
       "default": false,
@@ -1599,10 +1924,82 @@
       ]
     },
     {
+      "name": "Block GameAnalytics",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Gimbal",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block HelpShift",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Huawei Ads Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block Huawei Analytics",
       "description": "Stops Huawei Analytics event uploads so usage never reaches Huawei servers",
       "default": false,
       "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block HyprMX",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block IAB Open Measurement",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block InMobi Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block InMobi via Unity",
+      "description": null,
+      "default": false,
+      "category": "Unity",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -1617,8 +2014,44 @@
       "options": []
     },
     {
+      "name": "Block Interstitial Ads",
+      "description": null,
+      "default": false,
+      "category": "Ads",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Kochava",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Leanplum",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block Legacy Analytics",
       "description": "Stops pre-Firebase Google Analytics so screen views and hits never upload",
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Localytics",
+      "description": null,
       "default": false,
       "category": "Telemetry",
       "dependencies": [],
@@ -1663,10 +2096,154 @@
       ]
     },
     {
+      "name": "Block MAX Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block MREC Ads",
+      "description": null,
+      "default": false,
+      "category": "Ads",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Matomo",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Meta Ads Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Mintegral Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Mintegral via Unity",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Mixpanel",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Mixpanel People",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block MoEngage",
       "description": "Stops the MoEngage SDK so events and profile traits never reach its engagement cloud",
       "default": false,
       "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Moloco Ad Loading",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Moloco SDK Init",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block MyTarget Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block New Relic",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Ogury",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block OneSignal",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block OpenTelemetry",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Pangle Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -1764,10 +2341,55 @@
       ]
     },
     {
+      "name": "Block Radar",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Raygun",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Rewarded Ads",
+      "description": null,
+      "default": false,
+      "category": "Ads",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block Screenshot Detection",
       "description": "Adds FLAG_SECURE to every activity window so the system blocks screenshots, screen recording and recents previews of the app",
       "default": false,
       "category": "Privacy",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Segment",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Sentry",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -1837,8 +2459,98 @@
       ]
     },
     {
+      "name": "Block Shake",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Singular",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Smaato",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Smartlook",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block Snowplow",
       "description": "Stops the Snowplow tracker so structured events never reach its collectors",
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Splunk Mint",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block StartApp Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block SuperAwesome",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Tapjoy",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Tenjin",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block TestFairy",
+      "description": null,
       "default": false,
       "category": "Telemetry",
       "dependencies": [],
@@ -1855,8 +2567,350 @@
       "options": []
     },
     {
+      "name": "Block TikTok IAP Init",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Treasure Data",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block UXCam",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Ads Gateway",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Ads Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Ads Load",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Ads Show",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Ads Token Request",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Ads Viewer",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Analytics",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Banner Cache",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Clipboard Write",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Interstitial Load",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Interstitial Show",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Logger Disable",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Monetization Events",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Native Library Load",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity OMID Measurement",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Player Destroy",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Player Pause",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Player Quit",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Player Resume",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Player Shutdown",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Rewarded Ad Load",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Rewarded Ad Show",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Screen Brightness Set",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Send Message",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Services Init",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Soft Input",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Store Billing",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Unity Store Monitor",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block UserCentrics Init",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Vungle Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Vungle Legacy Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block WebEngage",
+      "description": null,
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block Yandex Ads Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Block Yandex Metrica",
       "description": "Stops Yandex Metrica activation and event reports so usage never reaches Yandex servers",
+      "default": false,
+      "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block ironSource Init",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Block mParticle",
+      "description": null,
       "default": false,
       "category": "Telemetry",
       "dependencies": [],
@@ -2432,6 +3486,60 @@
       "options": []
     },
     {
+      "name": "Disable Accessibility Event Send",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Account Addition",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Account Removal",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Account Sync",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Activity Finish",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Activity Start",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Activity Transitions",
       "description": "No-ops Activity.overridePendingTransition(...) so the app's custom activity enter/exit animations are skipped.",
       "default": false,
@@ -2541,6 +3649,24 @@
       ]
     },
     {
+      "name": "Disable Alarm Cancellation",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Alarm Scheduling",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Analytics Events",
       "description": "Blocks app tracking and analytics.",
       "default": false,
@@ -2577,10 +3703,55 @@
       "options": []
     },
     {
+      "name": "Disable Audio Focus Request",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Audio Mode Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Audio Record Release",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Audio Recording",
       "description": "Drops microphone recording calls so the app cannot capture audio.",
       "default": false,
       "category": "Audio",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Audio Routing Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Auth Token Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -2631,11 +3802,12 @@
       "compatiblePackages": [
         {
           "packageName": "com.bandcamp.android",
-          "name": null,
+          "name": "Bandcamp",
           "description": null,
           "apkFileType": null,
           "appIconColor": null,
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": null,
@@ -2650,8 +3822,53 @@
       "options": []
     },
     {
+      "name": "Disable Biometric Authentication",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Bluetooth A2DP",
       "description": "Makes AudioManager.isBluetoothA2dpOn() report false so apps that change behavior when Bluetooth audio is streaming run normally.",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Bluetooth A2DP Connect",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Bluetooth Bond Cancel",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Bluetooth Bond Removal",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Bluetooth Bonding",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -2668,8 +3885,44 @@
       "options": []
     },
     {
+      "name": "Disable Bluetooth Discovery Cancel",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Bluetooth Headset Connect",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Bluetooth Name Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Bluetooth SCO",
       "description": "Makes AudioManager.isBluetoothScoOn() report false so apps that change behavior when a Bluetooth SCO link is active run normally.",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Bluetooth Toggle",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -2686,10 +3939,109 @@
       "options": []
     },
     {
+      "name": "Disable Broadcast Send",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Call Answer",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Camera Auto Focus",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Camera Face Detection",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Camera Flash",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Camera Focus Mode",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Camera Parameter Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Camera Picture Format",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Camera Preview",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Camera Release",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Camera Shutter Sound",
       "description": "Silences the camera shutter and video-record sounds by neutralizing MediaActionSound.play(...) and Camera.playSound(...).",
       "default": false,
       "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Clipboard Read",
+      "description": null,
+      "default": false,
+      "category": "Force",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -2717,6 +4069,60 @@
       "description": "Makes dialer tone playback report failure so keypad tones stay silent.",
       "default": false,
       "category": "Audio",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Device Lock",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Device Wipe",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Dialog Dismiss",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Dialog Show",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Download Enqueue",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Download Manager Remove",
+      "description": null,
+      "default": false,
+      "category": "Disable",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -2754,6 +4160,15 @@
       "description": "Adds Facebook SDK manifest switches that stop auto-initialization, automatic app event logging and advertiser ID collection at startup",
       "default": false,
       "category": "Telemetry",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Fingerprint Authentication",
+      "description": null,
+      "default": false,
+      "category": "Disable",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -2850,10 +4265,37 @@
       ]
     },
     {
+      "name": "Disable Foreground Service Start",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Game Sounds",
       "description": "Makes SoundPool playback return an invalid stream so short game sounds stay silent.",
       "default": false,
       "category": "Audio",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Geofencing",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Global Settings Write",
+      "description": null,
+      "default": false,
+      "category": "Disable",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -2940,6 +4382,33 @@
       "options": []
     },
     {
+      "name": "Disable Input Method Show",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Job Cancellation",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Job Scheduling",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Keyboard Sound",
       "description": "Silences keyboard and system sounds.",
       "default": false,
@@ -2949,8 +4418,35 @@
       "options": []
     },
     {
+      "name": "Disable Keyguard Dismiss",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Location Requests",
       "description": "Stops the app from tracking your location.",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Location Single Update",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Location Updates",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -2981,8 +4477,125 @@
       ]
     },
     {
+      "name": "Disable Media Playback",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Player Release",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Player Seek",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Player Volume",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Recorder Release",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Recording",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Scanner Disconnect",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Scanner Scan",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Session Callback",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Media Session Updates",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Microphone Mute",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Music Detection",
       "description": "Makes AudioManager.isMusicActive() report false so apps that react to playing music behave as if nothing is playing.",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Network Callback Registration",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Network Callback Unregister",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -3007,6 +4620,42 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Disable Notification Cancellation",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Notification Channel Creation",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Notification Channel Delete",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Notification Policy Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
     },
     {
       "name": "Disable Notification Sound",
@@ -3044,11 +4693,12 @@
       "compatiblePackages": [
         {
           "packageName": "com.bandcamp.android",
-          "name": null,
+          "name": "Bandcamp",
           "description": null,
           "apkFileType": null,
           "appIconColor": null,
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": null,
@@ -3081,8 +4731,107 @@
       "options": []
     },
     {
+      "name": "Disable Package Install Abort",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Package Installation",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Package Uninstall",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Permission Request",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Phone Calls",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Picture Taking",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Popup Keyboard",
       "description": "Makes soft-keyboard requests report failure so the keyboard stops popping up.",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Popup Window Dismiss",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Popup Window Show",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Power Reboot",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Process Kill",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Process Network Bind",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -3117,6 +4866,24 @@
       "options": []
     },
     {
+      "name": "Disable Ringer Mode Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Ringer Silence",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Ringtone Playback",
       "description": "Drops ringtone playback calls so ringtones stay silent.",
       "default": false,
@@ -3126,8 +4893,44 @@
       "options": []
     },
     {
+      "name": "Disable SMS Sending",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Screen Sleep",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Scroll View Smooth Scroll",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Scrollbars",
       "description": "Forces View.setVerticalScrollBarEnabled/setHorizontalScrollBarEnabled(false) so scrollbars are never drawn.",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Secure Settings Write",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -3144,8 +4947,44 @@
       "options": []
     },
     {
+      "name": "Disable Sensor Registration",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Sensor Unregistration",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Sensors",
       "description": "Stops the app from reading motion and orientation sensors.",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Service Start",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Settings Write",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -3188,11 +5027,12 @@
       "compatiblePackages": [
         {
           "packageName": "com.bandcamp.android",
-          "name": null,
+          "name": "Bandcamp",
           "description": null,
           "apkFileType": null,
           "appIconColor": null,
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": null,
@@ -3207,6 +5047,15 @@
       "options": []
     },
     {
+      "name": "Disable Task Background",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Text-to-Speech",
       "description": "Reports text-to-speech success without playing anything so spoken prompts stay silent.",
       "default": false,
@@ -3216,8 +5065,71 @@
       "options": []
     },
     {
+      "name": "Disable Toast Cancel",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable Toasts",
       "description": "No-ops Toast.show() so the app cannot display toast pop-ups.",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable URI Permission Revoke",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Video Playback",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable View Animation",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable View Visibility Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Volume Change",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Wake Lock Release",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -3234,8 +5146,269 @@
       "options": []
     },
     {
+      "name": "Disable WebView App Cache",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Cache Clear",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Content Access",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Cookie Write",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView DOM Storage",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Geolocation",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView History Clear",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Image Loading",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Initial Focus",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView JavaScript",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Load",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Navigation",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Offscreen Pre-Raster",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Popups",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Reload",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Disable WebView Safe Browsing",
       "description": "Forces WebSettings.setSafeBrowsingEnabled(false) to disable WebView Google Safe Browsing checks (complements the callback bypass).",
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Save Form Data",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Save Password",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Wide Viewport",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Zoom",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WebView Zoom Support",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WiFi Disconnect",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WiFi Network Add",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WiFi Network Enable",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WiFi Network Remove",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WiFi P2P Connect",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WiFi Reconnect",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WiFi Scanning",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable WiFi Toggle",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Window Add View",
+      "description": null,
       "default": false,
       "category": "Disable",
       "dependencies": [],
@@ -3247,6 +5420,24 @@
       "description": "Drops window and view blur calls for sharper UI and better performance.",
       "default": false,
       "category": "Graphics",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Window Remove View",
+      "description": null,
+      "default": false,
+      "category": "Disable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Disable Window Update View",
+      "description": null,
+      "default": false,
+      "category": "Disable",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -3269,11 +5460,12 @@
       "compatiblePackages": [
         {
           "packageName": "com.bandcamp.android",
-          "name": null,
+          "name": "Bandcamp",
           "description": null,
           "apkFileType": null,
           "appIconColor": null,
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": null,
@@ -3456,6 +5648,213 @@
       "description": "Forces WebSettings.setSupportZoom(true) so WebViews permit zooming the page.",
       "default": false,
       "category": "Enable",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Activity Recognition Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Bluetooth Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Body Sensors Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Calendar Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Camera Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Contacts Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Foreground Service Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Install Packages Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Location Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Microphone Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Phone Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Post Notifications Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Query All Packages Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Read Call Log Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Read Phone State Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Read SMS Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Read Storage Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Receive SMS Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure SMS Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Vibrate Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Wake Lock Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Write Calendar Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Ensure Write Storage Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -4284,6 +6683,15 @@
       "options": []
     },
     {
+      "name": "Force Location Enabled",
+      "description": null,
+      "default": false,
+      "category": "Force",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Force Max Brightness",
       "description": "Forces the system screen brightness setting to a chosen value (default 255) so apps that read it cannot dim or restrict the screen.",
       "default": false,
@@ -4316,6 +6724,24 @@
       "description": "Makes TelephonyManager.isMultiSimEnabled() report true so apps that require multiple SIMs run on single-SIM devices.",
       "default": false,
       "category": "Force",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Network Connected",
+      "description": null,
+      "default": false,
+      "category": "Force",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Non-Resizable Activity",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -4415,6 +6841,105 @@
       "description": "Makes Environment.isExternalStorageRemovable() report false so apps that refuse to run from removable storage treat it as internal.",
       "default": false,
       "category": "Force",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity ARCore Enabled",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Ads Debug Mode",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Ads Initialized",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Ads Normal Mode",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Ads Not Initialized",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Ads Supported",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Auto Report Fully Drawn",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Back Button Leaves App",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Fullscreen Launch",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Services Initialized",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Force Unity Services Supported",
+      "description": null,
+      "default": false,
+      "category": "Unity",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -4989,6 +7514,15 @@
       "description": "Reports no USB devices or accessories so apps cannot fingerprint connected hardware",
       "default": false,
       "category": "Privacy",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Hide Unity Splash",
+      "description": null,
+      "default": false,
+      "category": "Unity",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -5599,8 +8133,89 @@
       "options": []
     },
     {
+      "name": "Remove AD_ID Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Activity Recognition Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Bluetooth Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Body Sensors Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Calendar Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Camera Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Remove Compatible Screens",
       "description": "Removes the <compatible-screens> block so the app is not restricted to a fixed set of screen sizes/densities.",
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Contacts Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Foreground Service Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Install Packages Permission",
+      "description": null,
       "default": false,
       "category": "Manifest",
       "dependencies": [],
@@ -5617,6 +8232,33 @@
       "options": []
     },
     {
+      "name": "Remove Location Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Microphone Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Phone Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
       "name": "Remove Play Count Limit",
       "description": "Bandcamp: removes the free streaming play limit on unowned tralbums, so full tracks keep playing and the purchase nag never appears.",
       "default": false,
@@ -5625,11 +8267,12 @@
       "compatiblePackages": [
         {
           "packageName": "com.bandcamp.android",
-          "name": null,
+          "name": "Bandcamp",
           "description": null,
           "apkFileType": null,
           "appIconColor": null,
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": null,
@@ -5641,6 +8284,114 @@
           ]
         }
       ],
+      "options": []
+    },
+    {
+      "name": "Remove Post Notifications Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Query All Packages Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Read Call Log Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Read Phone State Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Read SMS Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Read Storage Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Receive SMS Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove SMS Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Vibrate Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Wake Lock Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Write Calendar Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Remove Write Storage Permission",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
       "options": []
     },
     {
@@ -5672,6 +8423,44 @@
       ]
     },
     {
+      "name": "Set Max SDK Version",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "manifestmaxSdkVersion",
+          "title": "Max SDK",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 36,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Set Min SDK Version",
+      "description": null,
+      "default": false,
+      "category": "Manifest",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "manifestminSdkVersion",
+          "title": "Min SDK",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 21,
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Show Navigation Bar",
       "description": "Keeps the navigation bar visible in apps that hide it",
       "default": false,
@@ -5689,11 +8478,12 @@
       "compatiblePackages": [
         {
           "packageName": "com.bandcamp.android",
-          "name": null,
+          "name": "Bandcamp",
           "description": null,
           "apkFileType": null,
           "appIconColor": null,
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": null,
@@ -5712,6 +8502,15 @@
       "description": "Keep the status bar visible in fullscreen apps",
       "default": false,
       "category": "Interface",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Show Unity Splash",
+      "description": null,
+      "default": false,
+      "category": "Unity",
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
@@ -5933,6 +8732,139 @@
       "options": []
     },
     {
+      "name": "Spoof Build Brand",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuildBrand",
+          "title": "Brand",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "generic",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof Build Device",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuildDevice",
+          "title": "Device",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "generic",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof Build Display",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuildDisplay",
+          "title": "Display ID",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "generic",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof Build Host",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuildHost",
+          "title": "Host",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "localhost",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof Build ID",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuildId",
+          "title": "Build ID",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "REL",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof Build Manufacturer",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuildManufacturer",
+          "title": "Manufacturer",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "Generic",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof Build Product",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuildProduct",
+          "title": "Product",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "generic",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Spoof Build Serial",
       "description": "Reports a chosen device serial through Build.getSerial() so apps that fingerprint by serial number see a constant value.",
       "default": false,
@@ -5959,6 +8891,25 @@
       "dependencies": [],
       "compatiblePackages": null,
       "options": []
+    },
+    {
+      "name": "Spoof Build User",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofBuildUser",
+          "title": "User",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "android-build",
+          "values": null
+        }
+      ]
     },
     {
       "name": "Spoof CPU Architecture",
@@ -6348,6 +9299,25 @@
       "options": []
     },
     {
+      "name": "Spoof Radio Version",
+      "description": null,
+      "default": false,
+      "category": "Spoof",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofRadioVersion",
+          "title": "Radio version",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "unknown",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Spoof Ringer Mode",
       "description": "Forces AudioManager.getRingerMode() to report RINGER_MODE_NORMAL (2) so apps cannot detect silent or vibrate mode.",
       "default": false,
@@ -6592,6 +9562,44 @@
       "options": []
     },
     {
+      "name": "Spoof Unity Ads Version",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofUnityAdsVersionPatch",
+          "title": "Value",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "2026.1000.0",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Spoof Unity Services Version",
+      "description": null,
+      "default": false,
+      "category": "Unity",
+      "dependencies": [],
+      "compatiblePackages": null,
+      "options": [
+        {
+          "key": "spoofUnityServicesVersionPatch",
+          "title": "Value",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "1.0.0",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Spoof Voice Mail",
       "description": "Reports empty strings from TelephonyManager.getVoiceMailNumber() and getVoiceMailAlphaTag() so apps cannot read the voicemail number or tag.",
       "default": false,
@@ -6799,11 +9807,12 @@
       "compatiblePackages": [
         {
           "packageName": "com.bandcamp.android",
-          "name": null,
+          "name": "Bandcamp",
           "description": null,
           "apkFileType": null,
           "appIconColor": null,
           "signatures": null,
+          "formFactor": "MOBILE",
           "targets": [
             {
               "version": null,

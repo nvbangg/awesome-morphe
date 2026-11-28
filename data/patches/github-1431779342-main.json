@@ -1,6 +1,6 @@
 {
-  "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.8.0",
+  "NOTE": "Do NOT manually edit this file. Regenerate it with ./gradlew :patches:generatePatchesList. Manually editing this file can break third party tools that use this file.",
+  "version": "1.9.0",
   "patches": [
     {
       "name": "Block Product Ad Banners",
@@ -29,6 +29,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Bypass SSL Pinning",
+      "description": "For TLS debugging: trusts user-installed CA certificates, skips OkHttp certificate pinning and accepts any hostname, so a local proxy can inspect HTTPS traffic. Not selected by default.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.locket.Locket",
+          "name": "Locket Widget",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FFB201",
+          "signatures": [
+            "f7dd2c755cbbdf342b216c453e76e2ffcb34d688e5f91499bec0341648cbcb16"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.247.3",
+              "versionCodes": {
+                "ARM64_V8A": 636,
+                "ARMEABI_V7A": 636,
+                "X86_64": 636,
+                "X86": 636
+              },
+              "isExperimental": false,
+              "minSdk": 27,
               "description": null
             }
           ]
@@ -401,6 +435,50 @@
       "options": []
     },
     {
+      "name": "Spoof Firebase signing certificate",
+      "description": "Sends Locket's original signing-certificate SHA-1 to Firebase Installations, Remote Config, App Check and Auth. Required after repackaging: Morphe re-signs the APK, and Google otherwise rejects the requests with HTTP 403.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.locket.Locket",
+          "name": "Locket Widget",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FFB201",
+          "signatures": [
+            "f7dd2c755cbbdf342b216c453e76e2ffcb34d688e5f91499bec0341648cbcb16"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.247.3",
+              "versionCodes": {
+                "ARM64_V8A": 636,
+                "ARMEABI_V7A": 636,
+                "X86_64": 636,
+                "X86": 636
+              },
+              "isExperimental": false,
+              "minSdk": 27,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "originalCertSha1",
+          "title": "Original Firebase SHA-1",
+          "description": "SHA-1 of Locket's original signing certificate, sent as X-Android-Cert.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "187A27D3D7364A044307F56E66230F973DCCD5B7",
+          "values": null
+        }
+      ]
+    },
+    {
       "name": "Spoof WARP+ Unlimited UI",
       "description": "Forces WarpPlusState to UNLIMITED on every AccountData instance by intercepting the primary constructor before the account type field is written.",
       "default": true,
@@ -431,59 +509,6 @@
         }
       ],
       "options": []
-    },
-    {
-      "name": "Spoofer server",
-      "description": "Sends Locket's API traffic (feed, profile, AI frames, captions) to a self-hosted spoofer server instead of api.locketcamera.com. Enter the server address; the app keeps using the server's own HTTPS certificate, so no DNS profile or CA install is needed. Enable the second option to route RevenueCat and Firebase Remote Config through the same server as well. Not selected by default.",
-      "default": false,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "com.locket.Locket",
-          "name": "Locket Widget",
-          "description": null,
-          "apkFileType": "XAPK",
-          "appIconColor": "#FFB201",
-          "signatures": [
-            "f7dd2c755cbbdf342b216c453e76e2ffcb34d688e5f91499bec0341648cbcb16"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.247.1",
-              "versionCodes": {
-                "ARM64_V8A": 632,
-                "ARMEABI_V7A": 632,
-                "X86_64": 632,
-                "X86": 632
-              },
-              "isExperimental": false,
-              "minSdk": 27,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "spooferServer",
-          "title": "Spoofer server",
-          "description": "Address of the spoofer server, for example https://spoofer.example. It must answer HTTPS with a certificate for this name. A scheme is optional and is assumed to be https when missing; a path is not supported.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": null,
-          "values": null
-        },
-        {
-          "key": "routeRevenueCat",
-          "title": "Route RevenueCat and Remote Config",
-          "description": "Also sends api.revenuecat.com and firebaseremoteconfig.googleapis.com to the spoofer server, so its Gold payload and feature flags reach the app without a DNS profile. The server must answer /v1/subscribers*, /v1/receipts* and /v1/projects*. Rebuilding the app's dex files makes patching take noticeably longer.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
     },
     {
       "name": "Trust User Certificates",
@@ -537,12 +562,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.247.1",
+              "version": "1.247.3",
               "versionCodes": {
-                "ARM64_V8A": 632,
-                "ARMEABI_V7A": 632,
-                "X86_64": 632,
-                "X86": 632
+                "ARM64_V8A": 636,
+                "ARMEABI_V7A": 636,
+                "X86_64": 636,
+                "X86": 636
               },
               "isExperimental": false,
               "minSdk": 27,
@@ -551,7 +576,17 @@
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "forceFeatureGates",
+          "title": "Force feature gates",
+          "description": "Also stub androidFeatureGatesOverride() to true, so client-side feature gates follow the Gold state even when Remote Config disagrees.",
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
     },
     {
       "name": "Unlock Plus",
@@ -612,6 +647,38 @@
               },
               "isExperimental": false,
               "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks Pro: unlimited SSL proxying entries, filters, pinning, block/map/rewrite and breakpoint rules, the advanced body editor, Compose entries, Live Update and the widget. Also bypasses the PairIP license check so the repacked app starts.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.proxyman.proxymanandroid",
+          "name": "Proxyman",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4F46E5",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.33.0",
+              "versionCodes": {
+                "ARM64_V8A": 70,
+                "ARMEABI_V7A": 70,
+                "X86_64": 70,
+                "X86": 70
+              },
+              "isExperimental": false,
+              "minSdk": 32,
               "description": null
             }
           ]
