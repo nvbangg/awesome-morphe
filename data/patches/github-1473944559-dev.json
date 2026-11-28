@@ -1,7 +1,34 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.3.1-dev.1",
+  "version": "1.3.6",
   "patches": [
+    {
+      "name": "Allow patched app to start",
+      "description": "Prevents Zalo from crashing on startup after patching (arm64 only).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.zing.zalo",
+          "name": "Zalo",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#0068FF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.11.01",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Block ads & tracking",
       "description": "Removes ads from chats and feed, and stops analytics and crash reporting.",
@@ -64,8 +91,8 @@
       "options": []
     },
     {
-      "name": "High quality video uploads",
-      "description": "Uploads videos at 1080p with higher bitrate instead of 480p.",
+      "name": "Force highest video quality",
+      "description": "Tries to upload videos to Feed and Story at higher bitrate (may be affected by server-side limits).",
       "default": true,
       "category": null,
       "compatiblePackages": [
