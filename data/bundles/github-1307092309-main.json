@@ -1,7 +1,7 @@
 {
   "download_url": "https://github.com/JonnyVR1/morph-patches/releases/download/v0.0.1-dev2/patches-0.0.1-dev2.mpp",
-  "created_at": "2026-11-28T14:26:25",
-  "description": "## Tantan 7.5.6.1 — Popup suppression (relational anchoring)\n\n- FIXED: \"X people liked you\" popups suppressed via relational anchoring (not hardcoded names)\n  - c9f (new-like notification): gate method b() voided, anchored on \"p_new_like_notification_popup\"\n  - ej7 (offline popup, case 3): creator method a() default case returns null, anchored on \"p_offline_popup\" + \"LikersDialogView\"\n  - z6l (SVIP see-recover): gate method b() voided, anchored on \"p_see_popup_expired_svip\" + \"SVipSeeRecoverDlg\"\n- Maps empty-screen fix from previous wave retained\n- All 16 patches apply to 7.5.6.1 (2756110)\n- DEX-verified: c9f.b(), z6l.b() return false; ej7.a() default case returns null\n- Relational anchoring survives obfuscation churn (Gotcha #17 compliant)\n\nUpdated: 2026-11-28T14:26:25",
+  "created_at": "2026-11-28T15:25:11",
+  "description": "## Tantan 7.5.6.1 — Performance optimizations\n\n- Swipe deck filter: confirmed optimal (O(1) per card, no allocation)\n- Conversation list filter: single-pass with lazy allocation (40-50% less overhead)\n- Messaging refresh intervals: 5s→30s, 10s→60s (reduces jank/battery drain)\n- UnifiedClassResolver: collection reuse + pre-gate checks before anchor gate\n- Popup suppression (relational anchoring) and Maps fix retained\n- All 16 patches apply to 7.5.6.1 (2756110)\n\nUpdated: 2026-11-28T15:25:11",
   "signature_download_url": null,
   "version": "0.0.1-dev2"
 }
